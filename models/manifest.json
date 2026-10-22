@@ -1,0 +1,49 @@
+{
+  "schema": "microduck.course-models.v1",
+  "files": [
+    {
+      "file": "walk.onnx",
+      "sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "bytes": 793705,
+      "source": "Pollen Robotics community policy v8",
+      "role": "walk"
+    },
+    {
+      "file": "kick-teacher.onnx",
+      "sha256": "147a32c388c6b19111b3ac3b550a9a6dc8b8bf267118af4d8c3712522eedb5af",
+      "bytes": 793685,
+      "source": "Pollen Robotics community policy v8",
+      "role": "kick-teacher"
+    },
+    {
+      "file": "kick-residual.onnx",
+      "sha256": "37d7344daeb3001a2485eacbd9354bb8bf54ae736b1ad6a10b1a0648be291aee",
+      "bytes": 795068,
+      "source": "Microduck course retained trained model",
+      "role": "kick-residual"
+    },
+    {
+      "file": "kick-checkpoint.pt",
+      "sha256": "e2e0511a0f17b32556fea909b43f98a306f4809099489d1a93c8b0d28031c06b",
+      "bytes": 4855587,
+      "source": "Microduck course retained trained model",
+      "role": "kick-checkpoint"
+    },
+    {
+      "file": "detector.pt",
+      "sha256": "6eba38e35bc7f58b9bf73f75c762d38491c0206adc50bcb6de163ce5e7fd12e9",
+      "bytes": 5372997,
+      "source": "Microduck course retained trained model",
+      "role": "detector"
+    },
+    {
+      "file": "detector.onnx",
+      "sha256": "d65b14f68f55a75474d76953f86fbd9be9b0b4f99d1c6402e2c6edfaf196641b",
+      "bytes": 9748295,
+      "source": "Microduck course retained trained model",
+      "role": "detector"
+    }
+  ],
+  "training_performed": false,
+  "downstream_default": "course models; student outputs require explicit opt-in"
+}

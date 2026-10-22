@@ -1,0 +1,7 @@
+{
+  "source": "gait/qualify.py",
+  "sourceSha256": "86c90e1bf7fcd20637e8d5d4478b37ee7f5426f4be6871c9b2661825dd9aade9",
+  "snapshot": "gait/student_qualify_v1.py",
+  "snapshotSha256": "fea979776e52d79db404951409ae47dfa5cdb7ad43f2b7d690db94d3be236298",
+  "scope": "Only official scale1/defaultoffset action, development fixed20s, no adapter remapping or course acceptance"
+}

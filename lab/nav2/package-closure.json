@@ -1,0 +1,304 @@
+{
+  "base_image": {
+    "reference": "ros@sha256:32114cd33511c91307d4f5dea184dcbfb9385860bee9839b772332c8fc103856",
+    "Id": "sha256:c9df25bdf5d9bb5b0cf8b58c05d2c5431ea73a7a8b5e9c0ca14813a230c31623",
+    "Architecture": "arm64",
+    "RepoDigests": [
+      "ros@sha256:32114cd33511c91307d4f5dea184dcbfb9385860bee9839b772332c8fc103856"
+    ],
+    "source": "https://github.com/osrf/docker_images/tree/master/ros/jazzy/ubuntu/noble/ros-core"
+  },
+  "deb_count": 57,
+  "deb_total_bytes": 26058652,
+  "debs": [
+    {
+      "filename": "comerr-dev_2.1-1.47.0-2.4~exp1ubuntu4.1_arm64.deb",
+      "sha256": "d56e0dbf15625e87e2ebb68a0751f5a785f89b957587251fe62af2afb2a26daf",
+      "bytes": 44146
+    },
+    {
+      "filename": "cppzmq-dev_4.10.0-1build1_arm64.deb",
+      "sha256": "6748c426872fae6ab7fcad2b22adbf99302bdd46495443aecf78da6cc158af40",
+      "bytes": 25944
+    },
+    {
+      "filename": "icu-devtools_74.2-1ubuntu3.1_arm64.deb",
+      "sha256": "a356d95c5a0576c876123c42730ae696ebd852a0e4fbb93c9b7149845ed16afc",
+      "bytes": 208902
+    },
+    {
+      "filename": "krb5-multidev_1.20.1-6ubuntu2.10_arm64.deb",
+      "sha256": "c505b968bc0224cbabddc4c98bb4ac7d8697207f58714b5be51178720b47c911",
+      "bytes": 124786
+    },
+    {
+      "filename": "libbsd-dev_0.12.1-1build1.1_arm64.deb",
+      "sha256": "435612977823ad9e03810bb840b22e5d55031833d163a29230de071963054966",
+      "bytes": 169698
+    },
+    {
+      "filename": "libbsd0_0.12.1-1build1.1_arm64.deb",
+      "sha256": "cdf9ff601244e64482584d9d9b98aa54a573c081ab5956227c737307196c1ce3",
+      "bytes": 40970
+    },
+    {
+      "filename": "libeigen3-dev_3.4.0-4build0.1_all.deb",
+      "sha256": "56c05756bd5bf1e7d1c30ea545786a51684b3c796f8289b20cc803b2f1e6f754",
+      "bytes": 1056510
+    },
+    {
+      "filename": "libgssrpc4t64_1.20.1-6ubuntu2.10_arm64.deb",
+      "sha256": "c02a0a85da055a49fe347cc7b86aaab26c0abf0088e913a0059eda1fa3b4ab38",
+      "bytes": 57912
+    },
+    {
+      "filename": "libicu-dev_74.2-1ubuntu3.1_arm64.deb",
+      "sha256": "65a1c1196beddbeed78562be34821be82974e322bb48fbf76c62805ec16f232b",
+      "bytes": 11881468
+    },
+    {
+      "filename": "libkadm5clnt-mit12_1.20.1-6ubuntu2.10_arm64.deb",
+      "sha256": "385f1171f016c0e9d2c4b7cd60a61d405d230d8a962fdb8e96da28974a141097",
+      "bytes": 39930
+    },
+    {
+      "filename": "libkadm5srv-mit12_1.20.1-6ubuntu2.10_arm64.deb",
+      "sha256": "8af60badd954255f66ac929b58eb609125f44c688a4f609d55efdc446a112ba5",
+      "bytes": 53394
+    },
+    {
+      "filename": "libkdb5-10t64_1.20.1-6ubuntu2.10_arm64.deb",
+      "sha256": "27a3e8f129cebc58b6ca924f44b8bfa0f01a02b670a3766d26b5ef8dd5e81d7b",
+      "bytes": 40508
+    },
+    {
+      "filename": "libkrb5-dev_1.20.1-6ubuntu2.10_arm64.deb",
+      "sha256": "4a101673c72c8ecf466c3f11d281c3d171ada0988faadfee1780751058837867",
+      "bytes": 11884
+    },
+    {
+      "filename": "libmd-dev_1.1.0-2build1.1_arm64.deb",
+      "sha256": "861d78f0c200ee956afbdac0bde44c3230cd838cc8b353afa40a05014805d261",
+      "bytes": 43260
+    },
+    {
+      "filename": "libnorm-dev_1.5.9+dfsg-3.1build1_arm64.deb",
+      "sha256": "a75fd1eb035f99da8bdee0544d70df931a182c2c1329d529a7c574da05465086",
+      "bytes": 432602
+    },
+    {
+      "filename": "libnorm1t64_1.5.9+dfsg-3.1build1_arm64.deb",
+      "sha256": "b31886b4f3f142183083d0904ea0bbf2cf4949e258cec2db6d9c6c822303dd23",
+      "bytes": 149826
+    },
+    {
+      "filename": "liborocos-kdl-dev_1.5.1-4build1_arm64.deb",
+      "sha256": "8be35c9c83f7b0ea7a6ffff5060781c2ecbd7ef06f99d824a248d5f3af6a69a5",
+      "bytes": 84296
+    },
+    {
+      "filename": "liborocos-kdl1.5_1.5.1-4build1_arm64.deb",
+      "sha256": "929c49dfbd91c00c63010f9afe3e3aa5ddb71ba47afd650edb65f6cf80602a11",
+      "bytes": 228850
+    },
+    {
+      "filename": "libpgm-5.3-0t64_5.3.128~dfsg-2.1build1_arm64.deb",
+      "sha256": "7ee8d73f8a553bd2c38724fb9b832abc9c7df42af5d81598f57407bcebc0e721",
+      "bytes": 161792
+    },
+    {
+      "filename": "libpgm-dev_5.3.128~dfsg-2.1build1_arm64.deb",
+      "sha256": "1bf986bde3e1e7278ec26b5e24a3955c1ee07fd3e7ae86c2361001d5833bfa65",
+      "bytes": 222496
+    },
+    {
+      "filename": "libsodium-dev_1.0.18-1ubuntu0.24.04.1_arm64.deb",
+      "sha256": "84f1b2e70260af2842634b6fff4bb86bdd38fd28bddd14c25acd812006c891c6",
+      "bytes": 140268
+    },
+    {
+      "filename": "libsodium23_1.0.18-1ubuntu0.24.04.1_arm64.deb",
+      "sha256": "78471032060f3edfd539a01cb69a9ce8560a15e1d9efcd93ac7854731e9d679c",
+      "bytes": 119490
+    },
+    {
+      "filename": "libsqlite3-0_3.45.1-1ubuntu2.8_arm64.deb",
+      "sha256": "85925089ef6820a5b6ed80bb490d187465e49687c388333895680fda54e3ee06",
+      "bytes": 690864
+    },
+    {
+      "filename": "libsqlite3-dev_3.45.1-1ubuntu2.8_arm64.deb",
+      "sha256": "bdca1d2f51c62f7a8c4e87927314d618ad334f7335fb19646c6cc56e240ea998",
+      "bytes": 916440
+    },
+    {
+      "filename": "libxml2-dev_2.9.14+dfsg-1.3ubuntu3.8_arm64.deb",
+      "sha256": "92e3887200fcb247f5ba00d33a591ebb9546d6978c536001f57231b99ea225cf",
+      "bytes": 800432
+    },
+    {
+      "filename": "libzmq3-dev_4.3.5-1build2_arm64.deb",
+      "sha256": "4530f499314e14467a296eb8a77f738964a679c155f4687cec72e50c53ec2463",
+      "bytes": 539386
+    },
+    {
+      "filename": "libzmq5_4.3.5-1build2_arm64.deb",
+      "sha256": "c2e63e26929404b1627f55323b8902a098ee9e6d3054f317a6490ed3adf17f4b",
+      "bytes": 246946
+    },
+    {
+      "filename": "ros-jazzy-angles_1.16.1-1noble.20260305.211211_arm64.deb",
+      "sha256": "bad3d4d87c0bec0045321c417b7930c59f632853c9bd2189f9eef8e3934b7a25",
+      "bytes": 13864
+    },
+    {
+      "filename": "ros-jazzy-behaviortree-cpp_4.10.0-1noble.20260902.212340_arm64.deb",
+      "sha256": "81f7069eba9362ba424ed575225feddb3fe004aa1c22f91e8a531f9b6ed0a1f8",
+      "bytes": 612038
+    },
+    {
+      "filename": "ros-jazzy-bond_4.2.0-1noble.20260902.025203_arm64.deb",
+      "sha256": "5ef87b903da18e3d87461ffce182b2fd99d877eca2b3f94f8e6339f5d9c57096",
+      "bytes": 56120
+    },
+    {
+      "filename": "ros-jazzy-bondcpp_4.2.0-1noble.20260902.153702_arm64.deb",
+      "sha256": "dd17b75ae9b2364f394c883914a152af7f2d05e295917f9a2e5b9deaa3eb9172",
+      "bytes": 116576
+    },
+    {
+      "filename": "ros-jazzy-diagnostic-updater_4.2.7-1noble.20260902.152037_arm64.deb",
+      "sha256": "c9b04af6066a4829a775c9c0370fa1f06da6a49c9782af42cf9c7ebfede1dd27",
+      "bytes": 107336
+    },
+    {
+      "filename": "ros-jazzy-eigen3-cmake-module_0.3.1-1noble.20260603.145848_arm64.deb",
+      "sha256": "f93f0142d0401728835276e74156200cf8a9d889579d48ddba414b3e067571e7",
+      "bytes": 6432
+    },
+    {
+      "filename": "ros-jazzy-geographic-msgs_1.0.6-2noble.20260902.132856_arm64.deb",
+      "sha256": "8601c73232e44d93510ec7bea25c7ccb1b1eb50b8eb635d8f150847bb87350ca",
+      "bytes": 319056
+    },
+    {
+      "filename": "ros-jazzy-laser-geometry_2.7.2-1noble.20260903.003154_arm64.deb",
+      "sha256": "d2f2c202768e574229e38d4ffc0d69fc7329c367b371181edcbb37b8528fbc0c",
+      "bytes": 25720
+    },
+    {
+      "filename": "ros-jazzy-map-msgs_2.4.1-2noble.20260902.135735_arm64.deb",
+      "sha256": "9a5877e5213cd63c0d58acd8d27447338e537dc8ab9993312fdf7c81fcf85404",
+      "bytes": 238784
+    },
+    {
+      "filename": "ros-jazzy-message-filters_4.11.17-1noble.20260902.150205_arm64.deb",
+      "sha256": "d24ea944c90ce37160271e625764c6f72da5dd5896e3900fe13430456e2847c5",
+      "bytes": 49364
+    },
+    {
+      "filename": "ros-jazzy-nav2-behavior-tree_1.3.13-1noble.20260902.213707_arm64.deb",
+      "sha256": "b20e41cd61b08019f70051bf73b471299217eed55d0f608357d8fa1d3f2adabe",
+      "bytes": 1924274
+    },
+    {
+      "filename": "ros-jazzy-nav2-common_1.3.13-1noble.20260902.193153_arm64.deb",
+      "sha256": "25bf0206722f75501b379312a11760ba37842825cbaa3c43a0662c999f11890f",
+      "bytes": 10302
+    },
+    {
+      "filename": "ros-jazzy-nav2-core_1.3.13-1noble.20260903.004923_arm64.deb",
+      "sha256": "be4bb256d75e186f4d25517d39c766517cdd75c6c63ee797e42f6f250cec3065",
+      "bytes": 14268
+    },
+    {
+      "filename": "ros-jazzy-nav2-costmap-2d_1.3.13-1noble.20260903.003455_arm64.deb",
+      "sha256": "f1da054cc43baa98d65b7e6e6033a7a017205174a68f8d8cfc66e2b55afeb0e1",
+      "bytes": 1010682
+    },
+    {
+      "filename": "ros-jazzy-nav2-lifecycle-manager_1.3.13-1noble.20260902.211847_arm64.deb",
+      "sha256": "5534b07ac794b6161cdd817f71a95343a99683987253eb17068e4325e63fb6a0",
+      "bytes": 86890
+    },
+    {
+      "filename": "ros-jazzy-nav2-msgs_1.3.13-1noble.20260902.193503_arm64.deb",
+      "sha256": "2566a2079901647a71010b984e7316147f221813c364b08a566e4a0c3b5393ef",
+      "bytes": 1797618
+    },
+    {
+      "filename": "ros-jazzy-nav2-navfn-planner_1.3.13-1noble.20260903.010003_arm64.deb",
+      "sha256": "d9fe752f149408ebdb30b95b97fa6d04ee285fa097a127a18fac7725d4cfd37d",
+      "bytes": 49168
+    },
+    {
+      "filename": "ros-jazzy-nav2-planner_1.3.13-1noble.20260903.010032_arm64.deb",
+      "sha256": "69b25bb95ca8477171cdd72e73e74b0328f9edded584f408de054bba967e7e41",
+      "bytes": 195036
+    },
+    {
+      "filename": "ros-jazzy-nav2-util_1.3.13-1noble.20260902.195022_arm64.deb",
+      "sha256": "e897926654ed96071276f85d881da1dffe01e55232e59ba069dad99024c0aaec",
+      "bytes": 161638
+    },
+    {
+      "filename": "ros-jazzy-nav2-voxel-grid_1.3.13-1noble.20260902.212802_arm64.deb",
+      "sha256": "4c6d8033de58fa4260626b3be5c5617a161e9df9fae6ae2fa1eb325128fa576a",
+      "bytes": 19462
+    },
+    {
+      "filename": "ros-jazzy-orocos-kdl-vendor_0.5.2-1noble.20260603.150050_arm64.deb",
+      "sha256": "e9656d553f79e0eb3d5782a205c3f38c6c630f1121a5403a392861dc9d496bcb",
+      "bytes": 7148
+    },
+    {
+      "filename": "ros-jazzy-sensor-msgs-py_5.3.8-1noble.20260902.140600_arm64.deb",
+      "sha256": "3bbb32cae1e92a94052a0937b23776aaeaac805710bf56772eea4a46179bcafb",
+      "bytes": 16526
+    },
+    {
+      "filename": "ros-jazzy-smclib_4.2.0-1noble.20260317.155426_arm64.deb",
+      "sha256": "6fa92bde01cb9ec0bd713a13466ac9902ca233b4d5b1a0b07c514414260ab1bb",
+      "bytes": 14104
+    },
+    {
+      "filename": "ros-jazzy-tf2-geometry-msgs_0.36.22-1noble.20260902.170215_arm64.deb",
+      "sha256": "e3a73afbea06233d9c12f2a22e81e09e54c99114d0b66edd6e3a46511f66b706",
+      "bytes": 20078
+    },
+    {
+      "filename": "ros-jazzy-tf2-msgs_0.36.22-1noble.20260902.124530_arm64.deb",
+      "sha256": "359f2689e9e045796bd60bb9bc7e215e49e423d12bf12994979ffc81c145e018",
+      "bytes": 176966
+    },
+    {
+      "filename": "ros-jazzy-tf2-py_0.36.22-1noble.20260902.150411_arm64.deb",
+      "sha256": "6b6eb71340cd081ba31f8e477cb6ac7192f3b762f6a4ce9a8fbd854791e004cf",
+      "bytes": 27610
+    },
+    {
+      "filename": "ros-jazzy-tf2-ros-py_0.36.22-1noble.20260902.150658_arm64.deb",
+      "sha256": "2cc866b0c54d93b0fe52011f8cb7cc549fc7eb89d97c2cdaa5d1d2610fc0e381",
+      "bytes": 28280
+    },
+    {
+      "filename": "ros-jazzy-tf2-ros_0.36.22-1noble.20260902.154805_arm64.deb",
+      "sha256": "cfae35b685821bcc8ce556f14f26fbb47cf33fa3acffe21c0588130d4577a42c",
+      "bytes": 315768
+    },
+    {
+      "filename": "ros-jazzy-tf2-sensor-msgs_0.36.22-1noble.20260902.163410_arm64.deb",
+      "sha256": "9c98326bc82a9ab17f4b1307784a82c019185d9069e07d02001288d69486b1de",
+      "bytes": 15222
+    },
+    {
+      "filename": "ros-jazzy-tf2_0.36.22-1noble.20260902.124510_arm64.deb",
+      "sha256": "8d14d94f7a0a848c6051fc110449df4806963ed96ed8d8ea73eb1f14b14c37a8",
+      "bytes": 89322
+    }
+  ],
+  "source_repositories": [
+    "http://packages.ros.org/ros2/ubuntu",
+    "http://ports.ubuntu.com/ubuntu-ports"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema": "microduck.football-physics-semantics.v2",
+  "id": "football-beta-180s-mechanical-v2",
+  "created_at_utc": "2026-10-19T07:09:46.394708+00:00",
+  "status": "frozen_prospective_not_run",
+  "runtime_id": "newton-bam-20261019",
+  "hardware_profile_id": "beta-gc2093-l8cx-v1",
+  "supersedes_for_new_runs_only": "legacy all28 coordinate hard-bound interpretation",
+  "old_protocol_and_results_preserved": true,
+  "mechanical_safety": {
+    "servo_coordinate_peak_violation_rad": {
+      "max": 0.001,
+      "source": "actual official28joint USD servo-coordinate range"
+    },
+    "physical_output_peak_violation_rad": {
+      "max": 0.001,
+      "definition": "q_servo + q_passive",
+      "source": "official14joint physical body range; do not add passive range"
+    },
+    "no_state_clipping": true,
+    "no_nonfinite": true
+  },
+  "diagnostics_not_redefined": {
+    "joint_limit_violation_rad": "legacy all28 max violation remains unchanged in meaning",
+    "legacy_all28_peak_violation_rad": "same all28 numeric diagnostic with explicit name",
+    "passive_soft_limit_peak_residual_rad": "14 additional soft backlash coordinates; report perjoint peak/P95/P99/fraction/duration",
+    "passive_fit_status": "not calibrated to physical hardware"
+  },
+  "unchanged_task": {
+    "time_limit_s": 180,
+    "layouts": [
+      "empty",
+      "one-known-obstacle"
+    ],
+    "trials_per_layout": 100,
+    "groups_per_layout": 4,
+    "trials_per_group": 25,
+    "wilson95_lower_min_each_layout": 0.8,
+    "minimum_success_each_group": 20,
+    "maximum_falls_each_group": 1,
+    "real_kicking_foot_ball_contact_required": true,
+    "whole_ball_crossing_inside_goal_required": true,
+    "obstacle_collision_allowed": false,
+    "failures_in_denominator": true,
+    "automatic_resets": false,
+    "separate_old_30s_challenge": true
+  },
+  "information_boundary": "RGB/8x8ToF/encoder/IMU/known map to controller; physical truth only initialization fixture and independent score",
+  "startup_support": "Only explicit calibration stage; no root-state projection; task clock after complete release; true external wrench exactly zero during scored time; initialization failures retained",
+  "required_model_bundle": [
+    "walk_network_sha256",
+    "walk_action_adapter_sha256",
+    "kick_network_sha256",
+    "kick_action_adapter_sha256",
+    "detector_weights_sha256",
+    "detector_onnx_sha256",
+    "camera_profile_sha256",
+    "robot_physics_sha256",
+    "solver_parameters_sha256",
+    "protocol_sha256"
+  ],
+  "claim_scope": "Specified simulation functional and mechanical-output bounds only, no physical gear lifetime or sim2real guarantee"
+}

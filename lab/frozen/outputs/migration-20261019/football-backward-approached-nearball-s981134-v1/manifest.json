@@ -1,0 +1,1756 @@
+{
+  "schema": "microduck.beta-football-development.v1",
+  "runtime_id": "newton-bam-20261019",
+  "hardware_profile_id": "beta-gc2093-l8cx-v1",
+  "qualification_claimed": false,
+  "status": "development_episode_finished",
+  "model": "@COURSE@/workshop/migration-20261019/models/community-v8/velstand.onnx",
+  "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "robot_usd_sha256": "d0b7ff7139b5b7b431e42a17a96e0b973b069f3c0810e2fd4ca09ec9f06a6f09",
+  "fixture": {
+    "root_pose_xyzw": [
+      -0.66,
+      0.0,
+      0.125,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "ball_pose_xyzw": [
+      0.0,
+      -0.01,
+      0.035,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "goal_plane_x_m": 0.93,
+    "goal_opening_width_m": 0.24,
+    "goal_opening_height_m": 0.18,
+    "ball_radius_m": 0.035,
+    "ball_mass_kg": 0.045,
+    "seed": 981134,
+    "layout": "empty",
+    "scope": "Initialization and independent evaluation only; never controller input"
+  },
+  "physics_hz": 200,
+  "policy_hz": 50,
+  "sensor_hz": 15,
+  "velocity_mapping": "See native_command_adapter on each control row; actual command is not an achieved velocity claim",
+  "kick_enabled": false,
+  "autonomous_kick_enabled": false,
+  "uncalibrated_point_estimate_development": true,
+  "failures_retained": true,
+  "automatic_resets": false,
+  "randomized": false,
+  "source_snapshot": {
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/test_cpu.py": {
+      "sha256": "ba09619d31b29410585867d028f95aee0d97d9a1995475d35e878d030e4e492d",
+      "snapshot": "source-snapshot/football/media_archive_v1/test_cpu.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/executor.py": {
+      "sha256": "d19498e420541d929d48408c85bf907a89e49ee6d0676a5fd284610bdbca1954",
+      "snapshot": "source-snapshot/football/media_archive_v1/executor.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/media_archive.py": {
+      "sha256": "09419695795185461d8489b41d2a3939b27330a6f48c22107f2080146d96446d",
+      "snapshot": "source-snapshot/football/media_archive_v1/media_archive.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/execute.py": {
+      "sha256": "798608923a74b6f959c34b32fe6af4989335602c96570d2f0a8b67c0720be1cb",
+      "snapshot": "source-snapshot/football/media_archive_v1/execute.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/release.json": {
+      "sha256": "0a965557ab11ff52c601f074d6455bd1dc57efefed5c693aa88220e774ba32ff",
+      "snapshot": "source-snapshot/football/media_archive_v1/release.json"
+    },
+    "@COURSE@/workshop/migration-20261019/football/controller.py": {
+      "sha256": "4c3e2b2cfe31d0e8547b3581a4076d2bf44dd7e4b317981b9204e6d2ce2c1e7e",
+      "snapshot": "source-snapshot/football/controller.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/audit_policy_sensor_trace.py": {
+      "sha256": "b9c52330708b3150bf1c9d81d4315fb61df18394dd3fcc9a36423ce4b144b83c",
+      "snapshot": "source-snapshot/football/audit_policy_sensor_trace.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/imu_predictor.py": {
+      "sha256": "f60f6277a712cb017a774ed559e01671026df7d5bda6f5d92163bf353f626efd",
+      "snapshot": "source-snapshot/football/imu_predictor.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/audit_fifo_prediction.py": {
+      "sha256": "20d54c528c375870ccc5396556cd83e3389b74977b89b8801f8c851b6fcbd82c",
+      "snapshot": "source-snapshot/football/audit_fifo_prediction.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_cpu.py": {
+      "sha256": "7ebfb45372564af57da88cce78eec80077858b89e7a6511f2cdc29a24a71791b",
+      "snapshot": "source-snapshot/football/test_cpu.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/extract_collision_geometry.py": {
+      "sha256": "1a6ddf63b4671d17433b49c056111304157b0820eaf37a4657452e35a636840b",
+      "snapshot": "source-snapshot/football/extract_collision_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/scoring.py": {
+      "sha256": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286",
+      "snapshot": "source-snapshot/football/scoring.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/server.py": {
+      "sha256": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8",
+      "snapshot": "source-snapshot/football/server.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/isaac_execute.py": {
+      "sha256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
+      "snapshot": "source-snapshot/football/isaac_execute.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/detector_client.py": {
+      "sha256": "d5cd26bb049800890ce672050be50468ed7145447b3c13d4913e5abcc75e93dd",
+      "snapshot": "source-snapshot/football/detector_client.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_startup_support.py": {
+      "sha256": "e805771249e360aed03aa14e5269c459bf2820de5ef45fa3ea5e9856e3ff32ae",
+      "snapshot": "source-snapshot/football/test_startup_support.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/http_client.py": {
+      "sha256": "31c9620abc6d1b1de21be95073d011beeee8fcae0c13b220754032e3f1894698",
+      "snapshot": "source-snapshot/football/http_client.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_beta_image_geometry.py": {
+      "sha256": "761efd7009c189a5f6f21afc32f6e43d53f5c7300d726a2f94ee1b14fd298115",
+      "snapshot": "source-snapshot/football/test_beta_image_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/leg_odometry.py": {
+      "sha256": "c88eb06e2ef0017e25b9c087884915ba477b4af2888d70eef07799504d3b2e7f",
+      "snapshot": "source-snapshot/football/leg_odometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_head_adapter.py": {
+      "sha256": "46e26147ad0759191790bc37bc3ad2435cfb16902aff9a9169e389eac948db7b",
+      "snapshot": "source-snapshot/football/test_head_adapter.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/prepare_calibration.py": {
+      "sha256": "1cb0a7a46324fdecc0223b0f3887ada8fccb349692bf46561bcdb5bbf15cf6e4",
+      "snapshot": "source-snapshot/football/prepare_calibration.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/startup_support.py": {
+      "sha256": "fba79bfc789833ef2ada6aeee9db32a369f0448c5d9d50eb8339721306a5e134",
+      "snapshot": "source-snapshot/football/startup_support.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/body_imu_input.py": {
+      "sha256": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a",
+      "snapshot": "source-snapshot/football/body_imu_input.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/nav2_bridge.py": {
+      "sha256": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
+      "snapshot": "source-snapshot/football/nav2_bridge.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/student_entry.py": {
+      "sha256": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
+      "snapshot": "source-snapshot/football/student_entry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/audit_replay_geometry.py": {
+      "sha256": "eeccc4ca89f1cd1b66b4894aff79957b633d47bfa0108ebaa82b12b3842a613d",
+      "snapshot": "source-snapshot/football/audit_replay_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/hardware_head_fk.py": {
+      "sha256": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
+      "snapshot": "source-snapshot/football/hardware_head_fk.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/contact_scoring.py": {
+      "sha256": "9d8909267a375f97097add3e7ab1db5add1bd7b933432c33c4d2c18e5d207589",
+      "snapshot": "source-snapshot/football/contact_scoring.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_mechanical_scoring.py": {
+      "sha256": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a",
+      "snapshot": "source-snapshot/football/test_mechanical_scoring.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/gaze_tracking.py": {
+      "sha256": "2609ae9417ba6a664ff8e2be310a5e5c87f9d4d50a27e90a78018ee0b51dd445",
+      "snapshot": "source-snapshot/football/gaze_tracking.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_gaze_tracking.py": {
+      "sha256": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac",
+      "snapshot": "source-snapshot/football/test_gaze_tracking.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/replay_actual_rgb.py": {
+      "sha256": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c",
+      "snapshot": "source-snapshot/football/replay_actual_rgb.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "snapshot": "source-snapshot/football/__init__.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_nav2_actual.py": {
+      "sha256": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb",
+      "snapshot": "source-snapshot/football/test_nav2_actual.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/visual_localization.py": {
+      "sha256": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1",
+      "snapshot": "source-snapshot/football/visual_localization.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/kick_development.py": {
+      "sha256": "d3155cc59b7be1832c8b572261401058a2ebf3bdc4e96ab47f22c7879678f034",
+      "snapshot": "source-snapshot/football/kick_development.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/ground_plane.py": {
+      "sha256": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44",
+      "snapshot": "source-snapshot/football/ground_plane.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/perception.py": {
+      "sha256": "6312c31a6331f92e9616a990a9b915798606b15f6e719a68e3993cf2857ec368",
+      "snapshot": "source-snapshot/football/perception.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/head_adapter.py": {
+      "sha256": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787",
+      "snapshot": "source-snapshot/football/head_adapter.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_controller_cpu.py": {
+      "sha256": "fdd2452e14fc04a12af2152d4547293ce95957abfdfcc33320f5bff315d5af29",
+      "snapshot": "source-snapshot/football/test_controller_cpu.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/mechanical_scoring.py": {
+      "sha256": "9c7c47080d2cd37dc928904cfb6dedb8c4384fbd026e3b359f5bc0e1aeec77a3",
+      "snapshot": "source-snapshot/football/mechanical_scoring.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_imu_predictor.py": {
+      "sha256": "d12415b4ec201ebcb9ac37fdfb5ed7a6e2e006ba389efcb27447e7994431b6fb",
+      "snapshot": "source-snapshot/football/test_imu_predictor.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/test_body_imu_input.py": {
+      "sha256": "255359ecb5a41f4d168a2b9cf7e49d9318af575582d15ee0f20cdda1ce8b2985",
+      "snapshot": "source-snapshot/football/test_body_imu_input.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/contour.py": {
+      "sha256": "99fdfad1f418a0ed41b84f17001161685dc5b0ac682395a0e756e31d2d011212",
+      "snapshot": "source-snapshot/football/vision/contour.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/grounded_direction.py": {
+      "sha256": "7a9ec2f802a7de227125f464ee037de2410c7dc02945fa9577178b1367905b16",
+      "snapshot": "source-snapshot/football/vision/grounded_direction.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/goal_points.py": {
+      "sha256": "3c91b899ef19af4aa7278046ada695a581b968fee16fb92780127aa75eac9160",
+      "snapshot": "source-snapshot/football/vision/goal_points.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/known_goal_geometry.py": {
+      "sha256": "3f4eac071f0bb6eecfe00edb7fcc189c8ad80fd7e9f1f9387e45b7d80e777e8a",
+      "snapshot": "source-snapshot/football/vision/known_goal_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/sphere_geometry.py": {
+      "sha256": "0d0c41c4477898521cba45aab57c93d83e91874d7be71306af93eabd3592647d",
+      "snapshot": "source-snapshot/football/vision/sphere_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/beta_box_geometry.py": {
+      "sha256": "8a91078c5a4ca1b05f00e6190a55f74076328616d767a9dca027652743dc8090",
+      "snapshot": "source-snapshot/football/vision/beta_box_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/beta_goal_points.py": {
+      "sha256": "e3b3543518ed07ee5d687e01a669301bbdb78f540884434c07682f01d9238fee",
+      "snapshot": "source-snapshot/football/vision/beta_goal_points.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/__init__.py": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "snapshot": "source-snapshot/football/vision/__init__.py"
+    },
+    "@COURSE@/workshop/migration-20261019/football/vision/goal_geometry.py": {
+      "sha256": "66aacd0504c20f0c7588340481a67d4a00941246228e5eceacdccf0a6e939f96",
+      "snapshot": "source-snapshot/football/vision/goal_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/isaac_beta_body_imu.py": {
+      "sha256": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601",
+      "snapshot": "source-snapshot/sensors/isaac_beta_body_imu.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/verify_hardware_profile.py": {
+      "sha256": "892d7647a9d552bcf59ab4b1621981808a71360dabd630afb657185837dff1bc",
+      "snapshot": "source-snapshot/sensors/verify_hardware_profile.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/make_sensor_matrix.py": {
+      "sha256": "1aa71466cf39bdb49d801896ecf29b30d6433ad271e035ef9bd4b43a46b697a6",
+      "snapshot": "source-snapshot/sensors/make_sensor_matrix.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/beta_mounts.py": {
+      "sha256": "ba18d0cf6812412b5805cac92503f2bc7303b0fb0adb7fe4129d53ecb0aeee8e",
+      "snapshot": "source-snapshot/sensors/beta_mounts.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/isaac_beta_sensor_rig.py": {
+      "sha256": "8aa46f6ec9513a8276e24f3886dbb79954a3660d2239427842df4d65fb9a8d08",
+      "snapshot": "source-snapshot/sensors/isaac_beta_sensor_rig.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/beta_sensor_profile.py": {
+      "sha256": "d7ebc2fab16125ab4a0fd2679b96384199493a03ecad7eae634664bee72caa3a",
+      "snapshot": "source-snapshot/sensors/beta_sensor_profile.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/isaac_beta_sensors_smoke.py": {
+      "sha256": "ae092018c47190403d0fdf3f6636f3ea4e8d4d3c45cae824120f174449021f5a",
+      "snapshot": "source-snapshot/sensors/isaac_beta_sensors_smoke.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/beta_tof_geometry.py": {
+      "sha256": "2972b464cbaeeeb2913d85c6ab6045b42d622d926c67333677767795e8d03244",
+      "snapshot": "source-snapshot/sensors/beta_tof_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/verify_body_hardware_profile.py": {
+      "sha256": "ae9fbff8cf53f3d755a99814e46e320d8841b2962bac38b2656f8d82748df12b",
+      "snapshot": "source-snapshot/sensors/verify_body_hardware_profile.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/beta_perception_geometry.py": {
+      "sha256": "c6e84f14c0ba4f30d7620bc86cc54ca5303a319450fcfa752766a06c1e140eca",
+      "snapshot": "source-snapshot/sensors/beta_perception_geometry.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/capture_clock.py": {
+      "sha256": "6ae284fffab7c984b4f5c1003165a939c9621f70e264f173a096597017d1af68",
+      "snapshot": "source-snapshot/sensors/capture_clock.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/beta_body_imu.py": {
+      "sha256": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4",
+      "snapshot": "source-snapshot/sensors/beta_body_imu.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/beta_head_imu.py": {
+      "sha256": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
+      "snapshot": "source-snapshot/sensors/beta_head_imu.py"
+    },
+    "@COURSE@/workshop/migration-20261019/gait/batch_policy.py": {
+      "sha256": "96699402dc689ca2dec56a048b90b8e2d45202b9aec27e09e122013d5562992a",
+      "snapshot": "source-snapshot/gait/batch_policy.py"
+    },
+    "@COURSE@/workshop/migration-20261019/gait/bounded_actions.py": {
+      "sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa",
+      "snapshot": "source-snapshot/gait/bounded_actions.py"
+    },
+    "@COURSE@/workshop/migration-20261019/gait/bounded-action-limits.json": {
+      "sha256": "b5ee7082137620880ff8a9d2b492e9c834f750bf52ac8f593f4235b190f04f5d",
+      "snapshot": "source-snapshot/gait/bounded-action-limits.json"
+    },
+    "@COURSE@/workshop/migration-20261019/perception/detector.py": {
+      "sha256": "c1d7a71289f04af28cd0e6679f097cefdaf82489e350ba8383b6b09332e457c7",
+      "snapshot": "source-snapshot/perception/detector.py"
+    },
+    "@COURSE@/workshop/migration-20261019/perception/serve_detector.py": {
+      "sha256": "ad617e26b2b8ab718c519585da03ee1bf4e2f71e7ef9195a7e1b897c78d5c5e8",
+      "snapshot": "source-snapshot/perception/serve_detector.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/experimental/shared_imu_snapshot.py": {
+      "sha256": "71b9307bc0abe32524530cd59aa87e8c4f331eb5d0fc95d5170a9fb21b3cc14f",
+      "snapshot": "source-snapshot/sensors/experimental/shared_imu_snapshot.py"
+    },
+    "@COURSE@/workshop/migration-20261019/sensors/experimental/packed_readback.py": {
+      "sha256": "272e2b57304f65d53b775e06da6d996c0836377dcb640a81de2f46d0f5c42568",
+      "snapshot": "source-snapshot/sensors/experimental/packed_readback.py"
+    }
+  },
+  "approached_nearball_calibration_entry": true,
+  "production_recovery": false,
+  "body_fusion_sensitivity": {
+    "orientation_correction_tau_s": 2.0,
+    "default_tau_s": 0.5,
+    "is_measured": false,
+    "is_ST_SFLP_setting": false,
+    "scope": "Declared virtual complementary-filter assumption; no truth initialization/correction"
+  },
+  "policy_IMU_selection": "body50",
+  "IMU_delivery_adapter": {
+    "control_read_hz": 50,
+    "source": "separate body powerboard LSM6DSV16X",
+    "decoder": "official median3 gyro/gravity,25live quaternion readiness",
+    "extra_read_to_policy_delay_s": 0.0,
+    "extra_delay_is_measured": false,
+    "median3_phase_delay_included": true,
+    "timing_source": "official main loop read\u2192inference\u2192apply within same tick; additional queue is an explicit sensitivity assumption",
+    "extra_prediction": false,
+    "head_FIFO_used_for_locomotion": false,
+    "encoder_timing": "same50Hz sync_read as body IMU,quantized4096positioncounts and.229rpm velocitycounts",
+    "last_action": "previous raw network output before target adapter",
+    "hardware_description_correction": "official body IMU was previously omitted; camera/head FIFO settings unchanged"
+  },
+  "visual_geometry": {
+    "sphere_refinement_level": 2,
+    "sphere_prims": [
+      "/World/envs/env_0/Ball/geometry/mesh"
+    ],
+    "collision_changed": false,
+    "sphere_radius_m": 0.035,
+    "sphere_mass_kg": 0.045,
+    "pitch_visual_top_z_m": 0.0002,
+    "pitch_has_collision": false
+  },
+  "paired_contact_order": [
+    "ankle_right",
+    "ankle_left"
+  ],
+  "detector": {
+    "mode": "actual-RGB-YOLO26n-torch-cuda:0",
+    "deployment": "@COURSE@/outputs/migration-20261019/beta-detector/train-random-001/deployment.json",
+    "deployment_sha256": "c40b2e743d08e9ab370e0b2d4d4817066eb1e54c104f699895eb9770a25cc99f",
+    "ready": true,
+    "hardware_profile_id": "beta-gc2093-l8cx-v1",
+    "weights_sha256": "6eba38e35bc7f58b9bf73f75c762d38491c0206adc50bcb6de163ce5e7fd12e9",
+    "device": "cuda:0",
+    "onnx_sha256": "d65b14f68f55a75474d76953f86fbd9be9b0b4f99d1c6402e2c6edfaf196641b",
+    "backend": "torch",
+    "clock_scope": "Synchronous measured inference; simulation pauses during request, real robot latency is not established"
+  },
+  "startup_support": {
+    "kind": "temporary external-wrench initialization fixture",
+    "config": {
+      "calibration_timeout_s": 5.0,
+      "supported_stand_s": 0.5,
+      "release_duration_s": 1.0,
+      "position_kp_n_m": 150.0,
+      "position_kd_ns_m": 12.0,
+      "orientation_kp_nm_rad": 2.0,
+      "orientation_kd_nms_rad": 0.16,
+      "maximum_force_n": 12.0,
+      "maximum_torque_nm": 0.6
+    },
+    "total_robot_mass_kg": 0.737257182598114,
+    "reference_pose_xyzw_initialization_only": [
+      -0.66,
+      0.0,
+      0.125,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ],
+    "measured_imu_valid_at_s": 0.84,
+    "release_started_at_s": 1.3399999999999999,
+    "task_started_at_s": 2.34,
+    "failure": null,
+    "world_feedback_scope": "initialization support only; not navigator input",
+    "no_state_projection": true,
+    "hardware_equivalent": "robot supported while powering up and calibrating; not demonstrated autonomous get-up"
+  },
+  "native_k10_runtime": {
+    "source_sha256": {
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/export/deployment.json": "79f2bb411a242f71d5321a3caa7445705c79688d08704815b600baad2e9b788f",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/export/training-ledger.snapshot.json": "0230110c7f771e764e40e1867bb030cd0dc67ea0227dbfb0e575c91c12675c18",
+      "@COURSE@/workshop/migration-20261019/models/community-v8/velstand.onnx": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "@COURSE@/workshop/migration-20261019/football/sources/ball_kick_right-v8.onnx": "147a32c388c6b19111b3ac3b550a9a6dc8b8bf267118af4d8c3712522eedb5af",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/export/residual.onnx": "37d7344daeb3001a2485eacbd9354bb8bf54ae736b1ad6a10b1a0648be291aee",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/model_499.pt": "e2e0511a0f17b32556fea909b43f98a306f4809099489d1a93c8b0d28031c06b"
+    },
+    "development_point_estimate_only": true,
+    "formal_qualification_claimed": false
+  },
+  "ground_contact_evidence": {
+    "path": "actual-ground-contact-binding.json",
+    "sha256": "35e1811ab3f658da21b4a643bb5fdc30fd25cae9bc79e1c0322a29361a7dcdf5",
+    "source_sha256": "7b011526850bf9fb0031fb82846fe7012e15178ca7be5be20c32e6edc80245b8",
+    "sampling_hz": 200,
+    "actor_input": false,
+    "controls_unchanged": true
+  },
+  "onnx_parity": {
+    "count": 1,
+    "maximum_absolute_error": 8.940696716308594e-08,
+    "tolerance": 1e-05,
+    "device": "cuda:0",
+    "reference": "original ONNX CPU scalar FP32",
+    "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+    "passed": true
+  },
+  "navigation_ground_mode": "tof-virtual-floor",
+  "approached_calibration": {
+    "selection": {
+      "selection": {
+        "status": "selected",
+        "case": "back_bias_vx-0.35_d1.6_h+0.10",
+        "vx": -0.35,
+        "command_duration_s": 1.6,
+        "desired_heading_offset_rad": 0.1
+      },
+      "summary": "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/backward-probe-summary.json",
+      "summary_sha256": "0c1e65a0762cfc2ab3cb13dcafc99e2060f74e2aebe6a08b3179af585fbf9ce4",
+      "independent_audit": "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/independent-audit.json",
+      "independent_audit_sha256": "c8376d231d00f92cf08f45fde08f29eaace297d67a0fefbd2d32ece8686487a2",
+      "root_final_decision": "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/root-final-decision-v1.json",
+      "root_final_decision_sha256": "2a85f91658d258362480e46d81b29db4eeaa5f500944bb9d3b57d21d98ed1a96",
+      "helper_sha256": "eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2",
+      "stage_a_run_helper_path": "@COURSE@/outputs/migration-20261019/claude-football-backward-bias-v121-v1/candidate/heading_feedback.py",
+      "scope": "StageB approached near-ball CALIBRATION ONLY; not production recovery, not task success"
+    },
+    "helper_sha256": "eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2",
+    "total_policy_steps": 431,
+    "cutoff": {
+      "timestamp_s": 12.52,
+      "task_time_s": 10.18,
+      "physics_tick": 2504,
+      "verdict_state": "KICK",
+      "verdict_reason": null,
+      "original_handoff_status": {
+        "state": "KICK",
+        "reason": null,
+        "head_offsets": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "override_body_zero": true,
+        "head_return_complete": true,
+        "kick_runtime_authorized": true,
+        "kick_phase_s": 0.0,
+        "kick_onset_s": 12.52,
+        "attempts": 1,
+        "memory": {
+          "memory_available": true,
+          "reason": "unseen_ball_assumed_stationary",
+          "point_level_m": [
+            0.09639639557985286,
+            -0.04046741755053654,
+            -0.0809217159178513
+          ],
+          "point_body_m": [
+            0.09566533492251464,
+            -0.04058062768112238,
+            -0.08172855940401497
+          ],
+          "frame": "BODY50_gravity_level_with_projected_body_forward",
+          "ball_capture_timestamp_s": 8.335,
+          "ball_age_s": 4.184999999999999,
+          "capture_sensor_read_age_s": 0.015000000000000568,
+          "sensor_read_timestamp_s": 12.52,
+          "sensor_read_age_s": 0.0,
+          "samples_since_capture": 210,
+          "low_confidence_samples_since_capture": 32,
+          "original_range_uncertainty_m": 0.02827839045283195,
+          "prediction_horizon_s": 0.0,
+          "public_motion_hold_is_measurement": false,
+          "propagated_uncertainty_calibrated": false,
+          "stationary_ball_verified": false,
+          "no_slip_verified": false,
+          "kick_authorized": false
+        },
+        "last_goal_heading_rad": -0.02383279205093064,
+        "last_goal_fix_s": 12.47,
+        "headreturn_start_s": 11.26,
+        "headreturn_quiet_start_s": 12.02,
+        "uncertainty_envelope_inside": false,
+        "uncalibrated_target_authorization": true,
+        "qualification_claimed": false,
+        "only_point_estimate_development_permission": true,
+        "truth_used": false
+      },
+      "kick_runtime_authorized_by_original_verdict": true,
+      "kick_suppressed_for_calibration": true,
+      "original_gate_pass_fabricated": false,
+      "truth_used": false
+    },
+    "calibrating": true,
+    "policy_steps_executed": 431,
+    "finished": true
+  },
+  "calibration_command": null,
+  "calibration_gaze_body_yaw_pitch_rad": [
+    0.0,
+    0.0
+  ],
+  "native_bam_drives": [
+    {
+      "pos_indices": [
+        25,
+        27,
+        29,
+        31,
+        33,
+        17,
+        19,
+        21,
+        23,
+        7,
+        9,
+        11,
+        13,
+        15
+      ],
+      "min_delay": 4,
+      "max_delay": 4
+    }
+  ],
+  "setup_wall_seconds_including_Kit": 19.872139757993864,
+  "terminal_reason": "calibration_completed",
+  "loop_wall_seconds": 42.89935524502653,
+  "experimental_shared_imu_transport": {
+    "schema": "microduck.shared-imu-transport-experiment.v1",
+    "implementation_sha256": "71b9307bc0abe32524530cd59aa87e8c4f331eb5d0fc95d5170a9fb21b3cc14f",
+    "world_kinematics_exposed_in_packet": false,
+    "cpu_snapshot_transfers": 4228,
+    "sensors_share_one_physics_tick": true,
+    "measurement_and_delivery_rates_changed": false,
+    "source_profiles": {
+      "body": {
+        "model": "LSM6DSV16X",
+        "simulated_sample_hz": 120.0,
+        "fifo_read_hz": 50.0,
+        "pipeline_delay_s": 0.0,
+        "additional_transport_delay_s": 0.0,
+        "gyro_bias_rad_s": [
+          0.0,
+          0.0,
+          0.002
+        ],
+        "gyro_noise_std_rad_s": 0.003,
+        "accel_noise_std_m_s2": 0.03,
+        "orientation_correction_tau_s": 2.0,
+        "sensor_position_trunk_m": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "placement": "body power board",
+        "role": "50 Hz locomotion/control IMU; separate from head_imu.stream",
+        "transport": "Dynamixel combined sync_read with servo feedback",
+        "control_read_hz": 50.0,
+        "bus_register_address": 124,
+        "bus_block_bytes": 12,
+        "sensor_to_trunk_quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "published_axes": "trunk FLU",
+        "gyro_range_deg_s": 500.0,
+        "gyro_lsb_deg_s": 0.0175,
+        "quaternion_encoding": "xyz binary16; positive w reconstructed",
+        "decoder": "component-wise median3 gyro/gravity, unfiltered quaternion; ready after25 live quaternion reads",
+        "minimum_ready_reads": 25,
+        "minimum_ready_read_time_s": 0.5,
+        "pipeline_delay_origin": "Experiment assumption only: robotd reads, infers and applies in the same50Hz loop; no fixed post-read20ms queue is established by upstream source",
+        "pipeline_delay_is_measured": false,
+        "pipeline_delay_default_scope": "Zero added queue follows the same-tick source schedule, not a measured zero bus/inference time; historical20ms is an explicit stress case",
+        "median_phase_note": "Component-wise median3 already contributes approximately one50Hz tick of phase lag on monotonic signals; its delay must not be counted again as transport",
+        "internal_sample_rate_is_measured": false,
+        "noise_is_measured": false,
+        "sensor_position_is_measured": false,
+        "sflp_firmware_reproduced": false,
+        "additional_transport_delay_is_measured": false,
+        "assumptions": [
+          "120 Hz virtual internal fusion rate is not confirmed body firmware configuration",
+          "gyro bias/noise and acceleration noise are experiment inputs",
+          "power-board translation is unknown; trunk origin is a parameterized approximation",
+          "Additional post-read pipeline delay is unknown; zero added queue is a baseline and20ms remains an explicit historical stress setting, neither is a measured bus/inference duration"
+        ],
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/imu.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/bus.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/obs.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd/src/main.rs"
+        ],
+        "acquired_samples": 2536,
+        "missed_internal_samples": 1,
+        "body_register_reads": 1058,
+        "delivered_packets": 1058,
+        "fusion_initialization": {
+          "minimum_samples": 25,
+          "minimum_duration_s": 0.18,
+          "maximum_sample_gap_s": 0.04,
+          "gravity_norm_tolerance_m_s2": 1.18,
+          "maximum_gyro_norm_rad_s": 0.25,
+          "maximum_accel_component_std_m_s2": 0.2,
+          "maximum_direction_deviation_deg": 3.0,
+          "thresholds_are_measured": false,
+          "invalid_output": "orientation_valid=false and quat=null until a continuous stationary gravity window",
+          "assumption": "near-gravity magnitude, low gyro and stable acceleration are evidence for approximate rest; sustained constant linear acceleration remains unobservable without another sensor"
+        },
+        "head_stream_is_used_for_locomotion": false,
+        "articulation_body": "trunk_base",
+        "articulation_quaternion_order": "xyzw",
+        "virtual_sensor_acceleration": "two finite differences of the configured rigidly-mounted sensor point at200Hz",
+        "warmup": "first two physics updates establish derivatives without invented acceleration",
+        "world_kinematics_exposed_in_packet": false,
+        "fusion_hypothesis": "body50-scalar-finite-range-v1",
+        "gyro_clipping_resets_initialized_fusion": false,
+        "initial_saturation_blocks_initialization": true,
+        "sample_gap_invalidates_orientation": true,
+        "measured_gyro_range_deg_s": 500.0,
+        "clipped_measurement_integrated": true,
+        "hardware_fit_verified": false,
+        "interpretation": "Clipping flags and finite-range integration error are preserved; no truth orientation correction."
+      },
+      "head": {
+        "model": "LSM6DSV16X",
+        "enabled": true,
+        "reader": "robotd",
+        "simulated_sample_hz": 60.0,
+        "fifo_read_hz": 15.0,
+        "sensor_internal_odr_hz": 120.0,
+        "gyro_bias_rad_s": [
+          0.0,
+          0.0,
+          0.002
+        ],
+        "gyro_noise_std_rad_s": 0.003,
+        "accel_noise_std_m_s2": 0.03,
+        "orientation_correction_tau_s": 0.5,
+        "hardware_features": [
+          "SFLP on-chip orientation fusion",
+          "FIFO gyro/accel/quaternion batching"
+        ],
+        "stream_rate_is_official": true,
+        "noise_is_measured": false,
+        "gyro_range_deg_s": 500.0,
+        "accel_range_g": 4.0,
+        "sensor_to_head_quaternion_wxyz": [
+          0.5,
+          0.5,
+          -0.5,
+          -0.5
+        ],
+        "sensor_to_head_axes": "head = [-sensor.z, -sensor.x, +sensor.y]",
+        "published_axes": "head FLU after official decode/to_head",
+        "simulation_model": "biased/noisy local gyro and specific force; lightweight complementary tilt fusion",
+        "sflp_firmware_reproduced": false,
+        "absolute_yaw_available": false,
+        "orientation_reference": "gravity-aligned local frame, yaw initialized at zero and integrated from gyro",
+        "source_url": "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd/src/head_imu.rs",
+        "successful_samples": 1269,
+        "missed_samples": 0,
+        "initialization": {
+          "minimum_samples": 12,
+          "minimum_duration_s": 0.18,
+          "maximum_sample_gap_s": 0.04,
+          "gravity_norm_tolerance_m_s2": 1.18,
+          "maximum_gyro_norm_rad_s": 0.25,
+          "maximum_accel_component_std_m_s2": 0.2,
+          "maximum_direction_deviation_deg": 3.0,
+          "thresholds_are_measured": false,
+          "invalid_output": "orientation_valid=false and quat=null until a continuous stationary gravity window",
+          "assumption": "near-gravity magnitude, low gyro and stable acceleration are evidence for approximate rest; sustained constant linear acceleration remains unobservable without another sensor"
+        },
+        "fusion_limitations": [
+          "not ST SFLP firmware",
+          "no measured temperature bias",
+          "no real device timestamp jitter"
+        ],
+        "truth_boundary": "World kinematics are used only inside sensor synthesis, never exported as task localization"
+      }
+    },
+    "gpu_performance_verified": false,
+    "limitation": "Two sensor bodies in env_0; not a vectorized1024-env training implementation. No rendering, contact, encoder or BAM synchronization is combined here."
+  },
+  "experimental_packed_physics_transport": {
+    "calls": 4228,
+    "cpu_transfers": 4228,
+    "last": {
+      "groups": [
+        {
+          "dtype": "torch.float32",
+          "device": "cuda:0",
+          "values": 193,
+          "fields": [
+            "q",
+            "qd",
+            "limits",
+            "encoder_bias",
+            "root_xyz",
+            "root_quat",
+            "root_ang_b",
+            "root_lin_b",
+            "gravity",
+            "ball_xyz",
+            "forces",
+            "bam_0_torque",
+            "bam_0_voltage",
+            "bam_0_target"
+          ]
+        }
+      ],
+      "cpu_transfers": 1,
+      "dtype_preserved": true
+    },
+    "sampling_changed": false,
+    "world_state_is_controller_input": false,
+    "scope": "Transport only; a caller must retain its sensor/scorer information boundary"
+  },
+  "readback_equivalence": {
+    "enabled": false,
+    "physical_fields_compared": 0,
+    "head_packets_compared": 0,
+    "body_packets_compared": 0,
+    "mismatches": 0
+  },
+  "simulated_seconds": 21.14,
+  "task_seconds": 18.8,
+  "camera_frames": 317,
+  "policy_updates": 1057,
+  "physics_samples": 4228,
+  "scoring_physics_samples": 3760,
+  "scorer": {
+    "scoring_version": "whole_ball_v2_ground_tolerance_1mm",
+    "goal_time_s": null,
+    "real_foot_ball_contact": false,
+    "whole_ball_crossed_inside_goal": false,
+    "fell": false,
+    "obstacle_collision": false,
+    "joint_limit_violation_rad": 0.021806014701724052,
+    "contact": {
+      "kick_contact_observed": false,
+      "pre_kick_ball_contact_observed": false,
+      "kick_contact_impulse_ns": 0.0,
+      "max_kick_contact_force_n": 0.0,
+      "contact_samples": 3760,
+      "contact_threshold_n": 0.001
+    },
+    "controller_must_not_read": true,
+    "physics_semantics_id": "football-beta-180s-mechanical-v2",
+    "protocol_sha256": "a2aaa6ae660d9f8d8ad2fb30fa62d133cccdcb08a04a6cf54f3cce5c6a948c08",
+    "servo_coordinate_peak_violation_rad": 0.0,
+    "physical_output_peak_violation_rad": 0.0,
+    "legacy_all28_peak_violation_rad": 0.021806014701724052,
+    "passive_soft_limit_peak_residual_rad": 0.021806014701724052,
+    "passive_soft_limit_per_joint": [
+      {
+        "joint": "left_hip_yaw",
+        "peak_rad": 0.003336077556014061,
+        "p95_rad": 7.634926587343168e-05,
+        "p99_rad": 0.0008270461671054323,
+        "over_range_fraction": 0.36409574468085104,
+        "over_range_duration_s": 6.845000000000001
+      },
+      {
+        "joint": "left_hip_roll",
+        "peak_rad": 0.006317043676972389,
+        "p95_rad": 0.0005636926740407927,
+        "p99_rad": 0.002299288008362051,
+        "over_range_fraction": 0.6747340425531915,
+        "over_range_duration_s": 12.684999999999999
+      },
+      {
+        "joint": "left_hip_pitch",
+        "peak_rad": 0.007768562063574791,
+        "p95_rad": 0.0003627601079642763,
+        "p99_rad": 0.0019352888502180538,
+        "over_range_fraction": 0.7747340425531914,
+        "over_range_duration_s": 14.564999999999998
+      },
+      {
+        "joint": "left_knee",
+        "peak_rad": 0.018234046176075935,
+        "p95_rad": 0.0005960080772638317,
+        "p99_rad": 0.004097272101789703,
+        "over_range_fraction": 0.9066489361702128,
+        "over_range_duration_s": 17.045000000000005
+      },
+      {
+        "joint": "left_ankle",
+        "peak_rad": 0.011593533679842949,
+        "p95_rad": 0.00046118739992380046,
+        "p99_rad": 0.00251821057870984,
+        "over_range_fraction": 0.7170212765957447,
+        "over_range_duration_s": 13.480000000000015
+      },
+      {
+        "joint": "neck_pitch",
+        "peak_rad": 0.006127703934907913,
+        "p95_rad": 0.0003071211278438549,
+        "p99_rad": 0.0020725110545754353,
+        "over_range_fraction": 0.8776595744680851,
+        "over_range_duration_s": 16.500000000000004
+      },
+      {
+        "joint": "head_pitch",
+        "peak_rad": 0.0023157335817813873,
+        "p95_rad": 6.79568387567997e-05,
+        "p99_rad": 0.0002660344913601874,
+        "over_range_fraction": 0.9654255319148937,
+        "over_range_duration_s": 18.15
+      },
+      {
+        "joint": "head_yaw",
+        "peak_rad": 0.004397070035338402,
+        "p95_rad": 0.0002628969028592104,
+        "p99_rad": 0.0015965637378394537,
+        "over_range_fraction": 0.6071808510638298,
+        "over_range_duration_s": 11.415
+      },
+      {
+        "joint": "head_roll",
+        "peak_rad": 0.0020917952060699463,
+        "p95_rad": 8.748099207878102e-05,
+        "p99_rad": 0.000575645044445991,
+        "over_range_fraction": 0.7667553191489361,
+        "over_range_duration_s": 14.415
+      },
+      {
+        "joint": "right_hip_yaw",
+        "peak_rad": 0.003414878621697426,
+        "p95_rad": 0.000198087934404611,
+        "p99_rad": 0.000928077213466167,
+        "over_range_fraction": 0.5539893617021276,
+        "over_range_duration_s": 10.415000000000001
+      },
+      {
+        "joint": "right_hip_roll",
+        "peak_rad": 0.00673697330057621,
+        "p95_rad": 0.0005399570800364015,
+        "p99_rad": 0.0025503830611705736,
+        "over_range_fraction": 0.811968085106383,
+        "over_range_duration_s": 15.265000000000008
+      },
+      {
+        "joint": "right_hip_pitch",
+        "peak_rad": 0.007832081988453865,
+        "p95_rad": 0.00045036152005195574,
+        "p99_rad": 0.0022617481835186448,
+        "over_range_fraction": 0.7845744680851063,
+        "over_range_duration_s": 14.750000000000009
+      },
+      {
+        "joint": "right_knee",
+        "peak_rad": 0.013952435925602913,
+        "p95_rad": 0.000427609868347644,
+        "p99_rad": 0.0027202321588993042,
+        "over_range_fraction": 0.9053191489361702,
+        "over_range_duration_s": 17.019999999999996
+      },
+      {
+        "joint": "right_ankle",
+        "peak_rad": 0.021806014701724052,
+        "p95_rad": 0.00039718113839626263,
+        "p99_rad": 0.003177415262907737,
+        "over_range_fraction": 0.8077127659574468,
+        "over_range_duration_s": 15.185000000000002
+      }
+    ],
+    "passive_fit_status": "not calibrated to physical hardware",
+    "mechanical_output_bounds_passed": true,
+    "physical_episode_success": false,
+    "qualification_claimed": false
+  },
+  "control_failures": [],
+  "sensors": {
+    "kind": "beta_rtx_sensor_approximation",
+    "hardware_profile_id": "beta-gc2093-l8cx-v1",
+    "camera": {
+      "width_px": 960,
+      "height_px": 540,
+      "fps": 30.0,
+      "assumed_horizontal_fov_deg": 70.0,
+      "distortion_k1_k2_p1_p2_k3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "principal_offset_fraction": [
+        0.0,
+        0.0
+      ],
+      "mount_rotation_cw_deg": 0,
+      "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+      "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "sensor": "GalaxyCore GC2093",
+      "board": "beta / hw_rev 2",
+      "hardware_driver_raster": [
+        1920,
+        1080
+      ],
+      "hardware_driver_rate_hz": 30,
+      "simulated_output_raster": [
+        960,
+        540
+      ],
+      "raw_format_hardware": "SRGGB10_1X10",
+      "simulated_output_format": "RGB8 after virtual ISP",
+      "K": [
+        [
+          685.5110432362151,
+          0.0,
+          479.5
+        ],
+        [
+          0.0,
+          685.5110432362151,
+          269.5
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "assumed_vertical_fov_deg": 42.99566141876366,
+      "physical_lens_model": null,
+      "physical_lens_hfov_deg": null,
+      "physical_K": null,
+      "physical_D": null,
+      "unit_specific_calibration": false,
+      "calibrated": false,
+      "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+      "raw_stream_rotated": false,
+      "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+      "source_urls": [
+        "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+        "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+      ],
+      "distortion_application": "inverse Brown-Conrady remap of real RTX overscan using explicit assumed D"
+    },
+    "camera_upright_display": {
+      "width_px": 960,
+      "height_px": 540,
+      "K": [
+        [
+          685.5110432362151,
+          0.0,
+          479.5
+        ],
+        [
+          0.0,
+          685.5110432362151,
+          269.5
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "distortion_k1_k2_p1_p2_k3": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pixel_operation": "identity",
+      "optical_axis_operation": "identity",
+      "rotation_clockwise_deg": 0
+    },
+    "tof": {
+      "rows": 8,
+      "cols": 8,
+      "fps": 15.0,
+      "horizontal_fov_deg": 45.0,
+      "vertical_fov_deg": 45.0,
+      "minimum_reliable_range_m": 0.1,
+      "maximum_range_m": 4.0,
+      "sensor_generations": [
+        "VL53L8CX"
+      ],
+      "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+      "distance": "slant range along a normalized spherical-angle ray",
+      "sensor_axes": "FLU: +x forward, +y left, +z up",
+      "zone_order": "row-major; row 0 top, column 0 left",
+      "maximum_range_is_guaranteed": false,
+      "close_range_semantics": "Below 0.1 m is TooClose/unreliable, never a valid free-space observation",
+      "minimum_range_is_chip_physical_limit": false,
+      "close_range_model": "Conservative course slant-range filter; official kinematics also filters near points. This does not reproduce the chip's target-status firmware",
+      "bus": "SPI3",
+      "device": "/dev/spidev3.0",
+      "spi_clock_hz": 8000000,
+      "spi_bus_is_simulated": false,
+      "board": "beta / hw_rev 2",
+      "source_url": "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/kinematics/src/tof.rs#L108"
+    },
+    "head_imu": {
+      "model": "LSM6DSV16X",
+      "enabled": true,
+      "reader": "robotd",
+      "simulated_sample_hz": 60.0,
+      "fifo_read_hz": 15.0,
+      "sensor_internal_odr_hz": 120.0,
+      "gyro_bias_rad_s": [
+        0.0,
+        0.0,
+        0.002
+      ],
+      "gyro_noise_std_rad_s": 0.003,
+      "accel_noise_std_m_s2": 0.03,
+      "orientation_correction_tau_s": 0.5,
+      "hardware_features": [
+        "SFLP on-chip orientation fusion",
+        "FIFO gyro/accel/quaternion batching"
+      ],
+      "stream_rate_is_official": true,
+      "noise_is_measured": false,
+      "gyro_range_deg_s": 500.0,
+      "accel_range_g": 4.0,
+      "sensor_to_head_quaternion_wxyz": [
+        0.5,
+        0.5,
+        -0.5,
+        -0.5
+      ],
+      "sensor_to_head_axes": "head = [-sensor.z, -sensor.x, +sensor.y]",
+      "published_axes": "head FLU after official decode/to_head",
+      "simulation_model": "biased/noisy local gyro and specific force; lightweight complementary tilt fusion",
+      "sflp_firmware_reproduced": false,
+      "absolute_yaw_available": false,
+      "orientation_reference": "gravity-aligned local frame, yaw initialized at zero and integrated from gyro",
+      "source_url": "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd/src/head_imu.rs",
+      "successful_samples": 1269,
+      "missed_samples": 0,
+      "initialization": {
+        "minimum_samples": 12,
+        "minimum_duration_s": 0.18,
+        "maximum_sample_gap_s": 0.04,
+        "gravity_norm_tolerance_m_s2": 1.18,
+        "maximum_gyro_norm_rad_s": 0.25,
+        "maximum_accel_component_std_m_s2": 0.2,
+        "maximum_direction_deviation_deg": 3.0,
+        "thresholds_are_measured": false,
+        "invalid_output": "orientation_valid=false and quat=null until a continuous stationary gravity window",
+        "assumption": "near-gravity magnitude, low gyro and stable acceleration are evidence for approximate rest; sustained constant linear acceleration remains unobservable without another sensor"
+      },
+      "fusion_limitations": [
+        "not ST SFLP firmware",
+        "no measured temperature bias",
+        "no real device timestamp jitter"
+      ],
+      "truth_boundary": "World kinematics are used only inside sensor synthesis, never exported as task localization"
+    },
+    "mount": {
+      "name": "rl-jaw-soft-20261012",
+      "body_name": "jaw_soft",
+      "camera_position_body_m": [
+        0.0155,
+        -9.13778e-05,
+        -0.0733
+      ],
+      "tof_position_body_m": [
+        0.0135,
+        0.0224086,
+        -0.0733
+      ],
+      "imu_position_body_m": [
+        0.0152323,
+        0.000111069,
+        -0.05106
+      ],
+      "source": "microduck_rl@b02fdea4902c2b93b7d34a83a6f05da4ececb7d3 robot_allcollisions.xml",
+      "site_quaternion_xyzw": [
+        0.0,
+        0.7071067811865476,
+        0.0,
+        0.7071067811865476
+      ],
+      "camera_site_to_ros_xyzw": [
+        -0.5,
+        0.5,
+        -0.5,
+        0.5
+      ],
+      "camera_mount_rotation_cw_deg": 0,
+      "imu_position_scope": "matching CAD head_imu site; Beta chip position has not been measured on this physical unit",
+      "imu_orientation_scope": "Beta measured sensor-to-head mapping from robotd; head FLU follows the forward optical axis",
+      "source_is_asset_reference_not_unit_calibration": true
+    },
+    "body_quaternion_order": "xyzw",
+    "camera_api_quaternion_order": "xyzw",
+    "rtx_scene_partition": "env_0 (single-environment sensor rig)",
+    "camera_clock": "actual capture-to-capture simulation elapsed time; first capture from explicit reset timestamp (default zero)",
+    "world_stabilized_gimbal": false,
+    "independent_tof_optical_origin": true,
+    "rgb_raw_resolution": [
+      960,
+      540
+    ],
+    "rgb_upright_rotation": "identity; Beta native 0 degrees",
+    "rtx_undistorted_overscan_resolution": [
+      968,
+      548
+    ],
+    "rtx_pinhole_intrinsics": {
+      "fx": 685.5110432362151,
+      "fy": 685.5110432362151,
+      "cx": 484.0,
+      "cy": 274.0
+    },
+    "rgb_depth_coexistence": "global RTX disableColorRender false after depth camera initialization",
+    "tof_rtx_depth_resolution": [
+      32,
+      32
+    ],
+    "tof_render_fov_deg": [
+      50.0,
+      50.0
+    ],
+    "tof_sampling": "16 spherical subrays per 8x8 zone from independent RTX range product",
+    "near_clip_m": 0.03,
+    "near_clip_reason": "avoid decorative opaque lens housing; objects within 3 cm are not observed",
+    "noise_assumptions": {
+      "range_noise_std_m": 0.0,
+      "zone_dropout_probability": 0.0,
+      "origin": "explicit course assumptions, not measured hardware noise"
+    },
+    "missing_models": [
+      "exposure and motion blur",
+      "rolling shutter",
+      "auto exposure",
+      "ToF photon/reflectance/ambient IR interference",
+      "device crosstalk",
+      "ST SFLP firmware"
+    ],
+    "controller_boundary": "simulated_mount_poses is renderer/debug metadata, not admissible navigation localization",
+    "semantic_truth_available": false,
+    "autonomous_navigation_validated": false
+  },
+  "body_control_imu": {
+    "model": "LSM6DSV16X",
+    "simulated_sample_hz": 120.0,
+    "fifo_read_hz": 50.0,
+    "pipeline_delay_s": 0.0,
+    "additional_transport_delay_s": 0.0,
+    "gyro_bias_rad_s": [
+      0.0,
+      0.0,
+      0.002
+    ],
+    "gyro_noise_std_rad_s": 0.003,
+    "accel_noise_std_m_s2": 0.03,
+    "orientation_correction_tau_s": 2.0,
+    "sensor_position_trunk_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "profile_id": "beta-gc2093-l8cx-v1",
+    "placement": "body power board",
+    "role": "50 Hz locomotion/control IMU; separate from head_imu.stream",
+    "transport": "Dynamixel combined sync_read with servo feedback",
+    "control_read_hz": 50.0,
+    "bus_register_address": 124,
+    "bus_block_bytes": 12,
+    "sensor_to_trunk_quaternion_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "published_axes": "trunk FLU",
+    "gyro_range_deg_s": 500.0,
+    "gyro_lsb_deg_s": 0.0175,
+    "quaternion_encoding": "xyz binary16; positive w reconstructed",
+    "decoder": "component-wise median3 gyro/gravity, unfiltered quaternion; ready after25 live quaternion reads",
+    "minimum_ready_reads": 25,
+    "minimum_ready_read_time_s": 0.5,
+    "pipeline_delay_origin": "Experiment assumption only: robotd reads, infers and applies in the same50Hz loop; no fixed post-read20ms queue is established by upstream source",
+    "pipeline_delay_is_measured": false,
+    "pipeline_delay_default_scope": "Zero added queue follows the same-tick source schedule, not a measured zero bus/inference time; historical20ms is an explicit stress case",
+    "median_phase_note": "Component-wise median3 already contributes approximately one50Hz tick of phase lag on monotonic signals; its delay must not be counted again as transport",
+    "internal_sample_rate_is_measured": false,
+    "noise_is_measured": false,
+    "sensor_position_is_measured": false,
+    "sflp_firmware_reproduced": false,
+    "additional_transport_delay_is_measured": false,
+    "assumptions": [
+      "120 Hz virtual internal fusion rate is not confirmed body firmware configuration",
+      "gyro bias/noise and acceleration noise are experiment inputs",
+      "power-board translation is unknown; trunk origin is a parameterized approximation",
+      "Additional post-read pipeline delay is unknown; zero added queue is a baseline and20ms remains an explicit historical stress setting, neither is a measured bus/inference duration"
+    ],
+    "source_urls": [
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/imu.rs",
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/bus.rs",
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/obs.rs",
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd/src/main.rs"
+    ],
+    "acquired_samples": 2536,
+    "missed_internal_samples": 1,
+    "body_register_reads": 1058,
+    "delivered_packets": 1058,
+    "fusion_initialization": {
+      "minimum_samples": 25,
+      "minimum_duration_s": 0.18,
+      "maximum_sample_gap_s": 0.04,
+      "gravity_norm_tolerance_m_s2": 1.18,
+      "maximum_gyro_norm_rad_s": 0.25,
+      "maximum_accel_component_std_m_s2": 0.2,
+      "maximum_direction_deviation_deg": 3.0,
+      "thresholds_are_measured": false,
+      "invalid_output": "orientation_valid=false and quat=null until a continuous stationary gravity window",
+      "assumption": "near-gravity magnitude, low gyro and stable acceleration are evidence for approximate rest; sustained constant linear acceleration remains unobservable without another sensor"
+    },
+    "head_stream_is_used_for_locomotion": false,
+    "articulation_body": "trunk_base",
+    "articulation_quaternion_order": "xyzw",
+    "virtual_sensor_acceleration": "two finite differences of the configured rigidly-mounted sensor point at200Hz",
+    "warmup": "first two physics updates establish derivatives without invented acceleration",
+    "world_kinematics_exposed_in_packet": false,
+    "fusion_hypothesis": "body50-scalar-finite-range-v1",
+    "gyro_clipping_resets_initialized_fusion": false,
+    "initial_saturation_blocks_initialization": true,
+    "sample_gap_invalidates_orientation": true,
+    "measured_gyro_range_deg_s": 500.0,
+    "clipped_measurement_integrated": true,
+    "hardware_fit_verified": false,
+    "interpretation": "Clipping flags and finite-range integration error are preserved; no truth orientation correction."
+  },
+  "joint_names": [
+    "right_hip_yaw",
+    "passive_right_hip_yaw_backlash",
+    "right_hip_roll",
+    "passive_right_hip_roll_backlash",
+    "right_hip_pitch",
+    "passive_right_hip_pitch_backlash",
+    "right_knee",
+    "passive_right_knee_backlash",
+    "right_ankle",
+    "passive_right_ankle_backlash",
+    "neck_pitch",
+    "passive_neck_pitch_backlash",
+    "head_pitch",
+    "passive_head_pitch_backlash",
+    "head_yaw",
+    "passive_head_yaw_backlash",
+    "head_roll",
+    "passive_head_roll_backlash",
+    "left_hip_yaw",
+    "passive_left_hip_yaw_backlash",
+    "left_hip_roll",
+    "passive_left_hip_roll_backlash",
+    "left_hip_pitch",
+    "passive_left_hip_pitch_backlash",
+    "left_knee",
+    "passive_left_knee_backlash",
+    "left_ankle",
+    "passive_left_ankle_backlash"
+  ],
+  "policy_joint_names": [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle"
+  ],
+  "passive_joint_names": [
+    "passive_left_hip_yaw_backlash",
+    "passive_left_hip_roll_backlash",
+    "passive_left_hip_pitch_backlash",
+    "passive_left_knee_backlash",
+    "passive_left_ankle_backlash",
+    "passive_neck_pitch_backlash",
+    "passive_head_pitch_backlash",
+    "passive_head_yaw_backlash",
+    "passive_head_roll_backlash",
+    "passive_right_hip_yaw_backlash",
+    "passive_right_hip_roll_backlash",
+    "passive_right_hip_pitch_backlash",
+    "passive_right_knee_backlash",
+    "passive_right_ankle_backlash"
+  ],
+  "backend": {
+    "name": "newton",
+    "native_bam": true,
+    "physics_decimation": 1,
+    "policy_decimation": 4
+  },
+  "wall_seconds": 55.28077760597807,
+  "timing_wall_seconds": {
+    "startup_feedback": 0.36152862940798514,
+    "policy_50hz": 2.9144674916460644,
+    "physics_apply_step_scene_update": 4.782756182510639,
+    "state_readback_IMU_scoring_trace_200hz": 4.142329155467451,
+    "RTX_capture": 16.837556971120648,
+    "capture_readback_and_archive_submit": 0.9490544249711093,
+    "YOLO_request": 4.415700231009396,
+    "navigation_and_gaze": 8.323282114841277,
+    "trace_write_subset": 0.7208046141895466,
+    "Nav2_request_subset": 4.005118491128087
+  },
+  "timing_scope": "Host wall under shared load; capture_readback_and_archive_submit includes original readback plus immutable packet copy and bounded queue wait, not worker PNG/video cost. Media worker and post-episode drain times are separate. Nav2/trace times are subsets; GPU async work is charged at synchronization.",
+  "program_wall_before_cleanup_s": 62.775778588984394,
+  "videos": {
+    "first_person": {
+      "path": "first-person.mp4",
+      "frames": 317,
+      "nominal_fps": 15,
+      "exit_code": 0,
+      "sha256": "542f2fe18d9936342f6bc4d71b86febbd16270b387e4bee2bcdac84c67ace669",
+      "pid": 852987,
+      "child_exited": true
+    },
+    "overhead": {
+      "path": "overhead.mp4",
+      "frames": 317,
+      "nominal_fps": 15,
+      "exit_code": 0,
+      "sha256": "685e700e5ed4d03a9c93d361670702b13002e62c06d6d40b393c84f705649b77",
+      "pid": 852988,
+      "child_exited": true
+    },
+    "paired": {
+      "path": "paired-views.mp4",
+      "frames": 317,
+      "nominal_fps": 15,
+      "exit_code": 0,
+      "sha256": "a8bd099ead53d6633136ab734294fde5c18977c3335549980f9a202fe3678b28",
+      "pid": 852989,
+      "child_exited": true
+    }
+  },
+  "media_archive": {
+    "schema": "microduck.football-media-archive.v1",
+    "pid": 852663,
+    "status": "complete",
+    "committedCaptures": 317,
+    "qualificationClaimed": false,
+    "compressionLevel": 1,
+    "losslessPixels": true,
+    "dropPolicy": "none; bounded blocking backpressure",
+    "videos": {
+      "first_person": {
+        "path": "first-person.mp4",
+        "frames": 317,
+        "nominal_fps": 15,
+        "exit_code": 0,
+        "sha256": "542f2fe18d9936342f6bc4d71b86febbd16270b387e4bee2bcdac84c67ace669",
+        "pid": 852987,
+        "child_exited": true
+      },
+      "overhead": {
+        "path": "overhead.mp4",
+        "frames": 317,
+        "nominal_fps": 15,
+        "exit_code": 0,
+        "sha256": "685e700e5ed4d03a9c93d361670702b13002e62c06d6d40b393c84f705649b77",
+        "pid": 852988,
+        "child_exited": true
+      },
+      "paired": {
+        "path": "paired-views.mp4",
+        "frames": 317,
+        "nominal_fps": 15,
+        "exit_code": 0,
+        "sha256": "a8bd099ead53d6633136ab734294fde5c18977c3335549980f9a202fe3678b28",
+        "pid": 852989,
+        "child_exited": true
+      }
+    },
+    "timingsSeconds": {
+      "pngEncode": 9.332315577892587,
+      "archiveWrite": 0.3519197757996153,
+      "preview": 1.2107746591209434,
+      "postEpisodeVideo": 7.8873209320008755
+    },
+    "missingControlTimestamps": [],
+    "frameCount": 317,
+    "durationSeconds": 21.133333333333333,
+    "expectedCaptures": 317,
+    "evidenceComplete": true,
+    "workerWallSeconds": 50.76237359200604,
+    "encoderCleanupFallback": [],
+    "submittedCaptures": 317,
+    "queueCapacity": 16,
+    "queueFullWaits": 0,
+    "queuePutWallSeconds": 0.011629973072558641,
+    "workerExitCode": 0,
+    "workerExited": true
+  },
+  "wall_seconds_including_media_drain": 63.21683505899273,
+  "detector_cleanup": {
+    "owned_detector_pid": 852475,
+    "terminated": true,
+    "requests": 152
+  },
+  "Nav2_cleanup": {
+    "owned_container": "microduck-beta-nav2-39d21ecfc01a407189e6a7e5c516d1c3",
+    "ownership_token": "39d21ecfc01a407189e6a7e5c516d1c3",
+    "container_id": "e8a0c7a3214d4e384dad69c733159f3bd4ff1ae04728a2dd2ee03ecd43906d28",
+    "removed": true,
+    "owned_container_removed": true,
+    "owned_processes_zero": true,
+    "service_status": "complete",
+    "container_exit_code": 0,
+    "final_running": false,
+    "postscan_token_matches": [],
+    "summary_sha256": "04f334b09c1efe3d5d2dce48686303a1bce7bfb30f6903317b002b4508fe3177"
+  },
+  "source_changed_during_run": [],
+  "source_sha256": {
+    "controller.py": "4c3e2b2cfe31d0e8547b3581a4076d2bf44dd7e4b317981b9204e6d2ce2c1e7e",
+    "audit_policy_sensor_trace.py": "b9c52330708b3150bf1c9d81d4315fb61df18394dd3fcc9a36423ce4b144b83c",
+    "imu_predictor.py": "f60f6277a712cb017a774ed559e01671026df7d5bda6f5d92163bf353f626efd",
+    "audit_fifo_prediction.py": "20d54c528c375870ccc5396556cd83e3389b74977b89b8801f8c851b6fcbd82c",
+    "test_cpu.py": "7ebfb45372564af57da88cce78eec80077858b89e7a6511f2cdc29a24a71791b",
+    "extract_collision_geometry.py": "1a6ddf63b4671d17433b49c056111304157b0820eaf37a4657452e35a636840b",
+    "scoring.py": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286",
+    "server.py": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8",
+    "isaac_execute.py": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
+    "detector_client.py": "d5cd26bb049800890ce672050be50468ed7145447b3c13d4913e5abcc75e93dd",
+    "test_startup_support.py": "e805771249e360aed03aa14e5269c459bf2820de5ef45fa3ea5e9856e3ff32ae",
+    "http_client.py": "31c9620abc6d1b1de21be95073d011beeee8fcae0c13b220754032e3f1894698",
+    "test_beta_image_geometry.py": "761efd7009c189a5f6f21afc32f6e43d53f5c7300d726a2f94ee1b14fd298115",
+    "leg_odometry.py": "c88eb06e2ef0017e25b9c087884915ba477b4af2888d70eef07799504d3b2e7f",
+    "test_head_adapter.py": "46e26147ad0759191790bc37bc3ad2435cfb16902aff9a9169e389eac948db7b",
+    "prepare_calibration.py": "1cb0a7a46324fdecc0223b0f3887ada8fccb349692bf46561bcdb5bbf15cf6e4",
+    "startup_support.py": "fba79bfc789833ef2ada6aeee9db32a369f0448c5d9d50eb8339721306a5e134",
+    "body_imu_input.py": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a",
+    "nav2_bridge.py": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
+    "student_entry.py": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
+    "audit_replay_geometry.py": "eeccc4ca89f1cd1b66b4894aff79957b633d47bfa0108ebaa82b12b3842a613d",
+    "hardware_head_fk.py": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
+    "contact_scoring.py": "9d8909267a375f97097add3e7ab1db5add1bd7b933432c33c4d2c18e5d207589",
+    "test_mechanical_scoring.py": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a",
+    "gaze_tracking.py": "2609ae9417ba6a664ff8e2be310a5e5c87f9d4d50a27e90a78018ee0b51dd445",
+    "test_gaze_tracking.py": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac",
+    "replay_actual_rgb.py": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c",
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "test_nav2_actual.py": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb",
+    "visual_localization.py": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1",
+    "kick_development.py": "d3155cc59b7be1832c8b572261401058a2ebf3bdc4e96ab47f22c7879678f034",
+    "ground_plane.py": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44",
+    "perception.py": "6312c31a6331f92e9616a990a9b915798606b15f6e719a68e3993cf2857ec368",
+    "head_adapter.py": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787",
+    "test_controller_cpu.py": "fdd2452e14fc04a12af2152d4547293ce95957abfdfcc33320f5bff315d5af29",
+    "mechanical_scoring.py": "9c7c47080d2cd37dc928904cfb6dedb8c4384fbd026e3b359f5bc0e1aeec77a3",
+    "test_imu_predictor.py": "d12415b4ec201ebcb9ac37fdfb5ed7a6e2e006ba389efcb27447e7994431b6fb",
+    "test_body_imu_input.py": "255359ecb5a41f4d168a2b9cf7e49d9318af575582d15ee0f20cdda1ce8b2985",
+    "vision/contour.py": "99fdfad1f418a0ed41b84f17001161685dc5b0ac682395a0e756e31d2d011212",
+    "vision/grounded_direction.py": "7a9ec2f802a7de227125f464ee037de2410c7dc02945fa9577178b1367905b16",
+    "vision/goal_points.py": "3c91b899ef19af4aa7278046ada695a581b968fee16fb92780127aa75eac9160",
+    "vision/known_goal_geometry.py": "3f4eac071f0bb6eecfe00edb7fcc189c8ad80fd7e9f1f9387e45b7d80e777e8a",
+    "vision/sphere_geometry.py": "0d0c41c4477898521cba45aab57c93d83e91874d7be71306af93eabd3592647d",
+    "vision/beta_box_geometry.py": "8a91078c5a4ca1b05f00e6190a55f74076328616d767a9dca027652743dc8090",
+    "vision/beta_goal_points.py": "e3b3543518ed07ee5d687e01a669301bbdb78f540884434c07682f01d9238fee",
+    "vision/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vision/goal_geometry.py": "66aacd0504c20f0c7588340481a67d4a00941246228e5eceacdccf0a6e939f96"
+  },
+  "trace_sha256": {
+    "startup-support.jsonl": "af2d7e6ab1eaf1b80e1aa6cb13098d058c1277216d87fd27b23a5cea557a5c10",
+    "control.jsonl": "6965a8c50308edf53a43dd14b376c287a5b5945ba84012d1bf19005b8e4541bc",
+    "physics-trace.jsonl": "aae92805f4c7201879b6f87bcaebf2cabc74c943431d50756a7eb4ec05ad3ffe",
+    "body-imu.jsonl": "3fd91a83486b572db9ddebecc12d195dd75b8a09e9fa4cde80a4eb2cb65af782",
+    "public-memory-readback.jsonl": "d92bfb890c48f993038eed59b82b1ecbef144325abfd4ee080f2dc9803d2d978",
+    "sensor-inputs.jsonl": "716274035d9de0deb92da7d05251299b34a469a194814b00c80ed2ec477f346a",
+    "media-frame-ledger.jsonl": "3e57eb4fad45875ea008df9451251bdf5e4617b9923b97aefabe48a8d2f6d02f",
+    "media-commits.jsonl": "b14cded0723a54cede47199ec85553db4d78516947d80c2dc8be0c49f37aeea9",
+    "detections.jsonl": "ea912f9e1dcad5b760f9853bdb1bb3ceca829725b40c9b6529f9529b3860c6e8",
+    "policy-trace.jsonl": "daffd165a4675ac10097d9d480dfc2ed4a36a80c5979aa5968ccfa12715b3353",
+    "imu-fifo.jsonl": "f0ade9706d5229aaf583cbb17944e0ec84e0569f2aad34d8acd17d2dde480f9d"
+  },
+  "native_reference_contract": {
+    "schema": "microduck.native-football-reference.backward_approached_nearball_v1",
+    "qualification_claimed": false,
+    "model_identity": "published community velstand reference; not student-trained model",
+    "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+    "native_action": "scale1 affine raw+home-bias to native BAM; no EMA, projection or target slew; previous raw history",
+    "sensor": {
+      "fusion_hypothesis": "body50-scalar-finite-range-v1",
+      "gyro_clipping_resets_initialized_fusion": false,
+      "initial_saturation_blocks_initialization": true,
+      "sample_gap_invalidates_orientation": true,
+      "measured_gyro_range_deg_s": 500.0,
+      "clipped_measurement_integrated": true,
+      "sflp_firmware_reproduced": false,
+      "hardware_fit_verified": false,
+      "interpretation": "Clipping flags and finite-range integration error are preserved; no truth orientation correction.",
+      "orientation_correction_tau_s": 2.0,
+      "extra_delivery_delay_s": 0.0
+    },
+    "head_control": "Official61D head-command input plus bounded public same-read outer head integral in permitted zero-body observation only; no raw action or physical state override",
+    "controller": "Unchanged v117 approach until the original public HEAD_RETURN verdict; then the exact selected StageA helper; K10 forbidden (calibration only)",
+    "mechanical_interpretation": "Original active/passive simulator stops and motor torque remain. Historical combined-output gate is recorded as a conservative course diagnostic, not proven hardware stop.",
+    "autonomous_kick_enabled": false,
+    "production_recovery": false,
+    "task_reset_or_assistance": false,
+    "shared_gpu_not_performance": true,
+    "source_sha256": {
+      "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/backward-probe-summary.json": "0c1e65a0762cfc2ab3cb13dcafc99e2060f74e2aebe6a08b3179af585fbf9ce4",
+      "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/independent-audit.json": "c8376d231d00f92cf08f45fde08f29eaace297d67a0fefbd2d32ece8686487a2",
+      "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/root-final-decision-v1.json": "2a85f91658d258362480e46d81b29db4eeaa5f500944bb9d3b57d21d98ed1a96",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/export/deployment.json": "79f2bb411a242f71d5321a3caa7445705c79688d08704815b600baad2e9b788f",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/export/residual.onnx": "37d7344daeb3001a2485eacbd9354bb8bf54ae736b1ad6a10b1a0648be291aee",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/export/training-ledger.snapshot.json": "0230110c7f771e764e40e1867bb030cd0dc67ea0227dbfb0e575c91c12675c18",
+      "@COURSE@/outputs/migration-20261019/kick-native-v10-fresh512x500-s980702/model_499.pt": "e2e0511a0f17b32556fea909b43f98a306f4809099489d1a93c8b0d28031c06b",
+      "@COURSE@/workshop/migration-20261019/acceptance/bounded_image_head_servo.py": "f2c1b68ce19be41764dd040bfe2865492f862ef07ad67d6beed822f86246253e",
+      "@COURSE@/workshop/migration-20261019/acceptance/execute_long_development.py": "9a6a9948bec5250ae87002044853acf5be6bbdbedd9e3285308ae58229ae5f04",
+      "@COURSE@/workshop/migration-20261019/acceptance/execute_observed_ball_turn.py": "eb6e1039f478da27b4ebb00c15015c66365625c9f8ac9605404b3e368947ae3f",
+      "@COURSE@/workshop/migration-20261019/acceptance/execute_v8_active_view.py": "8e149be387ccba8e34d0ab2221054b76b1e6b83ccac2f24798aaec312288c70c",
+      "@COURSE@/workshop/migration-20261019/acceptance/execute_v8_development.py": "e48ed17b2249be02fced96080a31bc58edf44cdedea63702f674b517dbf03236",
+      "@COURSE@/workshop/migration-20261019/acceptance/execute_v8_navigation.py": "5495f0cbec5070f7d010f92edfb666454090258da622ec42f8057d514e052af0",
+      "@COURSE@/workshop/migration-20261019/acceptance/execute_v8_observed_attention.py": "3e290f497ad35ef8c0ed847f3a26ffb307ab3c0ca746b122a331e85ad7f60e27",
+      "@COURSE@/workshop/migration-20261019/acceptance/ground_contact_evidence.py": "7b011526850bf9fb0031fb82846fe7012e15178ca7be5be20c32e6edc80245b8",
+      "@COURSE@/workshop/migration-20261019/acceptance/guarded_navigation_feedback.py": "c97c5bd869538cb9606aa4db73af4376671d754cb9141cebe50cdd2a87e3656b",
+      "@COURSE@/workshop/migration-20261019/acceptance/measured_yaw_feedback.py": "1fa0a317ba93c24f02652865dfaa9ac5484592ab9f520e34fbc5c9642f1e9281",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/angular_navigation_native.py": "b0aaa44e9df97fa70a5da6c3c96ab26fd0e62ec5c3ec20e22d70494fe5a1dc87",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/attention_head_permission.py": "276dfcbc9d142a814b23da560bdf9902a574446b55656453d907ddc1eb0ecb87",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/attention_owner.py": "f445f1a32fa8e1708205c834b1e3c5b5dfc4ceafcf821805e4a17afe272f501b",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/ball_reacquisition.py": "36f80ca5157c626b8b8612b3b4bc5dbc3e1146d00463361faaaeb128cf44d99d",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/ball_view_hint.py": "306e2078dc397313288d8673c67e7658c278785346c5469da8c044ccb0a9179c",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/coarse_track.py": "a5bea49d962324dc384330208165670574ac50eea5b2002d5ac3042d1a7c717c",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/command_navigation_native.py": "0462de3bf03db49172b3b6fc0f09ffbc8b23afcb97512089d13010762905b355",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/contact_odometry.py": "1020f9d19dbd07248c4392c1cf1a6cac487c16d18af2a4be49675002e6554e67",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/cutoff_calibration.py": "d0ae4d67fa7588270076e4a87dbf4a3df0ddf9786f35dff23acdf26150cad1ef",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/design-v1.json": "076a51915e54e2756b613ae196a632ecf1758cd9e40920117e2473fb4e910867",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/execute.py": "1be0d62e69d7cd689b0bcf8e0402e5dc76a4642931aa10e8d71c38bd241a80eb",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/execute_media.py": "d762ff651da67cce13ac9e4d71bc3ba6e9e2588d6f50affa2d100d64d82759a2",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/executor.py": "674eaf5ed9502329d09cd62374faa28060ae599bca565fc36caf0da73aaa830a",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/final_approach.py": "1498a7071ebf601518536d22927b4a2d7e452427f561ab37dde27c202f097981",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/fine_feedback_permission.py": "a1068426d1197ac0469d8ffcce351f611d1d1e5b130b4df2ef2d8a1152585d36",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/fine_kick_v65.py": "37f2e5c00db56d3a7de60fa753b6175ad00510b02991d449df17be722dd0fd38",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/fine_transition_latch.py": "78e7dfc02df0eb7d57fcc501867adbad280366c0b1841026eb90385c85f44fb8",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/goal_reacquisition_native.py": "3ea585fb356e1dfca0874fdf4567d42f1e3012957875908d1f5e46ad28aa47f3",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/head_feedback.py": "32f2b1df64d9322c0b6c3e6ff7e1a34604f6aa25d0f6343b90d1d6316b0b655d",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/head_feedback_core.py": "1ac8a3877d71f1ad50c461189dda2129e3a0e21138d2b133035560227740f721",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/head_handoff.py": "6c014294e598367773b44003616f09c41db8930140c186340525798dae145f8a",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/heading_feedback.py": "eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/image_attention_native.py": "8f9358f0f600f723bee99eb98965c403caaf775864e4a58134131058e038be46",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/image_head_servo.py": "13a8896f1488245d947f89480f92d0e72b66042e5d6a03eb6e3a051ff9573411",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/kick_runtime_early.py": "2dbafc467d850609fb9ded5cc2c473106c2829e37231f7d4f8e408fd00244a86",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/native_head_domain.py": "8f14ff23f03ee30c1623bc5ebb13f342ef1480f9cac5fdd0e7e0a59719b2f8e3",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/near_ball_phase_native.py": "e9c3090d0e6861ce627e8a7ad9ff2336878b64a120da20f0313223945ecef529",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/neutral_fine_step.py": "c35484e30727652c6ce3cfce50a2c4a6ca3f2cbaa3afb6b76d4c111ffc66a26c",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/range_progress.py": "7b7b8b924fe013e7a18d4bf92142cef7872590a4430416893272bd2810596173",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/release.json": "af98e15a681718c5725e1adcb2417b1138316c7f53783489ed8fc403991394af",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/settled_entry.py": "a4f45285040c40c9dce6d4807650480e1c7375f26dede1eff3ffeaae0759b0c5",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/short_primitive.py": "d67928151d97a6056b953766b884d811d44718f50c3145e9c54f4ec620947b38",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/sole_kinematics.py": "77e2de4904f7755c17aa16276a497dc666afaf73a45c5c700d886bb81119e644",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/stage-a-selection.json": "5ede72305cb543cfca32808a9355106eac9327e37105000559391ba5cb9e7097",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/task_navigation.py": "e37f9c6fe8400bbd47585c476be902f3bf744f94e9c2e3087b72fd09cb2de27e",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_attention_head_permission.py": "5e721a8a8fcc73a60ba68e205e403372038673b3beb1c00cac5d00aca6e82817",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_attention_owner.py": "9e0d08bb782b1cf1f209abac24108916fb647e52655e1fd97c4c6dd5e7d109aa",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_ball_reacquisition.py": "f95696e4c0adaa4d00919712ecbe8235fde40fcded48e44e0d3af6d69d884f98",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_ball_view_hint.py": "12e425a67c16af422bd28d71043d5bbe52f2556e20a70601de526ad134deed94",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_close_forward.py": "275520391e083adaa7c2c9259ccbe1ec78f6bc3c3abb75a3b96a4f0ab50f21ef",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_coarse_track.py": "e7178e1903a371eb23b995dab9aa3c0f0fe7b59259549f361b0c137bb5f7bd2b",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_command_guards.py": "54ef91413809f3e9a422ccdb971553d32216aae03226074706ae379724fdcd76",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_continuous_final_track.py": "ed7165035d3fe3298db53e656a55d71c72243eb1bd49b2f94b3148ff89894355",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_continuous_track.py": "7e9701db857856b69747b7671596efef61ca214a779fd3a06ca0f7f9586e05f7",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_deep_ball_search.py": "e6a51aa5997a3078e47a3d5eb0eb63fed377940275c6b130975f1809a3a47ee9",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_final_stride_v71.py": "f2c540fe83c6381ace78df9f51460ed2a4c92f700e77c3ed3228abc32f8e7f1f",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_fine_attention_commit.py": "d24c0bd307c2efc06e2f38f521c26d4eff77b1e16797fed0fcd95a0a0d3b1a54",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_fine_feedback_permission.py": "1d4d34b5b717125c28dd7b00a79731ca86da2342a66722dc297e52356fea8060",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_fine_kick_v65.py": "e2194f3c618c244bbe3188d53b3f46ef2f3137ec80bf483728a43b295c10a1a3",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_fine_transition_latch.py": "07bc242ab9d62a229ce468b417e31fd19c81c58d0feadee18f79818ef90c0ecd",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_fixed_closedloop_primitive.py": "483cea4d204828a53109498816f3e538958e391895d774a7c15ac9ea1c6756f0",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_goal_reacquisition.py": "299c92bf0e4249b4466ad2688f505c9bc9d576d9b8d4bd42d430dd72fbeb9c54",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_goal_turn_progress.py": "31178905d0dd4a962fc8d9809c14dee371aa327aa5938031a1337614a081eab7",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_guard_stop_reobserve.py": "0a1872ab7aed09700a9a9fc2027505a4e78becb0df0d5e3da67f803c00fecac1",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_head_feedback.py": "88b3ef2beb55049f8de0a545cffad1e350668dfbddfd6f358bfb50af156a7e4c",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_head_feedback_core.py": "9ed24a0457bdac2050e5664c7fc75ffca3d732effa3ab277bc5cdb68c604f3f7",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_hold_complete_near_view.py": "5a9d1c447a49359e9cf86684cb7f9b63faa0acf5e179276e464560ac0f15c608",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_interpolated_primitives.py": "8fe6be70f48aeb4597a14843aaf5fc4e26a6de463e5d82154a618cd7106ccfc7",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_json_trace.py": "4179dfb05ad34b6fd9cbc7b7fa9dacbbdbdc4f66704330fdc7e7b19b40230f0f",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_macro_capture_domain.py": "b132a74f19c34b42d09144a8b3237862a3106a5ea2cb2c79381c2adb7c03090f",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_macro_decoupled_heading.py": "9bae1fbb7f71d2c1271c6fba91d8234eda84ff5926eec96390a2088bd3a40dd3",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_macro_head_return.py": "b6f68278b4b95d40e5a22aafe9637ad64432a0dfa515a6352e56c32f4b6e5583",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_macro_shot_frame.py": "e0677388259c7eddf8d9d34dae4e5894b0f19c025568a577d5a6afb29e440b0a",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_motion_heading_reference.py": "2b09b1babeca6b7d3392313ee48040c309dbd78c11fe1eed103039f707feee6c",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_neutral_fine_step.py": "be8b7b19862ac6ae24a9198eee480af805c219b9e551958e66f44e72bbf49f0e",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_neutral_turn.py": "d55556a35d405943416f9b6b8493ba6c6c2bdf2d4e9585bc9a9023fc95d3e8a9",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_observation_tolerance_v74.py": "ed8e8570fd614959d40664aa4869f92b3c350890f4dd7bbdd8354000c52854bd",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_phase_direction.py": "8b3b2da0ab3fbf198553e7a83b05420e939319037bce0aa85a9550a1dbd1bffd",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_pitch_redistribution.py": "8f20f03b42024e79e6ea218ca08045da3b6ae404450ff9971a563733d932200d",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_pulse_clock.py": "dcdc09eb9dd642f2089293ce92a15c30b3bea3f0e15b0f816785e3585a00fd93",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_range_progress.py": "507ccbb83821b75fbed45ad93ebd313c0dd55fbfee8dd021d585b27444edc7cb",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_reacquire_scope.py": "9ccf51f92a809c05b7cd4159bd65f6b0813263ecb7fb1c532d072952764cb3fd",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_return_margin.py": "17a66a688c474205b832bfe30216618d402fbcf462608f9083b2aaa568f887c8",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_search_domain.py": "46896027b8efce138b8b2c8a9e347909a79c8bc42e572c952f37c4e82123d2e7",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_settle_guard_hold.py": "c1fba8923fd4e2cf325439374ebd9ff26cf6d02325a61e9a6ed78f653b23893c",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_short_primitive.py": "965bedfff70c408212e8df71a2dd8fb1b86bb0329dba3dd974046bedffddab3a",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_sole_odometry_invariants.py": "4c7a99289590c1ca58fae48ac77e48febaca602d0cd455003a6c0ccc3467cfa1",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_standoff.py": "f61a0d83a89773feafad5e69cd4ef13b1c01f697d4bab3207e9250a3a1403499",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_task_phases.py": "7749269646b5b4f207c26ea1b02ccc29bc30e7f3da6009247621f888bcdfff0b",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_track_brake.py": "b04bf3aa6778bbad1076640ac7f141c1a4e5237c102e86c67507b306141a623a",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_track_deceleration.py": "7d556c5eb63f93de15dd92fcb20ca7bb83bbb3f5c6a13e5c221ffecea4f11a4a",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_track_goal_reobserve.py": "78e2b49b37b9532d0eae99e3cca241ebb5e61d667f17218db55bb48e59103f82",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_track_prealignment.py": "39217fa13df8a379135a27b9ddf3060611d26e399e8fcfeab80a5b293100c1b5",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_track_stop_margin.py": "1eb92b01ffc5d344c88539f00c8e70a8efdca085b82b5e5e31f4a53d6ccea05d",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_turn_commitment.py": "5f5bf4683f96793cfcc37640f5eb8e0b50e8691426654dbbd8e09e1dc84dc253",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_turn_goal_view.py": "cb8d1cd949b132f51472cd21dd88f111388f56e0782aa4019c57ac4cafb98563",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_turn_prediction.py": "bd278201819648740cb60375307828bcd644b68962b45445aad12c265b246654",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_v66_contract.py": "11f2f9b7103a81f24fdbd61fee0dcbca921e8577d5efa06ff567e99e6c7ecdfb",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_visibility_consumers.py": "ea880a3d83508395da36a6c66a83c7995ac88292380d7a7c6b95bb8f0ea1ad0b",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/test_zone_floor_projection.py": "c0336b53b69dafbbcd6159860174ee4645c34410295278169102864fab984d3b",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/turn_prediction.py": "43490889c1dc30058a659b1af323825c8ebb417d230d4aecf3709dac0d3702d2",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/visibility_gate.py": "5d3055727d1dca2cd2a41ab2287e53a053cd26b459ea4d044f76cc96786009e7",
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/zone_floor_projection.py": "d6af215deb76b913ba072a46208fccb80906ed88ce0e5021e7c30a6e51cf5e1d",
+      "@COURSE@/workshop/migration-20261019/acceptance/observed_ball_attention.py": "9660e7ea5b39c476b721fa4611ccb7acfa4d780edb16dee1ce61c19efd3efa18",
+      "@COURSE@/workshop/migration-20261019/acceptance/public_ball_read_adapter_v1.py": "6a4667dbe20daed4276da590d286a5d21aa8606b7d0e240f960b8d547f3d8a9b",
+      "@COURSE@/workshop/migration-20261019/acceptance/public_ball_read_adapter_v2.py": "dd0ec4f6de33e4f7c1d14e8a9503925273c1ee1db8245f91b754356eaf5d6654",
+      "@COURSE@/workshop/migration-20261019/acceptance/tof_ball_association.py": "a9cca16efffdb8d3b5df839e2cd7cc1e11b9b20eba30012043eb16baca66db70",
+      "@COURSE@/workshop/migration-20261019/football/controller.py": "4c3e2b2cfe31d0e8547b3581a4076d2bf44dd7e4b317981b9204e6d2ce2c1e7e",
+      "@COURSE@/workshop/migration-20261019/football/gaze_tracking.py": "2609ae9417ba6a664ff8e2be310a5e5c87f9d4d50a27e90a78018ee0b51dd445",
+      "@COURSE@/workshop/migration-20261019/football/ground_plane.py": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44",
+      "@COURSE@/workshop/migration-20261019/football/hardware_head_fk.py": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
+      "@COURSE@/workshop/migration-20261019/football/head_adapter.py": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787",
+      "@COURSE@/workshop/migration-20261019/football/kick_runtime_v1/runtime.py": "a2781a733ecd0b9aad5b987835022ecbcfd1384a214ee031af8604d96382e32a",
+      "@COURSE@/workshop/migration-20261019/football/leg_odometry.py": "c88eb06e2ef0017e25b9c087884915ba477b4af2888d70eef07799504d3b2e7f",
+      "@COURSE@/workshop/migration-20261019/football/media_archive_v1/execute.py": "798608923a74b6f959c34b32fe6af4989335602c96570d2f0a8b67c0720be1cb",
+      "@COURSE@/workshop/migration-20261019/football/nav2_bridge.py": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
+      "@COURSE@/workshop/migration-20261019/football/nav2_service/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "@COURSE@/workshop/migration-20261019/football/nav2_service/client.py": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c",
+      "@COURSE@/workshop/migration-20261019/football/nav2_service/contract.py": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79",
+      "@COURSE@/workshop/migration-20261019/football/nav2_service/map_contract.py": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285",
+      "@COURSE@/workshop/migration-20261019/football/nav2_service/obstacle_contract.py": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07",
+      "@COURSE@/workshop/migration-20261019/football/nav2_service/owner.py": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2",
+      "@COURSE@/workshop/migration-20261019/football/perception.py": "6312c31a6331f92e9616a990a9b915798606b15f6e719a68e3993cf2857ec368",
+      "@COURSE@/workshop/migration-20261019/football/public_ball_memory_v1/memory.py": "6b268da8af9bd0351cb5204809eba247fab2409f53b03fc859b953f087cc0bb6",
+      "@COURSE@/workshop/migration-20261019/football/sources/ball_kick_right-v8.onnx": "147a32c388c6b19111b3ac3b550a9a6dc8b8bf267118af4d8c3712522eedb5af",
+      "@COURSE@/workshop/migration-20261019/football/vision/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "@COURSE@/workshop/migration-20261019/football/vision/beta_box_geometry.py": "8a91078c5a4ca1b05f00e6190a55f74076328616d767a9dca027652743dc8090",
+      "@COURSE@/workshop/migration-20261019/football/vision/beta_goal_points.py": "e3b3543518ed07ee5d687e01a669301bbdb78f540884434c07682f01d9238fee",
+      "@COURSE@/workshop/migration-20261019/football/vision/contour.py": "99fdfad1f418a0ed41b84f17001161685dc5b0ac682395a0e756e31d2d011212",
+      "@COURSE@/workshop/migration-20261019/football/vision/goal_geometry.py": "66aacd0504c20f0c7588340481a67d4a00941246228e5eceacdccf0a6e939f96",
+      "@COURSE@/workshop/migration-20261019/football/vision/goal_points.py": "3c91b899ef19af4aa7278046ada695a581b968fee16fb92780127aa75eac9160",
+      "@COURSE@/workshop/migration-20261019/football/vision/grounded_direction.py": "7a9ec2f802a7de227125f464ee037de2410c7dc02945fa9577178b1367905b16",
+      "@COURSE@/workshop/migration-20261019/football/vision/known_goal_geometry.py": "3f4eac071f0bb6eecfe00edb7fcc189c8ad80fd7e9f1f9387e45b7d80e777e8a",
+      "@COURSE@/workshop/migration-20261019/football/vision/sphere_geometry.py": "0d0c41c4477898521cba45aab57c93d83e91874d7be71306af93eabd3592647d",
+      "@COURSE@/workshop/migration-20261019/football/visual_localization.py": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1",
+      "@COURSE@/workshop/migration-20261019/models/community-v8/manifest.json": "c566390738dd90a54c1e2de829aaab0e904c636949e2c2c6158ee7bbb889b818",
+      "@COURSE@/workshop/migration-20261019/models/community-v8/velstand.onnx": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "@COURSE@/workshop/migration-20261019/sensors/beta_body_imu.py": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4",
+      "@COURSE@/workshop/migration-20261019/sensors/beta_head_imu.py": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
+      "@COURSE@/workshop/migration-20261019/sensors/beta_perception_geometry.py": "c6e84f14c0ba4f30d7620bc86cc54ca5303a319450fcfa752766a06c1e140eca",
+      "@COURSE@/workshop/migration-20261019/sensors/beta_sensor_profile.py": "d7ebc2fab16125ab4a0fd2679b96384199493a03ecad7eae634664bee72caa3a",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/ball_image_border_v1/adapter.py": "ba7deb63b73817ecaed7f82073ba417c52bd7fd067f635db470fd9b686dca63d",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/ball_image_border_v1/guard.py": "b9c14a42811cb92d80a4a7bc296fc047756105264ae68bf87d54c27bd8dc0506",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/body50_scalar_finite_range_v1/adapter.py": "e89a75dab743496e2557328e3e3bc02077f42baef5d2fb05a0f165c55b88a525",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/body50_scalar_finite_range_v1/finite_range_chip.py": "22092450706b661503d420d4a76566918ce3b6c92c64b1d421aeb9daf4284d21",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/grounded_ball_v1/geometry.py": "08f1ee1183c101953b5d408de76ba63501e661a1b9008ac5574443f48b4df8fe",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/grounded_ball_v1/test_geometry.py": "deec21c130605bdaad7feb5c24013b682b7eb5d1fcefa08d32a7882e1665aecc",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/grounded_ball_v2/geometry.py": "c6fae125fc4051fd75d397a4371f76fc21dac24a129a7f58193c9b3a6cd8be45",
+      "@COURSE@/workshop/migration-20261019/sensors/experimental/grounded_ball_v2/test_geometry.py": "8530f015dc91e558762655aa1d5bacc9ae0e6e5ba7a69962b271ea362b96cd54",
+      "@COURSE@/workshop/migration-20261019/sensors/isaac_beta_body_imu.py": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601"
+    },
+    "started_unix_s": 1792587262.8746881,
+    "argv": [
+      "@COURSE@/workshop/migration-20261019/acceptance/native_backward_approached_nearball_v1/execute_media.py",
+      "--model",
+      "@COURSE@/workshop/migration-20261019/models/community-v8/velstand.onnx",
+      "--output",
+      "@COURSE@/outputs/migration-20261019/football-backward-approached-nearball-s981134-v1",
+      "--development",
+      "--seconds",
+      "180",
+      "--seed",
+      "981134",
+      "--body-fusion-tau-s",
+      "2",
+      "--body-added-delay-s",
+      "0",
+      "--policy-imu",
+      "body50",
+      "--detector-deployment",
+      "@COURSE@/outputs/migration-20261019/beta-detector/train-random-001/deployment.json",
+      "--detector-backend",
+      "torch",
+      "--detector-device",
+      "cuda:0",
+      "--shared-imu-readback",
+      "--packed-physics-readback",
+      "--root-x",
+      "-.66",
+      "--root-y",
+      "0",
+      "--ball-xy",
+      "0",
+      "-.01"
+    ],
+    "status": "completed",
+    "source_changed_during_run": [],
+    "ended_unix_s": 1792587327.7209551
+  },
+  "formal_qualification_claimed": false
+}

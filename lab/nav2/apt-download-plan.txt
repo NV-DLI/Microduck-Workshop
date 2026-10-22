@@ -1,0 +1,109 @@
+Reading package lists...
+Building dependency tree...
+Reading state information...
+ros-jazzy-rclpy is already the newest version (7.1.12-1noble.20260902.143245).
+ros-jazzy-rclpy set to manually installed.
+ros-jazzy-nav-msgs is already the newest version (5.3.8-1noble.20260902.123754).
+ros-jazzy-nav-msgs set to manually installed.
+ros-jazzy-geometry-msgs is already the newest version (5.3.8-1noble.20260902.122255).
+ros-jazzy-geometry-msgs set to manually installed.
+ros-jazzy-lifecycle-msgs is already the newest version (2.0.4-1noble.20260902.122414).
+ros-jazzy-lifecycle-msgs set to manually installed.
+ros-jazzy-rmw-fastrtps-cpp is already the newest version (8.4.4-1noble.20260902.140744).
+ros-jazzy-rmw-fastrtps-cpp set to manually installed.
+The following additional packages will be installed:
+  comerr-dev cppzmq-dev icu-devtools krb5-multidev libbsd-dev libbsd0
+  libeigen3-dev libgssrpc4t64 libicu-dev libkadm5clnt-mit12 libkadm5srv-mit12
+  libkdb5-10t64 libkrb5-dev libmd-dev libnorm-dev libnorm1t64
+  liborocos-kdl-dev liborocos-kdl1.5 libpgm-5.3-0t64 libpgm-dev libsodium-dev
+  libsodium23 libsqlite3-0 libsqlite3-dev libxml2-dev libzmq3-dev libzmq5
+  ros-jazzy-angles ros-jazzy-behaviortree-cpp ros-jazzy-bond ros-jazzy-bondcpp
+  ros-jazzy-diagnostic-updater ros-jazzy-eigen3-cmake-module
+  ros-jazzy-geographic-msgs ros-jazzy-laser-geometry ros-jazzy-map-msgs
+  ros-jazzy-message-filters ros-jazzy-nav2-behavior-tree ros-jazzy-nav2-common
+  ros-jazzy-nav2-core ros-jazzy-nav2-util ros-jazzy-nav2-voxel-grid
+  ros-jazzy-orocos-kdl-vendor ros-jazzy-sensor-msgs-py ros-jazzy-smclib
+  ros-jazzy-tf2 ros-jazzy-tf2-geometry-msgs ros-jazzy-tf2-msgs
+  ros-jazzy-tf2-py ros-jazzy-tf2-ros ros-jazzy-tf2-sensor-msgs
+Suggested packages:
+  doc-base krb5-doc libeigen3-doc libmpfrc++-dev krb5-user icu-doc libnorm-doc
+  sqlite3-doc
+The following NEW packages will be installed:
+  comerr-dev cppzmq-dev icu-devtools krb5-multidev libbsd-dev libbsd0
+  libeigen3-dev libgssrpc4t64 libicu-dev libkadm5clnt-mit12 libkadm5srv-mit12
+  libkdb5-10t64 libkrb5-dev libmd-dev libnorm-dev libnorm1t64
+  liborocos-kdl-dev liborocos-kdl1.5 libpgm-5.3-0t64 libpgm-dev libsodium-dev
+  libsodium23 libsqlite3-dev libxml2-dev libzmq3-dev libzmq5 ros-jazzy-angles
+  ros-jazzy-behaviortree-cpp ros-jazzy-bond ros-jazzy-bondcpp
+  ros-jazzy-diagnostic-updater ros-jazzy-eigen3-cmake-module
+  ros-jazzy-geographic-msgs ros-jazzy-laser-geometry ros-jazzy-map-msgs
+  ros-jazzy-message-filters ros-jazzy-nav2-behavior-tree ros-jazzy-nav2-common
+  ros-jazzy-nav2-core ros-jazzy-nav2-costmap-2d
+  ros-jazzy-nav2-lifecycle-manager ros-jazzy-nav2-msgs
+  ros-jazzy-nav2-navfn-planner ros-jazzy-nav2-planner ros-jazzy-nav2-util
+  ros-jazzy-nav2-voxel-grid ros-jazzy-orocos-kdl-vendor
+  ros-jazzy-sensor-msgs-py ros-jazzy-smclib ros-jazzy-tf2
+  ros-jazzy-tf2-geometry-msgs ros-jazzy-tf2-msgs ros-jazzy-tf2-py
+  ros-jazzy-tf2-ros ros-jazzy-tf2-ros-py ros-jazzy-tf2-sensor-msgs
+The following packages will be upgraded:
+  libsqlite3-0
+1 upgraded, 56 newly installed, 0 to remove and 2 not upgraded.
+Need to get 26.1 MB of archives.
+After this operation, 161 MB of additional disk space will be used.
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-angles/ros-jazzy-angles_1.16.1-1noble.20260305.211211_arm64.deb' ros-jazzy-angles_1.16.1-1noble.20260305.211211_arm64.deb 13864 MD5Sum:8898667bea518c6aba401165e33e56cd
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-behaviortree-cpp/ros-jazzy-behaviortree-cpp_4.10.0-1noble.20260902.212340_arm64.deb' ros-jazzy-behaviortree-cpp_4.10.0-1noble.20260902.212340_arm64.deb 612038 MD5Sum:54213639caac109e7f04d3e2b8d263ad
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-bond/ros-jazzy-bond_4.2.0-1noble.20260902.025203_arm64.deb' ros-jazzy-bond_4.2.0-1noble.20260902.025203_arm64.deb 56120 MD5Sum:b14006a0e20381da5a7f734e0f263bf6
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-smclib/ros-jazzy-smclib_4.2.0-1noble.20260317.155426_arm64.deb' ros-jazzy-smclib_4.2.0-1noble.20260317.155426_arm64.deb 14104 MD5Sum:12e2c1f36d37a743efef3386f969ae9e
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-bondcpp/ros-jazzy-bondcpp_4.2.0-1noble.20260902.153702_arm64.deb' ros-jazzy-bondcpp_4.2.0-1noble.20260902.153702_arm64.deb 116576 MD5Sum:6e4f0081450999f002b4b700a4f71661
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-diagnostic-updater/ros-jazzy-diagnostic-updater_4.2.7-1noble.20260902.152037_arm64.deb' ros-jazzy-diagnostic-updater_4.2.7-1noble.20260902.152037_arm64.deb 107336 MD5Sum:9aa219bad505602f8a10865974cb1e3e
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-eigen3-cmake-module/ros-jazzy-eigen3-cmake-module_0.3.1-1noble.20260603.145848_arm64.deb' ros-jazzy-eigen3-cmake-module_0.3.1-1noble.20260603.145848_arm64.deb 6432 MD5Sum:db39375dad2f6510143b530614918309
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-geographic-msgs/ros-jazzy-geographic-msgs_1.0.6-2noble.20260902.132856_arm64.deb' ros-jazzy-geographic-msgs_1.0.6-2noble.20260902.132856_arm64.deb 319056 MD5Sum:facf79e5aba8042f5772a644378a3ed4
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-sensor-msgs-py/ros-jazzy-sensor-msgs-py_5.3.8-1noble.20260902.140600_arm64.deb' ros-jazzy-sensor-msgs-py_5.3.8-1noble.20260902.140600_arm64.deb 16526 MD5Sum:74f5abe20d1fe1e6713473eba93897ae
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2/ros-jazzy-tf2_0.36.22-1noble.20260902.124510_arm64.deb' ros-jazzy-tf2_0.36.22-1noble.20260902.124510_arm64.deb 89322 MD5Sum:8f6ee37f18868a02bb47ab6b2b14f15c
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-laser-geometry/ros-jazzy-laser-geometry_2.7.2-1noble.20260903.003154_arm64.deb' ros-jazzy-laser-geometry_2.7.2-1noble.20260903.003154_arm64.deb 25720 MD5Sum:14a69ed627f60f4e915e6463eedb45c9
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-map-msgs/ros-jazzy-map-msgs_2.4.1-2noble.20260902.135735_arm64.deb' ros-jazzy-map-msgs_2.4.1-2noble.20260902.135735_arm64.deb 238784 MD5Sum:4101666016311707523791c349c2dbd7
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-message-filters/ros-jazzy-message-filters_4.11.17-1noble.20260902.150205_arm64.deb' ros-jazzy-message-filters_4.11.17-1noble.20260902.150205_arm64.deb 49364 MD5Sum:807820acc29ac408202db4e83cc09391
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-msgs/ros-jazzy-nav2-msgs_1.3.13-1noble.20260902.193503_arm64.deb' ros-jazzy-nav2-msgs_1.3.13-1noble.20260902.193503_arm64.deb 1797618 MD5Sum:997fe8724de618341c43afa6c3d6a08b
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-common/ros-jazzy-nav2-common_1.3.13-1noble.20260902.193153_arm64.deb' ros-jazzy-nav2-common_1.3.13-1noble.20260902.193153_arm64.deb 10302 MD5Sum:f2fbba8ba313c723c6eb6f095cbec8c1
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-orocos-kdl-vendor/ros-jazzy-orocos-kdl-vendor_0.5.2-1noble.20260603.150050_arm64.deb' ros-jazzy-orocos-kdl-vendor_0.5.2-1noble.20260603.150050_arm64.deb 7148 MD5Sum:cf4b7aacf539f544cfdbfbc0281404a5
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2-msgs/ros-jazzy-tf2-msgs_0.36.22-1noble.20260902.124530_arm64.deb' ros-jazzy-tf2-msgs_0.36.22-1noble.20260902.124530_arm64.deb 176966 MD5Sum:7d767fce433715861b604594f2e50046
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2-ros/ros-jazzy-tf2-ros_0.36.22-1noble.20260902.154805_arm64.deb' ros-jazzy-tf2-ros_0.36.22-1noble.20260902.154805_arm64.deb 315768 MD5Sum:81fafe34f85f029e9381373c9c758f97
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2-py/ros-jazzy-tf2-py_0.36.22-1noble.20260902.150411_arm64.deb' ros-jazzy-tf2-py_0.36.22-1noble.20260902.150411_arm64.deb 27610 MD5Sum:65b8392eb5ee4510ead964ed975f7fa6
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2-ros-py/ros-jazzy-tf2-ros-py_0.36.22-1noble.20260902.150658_arm64.deb' ros-jazzy-tf2-ros-py_0.36.22-1noble.20260902.150658_arm64.deb 28280 MD5Sum:988bf49116686afab0d959306e0ee1ee
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2-geometry-msgs/ros-jazzy-tf2-geometry-msgs_0.36.22-1noble.20260902.170215_arm64.deb' ros-jazzy-tf2-geometry-msgs_0.36.22-1noble.20260902.170215_arm64.deb 20078 MD5Sum:b0e96e8380d588f02e606e968f6f47cf
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-util/ros-jazzy-nav2-util_1.3.13-1noble.20260902.195022_arm64.deb' ros-jazzy-nav2-util_1.3.13-1noble.20260902.195022_arm64.deb 161638 MD5Sum:cce546c33924260f24ab0e885b6dd924
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-behavior-tree/ros-jazzy-nav2-behavior-tree_1.3.13-1noble.20260902.213707_arm64.deb' ros-jazzy-nav2-behavior-tree_1.3.13-1noble.20260902.213707_arm64.deb 1924274 MD5Sum:2b1e26516e10f8edc449f38577f5b852
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-voxel-grid/ros-jazzy-nav2-voxel-grid_1.3.13-1noble.20260902.212802_arm64.deb' ros-jazzy-nav2-voxel-grid_1.3.13-1noble.20260902.212802_arm64.deb 19462 MD5Sum:61e1627db050ab6e3989891a7671b959
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-tf2-sensor-msgs/ros-jazzy-tf2-sensor-msgs_0.36.22-1noble.20260902.163410_arm64.deb' ros-jazzy-tf2-sensor-msgs_0.36.22-1noble.20260902.163410_arm64.deb 15222 MD5Sum:9d306316aa9b420ec3c531012b3d3649
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-costmap-2d/ros-jazzy-nav2-costmap-2d_1.3.13-1noble.20260903.003455_arm64.deb' ros-jazzy-nav2-costmap-2d_1.3.13-1noble.20260903.003455_arm64.deb 1010682 MD5Sum:b91075ad1b88f63a84fa2b38eadccf17
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-core/ros-jazzy-nav2-core_1.3.13-1noble.20260903.004923_arm64.deb' ros-jazzy-nav2-core_1.3.13-1noble.20260903.004923_arm64.deb 14268 MD5Sum:b7b5c6b64056074bb8e3a091fe354a93
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-lifecycle-manager/ros-jazzy-nav2-lifecycle-manager_1.3.13-1noble.20260902.211847_arm64.deb' ros-jazzy-nav2-lifecycle-manager_1.3.13-1noble.20260902.211847_arm64.deb 86890 MD5Sum:8aa1797645f0bc2b76609628df703e4f
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-navfn-planner/ros-jazzy-nav2-navfn-planner_1.3.13-1noble.20260903.010003_arm64.deb' ros-jazzy-nav2-navfn-planner_1.3.13-1noble.20260903.010003_arm64.deb 49168 MD5Sum:c2829e21999b6280619e7e5f31bea72c
+'http://packages.ros.org/ros2/ubuntu/pool/main/r/ros-jazzy-nav2-planner/ros-jazzy-nav2-planner_1.3.13-1noble.20260903.010032_arm64.deb' ros-jazzy-nav2-planner_1.3.13-1noble.20260903.010032_arm64.deb 195036 MD5Sum:cdc8c762efbc5e9b1c84df0626a4a9ed
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/libb/libbsd/libbsd0_0.12.1-1build1.1_arm64.deb' libbsd0_0.12.1-1build1.1_arm64.deb 40970 MD5Sum:39d93ed56b534d32ae87e4c18b5e46a6
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/s/sqlite3/libsqlite3-0_3.45.1-1ubuntu2.8_arm64.deb' libsqlite3-0_3.45.1-1ubuntu2.8_arm64.deb 690864 MD5Sum:596b5ec961e616f36c7050a4237d6313
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/n/norm/libnorm1t64_1.5.9%2bdfsg-3.1build1_arm64.deb' libnorm1t64_1.5.9+dfsg-3.1build1_arm64.deb 149826 MD5Sum:531c4305716f890c4acc9c3702229d36
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/libp/libpgm/libpgm-5.3-0t64_5.3.128%7edfsg-2.1build1_arm64.deb' libpgm-5.3-0t64_5.3.128~dfsg-2.1build1_arm64.deb 161792 MD5Sum:baedca145b13ada28a5ea9bb21afd0a6
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/libs/libsodium/libsodium23_1.0.18-1ubuntu0.24.04.1_arm64.deb' libsodium23_1.0.18-1ubuntu0.24.04.1_arm64.deb 119490 MD5Sum:6e627f07e5967a306843237668bf07b1
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/z/zeromq3/libzmq5_4.3.5-1build2_arm64.deb' libzmq5_4.3.5-1build2_arm64.deb 246946 MD5Sum:32bb39c17a4f37c6e7f7e49f45643413
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/libp/libpgm/libpgm-dev_5.3.128%7edfsg-2.1build1_arm64.deb' libpgm-dev_5.3.128~dfsg-2.1build1_arm64.deb 222496 MD5Sum:e67e3aa12a0ef6f1e345882ffaa5ffce
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/libs/libsodium/libsodium-dev_1.0.18-1ubuntu0.24.04.1_arm64.deb' libsodium-dev_1.0.18-1ubuntu0.24.04.1_arm64.deb 140268 MD5Sum:82d80699d5b7bea7b0c4d4f29efe430c
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/i/icu/icu-devtools_74.2-1ubuntu3.1_arm64.deb' icu-devtools_74.2-1ubuntu3.1_arm64.deb 208902 MD5Sum:3d993390863d640ac328fd45defcb1e8
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/i/icu/libicu-dev_74.2-1ubuntu3.1_arm64.deb' libicu-dev_74.2-1ubuntu3.1_arm64.deb 11881468 MD5Sum:2faf3702938029939b31c927b95c12d6
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/libx/libxml2/libxml2-dev_2.9.14%2bdfsg-1.3ubuntu3.8_arm64.deb' libxml2-dev_2.9.14+dfsg-1.3ubuntu3.8_arm64.deb 800432 MD5Sum:81656f9b8da6e9ad081072a20e359be5
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/n/norm/libnorm-dev_1.5.9%2bdfsg-3.1build1_arm64.deb' libnorm-dev_1.5.9+dfsg-3.1build1_arm64.deb 432602 MD5Sum:2ed69902ac8ed8d1c21e33c2921896c3
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/e/e2fsprogs/comerr-dev_2.1-1.47.0-2.4%7eexp1ubuntu4.1_arm64.deb' comerr-dev_2.1-1.47.0-2.4~exp1ubuntu4.1_arm64.deb 44146 MD5Sum:33cfc0b34171fb9b485d8029ea83c430
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/k/krb5/libgssrpc4t64_1.20.1-6ubuntu2.10_arm64.deb' libgssrpc4t64_1.20.1-6ubuntu2.10_arm64.deb 57912 MD5Sum:b0dc685939a4b6bc89b40b1c6e960442
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/k/krb5/libkadm5clnt-mit12_1.20.1-6ubuntu2.10_arm64.deb' libkadm5clnt-mit12_1.20.1-6ubuntu2.10_arm64.deb 39930 MD5Sum:c38eab08fad0256f478084a100788bfe
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/k/krb5/libkdb5-10t64_1.20.1-6ubuntu2.10_arm64.deb' libkdb5-10t64_1.20.1-6ubuntu2.10_arm64.deb 40508 MD5Sum:f71f7413dc043d573d93ba2f6bef7462
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/k/krb5/libkadm5srv-mit12_1.20.1-6ubuntu2.10_arm64.deb' libkadm5srv-mit12_1.20.1-6ubuntu2.10_arm64.deb 53394 MD5Sum:00dd2d67012224dda5de32dbc436d0a1
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/k/krb5/krb5-multidev_1.20.1-6ubuntu2.10_arm64.deb' krb5-multidev_1.20.1-6ubuntu2.10_arm64.deb 124786 MD5Sum:423c9c1729177dd1c1920d414598535b
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/k/krb5/libkrb5-dev_1.20.1-6ubuntu2.10_arm64.deb' libkrb5-dev_1.20.1-6ubuntu2.10_arm64.deb 11884 MD5Sum:ad8957d9e12f07104e4098710edf12c6
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/libm/libmd/libmd-dev_1.1.0-2build1.1_arm64.deb' libmd-dev_1.1.0-2build1.1_arm64.deb 43260 MD5Sum:9d527898b586287daad7a51f19674530
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/libb/libbsd/libbsd-dev_0.12.1-1build1.1_arm64.deb' libbsd-dev_0.12.1-1build1.1_arm64.deb 169698 MD5Sum:e351a65cadeba8a936d4fa313efbb95e
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/z/zeromq3/libzmq3-dev_4.3.5-1build2_arm64.deb' libzmq3-dev_4.3.5-1build2_arm64.deb 539386 MD5Sum:067e2d7802892961e8c5497dcd0ac6bf
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/c/cppzmq/cppzmq-dev_4.10.0-1build1_arm64.deb' cppzmq-dev_4.10.0-1build1_arm64.deb 25944 MD5Sum:2da67ca5af94f499b8ba907e8875f9ac
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/o/orocos-kdl/liborocos-kdl1.5_1.5.1-4build1_arm64.deb' liborocos-kdl1.5_1.5.1-4build1_arm64.deb 228850 MD5Sum:53273ef1ac35c313dbe561efeb7805f0
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/e/eigen3/libeigen3-dev_3.4.0-4build0.1_all.deb' libeigen3-dev_3.4.0-4build0.1_all.deb 1056510 MD5Sum:db3f406cf7c421a0c160e10776533a81
+'http://ports.ubuntu.com/ubuntu-ports/pool/universe/o/orocos-kdl/liborocos-kdl-dev_1.5.1-4build1_arm64.deb' liborocos-kdl-dev_1.5.1-4build1_arm64.deb 84296 MD5Sum:470eae3e4dc84ebb611005b59b31a11d
+'http://ports.ubuntu.com/ubuntu-ports/pool/main/s/sqlite3/libsqlite3-dev_3.45.1-1ubuntu2.8_arm64.deb' libsqlite3-dev_3.45.1-1ubuntu2.8_arm64.deb 916440 MD5Sum:ff253b71e998ca0c9f6dfc27b4b4a523

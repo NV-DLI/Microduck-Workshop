@@ -1,0 +1,12 @@
+New software in this repository is licensed under the GNU Affero General Public
+License, version 3.0 (AGPL-3.0). The complete license is in
+licenses/AGPL-3.0.txt.
+
+Third-party software, policies, CAD, data and derived visual assets retain their
+own licenses and notices. In particular, this grant does not relicense Pollen
+Robotics CAD as AGPL. See THIRD_PARTY_NOTICES.md and artwork/NOTICE.md.
+
+Course text and diagrams authored for this repository are licensed under
+Creative Commons Attribution-ShareAlike 4.0 International:
+https://creativecommons.org/licenses/by-sa/4.0/
+This excludes third-party and CAD-derived images, recordings and geometry.

@@ -1,0 +1,15 @@
+{
+  "kind": "new-beta-independent-nav2-bundle",
+  "files": {
+    "image-lock.json": "e4ebdaf3f420d6dc0574cd2444074e93cc412d2f1d09e32db7a699dfa3569e25",
+    "map_contract.py": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285",
+    "image_preflight.py": "6288056f4dd336a5881008c5c58db0a1b1120ac5a3af0c55c6e2f65be9a51033",
+    "owner.py": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2",
+    "nav2.yaml": "49af253b88b4c70606a1ba463c604127e5008165257bd2c93830d1d465415a66",
+    "client.py": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c",
+    "obstacle_contract.py": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07",
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "contract.py": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79",
+    "service.py": "524240ce1240bb565686da959ca80ea306baf310e0935f1c07b680307ed42eaf"
+  }
+}

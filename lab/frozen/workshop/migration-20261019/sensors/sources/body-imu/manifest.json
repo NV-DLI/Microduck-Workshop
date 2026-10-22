@@ -1,0 +1,50 @@
+[
+  {
+    "upstream_path": "duck-control/src/imu.rs",
+    "path": "duck-control__src__imu.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/imu.rs",
+    "sha256": "5f868c380802e3a7c69a32aaceee7fa208a0fcbb17e0607b0140b2492344e0b6"
+  },
+  {
+    "upstream_path": "duck-control/src/bus.rs",
+    "path": "duck-control__src__bus.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/bus.rs",
+    "sha256": "cc88a67214e74e868e5ac041ba6d024dedad29699939e69c14d9a3692ed066ae"
+  },
+  {
+    "upstream_path": "duck-control/src/io.rs",
+    "path": "duck-control__src__io.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/io.rs",
+    "sha256": "c1e68beff31312e6d4fa2b20690a68e21fb4502cb5b7f27a69a58c080ed78e71"
+  },
+  {
+    "upstream_path": "duck-control/src/obs.rs",
+    "path": "duck-control__src__obs.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/obs.rs",
+    "sha256": "89c139b747c932eb48fb4f2916e5d245a23f60367b33f55746fc4fb0320e8b6d"
+  },
+  {
+    "upstream_path": "robotd/src/main.rs",
+    "path": "robotd__src__main.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/robotd/src/main.rs",
+    "sha256": "caf37d95daf573c32acb2469830cf3292eb00214ed3b17bd5cf10999f4386d0e"
+  },
+  {
+    "upstream_path": "robotd/src/control.rs",
+    "path": "robotd__src__control.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/robotd/src/control.rs",
+    "sha256": "24b7b51dc68e433ba00a12f7454161febc4fa67af971d717a2522f29e84e0488"
+  },
+  {
+    "upstream_path": "robotd/src/params.rs",
+    "path": "robotd__src__params.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/robotd/src/params.rs",
+    "sha256": "386305e3ce00a409f6527d2be2048a927c2b448423ed1bb9fc63f29af0ff3064"
+  },
+  {
+    "upstream_path": "robotd-params/src/board.rs",
+    "path": "robotd-params__src__board.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+    "sha256": "f5022ef8b1f475e304bafe1a1a5566383eb50c2c90849643cf44b82d8b64a1a1"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "scope": "Pre-default-change snapshot; preserves20ms behavior and audit after correcting the source interpretation. This is not a claim of the exact earlier v9 source hash.",
+  "files": [
+    {
+      "original_path": "@COURSE@/workshop/migration-20261019/sensors/beta_body_imu.py",
+      "sha256": "763df76d222165f8f18fa7589aae5feaf5293d3936565db4ba5e81cb513f88ff",
+      "saved_name": "beta_body_imu.py"
+    },
+    {
+      "original_path": "@COURSE@/workshop/migration-20261019/sensors/tests/test_body_imu.py",
+      "sha256": "c34f627239c057dfccd0c63e610dd8ca2d7c3649f65f1c49cc2500a98273d251",
+      "saved_name": "test_body_imu.py"
+    },
+    {
+      "original_path": "@COURSE@/workshop/migration-20261019/sensors/reports/hardware-profile-report-v3.json",
+      "sha256": "b461ee4ff5a23f0a4ab890a5686859633472ae8a46abb1a1ca639b5ea648c1fb",
+      "saved_name": "hardware-profile-report-v3.json"
+    },
+    {
+      "original_path": "@COURSE@/workshop/migration-20261019/sensors/reports/hardware-profile-report-v3.cpu-tests.log",
+      "sha256": "8a12c52262b7921ddff0abc64461df691d9a9e594cf9f5456aa552efa8fe8589",
+      "saved_name": "hardware-profile-report-v3.cpu-tests.log"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "microduck.community-live-adapter.v1",
+  "actionAdapter": "raw-history-internal8",
+  "sourceFiles": [
+    {
+      "path": "precision_recipe_v3.py",
+      "sha256": "4a1f98c46d76b91e62c33beeb2f6c1b3b5cec4258256257540e227a8263ca3f1",
+      "source": "@COURSE@/outputs/migration-20261019/gait-gaze-v6-from2799-1024x1200-seed970241/precision_recipe_v3.py"
+    },
+    {
+      "path": "precision_recipe.py",
+      "sha256": "0c4431ba14682d496dd3d2747fdc095fcb2cbdec2f4b504a87152bf5382c1250",
+      "source": "@COURSE@/outputs/migration-20261019/gait-gaze-v6-from2799-1024x1200-seed970241/precision_recipe.py"
+    },
+    {
+      "path": "bounded_actions.py",
+      "sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa",
+      "source": "@COURSE@/outputs/migration-20261019/gait-gaze-v6-from2799-1024x1200-seed970241/bounded_actions.py"
+    },
+    {
+      "path": "bounded-action-limits.json",
+      "sha256": "b5ee7082137620880ff8a9d2b492e9c834f750bf52ac8f593f4235b190f04f5d",
+      "source": "@COURSE@/outputs/migration-20261019/gait-gaze-v6-from2799-1024x1200-seed970241/bounded-action-limits.json"
+    }
+  ],
+  "evidence": "@COURSE@/outputs/migration-20261019/community-walk-command-grid-v2/report.json",
+  "scope": "Byte-identical action class/dependencies from the probe recipe. Only the action class is applied; not training rewards/events. Live and direction regression still pending."
+}

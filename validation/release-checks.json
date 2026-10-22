@@ -1,0 +1,96 @@
+{
+  "date": "2026-10-22",
+  "scope": "Course packaging and teaching-command validation; not a new independent success-rate cohort",
+  "platform": "Ubuntu 24.04, aarch64, NVIDIA GB10",
+  "fixed_models_unchanged": true,
+  "fixed_model_bytes": 22359337,
+  "fresh_environment": {
+    "source_archive_pinned": true,
+    "dependency_cache_reused": true,
+    "IsaacLab_source_files_compared_to_upstream": 3218,
+    "source_differences": 0,
+    "doctor_passed": true,
+    "nav2_packages_downloaded_from_official_snapshots": 57,
+    "new_navigation_image_built": true,
+    "new_environment_full_task": {
+      "seed": 983102,
+      "task_seconds": 17.285,
+      "passed": true,
+      "independent_checks": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "actual_foot_ball_contact": true,
+      "whole_ball_crossed": true,
+      "fell": false,
+      "result_sha256": "9130c51ddeed9d7bbd07c6a99f4dfd271cf5df139ede9ac72feef4107040552f"
+    }
+  },
+  "student_practice": {
+    "walking": {
+      "environments": 64,
+      "iterations": 20,
+      "seed": 101,
+      "state": "completed",
+      "export_exists": true,
+      "independent_replay_fell": true,
+      "replay_simulated_seconds": 0.78,
+      "replaced_course_defaults": false
+    },
+    "detector": {
+      "epochs": 5,
+      "batch": 8,
+      "seed": 303,
+      "images": 40,
+      "completed": true,
+      "replaced_course_defaults": false
+    }
+  },
+  "fixed_model_labs": {
+    "walking_12_seconds_no_fall": true,
+    "detector_40_images_completed": true,
+    "geometric_plan_completed": true
+  },
+  "anatomy": {
+    "components": 70,
+    "triangles": 796802,
+    "editable_blender": true,
+    "independent_portable_rebuild_verified": true,
+    "physics_animation": false
+  },
+  "historical_independent_result": {
+    "successes": 9,
+    "trials": 10,
+    "seeds": "983101\u2013983110",
+    "scope": "frozen empty-field task only; no new independent trials claimed here"
+  },
+  "website": {
+    "bilingual_content_pages": 26,
+    "desktop_mobile_page_checks": 52,
+    "local_link_checks": 746,
+    "interactions": [
+      "copy",
+      "progress",
+      "language",
+      "search",
+      "quiz",
+      "GIF play/pause",
+      "70 components",
+      "explode",
+      "select",
+      "reset",
+      "focus part",
+      "mobile menu"
+    ],
+    "errors": [],
+    "passed": true
+  }
+}

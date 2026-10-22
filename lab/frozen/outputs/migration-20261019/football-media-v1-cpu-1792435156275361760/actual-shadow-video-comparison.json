@@ -1,0 +1,116 @@
+{
+  "scope": "CPU same-frame replay, not a fresh physics run or end-to-end speed claim",
+  "captureIndices": [
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52
+  ],
+  "captureTimeRange": [
+    2.4,
+    3.535
+  ],
+  "sensorRowsExactExceptNewPNGFileSHA": true,
+  "decodedRGBToFPixelsExact": true,
+  "videoComparison": {
+    "first_person": {
+      "frames": 18,
+      "fps": 15.0,
+      "durationSeconds": 1.2,
+      "decodedFramesExact": true,
+      "mp4BytesExact": true,
+      "candidateSHA256": "07b37c018ae48e993d16ea2f4bcecf58e5fa59d60f837ae3c260bee6bc3a02e2",
+      "originalRealtimeSHA256": "07b37c018ae48e993d16ea2f4bcecf58e5fa59d60f837ae3c260bee6bc3a02e2"
+    },
+    "overhead": {
+      "frames": 18,
+      "fps": 15.0,
+      "durationSeconds": 1.2,
+      "decodedFramesExact": true,
+      "mp4BytesExact": true,
+      "candidateSHA256": "0fb5de59c45d6da28cfcf5fa008685289a34f976b76c282d12028203f515b6d1",
+      "originalRealtimeSHA256": "0fb5de59c45d6da28cfcf5fa008685289a34f976b76c282d12028203f515b6d1"
+    },
+    "paired": {
+      "frames": 18,
+      "fps": 15.0,
+      "durationSeconds": 1.2,
+      "decodedFramesExact": true,
+      "mp4BytesExact": true,
+      "candidateSHA256": "226cd040dfe0b559df5e63a21d83bed96cc44ce6f222b676ac33a3b943e92336",
+      "originalRealtimeSHA256": "226cd040dfe0b559df5e63a21d83bed96cc44ce6f222b676ac33a3b943e92336"
+    }
+  },
+  "result": {
+    "schema": "microduck.football-media-archive.v1",
+    "pid": 2556482,
+    "status": "complete",
+    "committedCaptures": 18,
+    "qualificationClaimed": false,
+    "compressionLevel": 1,
+    "losslessPixels": true,
+    "dropPolicy": "none; bounded blocking backpressure",
+    "videos": {
+      "first_person": {
+        "path": "first-person.mp4",
+        "frames": 18,
+        "nominal_fps": 15,
+        "exit_code": 0,
+        "sha256": "07b37c018ae48e993d16ea2f4bcecf58e5fa59d60f837ae3c260bee6bc3a02e2",
+        "pid": 2556508,
+        "child_exited": true
+      },
+      "overhead": {
+        "path": "overhead.mp4",
+        "frames": 18,
+        "nominal_fps": 15,
+        "exit_code": 0,
+        "sha256": "0fb5de59c45d6da28cfcf5fa008685289a34f976b76c282d12028203f515b6d1",
+        "pid": 2556509,
+        "child_exited": true
+      },
+      "paired": {
+        "path": "paired-views.mp4",
+        "frames": 18,
+        "nominal_fps": 15,
+        "exit_code": 0,
+        "sha256": "226cd040dfe0b559df5e63a21d83bed96cc44ce6f222b676ac33a3b943e92336",
+        "pid": 2556510,
+        "child_exited": true
+      }
+    },
+    "timingsSeconds": {
+      "pngEncode": 0.3873347929911688,
+      "archiveWrite": 0.0148858270040364,
+      "preview": 0.02558596099697752,
+      "postEpisodeVideo": 0.692171202004829
+    },
+    "missingControlTimestamps": [],
+    "frameCount": 18,
+    "durationSeconds": 1.2,
+    "expectedCaptures": 18,
+    "evidenceComplete": true,
+    "workerWallSeconds": 1.182608994000475,
+    "encoderCleanupFallback": [],
+    "submittedCaptures": 18,
+    "queueCapacity": 2,
+    "queueFullWaits": 12,
+    "queuePutWallSeconds": 0.8178669670087402,
+    "workerExitCode": 0,
+    "workerExited": true
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "microduck.root-approached-nearball-protocol.v1",
+  "purpose": "Nearball retreat calibration after originalfullapproach only; no tasksuccess or productionrecovery claim",
+  "seeds": [
+    981134,
+    981135
+  ],
+  "fixture": {
+    "root_xy": [
+      -0.66,
+      0.0
+    ],
+    "ball_xy": [
+      0.0,
+      -0.01
+    ],
+    "layout": "empty"
+  },
+  "approach": "unmodifiedv117 topublicHEAD_RETURN firstKICKorwhitelistedFAILED verdict, suppressK10beforeanyaction",
+  "motion": {
+    "helper_sha256": "eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2",
+    "vx": -0.35,
+    "duration_s": 1.6,
+    "heading_offset_rad": 0.1,
+    "hold_steps": 250,
+    "move_steps": 80,
+    "settle_steps": 101
+  },
+  "gates": [
+    "alltime footballforce<=.001N",
+    "ballXYshift<.005",
+    "nearball atmovestart x[.06,.14] abs(y)<=.10",
+    "publiccutoff point same domain",
+    "nofall/originalmechanical/nokick",
+    "all3independentaudits"
+  ],
+  "stopping_rule": "2completeclean required; stopfirstfailure,no identicalretry",
+  "original_task_limit_s": 180,
+  "release_sha256": "af98e15a681718c5725e1adcb2417b1138316c7f53783489ed8fc403991394af",
+  "auditor_sha256": "7e0e20f16b5428141eb62e17aec91f6bdb1ae6b718f9e9822fbc8a8e927fa209",
+  "source_launch_spec_sha256": "e6478c4990b2894e9a76a417dea7564e537512a1179db2eda388b76be7d7a4b7",
+  "training_updates": 0
+}

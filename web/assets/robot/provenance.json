@@ -1,0 +1,50 @@
+{
+  "kind": "mechanical-assembly-illustration",
+  "physics_rollout": false,
+  "duration_seconds": 5.1,
+  "frames": 51,
+  "fps": 10,
+  "dimensions": [
+    720,
+    540
+  ],
+  "source": "artwork/microduck.blend",
+  "renderer": "Blender Cycles CPU",
+  "samples": 24,
+  "license": "CC BY-NC-SA 4.0",
+  "author_geometry": "Pollen Robotics",
+  "files": {
+    "assembled.png": {
+      "bytes": 2463262,
+      "sha256": "e51f1c7614ef92d9d4d6a7bd7abbbbe4afd202f99789b5f9b27bad9c8759182f"
+    },
+    "microduck.glb": {
+      "bytes": 11893404,
+      "sha256": "eea0931fefde8b2d352eaaa73b5e380f2790f63fb716a8c1a2ce219ffe58c1ac"
+    },
+    "exploded-cycle.gif": {
+      "bytes": 9033363,
+      "sha256": "afa3089e1b52870bfbd05ccd6ac3cc2e43e8ca04ebebf37ecb0cfd2f3ce51537"
+    },
+    "NOTICE.md": {
+      "bytes": 1336,
+      "sha256": "79de617166a17ba3bc61c73333ad4edf431e3e03971818caf5b15fa4116590ad"
+    },
+    "exploded.png": {
+      "bytes": 2459680,
+      "sha256": "e24ddd1872132859a0ca02dfcfcf531e57942282ca32c5e0b4588fd7437692f5"
+    },
+    "components.json": {
+      "bytes": 50572,
+      "sha256": "c53a7df3804af236e4cb9b3ba8afe0805e140f09a2afa1c89f0678b7f41935d0"
+    },
+    "poster.png": {
+      "bytes": 2459680,
+      "sha256": "e24ddd1872132859a0ca02dfcfcf531e57942282ca32c5e0b4588fd7437692f5"
+    },
+    "LICENSE-MODELS.md": {
+      "bytes": 1148,
+      "sha256": "51526767ce31785f88f318ede4870f4b0d466267c79ce6fb9009c682f798da30"
+    }
+  }
+}

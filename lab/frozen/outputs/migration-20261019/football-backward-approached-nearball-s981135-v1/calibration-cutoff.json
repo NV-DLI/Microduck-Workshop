@@ -1,0 +1,65 @@
+{
+  "timestamp_s": 12.780000000000001,
+  "task_time_s": 10.440000000000001,
+  "physics_tick": 2556,
+  "verdict_state": "KICK",
+  "verdict_reason": null,
+  "original_handoff_status": {
+    "state": "KICK",
+    "reason": null,
+    "head_offsets": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "override_body_zero": true,
+    "head_return_complete": true,
+    "kick_runtime_authorized": true,
+    "kick_phase_s": 0.0,
+    "kick_onset_s": 12.780000000000001,
+    "attempts": 1,
+    "memory": {
+      "memory_available": true,
+      "reason": "unseen_ball_assumed_stationary",
+      "point_level_m": [
+        0.10000402617096661,
+        -0.034686058564363374,
+        -0.07518196976632333
+      ],
+      "point_body_m": [
+        0.09946887375246241,
+        -0.035086536835442016,
+        -0.07570425730690475
+      ],
+      "frame": "BODY50_gravity_level_with_projected_body_forward",
+      "ball_capture_timestamp_s": 8.535,
+      "ball_age_s": 4.245000000000001,
+      "capture_sensor_read_age_s": 0.015000000000000568,
+      "sensor_read_timestamp_s": 12.780000000000001,
+      "sensor_read_age_s": 0.0,
+      "samples_since_capture": 213,
+      "low_confidence_samples_since_capture": 28,
+      "original_range_uncertainty_m": 0.026862297722269578,
+      "prediction_horizon_s": 0.0,
+      "public_motion_hold_is_measurement": false,
+      "propagated_uncertainty_calibrated": false,
+      "stationary_ball_verified": false,
+      "no_slip_verified": false,
+      "kick_authorized": false
+    },
+    "last_goal_heading_rad": 0.06298073753222243,
+    "last_goal_fix_s": 12.735,
+    "headreturn_start_s": 11.4,
+    "headreturn_quiet_start_s": 12.280000000000001,
+    "uncertainty_envelope_inside": false,
+    "uncalibrated_target_authorization": true,
+    "qualification_claimed": false,
+    "only_point_estimate_development_permission": true,
+    "truth_used": false
+  },
+  "kick_runtime_authorized_by_original_verdict": true,
+  "kick_suppressed_for_calibration": true,
+  "original_gate_pass_fabricated": false,
+  "truth_used": false
+}

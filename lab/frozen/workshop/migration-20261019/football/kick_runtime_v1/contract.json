@@ -1,0 +1,32 @@
+{
+  "schema": "microduck.native-k10-runtime-contract.v1",
+  "source": "@COURSE@/workshop/migration-20261019/football/kick_runtime_v1/runtime.py",
+  "source_sha256": "a2781a733ecd0b9aad5b987835022ecbcfd1384a214ee031af8604d96382e32a",
+  "interface": {
+    "construct": "NativeKickRuntime(deployment_json)",
+    "step": "step(body61, previous_raw14=actual_last_sent_raw14, phase_s=public_elapsed_or_minus1, ready=bool, authorized=bool, head_return_complete=bool)",
+    "return": "raw14,teacher14,residual14,delta14,actor62,kick_weight,active,kick_authorized=false,mode"
+  },
+  "caller_responsibilities": [
+    "Same-read finite BODY50 public61 input only; validate current50Hz sample/read/delivery timestamps every control tick.",
+    "Public sensor supervisor owns target admission, successful physical head-neutral return, clock start, terminal and abort behavior.",
+    "Record authorization inputs; no simulator truth enters supervisor or adapter.",
+    "Supply actual sent history unchanged at body61[34:48] and previous_raw14; do not substitute predicted or pre-filtered history.",
+    "Original home+raw-bias native BAM scale1, no clipping/EMA/target projection.",
+    "At4seconds finish and score actual trajectory. Do not indefinitely call phase4 or silently reset.",
+    "ready=false returns native rawzero without network inference; physical safety/abort handling remains supervisor-owned."
+  ],
+  "native_contract": {
+    "commands48_61_zero_during_active": true,
+    "residual_bound": 0.2,
+    "kick_seconds": 0.5,
+    "smoothstep_standing_blend_seconds": 0.4,
+    "episode_seconds": 4,
+    "automatic_authorization": false,
+    "ground_truth_input": false,
+    "head_joint_override": false
+  },
+  "cpu_review": "@COURSE@/outputs/migration-20261019/native-k10-runtime-cpu-review-v1.json",
+  "cpu_review_sha256": "f0a49f7acd2f3dbd1c99f377489b73670c7143253465c6d153a7b542af86a0fc",
+  "qualification_claimed": false
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "microduck.body50-vector-cpu-equivalence.v1",
+  "status": "passed",
+  "qualification_claimed": false,
+  "GPU_tested": false,
+  "same_noise_injected": true,
+  "source_sha256": {
+    "@COURSE@/workshop/migration-20261019/acceptance/body50_training/test_producer.py": "385ae1e53bafcd73cbbdc665049735a471a915fd1999649aa099ac72c7ba69c9",
+    "@COURSE@/workshop/migration-20261019/acceptance/body50_training/vector_body_imu.py": "a02b50ce8bcaf64d8a35ece84d29904019166019a16b7775e0566f2e7d0ad67d",
+    "@COURSE@/workshop/migration-20261019/acceptance/body50_training/physics_producer.py": "b38e91ee2ba3d5e62844265460dc0d22487fe63f789692c5820e98f3e26503e1",
+    "@COURSE@/workshop/migration-20261019/acceptance/body50_training/test_equivalence.py": "e6252809f4580bf435cbf3541bb5260c847c445133bd7e2738e2c20a346f2c1d",
+    "@COURSE@/workshop/migration-20261019/sensors/beta_body_imu.py": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4",
+    "@COURSE@/workshop/migration-20261019/sensors/beta_head_imu.py": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
+    "@COURSE@/workshop/migration-20261019/sensors/isaac_beta_body_imu.py": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601",
+    "@COURSE@/workshop/migration-20261019/football/body_imu_input.py": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a"
+  },
+  "checks": [
+    {
+      "script": "test_equivalence.py",
+      "returncode": 0,
+      "stdout": "{\"case\": \"dynamic-reset-gap-saturation\", \"delivered_packets\": 1592, \"valid_packets\": [154, 320, 245, 154], \"wire_bytes_exact\": true, \"max_decoded_difference\": 1.1102230246251565e-16}\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 1.328s\n\nOK\n"
+    },
+    {
+      "script": "test_producer.py",
+      "returncode": 0,
+      "stdout": "{\"producer_control_samples\": 2144, \"max_measurement_difference\": 1.1102230246251565e-16, \"independent_reset\": true, \"invalid_rows_no_truth\": true}\n",
+      "stderr": ".\n----------------------------------------------------------------------\nRan 1 test in 0.928s\n\nOK\n"
+    }
+  ]
+}

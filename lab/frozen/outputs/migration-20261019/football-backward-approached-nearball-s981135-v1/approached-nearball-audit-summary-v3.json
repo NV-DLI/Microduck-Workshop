@@ -1,0 +1,13 @@
+{
+  "seed": 981135,
+  "service_state": "completed",
+  "service_exit_code": 0,
+  "audit_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "passed": true,
+  "scope": "Approached near-ball calibration StageB only; not task success, not production recovery",
+  "training_updates": 0
+}

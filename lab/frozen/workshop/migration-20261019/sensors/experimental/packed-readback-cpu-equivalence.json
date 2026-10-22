@@ -1,0 +1,17 @@
+{
+  "schema": "microduck.packed-readback-cpu-checks.v1",
+  "checks_passed": 4,
+  "gpu_execution_verified": false,
+  "coverage": [
+    "mixed shapes and native dtypes",
+    "int64 above float64 exact range and float64 below float32 precision",
+    "noncontiguous views",
+    "copied output independent of source mutation",
+    "nonfinite and bfloat16 implicit cast rejection"
+  ],
+  "world_truth_exposed_to_controller": false,
+  "sources_sha256": {
+    "packed_readback.py": "272e2b57304f65d53b775e06da6d996c0836377dcb640a81de2f46d0f5c42568",
+    "test_packed_readback.py": "4a7b6605eb7658a08065f63b17f241b8a94c17181af5b3f4d19b48b6d6061613"
+  }
+}

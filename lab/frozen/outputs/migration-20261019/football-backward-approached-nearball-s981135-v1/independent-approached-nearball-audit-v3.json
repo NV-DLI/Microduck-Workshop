@@ -1,0 +1,63 @@
+{
+  "schema": "microduck.backward-approached-nearball-audit.v3",
+  "passed": true,
+  "checks": {
+    "frozen_fixture_seed_limit": true,
+    "model_identity": true,
+    "calibration_completed_within_original_limit": true,
+    "permanent_switch_once": true,
+    "public_head_return_verdict_cutoff": true,
+    "public_memory_at_cutoff_in_domain": true,
+    "no_kick_ever": true,
+    "head_exactly_zero_from_switch": true,
+    "helper_replay_exact": true,
+    "motion_window_cutoff_plus_250_80_101": true,
+    "calibration_row_secondary_consistent": true,
+    "raw_onnx": true,
+    "raw_history": true,
+    "same_read_imu_command_head": true,
+    "policy_and_packet_clocks": true,
+    "init_boundary_and_no_scorer_reset": true,
+    "no_task_external_assist": true,
+    "alltime_paired_ankle_ball_force_le_1mN": true,
+    "alltime_ball_xy_shift_lt_5mm": true,
+    "no_pre_kick_contact": true,
+    "no_fall": true,
+    "original_mechanical": true,
+    "truth_ball_relative_at_movement_start_in_domain": true,
+    "source_unchanged": true,
+    "approach_sources_pure_v117": true,
+    "selected_helper_frozen": true
+  },
+  "cutoff": {
+    "timestamp_s": 12.780000000000001,
+    "task_time_s": 10.440000000000001,
+    "verdict_state": "KICK",
+    "verdict_reason": null
+  },
+  "public_memory_point_at_cutoff": [
+    0.10000402617096661,
+    -0.034686058564363374,
+    -0.07518196976632333
+  ],
+  "truth_ball_relative_at_movement_start_m": [
+    0.09229008078638988,
+    -0.039598915699741104
+  ],
+  "peak_paired_ankle_ball_force_n": 0.0,
+  "maximum_ball_xy_shift_m": 2.2351741811588166e-10,
+  "raw_onnx_max_error": 1.1920928955078125e-06,
+  "raw_history_max_error": 0.0,
+  "same_read_max_error": 5.867919061763871e-08,
+  "helper_fault": null,
+  "helper_max_error": 0.0,
+  "nominal_kick_permission_is_not_execution": true,
+  "scope": "Approached near-ball CALIBRATION only; not autonomous task success; truth only scores contact, ball shift and the near-ball domain",
+  "source_sha256": {
+    "@COURSE@/workshop/migration-20261019/acceptance/audit_backward_approached_nearball_v3.py": "dcd18725eec8ba795cbdcada1db32a55cd45999e1b4872278a2228ba01e93a22",
+    "@COURSE@/outputs/migration-20261019/football-backward-approached-nearball-s981135-v1/manifest.json": "5d5c4dd31a6d043ae3ac685774342efeb3a2bdff26abd718ae8c303422251063",
+    "@COURSE@/outputs/migration-20261019/football-backward-approached-nearball-s981135-v1/policy-trace.jsonl": "9069a021e7f98eaa3c4d5a43d8248fdbb2454f69a44c84f7f10d745ca3a83948",
+    "@COURSE@/outputs/migration-20261019/football-backward-approached-nearball-s981135-v1/physics-trace.jsonl": "69b5a3c7c6e2aeff2ad4d8eefa067464112be84a2692953314341afa2a9e97fb",
+    "@COURSE@/outputs/migration-20261019/football-backward-approached-nearball-s981135-v1/calibration-cutoff.json": "efeb1a6e47c7eec92d473c4c8a8c7d1197137d84f6489bf5e0537a20ccccd06f"
+  }
+}

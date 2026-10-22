@@ -1,0 +1,160 @@
+{
+  "schema": "microduck.body-sensor-observation-contract.v2",
+  "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+  "profile": {
+    "model": "LSM6DSV16X",
+    "simulated_sample_hz": 120.0,
+    "fifo_read_hz": 50.0,
+    "pipeline_delay_s": 0.0,
+    "additional_transport_delay_s": 0.0,
+    "gyro_bias_rad_s": [
+      0.0,
+      0.0,
+      0.002
+    ],
+    "gyro_noise_std_rad_s": 0.003,
+    "accel_noise_std_m_s2": 0.03,
+    "orientation_correction_tau_s": 0.5,
+    "sensor_position_trunk_m": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "profile_id": "beta-gc2093-l8cx-v1",
+    "placement": "body power board",
+    "role": "50 Hz locomotion/control IMU; separate from head_imu.stream",
+    "transport": "Dynamixel combined sync_read with servo feedback",
+    "control_read_hz": 50.0,
+    "bus_register_address": 124,
+    "bus_block_bytes": 12,
+    "sensor_to_trunk_quaternion_wxyz": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "published_axes": "trunk FLU",
+    "gyro_range_deg_s": 500.0,
+    "gyro_lsb_deg_s": 0.0175,
+    "quaternion_encoding": "xyz binary16; positive w reconstructed",
+    "decoder": "component-wise median3 gyro/gravity, unfiltered quaternion; ready after25 live quaternion reads",
+    "minimum_ready_reads": 25,
+    "minimum_ready_read_time_s": 0.5,
+    "pipeline_delay_origin": "Experiment assumption only: robotd reads, infers and applies in the same50Hz loop; no fixed post-read20ms queue is established by upstream source",
+    "pipeline_delay_is_measured": false,
+    "pipeline_delay_default_scope": "Zero added queue follows the same-tick source schedule, not a measured zero bus/inference time; historical20ms is an explicit stress case",
+    "median_phase_note": "Component-wise median3 already contributes approximately one50Hz tick of phase lag on monotonic signals; its delay must not be counted again as transport",
+    "internal_sample_rate_is_measured": false,
+    "noise_is_measured": false,
+    "sensor_position_is_measured": false,
+    "sflp_firmware_reproduced": false,
+    "additional_transport_delay_is_measured": false,
+    "assumptions": [
+      "120 Hz virtual internal fusion rate is not confirmed body firmware configuration",
+      "gyro bias/noise and acceleration noise are experiment inputs",
+      "power-board translation is unknown; trunk origin is a parameterized approximation",
+      "Additional post-read pipeline delay is unknown; zero added queue is a baseline and20ms remains an explicit historical stress setting, neither is a measured bus/inference duration"
+    ],
+    "source_urls": [
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/imu.rs",
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/bus.rs",
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/obs.rs",
+      "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd/src/main.rs"
+    ]
+  },
+  "clock": {
+    "physics_hz": 200,
+    "internal_sample_hz_assumed": 120,
+    "register_read_hz": 50,
+    "acquire_rule": "One actual sample when floor(t*120) advances; never backfill missed samples; acquired timestamp is current physical tick",
+    "read_rule": "At advancing floor(t*50), use latest acquired sample, not head FIFO",
+    "added_delay_sensitivity_s": [
+      0,
+      0.005,
+      0.01,
+      0.02
+    ],
+    "coast_on_missing_read": "Not yet modeled; official runtime holds the prior sample up to3 dropped reads"
+  },
+  "measurement": {
+    "gyro_axes": "trunk FLU identity Beta mount",
+    "gyro_bias_rad_s": [
+      0,
+      0,
+      0.002
+    ],
+    "gyro_gaussian_std_rad_s": 0.003,
+    "gyro_clip_deg_s": 500,
+    "gyro_quantum_deg_s": 0.0175,
+    "accel_quantity": "specificforce = R_world_to_trunk*(a_world - [0,0,-9.80665])",
+    "accel_gaussian_std_m_s2": 0.03,
+    "accel_clip_g": 4,
+    "accel_quantum_g": 0.000122,
+    "noise_and_accel_range_and_fusion_rate_are_unmeasured_body_assumptions": true
+  },
+  "fusion": {
+    "orientation_init": "No truth quaternion: stable measured acceleration direction to local up; yaw arbitrary",
+    "initialization_sample_count": 25,
+    "initialization_min_duration_s": 0.18,
+    "initialization_gyro_norm_max_rad_s": 0.25,
+    "initialization_gravity_norm_tolerance_m_s2": 1.18,
+    "initialization_accel_component_std_max_m_s2": 0.2,
+    "initialization_direction_deviation_max_deg": 3,
+    "gap_over_s_invalidates": 0.04,
+    "gyro_saturation_invalidates": true,
+    "integration": "q <- normalize(q * Exp((gyro + k*cross(measured_up,predicted_up))*dt))",
+    "correction_k_per_s": 2,
+    "correction_active_only_accel_norm_m_s2": [
+      8.3,
+      11.3
+    ],
+    "proprietary_SFLP_reproduced": false
+  },
+  "decoder": {
+    "gyro_wire": "i16 little endian with17.5mdps/LSB",
+    "quat_wire": "xyz binary16,positivew=sqrt(max(0,1-|xyz|\u00b2)),normalizedbefore use",
+    "invalid_quat": "allzero/NaN/|xyz|\u00b2>1.02 holds previousquat and does not incrementreadycount",
+    "ready_live_quat_reads": 25,
+    "gyro": "component-wise median3(initialhistoryzero)",
+    "gravity": "normalize(R_inverse(q)*[0,0,-1]),then component-wise median3(initialhistorydown)",
+    "gravity_normalized_after_median": false,
+    "quat_is_median_filtered": false
+  },
+  "policy_boundary": {
+    "observation_dim": 61,
+    "gyro_range": [
+      0,
+      3
+    ],
+    "gravity_range": [
+      3,
+      6
+    ],
+    "encoder_pos_range": [
+      6,
+      20
+    ],
+    "encoder_velocity_range": [
+      20,
+      34
+    ],
+    "previous_raw_policy_action_range": [
+      34,
+      48
+    ],
+    "command_range": [
+      48,
+      61
+    ],
+    "same_bus_encoders": "Bind to read_timestamp_s; use servo+passive physical joint order14; official4096counts/rev and.229rpm",
+    "no_world_pose_exported": true,
+    "no_predictor_bypassing_delivery": true
+  },
+  "source_sha256": {
+    "beta_body_imu.py": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4",
+    "beta_head_imu.py": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
+    "isaac_beta_body_imu.py": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601"
+  },
+  "default_added_delay_s": 0.0,
+  "historical20ms": "v9 retains explicitly configured.020; no added queue is official source-order baseline, not a measured timing guarantee"
+}

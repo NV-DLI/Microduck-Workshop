@@ -1,0 +1,22 @@
+[
+  {
+    "path": "head.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/kinematics/src/head.rs",
+    "sha256": "e13f038568395e70b4a92cc5a8e116a27e1b8f414a32fd9a9168f4d1185e0ad2"
+  },
+  {
+    "path": "robot_allcollisions.xml",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck_rl/b02fdea4902c2b93b7d34a83a6f05da4ececb7d3/src/mjlab_microduck/robot/microduck/robot_allcollisions.xml",
+    "sha256": "ec9d2f731596cfc847a7fc3898ef8b5e67a548928abc23216537f1da8af2729c"
+  },
+  {
+    "path": "runtime_robot_walk.xml",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/kinematics/assets/alpha/robot_walk.xml",
+    "sha256": "078693dff3bcd5e69eb6cc483974178e1511a11f762b1a4dd00370bc5d58b8a8"
+  },
+  {
+    "path": "head_imu.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/robotd/src/head_imu.rs",
+    "sha256": "e09f750d83b7df18b91f72a99bc839594c4d7da91dd4eb2fe9a08e40fd944b88"
+  }
+]

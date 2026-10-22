@@ -1,0 +1,25 @@
+{
+  "kind": "official-apt-CPU-image-lock-v1",
+  "image_id": "sha256:c60e955f781c31c00b46b415c9bad7dc8e5faa922f0e3ea0dbb44f604685bfbd",
+  "architecture": "arm64",
+  "uncompressed_size_bytes": 671949764,
+  "base_reference": "ros@sha256:32114cd33511c91307d4f5dea184dcbfb9385860bee9839b772332c8fc103856",
+  "direct_packages": {
+    "ros-jazzy-nav2-planner": "1.3.13-1noble.20260903.010032",
+    "ros-jazzy-nav2-navfn-planner": "1.3.13-1noble.20260903.010003",
+    "ros-jazzy-nav2-costmap-2d": "1.3.13-1noble.20260903.003455",
+    "ros-jazzy-nav2-lifecycle-manager": "1.3.13-1noble.20260902.211847",
+    "ros-jazzy-nav2-msgs": "1.3.13-1noble.20260902.193503",
+    "ros-jazzy-rclpy": "7.1.12-1noble.20260902.143245",
+    "ros-jazzy-tf2-ros-py": "0.36.22-1noble.20260902.150658",
+    "ros-jazzy-nav-msgs": "5.3.8-1noble.20260902.123754",
+    "ros-jazzy-geometry-msgs": "5.3.8-1noble.20260902.122255",
+    "ros-jazzy-lifecycle-msgs": "2.0.4-1noble.20260902.122414",
+    "ros-jazzy-rmw-fastrtps-cpp": "8.4.4-1noble.20260902.140744"
+  },
+  "deb_manifest_sha256": "df43ab57d6a4eeaae25cd37885f0da5269f7fbd89346534a07063db442ecbc11",
+  "Dockerfile_sha256": "98314b6942cf75e5aaf711bcd82af5e209375142c802d5b4c929e16afc3dc4f4",
+  "package_closure_sha256": "dc085105b15721dbf011e5d938d608ac4e2f51239c14b30c7da0039cfa17773d",
+  "no_running_container_committed": true,
+  "offline_final_build": true
+}

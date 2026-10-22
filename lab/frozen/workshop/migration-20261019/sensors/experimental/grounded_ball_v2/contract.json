@@ -1,0 +1,23 @@
+{
+  "schema": "microduck.grounded-ball-v2-call-contract.v1",
+  "source": "@COURSE@/workshop/migration-20261019/sensors/experimental/grounded_ball_v2/geometry.py",
+  "sourceSHA256": "c6fae125fc4051fd75d397a4371f76fc21dac24a129a7f58193c9b3a6cd8be45",
+  "parentSourceSHA256": "08f1ee1183c101953b5d408de76ba63501e661a1b9008ac5574443f48b4df8fe",
+  "call": "refine_grounded_complete_ball(perception_result, tof_frame=original_same_capture_tof_frame, now_s=current_same_clock_time)",
+  "requirements": [
+    "perception_result is one complete BetaPerception.estimate result; do not mix nested fields from separate captures.",
+    "tof_frame is the exact packet passed to that same estimate call; preserve its source SHA. Timestamp matching alone cannot prove physical provenance.",
+    "Finite nonnegative perception/original-ball/pose/ToF/now timestamps; all capture times agree within1us and each capture age is0..200ms.",
+    "All three original/pose/ground reference labels match. Ground plane coefficients exactly match the accepted public floor observation.",
+    "Parent complete boundary, 35mm sphere, range, unit normal and ray guards remain unchanged.",
+    "On rejected output do not silently restore an older successful geometry; keep the surrounding controller unavailable/observation behavior."
+  ],
+  "validOutput": "Exactly identical to v1, including legacy kind label; source contract identifies v2 validation. No uncertainty reduction or new motion/kick authority.",
+  "limits": [
+    "Actual ground support and real hardware floor/radius/FK/optics remain unverified.",
+    "Replay retains capture-time effective proprio, not independently qualified held50Hz measurements."
+  ],
+  "review": "@COURSE@/outputs/migration-20261019/grounded-ball-v2-cpu-acceptance-v1.json",
+  "reviewSHA256": "efd9260fbffcfe2444a6f58c48a5f63b7cc8e6186ee427ef3b40af00a53b0a51",
+  "installed": false
+}

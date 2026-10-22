@@ -1,0 +1,1007 @@
+{
+  "schema": "microduck.gaze-command-table.v1",
+  "scope": "Encoder FK/IK only; no dynamic claim",
+  "sources": {
+    "football/head_adapter.py": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787",
+    "football/hardware_head_fk.py": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
+    "sensors/sources/robot_allcollisions.xml": "ec9d2f731596cfc847a7fc3898ef8b5e67a548928abc23216537f1da8af2729c"
+  },
+  "head_joint_order": [
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll"
+  ],
+  "rows": [
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.4,
+        0.0
+      ],
+      "desired_head_joint_rad": [
+        0.3491000000001354,
+        0.34910000000013547,
+        -0.39999596091820266,
+        1.1232487739627339e-20
+      ],
+      "head_pose_native_offsets_rad": [
+        1.3539169785303784e-13,
+        1.354472090042691e-13,
+        -0.39999596091820266,
+        1.1232487739627339e-20
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.039081797357204e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.2,
+        0.0
+      ],
+      "desired_head_joint_rad": [
+        0.349099999999986,
+        0.349099999999986,
+        -0.1999979217705369,
+        -5.4160118124388194e-20
+      ],
+      "head_pose_native_offsets_rad": [
+        -1.404432126150823e-14,
+        -1.404432126150823e-14,
+        -0.1999979217705369,
+        -5.4160118124388194e-20
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 2.0782294631035304e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.0,
+        0.0
+      ],
+      "desired_head_joint_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ],
+      "head_pose_native_offsets_rad": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 1.232595164407831e-32,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.2,
+        0.0
+      ],
+      "desired_head_joint_rad": [
+        0.349099999999986,
+        0.349099999999986,
+        0.1999979217705371,
+        -6.424333631442166e-20
+      ],
+      "head_pose_native_offsets_rad": [
+        -1.404432126150823e-14,
+        -1.404432126150823e-14,
+        0.1999979217705371,
+        -6.424333631442166e-20
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 2.078229462911178e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.4,
+        0.0
+      ],
+      "desired_head_joint_rad": [
+        0.34910000000024644,
+        0.34910000000024644,
+        0.3999959609182028,
+        1.5980598272312252e-20
+      ],
+      "head_pose_native_offsets_rad": [
+        2.464140003155535e-13,
+        2.464140003155535e-13,
+        0.3999959609182028,
+        1.5980598272312252e-20
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.039081797248372e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.4,
+        0.35
+      ],
+      "desired_head_joint_rad": [
+        0.16043943130725596,
+        0.5377605686923377,
+        -0.3744981062469837,
+        -0.1439693250023998
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.18866056869274406,
+        0.18866056869233766,
+        -0.3744981062469837,
+        -0.1439693250023998
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.8007175378782444e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.2,
+        0.35
+      ],
+      "desired_head_joint_rad": [
+        0.17083194589865897,
+        0.5273680541002619,
+        -0.1877287979431057,
+        -0.06939403512546834
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.17826805410134106,
+        0.17826805410026186,
+        -0.1877287979431057,
+        -0.06939403512546834
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.882847722455187e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.0,
+        0.35
+      ],
+      "desired_head_joint_rad": [
+        0.17410088845799443,
+        0.5240991115413555,
+        3.257634351949993e-18,
+        4.922692853338621e-18
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.1749991115420056,
+        0.17499911154135545,
+        3.257634351949993e-18,
+        4.922692853338621e-18
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 1.7769166389185277e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.2,
+        0.35
+      ],
+      "desired_head_joint_rad": [
+        0.1708319458986852,
+        0.5273680541002972,
+        0.18772879794310204,
+        0.06939403512546825
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.17826805410131483,
+        0.17826805410029717,
+        0.18772879794310204,
+        0.06939403512546825
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.88284772185718e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.4,
+        0.35
+      ],
+      "desired_head_joint_rad": [
+        0.1604394313069846,
+        0.5377605686920665,
+        0.37449810624698365,
+        0.14396932500239976
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.18866056869301542,
+        0.18866056869206643,
+        0.37449810624698365,
+        0.14396932500239976
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.800717537818979e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.4,
+        0.7
+      ],
+      "desired_head_joint_rad": [
+        -0.021275395536372345,
+        0.7194753955364659,
+        -0.30242998143227684,
+        -0.26591622907183843
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.3703753955363724,
+        0.37037539553646587,
+        -0.30242998143227684,
+        -0.26591622907183843
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 6.1004800892356195e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.2,
+        0.7
+      ],
+      "desired_head_joint_rad": [
+        -0.005866447015554385,
+        0.7040664470148903,
+        -0.15254126923750905,
+        -0.12985396423306175
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.3549664470155544,
+        0.3549664470148903,
+        -0.15254126923750905,
+        -0.12985396423306175
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.31197606489918e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.0,
+        0.7
+      ],
+      "desired_head_joint_rad": [
+        -0.0008982230834421487,
+        0.69909822308328,
+        3.656395807244658e-18,
+        -3.220325339812703e-19
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.3499982230834422,
+        0.34999822308327994,
+        3.656395807244658e-18,
+        -3.220325339812703e-19
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 3.553833277610963e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.2,
+        0.7
+      ],
+      "desired_head_joint_rad": [
+        -0.005866447015558988,
+        0.7040664470148995,
+        0.15254126923750977,
+        0.1298539642330595
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.354966447015559,
+        0.3549664470148995,
+        0.15254126923750977,
+        0.1298539642330595
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 4.311976051011328e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.4,
+        0.7
+      ],
+      "desired_head_joint_rad": [
+        -0.021275395536411522,
+        0.719475395536427,
+        0.3024299814322766,
+        0.2659162290718384
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.3703753955364115,
+        0.370375395536427,
+        0.3024299814322766,
+        0.2659162290718384
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 6.100480089180828e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.4,
+        1.0
+      ],
+      "desired_head_joint_rad": [
+        -0.16925668038966485,
+        0.8674566803887971,
+        -0.2119855212122294,
+        -0.341799530425787
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.5183566803896649,
+        0.5183566803887971,
+        -0.2119855212122294,
+        -0.341799530425787
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.342339657024228e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.2,
+        1.0
+      ],
+      "desired_head_joint_rad": [
+        -0.155455096582971,
+        0.8536550965824306,
+        -0.10754763043395639,
+        -0.16894629088511487
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.504555096582971,
+        0.5045550965824306,
+        -0.10754763043395639,
+        -0.16894629088511487
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 5.6502079428685085e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.0,
+        1.0
+      ],
+      "desired_head_joint_rad": [
+        -0.15089749511774955,
+        0.8490974951172678,
+        -1.0229592187193079e-18,
+        1.1084741501132325e-23
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.4999974951177496,
+        0.4999974951172678,
+        -1.0229592187193079e-18,
+        1.1084741501132325e-23
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 5.009764982676743e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.2,
+        1.0
+      ],
+      "desired_head_joint_rad": [
+        -0.15545509658284243,
+        0.853655096582559,
+        0.1075476304339564,
+        0.16894629088511492
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.5045550965828425,
+        0.5045550965825589,
+        0.1075476304339564,
+        0.16894629088511492
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 5.6502079429153274e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.4,
+        1.0
+      ],
+      "desired_head_joint_rad": [
+        -0.1692566803896302,
+        0.8674566803888322,
+        0.21198552121222897,
+        0.3417995304257868
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.5183566803896302,
+        0.5183566803888322,
+        0.21198552121222897,
+        0.3417995304257868
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.342339656909415e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.4,
+        1.2
+      ],
+      "desired_head_joint_rad": [
+        -0.26436304790520954,
+        0.962563047904946,
+        -0.14157986069908887,
+        -0.37537031387860387
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.6134630479052096,
+        0.6134630479049459,
+        -0.14157986069908887,
+        -0.37537031387860387
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.860602871520767e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.2,
+        1.2
+      ],
+      "desired_head_joint_rad": [
+        -0.25427008328145345,
+        0.9524700832812997,
+        -0.07205256636388384,
+        -0.18672988668970605
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.6033700832814535,
+        0.6033700832812996,
+        -0.07205256636388384,
+        -0.18672988668970605
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 9.765670517308767e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.0,
+        1.2
+      ],
+      "desired_head_joint_rad": [
+        -0.2508969706432739,
+        0.9490969706409572,
+        3.326173734254899e-18,
+        1.681907512609469e-17
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.599996970643274,
+        0.5999969706409571,
+        3.326173734254899e-18,
+        1.681907512609469e-17
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 6.058715768946479e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.2,
+        1.2
+      ],
+      "desired_head_joint_rad": [
+        -0.2542700832813952,
+        0.9524700832813514,
+        0.07205256636388614,
+        0.1867298866896977
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.6033700832813953,
+        0.6033700832813513,
+        0.07205256636388614,
+        0.1867298866896977
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 9.765670525355758e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.4,
+        1.2
+      ],
+      "desired_head_joint_rad": [
+        -0.2643630479052915,
+        0.962563047904864,
+        0.14157986069908884,
+        0.37537031387860365
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.6134630479052916,
+        0.613463047904864,
+        0.14157986069908884,
+        0.37537031387860365
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.860602871579909e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.4,
+        1.4
+      ],
+      "desired_head_joint_rad": [
+        -0.35752185124948027,
+        1.0557218512487625,
+        -0.06623568706235644,
+        -0.3947646988536936
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.7066218512494803,
+        0.7066218512487625,
+        -0.06623568706235644,
+        -0.3947646988536936
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 8.81812462988223e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        -0.2,
+        1.4
+      ],
+      "desired_head_joint_rad": [
+        -0.3525667482928306,
+        1.0507667482915515,
+        -0.03377357736925616,
+        -0.19716316504093795
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.7016667482928306,
+        0.7016667482915515,
+        -0.03377357736925616,
+        -0.19716316504093795
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.390497714265172e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.0,
+        1.4
+      ],
+      "desired_head_joint_rad": [
+        -0.35089647554070014,
+        1.0490964755399812,
+        3.2579641982072972e-18,
+        -5.526155439485864e-20
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.6999964755407002,
+        0.6999964755399812,
+        3.2579641982072972e-18,
+        -5.526155439485864e-20
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.048919318517872e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.2,
+        1.4
+      ],
+      "desired_head_joint_rad": [
+        -0.3525667482930086,
+        1.0507667482913738,
+        0.033773577369256166,
+        0.197163165040937
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.7016667482930086,
+        0.7016667482913739,
+        0.033773577369256166,
+        0.197163165040937
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 7.390497714064327e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "gaze_body_yaw_pitch_rad": [
+        0.4,
+        1.4
+      ],
+      "desired_head_joint_rad": [
+        -0.35752185124969754,
+        1.0557218512485431,
+        0.06623568706235732,
+        0.39476469885369153
+      ],
+      "head_pose_native_offsets_rad": [
+        -0.7066218512496976,
+        0.7066218512485432,
+        0.06623568706235732,
+        0.39476469885369153
+      ],
+      "joint_names": [
+        "neck_pitch",
+        "head_pitch",
+        "head_yaw",
+        "head_roll"
+      ],
+      "orientation_residual_rad": 8.81812463252944e-06,
+      "accepted": true,
+      "world_stabilized": false,
+      "native_home_rad": [
+        0.3491,
+        0.3491,
+        0.0,
+        0.0
+      ]
+    }
+  ]
+}

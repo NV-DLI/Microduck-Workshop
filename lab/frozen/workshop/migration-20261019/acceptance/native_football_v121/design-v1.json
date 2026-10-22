@@ -1,0 +1,827 @@
+{
+  "schema": "microduck.full-task-development.v77",
+  "qualification_claimed": false,
+  "formal100plus100_queue": false,
+  "purpose": "First complete public-sensor task development: actual approach, final strike point and goal yaw, same-read public ball memory, physical neutral-head return, one K10 native kick and actual goal/recovery scoring.",
+  "initialization": "Same nominal empty seeded field; all real robot/ball/goal initialization occurs once before recorded physics; no task state writes, resets, assistance or ball relocation.",
+  "reference_actor": "community-v8 velstand, not own student training",
+  "own_gait_training": "Separate own-from-random walking lineage and evaluations are not used by this community-reference controller.",
+  "changes": [
+    "same-capture grounded_ball_v2 center with original complete-boundary/ToF gates and unchanged old bbox uncertainty",
+    "bounded point-estimate final approach using actual public ball point and observed goal memory",
+    "same50Hz packet+encoder read memoryv2, bounded physical per-head-command return at .3rad/s",
+    "source-validated native K10 adapter plus actual ground-partner evidence",
+    "task fall threshold .07m/.8rad aligns frozen layered v4; historical legacy metrics retained"
+  ],
+  "clocks": {
+    "physics": 200,
+    "policy": 50,
+    "rgb_tof": 15,
+    "memory": "Every actual50Hz delivered same-read packet; poll current status with no new packet; original sample/read/delivery timestamps retained",
+    "camera_pose_limitation": "Current capture-time unquantized effective q/qd with held BODY50 gyro/gravity remains explicit; candidate same-read camera pose is separate future work."
+  },
+  "near": {
+    "entry_range_minus_old_uncertainty_m": 0.34,
+    "point_target_xy_m": [
+      0.09,
+      -0.035
+    ],
+    "desired_center_error_m": 0.005,
+    "training_box_x_m": [
+      0.075,
+      0.105
+    ],
+    "training_box_y_m": [
+      -0.05,
+      -0.02
+    ],
+    "goal_heading_max_rad": 0.08,
+    "quiet_window_s": 0.4,
+    "quiet_min_samples": 6,
+    "quiet_gyro_3D_RMS_max": 0.12,
+    "quiet_ball_XY_diameter_max_m": 0.02,
+    "forward_command": 0.3,
+    "forward_max_duration_s": 0.4,
+    "forward_short_duration_s": 0.2,
+    "long_if_position_error_gt_m": 0.06,
+    "forward_stop_if_error_x_le_m": 0.005,
+    "forward_stop_if_point_x_le_m": 0.075,
+    "forward_max_heading_rad": 0.15,
+    "turn_command_abs": 0.8,
+    "turn_max_duration_s": 2.4,
+    "predictive_stop": "existing .15s constant publicgyro hint at .06 bearing; not a stopping bound",
+    "budgets": {
+      "forward": 20,
+      "turn": 24
+    },
+    "reverse_or_direct_strafe": "unvalidated, hold; no invented sideways velocity",
+    "acceptable_point_5mm_center_preference": "A stable acceptable wide-box point may be used after one additional second; not infinite centering.",
+    "close_range_horizontal_point_m": 0.22,
+    "close_forward_command": 0.2,
+    "close_forward_max_duration_s": 0.2,
+    "far_to_close_transition": "immediate zero, then original fresh quiet before any new pulse",
+    "automatic_amplitude_escalation": false,
+    "close_head_return_preparation_bearing_max_rad": 0.06,
+    "actual_after_head_return_STEP_bearing_max_rad": 0.15,
+    "goal_entry_heading_max_rad": 0.065
+  },
+  "head_return": {
+    "per_joint_command_slew_rad_s": 0.3,
+    "native_action_and_actual_joints_overridden": false,
+    "memory_max_age_s": 4.5,
+    "quiet_s": 0.5,
+    "gyro_norm_max_rad_s": 0.1,
+    "effective_qd_RMS_max_rad_s": 0.25,
+    "public_tilt_max_rad": 0.35,
+    "goal_fix_max_age_s": 0.5,
+    "kick_point_must_still_be_inside_training_box": true,
+    "failure": "expire/invalid/gap/out-of-domain means explicit failed terminal; no silent retry"
+  },
+  "authorization_scope": {
+    "development_point_estimate_only": true,
+    "uncertainty_envelope_inside": false,
+    "uncalibrated_target_authorization": true,
+    "old_bbox_uncertainty": "unchanged diagnostic; neither reduced nor claimed as95percent confidence",
+    "formal_permission": false,
+    "reason": "Grounded multi-run center error supports a full development attempt; propagated uncertainty is not yet calibrated and formal gate remains unchanged."
+  },
+  "kick": {
+    "runtime": "@COURSE@/workshop/migration-20261019/football/kick_runtime_v1/runtime.py",
+    "episode_s": 4.0,
+    "published_teacher_kick_s": 0.5,
+    "course_teacher_recovery_blend_s": 0.4,
+    "residual_bound": 0.2,
+    "active_body61_command13": "all zero",
+    "previous_raw": "actual last sent merged raw14",
+    "one_attempt": true,
+    "own_runtime_authority": false
+  },
+  "score": {
+    "protocol": "@COURSE@/workshop/migration-20261019/acceptance/football-layered-qualification-v4.json",
+    "development_admission_differs_from_formal": true,
+    "fall_height_m": 0.07,
+    "fall_tilt_rad": 0.8,
+    "real_named_foot_ball_contact": true,
+    "whole_ball_fixed_goal": true,
+    "actual_ground_pair": true,
+    "recovery_window_s": [
+      3.5,
+      4.0
+    ],
+    "all_failures_and_old_extra_combined_gate": "retain independently, never rewrite old scores"
+  },
+  "runs": {
+    "development": "one durable service, original180s/971001",
+    "automatic_retry": false,
+    "formal100plus100": false
+  },
+  "source_pin_scope": "All local controller/helper/executor and frozen dependency files checked at launch/end; exact media worker pins retained. No single-factor causal claim.",
+  "evidence_basis": "Actualv60: four complete ball captures48.27..48.47, fresh goal51.87,7.6s left under original24s. Old search returned to35.47seed rather than latest complete view. Command-only slew lower bound3.548s does not prove actual tracking can complete, and original I remained continuously enabled without a new5s wait.",
+  "head_search": {
+    "candidate_gaze_engineering_box_yaw": [
+      -1.6,
+      1.6
+    ],
+    "candidate_gaze_engineering_box_pitch": [
+      0,
+      1.4
+    ],
+    "waypoint_offsets": [
+      [
+        0,
+        0
+      ],
+      [
+        -0.3,
+        0
+      ],
+      [
+        0.3,
+        0
+      ],
+      [
+        0,
+        0.2
+      ],
+      [
+        -0.3,
+        0.2
+      ],
+      [
+        0.3,
+        0.2
+      ],
+      [
+        0,
+        -0.25
+      ],
+      [
+        -0.3,
+        -0.25
+      ],
+      [
+        0.3,
+        -0.25
+      ]
+    ],
+    "targets_pass_actual_IK_and_native_source_head_command_bounds": true,
+    "all_candidate_acceptance_rejections_recorded": true,
+    "native_head_bounds_rad": [
+      1.1,
+      1.1,
+      1.4,
+      0.31
+    ],
+    "actual_executor_final_gate_unchanged": true,
+    "slew_rad_s": 0.6,
+    "fresh_pixel_step_rate_rad_s": 0.45,
+    "target_command_arrival_tolerance_rad": 0.03,
+    "commanded_dwell_s": 1.0,
+    "deadline_s": 24.0,
+    "actual_servo_tracking_verified": false,
+    "gait_gaze_generalization_claimed": false,
+    "cache_authorizes_body": false,
+    "partial_ball_authorizes_metric": false
+  },
+  "attention_owner": {
+    "only_after_actual_near_entry": true,
+    "goal_trigger_age_s": 8.0,
+    "goal_refresh_deadline_s": 6.0,
+    "total_attention_deadline_s": 24.0,
+    "body_or_kick_authority": false,
+    "goal_success": "accepted public goal fix newer than phase start, age<=.2s; visible pixels alone insufficient",
+    "ball_success": "complete grounded capture newer than goal completion, current same-frame guards",
+    "goal_refresh_resets_ball_age_or_deadline": false,
+    "gaze_source_domain": "unchanged actual native command/IK gate",
+    "hazard_holds": "TooClose/floor rejection retain original body/kick/metric denial. Explicit current-capture attention with fresh finite proprio may only move head within original native domain/slew; no motion or deadline permission follows.",
+    "deadline_basis": "Prospective engineering bounds: head command envelope and .6rad/s slew allow a finite observation segment; no measured worst-case sensing guarantee is claimed."
+  },
+  "historical_changes_from_v47": [
+    "After actual near entry, missing fresh complete ball invokes bounded head-only reacquisition over old cache/goal-refresh priority. Old public direction only seeds search and cannot refresh ball age or authorize base/kick.",
+    "Fresh partial ball pixels use same-capture FK image Jacobian for head only; missing pixels visit at most9 actual-IK-checked targets,1s commanded dwell,24s hard deadline. Original floor/TooClose/capture holds remain and clock continues.",
+    "Public ball search failure terminates the preserved episode. Complete fresh grounded metric exits search to unchanged final alignment/headreturn/K10 gates."
+  ],
+  "historical_changes_from_v48": [
+    "Explicit attention ownership only after near entry: expired original8s goal fix starts committed GOAL_REFRESH; missing complete ball cannot preempt until a new accepted goal fix or6s hard timeout.",
+    "A goal fix must be accepted after the current GOAL_REFRESH phase start and fresh<=.2s. BALL_REACQUIRE then requires a new complete ball capture strictly later than that goal fix before final alignment can resume.",
+    "Goal/ball owner always sets body0/kickfalse; original floor/TooClose/capture protection holds head and deadlines continue. Total attention deadline24s never restarts on a goal fix; original far-state attention/near geometry/native action/headreturn/K10 remain unchanged."
+  ],
+  "head_feedback": {
+    "warmup_zero_observe_s": 5.0,
+    "ki_per_s": 0.35,
+    "deadband_rad": 0.005,
+    "correction_bound_rad": 0.35,
+    "total_command_slew_rad_s": 0.3,
+    "motion_withdrawal_deadline_s": 2.0,
+    "source_head_box_rad": [
+      1.1,
+      1.1,
+      1.4,
+      0.31
+    ],
+    "new_body_authority": false,
+    "world_stabilization_qualified": false,
+    "walking_compensation_qualified": false,
+    "source_probe": "native-head-feedback-nominal8-s980901",
+    "qualification_claimed": false,
+    "pitch_redistribution": {
+      "enabled_only_original_permission": true,
+      "previous_actual_sent_neck_bound_tolerance_rad": 1e-09,
+      "outward_error_min_abs_rad": 0.005,
+      "head_pitch_integral_error": "e_head_pitch - e_neck",
+      "other_three_components_unchanged": true,
+      "measured_gain_assumption": "Opposing public FK optical rotation axes motivate error allocation; actual actor/BAM response, camera translation, body coupling and real pixel recovery remain unverified until this run.",
+      "diagnostics": [
+        "integral_error_rad",
+        "pitch_error_redistributed"
+      ]
+    },
+    "fine_reacquire_permission": {
+      "phase": "REACQUIRE only",
+      "quiet_requirement": "Original .5s quiet already completed before entering REACQUIRE",
+      "requires": "explicit current head-only attention owner; fresh capture and same-read packet; zero actual/requested body, no kick; original24s deadline",
+      "starts_original5s_timer": true,
+      "RETURN_STEP_SETTLE_HEAD_RETURN_KICK_integration": false,
+      "source": "@COURSE@/workshop/migration-20261019/acceptance/fine_reacquire_feedback_v2"
+    }
+  },
+  "historical_changes_from_v49": [
+    "Bounded integral correction only through existing four native head commands in permitted zero-body observation, ball/goal search phases, after5continuous seconds. Exact tested Ki .35/s, perjoint correction .35rad, native bounds and actual command slew .3rad/s.",
+    "Public same-read BODY50seq/q/read_dt only; no repeated packet integration. Original TooClose/floor/head-hold freezes command and invalid read resets integration interval. No raw action, physical state, sensor/history or attention deadline changes.",
+    "On motion request with residual correction, body stayszero while actual command slews to currentnominal, original navigation pulse/time/budgets continue. Fixed2s withdrawal deadline cannot restart; HEAD_RETURN/KICK disableintegration and retain original truequiet/neutral command gates."
+  ],
+  "other_gaze_bounds_unchanged": {
+    "committed_goal_refresh_yaw_rad": [
+      -1.2,
+      1.2
+    ],
+    "legacy_far_default_yaw_rad": [
+      -0.4,
+      0.4
+    ],
+    "source_head_command_bounds_rad": [
+      1.1,
+      1.1,
+      1.4,
+      0.31
+    ]
+  },
+  "historical_changes_from_v50": [
+    "Only the lost-ball head-search engineering yaw envelope changes from\u00b11.2 to\u00b11.6rad; pitch remains0..1.4. Every proposed head-only gaze receives the original native head-input domain and physical IK-margin check; rejected targets hold without resetting any timer.",
+    "The original image Jacobian arithmetic is unchanged and now accurately labelled an uncalibrated ideal-body-axis local approximation. It ignores translation and does not model real policy/joint tracking. No new Jacobian is deployed."
+  ],
+  "historical_changes_from_v51": [
+    "Final approach at current complete public grounded horizontal range<=.22m starts only command .2 for at most .20s, with unchanged fresh/quiet/heading/20pulse budget. This range is a point estimate, not the old uncertainty lower bound.",
+    "A currently active .3 pulse is immediately zeroed on a valid capture entering .22m. A new .2 pulse requires the original quiet observation again; elapsed pulse and total budgets are never refunded. No automatic upward amplitude fallback.",
+    "Original .3 far pulse and all turn/attention/native head feedback/headreturn/K10 gates unchanged. Existing200Hz/50Hz raw public records permit separate postrun public legFK and actual command/ball movement diagnosis; no private foot force is used for control."
+  ],
+  "neutral_fine_step": {
+    "states": [
+      "IDLE",
+      "RETURN",
+      "STEP",
+      "SETTLE",
+      "REACQUIRE",
+      "FAILED"
+    ],
+    "start_point_x_min_m": 0.13,
+    "start_horizontal_range_max_m": 0.22,
+    "point_y_m": [
+      -0.1,
+      0.08
+    ],
+    "start_goal_age_max_s": 8.0,
+    "physical_head_slew_rad_s": 0.3,
+    "actual_sent_neutral_required": true,
+    "quiet_s": 0.5,
+    "gyro_norm_max_rad_s": 0.1,
+    "effective_qd_RMS_max_rad_s": 0.25,
+    "tilt_max_rad": 0.35,
+    "before_STEP_goal_age_max_s": 0.5,
+    "STEP_goal_age_max_s": 1.1,
+    "command": [
+      0.2,
+      0,
+      0
+    ],
+    "step_max_s": 0.6,
+    "step_stop_point_x_m": 0.105,
+    "propagated_point_x_m": [
+      0.075,
+      0.25
+    ],
+    "memory_max_age_s": 4.5,
+    "memory_anchor_refresh_during_phase": false,
+    "policy_interval_max_s": 0.025,
+    "packet_age_max_s": 0.08,
+    "capture_age_max_s": 0.2,
+    "phase_total_max_s": 24.0,
+    "reacquisition_requires_actual_new_complete_capture": true,
+    "kick_authority": false,
+    "nominal_time_budget_s": {
+      "head_return": 1.65,
+      "initial_quiet": 0.5,
+      "step": 0.6,
+      "settle_quiet": 0.5,
+      "sum_before_reacquire": 3.25
+    },
+    "timing_not_guaranteed": true,
+    "after_stop_motion_bound_claimed": false,
+    "memory_required_states": [
+      "RETURN",
+      "STEP"
+    ],
+    "expired_memory_SETTLE": "body remainszero; original quiet then head-only REACQUIRE, never renewed memory validity",
+    "entry_and_pre_STEP_waypoint_bearing_max_rad": 0.15,
+    "STEP_goal_heading_change_max_rad": 0.15,
+    "STEP_goal_heading_reference": "freeze observed goal bearing at STEP onset",
+    "final_K10_absolute_goal_heading_max_rad": 0.08,
+    "direction_reason": "Different public angles represent preparation-point navigation, in-step drift and final shooting alignment. Thresholds are unchanged; the correct angle is assigned to each phase."
+  },
+  "historical_changes_from_v52": [
+    "Near final .2 request now initiates one public-memory-backed physical neutral-head step, rather than an immediate low-head .2/.2s pulse. Original forward budget is consumed once; final navigator cannot allocate another pulse during this phase.",
+    "RETURN uses actual same-read encoder/gyro quiet, actual sent command neutral, original .3rad/s head slew. STEP commands .2 for at most .6s, then zero and .5s public quiet, then head-only actual complete-ball reacquisition. No second step before a new capture reauthorizes the original final controller.",
+    "Ball memory anchor is frozen through RETURN/STEP/SETTLE. Invalid packet, stale/hazard capture, original unsafe navigation reason, capture exception, goal/point guard or original memory age expiry terminates with zero body. Head feedback integration disabled and head-search waypoint credit withheld while fine step owns head; original attention clocks continue."
+  ],
+  "historical_changes_from_v53": [
+    "Only after STEP has irrevocably zeroed body authority, SETTLE no longer requires the old ball memory to remain valid. Current packet/capture/hazard gates, original .5s continuous quiet and24s attention remain. Memory still expires at4.5s and cannot authorize RETURN/STEP after expiry.",
+    "Quiet completion permits only head-only REACQUIRE. No new body pulse or kick is allowed until an actual fresh complete ball capture returns the state to IDLE and the original final controller independently grants new permission. No timing budget, threshold or success criterion changes."
+  ],
+  "historical_changes_from_v54": [
+    "Correct phase direction semantics: entry and end of RETURN use the original public preparation-waypoint bearing error=p_xy-R(goal_heading)*[.09,-.035],abs(bearing)<=.15. Final shot heading is not an early approach requirement.",
+    "STEP freezes goal bearing at onset and requires absolute wrapped change<=.15 while fresh-goal/memory guards remain. Absolute final kick heading<=.08 and original final-goal turn mode are unchanged. Both waypoint angle and absolute/relative goal angles are recorded; no new turn or time budget."
+  ],
+  "historical_changes_from_v55": [
+    "Only close approach before final-goal mode aims the preparation waypoint within the existing .06rad turn-stop neighborhood before requesting neutral-head return. This stricter prealignment uses the same finite turn budget/command/minimum and maximum duration/quiet gates; the actual post-return step direction gate remains .15.",
+    "Far approach bearing remains .15, final kick alignment remains .08, no additional memory movement, extra turn budget, automatic threshold increase or deadline extension. .06 is an engineering centering target, not a measured worst-case return drift guarantee."
+  ],
+  "attention_head_permission": {
+    "owners": [
+      "GOAL_REFRESH",
+      "BALL_REACQUIRE"
+    ],
+    "proprio_max_age_s": 0.2,
+    "geometry_capture_clock_equals_now": true,
+    "finite_shapes": {
+      "q": 14,
+      "qd": 14,
+      "gyro": 3,
+      "gravity": 3
+    },
+    "gravity_unit_norm_check": [
+      0.9,
+      1.1
+    ],
+    "unique_named_joints": 14,
+    "TooClose_body_gate_unchanged": true,
+    "floor_required_for_body_and_metric": true,
+    "floor_required_for_head_attention": false,
+    "actual_policy_same_read_gate_s": 0.08,
+    "no_metric_reconstruction": true,
+    "body_zero": true,
+    "kick_authorized": false,
+    "no_hardware_collision_safety_claim": true
+  },
+  "prior_failure_evidence": "@COURSE@/outputs/migration-20261019/football-v60-attention-scheduling-public-review-v1.json",
+  "historical_changes_from_v56": [
+    "Separate head-only attention permission from body/metric permission, only while the explicit near attention owner is GOAL_REFRESH or BALL_REACQUIRE. Fresh finite same-capture public encoder q/qd and BODY50 gyro/gravity are required. Native source-command/physical IK gates and existing slew remain.",
+    "TooClose and floor rejection still withdraw all body/kick authority and never become accepted floor/ball observations. The same real64-zone values/thresholds are untouched. Valid angular partial observations may center the head; missing pixels use the original bounded search.",
+    "The public permission is capture-bound; the actual50Hz head feedback still separately rejects stale/invalid same-read packets. The original5s I warmup, Ki .35, .35rad compensation/.3rad/s slew and zero-body requirement are unchanged.",
+    "Original24s attention/6s goal phase,4.5s ball memory movement cutoff, final quiet/heading/position and K10 gates remain. No invisible body movement or deadline extension."
+  ],
+  "phase_permission_matrix": {
+    "IDLE_new_RETURN": {
+      "complete_actual_ball": true,
+      "original_body_hazard_guard": true,
+      "memory_max_age_s": 4.5,
+      "head_only_permission_substitutes": false
+    },
+    "RETURN": {
+      "original_capture_hazard_guard": true,
+      "valid_same_read": true,
+      "memory_max_age_s": 4.5,
+      "body_velocity": [
+        0,
+        0,
+        0
+      ]
+    },
+    "STEP": {
+      "original_capture_hazard_guard": true,
+      "valid_same_read": true,
+      "memory_max_age_s": 4.5,
+      "body_velocity": [
+        0.2,
+        0,
+        0
+      ],
+      "maximum_s": 0.6
+    },
+    "SETTLE": {
+      "original_capture_hazard_guard": true,
+      "valid_same_read": true,
+      "expired_memory_allowed": true,
+      "body_velocity": [
+        0,
+        0,
+        0
+      ],
+      "continuous_quiet_s": 0.5
+    },
+    "REACQUIRE": {
+      "original_capture_hazard_guard_OR_explicit_capture_bound_head_only_permission": true,
+      "valid_same_read": true,
+      "capture_age_max_s": 0.2,
+      "expired_memory_allowed": true,
+      "body_velocity": [
+        0,
+        0,
+        0
+      ],
+      "kick_authorized": false,
+      "new_complete_body_safe_capture_required_for_exit": true
+    },
+    "all_active": {
+      "policy_interval_max_s": 0.025,
+      "fine_deadline_s": 24,
+      "attention_deadline_s": 24,
+      "native_head_command_box_rad": [
+        1.1,
+        1.1,
+        1.4,
+        0.31
+      ],
+      "no_new_success_gate": true
+    }
+  },
+  "historical_changes_from_v57": [
+    "Only neutral-step REACQUIRE may continue with explicit current-capture GOAL_REFRESH/BALL_REACQUIRE head-only permission while the original body/metric hazard guard is false. Executor verifies phase, owner identity, accepted capture-bound permission and requested body zero/kick false.",
+    "The original hazard remains recorded. RETURN, STEP and SETTLE retain original body/capture gates; new complete but hazard-blocked ball cannot end REACQUIRE or authorize another step. No metric, floor or permission is fabricated.",
+    "Current policy interval, valid same-read packet, fresh capture, original 24s fine/attention deadline and native head source bounds/slew remain. Old ball memory still expires at 4.5s and cannot authorize further movement."
+  ],
+  "historical_changes_from_v58": [
+    "Only the already-enabled original head feedback integral reallocates head_pitch error to e_head_pitch - e_neck when previous actual sent neck command is at its native bound and neck error points outward beyond the unchanged .005rad deadband.",
+    "Original same-read/new-sequence, valid input, allowed zero-body observation and continuous5s permission remain. All other phases, other three head command components, Ki .35, correction bound .35, total command slew .3, native bounds and clocks remain unchanged.",
+    "This candidate branches from frozenv58. The separatev59 fine-REACQUIRE integration proposal is unexecuted and excluded. No change to ideal-axis pixel Jacobian, camera/FOV, ball, physics, observation, 21sector complete-ball guard, body/kick authority, success criteria or deadlines."
+  ],
+  "changes_from_v60": [
+    "Store only a current complete public ball detection and accepted floor, retaining the original capture time and prior already-issued gaze command (before this capture retargets the head). Partial/rejected/old/future observations do not overwrite the hint.",
+    "Only a new accepted goal fix starts head-only return to the retained gaze. Original source-domain gate, actual native command slew, head permission and total24s attention deadline remain; no camera observation, metric or body/kick permission is inferred.",
+    "At original .03rad gaze-command arrival, resume the original pixel/scan candidate logic. No reuse, reset or change of I state; original v60 saturation transfer, Ki/.35bias/.3slew/5s permission, body/fine/return/kick contracts and all thresholds remain unchanged."
+  ],
+  "ball_view_hint": {
+    "kind": "prior issued gaze command associated with latest complete actual public ball capture",
+    "input_capture_required_current": true,
+    "partial_or_rejected_or_future_capture_overwrites": false,
+    "reset_clears": true,
+    "new_goal_fix_required_for_return": true,
+    "return_arrival_gaze_command_tolerance_rad": 0.03,
+    "actual_head_tracking_inferred": false,
+    "maximum_total_attention_s": 24,
+    "memory_max_age_s_unchanged": 4.5,
+    "original_camera_timestamp_retained": true,
+    "body_or_kick_permission": false,
+    "metric_position": null,
+    "observation_time_refresh": false,
+    "fallback": "original scan/pixel after gaze-command arrival, with original source gate and timeout",
+    "integral_state_or_parameters_changed": false
+  },
+  "changes_from_v61": [
+    "Original RGB associated white-component border veto before original accepted metric; original21-sector/ground/time predicates unchanged. Seven-run actual admission changes only4 confirmed cropped frames.",
+    "Explicit fineREACQUIRE feedback permission after original half-second measured quiet, with zero body/kick, same-read public packet and original5s observation timer. v61 integral core/limits/redistribution unchanged."
+  ],
+  "image_border_guard": {
+    "source": "@COURSE@/workshop/migration-20261019/sensors/experimental/ball_image_border_v1",
+    "same_original_RGB_and_box": true,
+    "plain_white_asset_scope": true,
+    "no_geometry_fitting_or_missing_arc_completion": true,
+    "unknown_component_rejected": true,
+    "does_not_refresh_metric_time_hint_on_reject": true,
+    "original21_sectors_unchanged": true
+  },
+  "evidence_basis_v62": [
+    "@COURSE@/outputs/migration-20261019/football-v61-development-decision-v1.json",
+    "@COURSE@/outputs/migration-20261019/ball-image-border-v1-seven-run-replay.json",
+    "@COURSE@/outputs/migration-20261019/ball-image-border-v1-added-reject-visual-review.json",
+    "@COURSE@/outputs/migration-20261019/football-v62-geometry-integration-review-v1.json",
+    "@COURSE@/outputs/migration-20261019/fine-reacquire-feedback-v2-counterfactual.json"
+  ],
+  "v63_change": {
+    "scope": "Only defer attention owner release during fine REACQUIRE until the existing complete AND body-safe capture commits. Next new capture releases owner.",
+    "unchanged": [
+      "24s attention total deadline",
+      "24s fine deadline",
+      "4.5s ball memory",
+      "8s goal TTL",
+      "5s quiet integral activation",
+      "0.5s measured quiet fine feedback permission",
+      "native head bounds, .35 integral bias, .3 slew, .35 Ki, .005 deadband",
+      "body and kick gates",
+      "RGB21-sector gate plus observed-component border veto",
+      "all public sensor and same-read predicates"
+    ],
+    "CPU_validation": "180 tests passed, including actual v62 terminal capture reproducing old false failure and seven ownership/negative cases; no new physics claim"
+  },
+  "v64_change": {
+    "scope": "Only add a bounded one-next-capture fine-step entry latch after FinalApproach final_close_range_transition_stop. The transition capture may trigger immediately if every original NeutralFineStep entry predicate already holds; otherwise it may arm one pending opportunity that grants nothing. Only the very next capture (index+1, 0<dt<=.08s), ordinary OBSERVE sampling, exact zero body, APPROACH, fine IDLE, complete ball, body guard safe, memory anchored on that capture and all original entry predicates on that capture's own fresh memory may trigger. Consumed on that capture; cancelled by any invalid/duplicate/skipped/exception capture.",
+    "helper": "fine_transition_latch.py (byte-identical to acceptance/fine_transition_entry_v2/fine_transition_latch.py)",
+    "original_trigger": "v63 .2 final_public_forward expression reproduced bit-for-bit",
+    "unchanged": [
+      "NeutralFineStep source, entry domain .13<=x |xy|<=.22 -.10<=y<=.08, 8s goal TTL, .15 bearing",
+      "RETURN .3 rad/s neutral head and .5s measured quiet",
+      "4.5s ball memory, .5s fresh goal before STEP, .6s STEP, .105 stop",
+      "24s attention and fine deadlines",
+      "body hazard, ToF .1m filter, kick gates and K10 runtime",
+      "head feedback .35 bias/.3 slew/5s quiet, native bounds",
+      "FinalApproach, attention owner, camera/ToF/scoring, thresholds, rewards",
+      "no frame-reference change; memory and final-approach frames as in v63"
+    ],
+    "evidence": "@COURSE@/outputs/migration-20261019/fine-transition-entry-v2",
+    "physics_claim": false
+  },
+  "v66_change": {
+    "standoff_xy_m": [
+      0.26,
+      -0.035
+    ],
+    "position_commit_domain": "shot-frame x in [.13,.295], lateral error <=.018; also unchanged existing kick box",
+    "ordering": "fresh guarded positioning, goal alignment, fresh zero-body observation, v65 strict fine entry",
+    "goal_entry_rad": 0.0247,
+    "goal_turn_stop_hint_rad": 0.015,
+    "fine_step": "v65 preparation v2; legacy nonzero-body trigger removed",
+    "physics_claim": false,
+    "memory_lifetime_s": 4.5
+  },
+  "changes_since_v66": [
+    "Restore 4.5-second memory and original .6-second fine step; no 6-second candidate.",
+    "Measured quiet and lateral margin required for fine entry.",
+    "50 Hz expiry of .04-.5s goal turn pulses; per-direction gain updated only from subsequent settled public heading.",
+    "First development fixture: original root x -.66, root y +.035, ball (0,0); full approach required. No runtime assistance."
+  ],
+  "user_target_20261021": {
+    "full_task_success_rate": 0.7,
+    "historical_80pct_runs_unchanged": true,
+    "formal_validation_not_started": true
+  },
+  "changes_since_v70": [
+    "Limited final stride only at fresh ball x [.14,.177), y within 8mm of -.035, head <=.75rad: head-command return .5rad/s, forward .2 for <=1.2s, stop by public-memory x<=.112m.",
+    "Memory remains 4.5s; actual 0.5s quiet, current ToF safety, goal freshness and exact K10 box retained.",
+    "Development-only head slew and stride require new physical evidence; old .3rad/s/.6s route retained outside final-stride domain."
+  ],
+  "changes_since_v71": [
+    "Correct mistaken 1m-goal-width assumption: actual goal opening .24m and pitch width 1m. Restore original .08rad final kick gate and goal-post scoring.",
+    "Body-forward foot alignment target uses a goal-center deviation capped at .06rad; fresh settled entry <=.065rad. This relaxes only the earlier three-sample-derived .0247 entry margin; final .08 gate remains.",
+    "All models, source snapshots, failures preserved; no retraining.",
+    "Fine yaw starts at command .4 with <=.8s pulses; increase command only after a >=.5s pulse yields <.005rad settled public response, capped .8. This is physical development, not a proven calibration."
+  ],
+  "fixture_geometry": {
+    "goal_opening_width_m": 0.24,
+    "ball_radius_m": 0.035,
+    "goal_plane_x_m": 0.93,
+    "pitch_width_m": 1.0
+  },
+  "changes_since_v72": [
+    "Interpose a settled, fresh public-memory handoff before final yaw motion. Physically return head at .5rad/s, require actual neutral and .5s measured quiet.",
+    "Yaw-only domain extends to .4m public ball range; neutral turn .6 command for <=.8s, 50Hz public-memory/gyro braking, fresh goal <=.5s, unchanged 4.5s ball memory and actual ToF guards.",
+    "After turn settle and reacquire actual complete ball, then replan. No world state, resets, ball writes or action overrides. Original K10 box and .08rad kick gate unchanged."
+  ],
+  "changes_since_v73": [
+    "v73 measured repeatable neutral-turn/observe cycle: at ~.31m head-up memory y\u2248-.031, head-down fresh y\u2248-.025, causing redundant .03rad turns with former .02 threshold.",
+    "Separate coarse and fine observed angular tolerance: .06rad beyond .22m, .03rad within .22m; tight .005rad trigger if goal heading >.065. Actual settled entry y margin and K10 final box/.08rad gate retained.",
+    "At <=.22m a rejected fine entry always holds zero body; never replace it with a forward pulse."
+  ],
+  "changes_since_v74": [
+    "Use the same physically neutral-head .2-command/.6s step for farther final approach (.22-.36m); still reobserve complete ball after every step.",
+    "Fresh measured quiet/ToF/head-domain/goal heading required; .5rad/s head return; memory4.5s and final kick box/.08rad unchanged.",
+    "First planned run starts .30m behind ball at y=.035: explicitly close-approach development, not original .66m full-distance validation. Restore full distance after integration works."
+  ],
+  "changes_since_v75": [
+    "Calibration v2 identified a continuous walking region at vx .25-.30 with neutral head and bounded +/- .2 yaw/lateral; all70 calibration worlds survived. This is calibration, not task qualification.",
+    "At fresh quiet ball range .18-.36m, physically return head, wait .5s actual quiet, then track public shot-line lateral error and fresh goal heading continuously for <=2s or until memory x<=.112m.",
+    "vx .25-.30, vy +/- .2, wz +/- .2. Same public memory4.5s, current ToF guard, head-neutral and final K10 .08rad/position-box gates. Original whole-ball goal scorer unchanged.",
+    "First proposed fixture rootx -.30m, rooty .035: close-approach integration, explicitly not original full-distance qualification."
+  ],
+  "changes_since_v76": [
+    "v76 reached the handoff x range but failed exact box/heading: memory final(.089,-.076), goalheading-.107. Retain failure; no kick.",
+    "Two-stage approach: continuous coarse step stops at public x .20, then reacquires actual ball before final short stride. This avoids using the longer coarse-memory estimate to authorize K10.",
+    "Coarse lateral error low-pass .20s, goal heading .12s; vy gain8 and yaw-frame compensation .65*sin(h), wz 2*(h-.04), same bounded commands. These are development choices, not calibrated guarantees.",
+    "Final-stride domain extends to x<.195, keeping8mm lateral/head<=.75 gates, uses existing actor vx.25 for <=1.2s or x<=.112; memory4.5 and original final box/.08 unchanged.",
+    "No additional training. First .30m fixture remains close-approach development only."
+  ],
+  "v78_primitive": {
+    "calibration": "football-command-probe-v3;27commandsx2worlds, no training",
+    "selector": "fresh quiet public ball/heading, both recorded endpoints inside unchanged finalbox/.08 (margin .002m/.005rad)",
+    "head_return": "reselect using propagated public memory after measuredneutralquiet; no compatible primitive =>zero/reacquire",
+    "motion": "frozen selected command+duration, original current publicguards and4.5s memory; actualhead/quiet/K10 gates unchanged",
+    "scope": "Near-distance first, no complete task claim"
+  },
+  "v79_public_yaw_feedback": {
+    "reason": "v78 same macro reachedx but drifted.2rad; static endpoint is not transferable from nominalneutral initialization",
+    "command": "reuse selectedvx/vy/duration; wz=clip(-.75vy+2.5goal_heading-.25 filteredpublicyawrate,+/-.5)",
+    "no_truth": true,
+    "same_final_gates": true,
+    "no_training": true
+  },
+  "v80_stop_yaw_margin": {
+    "v79_result": "finalpublicpoint(.0852,-.0478) inside, heading-.108 outside. Stopheading-.0267 thencoast changed-.0815rad",
+    "new_target": "Duringmovingmacro targetgoalheading+.06rad to account observed positive stoppingyaw. Final.08radgate unchanged; no hard stop bound claimed.",
+    "no_training": true
+  },
+  "v81_head_entry": {
+    "reason": "Fullroot-.66 stopped near.16m but actualnativehead neck-.812 exceeded old.75degree-independent command bound, rejected every fineentry and counted24unexecutedturnrequests. No physical finalturns happened.",
+    "new_head_max_rad": 0.95,
+    "original_native_bounds_unchanged": [
+      1.1,
+      1.1,
+      1.4,
+      0.31
+    ],
+    "slew": ".5rad/s actualneutralquiet.5s andmemoryTTL4.5s remain. Maxheadreturn1.9s leavesfinite shortstep budget; expiry stillfailsclosed.",
+    "scope": "Head command admission only, no scorer/model/training changes"
+  },
+  "v82_kick_composition": {
+    "same_models": "Exact saved communitywalk/rightkick/K10 residual, no training. Actorphase remainsactual/4, rawactualhistory maintained.",
+    "new_composition": {
+      "hold_s": 0.14,
+      "blend_s": 0.12,
+      "episode_s": 4.0,
+      "residual_bound": 0.2
+    },
+    "previous_composition": {
+      "hold_s": 0.5,
+      "blend_s": 0.4
+    },
+    "reason": "v80 strikeat.13s; right_hip_roll overdriven byraw~-1.17radat.20s, physicalpeakviolationat.30s. Beginreturnafterstrike, reduceball-freefollowthrough. No physicalstate/ball correction.",
+    "scope": "Untrained deploymentcompositioncandidate; original K10 release unchanged. Must evaluategoal/recovery/mechanical separately."
+  },
+  "v83_closed_loop_selector": {
+    "reason": "v81 used oldopenloop yaw endpoint box togate a nowclosedloop action. One candidateblockedbecausepredicted y=-.021991 exceeded extra2mm marginby8micrometers, thenloopedturns.",
+    "new_prediction": "Use zero-wz baseline translations, rotate by desiredtotal yaw=initialgoalheading (goal0 atsettle), bothreplicatesinside originalxybox. Finalactualhead/goal.08/quiet/currentToF/memorystillunchanged.",
+    "intent": "Selection heuristic only, not provenendpointbounds orqualification. Earlyreturn composition fromv82 remainsnewuntrainedcandidate."
+  },
+  "v84_headonly_reacquisition": {
+    "evidence": "v83full aftercoarseball~.17m; searchseedpitch.538 onlyscanned.288/.538/.738 andneverlookeddown~1.1; targets exhausted. No kick.",
+    "change": "For head-onlysearch startingpitch<.85, firstaddabsolute1.1/1.3pitch with0,+/-.3yaw; retainold targets/nativeIKbounds/slew/deadlines/currentproprio. No ballmetric/body/kick authority from search."
+  },
+  "v85_macro_closed_feedback": {
+    "v84": "fullroute reachedmemory(.086,-.045), butoldanchor expired4.5s justbefore.5quiet, goal+.112. No kick.",
+    "head": "MACROonly neutralcommand slew .65rad/s vs.5; actualneutral/.5quiet/4.5TTL retained.",
+    "lateral": "Publicmemory y follows linear predeclared path from macrostarty to-.035; .12sLP error, gain8, correctioncap.12 andtotalvycap.3.",
+    "yaw": "Stopmargin dependsnominalvy: target=-.04-.5basevy (rightward-.2=>+.06,straight0=>-.04); publicgoal/gyrofeedback unchangedlimits.",
+    "scoring": "Originalfinalposition/heading/mechanics unchanged. No training or truthcontrol."
+  },
+  "v86_actual_head_slew": {
+    "cause": "Outer feedback clamped actual head at .3 despite nominal .65; v85 CPU-only retained.",
+    "change": "Only explicit owned MACRO RETURN with fresh valid packet, zero body, no integration, componentwise movement toward zero: actual .65 rad/s. All other phases retain .3. Original final measured neutral, quiet, TTL and scoring unchanged.",
+    "timing_probe": "v13 .14/.12 arm 16/16 original physics success; no training."
+  },
+  "v87_coarse_stop": {
+    "evidence": "v86 coarse .197 at stop coasted to.150 with goal-.144, then TURN lost valid capture. No MACRO executed.",
+    "change": "TRACK stop at public memory x<=.235 instead.20 to account for measured2-5cm coast; lateral gain5 vs8; yaw gain2.5 with publicgyroLP.1/damping.25 and calibrated lateral coupling-.75vy, cap.5. No change to local K10 or final gates.",
+    "scope": "Development feedback, not calibrated bounds."
+  },
+  "v88_interpolated_step": {
+    "evidence": "v87 observed .1977,-.03865 h-.0361: .6s prediction .116 toofar;.8s endpoints .0782/.0743 one .7mm outside, so no original discrete candidate.",
+    "change": "Convex bilinear interpolation within previously sampled .4-.8s, vy[-.2,.2], nominalw0, retaining both-replica original predictedbox. Actual public position stops after>=.35s at x<=.118+.05basevy to account measured17-28mm coast; original final box/heading authoritative.",
+    "limitation": "Interpolation unvalidated estimates; all original physical samples preserved; no truth runtime or training."
+  },
+  "v89_fixed_lateral_command": {
+    "v88": "Fullroute reachesheadhandoffin3.365s memory, headreturn1.48s works. Final p(.1118,-.0609),h+.0034 fails originalbox. Interpolated vy-.1 thenLPcorrection-.12 yieldslittletranslation andphase-dependentcoast.",
+    "change": "Keep duration interpolation, quantize selected lateral command to measured -/+ .2 or0 forwholeMACRO. Remove within-step lateral modulation, retain diagnostics. Heading target dependsactualvy as originalsuccessfulv82; original goal/gyrofeedback. Publicxstop.108 (after.35s), selectedduration remains maximum.",
+    "scope": "New developmentcomposition, no modelchange/training, actual finalgates retained."
+  },
+  "v90_goal_frame_lateral": {
+    "evidence": "v88 final(.1118,-.0609),v89 final(.0885,-.0093), bothfullnominalno kick. Body-frame p_y changes during yaw correction; v89 initialh-.127\u2192+.058 accountsabout3cm apparentlateralchange.",
+    "change": "MACRO publicgoal-frame lateralerror=-sin(h)*p_x+cos(h)*p_y+.035, LP.1s; hysteresis\u00b112mm activate measuredvy\u00b1.2, \u00b16mm deactivate. Headingtarget0 withsamegyro/yaw/lateralcoupling. Stoppublicx<=.105 after.35s, timeceiling min1s,selectedduration+.16. Original4.5TTL andactualfinalgates retained.",
+    "scope": "New closed-loopdevelopment, no modelweightchange/training; no truthcontrol."
+  },
+  "v91_stopping_margin": {
+    "v90": "Actual goal-frame feedback reached macrostop public(.1031,-.0325),h-.0324, but settled(.0716,-.0541),h-.1033; no kick. Measuredstopcoast31.5mm andyaw-.071.",
+    "change": "Retain publicgoalframehysteresis; stopx.112 instead.105; lateralprospectivecenter-.030 vs-.035, prospectiveyawtarget+.035. Actualoriginalfinalbox/headingunchanged.",
+    "scope": "Developmentparameters fromretainedmotion, not hardboundcalibration; no training."
+  },
+  "v92_decoupled_macro": {
+    "evidence": "v91independent first5 failures retained: case1 h-.167\u2192+.220 underleftstep; case2finalx.0709;case3 TRACK y.084 triggered operating-domain failure;case4 real currentcapturehazard retained;case5 finalh-.08084.",
+    "change": "Align beforeMACRO: |publich|<=.08 atselectionandafterheadreturn. MACROwz=2.5h-.25gyroLP independentofvy, matchesalgebraicv82law. Stoppublicx.118 vs.112. TRACK-only dynamic p_y domain \u00b1.15 vs[-.1,.08], admitting heading/sway duringcoarse path; entry/currenthazard/TTL/finalkickboxunchanged.",
+    "history": "Frozen v91independentbatch unchanged; thisnewcandidate cannotreuseitsseeds asindependentqualification.",
+    "scope": "CPUcandidate,no newtraining; physicalvalidationpending."
+  },
+  "v93_zero_authority_guard_wait": {
+    "evidence": "Frozenv91independentcase4 and7 currentgeometryguardfailed60/140ms AFTERTURNhadalreadyenteredSETTLE, terminatingwhilecommandwasalreadyzero.",
+    "change": "SETTLEonly whenfreshcaptureguardunsafe: preservezero-body, freezeheadatthelastactualcommand, resetquietwindow, awaitnewcurrent safe capture withinexisting24sdeadline. Missing/stalecaptureclock andanyactivebodyphase stillfail. No new action or oldobservationpermission.",
+    "scope": "v92+zeroauthorityrecovery, CPUcandidatependingphysics; v91batchunchanged."
+  },
+  "v94_entry_consistency": {
+    "evidence": "v93 recovered after turn and coarse tracking, but public(.2201,-.0613) had radius .2285m: selector admitted while inherited capture radius .22 rejected.",
+    "change": "MACRO capture radius .27 covers selector x<=.24,y>=-.10; selector miny tightened to same-.10 capture bound. Other modes unchanged. Original final kick gates unchanged.",
+    "scope": "No retraining; knownseed development only."
+  },
+  "v95_fixed_measured_steps": {
+    "evidence": "Audited closedloopv4 72worlds. Dynamicv94stop .70s finished x.106,y-.0193,h+.109; no kick.",
+    "change": "Fixed measured duration .6/.8 and lateral -.2/-.1/0; no duration/vy interpolation or within-step lateral switching. Heading interpolation only across measured -.1,0,+.1 references, all4 predicted originalpoint/heading gates required. Coarse TRACK stop .215 instead .235 targets .18m region. Actual final gates/TTL unchanged.",
+    "limitations": "Gyro-integrated calibration heading differs from camera navigation; estimates are not physical bounds. Knownseeddevelopmentnotindependentqualification. No retraining."
+  },
+  "v96_continuous_final_approach": {
+    "motivation": "v95firstindependentcase staged around x.196 where .6/.8calibration has no viable endpoint, then repeated turns. Avoid an unnecessary stop/reacquire/second gait-start gap when original public memory can cover the full .34\u2192.115 movement.",
+    "change": "TRACK continues to publicx.115 with unchanged2second movement maximum and4.5secondmemory. Nativehead .65return same safezero condition asMACRO. Goal-frame lateral gain10cap.2, decoupled yaw2.5h-.25gyro; originalfinalkickgates remain. Macro remainsfallback, models unchanged.",
+    "scope": "CPUcandidateonly, not claimed reliable; untested whole continuous path. Currentv95independentbatch remains frozen."
+  },
+  "v97_public_gyro_motion_reference": {
+    "evidence": "Claudeendpointreview measured cameraheading RMS .021-.066,max.13 during6fullmacros; same-read gyro calibrationRMS .005-.014. Bothfixedsteps/continuoustrack needconsistent short-windowheading.",
+    "change": "Movementstartanchors currentpubliccamera h once, thenintegrates newactualpublicreadseq andgravity-projectedgyro; latercamera capturesretainoriginalfreshgoal/angle safetychecks but do notretarget movingreference. Statusmarks prediction separately, no fakefreshness. Originalfinalhandoff still currentcamera heading.",
+    "scope": "v96continuouscandidate+publicgyroreference, CPUonly untilsequentialphysics; no training or truth control."
+  },
+  "v100_turn_goal_view": {
+    "evidence": "v97independent974102 returnedheadtoneutral atgoalh-.65 andlostcurrentgoal; noTURNexecuted.",
+    "change": "ForTURNonlyabs(publich)>.45, fixedreturnheadyaw=clip(.5h,+/-.5),otheraxesneutral; actualcommandatfixedtargetandoriginalquietrequired. KeepsgoalwithinviewbeforeandafterboundedTURN. Allfreshcapture/goals/4.5TTL/finalkickneutralandoriginalgates retained.",
+    "scope": "v97base,notv98/v99; known974102development; no training/groundtruthinput."
+  },
+  "v101_hold_complete_near_view": {
+    "evidence": "v100known974102 repeatedlyreacquiredsideball thenlegacygaze yaw clipped-.4; lostcompleteballbefore.4squietwindow, neverenteredTURN.",
+    "change": "Forfreshcompletegroundedballinexistingfinal_entry,ownerNONE,outsidelegacyyaw.4,holdalreadyadmittedcurrentgazeunchanged. No newhead/body authority, nooldcapturefreshness, goalrefresh/fineownershipprioritypreserved.",
+    "scope": "CPUcandidate; no training/groundtruth; known974102development."
+  },
+  "v102_public_sole_odometry": {
+    "evidence": "ClaudeDEV93endpoints8.43->2.36mmmedian; HELDOUT_A12decisionpoints18.84->7.62mmmedian,12/12improve,max15.14mm,not10mmbounded. No falseaccepts at6recordedgatecounterfactuals.",
+    "change": "OnlypublicBallMemorylegestimator usesactualUSDsolehull lowestpatch(.5mm) andsupportheightband1mm. Controller.vision.leg unchanged. Frozenadapter timestamps,gyrointegration,memory4.5TTL andcameraanchors unchanged. v101headviewfixretained.",
+    "scope": "No modeltraining/weightchange; replaynotphysicalsuccess. Known974105developmentnext."
+  },
+  "v103_turn_head_actual_tracking": {
+    "evidence": "v102heldnearview enabledTURNentry atpublich-.958; nativeyaw-.479 reached butcurrentgoalstillabsent (lastfix33.935atfail40.92). No turn/kick; newsolememoryactualreplay1465ticks agrees4.4e-16.",
+    "change": "ForlargeTURN choosefixednativeheadyaw=clip(publich,+/-1.1)insteadhalfh capped.5. Originalsourceyawbound1.4,actualcommandarrival,quiet,currentcamera.5s andcapture.2sguards unchanged. No guaranteeofcameraanglefromcommand.",
+    "scope": "Known974105development; no training. v101CPUonly; v102failedbeforeTRACK."
+  },
+  "v104_near_range_deceleration": {
+    "evidence": "v103 independent2/6. Finalcoastpublicx15/12/40/26/18mm overcases2..6; hpoststop failures4/5/6. Existingnativecommandprobev2 confirms.25producesforwardmotion, withheading-dependentvariation.",
+    "change": "TRACKvx .3 whilepublicx>.17 else.25; xstop.115 unchanged; maxmovement2.3s. TTL4.5 and allfinalkick/quiet/camera/ToFgates unchanged. No newmodel/training.",
+    "scope": "Knownfailed975104development; noindependentresult."
+  },
+  "v105_command_brake": {
+    "evidence": "v104known975104success;975105failedafterstopdy-18.9mm,heading-.044to-.113. No modelchanges.",
+    "change": "Atpublicx<=.125, linearly ramp last TRACK body command tozero over.16s; keepstateTRACK/headneutral/gyroreference updateuntilzero. Existinginstantstop atx<=.115 ifno ramp yet, emergencyx<=.09, total2.3s andmemory4.5s unchanged. Engineeringcandidate, notprovedstoppingdistance.",
+    "scope": "Known975105development. Original finalbox,goalangle,quiet,recovery unchanged."
+  },
+  "v107_track_goal_first": {
+    "base": "v105 preserved success, originalTRACKysetpoint-.035. v106failedknown975106retained; not reused.",
+    "evidence": "v106TRACKstartpublich-.164,point(.233,-.081),finalh-.186/y-.0535failed. v105known975106start+.062 finaly-.055failed;known975105start-.024passed.",
+    "change": "Afteractualneutralhead+.5quietandfreshgoal, TRACKstart|h|>.04 becomespuregoalTURNwithzeroXY, existing.6yaw/.8smaximum/gyrobrake; thenSETTLE+freshballREACQUIRE. No TRACKforwardcommand untilanotheractualquietandfreshgoal entry. Original finalkickguards unchanged.",
+    "scope": "Known975106development; no training."
+  },
+  "v108_floor_projection": {
+    "base": "v107 unchanged locomotion, fine approach and kick. No model training.",
+    "cause": "v107 independent ep1 180s no motion: minimum-zone range projected on central ray falsely marks floor 2\u20135cm high. Original full direct envelope passed4/1349requests.",
+    "change": "After same-capture public floor gate, reconstruct declared 32px/50deg nearest raster subray for each 45deg 8x8 zone. Only complete valid measured returns within5mm of accepted floor are projected on that ray. Measured ranges, masks, other rays, immediate hazard, field prior and10cm envelope unchanged.",
+    "evidence": "@COURSE@/outputs/migration-20261019/football-v108-preparation-v1/navigation-floor-replay-v1.json",
+    "offline_result": "All1349 corrected direct segments pass originalenvelope; no physical claim.",
+    "scope": "simulation nearest-zone approximation only, not physical ST calibration; no privileged depth consumed"
+  },
+  "v109_track_entry_and_stop_margin": {
+    "base": "v108 floor geometry fix; models unchanged",
+    "evidence": [
+      "v107independent976103 settledp(.0996,-.0509),h+.060: y misses originalbox by0.9mm",
+      "v107independent976104 repeatedpuregoalTURN at h-.05 to-.06 lasts.08s andreturns essentiallysameheading. At least10actual attempts noTRACKprogress."
+    ],
+    "changes": [
+      "PrealignTRACK onlywhen freshquietgoal|h|>.08; finalkickheadinggate stays.08. Remove tighter.04 prealign deadlock, TRACK retainscontinuousheadingfeedback.",
+      "Reuse v106alreadyCPUtested movementsetpoint y=-.028 (7mm inward stopmargin). v106failedrealheading beforev107prealign; oldfailure retained. Finalkickbox unchanged."
+    ],
+    "scope": "Separate new combination must be physically tested; neither CPU nor oldknownsuccess implies70%.",
+    "lateral_target_m": -0.028
+  },
+  "v110_early_coarse_closed_loop": {
+    "cause": "v108 repaired everyfloor map and robotadvanced, but known976101 then turnednearball toheading-1.26 and failedreacquisition37.195s withzero fineentry. Coarse ball-bearing pulses plusheadmotion produceuncontrolled nearstation.",
+    "scope": "Empty declared surveyedfield only. No training, no truthinput.",
+    "change": "Atfreshballx(.38,.85],range<=.9 withoriginalupstreamauthority andcurrentpublic10cmroute, holdbodyzero for6realquietcaptures. Returnheadphysicallyneutral+.5quiet, then existingTRACKfeedback (targety-.028) up to2seconds orpublicx<=.36. StopandfreshballREACQUIRE, neverkickfromcoarsephase. Repeatboundedsegments asneeded beforeexistingfinalTRACK. Everyactivecoarsecapture must independentlyrecheckpublicmap route; stale/unsafe stop.",
+    "domain": "Coarse publicmemory(.075,.9]x,|y|<=.25; original4.5sTTL,actualgoal freshness,ToF hazards,modelsandfinalkickboxunchanged. NearTRACKentryxmax.38/rangemax.4 avoids0.36 boundarydeadlock, stillinsidepreexistingfine memorydomain.",
+    "qualification_claimed": false
+  },
+  "v111_coarse_continuous_heading": {
+    "evidence": "v110known976101coarsefirstentry p(.728,.191),h+.073. Afterheadreturnh+.082 triggeredpureTURN. .10sturn settledh+.104,p_y+.203, outsidecoarseentry.2. No advance. Frozen180srecordretained.",
+    "change": "Coarse segment uses existingcontinuousTRACKheadingfeedback for|h|<=.35; no near-goal prealignment loop atfar range. FinalTRACKstillprealigns>.08. Coarsecapture/entryybound.25 matchesexistingcoarse memorybound. Coarseobserveronlyownsbodywhen geometryadmissible,otherwiseoriginalnavigationremainsowner. Diagnosticincludescoarseentryreason.",
+    "scope": "No finalkickgate/model/scene changes; newphysicaldevelopmentrequired."
+  },
+  "v112_final_lateral_center": {
+    "evidence": "v111976101 completedtwo coarse segments andfinalTRACK, actualkick17.505taskseconds, nofall andall8auditspassed, butmissedgoal. Publickickp(.0887,-.0229), truth(.0833,-.0167); memoryyerror-6.2mm andstopcoast madeactualballoutsideoriginalbox. Firstgoalplane crossingy+.1898,allowedwholeballcenter\u00b1.085.",
+    "change": "Keepcoarse approachtarget-.028. RestorefinalTRACKtargetoriginalright-footboxcenter-.035. Nochangefinalpublicbox,headinggate,originalscore,models,retimedK10,orcoarsepathauthority.",
+    "scope": "Known976101development only. Originalv111failurepreserved; no success-rate claim."
+  },
+  "v114_guard_stop_reobserve": {
+    "evidence": "Frozen v112 independent ep1 failed atpublicx.256 because one actual_ToF_floor_unavailable capture during TRACK. All priorcoarse/finalsegments retained. Batchremainsunchanged.",
+    "change": "Current unsafe capture stillimmediately setsallbodycommandszero andfreezeshead. Enterexisting boundedSETTLE ratherterminalFAILED; require freshsafe captures, original.5quiet, then completefreshball beforeIDLE/newentry. Explicitno kickroute fromguardstop. No extra motion authority, no clock/anchor refresh, existing24sdeadlineand180taskbudget retained. Missing/stale camera clock or invalidpacket stillfatal.",
+    "scope": "CPUpreparationonlywhilev112independentfrozenbatchruns. No modelweightchange/training."
+  },
+  "v115_prealignment_net_progress": {
+    "basis": "Frozenv114independent978102 repeatedly issued.10s goalturns nearh+.08-.10 andsettledwithnegligiblenetrotation; instantaneousgyrocoastprediction prematurelystops. Batchunchanged.",
+    "change": "Onlygoalprealignment predictivebrake requireselapsed>=.16, actualgoalfixafterturnstart, and signednetgoalprogress>=.03. Directgoalbearing<=.015 stillstopsafteroriginal.08. Original.8s max, .6amplitude, zeroXY, sensor/TTL/guards/freshballreacquisition allunchanged. No newkickingauthority.",
+    "scope": "CPUcandidateonly, actualmovementunknown. No modeltraining."
+  },
+  "v116_measured_pure_turn_amplitude": {
+    "basis": "v114frozen978105 repeatedly.26s puregoal turns atcommand.6: duringmotion publich.122->.065, thenresth.10. v115progressminimumalonewouldnotpreventthis. Existingno-trainingv1neutralpureturnprobe usedabsw.8 andmeasuredactualnet.17-.36 over.24/.48s.",
+    "change": "Onlygoal-onlyprealignment usesexistingtestedabsw.8 instead.6, retainingv115.16minimum+.03netprogress forpredictivebrake; directgoalreachedoriginal.08min andoriginal.8maximumunchanged. OtherTURN motionsremain.6. No changeentry/finalkick/safety/modelweights.",
+    "scope": "Prospectivecontrolcomposition, notproofaccuracystable. v115retainedCPUonly; no equivalentphysicalrunrepeated."
+  },
+  "v117_goal_dropout_reacquisition": {
+    "basis": "v116 known978105 stopped at t3.98 with goal age>.5s during coarse TRACK, public heading .124; no turn yet.",
+    "change": "Only TRACK missing/stale goal: immediate zero, existing bounded SETTLE/REACQUIRE, forbid handoff at interrupted stop. No relaxed freshness, large heading still fatal, original model/TTL/24s/180s/final scoring unchanged."
+  }
+}

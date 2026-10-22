@@ -1,0 +1,12 @@
+[
+  {
+    "path": "@COURSE@/workshop/migration-20261019/sensors/experimental/mechanical_qualification_review_v1/duck-control__src__safety.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/safety.rs",
+    "sha256": "9f00233825613e16351383c8c36f409fd060485bbe280c08694c67a453e5d198"
+  },
+  {
+    "path": "@COURSE@/workshop/migration-20261019/sensors/experimental/mechanical_qualification_review_v1/duck-control__src__model.rs",
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/model.rs",
+    "sha256": "0d6f1c81ae18d928b309db5150e5a89ecf5c633c45eb593d0f87282355cab804"
+  }
+]

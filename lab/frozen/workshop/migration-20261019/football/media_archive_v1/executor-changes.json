@@ -1,0 +1,57 @@
+{
+  "schema": "microduck.football-media-executor-diff.v1",
+  "base": "@COURSE@/workshop/migration-20261019/football/isaac_execute.py",
+  "baseSha256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
+  "candidateSha256": "d19498e420541d929d48408c85bf907a89e49ee6d0676a5fd284610bdbca1954",
+  "exactReplacements": [
+    {
+      "old": "ROOT=Path(__file__).resolve().parent\nM=ROOT.parent",
+      "new": "MEDIA_DIR=Path(__file__).resolve().parent\nROOT=MEDIA_DIR.parent\nM=ROOT.parent\nif str(MEDIA_DIR) not in sys.path:sys.path.insert(0,str(MEDIA_DIR))"
+    },
+    {
+      "old": "started=time.monotonic();env=None;nav=None;detector=None;videos={};logs={};report=",
+      "new": "started=time.monotonic();env=None;nav=None;detector=None;media=None;logs={};report="
+    },
+    {
+      "old": "'RTX_capture','image_file_io','YOLO_request','navigation_and_gaze','video_and_preview','trace_write_subset'",
+      "new": "'RTX_capture','capture_readback_and_archive_submit','YOLO_request','navigation_and_gaze','trace_write_subset'"
+    },
+    {
+      "old": "for file in [*ROOT.glob('*.py'),*ROOT.glob('vision/*.py'),",
+      "new": "for file in [*MEDIA_DIR.glob('*.py'),MEDIA_DIR/'release.json',*ROOT.glob('*.py'),*ROOT.glob('vision/*.py'),"
+    },
+    {
+      "old": "for name in ('physics-trace','sensor-inputs','control','policy-trace','startup-support','detections','imu-fifo','body-imu')",
+      "new": "for name in ('physics-trace','control','policy-trace','startup-support','detections','imu-fifo','body-imu')"
+    },
+    {
+      "old": "        if not a.no_video:\n            videos={'first_person':Video(output/'first-person.mp4',a.width,a.height),'overhead':Video(output/'overhead.mp4',a.width,a.height),'paired':Video(output/'paired-views.mp4',a.width*2,a.height)}",
+      "new": "        from media_archive import ArchiveSink,ArchiveError\n        media=ArchiveSink(output,capacity=16,compression=1,no_video=a.no_video)"
+    },
+    {
+      "old": "                    stem=f'{capture_count:06d}';Image.fromarray(rgb).save(output/'frames'/f'{stem}-rgb.png');Image.fromarray(third).save(output/'frames'/f'{stem}-overhead.png');np.save(output/'frames'/f'{stem}-tof-range.npy',capture['tof_source_ray_range'])",
+      "new": "                    stem=f'{capture_count:06d}'"
+    },
+    {
+      "old": "                    row.update(rgb_file_sha256=sha(output/row['rgb']),overhead_file_sha256=sha(output/row['overhead']),published_unix_s=time.time())\n                    log('sensor-inputs',row)\n                    timings['image_file_io']+=time.monotonic()-section",
+      "new": "                    row['capture_submit_unix_s']=time.time()\n                    media.capture(row,rgb,third,capture['tof_source_ray_range'],phase=support_row['phase'],policy=active_policy)\n                    timings['capture_readback_and_archive_submit']+=time.monotonic()-section"
+    },
+    {
+      "old": "                    section=time.monotonic()\n                    first=Image.fromarray(rgb.copy());third_label=Image.fromarray(third.copy())\n                    ImageDraw.Draw(first).text((12,12),f'HEAD CAMERA  t={t:.3f}s  '+last_control['state'],fill='yellow',stroke_width=1,stroke_fill='black')\n                    ImageDraw.Draw(third_label).text((12,12),f'OVERHEAD t={t:.3f}s {support_row[\"phase\"]} / {active_policy}',fill='yellow',stroke_width=1,stroke_fill='black')\n                    first=np.asarray(first);third_label=np.asarray(third_label)\n                    if videos:videos['first_person'].add(first);videos['overhead'].add(third_label);videos['paired'].add(np.concatenate([first,third_label],axis=1))\n                    capture_count+=1\n                    Image.fromarray(np.concatenate([first,third_label],axis=1)).save(output/'latest-paired.png')\n                    timings['video_and_preview']+=time.monotonic()-section",
+      "new": "                    capture_count+=1  # All evidence and video frames stay in the bounded archive queue."
+    },
+    {
+      "old": "        report['timing_scope']='Host wall under shared load; Nav2 is a subset of navigation, trace writes are subsets of their containing stages; GPU async work is charged to whichever synchronization waits for it'",
+      "new": "        report['timing_scope']='Host wall under shared load; capture_readback_and_archive_submit includes original readback plus immutable packet copy and bounded queue wait, not worker PNG/video cost. Media worker and post-episode drain times are separate. Nav2/trace times are subsets; GPU async work is charged at synchronization.'"
+    },
+    {
+      "old": "        report['videos']={}\n        for name,video in videos.items():\n            try:report['videos'][name]=video.close()\n            except Exception as error:report['videos'][name]={'error':repr(error)}",
+      "new": "        report['videos']={};media_error=None\n        if media is not None:\n            try:\n                report['media_archive']=media.close();report['videos']=report['media_archive']['videos']\n            except BaseException as error:\n                media_error=error;report['media_archive']=getattr(media,'result',{'evidenceComplete':False,'status':'failed','error':'Media result unavailable'})\n                report['evidence_status']='incomplete';report['status']='failed';report['media_error']=repr(error)\n        report['wall_seconds_including_media_drain']=time.monotonic()-started"
+    },
+    {
+      "old": "        write_json(output/'manifest.json',report)\n        if env is not None:env.close()",
+      "new": "        try:write_json(output/'manifest.json',report)\n        finally:\n            if env is not None:env.close()\n        if media_error is not None and sys.exc_info()[0] is None:raise media_error"
+    }
+  ],
+  "physicsControlSensorSourceChanged": false
+}

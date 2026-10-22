@@ -1,0 +1,16 @@
+{
+  "seed": 981134,
+  "service_state": "completed",
+  "service_exit_code": 0,
+  "audit_exit_codes": [
+    0,
+    0,
+    0
+  ],
+  "passed": true,
+  "scope": "Approached near-ball calibration StageB only; not task success, not production recovery",
+  "training_updates": 0,
+  "supersedes_interpretation_only": "Originalv1 failed solely nominalKICKpermission metadata; v2 additionally demanded absent startupscorerfields. Bothretained. v3 independentlychecks actualexecuted WALK/rawONNX/taskphysicsflags and exactnominalprovenance; all originalphysicalcriteria unchanged; no physics repeated.",
+  "corrected_auditor_sha256": "dcd18725eec8ba795cbdcada1db32a55cd45999e1b4872278a2228ba01e93a22",
+  "evidence_correction_sha256": "cddff10ac7c69ba0c5d3252b98b3930b90678bbf7cff2b71fc8e3f3e9165ba04"
+}

@@ -1,0 +1,4610 @@
+{
+  "sha": "53230463927095ea890f231d29089bb0a538c06f",
+  "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/53230463927095ea890f231d29089bb0a538c06f",
+  "tree": [
+    {
+      "path": ".cargo",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "364648bc72a27b14e778e63e858a9d1790e474b5",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/364648bc72a27b14e778e63e858a9d1790e474b5"
+    },
+    {
+      "path": ".cargo/config.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "effc29e64e546f3c7668e3c989238dfacb7709b7",
+      "size": 1231,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/effc29e64e546f3c7668e3c989238dfacb7709b7"
+    },
+    {
+      "path": ".github",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1d12cb858f0dd67084910aba15680fdb7c74f8f5",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1d12cb858f0dd67084910aba15680fdb7c74f8f5"
+    },
+    {
+      "path": ".github/workflows",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "58754d468bf5faa547baf8ab4ae74d5b38eef0e2",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/58754d468bf5faa547baf8ab4ae74d5b38eef0e2"
+    },
+    {
+      "path": ".github/workflows/_build-duckctl.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "86697408c3b2944cc52d9cce5442979eba18179e",
+      "size": 5426,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/86697408c3b2944cc52d9cce5442979eba18179e"
+    },
+    {
+      "path": ".github/workflows/_build-release.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "59b631bb029060c6f7902fa2c4f69affdc99e49e",
+      "size": 27025,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/59b631bb029060c6f7902fa2c4f69affdc99e49e"
+    },
+    {
+      "path": ".github/workflows/_promote-release.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "da300c4d1505ecb16c36f642e9df6e6ba8fa87ae",
+      "size": 11509,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/da300c4d1505ecb16c36f642e9df6e6ba8fa87ae"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b82ee0a5e18972e1f1d04f78b4f38beab85931e",
+      "size": 20264,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7b82ee0a5e18972e1f1d04f78b4f38beab85931e"
+    },
+    {
+      "path": ".github/workflows/dev.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1902a591cbce7f1c957897d4000312d6ae98ef88",
+      "size": 16510,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1902a591cbce7f1c957897d4000312d6ae98ef88"
+    },
+    {
+      "path": ".github/workflows/duckctl-pypi.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ae728ace86c4d3d5d26d2ffa75709f07f2a1a1c5",
+      "size": 4829,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ae728ace86c4d3d5d26d2ffa75709f07f2a1a1c5"
+    },
+    {
+      "path": ".github/workflows/promote.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96e0a4ce0b50a99de8ebc18baf80668a283c2226",
+      "size": 1155,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/96e0a4ce0b50a99de8ebc18baf80668a283c2226"
+    },
+    {
+      "path": ".github/workflows/prune-dev-releases.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e2aae9161c7a6b3def7f0babcb137c37c4fb29b",
+      "size": 3125,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6e2aae9161c7a6b3def7f0babcb137c37c4fb29b"
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3014d88348390307be4c8f98bb688c3b3671bfe6",
+      "size": 6762,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3014d88348390307be4c8f98bb688c3b3671bfe6"
+    },
+    {
+      "path": ".github/workflows/turn-endpoint.yml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9f805ac7869c2cc3716fe10aee2b1979f5a2a338",
+      "size": 3593,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9f805ac7869c2cc3716fe10aee2b1979f5a2a338"
+    },
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad6ab66336525b1539b3c8b3f9f103189bf70c21",
+      "size": 1264,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ad6ab66336525b1539b3c8b3f9f103189bf70c21"
+    },
+    {
+      "path": "AGENTS.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7ddaf1b1984bfdfb59c2f18130e05e4628e436f8",
+      "size": 2343,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7ddaf1b1984bfdfb59c2f18130e05e4628e436f8"
+    },
+    {
+      "path": "CLAUDE.md",
+      "mode": "120000",
+      "type": "blob",
+      "sha": "47dc3e3d863cfb5727b87d785d09abf9743c0a72",
+      "size": 9,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/47dc3e3d863cfb5727b87d785d09abf9743c0a72"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6612500f8f063d1b947dd92d8b05b267c14d4c9a",
+      "size": 9554,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6612500f8f063d1b947dd92d8b05b267c14d4c9a"
+    },
+    {
+      "path": "Cargo.lock",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11bb087674ab6aa1e8d929d097354bc000a10abe",
+      "size": 143186,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/11bb087674ab6aa1e8d929d097354bc000a10abe"
+    },
+    {
+      "path": "Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3e0bfaafa205745e3d7631255e108ca59368b3d8",
+      "size": 6640,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3e0bfaafa205745e3d7631255e108ca59368b3d8"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "size": 11357,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3d1de59a5dd8d0da09650ae70495ba887d81234",
+      "size": 5137,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f3d1de59a5dd8d0da09650ae70495ba887d81234"
+    },
+    {
+      "path": "btd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2ef1679fef2a52975a5f20a603bf1b82c4d945c1",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/2ef1679fef2a52975a5f20a603bf1b82c4d945c1"
+    },
+    {
+      "path": "btd/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "40a367540def79a4b9a70bd95447c0b1f75a1456",
+      "size": 3046,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/40a367540def79a4b9a70bd95447c0b1f75a1456"
+    },
+    {
+      "path": "btd/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "960648b6fab98585091665814ef6e66c16ef8f7b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/960648b6fab98585091665814ef6e66c16ef8f7b"
+    },
+    {
+      "path": "btd/src/bluez.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "33d32686c5472e504ed2186218dc06da6fca2433",
+      "size": 57773,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/33d32686c5472e504ed2186218dc06da6fca2433"
+    },
+    {
+      "path": "btd/src/chorale.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "17c9b8ca7db7f6ff9365fea8f1a779915b6e57e4",
+      "size": 24210,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/17c9b8ca7db7f6ff9365fea8f1a779915b6e57e4"
+    },
+    {
+      "path": "btd/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9c6bf2aed35de217ce07a58e346da9bebb2d18a",
+      "size": 2145,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f9c6bf2aed35de217ce07a58e346da9bebb2d18a"
+    },
+    {
+      "path": "btd/src/link.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e88365c1ae1fb205c17fa257b0a95c7282e8dcb6",
+      "size": 5379,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e88365c1ae1fb205c17fa257b0a95c7282e8dcb6"
+    },
+    {
+      "path": "btd/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2f62f081591e1069bdaa741b660a13eb5e3568a9",
+      "size": 8207,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2f62f081591e1069bdaa741b660a13eb5e3568a9"
+    },
+    {
+      "path": "btd/src/pairing.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6586bfad4db31dabf6b3625e70798516c18d1838",
+      "size": 9565,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6586bfad4db31dabf6b3625e70798516c18d1838"
+    },
+    {
+      "path": "btd/src/route.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58b9ae8ed9ef6739c8dcadbac0aacce7b40e2048",
+      "size": 56099,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/58b9ae8ed9ef6739c8dcadbac0aacce7b40e2048"
+    },
+    {
+      "path": "btd/src/session.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "da03cefed5d0f95989e53af80074727a64e8202e",
+      "size": 42566,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/da03cefed5d0f95989e53af80074727a64e8202e"
+    },
+    {
+      "path": "btd/src/upstream.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95d59f3bf5a676a8807dfc90b283d0b478dadadd",
+      "size": 17338,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/95d59f3bf5a676a8807dfc90b283d0b478dadadd"
+    },
+    {
+      "path": "btd/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cd4763cc5d23d859d79a040abcd057cb5d9b78d7",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/cd4763cc5d23d859d79a040abcd057cb5d9b78d7"
+    },
+    {
+      "path": "btd/systemd/btd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "85cfd27bf0284f24e3b127b2b219ffc1560ef238",
+      "size": 3899,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/85cfd27bf0284f24e3b127b2b219ffc1560ef238"
+    },
+    {
+      "path": "btd/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9adc8a4ccb422cc245d26b591ef8fb1937de200c",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/9adc8a4ccb422cc245d26b591ef8fb1937de200c"
+    },
+    {
+      "path": "btd/systemd/sysusers.d/btd.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "281a377606f68051319dacaab880d3a42b8bdb95",
+      "size": 1230,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/281a377606f68051319dacaab880d3a42b8bdb95"
+    },
+    {
+      "path": "configd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "71c36f3cb3de7314062b75791b84dfe8d3d383c7",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/71c36f3cb3de7314062b75791b84dfe8d3d383c7"
+    },
+    {
+      "path": "configd/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "049595e96b3c4e5fe80c66f0ba394060d77b1254",
+      "size": 2538,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/049595e96b3c4e5fe80c66f0ba394060d77b1254"
+    },
+    {
+      "path": "configd/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1d15d01a921d3bac391bc4ea5192ee5d26503edf",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1d15d01a921d3bac391bc4ea5192ee5d26503edf"
+    },
+    {
+      "path": "configd/src/bluez.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "745faabaa317a3a294145c683af5b7cf22d0b998",
+      "size": 55673,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/745faabaa317a3a294145c683af5b7cf22d0b998"
+    },
+    {
+      "path": "configd/src/identity.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "607182c2d003404163cb8f77c8ca00bf3f56dc0b",
+      "size": 5304,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/607182c2d003404163cb8f77c8ca00bf3f56dc0b"
+    },
+    {
+      "path": "configd/src/indicator.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "76d5fe8341a9dfa1f6ba30379d7aa6f4c08503a3",
+      "size": 4428,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/76d5fe8341a9dfa1f6ba30379d7aa6f4c08503a3"
+    },
+    {
+      "path": "configd/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e3c2c41651d966f7398f3cc3a38bea0ca5608589",
+      "size": 2009,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e3c2c41651d966f7398f3cc3a38bea0ca5608589"
+    },
+    {
+      "path": "configd/src/logs.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0a8fa831973c68d9cb81b511187b5ca85d8b532",
+      "size": 17394,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e0a8fa831973c68d9cb81b511187b5ca85d8b532"
+    },
+    {
+      "path": "configd/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a3dc2d4545aa521a994b7a10873e1102cf777763",
+      "size": 25897,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a3dc2d4545aa521a994b7a10873e1102cf777763"
+    },
+    {
+      "path": "configd/src/net.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c693bcefc96dbb01e7b0ac8210eba2e71cfcb817",
+      "size": 15062,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c693bcefc96dbb01e7b0ac8210eba2e71cfcb817"
+    },
+    {
+      "path": "configd/src/nm.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "63c586a4a6b5147e1dc5aae05f681f3099812558",
+      "size": 37027,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/63c586a4a6b5147e1dc5aae05f681f3099812558"
+    },
+    {
+      "path": "configd/src/pad.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "829df0f7a98fc6093db857352ef190217c1cdd8e",
+      "size": 23109,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/829df0f7a98fc6093db857352ef190217c1cdd8e"
+    },
+    {
+      "path": "configd/src/power.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "169dd3946fe44f9db696401e5f6bd7c480132ed0",
+      "size": 2527,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/169dd3946fe44f9db696401e5f6bd7c480132ed0"
+    },
+    {
+      "path": "configd/src/store.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b83760042c1ee99be04f8c4c521e7a2034cfd4a",
+      "size": 13574,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5b83760042c1ee99be04f8c4c521e7a2034cfd4a"
+    },
+    {
+      "path": "configd/src/units.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7f3d7958131a1b9bc328a02aaa0ce1534b318b2",
+      "size": 10617,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a7f3d7958131a1b9bc328a02aaa0ce1534b318b2"
+    },
+    {
+      "path": "configd/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a1bbafbca08bf269dac31bac20bd7434c9e5e9f2",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a1bbafbca08bf269dac31bac20bd7434c9e5e9f2"
+    },
+    {
+      "path": "configd/systemd/configd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c0c1cd927643080a5c30d70aafc6361d8490259",
+      "size": 6412,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9c0c1cd927643080a5c30d70aafc6361d8490259"
+    },
+    {
+      "path": "configd/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ae8c4910b5369f5811d56d339c9f1f687f8bb46a",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/ae8c4910b5369f5811d56d339c9f1f687f8bb46a"
+    },
+    {
+      "path": "configd/systemd/sysusers.d/README",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5e8dc50075030d8a20bbe392669015c4919eaf04",
+      "size": 378,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5e8dc50075030d8a20bbe392669015c4919eaf04"
+    },
+    {
+      "path": "deploy",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "62f02245450c667bd98925dadb503ad2e762d307",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/62f02245450c667bd98925dadb503ad2e762d307"
+    },
+    {
+      "path": "deploy/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "698eb2f8ffe80303a9f9d78d18d767bf817c6c7e",
+      "size": 25940,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/698eb2f8ffe80303a9f9d78d18d767bf817c6c7e"
+    },
+    {
+      "path": "deploy/audio",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0d587399f9657bc7976eaa0111eff4f91b3ac0d8",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/0d587399f9657bc7976eaa0111eff4f91b3ac0d8"
+    },
+    {
+      "path": "deploy/audio/aic3104-i2c3.dts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "69d9526b106c3f088b83373f33e707ee99f18eb9",
+      "size": 3039,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/69d9526b106c3f088b83373f33e707ee99f18eb9"
+    },
+    {
+      "path": "deploy/audio/aic3104-init.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4c2a0db617a8b3c2d2475e5ebf977564b6582ce1",
+      "size": 2301,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4c2a0db617a8b3c2d2475e5ebf977564b6582ce1"
+    },
+    {
+      "path": "deploy/audio/aic3x-dkms",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a86940c2dad989b7178abaaafa257495211d1488",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a86940c2dad989b7178abaaafa257495211d1488"
+    },
+    {
+      "path": "deploy/audio/aic3x-dkms/Makefile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45b5c60efb9cca93616bd9bc7d11a0c668616590",
+      "size": 420,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/45b5c60efb9cca93616bd9bc7d11a0c668616590"
+    },
+    {
+      "path": "deploy/audio/aic3x-dkms/dkms.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d794398abe2d7d9c6fd3a28657df9a2881ec0bf2",
+      "size": 440,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d794398abe2d7d9c6fd3a28657df9a2881ec0bf2"
+    },
+    {
+      "path": "deploy/audio/aic3x-dkms/tlv320aic3x-i2c.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d7e94d564dbf7e5dd9a76f81598bcaa94bccd413",
+      "size": 1824,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d7e94d564dbf7e5dd9a76f81598bcaa94bccd413"
+    },
+    {
+      "path": "deploy/audio/aic3x-dkms/tlv320aic3x.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "08938801daec26e4b1adcb1a8147e31e8ef0439d",
+      "size": 63877,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/08938801daec26e4b1adcb1a8147e31e8ef0439d"
+    },
+    {
+      "path": "deploy/audio/aic3x-dkms/tlv320aic3x.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "14298f9e6d9b3cb723c246935ed531302439fc3b",
+      "size": 8781,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/14298f9e6d9b3cb723c246935ed531302439fc3b"
+    },
+    {
+      "path": "deploy/audio/i2c3-pihat.dts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "40ae6d4a573caeb971fdc79802e196500b6635b3",
+      "size": 2946,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/40ae6d4a573caeb971fdc79802e196500b6635b3"
+    },
+    {
+      "path": "deploy/dev-key",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5e770b998bb6e695d184ab9ae57a8ac69739e702",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/5e770b998bb6e695d184ab9ae57a8ac69739e702"
+    },
+    {
+      "path": "deploy/dev-key/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c5256bcb96a2840cd58ed92b9806a4768ad36d1d",
+      "size": 1367,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c5256bcb96a2840cd58ed92b9806a4768ad36d1d"
+    },
+    {
+      "path": "deploy/dev-key/team.dev.pub",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05ba99f404d1d6ade7c117286c56f4d82e25ff2c",
+      "size": 114,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/05ba99f404d1d6ade7c117286c56f4d82e25ff2c"
+    },
+    {
+      "path": "deploy/journald.conf.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "964733aedf38777d0a991a71c46f662cfff38395",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/964733aedf38777d0a991a71c46f662cfff38395"
+    },
+    {
+      "path": "deploy/journald.conf.d/10-robot.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dcaff843d9b9db9fe12aac9a846c157c4ab2109f",
+      "size": 2389,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/dcaff843d9b9db9fe12aac9a846c157c4ab2109f"
+    },
+    {
+      "path": "deploy/overlays",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "014cc1e337d05eeba70d04c55ac5771ddc9ad9fe",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/014cc1e337d05eeba70d04c55ac5771ddc9ad9fe"
+    },
+    {
+      "path": "deploy/overlays/rk3568-npu-enable.dts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6701f0a2e0859d5a16e342d3070e6d22e401e933",
+      "size": 1375,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6701f0a2e0859d5a16e342d3070e6d22e401e933"
+    },
+    {
+      "path": "deploy/robotd.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b41019315b8c5f050b031edb8c4d32d1196d49dc",
+      "size": 36097,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b41019315b8c5f050b031edb8c4d32d1196d49dc"
+    },
+    {
+      "path": "deploy/trusted_keys",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "84f950e3d84feb02f9287d07c6e042f04a4274ce",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/84f950e3d84feb02f9287d07c6e042f04a4274ce"
+    },
+    {
+      "path": "deploy/trusted_keys/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "71a1ba680fdcd6daf4b333f4cd4bccfa565798b8",
+      "size": 1997,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/71a1ba680fdcd6daf4b333f4cd4bccfa565798b8"
+    },
+    {
+      "path": "deploy/trusted_keys/release-1.pub",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "19e60a9562224156270f0358967160f508042838",
+      "size": 114,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/19e60a9562224156270f0358967160f508042838"
+    },
+    {
+      "path": "deploy/trusted_keys/release-2.pub",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bbf58b87c806cd1b055e25cfcc3ebe54ef9410fd",
+      "size": 114,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/bbf58b87c806cd1b055e25cfcc3ebe54ef9410fd"
+    },
+    {
+      "path": "deploy/trusted_keys/release-3.pub",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b6a998d7b03c5483a0ea146c9d4011f101cb8cc",
+      "size": 114,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5b6a998d7b03c5483a0ea146c9d4011f101cb8cc"
+    },
+    {
+      "path": "deploy/updater.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d8fcb7b43f4c3956175b73484af5b77b0f18b29c",
+      "size": 11159,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d8fcb7b43f4c3956175b73484af5b77b0f18b29c"
+    },
+    {
+      "path": "docs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1d44c1d4dd7dee7cc7234b29f854dec7aa90e4f1",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1d44c1d4dd7dee7cc7234b29f854dec7aa90e4f1"
+    },
+    {
+      "path": "docs/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e78dde2da4fcee7707d263cf80259dd1e6928c1e",
+      "size": 6900,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e78dde2da4fcee7707d263cf80259dd1e6928c1e"
+    },
+    {
+      "path": "docs/design",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5c696c3141f345c63fbc1fc70fdf6fe98306c2e0",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/5c696c3141f345c63fbc1fc70fdf6fe98306c2e0"
+    },
+    {
+      "path": "docs/design/app-path-design.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9f600e62e4988a45789b1553e4bc0e32a401f481",
+      "size": 66792,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9f600e62e4988a45789b1553e4bc0e32a401f481"
+    },
+    {
+      "path": "docs/design/architecture.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f5c1f431c41b4a25dc9bf3f7e66fa5b026d2fcd3",
+      "size": 39612,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f5c1f431c41b4a25dc9bf3f7e66fa5b026d2fcd3"
+    },
+    {
+      "path": "docs/design/boot-recovery-net.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "853232015f8a285a39ad5069948622e88de70cbe",
+      "size": 13686,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/853232015f8a285a39ad5069948622e88de70cbe"
+    },
+    {
+      "path": "docs/design/mobile-app.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5ca44d723cf9fed0d99b664cea654a43788f180",
+      "size": 18796,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d5ca44d723cf9fed0d99b664cea654a43788f180"
+    },
+    {
+      "path": "docs/design/policy-channel-design.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "44d3d9a849052f86f1d1dd0d54155fa107ed40ea",
+      "size": 52032,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/44d3d9a849052f86f1d1dd0d54155fa107ed40ea"
+    },
+    {
+      "path": "docs/design/remote-access-design.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f2590903bf01c2ff18bf45dae54e249794b4ceba",
+      "size": 84582,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f2590903bf01c2ff18bf45dae54e249794b4ceba"
+    },
+    {
+      "path": "docs/design/remote-webrtc.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d399f8ec131a6ddd7a293d3e7db88e00e110f832",
+      "size": 37348,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d399f8ec131a6ddd7a293d3e7db88e00e110f832"
+    },
+    {
+      "path": "docs/design/restart-order.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32217face92d3500620d2e3852479d8ce9508d1b",
+      "size": 28737,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/32217face92d3500620d2e3852479d8ce9508d1b"
+    },
+    {
+      "path": "docs/design/robotd-design.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4ed56dfd70fdcea1fb0e7c01c71f6a946aaac731",
+      "size": 75709,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4ed56dfd70fdcea1fb0e7c01c71f6a946aaac731"
+    },
+    {
+      "path": "docs/design/simulation.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "88c10f839177ab14a1899cd626a01efcfd85e1b4",
+      "size": 20471,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/88c10f839177ab14a1899cd626a01efcfd85e1b4"
+    },
+    {
+      "path": "docs/design/updater-design.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "870e8604e2537683aab422a8d03ff02b2ce9457a",
+      "size": 92842,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/870e8604e2537683aab422a8d03ff02b2ce9457a"
+    },
+    {
+      "path": "docs/design/webrtc-console.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c6fbf982138e76aba7397e2025aa3c73fd3ada11",
+      "size": 21771,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c6fbf982138e76aba7397e2025aa3c73fd3ada11"
+    },
+    {
+      "path": "docs/faq.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f1da47721591078a8d499bf7409390d265add234",
+      "size": 4608,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f1da47721591078a8d499bf7409390d265add234"
+    },
+    {
+      "path": "docs/ideas",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2afeb842f9f562e93f83f781bebb3f07d1a2abb4",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/2afeb842f9f562e93f83f781bebb3f07d1a2abb4"
+    },
+    {
+      "path": "docs/ideas/autonomous_behavior.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "001805256839f92856679d557c798d6efdbaf2ab",
+      "size": 6703,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/001805256839f92856679d557c798d6efdbaf2ab"
+    },
+    {
+      "path": "docs/policy-manifest.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "93903c272f321af45b2b570b0efea5284df31ca0",
+      "size": 9304,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/93903c272f321af45b2b570b0efea5284df31ca0"
+    },
+    {
+      "path": "docs/project",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c5b3007ad2c6995755ef702fd257b8a20517d051",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/c5b3007ad2c6995755ef702fd257b8a20517d051"
+    },
+    {
+      "path": "docs/project/ci-setup.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ad46d014bd18ee6b4de974815efb142642ff25c",
+      "size": 14264,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2ad46d014bd18ee6b4de974815efb142642ff25c"
+    },
+    {
+      "path": "docs/project/idle-cpu.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b849c771fd013a8520863d352877660e03e28348",
+      "size": 9396,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b849c771fd013a8520863d352877660e03e28348"
+    },
+    {
+      "path": "docs/project/install-path-gap.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ef76259704409568c8c2a542889f04a35264c9c",
+      "size": 37275,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2ef76259704409568c8c2a542889f04a35264c9c"
+    },
+    {
+      "path": "docs/project/media-bringup.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67cef93480b4fe39918481fb9304c891940a6a2d",
+      "size": 32851,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/67cef93480b4fe39918481fb9304c891940a6a2d"
+    },
+    {
+      "path": "docs/project/npu-bringup.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a1cb76071161a5d457b7a19fb2f5362d020337e0",
+      "size": 11225,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a1cb76071161a5d457b7a19fb2f5362d020337e0"
+    },
+    {
+      "path": "docs/project/pad-minimal-pairing.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bea02f8ea023a50b812acef9c23b455c71d48258",
+      "size": 12545,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/bea02f8ea023a50b812acef9c23b455c71d48258"
+    },
+    {
+      "path": "docs/project/roadmap.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ad1dd832b7e8f5e1b6790e209b7a475e9feff35",
+      "size": 25152,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2ad1dd832b7e8f5e1b6790e209b7a475e9feff35"
+    },
+    {
+      "path": "docs/project/slice-2-bringup.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "29f856e499e13266a38817263d26e4ddf9773fc0",
+      "size": 8098,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/29f856e499e13266a38817263d26e4ddf9773fc0"
+    },
+    {
+      "path": "docs/project/tof-on-demand.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "15000990c4063abd91e6e0035b65afdd31254cea",
+      "size": 11735,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/15000990c4063abd91e6e0035b65afdd31254cea"
+    },
+    {
+      "path": "docs/project/update-over-ble.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "33d825d5e2d59167ce3b8b9e8b88358b802a4607",
+      "size": 10222,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/33d825d5e2d59167ce3b8b9e8b88358b802a4607"
+    },
+    {
+      "path": "docs/recurrent-policies.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b162c3bac53b490d75d68b0077ed13046adad488",
+      "size": 4461,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b162c3bac53b490d75d68b0077ed13046adad488"
+    },
+    {
+      "path": "docs/robot",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2fdedf7b68440d61ae35714e6e8f817766b31887",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/2fdedf7b68440d61ae35714e6e8f817766b31887"
+    },
+    {
+      "path": "docs/robot/cheatsheet-dev.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "901ca92d2230f6206488e73413c542e4b492d194",
+      "size": 6254,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/901ca92d2230f6206488e73413c542e4b492d194"
+    },
+    {
+      "path": "docs/robot/cheatsheet.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cfde58c891856424470df76996051e6c6765f155",
+      "size": 59852,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/cfde58c891856424470df76996051e6c6765f155"
+    },
+    {
+      "path": "docs/robot/dev-push.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f51b0bef3a11338b5a33b67bf647c641d9df1c6f",
+      "size": 12612,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f51b0bef3a11338b5a33b67bf647c641d9df1c6f"
+    },
+    {
+      "path": "docs/robot/duckctl.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aed2ef7a97f26fb0bcb2eb1f9e81664bf7d6954d",
+      "size": 26268,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/aed2ef7a97f26fb0bcb2eb1f9e81664bf7d6954d"
+    },
+    {
+      "path": "docs/robot/install-by-hand.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9a8661da67c5dbf9085a13b514ac4af694d6760",
+      "size": 4394,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f9a8661da67c5dbf9085a13b514ac4af694d6760"
+    },
+    {
+      "path": "docs/robot/install-dev.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "33ebd18952ae952c6490c57ece1d7d516a7d6d4b",
+      "size": 12982,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/33ebd18952ae952c6490c57ece1d7d516a7d6d4b"
+    },
+    {
+      "path": "docs/robot/pair-a-gamepad.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a88658fc2d26f6cc6af222b94db02265fb581413",
+      "size": 16011,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a88658fc2d26f6cc6af222b94db02265fb581413"
+    },
+    {
+      "path": "docs/robot/simulation.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4edfeadb1ed673263b31b7440aef4de4ba7c1938",
+      "size": 12894,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4edfeadb1ed673263b31b7440aef4de4ba7c1938"
+    },
+    {
+      "path": "docs/robot/udp-pad.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c7eaf66a5987cb3ffc7fa0f02d4d9cb0b4fe7221",
+      "size": 22447,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c7eaf66a5987cb3ffc7fa0f02d4d9cb0b4fe7221"
+    },
+    {
+      "path": "docs/superpowers",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "7aa119b7137972d25570d718fe9cd76715a51687",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/7aa119b7137972d25570d718fe9cd76715a51687"
+    },
+    {
+      "path": "docs/superpowers/plans",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "40f0a2cb7c6e7a4902864709a21c04ba6b4e9c8a",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/40f0a2cb7c6e7a4902864709a21c04ba6b4e9c8a"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-07-netpad-udp.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c4c5f22d22f294f2bfd770d734eaf714868c7ea1",
+      "size": 94982,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c4c5f22d22f294f2bfd770d734eaf714868c7ea1"
+    },
+    {
+      "path": "docs/superpowers/specs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "52cb6283a300192ea3586499c647ce6c7d1e702d",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/52cb6283a300192ea3586499c647ce6c7d1e702d"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-07-netpad-udp-design.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "87c0f71b52fc0ad1ca4b5526ac05d5e1fb6ec091",
+      "size": 12218,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/87c0f71b52fc0ad1ca4b5526ac05d5e1fb6ec091"
+    },
+    {
+      "path": "duck-ble",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "715b69757da4c851a222ca12b0bfa10df0bf2f65",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/715b69757da4c851a222ca12b0bfa10df0bf2f65"
+    },
+    {
+      "path": "duck-ble/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6adb1eab1a48d361d5fd9464e3e3641607d04b65",
+      "size": 1052,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6adb1eab1a48d361d5fd9464e3e3641607d04b65"
+    },
+    {
+      "path": "duck-ble/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4b4aa29bd3b7cc0e3de6e50ba83d2a710f8ae1fa",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/4b4aa29bd3b7cc0e3de6e50ba83d2a710f8ae1fa"
+    },
+    {
+      "path": "duck-ble/src/adv.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd3e47105350004fb65d231b3dd85426057f650b",
+      "size": 8328,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/dd3e47105350004fb65d231b3dd85426057f650b"
+    },
+    {
+      "path": "duck-ble/src/framing.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9db839e4e7a7e17897c932a1f6a92bd2b916ffea",
+      "size": 14851,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9db839e4e7a7e17897c932a1f6a92bd2b916ffea"
+    },
+    {
+      "path": "duck-ble/src/gatt.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1790f333b38181cfcddaa71a306243fefd3f3846",
+      "size": 2769,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1790f333b38181cfcddaa71a306243fefd3f3846"
+    },
+    {
+      "path": "duck-ble/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "70b620a1f031a37edae274667337c49caf59e886",
+      "size": 1370,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/70b620a1f031a37edae274667337c49caf59e886"
+    },
+    {
+      "path": "duck-control",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5829ea762f075f74d6f9d6abb96de3dbd7c598dd",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/5829ea762f075f74d6f9d6abb96de3dbd7c598dd"
+    },
+    {
+      "path": "duck-control/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b53d572e8c70f0195039e490fb3a20b06a7c0100",
+      "size": 2757,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b53d572e8c70f0195039e490fb3a20b06a7c0100"
+    },
+    {
+      "path": "duck-control/examples",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "77d02a6a2b284de7ae1a0431fcd055248064c2ba",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/77d02a6a2b284de7ae1a0431fcd055248064c2ba"
+    },
+    {
+      "path": "duck-control/examples/pickup-bench.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "12426568f6c6aefe9fad983cbdbb2e8da467786f",
+      "size": 2902,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/12426568f6c6aefe9fad983cbdbb2e8da467786f"
+    },
+    {
+      "path": "duck-control/examples/policy-rehearsal.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "877cc99dc8e1cbf6dbba87122fa70a470e2e1e15",
+      "size": 2940,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/877cc99dc8e1cbf6dbba87122fa70a470e2e1e15"
+    },
+    {
+      "path": "duck-control/models",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "dcbc637a8ac7a483e8d64125c7ec01c43ce87e64",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/dcbc637a8ac7a483e8d64125c7ec01c43ce87e64"
+    },
+    {
+      "path": "duck-control/models/pickup_detector.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1152395b86fe181ef4a38c972da3039d9f7e5a70",
+      "size": 36138,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1152395b86fe181ef4a38c972da3039d9f7e5a70"
+    },
+    {
+      "path": "duck-control/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4ab2456b7372407db3c874ed32442cb750620ea9",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/4ab2456b7372407db3c874ed32442cb750620ea9"
+    },
+    {
+      "path": "duck-control/src/bus.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "da13fa7fa22143c8ab84fb60d54e798ad5b8d062",
+      "size": 37098,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/da13fa7fa22143c8ab84fb60d54e798ad5b8d062"
+    },
+    {
+      "path": "duck-control/src/fall.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2de79c1fb494a6cbaee4c79c3c0f79948f22fff7",
+      "size": 11674,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2de79c1fb494a6cbaee4c79c3c0f79948f22fff7"
+    },
+    {
+      "path": "duck-control/src/imu.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "37e0b1e726dd48f18daea7bd23df7870f4cbbb1c",
+      "size": 14069,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/37e0b1e726dd48f18daea7bd23df7870f4cbbb1c"
+    },
+    {
+      "path": "duck-control/src/io.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "498fd3ff22c30be5fdb03f242afa464acac7da0b",
+      "size": 16951,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/498fd3ff22c30be5fdb03f242afa464acac7da0b"
+    },
+    {
+      "path": "duck-control/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e4769b5618a2d5f956c3f336cdabdbd94a581cae",
+      "size": 1028,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e4769b5618a2d5f956c3f336cdabdbd94a581cae"
+    },
+    {
+      "path": "duck-control/src/model.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "731c08219f55574651a6d90e9580bbcdaf5e53d4",
+      "size": 14933,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/731c08219f55574651a6d90e9580bbcdaf5e53d4"
+    },
+    {
+      "path": "duck-control/src/obs.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e68af76e184bd0614c7add425d2a3cf9608cc4fb",
+      "size": 17427,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e68af76e184bd0614c7add425d2a3cf9608cc4fb"
+    },
+    {
+      "path": "duck-control/src/pickup.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "061420e531b4064a77febf330c0ac30d7b6ee0e1",
+      "size": 18064,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/061420e531b4064a77febf330c0ac30d7b6ee0e1"
+    },
+    {
+      "path": "duck-control/src/policy.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "17a5a976340fe5c013959396732c9a36d109a7d2",
+      "size": 33389,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/17a5a976340fe5c013959396732c9a36d109a7d2"
+    },
+    {
+      "path": "duck-control/src/safety.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "14db58c2527dbf8bbe42bb6b918d45abd7cd11ec",
+      "size": 39924,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/14db58c2527dbf8bbe42bb6b918d45abd7cd11ec"
+    },
+    {
+      "path": "duck-control/src/sim.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a56e3b0cd462ec20d0131f9525edf9f504c6a2fd",
+      "size": 19403,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a56e3b0cd462ec20d0131f9525edf9f504c6a2fd"
+    },
+    {
+      "path": "duck-control/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cc9e26fe786fa169d72398656da3fd9b7ca70d12",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/cc9e26fe786fa169d72398656da3fd9b7ca70d12"
+    },
+    {
+      "path": "duck-control/tests/fixtures",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3406019e94418a1f5226057122d9e9a67b20998e",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/3406019e94418a1f5226057122d9e9a67b20998e"
+    },
+    {
+      "path": "duck-control/tests/fixtures/bad_action_count.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2040531da710cb85233017294e148366dcc5d805",
+      "size": 239,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2040531da710cb85233017294e148366dcc5d805"
+    },
+    {
+      "path": "duck-control/tests/fixtures/bad_batch.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4cb3d50e88b5fe57369af599fa40821b818e0dab",
+      "size": 2521,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4cb3d50e88b5fe57369af599fa40821b818e0dab"
+    },
+    {
+      "path": "duck-control/tests/fixtures/bad_rank.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f03991592f0a403537df9a60eec6752f4e1838c6",
+      "size": 251,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f03991592f0a403537df9a60eec6752f4e1838c6"
+    },
+    {
+      "path": "duck-control/tests/fixtures/bad_state_shape.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "245643bc96c3769806f8074624a6fe614c44cf50",
+      "size": 2521,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/245643bc96c3769806f8074624a6fe614c44cf50"
+    },
+    {
+      "path": "duck-control/tests/fixtures/bad_width.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2b24d32fb02161ea351c2106ed8d431caec6937c",
+      "size": 2521,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2b24d32fb02161ea351c2106ed8d431caec6937c"
+    },
+    {
+      "path": "duck-control/tests/fixtures/dynamic_batch.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "923abe99008027c33baa6429a17514a0fb602f21",
+      "size": 2551,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/923abe99008027c33baa6429a17514a0fb602f21"
+    },
+    {
+      "path": "duck-control/tests/fixtures/dynamic_hidden.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "264daa3df42e0dad39bce4fb859b03c76f3c006f",
+      "size": 2527,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/264daa3df42e0dad39bce4fb859b03c76f3c006f"
+    },
+    {
+      "path": "duck-control/tests/fixtures/extra_input.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3b98c2f1984030b144229441e0583950a426651e",
+      "size": 2547,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3b98c2f1984030b144229441e0583950a426651e"
+    },
+    {
+      "path": "duck-control/tests/fixtures/feedforward.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c97e5eabc3a02e1f06389c034d72252bfd1146e",
+      "size": 247,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2c97e5eabc3a02e1f06389c034d72252bfd1146e"
+    },
+    {
+      "path": "duck-control/tests/fixtures/generate.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f74e0e979329bae654e632003fd446dcee17274",
+      "size": 4097,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1f74e0e979329bae654e632003fd446dcee17274"
+    },
+    {
+      "path": "duck-control/tests/fixtures/lstm.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "befdef32a7e633b29c67acc40dbae3a467b54b7c",
+      "size": 2521,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/befdef32a7e633b29c67acc40dbae3a467b54b7c"
+    },
+    {
+      "path": "duck-control/tests/fixtures/lstm_changed.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "120e03e0c9b8e9206bcff618e9eaf0e0fd962483",
+      "size": 2521,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/120e03e0c9b8e9206bcff618e9eaf0e0fd962483"
+    },
+    {
+      "path": "duck-control/tests/fixtures/missing_state.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4ddcdcd9ea9575eeed4f473a94aa4fec53bb4612",
+      "size": 2493,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4ddcdcd9ea9575eeed4f473a94aa4fec53bb4612"
+    },
+    {
+      "path": "duck-control/tests/fixtures/nan_state.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "85f3fb90b7b236c1fa8de15028db3d273dd69f3e",
+      "size": 2560,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/85f3fb90b7b236c1fa8de15028db3d273dd69f3e"
+    },
+    {
+      "path": "duck-control/tests/fixtures/pickup_windows.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "930cd44e4975aff48e651b75c92a52b57b4205d5",
+      "size": 126170,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/930cd44e4975aff48e651b75c92a52b57b4205d5"
+    },
+    {
+      "path": "duck-control/tests/fixtures/wrong_type.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa0080790c75d6cdbf6881c2f717eda029105aa6",
+      "size": 2521,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/fa0080790c75d6cdbf6881c2f717eda029105aa6"
+    },
+    {
+      "path": "duck-control/tests/pickup_detector.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6966c7813f59f89db654068c652cb095859197fc",
+      "size": 2772,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6966c7813f59f89db654068c652cb095859197fc"
+    },
+    {
+      "path": "duck-control/tests/recurrent_policy.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1e6142d94e2b3905b49b4e33654e9e8d95baa710",
+      "size": 5643,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1e6142d94e2b3905b49b4e33654e9e8d95baa710"
+    },
+    {
+      "path": "duck-detect",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1b653f17f6dc8477263fc582f47e81360a10ada6",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1b653f17f6dc8477263fc582f47e81360a10ada6"
+    },
+    {
+      "path": "duck-detect/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "466ad903d61a73358b3ecf3a5fc3808dde363a8a",
+      "size": 1283,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/466ad903d61a73358b3ecf3a5fc3808dde363a8a"
+    },
+    {
+      "path": "duck-detect/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "95171eb62e6c160468a943079caa082e567fb73c",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/95171eb62e6c160468a943079caa082e567fb73c"
+    },
+    {
+      "path": "duck-detect/src/bin",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "85690f0a3dad22754e192db4d590975f8367eeaa",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/85690f0a3dad22754e192db4d590975f8367eeaa"
+    },
+    {
+      "path": "duck-detect/src/bin/duck-bench.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "350ee0cc19c6429923e82066d5f493e4d110a0aa",
+      "size": 11708,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/350ee0cc19c6429923e82066d5f493e4d110a0aa"
+    },
+    {
+      "path": "duck-detect/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74ce1267322876e8394e736d3b13988ad358ea61",
+      "size": 10462,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/74ce1267322876e8394e736d3b13988ad358ea61"
+    },
+    {
+      "path": "duck-detect/src/onnx.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bc8881ac3fefacd4ab149926e40cad535db4fa22",
+      "size": 3837,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/bc8881ac3fefacd4ab149926e40cad535db4fa22"
+    },
+    {
+      "path": "duck-detect/src/rknn.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6260c49f0df9a048d42dca229e53467c77f8139c",
+      "size": 19708,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6260c49f0df9a048d42dca229e53467c77f8139c"
+    },
+    {
+      "path": "duck-ether",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "22e32076eabb0bc9ab01c86a85541b42eeaa4188",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/22e32076eabb0bc9ab01c86a85541b42eeaa4188"
+    },
+    {
+      "path": "duck-ether/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b489e1ff7c6d1a87cf254c3c8b0ea8be5bcadf54",
+      "size": 568,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b489e1ff7c6d1a87cf254c3c8b0ea8be5bcadf54"
+    },
+    {
+      "path": "duck-ether/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "99dc0d9ed07f67cb6325b7423cea2cfe77cda878",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/99dc0d9ed07f67cb6325b7423cea2cfe77cda878"
+    },
+    {
+      "path": "duck-ether/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c78dd69f386c049c8483d89abbb82fe1c9ecb3b",
+      "size": 17849,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8c78dd69f386c049c8483d89abbb82fe1c9ecb3b"
+    },
+    {
+      "path": "duck-ipc-proto",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ccd4c7d61a06dd0bfedab278680fb9e2b3aa21fb",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/ccd4c7d61a06dd0bfedab278680fb9e2b3aa21fb"
+    },
+    {
+      "path": "duck-ipc-proto/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "09854ded13a1057932aaf07de7a8b5b6abb2851b",
+      "size": 1239,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/09854ded13a1057932aaf07de7a8b5b6abb2851b"
+    },
+    {
+      "path": "duck-ipc-proto/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b64da4d9e0c53eaa7ae9eb7755b84a309971269a",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b64da4d9e0c53eaa7ae9eb7755b84a309971269a"
+    },
+    {
+      "path": "duck-ipc-proto/src/led.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c315b87dfdd6f4962f05a6dc9be229017a8fa7a4",
+      "size": 6850,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c315b87dfdd6f4962f05a6dc9be229017a8fa7a4"
+    },
+    {
+      "path": "duck-ipc-proto/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f64c7e1b3a4b090f5a167d88e98974f303c7d97c",
+      "size": 337229,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f64c7e1b3a4b090f5a167d88e98974f303c7d97c"
+    },
+    {
+      "path": "duck-ipc-proto/src/vetbook.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "987308b94175db499dea9c1f76b4c78c1120cb12",
+      "size": 21912,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/987308b94175db499dea9c1f76b4c78c1120cb12"
+    },
+    {
+      "path": "duckctl",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f9fcd69114f9c1538b76c9113740c8baa974aadc",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/f9fcd69114f9c1538b76c9113740c8baa974aadc"
+    },
+    {
+      "path": "duckctl/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75428055d0ffc35777766787bf6e7af39ad9da4e",
+      "size": 5688,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/75428055d0ffc35777766787bf6e7af39ad9da4e"
+    },
+    {
+      "path": "duckctl/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "83da1b7c000d1e369ff7a472b3c8b9c49d473531",
+      "size": 460,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/83da1b7c000d1e369ff7a472b3c8b9c49d473531"
+    },
+    {
+      "path": "duckctl/examples",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "402ca9f9b75f7554f93b2f3ea2d2d88391f2da99",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/402ca9f9b75f7554f93b2f3ea2d2d88391f2da99"
+    },
+    {
+      "path": "duckctl/examples/advwatch.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4314442962b8d48d4d019d7503c94442e92ff08",
+      "size": 10956,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f4314442962b8d48d4d019d7503c94442e92ff08"
+    },
+    {
+      "path": "duckctl/pyproject.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f7c5e0587e590a4e3809001164309f0dbcf9ba55",
+      "size": 1517,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f7c5e0587e590a4e3809001164309f0dbcf9ba55"
+    },
+    {
+      "path": "duckctl/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3122999ad439cc2a54bae4e28f314aa59a0e0d2b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/3122999ad439cc2a54bae4e28f314aa59a0e0d2b"
+    },
+    {
+      "path": "duckctl/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "216947a97cbe28d396d17f1d3b393c9e867abf56",
+      "size": 177164,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/216947a97cbe28d396d17f1d3b393c9e867abf56"
+    },
+    {
+      "path": "duckctl/src/udp_pad.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ff143905cef08d8d4579c1464e1783b70099a981",
+      "size": 28818,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ff143905cef08d8d4579c1464e1783b70099a981"
+    },
+    {
+      "path": "duckctl/src/udp_pad",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1cbd228194583fc65ea55b8a78e0abd2c0498663",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1cbd228194583fc65ea55b8a78e0abd2c0498663"
+    },
+    {
+      "path": "duckctl/src/udp_pad/claim.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "700ddd633e4f34b58b2ed423083f24ca2dfebd42",
+      "size": 5750,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/700ddd633e4f34b58b2ed423083f24ca2dfebd42"
+    },
+    {
+      "path": "duckctl/src/udp_pad/link.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "af8f861e50e46d749b4ee37dd992201e9ac3d853",
+      "size": 10757,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/af8f861e50e46d749b4ee37dd992201e9ac3d853"
+    },
+    {
+      "path": "duckctl/src/udp_pad/panel.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45028f632f0443062c71804fca348bc17ffdbe3d",
+      "size": 35157,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/45028f632f0443062c71804fca348bc17ffdbe3d"
+    },
+    {
+      "path": "hooks",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "faa434cc61d422a7343e49886c25c78052e09a1d",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/faa434cc61d422a7343e49886c25c78052e09a1d"
+    },
+    {
+      "path": "hooks/postinstall",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "0a3001e55f11d2ae62898dbe348cbafa024f9997",
+      "size": 9548,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/0a3001e55f11d2ae62898dbe348cbafa024f9997"
+    },
+    {
+      "path": "hooks/preinstall.in",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "270821882bd3c76a32436585c57c2fb428312d17",
+      "size": 10165,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/270821882bd3c76a32436585c57c2fb428312d17"
+    },
+    {
+      "path": "kinematics",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "dddef7587ff44e809d82ca871121ebc694d4cdfa",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/dddef7587ff44e809d82ca871121ebc694d4cdfa"
+    },
+    {
+      "path": "kinematics/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "caa1604cddfa1b5e520fcad34e041b6269638b93",
+      "size": 869,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/caa1604cddfa1b5e520fcad34e041b6269638b93"
+    },
+    {
+      "path": "kinematics/assets",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a35509613d2210584818db6507af1d4722a23b4b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a35509613d2210584818db6507af1d4722a23b4b"
+    },
+    {
+      "path": "kinematics/assets/alpha",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d2bd0ae9be1bb1e8dfdf625adf874d3998c9b878",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/d2bd0ae9be1bb1e8dfdf625adf874d3998c9b878"
+    },
+    {
+      "path": "kinematics/assets/alpha/robot_walk.xml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96b702a7c0783dcadd4c12b12901f3f60251d41e",
+      "size": 6881,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/96b702a7c0783dcadd4c12b12901f3f60251d41e"
+    },
+    {
+      "path": "kinematics/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9159908d8becfaeded42ead502be646249000477",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/9159908d8becfaeded42ead502be646249000477"
+    },
+    {
+      "path": "kinematics/src/hand.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1b08ec4c0278805184bcdcb961f46a8e82af80aa",
+      "size": 16907,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1b08ec4c0278805184bcdcb961f46a8e82af80aa"
+    },
+    {
+      "path": "kinematics/src/head.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "905d3b3fdc5ecffa58341c2a8d0f0b6157344308",
+      "size": 15759,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/905d3b3fdc5ecffa58341c2a8d0f0b6157344308"
+    },
+    {
+      "path": "kinematics/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a0407afe26af225c38a4bae6bb49defa23fee0d",
+      "size": 14478,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5a0407afe26af225c38a4bae6bb49defa23fee0d"
+    },
+    {
+      "path": "kinematics/src/math.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f99ed460292cbc8d334cf4f8e8b572f436958605",
+      "size": 6400,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f99ed460292cbc8d334cf4f8e8b572f436958605"
+    },
+    {
+      "path": "kinematics/src/mjcf.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77e931c0b5477f823fd65aeb128e42826fe68c8b",
+      "size": 7298,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/77e931c0b5477f823fd65aeb128e42826fe68c8b"
+    },
+    {
+      "path": "kinematics/src/tof.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d968cd78c2dbb003cc11b5ec17ce82ec29f758d9",
+      "size": 15888,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d968cd78c2dbb003cc11b5ec17ce82ec29f758d9"
+    },
+    {
+      "path": "kinematics/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3b247a462bec156246cb4a79c32300fee32514e0",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/3b247a462bec156246cb4a79c32300fee32514e0"
+    },
+    {
+      "path": "kinematics/tests/fixtures",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "785c8bf334d380f8b97a346a2ce384db649ced68",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/785c8bf334d380f8b97a346a2ce384db649ced68"
+    },
+    {
+      "path": "kinematics/tests/fixtures/fk_alpha.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "24109f20a12a0c0397105abd9f25320333403017",
+      "size": 163350,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/24109f20a12a0c0397105abd9f25320333403017"
+    },
+    {
+      "path": "kinematics/tests/fk_against_mujoco.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b88cd765cf29e108314bb7aa8c0e57c7d7099421",
+      "size": 2880,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b88cd765cf29e108314bb7aa8c0e57c7d7099421"
+    },
+    {
+      "path": "kinematics/tests/perf_probe.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "90933690a2e5095411ee16a78f5a6103b2e05d47",
+      "size": 2327,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/90933690a2e5095411ee16a78f5a6103b2e05d47"
+    },
+    {
+      "path": "mediad",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "bf2ddbe943cf99ad69112f9cdcee21aaf0475d86",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/bf2ddbe943cf99ad69112f9cdcee21aaf0475d86"
+    },
+    {
+      "path": "mediad/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bb760f5fad00b3c8d382e53a922b04f43edb8377",
+      "size": 10074,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/bb760f5fad00b3c8d382e53a922b04f43edb8377"
+    },
+    {
+      "path": "mediad/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "85b15c0d24abce18eb46d826fd87da364e30aea3",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/85b15c0d24abce18eb46d826fd87da364e30aea3"
+    },
+    {
+      "path": "mediad/src/camera.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea303ee4ef0b6550cb1c55cc0be2919aab2b329c",
+      "size": 23473,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ea303ee4ef0b6550cb1c55cc0be2919aab2b329c"
+    },
+    {
+      "path": "mediad/src/config.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a029a115e944eabfa67b8263a3dbfbf539d28082",
+      "size": 4469,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a029a115e944eabfa67b8263a3dbfbf539d28082"
+    },
+    {
+      "path": "mediad/src/detect.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2383f297533fe775a39b6452ed528c4087f82d89",
+      "size": 16925,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2383f297533fe775a39b6452ed528c4087f82d89"
+    },
+    {
+      "path": "mediad/src/exposure.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "60aaf728aec4dc5944400a7f2d6f388e4a19d9ca",
+      "size": 34760,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/60aaf728aec4dc5944400a7f2d6f388e4a19d9ca"
+    },
+    {
+      "path": "mediad/src/frame.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "80f23c59dff7c03c718a0f8bb0dc8d3fefa57026",
+      "size": 21220,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/80f23c59dff7c03c718a0f8bb0dc8d3fefa57026"
+    },
+    {
+      "path": "mediad/src/indicator.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27dfe89fe34cdb8089ccc4d34b90f7a973971e26",
+      "size": 2025,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/27dfe89fe34cdb8089ccc4d34b90f7a973971e26"
+    },
+    {
+      "path": "mediad/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e99c50d33a171ee14c2ed8363a4ea029ed2f75e7",
+      "size": 3637,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e99c50d33a171ee14c2ed8363a4ea029ed2f75e7"
+    },
+    {
+      "path": "mediad/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58ce574c8ff52d35a0c1d1999553b2115c86f8ed",
+      "size": 36853,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/58ce574c8ff52d35a0c1d1999553b2115c86f8ed"
+    },
+    {
+      "path": "mediad/src/pipeline.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ef02f42f526617aa3aba95689ea9644cbba1174e",
+      "size": 131070,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ef02f42f526617aa3aba95689ea9644cbba1174e"
+    },
+    {
+      "path": "mediad/src/producer.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b2a114ccf39e81391fd8c882a37cdbd2bc6a97f",
+      "size": 10910,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7b2a114ccf39e81391fd8c882a37cdbd2bc6a97f"
+    },
+    {
+      "path": "mediad/src/relay.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bdec05f079b52a035ddab9a6461039a307fc9351",
+      "size": 117796,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/bdec05f079b52a035ddab9a6461039a307fc9351"
+    },
+    {
+      "path": "mediad/src/route.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "434121b4c1993d8e4abbf2090129a6f580dc4df4",
+      "size": 31015,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/434121b4c1993d8e4abbf2090129a6f580dc4df4"
+    },
+    {
+      "path": "mediad/src/sensor.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "71830a1194bd46f995e66a4325bd844736b506c4",
+      "size": 16760,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/71830a1194bd46f995e66a4325bd844736b506c4"
+    },
+    {
+      "path": "mediad/src/session.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4dafe756056d4e84f45764229b1631ce2446373",
+      "size": 31410,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f4dafe756056d4e84f45764229b1631ce2446373"
+    },
+    {
+      "path": "mediad/src/snapshot.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4e6d431f04c741ab8921138c3f9a1fdd64bfa25",
+      "size": 5393,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f4e6d431f04c741ab8921138c3f9a1fdd64bfa25"
+    },
+    {
+      "path": "mediad/src/stream.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c039ec4bb599452583a438aab4112ece389dfde4",
+      "size": 43375,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c039ec4bb599452583a438aab4112ece389dfde4"
+    },
+    {
+      "path": "mediad/src/turn.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a5cf51e421bceff9cb3b8f4faa44b64b690f6d84",
+      "size": 23516,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a5cf51e421bceff9cb3b8f4faa44b64b690f6d84"
+    },
+    {
+      "path": "mediad/src/upstream.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "583fb116655c377fab2c65742475584321817c08",
+      "size": 12533,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/583fb116655c377fab2c65742475584321817c08"
+    },
+    {
+      "path": "mediad/src/vetbook.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea2ba3841d48487b471cebd5f5a9dba1277a9ba6",
+      "size": 2560,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ea2ba3841d48487b471cebd5f5a9dba1277a9ba6"
+    },
+    {
+      "path": "mediad/src/web.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11c825040b1a5953c0693e82abf24ca0c1f2bd80",
+      "size": 15072,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/11c825040b1a5953c0693e82abf24ca0c1f2bd80"
+    },
+    {
+      "path": "mediad/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "98dccc3407a700f1e0178d6fed350ff243026f0d",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/98dccc3407a700f1e0178d6fed350ff243026f0d"
+    },
+    {
+      "path": "mediad/systemd/mediad.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "195b33d911d5d0330397a784c64c355c8af5ac11",
+      "size": 9097,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/195b33d911d5d0330397a784c64c355c8af5ac11"
+    },
+    {
+      "path": "mediad/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "59090041a434e25643f769cd33ac0b50bd975b14",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/59090041a434e25643f769cd33ac0b50bd975b14"
+    },
+    {
+      "path": "mediad/systemd/sysusers.d/mediad.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "62fe095db72aa6c7347db085c062639c4d75ffad",
+      "size": 1068,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/62fe095db72aa6c7347db085c062639c4d75ffad"
+    },
+    {
+      "path": "mediad/webclient",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6e03efe04affa57e0a06992851efc8ba72762b47",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/6e03efe04affa57e0a06992851efc8ba72762b47"
+    },
+    {
+      "path": "mediad/webclient/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "88ac6520bb642fcead60af289f7aafbafd595540",
+      "size": 88679,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/88ac6520bb642fcead60af289f7aafbafd595540"
+    },
+    {
+      "path": "mediad/webclient/space",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "dc6f328f52950433ec8e83ca2737695feef82693",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/dc6f328f52950433ec8e83ca2737695feef82693"
+    },
+    {
+      "path": "mediad/webclient/space/Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ca281f4686c5c57ed7d7d610686670f0e0ebaf8e",
+      "size": 1150,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ca281f4686c5c57ed7d7d610686670f0e0ebaf8e"
+    },
+    {
+      "path": "mediad/webclient/space/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "68d7521644e3320d1987dd90ec95745deaf458af",
+      "size": 2784,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/68d7521644e3320d1987dd90ec95745deaf458af"
+    },
+    {
+      "path": "mediad/webclient/space/entrypoint.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "c7006e166478202816f3907d6560f8aa0e3d1546",
+      "size": 3447,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c7006e166478202816f3907d6560f8aa0e3d1546"
+    },
+    {
+      "path": "netpadd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ddc4813e766820db7af309768dcb4f2e0359337b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/ddc4813e766820db7af309768dcb4f2e0359337b"
+    },
+    {
+      "path": "netpadd/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a89a9ebfabf60e20f42826a49c65a8325bf76131",
+      "size": 756,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a89a9ebfabf60e20f42826a49c65a8325bf76131"
+    },
+    {
+      "path": "netpadd/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "de732be6a0f2ddc3dd5fef752a1e2fcc0d3c7956",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/de732be6a0f2ddc3dd5fef752a1e2fcc0d3c7956"
+    },
+    {
+      "path": "netpadd/src/health.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "704d7db9045cfe7276fe64c17f0c65e81189ddd9",
+      "size": 6450,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/704d7db9045cfe7276fe64c17f0c65e81189ddd9"
+    },
+    {
+      "path": "netpadd/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea38e562b601e9fb346ae45bfc8b8c4b837ae328",
+      "size": 39147,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ea38e562b601e9fb346ae45bfc8b8c4b837ae328"
+    },
+    {
+      "path": "netpadd/src/receiver.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "82892c99ed5bc35a3a24e7d9b867dae4885e2e20",
+      "size": 29907,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/82892c99ed5bc35a3a24e7d9b867dae4885e2e20"
+    },
+    {
+      "path": "netpadd/src/robotd.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b47a609cdbf3ff012d3b5d1c2f6957edb0510537",
+      "size": 3007,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b47a609cdbf3ff012d3b5d1c2f6957edb0510537"
+    },
+    {
+      "path": "netpadd/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "495c877c8e6a6c5a5ed8af4e40ed2dbcfc4398e1",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/495c877c8e6a6c5a5ed8af4e40ed2dbcfc4398e1"
+    },
+    {
+      "path": "netpadd/systemd/netpadd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "642880bf24eb8ba1b544dddad1b7c10cbf22fd34",
+      "size": 2028,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/642880bf24eb8ba1b544dddad1b7c10cbf22fd34"
+    },
+    {
+      "path": "netpadd/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f972d937b1313d2f134c7df890835ee821f02084",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/f972d937b1313d2f134c7df890835ee821f02084"
+    },
+    {
+      "path": "netpadd/systemd/sysusers.d/netpadd.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e36d29570b3ae640f519467f7fe66da360329511",
+      "size": 322,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e36d29570b3ae640f519467f7fe66da360329511"
+    },
+    {
+      "path": "nfc",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f07aa82550b5f570a0cacb698c47dd4f9a5bd5de",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/f07aa82550b5f570a0cacb698c47dd4f9a5bd5de"
+    },
+    {
+      "path": "nfc/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2117f7376b785a1643f01578f33bed462e243ce",
+      "size": 1332,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e2117f7376b785a1643f01578f33bed462e243ce"
+    },
+    {
+      "path": "nfc/examples",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "00637e5347022511280bb839a9e561b3d96e462b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/00637e5347022511280bb839a9e561b3d96e462b"
+    },
+    {
+      "path": "nfc/examples/st25r100_diag.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "48b54b0b159b452af7da54a1828f039be04d6398",
+      "size": 2442,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/48b54b0b159b452af7da54a1828f039be04d6398"
+    },
+    {
+      "path": "nfc/examples/st25r100_probe.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "21c4b48acac73b2b219bdcdd20d636f8ede16e6e",
+      "size": 796,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/21c4b48acac73b2b219bdcdd20d636f8ede16e6e"
+    },
+    {
+      "path": "nfc/examples/st25r100_raw.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fdf7d9b08af5f7069c5bea5ef862d5c6f77f3314",
+      "size": 3195,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/fdf7d9b08af5f7069c5bea5ef862d5c6f77f3314"
+    },
+    {
+      "path": "nfc/examples/st25r100_read.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "898fad34138f5115e4f301c71f0a031162838bf5",
+      "size": 2022,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/898fad34138f5115e4f301c71f0a031162838bf5"
+    },
+    {
+      "path": "nfc/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "67cb46c8703e683c558c731694457b3a6685e173",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/67cb46c8703e683c558c731694457b3a6685e173"
+    },
+    {
+      "path": "nfc/src/clrc663.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "08f0636878d5921767042ed6fa14057ef0847937",
+      "size": 9088,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/08f0636878d5921767042ed6fa14057ef0847937"
+    },
+    {
+      "path": "nfc/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "da1881b201eeb0137d590fae835cf7a961dfa91e",
+      "size": 2766,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/da1881b201eeb0137d590fae835cf7a961dfa91e"
+    },
+    {
+      "path": "nfc/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "21b61e3194bd065dcf4fa6c989c639fc9a0d9ec8",
+      "size": 12361,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/21b61e3194bd065dcf4fa6c989c639fc9a0d9ec8"
+    },
+    {
+      "path": "nfc/src/ndef.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "048b7dbe0197e668cd7869abfd7da6c45e58e040",
+      "size": 8418,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/048b7dbe0197e668cd7869abfd7da6c45e58e040"
+    },
+    {
+      "path": "nfc/src/pairing.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "354da234c6c870d8caaf457de5e1e317a2def3d6",
+      "size": 8064,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/354da234c6c870d8caaf457de5e1e317a2def3d6"
+    },
+    {
+      "path": "nfc/src/reader.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "036eb3308a2b8bb4c0528ad0b1d22d391f936c18",
+      "size": 1619,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/036eb3308a2b8bb4c0528ad0b1d22d391f936c18"
+    },
+    {
+      "path": "nfc/src/registers.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b29cea329544a761a4a472afbae532b87252b61e",
+      "size": 2754,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b29cea329544a761a4a472afbae532b87252b61e"
+    },
+    {
+      "path": "nfc/src/serial.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a35710e2b7bca51ee8d4de2d42e523bcd58031c",
+      "size": 5285,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9a35710e2b7bca51ee8d4de2d42e523bcd58031c"
+    },
+    {
+      "path": "nfc/src/spi.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "10d0b442e61c28dd38cf02ba854c00be53cb4204",
+      "size": 4574,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/10d0b442e61c28dd38cf02ba854c00be53cb4204"
+    },
+    {
+      "path": "nfc/src/st25r100.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "93af5441876a30cbee66b4c1c5f5041bcc78cc42",
+      "size": 16916,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/93af5441876a30cbee66b4c1c5f5041bcc78cc42"
+    },
+    {
+      "path": "nfc/src/tag.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d087a4c7e26668cd181d5f3ed6542bc360b46412",
+      "size": 4750,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d087a4c7e26668cd181d5f3ed6542bc360b46412"
+    },
+    {
+      "path": "nfc/src/transport.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "12f78d3a8fe78bfc9a67df99e0138a9427fa9284",
+      "size": 5924,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/12f78d3a8fe78bfc9a67df99e0138a9427fa9284"
+    },
+    {
+      "path": "nfc/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c6b22e2fb25118757faae50ba3f42b1f1a11edcb",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/c6b22e2fb25118757faae50ba3f42b1f1a11edcb"
+    },
+    {
+      "path": "nfc/systemd/nfcd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7b452359832d16aa06ee1c8409a7b6a9f13fe570",
+      "size": 1907,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7b452359832d16aa06ee1c8409a7b6a9f13fe570"
+    },
+    {
+      "path": "nfc/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "091e8544c4cf6ea6747b20a0cab60aada467c2aa",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/091e8544c4cf6ea6747b20a0cab60aada467c2aa"
+    },
+    {
+      "path": "nfc/systemd/sysusers.d/nfcd.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0f317c90307f70c8a9de0da0e84449e48916e538",
+      "size": 539,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/0f317c90307f70c8a9de0da0e84449e48916e538"
+    },
+    {
+      "path": "odometry",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d661e3eeaad79c5f9ebddc83c1c937e9a917725d",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/d661e3eeaad79c5f9ebddc83c1c937e9a917725d"
+    },
+    {
+      "path": "odometry/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f3cddcc9c5a53bb3e617adc4d9c9868e8f7e725e",
+      "size": 751,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f3cddcc9c5a53bb3e617adc4d9c9868e8f7e725e"
+    },
+    {
+      "path": "odometry/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8996be3a14191ba746f92c5298c2f1454e681e73",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/8996be3a14191ba746f92c5298c2f1454e681e73"
+    },
+    {
+      "path": "odometry/src/anchors.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f834be6b3abb4d19e6beca24dd4e556982710679",
+      "size": 3248,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f834be6b3abb4d19e6beca24dd4e556982710679"
+    },
+    {
+      "path": "odometry/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2b94eaa968fae2af9e904cc7dae8a6c636defa9b",
+      "size": 17343,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2b94eaa968fae2af9e904cc7dae8a6c636defa9b"
+    },
+    {
+      "path": "pad-imu",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "44327d7f771a913d535da6705cfdfa54b95bde93",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/44327d7f771a913d535da6705cfdfa54b95bde93"
+    },
+    {
+      "path": "pad-imu/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "64463d22b37400571cabc8774101793c766fdefc",
+      "size": 528,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/64463d22b37400571cabc8774101793c766fdefc"
+    },
+    {
+      "path": "pad-imu/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a4fd9cdd7b3ac3da792c7d2740b2f6b3415cb37b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a4fd9cdd7b3ac3da792c7d2740b2f6b3415cb37b"
+    },
+    {
+      "path": "pad-imu/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "470f265e067a876c76766ab9b964f28d6333eb32",
+      "size": 22439,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/470f265e067a876c76766ab9b964f28d6333eb32"
+    },
+    {
+      "path": "pad-map",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d112cf277d6b26ce9a7d578e124b08d17615eac0",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/d112cf277d6b26ce9a7d578e124b08d17615eac0"
+    },
+    {
+      "path": "pad-map/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b3781d3a2b36b9f28221730a6b2d28637e5f99d",
+      "size": 554,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6b3781d3a2b36b9f28221730a6b2d28637e5f99d"
+    },
+    {
+      "path": "pad-map/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "33871c39e16d5b80897051d77dbc20bd185a38c3",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/33871c39e16d5b80897051d77dbc20bd185a38c3"
+    },
+    {
+      "path": "pad-map/src/bindings.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0b2beba2cca2a6e924bce3cbc2f98622c0395ada",
+      "size": 5833,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/0b2beba2cca2a6e924bce3cbc2f98622c0395ada"
+    },
+    {
+      "path": "pad-map/src/buttons.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aeabde1d71e091cd86dc9c415f8638d26486d36e",
+      "size": 2319,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/aeabde1d71e091cd86dc9c415f8638d26486d36e"
+    },
+    {
+      "path": "pad-map/src/continuous.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "045bb0300c36b4c5e1d8ae881f0f58e95ec966f1",
+      "size": 9396,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/045bb0300c36b4c5e1d8ae881f0f58e95ec966f1"
+    },
+    {
+      "path": "pad-map/src/hold.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9951fb31433373cad6bb9586d59539b19f4780cd",
+      "size": 12518,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9951fb31433373cad6bb9586d59539b19f4780cd"
+    },
+    {
+      "path": "pad-map/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8750d5662807ec9c7e015b4af14b41f3a9ef927a",
+      "size": 2126,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8750d5662807ec9c7e015b4af14b41f3a9ef927a"
+    },
+    {
+      "path": "pad-map/src/loss.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "614f64ab9dcbbdcdb6618021966d7b58e29e1cb3",
+      "size": 9605,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/614f64ab9dcbbdcdb6618021966d7b58e29e1cb3"
+    },
+    {
+      "path": "pad-map/src/mapper.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9846b09eb809e4990e288ca78368bbfde0dd510",
+      "size": 40823,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f9846b09eb809e4990e288ca78368bbfde0dd510"
+    },
+    {
+      "path": "pad-map/src/wire.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "70dec0740cc79cf18bf8e516538a1d05d50be012",
+      "size": 17182,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/70dec0740cc79cf18bf8e516538a1d05d50be012"
+    },
+    {
+      "path": "padd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "915ae52a4a9ccef909f420b85e67b5256a1b20c3",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/915ae52a4a9ccef909f420b85e67b5256a1b20c3"
+    },
+    {
+      "path": "padd/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b1433e83104e97cc7d27dc8ca091c3d626a244de",
+      "size": 2576,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b1433e83104e97cc7d27dc8ca091c3d626a244de"
+    },
+    {
+      "path": "padd/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "489e944a5096a785ae68b85b08406f8a34ed5f11",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/489e944a5096a785ae68b85b08406f8a34ed5f11"
+    },
+    {
+      "path": "padd/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b0fd8b501656dfe781af53925c333b78b082ed1",
+      "size": 28845,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5b0fd8b501656dfe781af53925c333b78b082ed1"
+    },
+    {
+      "path": "padd/src/tap.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3c6fbfeaaac7aaa4566541d1215ed2fe9c88f044",
+      "size": 54883,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3c6fbfeaaac7aaa4566541d1215ed2fe9c88f044"
+    },
+    {
+      "path": "padd/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f505abf1f8d70b5523cec0063df366db110d9def",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/f505abf1f8d70b5523cec0063df366db110d9def"
+    },
+    {
+      "path": "padd/systemd/padd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d673471b4289b62bd3cd9a7067b9e180eaf0106e",
+      "size": 6339,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d673471b4289b62bd3cd9a7067b9e180eaf0106e"
+    },
+    {
+      "path": "padd/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9fa6c73a3ba2ed48cb8ff132789bb2fb62b16eb2",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/9fa6c73a3ba2ed48cb8ff132789bb2fb62b16eb2"
+    },
+    {
+      "path": "padd/systemd/sysusers.d/padd.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32fc32a7c4fa5875341dd3fe95cfe5512211ab3e",
+      "size": 1126,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/32fc32a7c4fa5875341dd3fe95cfe5512211ab3e"
+    },
+    {
+      "path": "pet-detect",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "bdbfb025a337d70fceef85a9c372b71599489c70",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/bdbfb025a337d70fceef85a9c372b71599489c70"
+    },
+    {
+      "path": "pet-detect/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75b20d8fd256038d3e393f1f5811389caf118e0e",
+      "size": 926,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/75b20d8fd256038d3e393f1f5811389caf118e0e"
+    },
+    {
+      "path": "pet-detect/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4de5189847409e581b8b7bb01febc7ee8afba0ca",
+      "size": 1605,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4de5189847409e581b8b7bb01febc7ee8afba0ca"
+    },
+    {
+      "path": "pet-detect/models",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1c6de98449b275362a664fdbe7b77e248b03a362",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1c6de98449b275362a664fdbe7b77e248b03a362"
+    },
+    {
+      "path": "pet-detect/models/pet_detect.onnx",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3e37441d55f2dedd170dc9e9913e610744e31d5e",
+      "size": 20201,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3e37441d55f2dedd170dc9e9913e610744e31d5e"
+    },
+    {
+      "path": "pet-detect/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ab3000701dc44fd6bccb48205e296fc64168052e",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/ab3000701dc44fd6bccb48205e296fc64168052e"
+    },
+    {
+      "path": "pet-detect/src/bin",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "42e83a2c3741d57486de97156391d104f083ed90",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/42e83a2c3741d57486de97156391d104f083ed90"
+    },
+    {
+      "path": "pet-detect/src/bin/detect.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "af917628334e9c1246008156edfcc3703f46242f",
+      "size": 2726,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/af917628334e9c1246008156edfcc3703f46242f"
+    },
+    {
+      "path": "pet-detect/src/bin/features.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "26e3e5d27bba770d27a8cab5d91b21316834d0be",
+      "size": 1656,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/26e3e5d27bba770d27a8cab5d91b21316834d0be"
+    },
+    {
+      "path": "pet-detect/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4da0ba7ce1ca390fb71f0f9e538bdaaae9457c81",
+      "size": 13661,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4da0ba7ce1ca390fb71f0f9e538bdaaae9457c81"
+    },
+    {
+      "path": "pet-detect/src/worker.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e32fa0e3b97e46238db9a36d356db172bd76a390",
+      "size": 21004,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e32fa0e3b97e46238db9a36d356db172bd76a390"
+    },
+    {
+      "path": "pet-detect/training",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "780b1a1f48e1de30174aba655289fe1e2bbeeecd",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/780b1a1f48e1de30174aba655289fe1e2bbeeecd"
+    },
+    {
+      "path": "pet-detect/training/train.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "b7948a122f2b42698bcb5312b383806d91f25fc8",
+      "size": 5740,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b7948a122f2b42698bcb5312b383806d91f25fc8"
+    },
+    {
+      "path": "robotctl",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c207a9080a7f155a4a6536136b16b39065317305",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/c207a9080a7f155a4a6536136b16b39065317305"
+    },
+    {
+      "path": "robotctl/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a6fb1e39330c22bcd79bec26153e4b109de0ebf4",
+      "size": 3118,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a6fb1e39330c22bcd79bec26153e4b109de0ebf4"
+    },
+    {
+      "path": "robotctl/assets",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "226669e74faa6f732c9808307486ed7ad3dbe76e",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/226669e74faa6f732c9808307486ed7ad3dbe76e"
+    },
+    {
+      "path": "robotctl/assets/duck.bin",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c43d9afdf4e6b23c195922711c0ef4b1de0a2016",
+      "size": 72334,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c43d9afdf4e6b23c195922711c0ef4b1de0a2016"
+    },
+    {
+      "path": "robotctl/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "90b4857e7aaa3ab74c035f0a46642d8e18170cb0",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/90b4857e7aaa3ab74c035f0a46642d8e18170cb0"
+    },
+    {
+      "path": "robotctl/src/camera.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5761d688c51b5ce3d5de6a97e857315a3c26f839",
+      "size": 13833,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5761d688c51b5ce3d5de6a97e857315a3c26f839"
+    },
+    {
+      "path": "robotctl/src/cells.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "53505166c0d0398e4849b3b5869353be80ac3fa7",
+      "size": 1847,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/53505166c0d0398e4849b3b5869353be80ac3fa7"
+    },
+    {
+      "path": "robotctl/src/configure.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "256f10af2b9686f3338f311fd938836ac32980e0",
+      "size": 63107,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/256f10af2b9686f3338f311fd938836ac32980e0"
+    },
+    {
+      "path": "robotctl/src/duck.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b10cb603b534ea183ba952fa01d5c149aa15201e",
+      "size": 36761,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b10cb603b534ea183ba952fa01d5c149aa15201e"
+    },
+    {
+      "path": "robotctl/src/frame.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e5629290b6ec869c48517623b77c7492e2db943",
+      "size": 6468,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6e5629290b6ec869c48517623b77c7492e2db943"
+    },
+    {
+      "path": "robotctl/src/imu_view.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4c5aed7a41b5f36417951864088fc7d4b361dab3",
+      "size": 11175,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4c5aed7a41b5f36417951864088fc7d4b361dab3"
+    },
+    {
+      "path": "robotctl/src/led.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2517f7efd93607a7dbce5793d827ed51372ad5ea",
+      "size": 9448,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2517f7efd93607a7dbce5793d827ed51372ad5ea"
+    },
+    {
+      "path": "robotctl/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4b25b5801b2257b0d931451a42c435905f6a93ce",
+      "size": 342130,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4b25b5801b2257b0d931451a42c435905f6a93ce"
+    },
+    {
+      "path": "robotctl/src/monitor.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35ba189b92d4a9d395188e17ced3c91d2f4943aa",
+      "size": 212445,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/35ba189b92d4a9d395188e17ced3c91d2f4943aa"
+    },
+    {
+      "path": "robotctl/src/path_map.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e32d5e123f98c0e4846b43890c465ab628f54229",
+      "size": 13373,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e32d5e123f98c0e4846b43890c465ab628f54229"
+    },
+    {
+      "path": "robotctl/src/show.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aafeef2e80bbc7298101ce0a3d8dfa27c1c4c659",
+      "size": 30273,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/aafeef2e80bbc7298101ce0a3d8dfa27c1c4c659"
+    },
+    {
+      "path": "robotctl/src/vetbook.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c0bee968bbebf3d5e96e1cc5cb3a992c002054a3",
+      "size": 67642,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c0bee968bbebf3d5e96e1cc5cb3a992c002054a3"
+    },
+    {
+      "path": "robotd-params",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fda0bf23a264f46a70c09cf4b08fb056c6365c02",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/fda0bf23a264f46a70c09cf4b08fb056c6365c02"
+    },
+    {
+      "path": "robotd-params/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7caa9098407ca0760e298265d3f30c73531c3cd2",
+      "size": 1568,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7caa9098407ca0760e298265d3f30c73531c3cd2"
+    },
+    {
+      "path": "robotd-params/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e75b8c706091bee3363f9b3f4d1de20ea4b53c8c",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/e75b8c706091bee3363f9b3f4d1de20ea4b53c8c"
+    },
+    {
+      "path": "robotd-params/src/board.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e3a759bc3a9c0d6015328ea65d0275c745160b2",
+      "size": 12993,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4e3a759bc3a9c0d6015328ea65d0275c745160b2"
+    },
+    {
+      "path": "robotd-params/src/edit.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "21c8fa63aab5f7213f7773659cf2c2dab7fc2b14",
+      "size": 66988,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/21c8fa63aab5f7213f7773659cf2c2dab7fc2b14"
+    },
+    {
+      "path": "robotd-params/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "71007de3095e488d81e7880a39fa753e49c15ff1",
+      "size": 196503,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/71007de3095e488d81e7880a39fa753e49c15ff1"
+    },
+    {
+      "path": "robotd-params/src/pad_axes.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "faf553fb534a3b3864c9f6c54761fb428d435b9b",
+      "size": 11901,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/faf553fb534a3b3864c9f6c54761fb428d435b9b"
+    },
+    {
+      "path": "robotd-params/src/registry.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c064ccf6ae803daac785c4b797dcf2f41c76aae5",
+      "size": 48104,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c064ccf6ae803daac785c4b797dcf2f41c76aae5"
+    },
+    {
+      "path": "robotd-params/src/serial.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "413be1881571fa9a23aa875d3ab30a27a5b664e8",
+      "size": 7085,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/413be1881571fa9a23aa875d3ab30a27a5b664e8"
+    },
+    {
+      "path": "robotd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e24b1a51ef13addbb7c35ae2774b09c353a579ea",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/e24b1a51ef13addbb7c35ae2774b09c353a579ea"
+    },
+    {
+      "path": "robotd/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c3e64b395cd430869a2c9707c0e733c2c77bf84e",
+      "size": 2592,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c3e64b395cd430869a2c9707c0e733c2c77bf84e"
+    },
+    {
+      "path": "robotd/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b240e1ebd1ed86aad03abb716c73017d8d94787b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b240e1ebd1ed86aad03abb716c73017d8d94787b"
+    },
+    {
+      "path": "robotd/src/chorale.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3d1d229af3cf3e743e11d67da3083e5be25af64f",
+      "size": 56062,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3d1d229af3cf3e743e11d67da3083e5be25af64f"
+    },
+    {
+      "path": "robotd/src/control.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "62c39c141411782e8e7c9c44fa273d3c30b0f82c",
+      "size": 43675,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/62c39c141411782e8e7c9c44fa273d3c30b0f82c"
+    },
+    {
+      "path": "robotd/src/head_imu.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e5753e3e1fafd82147836b05b78b32b496dfc98",
+      "size": 25256,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6e5753e3e1fafd82147836b05b78b32b496dfc98"
+    },
+    {
+      "path": "robotd/src/idle_head.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "35e9ae203c931bb5f88f5828fb25522564310aca",
+      "size": 21279,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/35e9ae203c931bb5f88f5828fb25522564310aca"
+    },
+    {
+      "path": "robotd/src/intents.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "577fdf8533c505096bb63025ebb26c0e09a4d6a0",
+      "size": 29536,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/577fdf8533c505096bb63025ebb26c0e09a4d6a0"
+    },
+    {
+      "path": "robotd/src/leds.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "39e5c0b95d76d0a8e2108f3fb1a84d2c306b68f8",
+      "size": 11530,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/39e5c0b95d76d0a8e2108f3fb1a84d2c306b68f8"
+    },
+    {
+      "path": "robotd/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aa7ef51c50a2fea779f25f6db7a4c1ee2e2f3c91",
+      "size": 437765,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/aa7ef51c50a2fea779f25f6db7a4c1ee2e2f3c91"
+    },
+    {
+      "path": "robotd/src/params.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "11964411757dee19f6ff3769b7039006d583324c",
+      "size": 361,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/11964411757dee19f6ff3769b7039006d583324c"
+    },
+    {
+      "path": "robotd/src/pickup.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "854a7a3623b865e02912ecd86aa60c818cb52884",
+      "size": 11699,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/854a7a3623b865e02912ecd86aa60c818cb52884"
+    },
+    {
+      "path": "robotd/src/posture.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "92147de4a7662d06509e0ae02dae95f8f1d163ab",
+      "size": 7723,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/92147de4a7662d06509e0ae02dae95f8f1d163ab"
+    },
+    {
+      "path": "robotd/src/soc.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c101683ed16c459a25ef5e237d29627ff8748af8",
+      "size": 14810,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c101683ed16c459a25ef5e237d29627ff8748af8"
+    },
+    {
+      "path": "robotd/src/sound.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "335592210deb0df241220c4f32d3d4674bfda258",
+      "size": 42185,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/335592210deb0df241220c4f32d3d4674bfda258"
+    },
+    {
+      "path": "robotd/src/theremin.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9527675cb1e890644fa023a993276200d14d5e5b",
+      "size": 20732,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9527675cb1e890644fa023a993276200d14d5e5b"
+    },
+    {
+      "path": "robotd/src/vetbook.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7ffc998f29a8e9aa6ef7d8fb0a936bf08bf037d",
+      "size": 36374,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a7ffc998f29a8e9aa6ef7d8fb0a936bf08bf037d"
+    },
+    {
+      "path": "robotd/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b3ed4de5781df9f6cac3cf3186f10b2da34a89d8",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b3ed4de5781df9f6cac3cf3186f10b2da34a89d8"
+    },
+    {
+      "path": "robotd/systemd/robotd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "050f7b453a6f681651155f733bdbac36463e66c6",
+      "size": 5112,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/050f7b453a6f681651155f733bdbac36463e66c6"
+    },
+    {
+      "path": "robotd/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e3d311dcf07729d9def7a55ae3324d93049666a2",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/e3d311dcf07729d9def7a55ae3324d93049666a2"
+    },
+    {
+      "path": "robotd/tests/single_instance.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2e6244181848372997561e9b5ee0999c61854fd9",
+      "size": 13475,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2e6244181848372997561e9b5ee0999c61854fd9"
+    },
+    {
+      "path": "robotd/tests/updater_gate.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4fa275149d9439ea483d8dd8c5673b1732228786",
+      "size": 20456,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4fa275149d9439ea483d8dd8c5673b1732228786"
+    },
+    {
+      "path": "scripts",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f44d7663b3d7776dd6308ec003731d8b49141020",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/f44d7663b3d7776dd6308ec003731d8b49141020"
+    },
+    {
+      "path": "scripts/bake-duck-mesh.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "ce309d8cad1948f518b3c5de44535a9b0a73509e",
+      "size": 9374,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ce309d8cad1948f518b3c5de44535a9b0a73509e"
+    },
+    {
+      "path": "scripts/board-test.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "afa7c9c8a0115b8ae7bb8fe12af2be108c5a1a44",
+      "size": 58755,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/afa7c9c8a0115b8ae7bb8fe12af2be108c5a1a44"
+    },
+    {
+      "path": "scripts/ci-release-notes.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "9b45ce06b4845b0d172e2796a59e626c2f366383",
+      "size": 2744,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9b45ce06b4845b0d172e2796a59e626c2f366383"
+    },
+    {
+      "path": "scripts/cross-sysroot.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "30a11769897d48e41b9ecd0dbb927913c2eed041",
+      "size": 9772,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/30a11769897d48e41b9ecd0dbb927913c2eed041"
+    },
+    {
+      "path": "scripts/dev-build.Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c957ecc1946b92966961cafeefad75a7f842cfd",
+      "size": 2111,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7c957ecc1946b92966961cafeefad75a7f842cfd"
+    },
+    {
+      "path": "scripts/dev-push.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "c46a5e80bf9ac2c79154ab1329ab900e9e6d635b",
+      "size": 29834,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c46a5e80bf9ac2c79154ab1329ab900e9e6d635b"
+    },
+    {
+      "path": "scripts/duck-sim",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "3762257a3cf16c6462e3b5e9cf2e956832431dbe",
+      "size": 57742,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3762257a3cf16c6462e3b5e9cf2e956832431dbe"
+    },
+    {
+      "path": "scripts/homebrew-formula.py",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "af2cc7ee520f5a6cbbedf241a178d7905bc3c484",
+      "size": 3712,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/af2cc7ee520f5a6cbbedf241a178d7905bc3c484"
+    },
+    {
+      "path": "scripts/install-duckctl.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "fa0842a571159be7cf6487728ae1b051040e3531",
+      "size": 1678,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/fa0842a571159be7cf6487728ae1b051040e3531"
+    },
+    {
+      "path": "scripts/install.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "c44fca393cc0599917c1c814db5ac07730d0d3c9",
+      "size": 53389,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c44fca393cc0599917c1c814db5ac07730d0d3c9"
+    },
+    {
+      "path": "scripts/migrate-network.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "22df828fb09c97e61790981c6be8c740958060ff",
+      "size": 22913,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/22df828fb09c97e61790981c6be8c740958060ff"
+    },
+    {
+      "path": "scripts/pad-link-test.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "fee09201423cc5530f8678d6fbd3f62f425fd61c",
+      "size": 20175,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/fee09201423cc5530f8678d6fbd3f62f425fd61c"
+    },
+    {
+      "path": "scripts/pad-stack-report.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "da98e5464c2d6dd9149654d83aeb7f8e3d98b580",
+      "size": 31146,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/da98e5464c2d6dd9149654d83aeb7f8e3d98b580"
+    },
+    {
+      "path": "scripts/provision-board.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "1c9bd78884453a23a21c501479818e788946c094",
+      "size": 47275,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1c9bd78884453a23a21c501479818e788946c094"
+    },
+    {
+      "path": "scripts/provision.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "7241cc9c5c20b56fb0973ffb25248b8b98585369",
+      "size": 42419,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7241cc9c5c20b56fb0973ffb25248b8b98585369"
+    },
+    {
+      "path": "scripts/publish-console.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "6018074ce6bade7a0df155c234aa739f57e102b3",
+      "size": 5021,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6018074ce6bade7a0df155c234aa739f57e102b3"
+    },
+    {
+      "path": "scripts/publish-space.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "1aea98d14057b15be9347dc46706620afe2c2407",
+      "size": 3664,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1aea98d14057b15be9347dc46706620afe2c2407"
+    },
+    {
+      "path": "scripts/rkaiq-modinfo-shim.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43d321db0bb5e73250d05bb5a44a4ff572d4f3fc",
+      "size": 3457,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/43d321db0bb5e73250d05bb5a44a4ff572d4f3fc"
+    },
+    {
+      "path": "scripts/robot-boot-check",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "d4524eddf8fc0624acf54b9bda3fa2a3d2337bc2",
+      "size": 5757,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d4524eddf8fc0624acf54b9bda3fa2a3d2337bc2"
+    },
+    {
+      "path": "scripts/robot-rescue",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "37cb0dca9e8ae9a96adbee605dff4ef290df8db0",
+      "size": 9611,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/37cb0dca9e8ae9a96adbee605dff4ef290df8db0"
+    },
+    {
+      "path": "scripts/seed-detector.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "cab86aa9cb06c207341f493ceb31a8ed0563d437",
+      "size": 6294,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/cab86aa9cb06c207341f493ceb31a8ed0563d437"
+    },
+    {
+      "path": "scripts/seed-policies.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "8547a2402656a7836c67d091b8dae209c9bd4b06",
+      "size": 11733,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8547a2402656a7836c67d091b8dae209c9bd4b06"
+    },
+    {
+      "path": "scripts/setup-board.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "781ee875cd859ef2312ba59bfcdf11e3a5d90a86",
+      "size": 54910,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/781ee875cd859ef2312ba59bfcdf11e3a5d90a86"
+    },
+    {
+      "path": "scripts/setup-gstreamer.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "60a32533b2b80e2f3a5c2eb81ca67b1049f86504",
+      "size": 32689,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/60a32533b2b80e2f3a5c2eb81ca67b1049f86504"
+    },
+    {
+      "path": "scripts/setup-login.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "c0ac26baa9d2c9bab8bbd2924243d0eacd11548c",
+      "size": 10120,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c0ac26baa9d2c9bab8bbd2924243d0eacd11548c"
+    },
+    {
+      "path": "scripts/setup-npu.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "b34c28d597a0ebd441caf48fbf8acb9bbe04c69c",
+      "size": 12105,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b34c28d597a0ebd441caf48fbf8acb9bbe04c69c"
+    },
+    {
+      "path": "scripts/setup-quiet-boot.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "363b0d190ed6bf744878cafb7887bcae2f612333",
+      "size": 4545,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/363b0d190ed6bf744878cafb7887bcae2f612333"
+    },
+    {
+      "path": "scripts/setup-rkaiq.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "9768f87a2a368b17cd2e77f207e3406fea1322fc",
+      "size": 17053,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9768f87a2a368b17cd2e77f207e3406fea1322fc"
+    },
+    {
+      "path": "scripts/systemd-test.Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0c8014076b25a5ebda9ebcd6971ee9960515267a",
+      "size": 1092,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/0c8014076b25a5ebda9ebcd6971ee9960515267a"
+    },
+    {
+      "path": "scripts/systemd-test.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "7fad407c1b1b187a2ad47059d46ace48e8670bb1",
+      "size": 19830,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7fad407c1b1b187a2ad47059d46ace48e8670bb1"
+    },
+    {
+      "path": "sounds",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "018edfa4a1e2d29afc3a5bd7b65899b9cc706948",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/018edfa4a1e2d29afc3a5bd7b65899b9cc706948"
+    },
+    {
+      "path": "sounds/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3cf777e0e757345b3950d65f32616dce67d8a806",
+      "size": 787,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3cf777e0e757345b3950d65f32616dce67d8a806"
+    },
+    {
+      "path": "sounds/scores",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4703c6120bfd0e29f63ce97b16939a9ec7a8edb6",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/4703c6120bfd0e29f63ce97b16939a9ec7a8edb6"
+    },
+    {
+      "path": "sounds/scores/duck_strut.mid",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8f6d31ab4bbb5b052aab59e98ba7052caad5c396",
+      "size": 2958,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8f6d31ab4bbb5b052aab59e98ba7052caad5c396"
+    },
+    {
+      "path": "sounds/scores/outer_wilds.mid",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad65142a38397380db30e677739406c169e93bfe",
+      "size": 4994,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ad65142a38397380db30e677739406c169e93bfe"
+    },
+    {
+      "path": "sounds/scores/wistful.duckscore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "29d970869fb8b03182f9c84e5f346539dbd684bb",
+      "size": 4171,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/29d970869fb8b03182f9c84e5f346539dbd684bb"
+    },
+    {
+      "path": "sounds/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "536883ca118fcda2848c61a3a4567e4979f6aa19",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/536883ca118fcda2848c61a3a4567e4979f6aa19"
+    },
+    {
+      "path": "sounds/src/chorale",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a2810bcabf0026dc436a224cfad75a7e18ca11f4",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a2810bcabf0026dc436a224cfad75a7e18ca11f4"
+    },
+    {
+      "path": "sounds/src/chorale/beat.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c8e2261ded379557c0a15ac49dcdea3619ef5663",
+      "size": 22845,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c8e2261ded379557c0a15ac49dcdea3619ef5663"
+    },
+    {
+      "path": "sounds/src/chorale/midi.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6c78c7c1c1ed7488631ca2c2f6ac77d8cbe4142",
+      "size": 32103,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b6c78c7c1c1ed7488631ca2c2f6ac77d8cbe4142"
+    },
+    {
+      "path": "sounds/src/chorale/mod.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1270c6c3441f89cfd8b22eb6036dfeb84e2ceaf2",
+      "size": 62618,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1270c6c3441f89cfd8b22eb6036dfeb84e2ceaf2"
+    },
+    {
+      "path": "sounds/src/chorale/text.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4e7da3b9dd9a9dceac56e5d283082609090cec04",
+      "size": 20329,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4e7da3b9dd9a9dceac56e5d283082609090cec04"
+    },
+    {
+      "path": "sounds/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "943af2343c57fe9b6b0d8a83c3e68adc6e552fab",
+      "size": 7729,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/943af2343c57fe9b6b0d8a83c3e68adc6e552fab"
+    },
+    {
+      "path": "sounds/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f34546d17264f74f4375380584fe96e6da8d16b",
+      "size": 17967,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7f34546d17264f74f4375380584fe96e6da8d16b"
+    },
+    {
+      "path": "sounds/src/personality.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "762a5c401cff1052d0583602d2928bbaed6b73cc",
+      "size": 7161,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/762a5c401cff1052d0583602d2928bbaed6b73cc"
+    },
+    {
+      "path": "sounds/src/rng.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "775d1d269e4a7534b7c2123bf5849270515f7e5d",
+      "size": 5655,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/775d1d269e4a7534b7c2123bf5849270515f7e5d"
+    },
+    {
+      "path": "sounds/src/stream.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e7549a19cd94ba99b1dd1ef8e41f484f5c3e1b01",
+      "size": 39343,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e7549a19cd94ba99b1dd1ef8e41f484f5c3e1b01"
+    },
+    {
+      "path": "sounds/src/synth.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e1ad24b69219f220640c7353d3cead8635a8a8eb",
+      "size": 8895,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e1ad24b69219f220640c7353d3cead8635a8a8eb"
+    },
+    {
+      "path": "sounds/src/voices.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f637f7eb72ae1fa0fb97c1d87622fe96eadd021",
+      "size": 16501,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7f637f7eb72ae1fa0fb97c1d87622fe96eadd021"
+    },
+    {
+      "path": "spaces",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4de5e0c1ed7b829f5103eb6d432c71951643e035",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/4de5e0c1ed7b829f5103eb6d432c71951643e035"
+    },
+    {
+      "path": "spaces/hello",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0c1f9ba0f116ec0f836f572eba65c70742283d71",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/0c1f9ba0f116ec0f836f572eba65c70742283d71"
+    },
+    {
+      "path": "spaces/hello/Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a13ad3aa8c53679cce0e28cbc0d46f753f2da61a",
+      "size": 769,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a13ad3aa8c53679cce0e28cbc0d46f753f2da61a"
+    },
+    {
+      "path": "spaces/hello/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5cf49c492b53707ce114c18fcfa0d5734146896e",
+      "size": 550,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5cf49c492b53707ce114c18fcfa0d5734146896e"
+    },
+    {
+      "path": "spaces/hello/app.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7c609c5cdc9888285ad9dfcb563930281ce3e70",
+      "size": 2413,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a7c609c5cdc9888285ad9dfcb563930281ce3e70"
+    },
+    {
+      "path": "spaces/hello/requirements.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "064500a9e9d15b6bd0fd65c98495cfb5e036344f",
+      "size": 47,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/064500a9e9d15b6bd0fd65c98495cfb5e036344f"
+    },
+    {
+      "path": "spaces/policy-playground",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "00cb61a05390c48bca6e79b1089d6350d6240f69",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/00cb61a05390c48bca6e79b1089d6350d6240f69"
+    },
+    {
+      "path": "spaces/policy-playground/Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96e10f330dd5ee22ced3cb101cd82e23b09c1ea5",
+      "size": 1378,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/96e10f330dd5ee22ced3cb101cd82e23b09c1ea5"
+    },
+    {
+      "path": "spaces/policy-playground/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "714cce74eaaca139590cbcbff8d4b9365a06e11f",
+      "size": 4820,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/714cce74eaaca139590cbcbff8d4b9365a06e11f"
+    },
+    {
+      "path": "spaces/policy-playground/entrypoint.sh",
+      "mode": "100755",
+      "type": "blob",
+      "sha": "337ac5be171610140210d06cbe71f16789021943",
+      "size": 3419,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/337ac5be171610140210d06cbe71f16789021943"
+    },
+    {
+      "path": "spaces/policy-playground/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9caf276ea4f6c8adf171e03c7690e2487d0db379",
+      "size": 46197,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9caf276ea4f6c8adf171e03c7690e2487d0db379"
+    },
+    {
+      "path": "spaces/policy-playground/web",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "30aae2b7f0748737cc3d61b81b6fceaebf01295e",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/30aae2b7f0748737cc3d61b81b6fceaebf01295e"
+    },
+    {
+      "path": "spaces/policy-playground/web/.gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b9470778764f72c5257a3361590d2994547f90e1",
+      "size": 20,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b9470778764f72c5257a3361590d2994547f90e1"
+    },
+    {
+      "path": "spaces/policy-playground/web/index.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c64607940b7f764c7524c279b55cdac724a9a482",
+      "size": 294,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c64607940b7f764c7524c279b55cdac724a9a482"
+    },
+    {
+      "path": "spaces/policy-playground/web/package-lock.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d882bc739737e0973152f259e0e9ee42391f2dfb",
+      "size": 43562,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d882bc739737e0973152f259e0e9ee42391f2dfb"
+    },
+    {
+      "path": "spaces/policy-playground/web/package.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7bdc3498b5feb1d1b9d2a15dfc2781b1d42e649a",
+      "size": 405,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7bdc3498b5feb1d1b9d2a15dfc2781b1d42e649a"
+    },
+    {
+      "path": "spaces/policy-playground/web/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3bd626bb9214614ce44872150b44c8765f51b5e8",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/3bd626bb9214614ce44872150b44c8765f51b5e8"
+    },
+    {
+      "path": "spaces/policy-playground/web/src/auth.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a5457aecd01aa575b4661558118c70fbb4bac8b2",
+      "size": 7748,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a5457aecd01aa575b4661558118c70fbb4bac8b2"
+    },
+    {
+      "path": "spaces/policy-playground/web/src/hub.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67e7903dcaad343982f818107031bf33bd729aa2",
+      "size": 13593,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/67e7903dcaad343982f818107031bf33bd729aa2"
+    },
+    {
+      "path": "spaces/policy-playground/web/src/main.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3053e42b775338b216c9fdf669603257e0a15073",
+      "size": 28752,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3053e42b775338b216c9fdf669603257e0a15073"
+    },
+    {
+      "path": "spaces/policy-playground/web/src/rendezvous.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cead55bc0c95de4883b01968a185314fa2722d6b",
+      "size": 13550,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/cead55bc0c95de4883b01968a185314fa2722d6b"
+    },
+    {
+      "path": "spaces/policy-playground/web/src/style.css",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "97f4a6a8e34d5fa52b9281af41129d7466c72378",
+      "size": 5070,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/97f4a6a8e34d5fa52b9281af41129d7466c72378"
+    },
+    {
+      "path": "spaces/policy-playground/web/tsconfig.json",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f60b7413efa5b139837104b837516a9bc5c18494",
+      "size": 466,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f60b7413efa5b139837104b837516a9bc5c18494"
+    },
+    {
+      "path": "spaces/policy-playground/web/vite.config.ts",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0a37ec1a773413b5f93faa4708d1d645099abfe8",
+      "size": 1146,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/0a37ec1a773413b5f93faa4708d1d645099abfe8"
+    },
+    {
+      "path": "spaces/shared",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "70f3177ca4ab8cca1e7be2800055225fd0e6cb37",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/70f3177ca4ab8cca1e7be2800055225fd0e6cb37"
+    },
+    {
+      "path": "spaces/shared/control.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9b8faf243ff4f8846b1823bf25a06c9a95febac",
+      "size": 7505,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f9b8faf243ff4f8846b1823bf25a06c9a95febac"
+    },
+    {
+      "path": "spaces/shared/rendezvous.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "555e18abe060af6eca96ab0dbba3457b332616ac",
+      "size": 11352,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/555e18abe060af6eca96ab0dbba3457b332616ac"
+    },
+    {
+      "path": "spaces/shared/wire.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0fb9e35d8647296bd22fb0360a191783254bef6b",
+      "size": 19249,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/0fb9e35d8647296bd22fb0360a191783254bef6b"
+    },
+    {
+      "path": "spaces/vetbook",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8e9b291794da7defec3563b50b8f3969ab7d2b5d",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/8e9b291794da7defec3563b50b8f3969ab7d2b5d"
+    },
+    {
+      "path": "spaces/vetbook/Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "edc5205f985354f5fab502bad4dea6e5fbbc89fd",
+      "size": 1308,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/edc5205f985354f5fab502bad4dea6e5fbbc89fd"
+    },
+    {
+      "path": "spaces/vetbook/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ee5b0c02d2043ff0ce227dedf7c6938b95bfc18",
+      "size": 1725,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6ee5b0c02d2043ff0ce227dedf7c6938b95bfc18"
+    },
+    {
+      "path": "spaces/vetbook/app.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "947d8ffa0a0b01a1b996f03dc5491dfe16082085",
+      "size": 8845,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/947d8ffa0a0b01a1b996f03dc5491dfe16082085"
+    },
+    {
+      "path": "spaces/vetbook/card.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a16fdcb86a80c907a4c5ad65a995e15746004be4",
+      "size": 3919,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a16fdcb86a80c907a4c5ad65a995e15746004be4"
+    },
+    {
+      "path": "spaces/vetbook/card_fifa.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e1ddb4a0924745967c1494ef1475516778ca975",
+      "size": 7042,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9e1ddb4a0924745967c1494ef1475516778ca975"
+    },
+    {
+      "path": "spaces/vetbook/card_gameboy.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a75fb2580564f0a5b054b7032a3f46460c0c165e",
+      "size": 6939,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a75fb2580564f0a5b054b7032a3f46460c0c165e"
+    },
+    {
+      "path": "spaces/vetbook/card_notebook.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "64d2884aec16f2de3ae43a5e6ca18fe7fccaffda",
+      "size": 6550,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/64d2884aec16f2de3ae43a5e6ca18fe7fccaffda"
+    },
+    {
+      "path": "spaces/vetbook/card_passport.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b3c0c64ef7796e6c9db709d65c3f47cca0cc7bb4",
+      "size": 4332,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b3c0c64ef7796e6c9db709d65c3f47cca0cc7bb4"
+    },
+    {
+      "path": "spaces/vetbook/card_polaroid.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8ee7579c03f42dd6568e5cf95ee0bfdc7ca60ffb",
+      "size": 3594,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8ee7579c03f42dd6568e5cf95ee0bfdc7ca60ffb"
+    },
+    {
+      "path": "spaces/vetbook/card_profile.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb2ffb4170ddf11cb666169f789ffe17e462d4e9",
+      "size": 4881,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/fb2ffb4170ddf11cb666169f789ffe17e462d4e9"
+    },
+    {
+      "path": "spaces/vetbook/card_purikura.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "913a3298186be641a0adc104c04294fd52722241",
+      "size": 4951,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/913a3298186be641a0adc104c04294fd52722241"
+    },
+    {
+      "path": "spaces/vetbook/card_receipt.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0c65cf6b65150fd00b7d4dcbf3dbd3ecab289f2",
+      "size": 3870,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e0c65cf6b65150fd00b7d4dcbf3dbd3ecab289f2"
+    },
+    {
+      "path": "spaces/vetbook/cards.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a30549e9d7957008e2c84670a4dfbae493f96bb",
+      "size": 9339,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/5a30549e9d7957008e2c84670a4dfbae493f96bb"
+    },
+    {
+      "path": "spaces/vetbook/macros.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e8d621d7fa8d516005594cf8c48f42bab1a2a1b",
+      "size": 323,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9e8d621d7fa8d516005594cf8c48f42bab1a2a1b"
+    },
+    {
+      "path": "spaces/vetbook/page.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "56137f21ae77d56e0f1ea0973d9596c65191d72b",
+      "size": 7661,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/56137f21ae77d56e0f1ea0973d9596c65191d72b"
+    },
+    {
+      "path": "spaces/vetbook/pixel-head-gb.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5d4e120427cd785611eaaa6d86bb5e5740e02d0",
+      "size": 487,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d5d4e120427cd785611eaaa6d86bb5e5740e02d0"
+    },
+    {
+      "path": "spaces/vetbook/pixel-head.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27a082bf8fdcf85772d5cffb3da7937de9e7bbe4",
+      "size": 735,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/27a082bf8fdcf85772d5cffb3da7937de9e7bbe4"
+    },
+    {
+      "path": "spaces/vetbook/requirements.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f206f47f0f7f7ef1fd1d93b73bbbc4c99041b082",
+      "size": 81,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f206f47f0f7f7ef1fd1d93b73bbbc4c99041b082"
+    },
+    {
+      "path": "spaces/vetbook/sticker.webp",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bb74aceaf3c090a431efd7cc9d34ee98ccb73acd",
+      "size": 40026,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/bb74aceaf3c090a431efd7cc9d34ee98ccb73acd"
+    },
+    {
+      "path": "spaces/vetbook/story.html",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ca672cefbd7071e6a80d16b024ee3e623cf0ad9b",
+      "size": 2888,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ca672cefbd7071e6a80d16b024ee3e623cf0ad9b"
+    },
+    {
+      "path": "spaces/vetbook/test_traits.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95c0947f538689e00092e7908bd928de7bfc4fad",
+      "size": 2484,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/95c0947f538689e00092e7908bd928de7bfc4fad"
+    },
+    {
+      "path": "spaces/vetbook/traits.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "272189cfd1a2b38f23f1da0b0f6f3062dc378acf",
+      "size": 13500,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/272189cfd1a2b38f23f1da0b0f6f3062dc378acf"
+    },
+    {
+      "path": "spaces/vision-demo",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a7b545bd7a7b3d6fdeb18eca041629d6b427dfc8",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a7b545bd7a7b3d6fdeb18eca041629d6b427dfc8"
+    },
+    {
+      "path": "spaces/vision-demo/Dockerfile",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "97df3da0bc58c4b14f0138f1e529319bd1fd5e2f",
+      "size": 3780,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/97df3da0bc58c4b14f0138f1e529319bd1fd5e2f"
+    },
+    {
+      "path": "spaces/vision-demo/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cf2f3756bd0aef9bf1bbc97c387a7ec475bccfb5",
+      "size": 5799,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/cf2f3756bd0aef9bf1bbc97c387a7ec475bccfb5"
+    },
+    {
+      "path": "spaces/vision-demo/app.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1cbe80fb54c34da4c5b0ef99486250c361da6dea",
+      "size": 23404,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1cbe80fb54c34da4c5b0ef99486250c361da6dea"
+    },
+    {
+      "path": "spaces/vision-demo/boot.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "14dc9a9abda3f24724fe6b6d282989fb9ac1564f",
+      "size": 2086,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/14dc9a9abda3f24724fe6b6d282989fb9ac1564f"
+    },
+    {
+      "path": "spaces/vision-demo/control.py",
+      "mode": "120000",
+      "type": "blob",
+      "sha": "6db3c45af24615a6d8139f0c8b3efef8e9e0e875",
+      "size": 20,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6db3c45af24615a6d8139f0c8b3efef8e9e0e875"
+    },
+    {
+      "path": "spaces/vision-demo/filters.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ff91925cde668c4f2dafb8b4624ff468db26c4a9",
+      "size": 6393,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ff91925cde668c4f2dafb8b4624ff468db26c4a9"
+    },
+    {
+      "path": "spaces/vision-demo/receiver.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6cc5e8502e578e230017a16fdccacaaff2c8da82",
+      "size": 13611,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6cc5e8502e578e230017a16fdccacaaff2c8da82"
+    },
+    {
+      "path": "spaces/vision-demo/rendezvous.py",
+      "mode": "120000",
+      "type": "blob",
+      "sha": "044f900e874e8decebb57e9e97b424449ebf530f",
+      "size": 23,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/044f900e874e8decebb57e9e97b424449ebf530f"
+    },
+    {
+      "path": "spaces/vision-demo/requirements.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "736cdd3ce1f81b781e1ac70aabbfa16a9099e73a",
+      "size": 1679,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/736cdd3ce1f81b781e1ac70aabbfa16a9099e73a"
+    },
+    {
+      "path": "spaces/vision-demo/wire.py",
+      "mode": "120000",
+      "type": "blob",
+      "sha": "2db9e255d0821c8bd71e2bc0e8e571d37b18c285",
+      "size": 17,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2db9e255d0821c8bd71e2bc0e8e571d37b18c285"
+    },
+    {
+      "path": "test-support",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "859a57fa293ded61b2813538b3969a2013a190f1",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/859a57fa293ded61b2813538b3969a2013a190f1"
+    },
+    {
+      "path": "test-support/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6c49fc6c70f97f427f23a95c31e9a135154d6506",
+      "size": 634,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6c49fc6c70f97f427f23a95c31e9a135154d6506"
+    },
+    {
+      "path": "test-support/examples",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b5008d3ddd34422b017b4e9e54c8b0dba24bb667",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b5008d3ddd34422b017b4e9e54c8b0dba24bb667"
+    },
+    {
+      "path": "test-support/examples/fake-release.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "298fb0aa0d5852450fae73c7440ef92cdfe9a8a4",
+      "size": 7138,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/298fb0aa0d5852450fae73c7440ef92cdfe9a8a4"
+    },
+    {
+      "path": "test-support/examples/systemd-fixture.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a2e9c37f3c8bc84d1d38870d5087cf4762d3d4d9",
+      "size": 12744,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a2e9c37f3c8bc84d1d38870d5087cf4762d3d4d9"
+    },
+    {
+      "path": "test-support/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "198428569884d177bb71420e5e1a2dce37d5b26b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/198428569884d177bb71420e5e1a2dce37d5b26b"
+    },
+    {
+      "path": "test-support/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2f13dbd718ec8748b4bdbeba0cfafe27b3318118",
+      "size": 10646,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2f13dbd718ec8748b4bdbeba0cfafe27b3318118"
+    },
+    {
+      "path": "tof",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b0ab13720324cd90695718c3685b05a2f1d5e096",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b0ab13720324cd90695718c3685b05a2f1d5e096"
+    },
+    {
+      "path": "tof/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e49f73c9ed98add83772c40991b5b20f7e8f4dd4",
+      "size": 2281,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e49f73c9ed98add83772c40991b5b20f7e8f4dd4"
+    },
+    {
+      "path": "tof/build.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74740e1821abc7311c4d4dd28537eaf8355f1780",
+      "size": 4669,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/74740e1821abc7311c4d4dd28537eaf8355f1780"
+    },
+    {
+      "path": "tof/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "df23fd1b4e0c9e62dd8ac5401944069389df64b6",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/df23fd1b4e0c9e62dd8ac5401944069389df64b6"
+    },
+    {
+      "path": "tof/src/config.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d7ee1cce24a74f46e71a573634da2803ec3c837a",
+      "size": 2861,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d7ee1cce24a74f46e71a573634da2803ec3c837a"
+    },
+    {
+      "path": "tof/src/imu.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ea89f048d9f4be6cf6a666a275c10fc2eb8b58e7",
+      "size": 12398,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ea89f048d9f4be6cf6a666a275c10fc2eb8b58e7"
+    },
+    {
+      "path": "tof/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2bae16eca418d119c05e308a733cdfd55f66c947",
+      "size": 7140,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2bae16eca418d119c05e308a733cdfd55f66c947"
+    },
+    {
+      "path": "tof/src/link.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8a3bd80c4840bb0eec504ee41fc1ec1d03e1f14c",
+      "size": 5761,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8a3bd80c4840bb0eec504ee41fc1ec1d03e1f14c"
+    },
+    {
+      "path": "tof/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "de6481c69ce84501b78cca8d1604a4f3e0a2a100",
+      "size": 50433,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/de6481c69ce84501b78cca8d1604a4f3e0a2a100"
+    },
+    {
+      "path": "tof/src/sensor.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45fe0ed1be1f4406b21eb08e1a3f04c012d9784d",
+      "size": 16230,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/45fe0ed1be1f4406b21eb08e1a3f04c012d9784d"
+    },
+    {
+      "path": "tof/src/status.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3a41858b3dc97ca4f056bd84b657ae1b962b5dc5",
+      "size": 3431,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3a41858b3dc97ca4f056bd84b657ae1b962b5dc5"
+    },
+    {
+      "path": "tof/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a3781610d4b950232cf5baf8c18a99bc079b38ab",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a3781610d4b950232cf5baf8c18a99bc079b38ab"
+    },
+    {
+      "path": "tof/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fc3b40ebeb104473f2b3938b8b5f85d8351f24fd",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/fc3b40ebeb104473f2b3938b8b5f85d8351f24fd"
+    },
+    {
+      "path": "tof/systemd/sysusers.d/tofd.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "64e67b166416648635bdd267f9518c1d04db1a1e",
+      "size": 638,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/64e67b166416648635bdd267f9518c1d04db1a1e"
+    },
+    {
+      "path": "tof/systemd/tofd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2ba9c27a0f9dee752a4a0c0fc3c6c20562d020bb",
+      "size": 1999,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2ba9c27a0f9dee752a4a0c0fc3c6c20562d020bb"
+    },
+    {
+      "path": "tof/vendor",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "e58bf62bd508f16e67d840fb7b12cab50ef09ee4",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/e58bf62bd508f16e67d840fb7b12cab50ef09ee4"
+    },
+    {
+      "path": "tof/vendor/LICENSE.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b40364c28f3652a3ef7e5e6450ad4648d711f28a",
+      "size": 383,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b40364c28f3652a3ef7e5e6450ad4648d711f28a"
+    },
+    {
+      "path": "tof/vendor/platform.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "788b9d43906140636c20f7e535b232f8d5033449",
+      "size": 6234,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/788b9d43906140636c20f7e535b232f8d5033449"
+    },
+    {
+      "path": "tof/vendor/probe.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "135185063ebc485ebfb2195ab23290691ad71b8f",
+      "size": 4990,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/135185063ebc485ebfb2195ab23290691ad71b8f"
+    },
+    {
+      "path": "tof/vendor/vl53l5cx",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9760e565b9261e09e6480f6284d85681ea154ea2",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/9760e565b9261e09e6480f6284d85681ea154ea2"
+    },
+    {
+      "path": "tof/vendor/vl53l5cx/platform.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67849f47ca6860e875e8b6735b95d21c035dbf50",
+      "size": 2442,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/67849f47ca6860e875e8b6735b95d21c035dbf50"
+    },
+    {
+      "path": "tof/vendor/vl53l5cx/shim.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96aea337b2caade7da07ec4a53304d54c9539ef5",
+      "size": 2770,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/96aea337b2caade7da07ec4a53304d54c9539ef5"
+    },
+    {
+      "path": "tof/vendor/vl53l5cx/vl53l5cx_api.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ce026edae72c969f2ea06d301cbe884c702d287",
+      "size": 37790,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/6ce026edae72c969f2ea06d301cbe884c702d287"
+    },
+    {
+      "path": "tof/vendor/vl53l5cx/vl53l5cx_api.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dc8b52a0a267d7ad7fe5ef6a888e8d56f64f5792",
+      "size": 26858,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/dc8b52a0a267d7ad7fe5ef6a888e8d56f64f5792"
+    },
+    {
+      "path": "tof/vendor/vl53l5cx/vl53l5cx_buffers.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4fe86a1004e28f5ffa229684db0ce15eef03608a",
+      "size": 552567,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4fe86a1004e28f5ffa229684db0ce15eef03608a"
+    },
+    {
+      "path": "tof/vendor/vl53l8cx",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "37f5745d1f19799c63017888abebe1f9b5b951f9",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/37f5745d1f19799c63017888abebe1f9b5b951f9"
+    },
+    {
+      "path": "tof/vendor/vl53l8cx/platform.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "15148ba587bd83d75bbb7fe041b1bff8fca6d633",
+      "size": 2442,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/15148ba587bd83d75bbb7fe041b1bff8fca6d633"
+    },
+    {
+      "path": "tof/vendor/vl53l8cx/shim.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3687957a7d9d881d0efc3191ede8331668dd4e59",
+      "size": 3201,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3687957a7d9d881d0efc3191ede8331668dd4e59"
+    },
+    {
+      "path": "tof/vendor/vl53l8cx/vl53l8cx_api.c",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "56678b448783029ab8d6ccf2e91507722daf1a6e",
+      "size": 39102,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/56678b448783029ab8d6ccf2e91507722daf1a6e"
+    },
+    {
+      "path": "tof/vendor/vl53l8cx/vl53l8cx_api.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7cdd6e0d9e9d5c6e6731abf89a76ea7c6bc113bb",
+      "size": 27401,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7cdd6e0d9e9d5c6e6731abf89a76ea7c6bc113bb"
+    },
+    {
+      "path": "tof/vendor/vl53l8cx/vl53l8cx_buffers.h",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "85ae3526891fd23cf3a85fd896f3ed29f17315ae",
+      "size": 549954,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/85ae3526891fd23cf3a85fd896f3ed29f17315ae"
+    },
+    {
+      "path": "updater",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1ee18eb8bf87f537eb6cf5d06b3873f10627486a",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/1ee18eb8bf87f537eb6cf5d06b3873f10627486a"
+    },
+    {
+      "path": "updater/Cargo.lock",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7da1ab1b43ded408a6d52dc420ff2f2da40c206a",
+      "size": 3408,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7da1ab1b43ded408a6d52dc420ff2f2da40c206a"
+    },
+    {
+      "path": "updater/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3442b94030ba3fd70b72eeb199422f4010dde8fe",
+      "size": 3452,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3442b94030ba3fd70b72eeb199422f4010dde8fe"
+    },
+    {
+      "path": "updater/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0693933b930a5e610232c971953af19c2cbecd9e",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/0693933b930a5e610232c971953af19c2cbecd9e"
+    },
+    {
+      "path": "updater/src/account.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b67d1fdb93107f15950d53ce956ad160a10ccd21",
+      "size": 8067,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/b67d1fdb93107f15950d53ce956ad160a10ccd21"
+    },
+    {
+      "path": "updater/src/config.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "006cc7589823484b5aaba54e2b61f7d561c64b93",
+      "size": 45236,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/006cc7589823484b5aaba54e2b61f7d561c64b93"
+    },
+    {
+      "path": "updater/src/engine.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8ee8b4ce41243795eea530ce05f5b9d839ac7e66",
+      "size": 185925,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8ee8b4ce41243795eea530ce05f5b9d839ac7e66"
+    },
+    {
+      "path": "updater/src/faults.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "441c4fd204475137bfb8e783de10a23e7e30e07c",
+      "size": 5411,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/441c4fd204475137bfb8e783de10a23e7e30e07c"
+    },
+    {
+      "path": "updater/src/fsutil.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8b39d8f682687ec5f519e80b8b225efe123d73db",
+      "size": 3125,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8b39d8f682687ec5f519e80b8b225efe123d73db"
+    },
+    {
+      "path": "updater/src/hooks.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a018d9f71db6c4f06ed0d7901e9f18ea19ecfc6c",
+      "size": 21709,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a018d9f71db6c4f06ed0d7901e9f18ea19ecfc6c"
+    },
+    {
+      "path": "updater/src/ipc.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a408d50d9902b3d170dd9fcce86d42d72ea85dff",
+      "size": 50348,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a408d50d9902b3d170dd9fcce86d42d72ea85dff"
+    },
+    {
+      "path": "updater/src/journal.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "074bf4da7a1ab208c0694c3ce03da274e717df4e",
+      "size": 36664,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/074bf4da7a1ab208c0694c3ce03da274e717df4e"
+    },
+    {
+      "path": "updater/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "48689ea871cc08efa7e6286af9406ac344eb7050",
+      "size": 15610,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/48689ea871cc08efa7e6286af9406ac344eb7050"
+    },
+    {
+      "path": "updater/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "12b735ff4d42a572639f56bb3227638da62b5b7a",
+      "size": 37564,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/12b735ff4d42a572639f56bb3227638da62b5b7a"
+    },
+    {
+      "path": "updater/src/manifest.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e9ee5aea61544f5ce3f0d2bfafab9c6d13b89066",
+      "size": 9819,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/e9ee5aea61544f5ce3f0d2bfafab9c6d13b89066"
+    },
+    {
+      "path": "updater/src/orphan.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d470bdb414bc8ce293eb1f336e22753b408e6cdb",
+      "size": 14901,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d470bdb414bc8ce293eb1f336e22753b408e6cdb"
+    },
+    {
+      "path": "updater/src/policy.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4775bad4c950385165184d26dcb33413c58eec5",
+      "size": 72717,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a4775bad4c950385165184d26dcb33413c58eec5"
+    },
+    {
+      "path": "updater/src/preflight.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7802346fc49122c506ef96f8445639e17d8bc4d5",
+      "size": 18590,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/7802346fc49122c506ef96f8445639e17d8bc4d5"
+    },
+    {
+      "path": "updater/src/reconcile.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fd278ee132965f6e315a862a1b1e5cd29e0c6038",
+      "size": 16679,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/fd278ee132965f6e315a862a1b1e5cd29e0c6038"
+    },
+    {
+      "path": "updater/src/robot.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55abace91287fa37ccb36b7af8deef4f12b5c1a1",
+      "size": 22856,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/55abace91287fa37ccb36b7af8deef4f12b5c1a1"
+    },
+    {
+      "path": "updater/src/source",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "421c0b7357d5b08db127969e017f0b519dc6d5ce",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/421c0b7357d5b08db127969e017f0b519dc6d5ce"
+    },
+    {
+      "path": "updater/src/source/github.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d3430893560de8a8edb9448b65d70decca3309bf",
+      "size": 34456,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d3430893560de8a8edb9448b65d70decca3309bf"
+    },
+    {
+      "path": "updater/src/source/hf_hub.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "90b83233ef6ec3f90d6f1495bc217db25d1445b9",
+      "size": 7798,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/90b83233ef6ec3f90d6f1495bc217db25d1445b9"
+    },
+    {
+      "path": "updater/src/source/http.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ae463e59f3e8adf99ce86e9680cea0a9875238da",
+      "size": 17305,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ae463e59f3e8adf99ce86e9680cea0a9875238da"
+    },
+    {
+      "path": "updater/src/source/local.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95271313091625d1abdb1baaf22faff09e930a79",
+      "size": 12330,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/95271313091625d1abdb1baaf22faff09e930a79"
+    },
+    {
+      "path": "updater/src/source/mod.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a05fe08ee8caaddc56f1c9db7427a4ef7f7951a5",
+      "size": 4756,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/a05fe08ee8caaddc56f1c9db7427a4ef7f7951a5"
+    },
+    {
+      "path": "updater/src/spawn.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4541ae743541f7d5885be6f26f9ea17cba450d77",
+      "size": 6252,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/4541ae743541f7d5885be6f26f9ea17cba450d77"
+    },
+    {
+      "path": "updater/src/store.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed6bfbae8e5f3cf14e46d7e6543e293d0f4e5a57",
+      "size": 17545,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ed6bfbae8e5f3cf14e46d7e6543e293d0f4e5a57"
+    },
+    {
+      "path": "updater/src/transcript.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c2dd3981f46f4188faf5cc61010f0174e88921c5",
+      "size": 18931,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c2dd3981f46f4188faf5cc61010f0174e88921c5"
+    },
+    {
+      "path": "updater/src/unix.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cdb48641be0aaa2baeccea9c44e560a9c312f1cf",
+      "size": 2693,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/cdb48641be0aaa2baeccea9c44e560a9c312f1cf"
+    },
+    {
+      "path": "updater/src/verify.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0580b91f2e70df5617aa0bc663043d64c0e9fef",
+      "size": 22149,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f0580b91f2e70df5617aa0bc663043d64c0e9fef"
+    },
+    {
+      "path": "updater/src/vetbook.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "050d2f5974583f6c46494ffdf73061ab31e7863b",
+      "size": 14688,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/050d2f5974583f6c46494ffdf73061ab31e7863b"
+    },
+    {
+      "path": "updater/systemd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "55af8099e6e1f03f7a7d2159d52b43a00a7c987b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/55af8099e6e1f03f7a7d2159d52b43a00a7c987b"
+    },
+    {
+      "path": "updater/systemd/robot-boot-check.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "92779079016534ff32f943ae70e1ddccab1fd057",
+      "size": 1715,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/92779079016534ff32f943ae70e1ddccab1fd057"
+    },
+    {
+      "path": "updater/systemd/robot-boot-check.timer",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2eedf2aa3fd1103c272f5c28e7fe765cbf146363",
+      "size": 1448,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2eedf2aa3fd1103c272f5c28e7fe765cbf146363"
+    },
+    {
+      "path": "updater/systemd/sysusers.d",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a35da54625b49af12b88b688d3037f2f09ebbdc8",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/a35da54625b49af12b88b688d3037f2f09ebbdc8"
+    },
+    {
+      "path": "updater/systemd/sysusers.d/robot.conf",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "79b19b091c3313167ac67948a1c2e546db479cfc",
+      "size": 573,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/79b19b091c3313167ac67948a1c2e546db479cfc"
+    },
+    {
+      "path": "updater/systemd/updaterd.service",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c44b51fda9be0177ee1f9a80ec7c1001556d22da",
+      "size": 4016,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/c44b51fda9be0177ee1f9a80ec7c1001556d22da"
+    },
+    {
+      "path": "updater/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "43d37fe21cb756a8f2a4887ffc77ca7320c24131",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/43d37fe21cb756a8f2a4887ffc77ca7320c24131"
+    },
+    {
+      "path": "updater/tests/apply.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "664e50d92c33e821da703e3e19480298fa9229c7",
+      "size": 115219,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/664e50d92c33e821da703e3e19480298fa9229c7"
+    },
+    {
+      "path": "updater/tests/download.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "49f3b10d5b966239cbaf7387b5482e64c9c2e540",
+      "size": 10396,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/49f3b10d5b966239cbaf7387b5482e64c9c2e540"
+    },
+    {
+      "path": "updater/tests/install.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "efa26bce3a71bc784d572787bcf97a833d6b3b34",
+      "size": 15780,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/efa26bce3a71bc784d572787bcf97a833d6b3b34"
+    },
+    {
+      "path": "updater/tests/ipc.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f6c33c18d301ce2a622f4bb31c51259be1e47b9d",
+      "size": 55546,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/f6c33c18d301ce2a622f4bb31c51259be1e47b9d"
+    },
+    {
+      "path": "updater/tests/vetbook_share.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "25d4f9a8cbf9fc7080f0525d3a8cfb91c93d4de8",
+      "size": 8337,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/25d4f9a8cbf9fc7080f0525d3a8cfb91c93d4de8"
+    },
+    {
+      "path": "updater/updater.example.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d47962c6eafbd11983413f03b4181aa3aa754502",
+      "size": 10499,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/d47962c6eafbd11983413f03b4181aa3aa754502"
+    },
+    {
+      "path": "uyvy",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b115a3b5b5ff5e9fdc2dad76752ff1e5aad81d64",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b115a3b5b5ff5e9fdc2dad76752ff1e5aad81d64"
+    },
+    {
+      "path": "uyvy/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58a4fc03d4abf342c7e00f168d4022eef42f5060",
+      "size": 858,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/58a4fc03d4abf342c7e00f168d4022eef42f5060"
+    },
+    {
+      "path": "uyvy/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cb0ed25fa28a7ca07bf729e31ad782addeaa158b",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/cb0ed25fa28a7ca07bf729e31ad782addeaa158b"
+    },
+    {
+      "path": "uyvy/src/lib.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1b9eb6ee4ecd0aae108308ec1ddd3daaf84b5dbf",
+      "size": 16276,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/1b9eb6ee4ecd0aae108308ec1ddd3daaf84b5dbf"
+    },
+    {
+      "path": "xtask",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d54d938006fd9ed4176437a247b6036c048da7ad",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/d54d938006fd9ed4176437a247b6036c048da7ad"
+    },
+    {
+      "path": "xtask/Cargo.toml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e972adc2b6ac98c81cbb9d1fe9e54701bcf7fd3",
+      "size": 1101,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/9e972adc2b6ac98c81cbb9d1fe9e54701bcf7fd3"
+    },
+    {
+      "path": "xtask/src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9425343b6fce64dd37facac7e32cf49edb1ef32e",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/9425343b6fce64dd37facac7e32cf49edb1ef32e"
+    },
+    {
+      "path": "xtask/src/main.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8b2e44cfc7199f478f9e6ee3a62bd27f8e1c3673",
+      "size": 104866,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/8b2e44cfc7199f478f9e6ee3a62bd27f8e1c3673"
+    },
+    {
+      "path": "xtask/tests",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b4cd6df3c76b373cdb30a4ee098a411f950f7ae3",
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/trees/b4cd6df3c76b373cdb30a4ee098a411f950f7ae3"
+    },
+    {
+      "path": "xtask/tests/artifact.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3710bb50412e47da10e0032c6a26d0095a440e70",
+      "size": 19418,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/3710bb50412e47da10e0032c6a26d0095a440e70"
+    },
+    {
+      "path": "xtask/tests/rescue.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ca187760164a8a5933541915c4e1feb477a86cd9",
+      "size": 22151,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/ca187760164a8a5933541915c4e1feb477a86cd9"
+    },
+    {
+      "path": "xtask/tests/sideload.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2094686762b4693a08590aa99ac9b7296364492c",
+      "size": 4872,
+      "url": "https://api.github.com/repos/pollen-robotics/microduck/git/blobs/2094686762b4693a08590aa99ac9b7296364492c"
+    }
+  ],
+  "truncated": false
+}

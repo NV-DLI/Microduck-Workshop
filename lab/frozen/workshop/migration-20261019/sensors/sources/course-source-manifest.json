@@ -1,0 +1,12 @@
+[
+  {
+    "source": "@COURSE@/workshop/labs/hardware_sensor_profile.py",
+    "sha256": "960fc7a66b3459a252f76d2ac42c6c6e18c70da520013b5efda0f5ad578d93a1",
+    "new_module": "beta_tof_geometry.py"
+  },
+  {
+    "source": "@COURSE@/workshop/labs/hardware_perception_geometry.py",
+    "sha256": "fd2c69144b18fc30796bf0b0f33c0f5a2d24ee11883c97ff6f6aedcd50790339",
+    "new_module": "beta_perception_geometry.py"
+  }
+]

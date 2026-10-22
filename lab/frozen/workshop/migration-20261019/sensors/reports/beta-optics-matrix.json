@@ -1,0 +1,3653 @@
+{
+  "schema_version": 1,
+  "profile_id": "beta-gc2093-l8cx-v1",
+  "default_scenario_id": "hfov70-pinhole",
+  "hardware": "Beta GC2093 + SPI VL53L8CX + LSM6DSV16X",
+  "unknowns": [
+    "physical Beta lens FoV",
+    "physical Beta K/D",
+    "unit-specific camera/IMU extrinsics",
+    "measured sensor noise"
+  ],
+  "scenario_selection_is_hardware_calibration": false,
+  "tof": {
+    "rows": 8,
+    "cols": 8,
+    "fps": 15.0,
+    "horizontal_fov_deg": 45.0,
+    "vertical_fov_deg": 45.0,
+    "minimum_reliable_range_m": 0.1,
+    "maximum_range_m": 4.0,
+    "sensor_generations": [
+      "VL53L8CX"
+    ],
+    "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+    "distance": "slant range along a normalized spherical-angle ray",
+    "sensor_axes": "FLU: +x forward, +y left, +z up",
+    "zone_order": "row-major; row 0 top, column 0 left",
+    "maximum_range_is_guaranteed": false,
+    "close_range_semantics": "Below 0.1 m is TooClose/unreliable, never a valid free-space observation",
+    "minimum_range_is_chip_physical_limit": false,
+    "close_range_model": "Conservative course slant-range filter; official kinematics also filters near points. This does not reproduce the chip's target-status firmware",
+    "bus": "SPI3",
+    "device": "/dev/spidev3.0",
+    "spi_clock_hz": 8000000,
+    "spi_bus_is_simulated": false,
+    "board": "beta / hw_rev 2",
+    "source_url": "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/kinematics/src/tof.rs#L108"
+  },
+  "head_imu": {
+    "model": "LSM6DSV16X",
+    "enabled": true,
+    "reader": "robotd",
+    "simulated_sample_hz": 60.0,
+    "fifo_read_hz": 15.0,
+    "sensor_internal_odr_hz": 120.0,
+    "gyro_bias_rad_s": [
+      0.0,
+      0.0,
+      0.002
+    ],
+    "gyro_noise_std_rad_s": 0.003,
+    "accel_noise_std_m_s2": 0.03,
+    "orientation_correction_tau_s": 0.5,
+    "hardware_features": [
+      "SFLP on-chip orientation fusion",
+      "FIFO gyro/accel/quaternion batching"
+    ],
+    "stream_rate_is_official": true,
+    "noise_is_measured": false,
+    "gyro_range_deg_s": 500.0,
+    "accel_range_g": 4.0,
+    "sensor_to_head_quaternion_wxyz": [
+      0.5,
+      0.5,
+      -0.5,
+      -0.5
+    ],
+    "sensor_to_head_axes": "head = [-sensor.z, -sensor.x, +sensor.y]",
+    "published_axes": "head FLU after official decode/to_head",
+    "simulation_model": "biased/noisy local gyro and specific force; lightweight complementary tilt fusion",
+    "sflp_firmware_reproduced": false,
+    "absolute_yaw_available": false,
+    "orientation_reference": "gravity-aligned local frame, yaw initialized at zero and integrated from gyro",
+    "source_url": "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd/src/head_imu.rs"
+  },
+  "passed": true,
+  "gate": "CPU optical geometry only",
+  "gpu_render_validated": false,
+  "detector_trained": false,
+  "football_success_validated": false,
+  "scenarios": [
+    {
+      "scenario_id": "hfov60-pinhole",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 60.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 60.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            831.3843876330611,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            831.3843876330611,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 35.98339777135764,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              91.81909317619971,
+              122.90450112050627
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.489705279596947
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              91.81909317619971,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.489705279596947
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              91.81909317619971,
+              416.09549887949373
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.489705279596947
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              256.7312247338778,
+              122.90450112050627
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.002474750967366
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              256.7312247338778,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.002474750967366
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              256.7312247338778,
+              416.09549887949373
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.002474750967366
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.5,
+              122.90450112050627
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.5,
+              416.09549887949373
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              702.2687752661222,
+              122.90450112050627
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.002474750967373
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              702.2687752661222,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.002474750967373
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              702.2687752661222,
+              416.09549887949373
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.002474750967373
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              867.1809068238003,
+              122.90450112050627
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.489705279596947
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              867.1809068238003,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.489705279596947
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              867.1809068238003,
+              416.09549887949373
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.489705279596947
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.1102230246251565e-16,
+        "worst_bearing_error_if_nominal70_kept_deg": 4.489705279596947
+      }
+    },
+    {
+      "scenario_id": "hfov60-barrel",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 60.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 60.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            831.3843876330611,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            831.3843876330611,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 35.98339777135764,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              98.42484342778857,
+              125.97188317021627
+            ],
+            "roundtrip_error_normalized": 6.925182649553108e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.0696549691123565
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              97.29499556366017,
+              269.86155715154484
+            ],
+            "roundtrip_error_normalized": 1.8831602943691905e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.141745197688792
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              97.87797459756007,
+              414.06141603330786
+            ],
+            "roundtrip_error_normalized": 3.7248537587686315e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.104560684524536
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              258.28853962786434,
+              124.21296901939016
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.8846668137507336
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              257.6411234983751,
+              269.61938142686284
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.933661674918241
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              257.97429846355396,
+              415.33597873477004
+            ],
+            "roundtrip_error_normalized": 2.4980018054066022e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.9084511945627796
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.44830251659425,
+              123.42280293268072
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.004320933461550102
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.44830251659425,
+              415.88738196775375
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.004320933461550101
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              699.8917768441471,
+              124.52721018370053
+            ],
+            "roundtrip_error_normalized": 7.049916206369744e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.82259637505296
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              700.6425879404477,
+              269.61938142686284
+            ],
+            "roundtrip_error_normalized": 5.10702591327572e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.8794531244351695
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              700.2060180084575,
+              415.02173757045966
+            ],
+            "roundtrip_error_normalized": 2.5424107263916085e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.8463973698631655
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              858.302418696131,
+              126.51875200044478
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.9243364910963265
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              859.5356615270708,
+              269.86155715154484
+            ],
+            "roundtrip_error_normalized": 1.0451806087274917e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.003240528716795
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              858.8492875263595,
+              413.51454720307936
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.959340516949837
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.0451806087274917e-11,
+        "worst_bearing_error_if_nominal70_kept_deg": 4.141745197688792
+      }
+    },
+    {
+      "scenario_id": "hfov60-pincushion",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 60.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 60.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            831.3843876330611,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            831.3843876330611,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 35.98339777135764,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              85.2133429246108,
+              119.83711907079623
+            ],
+            "roundtrip_error_normalized": 5.2201576394850235e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.906301164118748
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              86.34319078873921,
+              269.13844284845516
+            ],
+            "roundtrip_error_normalized": 1.4903078771055789e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.835291540814801
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              85.7602117548393,
+              418.12958172567966
+            ],
+            "roundtrip_error_normalized": 2.874533944208224e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.871943718192458
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              255.17390983989128,
+              121.59603322162238
+            ],
+            "roundtrip_error_normalized": 9.880984919163893e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.1201254653088775
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              255.82132596938047,
+              269.38061857313716
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.0712341547308277
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              255.48815100420165,
+              416.8550190242174
+            ],
+            "roundtrip_error_normalized": 2.1094237467877974e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.0963981328608483
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.55169748340575,
+              122.38619930833181
+            ],
+            "roundtrip_error_normalized": 4.125281236519345e-18,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.004320933461550102
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.55169748340575,
+              416.3036157912337
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.004320933461550101
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              704.6457736880973,
+              121.28179205731197
+            ],
+            "roundtrip_error_normalized": 6.045164369083977e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.181986842445351
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              703.8949625917967,
+              269.38061857313716
+            ],
+            "roundtrip_error_normalized": 4.551914400963142e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.1253249407771477
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              704.3315325237869,
+              417.1692601885278
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.158276291674092
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              876.0593949514696,
+              119.29025024056776
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 5.048833890845515
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              874.8261521205297,
+              269.13844284845516
+            ],
+            "roundtrip_error_normalized": 7.795264433951843e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.971542928279575
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              875.5125261212411,
+              418.67645055590816
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 5.0145748723977945
+          }
+        ],
+        "max_roundtrip_error_normalized": 7.795264433951843e-12,
+        "worst_bearing_error_if_nominal70_kept_deg": 5.048833890845515
+      }
+    },
+    {
+      "scenario_id": "hfov70-pinhole",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            685.5110432362151,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            685.5110432362151,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 42.99566141876366,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              159.84095078913055,
+              148.62590750384823
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -7.105427357601002e-15
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              159.84095078913055,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.552713678800501e-15
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              159.84095078913055,
+              390.3740924961518
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -7.105427357601002e-15
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              295.8178695622397,
+              148.62590750384823
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -1.7763568394002505e-15
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              295.8178695622397,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -1.7763568394002505e-15
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              295.8178695622397,
+              390.3740924961518
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -1.7763568394002505e-15
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.5,
+              148.62590750384823
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.5,
+              390.3740924961518
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              663.1821304377603,
+              148.62590750384823
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 1.7763568394002505e-15
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              663.1821304377603,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 1.7763568394002505e-15
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              663.1821304377603,
+              390.3740924961518
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 1.7763568394002505e-15
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              799.1590492108694,
+              148.62590750384823
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              799.1590492108694,
+              269.5
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.552713678800501e-15
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              799.1590492108694,
+              390.3740924961518
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.1102230246251565e-16,
+        "worst_bearing_error_if_nominal70_kept_deg": 7.105427357601002e-15
+      }
+    },
+    {
+      "scenario_id": "hfov70-barrel",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            685.5110432362151,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            685.5110432362151,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 42.99566141876366,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              165.28766690947612,
+              151.1550917177678
+            ],
+            "roundtrip_error_normalized": 6.925238160704339e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.37506957734565916
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              164.3560603030038,
+              269.79811892529113
+            ],
+            "roundtrip_error_normalized": 1.8831602943691905e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.3107567993407905
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              164.83675078944816,
+              388.69690649812316
+            ],
+            "roundtrip_error_normalized": 3.7248537587686315e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.343932638151081
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              297.1019405329051,
+              149.7047937660243
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.10018154883376518
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              296.56811897823576,
+              269.59843495702967
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.058522125554475224
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              296.84283560914355,
+              389.7478365133437
+            ],
+            "roundtrip_error_normalized": 2.3869795029440866e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.07995898976479943
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.45737327244854,
+              149.0532689280704
+            ],
+            "roundtrip_error_normalized": 3.1799255071129596e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.0035627895481816266
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.45737327244854,
+              390.2024914372383
+            ],
+            "roundtrip_error_normalized": 2.981085453323202e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.003562789548181626
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              661.2221962698142,
+              149.96389868978582
+            ],
+            "roundtrip_error_normalized": 7.049916206369744e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.15294902676813926
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              661.8412712795863,
+              269.59843495702967
+            ],
+            "roundtrip_error_normalized": 5.10702591327572e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.10461424739308534
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              661.4813011935756,
+              389.48873158958213
+            ],
+            "roundtrip_error_normalized": 2.5424107263916085e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.13271656657281383
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              791.8383660836741,
+              151.60600783779574
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.5046381051331252
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              792.8552261452493,
+              269.79811892529113
+            ],
+            "roundtrip_error_normalized": 1.0451806087274917e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.43429783846720227
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              792.2892822037021,
+              388.2459903780952
+            ],
+            "roundtrip_error_normalized": 1.6653345369377348e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.47343671227491413
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.0451806087274917e-11,
+        "worst_bearing_error_if_nominal70_kept_deg": 0.5046381051331252
+      }
+    },
+    {
+      "scenario_id": "hfov70-pincushion",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            685.5110432362151,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            685.5110432362151,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 42.99566141876366,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              154.39423466878503,
+              146.0967232899286
+            ],
+            "roundtrip_error_normalized": 5.2201576394850235e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.37279367241560024
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              155.32584127525735,
+              269.20188107470887
+            ],
+            "roundtrip_error_normalized": 1.4903078771055789e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.3091928389825753
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              154.845150788813,
+              392.05127849418045
+            ],
+            "roundtrip_error_normalized": 2.874533944208224e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.34201795453873984
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              294.5337985915744,
+              147.5470212416721
+            ],
+            "roundtrip_error_normalized": 9.880984919163893e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.10008776497314464
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              295.0676201462437,
+              269.40156504297033
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.05849010991403958
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              294.79290351533587,
+              391.0003484789599
+            ],
+            "roundtrip_error_normalized": 2.1649348980190553e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.07989923542453248
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.54262672755146,
+              148.19854607962606
+            ],
+            "roundtrip_error_normalized": 3.1514896019132854e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.003562789548181626
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.54262672755146,
+              390.54569355506527
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0035627895481816266
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              665.1420646057064,
+              147.2879163179106
+            ],
+            "roundtrip_error_normalized": 6.056266599330229e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.1527305368601457
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              664.5229895959342,
+              269.40156504297033
+            ],
+            "roundtrip_error_normalized": 4.496403249731884e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.10451198492627256
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              664.8829596819448,
+              391.2594534027214
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.13255202692971402
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              806.4797323380648,
+              145.64580716990065
+            ],
+            "roundtrip_error_normalized": 1.6653345369377348e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.5005268334335717
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              805.4628722764896,
+              269.20188107470887
+            ],
+            "roundtrip_error_normalized": 7.795264433951843e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.4312493275769711
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              806.0288162180368,
+              392.5021946142084
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.46981628274292575
+          }
+        ],
+        "max_roundtrip_error_normalized": 7.795264433951843e-12,
+        "worst_bearing_error_if_nominal70_kept_deg": 0.5005268334335717
+      }
+    },
+    {
+      "scenario_id": "hfov80-pinhole",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 80.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 80.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            572.0417244452209,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            572.0417244452209,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 50.534015846724564,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              212.75256310700206,
+              168.6336098893105
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.7378930689379253
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              212.75256310700206,
+              269.5
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.7378930689379253
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              212.75256310700206,
+              370.3663901106895
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.7378930689379253
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              326.22188189799624,
+              168.6336098893105
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.3961595234454833
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              326.22188189799624,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.3961595234454833
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              326.22188189799624,
+              370.3663901106895
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.3961595234454833
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.5,
+              168.6336098893105
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.5,
+              370.3663901106895
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              632.7781181020038,
+              168.6336098893105
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.3961595234454833
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              632.7781181020038,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.3961595234454833
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              632.7781181020038,
+              370.3663901106895
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.3961595234454833
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              746.2474368929979,
+              168.6336098893105
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.7378930689379253
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              746.2474368929979,
+              269.5
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.7378930689379253
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              746.2474368929979,
+              370.3663901106895
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.7378930689379253
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.1102230246251565e-16,
+        "worst_bearing_error_if_nominal70_kept_deg": 3.7378930689379253
+      }
+    },
+    {
+      "scenario_id": "hfov80-barrel",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 80.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 80.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            572.0417244452209,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            572.0417244452209,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 50.534015846724564,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              217.29771072028768,
+              170.74415050487818
+            ],
+            "roundtrip_error_normalized": 6.925182649553108e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.068561955457504
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              216.5203084378166,
+              269.7487727452328
+            ],
+            "roundtrip_error_normalized": 1.8831602943691905e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.0119000359935555
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              216.92143255901516,
+              368.9668205778657
+            ],
+            "roundtrip_error_normalized": 3.7248537587686315e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.04113109920921
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              327.2934068276338,
+              169.5339133402686
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.4814827478140344
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              326.84794616628915,
+              269.5821414959256
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.446004798314595
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              327.077190285445,
+              369.8437952438607
+            ],
+            "roundtrip_error_normalized": 2.4980018054066022e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.464261332417582
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.46442906795363,
+              168.990232249352
+            ],
+            "roundtrip_error_normalized": 1.735226112276025e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.002973058272194917
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.46442906795363,
+              370.22319334292615
+            ],
+            "roundtrip_error_normalized": 1.5390917455904127e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.002973058272194917
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              631.14260233272,
+              169.75012988245743
+            ],
+            "roundtrip_error_normalized": 7.049916206369744e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.526414825070784
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              631.6592048581573,
+              269.5821414959256
+            ],
+            "roundtrip_error_normalized": 5.10702591327572e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.4852574833857624
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              631.3588188749088,
+              369.6275787016719
+            ],
+            "roundtrip_error_normalized": 2.5368596112684827e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.509187418640183
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              740.1385109442225,
+              171.1204286661507
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.182669730707527
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              740.9870550907863,
+              269.7487727452328
+            ],
+            "roundtrip_error_normalized": 1.0451861598426149e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.1207305682941175
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              740.5147891054951,
+              368.59054241659317
+            ],
+            "roundtrip_error_normalized": 1.6653345369377348e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.1551971539376495
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.0451861598426149e-11,
+        "worst_bearing_error_if_nominal70_kept_deg": 4.182669730707527
+      }
+    },
+    {
+      "scenario_id": "hfov80-pincushion",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 80.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 80.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            572.0417244452209,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            572.0417244452209,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 50.534015846724564,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              208.20741549371638,
+              166.5230692737428
+            ],
+            "roundtrip_error_normalized": 5.2201576394850235e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.4087027078732923
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              208.98481777618747,
+              269.2512272547672
+            ],
+            "roundtrip_error_normalized": 1.4903078771055789e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.4649021159576527
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              208.5836936549889,
+              371.7659596435133
+            ],
+            "roundtrip_error_normalized": 2.874533944208224e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 3.4358988982356102
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              325.15035696835866,
+              167.73330643835237
+            ],
+            "roundtrip_error_normalized": 9.936496070395151e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.310893082052088
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              325.59581762970333,
+              269.4178585040744
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.3463336329611657
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              325.3665735105475,
+              370.8889849775183
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.3280938937082585
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.53557093204637,
+              168.276987529269
+            ],
+            "roundtrip_error_normalized": 1.71762788610299e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.002973058272194917
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.53557093204637,
+              370.50958687845286
+            ],
+            "roundtrip_error_normalized": 1.5319905551280098e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.002973058272194917
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              634.4136338712875,
+              167.51708989616355
+            ],
+            "roundtrip_error_normalized": 6.045164369083977e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.2660365102435254
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              633.8970313458502,
+              269.4178585040744
+            ],
+            "roundtrip_error_normalized": 4.6074255521944e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.3071234799954894
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              634.1974173290987,
+              371.1052015197071
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.2832312515286883
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              752.3563628417734,
+              166.14679111247028
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.2957872767825442
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              751.5078186952096,
+              269.2512272547672
+            ],
+            "roundtrip_error_normalized": 7.795264433951843e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.3570360164971333
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              751.9800846805008,
+              372.14223780478585
+            ],
+            "roundtrip_error_normalized": 1.3543444143948591e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -3.322940977457776
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.3543444143948591e-11,
+        "worst_bearing_error_if_nominal70_kept_deg": 3.4649021159576527
+      }
+    },
+    {
+      "scenario_id": "hfov90-pinhole",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 90.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 90.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            480.00000000000006,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            480.00000000000006,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 58.71550708558254,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              255.67232408560065,
+              184.86304925993682
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 6.917511165965024
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              255.67232408560065,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 6.917511165965028
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              255.67232408560065,
+              354.1369507400632
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 6.917511165965024
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              350.8843876330611,
+              184.86304925993682
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.373700424738615
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              350.8843876330611,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.373700424738615
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              350.8843876330611,
+              354.1369507400632
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.373700424738615
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.5,
+              184.86304925993682
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.5,
+              354.1369507400632
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              608.1156123669389,
+              184.86304925993682
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.373700424738615
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              608.1156123669389,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.373700424738615
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              608.1156123669389,
+              354.1369507400632
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.373700424738615
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              703.3276759143994,
+              184.86304925993682
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -6.917511165965024
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              703.3276759143994,
+              269.5
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -6.917511165965028
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              703.3276759143994,
+              354.1369507400632
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -6.917511165965024
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.1102230246251565e-16,
+        "worst_bearing_error_if_nominal70_kept_deg": 6.917511165965028
+      }
+    },
+    {
+      "scenario_id": "hfov90-barrel",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 90.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 90.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          -0.08,
+          0.01,
+          0.002,
+          -0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            480.00000000000006,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            480.00000000000006,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 58.71550708558254,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              259.48615577155493,
+              186.6340031120443
+            ],
+            "roundtrip_error_normalized": 6.925182649553108e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 7.206037107594156
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              258.83383780305707,
+              269.70874511877184
+            ],
+            "roundtrip_error_normalized": 1.8831602943691905e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 7.156621003789013
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              259.17042090521113,
+              352.9625724612638
+            ],
+            "roundtrip_error_normalized": 3.724964781071094e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 7.182115309593559
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              351.78350380631724,
+              185.6184935535834
+            ],
+            "roundtrip_error_normalized": 1.1157741397482823e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.446311388957284
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              351.40971792967895,
+              269.5689248989355
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.416120952598867
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              351.6020765855122,
+              353.698441580052
+            ],
+            "roundtrip_error_normalized": 2.4980018054066022e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.431656891752054
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.4701524440393,
+              185.1622909507172
+            ],
+            "roundtrip_error_normalized": 3.722380874812068e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.002494692100327685
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.4701524440393,
+              354.0167943850472
+            ],
+            "roundtrip_error_normalized": 3.9117346765804615e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -0.002494692100327685
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              606.7432516881482,
+              185.79992077438845
+            ],
+            "roundtrip_error_normalized": 7.061018436615996e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.484543535600274
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              607.176732676708,
+              269.5689248989355
+            ],
+            "roundtrip_error_normalized": 5.10702591327572e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.449523410908334
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              606.9246789089533,
+              353.51701435924696
+            ],
+            "roundtrip_error_normalized": 2.5479618415147343e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.469885398605394
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              698.2016784038926,
+              186.94973797838816
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -7.305522597345316
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              698.9136914843118,
+              269.70874511877184
+            ],
+            "roundtrip_error_normalized": 1.045191710957738e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -7.251525632451969
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              698.5174132702364,
+              352.64683759491993
+            ],
+            "roundtrip_error_normalized": 1.863720289208004e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -7.28157418627141
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.863720289208004e-11,
+        "worst_bearing_error_if_nominal70_kept_deg": 7.305522597345316
+      }
+    },
+    {
+      "scenario_id": "hfov90-pincushion",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 90.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 90.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.08,
+          -0.01,
+          -0.002,
+          0.002,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.0,
+          0.0
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            480.00000000000006,
+            0.0,
+            479.5
+          ],
+          [
+            0.0,
+            480.00000000000006,
+            269.5
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 58.71550708558254,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              251.85849239964637,
+              183.09209540782928
+            ],
+            "roundtrip_error_normalized": 5.2201576394850235e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 6.629930910350705
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              252.51081036814423,
+              269.29125488122816
+            ],
+            "roundtrip_error_normalized": 1.4903078771055789e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 6.679051184136679
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              252.17422726599023,
+              355.31132901886264
+            ],
+            "roundtrip_error_normalized": 2.874533944208224e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 6.653702611994618
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              349.98527145980495,
+              184.1076049662902
+            ],
+            "roundtrip_error_normalized": 9.880984919163893e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.301123973645948
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              350.35905733644324,
+              269.4310751010645
+            ],
+            "roundtrip_error_normalized": 2.220446049250313e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.331291678851176
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              350.16669868061,
+              354.57545990007435
+            ],
+            "roundtrip_error_normalized": 2.1094237467877974e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 4.3157659477360255
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              479.5298475559607,
+              184.5638075691564
+            ],
+            "roundtrip_error_normalized": 3.7033786336263164e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.002494692100327685
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              479.5,
+              269.5
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.0
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              479.5298475559607,
+              354.25710709507916
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 0.002494692100327685
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              609.4879730457296,
+              183.92617774548512
+            ],
+            "roundtrip_error_normalized": 6.061817714453355e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.262937719850575
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              609.0544920571698,
+              269.4310751010645
+            ],
+            "roundtrip_error_normalized": 4.496403249731884e-15,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.297915071886504
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              609.3065458249246,
+              354.75688712087947
+            ],
+            "roundtrip_error_normalized": 2.2426505097428162e-14,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -4.277576002686482
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              708.4536734249061,
+              182.77636054148547
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -6.531208068623233
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              707.7416603444868,
+              269.29125488122816
+            ],
+            "roundtrip_error_normalized": 7.795264433951843e-12,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -6.584763424023148
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              708.1379385585623,
+              355.6270638852065
+            ],
+            "roundtrip_error_normalized": 1.3543499655099822e-11,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -6.55495251927184
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.3543499655099822e-11,
+        "worst_bearing_error_if_nominal70_kept_deg": 6.679051184136679
+      }
+    },
+    {
+      "scenario_id": "hfov70-offset-0.03",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          -0.03,
+          0.03
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          -0.03,
+          0.03
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            685.5110432362151,
+            0.0,
+            450.7
+          ],
+          [
+            0.0,
+            685.5110432362151,
+            285.7
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 42.99566141876366,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              131.04095078913053,
+              164.8259075038482
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -1.945146379934389
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              131.04095078913053,
+              285.7
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -1.945146379934389
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              131.04095078913053,
+              406.57409249615176
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -1.9451463799343927
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              267.01786956223975,
+              164.8259075038482
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.221431246973168
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              267.01786956223975,
+              285.7
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.221431246973168
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              267.01786956223975,
+              406.57409249615176
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.221431246973168
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              450.7,
+              164.8259075038482
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.4057214658097945
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              450.7,
+              285.7
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.405721465809794
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              450.7,
+              406.57409249615176
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.405721465809794
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              634.3821304377602,
+              164.8259075038482
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.268541693321488
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              634.3821304377602,
+              285.7
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.26854169332149
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              634.3821304377602,
+              406.57409249615176
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.26854169332149
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              770.3590492108694,
+              164.8259075038482
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.008720355767238
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              770.3590492108694,
+              285.7
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.008720355767238
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              770.3590492108694,
+              406.57409249615176
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": -2.008720355767238
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.1102230246251565e-16,
+        "worst_bearing_error_if_nominal70_kept_deg": 2.4057214658097945
+      }
+    },
+    {
+      "scenario_id": "hfov70-offset+0.03",
+      "profile_id": "beta-gc2093-l8cx-v1",
+      "camera_kwargs": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.03,
+          -0.03
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f"
+      },
+      "camera": {
+        "width_px": 960,
+        "height_px": 540,
+        "fps": 30.0,
+        "assumed_horizontal_fov_deg": 70.0,
+        "distortion_k1_k2_p1_p2_k3": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "principal_offset_fraction": [
+          0.03,
+          -0.03
+        ],
+        "mount_rotation_cw_deg": 0,
+        "calibration_family": "beta-uncalibrated; explicit virtual pinhole experiment",
+        "source_commit": "53230463927095ea890f231d29089bb0a538c06f",
+        "profile_id": "beta-gc2093-l8cx-v1",
+        "sensor": "GalaxyCore GC2093",
+        "board": "beta / hw_rev 2",
+        "hardware_driver_raster": [
+          1920,
+          1080
+        ],
+        "hardware_driver_rate_hz": 30,
+        "simulated_output_raster": [
+          960,
+          540
+        ],
+        "raw_format_hardware": "SRGGB10_1X10",
+        "simulated_output_format": "RGB8 after virtual ISP",
+        "K": [
+          [
+            685.5110432362151,
+            0.0,
+            508.3
+          ],
+          [
+            0.0,
+            685.5110432362151,
+            253.3
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "assumed_vertical_fov_deg": 42.99566141876366,
+        "physical_lens_model": null,
+        "physical_lens_hfov_deg": null,
+        "physical_K": null,
+        "physical_D": null,
+        "unit_specific_calibration": false,
+        "calibrated": false,
+        "optics_origin": "course sensitivity experiment; not alpha calibration and not measured Beta optics",
+        "raw_stream_rotated": false,
+        "rotation_applied_by": "none: Beta camera is mounted at 0 degrees",
+        "source_urls": [
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+          "https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs"
+        ]
+      },
+      "detector_contract": {
+        "image_rotation_deg": 0,
+        "input_image_size_wh": [
+          960,
+          540
+        ],
+        "reverse_letterbox_before_geometry": true,
+        "use_scenario_K_and_D_for_geometry": true,
+        "training_scope": "vary scene camera optics across the listed scenarios; split validation by scenario and seed"
+      },
+      "ray_checks": {
+        "points": [
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              188.64095078913056,
+              132.42590750384824
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.008720355767238
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              188.64095078913056,
+              253.3
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.008720355767238
+          },
+          {
+            "true_bearing_deg": -25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              188.64095078913056,
+              374.1740924961518
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.008720355767238
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              324.6178695622398,
+              132.42590750384824
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.26854169332149
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              324.6178695622398,
+              253.3
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.26854169332149
+          },
+          {
+            "true_bearing_deg": -15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              324.6178695622398,
+              374.1740924961518
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.268541693321488
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              508.3,
+              132.42590750384824
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.405721465809794
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              508.3,
+              253.3
+            ],
+            "roundtrip_error_normalized": 0.0,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.405721465809794
+          },
+          {
+            "true_bearing_deg": 0.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              508.3,
+              374.1740924961518
+            ],
+            "roundtrip_error_normalized": 2.7755575615628914e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.4057214658097945
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              691.9821304377602,
+              132.42590750384824
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.221431246973168
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              691.9821304377602,
+              253.3
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.221431246973168
+          },
+          {
+            "true_bearing_deg": 15.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              691.9821304377602,
+              374.1740924961518
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 2.221431246973168
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": -10.0,
+            "pixel": [
+              827.9590492108695,
+              132.42590750384824
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 1.9451463799343927
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 0.0,
+            "pixel": [
+              827.9590492108695,
+              253.3
+            ],
+            "roundtrip_error_normalized": 5.551115123125783e-17,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 1.945146379934389
+          },
+          {
+            "true_bearing_deg": 25.0,
+            "true_elevation_tangent_deg": 10.0,
+            "pixel": [
+              827.9590492108695,
+              374.1740924961518
+            ],
+            "roundtrip_error_normalized": 1.1102230246251565e-16,
+            "bearing_error_if_estimator_keeps_nominal70_deg": 1.945146379934389
+          }
+        ],
+        "max_roundtrip_error_normalized": 1.1102230246251565e-16,
+        "worst_bearing_error_if_nominal70_kept_deg": 2.4057214658097945
+      }
+    }
+  ]
+}

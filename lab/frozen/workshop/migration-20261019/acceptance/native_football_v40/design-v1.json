@@ -1,0 +1,253 @@
+{
+  "schema": "microduck.native-football-navigation-design.v40",
+  "status": "prospectively_frozen_before_first_actual_execution",
+  "purpose": "Restore native control and separately declared finite BODY50 in the actual RGB/ToF autonomous pipeline, then validate approach before enabling a neutral-head local kick. This reference model is not student-owned random training.",
+  "model": "@COURSE@/workshop/migration-20261019/models/community-v8/velstand.onnx",
+  "action": {
+    "class": "native BiasedJointPositionAction",
+    "raw_scale": 1,
+    "ema": false,
+    "position_projection": false,
+    "course_target_slew": false,
+    "head_reference_override": false,
+    "previous_raw_history": true,
+    "native_motor_physics_and_bounds_unchanged": true
+  },
+  "sensor": {
+    "body50": "Scalar finite-range candidate independently checked:120Hz virtual synthesis,50Hz reads,median3,tau2,zero extraqueue",
+    "head_fifo_and_camera_unchanged": true,
+    "hardware_firmware_reproduction_claimed": false,
+    "delivered_data_only": true
+  },
+  "scene": {
+    "physics_hz": 200,
+    "policy_hz": 50,
+    "RGB_ToF_hz": 15,
+    "no_task_reset_or_support": true,
+    "retain_current45g35mm_ball": true,
+    "all_historical_results_preserved": true
+  },
+  "navigation": {
+    "real_inputs": "same-frame RGB detector, complete-sphere metric estimate, 64 ToF cells, encoders and delivered BODY50; known goal map only",
+    "old_controller_source": "v28 bounded image servo and public angular-cell sphere association",
+    "new_strike_box_body_m": {
+      "x": [
+        0.075,
+        0.105
+      ],
+      "y": [
+        -0.05,
+        -0.02
+      ]
+    },
+    "strike_region_requires_fresh_public_geometry": true,
+    "partial_ball_never_disables_ToF_guard": true,
+    "all_zero_commands_stay_exact_zero": true,
+    "community_command_issue": "Prior low desired velocity commands fall inside community dead zone. A declared command adapter is required and must be separately tested on native + finite sensor, not calibrated from old projected-path velocity values.",
+    "initial_primitive_candidates": {
+      "forward": [
+        0.3,
+        0,
+        0
+      ],
+      "backward": [
+        -0.3,
+        0,
+        0
+      ],
+      "turn_left": [
+        0,
+        0,
+        0.6
+      ],
+      "turn_right": [
+        0,
+        0,
+        -0.6
+      ]
+    },
+    "primitive_speed_claimed": false,
+    "lateral_and_near_field_mapping": "Pending actual primitive response; do not invent precise lateral motion or disable guards to force progress.",
+    "command_adapter": {
+      "candidate_not_calibrated_speed_map": true,
+      "phase": "OBSERVE then TURN or ADVANCE toward current public preparation point; no STRAFE request",
+      "forward_command": [
+        0.3,
+        0,
+        0
+      ],
+      "forward_duration_s": 0.6,
+      "turn_command_magnitude": 0.6,
+      "turn_duration_min_max_s": [
+        0.4,
+        1.2
+      ],
+      "turn_start_bearing_rad": 0.18,
+      "turn_finish_bearing_rad": 0.06,
+      "sign_crossing_stops_immediately": true,
+      "observe_min_s": 0.4,
+      "observe_public_gyro_mean_max_rad_s": "legacy diagnostic only",
+      "observe_public_ball_relative_change_max_m": "legacy endpoint diagnostic only",
+      "observe_window_min_s": 0.33,
+      "observe_timeout_warning_s": 2.0,
+      "near_range_lower_bound_hold_m": 0.16,
+      "zero_guard_preempts_every_phase": true,
+      "near_field_armed": "observation approach only, no kick",
+      "source_response": "All14DRworlds retained; positive yaw world10 initially reversed until roughly1s while world11 responded early. A fixed0.5s guarantee is unsupported; bounded1.2s cap with fresh bearing termination is a development candidate.",
+      "measured_response_guaranteed": false,
+      "near_entry_lower_m": 0.34,
+      "near_hold_lower_m": 0.16,
+      "near_forward_duration_s": 0.4,
+      "near_lateral_duration_s": 2.0,
+      "near_lateral_command_magnitude": 0.3,
+      "near_heading_start_rad": 0.1,
+      "near_lateral_start_m": 0.025,
+      "near_lateral_stop_m": 0.02,
+      "goal_memory_age_max_s": 8.0,
+      "near_target_side_offset_m": 0.035,
+      "near_target_is_final_strike_qualification": false,
+      "near_body_heading_owner": "atan2(public preparation point body Y error, body X error)",
+      "final_goal_heading_alignment_armed": false,
+      "near_turn_duration_min_max_s": [
+        0.4,
+        2.4
+      ],
+      "near_turn_command_magnitude": 0.8,
+      "observe_public_gyro_3D_RMS_max_rad_s": 0.12,
+      "observe_public_ball_window_XY_diameter_max_m": 0.02,
+      "near_forward_command_magnitude": 0.2,
+      "forward_amplitude_latched_at_onset": true
+    }
+  },
+  "kick": {
+    "initial_short_navigation_armed": false,
+    "community_published_duration_s": 0.5,
+    "training_commit_of_kick_known": false,
+    "three_second_infer_default_is_not_model_binding": true,
+    "required_before_arming": [
+      "fresh or explicitly validated finite-age ball estimate inside strike box",
+      "public visual alignment to fixed goal",
+      "head and measured quiet state inside verified local skill onset distribution",
+      "actual native raw transition and recovery checked"
+    ],
+    "goal_plane_and_whole_ball_criterion_unchanged": true
+  },
+  "GPU_order": "One shared-load 40s Kit run after Web explicitly releases Kit. Flawed from0 v2 has stopped; no performance claim.",
+  "qualification_claimed": false,
+  "sources": {
+    "@COURSE@/workshop/migration-20261019/models/community-v8/velstand.onnx": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+    "@COURSE@/workshop/migration-20261019/models/community-v8/manifest.json": "c566390738dd90a54c1e2de829aaab0e904c636949e2c2c6158ee7bbb889b818",
+    "@COURSE@/outputs/migration-20261019/native-target-ab-v2-comparison.json": "d4a98a606883e6c08aa2f48886f8c8ae9c707153405e4bba496d3710e2654e55",
+    "@COURSE@/outputs/migration-20261019/native-target-finite-range-v3-comparison.json": "d65d74ee1b7456e4a814528ac55487d215ba16cfd763ae69e3a0dacae71ac43a",
+    "@COURSE@/outputs/migration-20261019/kick-native-target-ab-comparison-v1.json": "ac1ca6faf8b1aef39196aa93016bae54336a2fc23539697a82afc9303c7bd3c8",
+    "@COURSE@/outputs/migration-20261019/community-walk-command-grid-v2/summary.json": "68940708a89fbd567a2d33e3cc83e8bbecbdf24fb16664e1c9e3ab96a81c81b3",
+    "@COURSE@/outputs/migration-20261019/official-joint-semantics-review-v1.json": "f553cca538e5c5482d61548b6cdaeb605e7152e48ed816ad6cc6ff4be6bad702",
+    "@COURSE@/outputs/migration-20261019/body50-scalar-finite-range-cpu-v1.json": "8b39c1a4185a19be7accdae25912a64bd2b2649220b5a68a2fc6712bdc6562c6",
+    "@COURSE@/outputs/migration-20261019/native-community-primitives14-s980231/independent-audit.json": "6e52c38bb5df8def0d897cab0242276789f840cc1b35daa17c4870cb7b483ea5",
+    "@COURSE@/outputs/migration-20261019/native-community-primitives-response-v1.json": "83e11d746c86ab5ff54c63d646c80247491ce34bb33c0bb7409ddf962dd883fb",
+    "@COURSE@/outputs/migration-20261019/football-v29-independent-diagnosis-v1.json": "ec30763793fd20262bccd048671da8969c6de7be81ac9df66484a73d20f5f246",
+    "@COURSE@/outputs/migration-20261019/football-v30-phase-motion-independent-v2.json": "48dd61e65cadafc6f90c24c6a076b4796448ecaf044c22771a6c99335e037a6e",
+    "@COURSE@/outputs/migration-20261019/football-v33-lateral-response-diagnosis-v2.json": "9ef83629f6f6a76248d6a3478528d527624fe0af9479c6eb866c1376d0eb235b",
+    "@COURSE@/outputs/migration-20261019/football-v34-turn-independent-review-v1.json": "458dd8d746cbe46eca96ddc93794902004d96080b6452706484439174dc3c2e3",
+    "@COURSE@/outputs/migration-20261019/native-head-turn-amplitude6-s980242/independent-audit.json": "9ffd41721b7fb4fe1d473bc3f77debece0865e16d31789f4d49a0de578ea92c2",
+    "@COURSE@/outputs/migration-20261019/native-head-turn-amplitude6-s980242/independent-ground-motion-audit.json": "bc450aeb9dfd523b00ff7330e1710222a385083e508c30d86fcc3130d7a58395",
+    "@COURSE@/outputs/migration-20261019/football-v35-near-motion-independent-v1.json": "daa96255ca98a0f142645116f9c45383db1588e12d51df138d90b04094b12997",
+    "@COURSE@/outputs/migration-20261019/football-v36-development-decision-v1.json": "5cf87ec215875c7ed5e620f2d1a6a3f6dcd8b1b277786f7ece26d4daf57a0063",
+    "@COURSE@/outputs/migration-20261019/football-v37-public-quiet-window-review-v1.json": "e9ab51b1b8a37643acd641fd66d9bb0aeafcf035e45e393240255a357804c833",
+    "@COURSE@/outputs/migration-20261019/football-v37-relative-geometry-error-decomposition-v1.json": "f6999da23b1b7ee7baf1c2f06dfd61bfe7a45d084b45a5754d8de15b84c49654",
+    "@COURSE@/outputs/migration-20261019/native-navigation-head-command-domain-review-v1.json": "02d437fefcd50a9cf591fd0570d2ca07de0aa67f603116064d14488974cf7031"
+  },
+  "initial_run": {
+    "seed": 971001,
+    "root_xy": [
+      -0.66,
+      0.0
+    ],
+    "ball_xy": [
+      0.0,
+      0.0
+    ],
+    "seconds": 40,
+    "domain_randomization": false,
+    "qualification_claimed": false,
+    "source_dr_AB_preserved": true
+  },
+  "change_from_v29": "From frozenv30, only add explicit near alignment phases; existing public goal-shot-heading controls body direction, public relative position controls lateral move; stop at metric range lower.18m, kick remains disabled.",
+  "prospective_evidence": "@COURSE@/outputs/migration-20261019/football-v34-turn-independent-review-v1.json",
+  "planned_task_seconds": 40,
+  "integration_fix": {
+    "baseline": "v31 retained complete failed near-context run",
+    "change": "Both near geometry and image attention use the same current accepted RGB metric horizontal-range lower bound <=.34m as command adapter; actual_Navfn_path enters existing near context. Cropped map-only head attention never authorizes metric motion.",
+    "unchanged": "All original hard guards, durations, amplitudes, quiet gates, goal memory8s, stop lower bound.18m, model/sensors/scene/seed and kick disabled",
+    "guard_clarification": "Explicit zero Navfn request and zero_command_observe_real_settling preserve zero in the full near chain; no known hard hold is converted to alignment."
+  },
+  "change_from_v32": "Only lateral phase maximum duration .5 to 2.0s; .3 command and every immediate guard, sign/error/heading termination unchanged. Prior .53s pulses moved .77\u20132.60mm then often recoiled; no assumption that longer duration guarantees progress.",
+  "change_from_v33": "Replace ineffective lateral motion during near position approach by public preparation-waypoint bearing turn, then native forward burst. Goal-shot heading retained as a separate diagnostic for future final aim; no final kick/alignment qualification. Empty layout only.",
+  "change_from_v34": "Only near turn maximum duration 1.2 to 2.4 seconds, latched when a turn starts. Far turn remains 1.2 seconds. Same public preparation waypoint, .6 command, .4 minimum, .06 completion, immediate sign-crossing/guard stop, 18cm envelope and no kick.",
+  "duration_rationale": "Five completed v34 turns produced real +.140 to +.211rad yaw, followed by -.123 to -.132rad recoil in .4s. Two previous time-cap durations are a bounded hypothesis to test longer stepping, not a calibrated guarantee.",
+  "change_from_v35": "Only near turn command magnitude .6 to .8, latched at turn onset. Far .6 remains; every duration, stop, sign crossing, quiet, fresh visual/goal/ToF guard unchanged.",
+  "magnitude_rationale": "Prospective nominal near-head probe found +.6 no ground contact switching and .241rad at2.4s; +.8 produced10/11foot support transitions and1.912rad. All6conditions survived with continuous finiteBODY50. This does not guarantee precise stopping under image feedback.",
+  "change_from_v36": "Only development horizontal-range lower-bound stop .18 to .16m. Same complete fresh RGB/floor/ToF/goal authority, .4s near forward, .8 near turns, observed quiet gate and unarmed kick. Add read-only public metric geometry to control log.",
+  "closer_observation_rationale": {
+    "previous": "v36 reached .18613m actual horizontal ball distance with no contact/fall; complete-ball image retained and final1s planar RMS .000206m/s.",
+    "new_hold_lower_m": 0.16,
+    "scope": "Prospective bounded closer-observation experiment, not a hardware safety threshold or strike qualification. Keep physical ball/goal fixed and kick unarmed. Any loss/crop/stale/unknown obstacle still immediately zeros command.",
+    "uncertainty": "Use existing same-frame public metric lower bound, not private actual-distance score. No scalar radial uncertainty is claimed to certify XY strike-envelope inclusion.",
+    "expected_failure_modes": [
+      "closer ball crop or missing floor",
+      "goal refresh causing temporary visual loss",
+      "nonholonomic waypoint turn overshoot",
+      "head-command domain differs from validated neutral kick"
+    ],
+    "last_forward_stop_correction": "Independent timing review: lastforward ended14.47s by public waypoint bearing .16899>.15, not distance. True ball distance .21077 then .18345 at14.87s; first.4s rootlink XY travel39.1mm and radial approach27.3mm. The18cm lower-range hold first triggered after that and prevented restart. Thus16cm is the next observation step, not13cm. Complete report will bind independent review."
+  },
+  "change_from_v37": "Only quiet observation aggregation:3D delivered gyro RMS and maximum pairwise current public ball XY difference replace signed level-Z mean and first-last XY change. Same numeric limits .12rad/s and .02m, same .33s coverage/.45s window/.4s minimum. No change to16cm hold, amplitudes/durations/head/physics/sensors.",
+  "known_remaining_limits": [
+    "Native head command domain does not guarantee actual learned head tracking.",
+    "Goal memory8s remains unvalidated; fresh sphere uncertainty and metric guards unchanged.",
+    "No kick armed.",
+    "Two interface fixes, no single-factor performance attribution."
+  ],
+  "change_from_v38": "Only near-field forward command magnitude.3 to.2, latched at onset; far forward.3 and near.4s maximum unchanged. All RMS/visual quiet and immediate guards stay.",
+  "near_forward_rationale": {
+    "source": "native-near-forward-probe9-s980243/independent-audit.json",
+    "scope": "Nominal singleworldpercase physical pulse evidence, not achieved velocity calibration or guaranteed stopping.",
+    "point2_duration_point4_final_onset_heading_xy_m": [
+      0.00795,
+      -0.01059
+    ],
+    "point2_duration_point4_post_command_peak_xy_m": 0.01734,
+    "point3_duration_point4_final_onset_heading_xy_m": [
+      0.05577,
+      -0.00127
+    ],
+    "limitation": "Reduced impulse may not make reliable forward progress;retainfailure and never bypassquiet/vision to force motion."
+  },
+  "change_from_v39": "Two explicit native-head interface repairs: requested head_roll cap to source\u00b1.31 with separate pointing/fullorientation residuals; fresh visible-goal image centering during REFRESH_GOAL may move requested body-gaze yaw beyond legacycustom\u00b1.4, bounded\u00b11.2 and finalnativeFK/domain gate. Head-only, no partialgoal metric/range/body/kick authority. Nearforward.2 retained.",
+  "head_contract": {
+    "source_native_offsets_abs_rad": [
+      1.1,
+      1.1,
+      1.4,
+      0.31
+    ],
+    "goal_attention_gaze_yaw_envelope_rad": [
+      -1.2,
+      1.2
+    ],
+    "goal_attention_pitch_envelope_rad": [
+      0.0,
+      1.4
+    ],
+    "image_increment_max_rate_rad_s": 0.45,
+    "slew_rad_s": 0.6,
+    "pointing_residual_max_rad": 0.03,
+    "full_orientation_residual_still_reported": true,
+    "world_stabilization_claimed": false,
+    "partial_goal_only_visible_center": true,
+    "body_during_goal_image_reacquisition": "zero; phase reset, newquiet needed after return",
+    "return_to_ball": "Slew back toward original ball gaze; outside old\u00b1.4 ball Jacobian box skip that constrained correction until feasible, preserve observed angular target and allbodyguards",
+    "stale_or_missing_goal": "Missing visible goal with fresh proprio: existing public map/pose aims head only into native candidate gaze envelope; visible pixels then drive incremental centering. Stale proprio or TooClose holds head; no map estimate grants body or kick authority.",
+    "qualification_claimed": false
+  }
+}

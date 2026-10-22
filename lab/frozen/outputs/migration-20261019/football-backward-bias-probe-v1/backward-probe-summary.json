@@ -1,0 +1,2229 @@
+{
+  "schema": "microduck.backward-heading-bias-probe-summary.v1",
+  "run": "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1",
+  "audit_passed": true,
+  "selection": {
+    "status": "selected",
+    "case": "back_bias_vx-0.35_d1.6_h+0.10",
+    "vx": -0.35,
+    "command_duration_s": 1.6,
+    "desired_heading_offset_rad": 0.1
+  },
+  "selection_rule": "A case is eligible only if ALL 4 worlds pass every frozen gate AND the independent audit passed. Choose the eligible case with the smaller offset (+0.10 before +0.20). No eligible case => no adoption, no integration, no workaround.",
+  "gates": {
+    "preparation_passed": true,
+    "fell": false,
+    "servo_coordinate_peak_violation_rad_max": 0.001,
+    "physical_output_peak_violation_rad_max": 0.001,
+    "finite_state": true,
+    "onset_s_max": 1.0,
+    "abs_yaw_change_at_stop_plus_1s_rad_max": 0.25,
+    "abs_lateral_at_stop_plus_2s_m_max": 0.05,
+    "backward_distance_at_stop_plus_2s_m": [
+      0.12,
+      0.24
+    ],
+    "public_odometry_xy_error_at_stop_m_max": 0.03,
+    "public_odometry_chain_intact": true,
+    "post_stop_drift_m_max": 0.04,
+    "passive_soft_limit": "reported per joint (peak/P95/P99/fraction/duration) under football-physics-semantics-v2; diagnostic, not a gate",
+    "feedback_no_fault": true
+  },
+  "endpoints": {
+    "frame": "start heading frame: root XY and yaw at state index 999 (task 5.000 s, last tick before movement)",
+    "onset": "first state index >= 1000 whose start-frame dx <= -0.01 m; onset_s = its task time minus 5.0",
+    "stop": "state index 4*(250+move_steps)-1 (last tick of the last commanded policy step)",
+    "stop_plus_1s": "stop + 200 ticks",
+    "stop_plus_2s": "stop + 400 ticks",
+    "post_stop_drift": "peak |XY - XY(stop)| over [stop, stop+2s]",
+    "public_odometry": "frozen public adapter v2 + v117 SoleContactLegOdometry replay of the recorded packets; displacement between the reads at policy steps 250 and the stop step vs truth between the same physics instants"
+  },
+  "cases": [
+    {
+      "case": "back_bias_vx-0.35_d1.6_h+0.10",
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "desired_heading_offset_rad": 0.1,
+      "worlds": 4,
+      "yaw_at_stop_rad": [
+        0.13146238741613692,
+        0.09266000807264962,
+        0.10367103530905908,
+        0.07371389358043912
+      ],
+      "yaw_stop_plus_1s_rad": [
+        -0.08099507462306077,
+        -0.02865086839469022,
+        -0.0794012083294513,
+        -0.16095393720103157
+      ],
+      "worlds_all_gates_passed": 4,
+      "eligible": true,
+      "failed_gates_by_world": {
+        "0": [],
+        "1": [],
+        "2": [],
+        "3": []
+      },
+      "backward_stop_plus_2s_m": [
+        0.14798518666916483,
+        0.16213954940248967,
+        0.14407356063051888,
+        0.17702860122488828
+      ],
+      "onset_s": [
+        0.40000000000000036,
+        0.3650000000000002,
+        0.40500000000000025,
+        0.41500000000000004
+      ]
+    },
+    {
+      "case": "back_bias_vx-0.35_d1.6_h+0.20",
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "desired_heading_offset_rad": 0.2,
+      "worlds": 4,
+      "yaw_at_stop_rad": [
+        0.13085787267459725,
+        0.10884320810867854,
+        0.15789316954796284,
+        0.17920255344985314
+      ],
+      "yaw_stop_plus_1s_rad": [
+        -0.0220432487011899,
+        -0.03392710528271259,
+        0.029992013198647083,
+        0.014594180860512118
+      ],
+      "worlds_all_gates_passed": 4,
+      "eligible": true,
+      "failed_gates_by_world": {
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": []
+      },
+      "backward_stop_plus_2s_m": [
+        0.19503541097361507,
+        0.20382826893574887,
+        0.18704426041889535,
+        0.18922403856417577
+      ],
+      "onset_s": [
+        0.29000000000000004,
+        0.29000000000000004,
+        0.29000000000000004,
+        0.29000000000000004
+      ]
+    }
+  ],
+  "worlds": [
+    {
+      "index": 0,
+      "case": "back_bias_vx-0.35_d1.6_h+0.10",
+      "replicate": 0,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.015923237428069115,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.003855619579553604,
+            "p95_rad": 3.7236697971820816e-05,
+            "p99_rad": 0.00025524545460938787,
+            "over_range_fraction": 0.5233333333333333,
+            "over_range_duration_s": 7.8500000000000005
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.004717664793133736,
+            "p95_rad": 5.841590464115142e-05,
+            "p99_rad": 0.001015206389129157,
+            "over_range_fraction": 0.8396666666666667,
+            "over_range_duration_s": 12.595
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.004525596275925636,
+            "p95_rad": 6.298590451478953e-05,
+            "p99_rad": 0.0007080107741057638,
+            "over_range_fraction": 0.9286666666666666,
+            "over_range_duration_s": 13.93
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.014577364549040794,
+            "p95_rad": 7.351832464337349e-05,
+            "p99_rad": 0.0013243165612220635,
+            "over_range_fraction": 0.974,
+            "over_range_duration_s": 14.61
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.005439950153231621,
+            "p95_rad": 5.928566679358478e-05,
+            "p99_rad": 0.0007582768425345343,
+            "over_range_fraction": 0.9176666666666666,
+            "over_range_duration_s": 13.765
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.00398668460547924,
+            "p95_rad": 6.0933548957109446e-05,
+            "p99_rad": 0.0005722040683031077,
+            "over_range_fraction": 0.958,
+            "over_range_duration_s": 14.370000000000001
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.0008095819503068924,
+            "p95_rad": 6.229551509022712e-05,
+            "p99_rad": 0.0001627540588378902,
+            "over_range_fraction": 0.976,
+            "over_range_duration_s": 14.64
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.0019104797393083572,
+            "p95_rad": 3.278497606515883e-05,
+            "p99_rad": 0.00019195934757589868,
+            "over_range_fraction": 0.8356666666666667,
+            "over_range_duration_s": 12.535
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.0020498912781476974,
+            "p95_rad": 2.3540295660495755e-05,
+            "p99_rad": 0.00029856352135538986,
+            "over_range_fraction": 0.92,
+            "over_range_duration_s": 13.8
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.003492739051580429,
+            "p95_rad": 3.151874989271161e-05,
+            "p99_rad": 0.0002439585514366609,
+            "over_range_fraction": 0.54,
+            "over_range_duration_s": 8.1
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.003661591559648514,
+            "p95_rad": 6.199255585670471e-05,
+            "p99_rad": 0.0007635894231498156,
+            "over_range_fraction": 0.9356666666666666,
+            "over_range_duration_s": 14.035
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.005271729081869125,
+            "p95_rad": 6.264615803956982e-05,
+            "p99_rad": 0.0006063903868198087,
+            "over_range_fraction": 0.9253333333333333,
+            "over_range_duration_s": 13.88
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.015304313972592354,
+            "p95_rad": 7.59829767048359e-05,
+            "p99_rad": 0.0012179914675652917,
+            "over_range_fraction": 0.9733333333333334,
+            "over_range_duration_s": 14.6
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.015923237428069115,
+            "p95_rad": 6.771730259060859e-05,
+            "p99_rad": 0.001855395901948161,
+            "over_range_fraction": 0.948,
+            "over_range_duration_s": 14.22
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.40000000000000036,
+        "state_index": 1079,
+        "task_s": 5.4,
+        "dx_m": -0.010082574146404108,
+        "dy_m": -0.01548941169023894,
+        "dyaw_rad": 0.18856346910679989
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.12639120412631893,
+        "dy_m": -0.00888020223204896,
+        "dyaw_rad": 0.13146238741613692
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.1470109764085423,
+        "dy_m": -0.00398248006503011,
+        "dyaw_rad": -0.08099507462306077
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.14798518666916483,
+        "dy_m": -0.0038769868506894015,
+        "dyaw_rad": -0.09647834014046275
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.022166015569177185,
+        "drift_peak_m": 0.025331839968382695,
+        "coast_dx_dy_m": [
+          -0.02159398254284589,
+          0.005003215381359559
+        ],
+        "coast_dyaw_rad": -0.22794072755659966
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          1.8715276718139648,
+          -1.9266412258148193,
+          0.03264134004712105
+        ],
+        [
+          1.885247826576233,
+          -2.0437681674957275,
+          0.023052267730236053
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.13005861732949778,
+            -0.010579799335360365
+          ],
+          "truth_dx_dy_m": [
+            -0.12639120412631893,
+            -0.00888020223204896
+          ],
+          "xy_error_m": 0.0040420972175882934,
+          "public_dyaw_rad": 0.1245922283933778,
+          "truth_dyaw_rad": 0.13146238741613692
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.15015997352543756,
+            -0.001509799370549726
+          ],
+          "truth_dx_dy_m": [
+            -0.1470109764085423,
+            -0.00398248006503011
+          ],
+          "xy_error_m": 0.004003789787073072,
+          "public_dyaw_rad": -0.09847268194069159,
+          "truth_dyaw_rad": -0.08099507462306077
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.15123538876284479,
+            -0.001274971781561132
+          ],
+          "truth_dx_dy_m": [
+            -0.14798518666916483,
+            -0.0038769868506894015
+          ],
+          "xy_error_m": 0.004163447618228454,
+          "public_dyaw_rad": -0.1131349446924621,
+          "truth_dyaw_rad": -0.09647834014046275
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.2770501633517357,
+        "wz_saturated_ticks": 0,
+        "public_heading_at_last_active_tick_rad": -0.02536790666031356
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.13146238741613692,
+        "yaw_change_stop_to_plus_1s_rad": -0.2124574620391977,
+        "yaw_walk_peak_abs_rad": 0.1894975303288331
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 1,
+      "case": "back_bias_vx-0.35_d1.6_h+0.10",
+      "replicate": 1,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.018496213480830193,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.0016458351165056229,
+            "p95_rad": 3.453055396676052e-05,
+            "p99_rad": 0.00022886643186211574,
+            "over_range_fraction": 0.315,
+            "over_range_duration_s": 4.7250000000000005
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.007235666736960411,
+            "p95_rad": 5.8921240270137784e-05,
+            "p99_rad": 0.000998024865984915,
+            "over_range_fraction": 0.8043333333333333,
+            "over_range_duration_s": 12.065
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.0041727181524038315,
+            "p95_rad": 6.014285609126086e-05,
+            "p99_rad": 0.0006425704434514017,
+            "over_range_fraction": 0.9306666666666666,
+            "over_range_duration_s": 13.96
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.016069157049059868,
+            "p95_rad": 7.483605295419692e-05,
+            "p99_rad": 0.0009527124837040851,
+            "over_range_fraction": 0.9706666666666667,
+            "over_range_duration_s": 14.56
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.004795299842953682,
+            "p95_rad": 6.344253197312346e-05,
+            "p99_rad": 0.0008538258261978624,
+            "over_range_fraction": 0.9076666666666666,
+            "over_range_duration_s": 13.615
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.004849592223763466,
+            "p95_rad": 6.097219884395598e-05,
+            "p99_rad": 0.0006849682889878609,
+            "over_range_fraction": 0.9643333333333334,
+            "over_range_duration_s": 14.465
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.001094631850719452,
+            "p95_rad": 6.213868036866188e-05,
+            "p99_rad": 0.00011528855189681018,
+            "over_range_fraction": 0.9783333333333334,
+            "over_range_duration_s": 14.675
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.002583790570497513,
+            "p95_rad": 3.272192552685737e-05,
+            "p99_rad": 0.00044658543542027427,
+            "over_range_fraction": 0.5993333333333334,
+            "over_range_duration_s": 8.99
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.0021072793751955032,
+            "p95_rad": 2.637309953570364e-05,
+            "p99_rad": 0.0002832836098968974,
+            "over_range_fraction": 0.9243333333333333,
+            "over_range_duration_s": 13.865
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.0010580122470855713,
+            "p95_rad": 3.223968669772147e-05,
+            "p99_rad": 0.0002264804765582072,
+            "over_range_fraction": 0.6533333333333333,
+            "over_range_duration_s": 9.8
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.006051469594240189,
+            "p95_rad": 6.262054666876793e-05,
+            "p99_rad": 0.0009615634195506545,
+            "over_range_fraction": 0.921,
+            "over_range_duration_s": 13.815
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.0037591923028230667,
+            "p95_rad": 6.23722560703754e-05,
+            "p99_rad": 0.0005868097394704778,
+            "over_range_fraction": 0.9156666666666666,
+            "over_range_duration_s": 13.735
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.0047388263046741486,
+            "p95_rad": 7.6343584805727e-05,
+            "p99_rad": 0.0009177829697728147,
+            "over_range_fraction": 0.9723333333333334,
+            "over_range_duration_s": 14.585
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.018496213480830193,
+            "p95_rad": 6.851106882095333e-05,
+            "p99_rad": 0.0012819750048219875,
+            "over_range_fraction": 0.953,
+            "over_range_duration_s": 14.295
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.3650000000000002,
+        "state_index": 1072,
+        "task_s": 5.365,
+        "dx_m": -0.010143711995383128,
+        "dy_m": -0.019859161941694004,
+        "dyaw_rad": 0.14440642035698348
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.13943143779438646,
+        "dy_m": -0.013513660834724557,
+        "dyaw_rad": 0.09266000807264962
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.16204340924265756,
+        "dy_m": -0.0037564771156327944,
+        "dyaw_rad": -0.02865086839469022
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.16213954940248967,
+        "dy_m": -0.003907647810742739,
+        "dyaw_rad": -0.039806982486992215
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.024656313978836743,
+        "drift_peak_m": 0.02568000215835486,
+        "coast_dx_dy_m": [
+          -0.02270811160810321,
+          0.009606013023981818
+        ],
+        "coast_dyaw_rad": -0.13246699055964184
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          1.865049958229065,
+          0.06695569306612015,
+          0.033065181225538254
+        ],
+        [
+          1.8753517866134644,
+          -0.04951781779527664,
+          0.022835642099380493
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.13483174990636307,
+            -0.013790696813541614
+          ],
+          "truth_dx_dy_m": [
+            -0.13943143779438646,
+            -0.013513660834724557
+          ],
+          "xy_error_m": 0.004608023177110576,
+          "public_dyaw_rad": 0.09581078995133163,
+          "truth_dyaw_rad": 0.09266000807264962
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.1589218935687318,
+            -0.0025902292528050498
+          ],
+          "truth_dx_dy_m": [
+            -0.16204340924265756,
+            -0.0037564771156327944
+          ],
+          "xy_error_m": 0.00333226562268294,
+          "public_dyaw_rad": -0.0273216349647325,
+          "truth_dyaw_rad": -0.02865086839469022
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.15893326616328307,
+            -0.0027985872219029955
+          ],
+          "truth_dx_dy_m": [
+            -0.16213954940248967,
+            -0.003907647810742739
+          ],
+          "xy_error_m": 0.0033926785287932523,
+          "public_dyaw_rad": -0.035901733024912286,
+          "truth_dyaw_rad": -0.039806982486992215
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.2761432369229778,
+        "wz_saturated_ticks": 0,
+        "public_heading_at_last_active_tick_rad": 0.0034494952163351654
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.09266000807264962,
+        "yaw_change_stop_to_plus_1s_rad": -0.12131087646733985,
+        "yaw_walk_peak_abs_rad": 0.1551612459885856
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 2,
+      "case": "back_bias_vx-0.35_d1.6_h+0.10",
+      "replicate": 2,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.01788800023496151,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.0028669871389865875,
+            "p95_rad": 3.5753287374973266e-05,
+            "p99_rad": 0.0001943594776093916,
+            "over_range_fraction": 0.5106666666666667,
+            "over_range_duration_s": 7.66
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.006414363160729408,
+            "p95_rad": 5.898345261812209e-05,
+            "p99_rad": 0.0011160894297063322,
+            "over_range_fraction": 0.8406666666666667,
+            "over_range_duration_s": 12.61
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.0060629937797784805,
+            "p95_rad": 6.422344595193862e-05,
+            "p99_rad": 0.0009622731618583075,
+            "over_range_fraction": 0.9306666666666666,
+            "over_range_duration_s": 13.96
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.014317067340016365,
+            "p95_rad": 7.40019604563713e-05,
+            "p99_rad": 0.001805994585156411,
+            "over_range_fraction": 0.9733333333333334,
+            "over_range_duration_s": 14.6
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.006977347657084465,
+            "p95_rad": 6.176661700010295e-05,
+            "p99_rad": 0.000542739722877738,
+            "over_range_fraction": 0.9236666666666666,
+            "over_range_duration_s": 13.855
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.007298534736037254,
+            "p95_rad": 6.132237613201137e-05,
+            "p99_rad": 0.0007139177806675331,
+            "over_range_fraction": 0.9653333333333334,
+            "over_range_duration_s": 14.48
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.0005412381142377853,
+            "p95_rad": 6.206734105944634e-05,
+            "p99_rad": 0.00012020377442240649,
+            "over_range_fraction": 0.979,
+            "over_range_duration_s": 14.685
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.0024946238845586777,
+            "p95_rad": 3.268299624323837e-05,
+            "p99_rad": 0.0003378246724605524,
+            "over_range_fraction": 0.802,
+            "over_range_duration_s": 12.030000000000001
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.0023328475654125214,
+            "p95_rad": 2.5441963225603092e-05,
+            "p99_rad": 0.00033075129613279814,
+            "over_range_fraction": 0.917,
+            "over_range_duration_s": 13.755
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.0040124524384737015,
+            "p95_rad": 3.109974786639213e-05,
+            "p99_rad": 0.00040519027039408645,
+            "over_range_fraction": 0.5426666666666666,
+            "over_range_duration_s": 8.14
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.00649726577103138,
+            "p95_rad": 6.297603249549866e-05,
+            "p99_rad": 0.0010923190601169954,
+            "over_range_fraction": 0.93,
+            "over_range_duration_s": 13.950000000000001
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.004599286243319511,
+            "p95_rad": 6.302567198872565e-05,
+            "p99_rad": 0.0006824226863682182,
+            "over_range_fraction": 0.9203333333333333,
+            "over_range_duration_s": 13.805
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.015230385586619377,
+            "p95_rad": 7.579186931252479e-05,
+            "p99_rad": 0.0009225905500352327,
+            "over_range_fraction": 0.971,
+            "over_range_duration_s": 14.565
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.01788800023496151,
+            "p95_rad": 6.661480292677873e-05,
+            "p99_rad": 0.0017950312606990284,
+            "over_range_fraction": 0.946,
+            "over_range_duration_s": 14.19
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.40500000000000025,
+        "state_index": 1080,
+        "task_s": 5.405,
+        "dx_m": -0.010184124075160967,
+        "dy_m": -0.015289275208500189,
+        "dyaw_rad": 0.18327438402087504
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.12423160675057543,
+        "dy_m": -0.007785532684921586,
+        "dyaw_rad": 0.10367103530905908
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.1427406314916428,
+        "dy_m": 0.0032002048507085816,
+        "dyaw_rad": -0.0794012083294513
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.14407356063051888,
+        "dy_m": 0.003138049472592743,
+        "dyaw_rad": -0.09338754998148868
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.022650116576427765,
+        "drift_peak_m": 0.027448483235970923,
+        "coast_dx_dy_m": [
+          -0.019841953879943447,
+          0.010923582157514329
+        ],
+        "coast_dyaw_rad": -0.19705858529054776
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          1.8830276727676392,
+          2.076225519180298,
+          0.03462056815624237
+        ],
+        [
+          1.8857059478759766,
+          1.9599080085754395,
+          0.022445693612098694
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.13122325817584282,
+            -0.009778704744074516
+          ],
+          "truth_dx_dy_m": [
+            -0.12423160675057543,
+            -0.007785532684921586
+          ],
+          "xy_error_m": 0.0072702080100800065,
+          "public_dyaw_rad": 0.11185545770482186,
+          "truth_dyaw_rad": 0.10367103530905908
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.1507562666831778,
+            0.003959575709455143
+          ],
+          "truth_dx_dy_m": [
+            -0.1427406314916428,
+            0.0032002048507085816
+          ],
+          "xy_error_m": 0.008051524801234104,
+          "public_dyaw_rad": -0.08180377881660039,
+          "truth_dyaw_rad": -0.0794012083294513
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.15219800051418822,
+            0.0035640314416948457
+          ],
+          "truth_dx_dy_m": [
+            -0.14407356063051888,
+            0.003138049472592743
+          ],
+          "xy_error_m": 0.00813559979727108,
+          "public_dyaw_rad": -0.09505584663055489,
+          "truth_dyaw_rad": -0.09338754998148868
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.27506185681946416,
+        "wz_saturated_ticks": 0,
+        "public_heading_at_last_active_tick_rad": -0.013186249636390894
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.10367103530905908,
+        "yaw_change_stop_to_plus_1s_rad": -0.18307224363851038,
+        "yaw_walk_peak_abs_rad": 0.185681956852358
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 3,
+      "case": "back_bias_vx-0.35_d1.6_h+0.10",
+      "replicate": 3,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.010985435917973518,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.004736574366688728,
+            "p95_rad": 2.9397942125797098e-05,
+            "p99_rad": 0.0002670768089592444,
+            "over_range_fraction": 0.448,
+            "over_range_duration_s": 6.72
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.005770601332187653,
+            "p95_rad": 6.134323775768265e-05,
+            "p99_rad": 0.0011526084505021452,
+            "over_range_fraction": 0.8206666666666667,
+            "over_range_duration_s": 12.31
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.007695434615015984,
+            "p95_rad": 6.781965494155869e-05,
+            "p99_rad": 0.0012248173169791656,
+            "over_range_fraction": 0.9233333333333333,
+            "over_range_duration_s": 13.85
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.010727336630225182,
+            "p95_rad": 7.507232949137688e-05,
+            "p99_rad": 0.0009148448333144151,
+            "over_range_fraction": 0.9686666666666667,
+            "over_range_duration_s": 14.530000000000001
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.010985435917973518,
+            "p95_rad": 6.298646330833435e-05,
+            "p99_rad": 0.0007608784735202662,
+            "over_range_fraction": 0.9093333333333333,
+            "over_range_duration_s": 13.64
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.007931897416710854,
+            "p95_rad": 5.9434678405523293e-05,
+            "p99_rad": 0.0011237660981714482,
+            "over_range_fraction": 0.955,
+            "over_range_duration_s": 14.325000000000001
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.0017157290130853653,
+            "p95_rad": 6.234664469957351e-05,
+            "p99_rad": 0.00022650033235549366,
+            "over_range_fraction": 0.974,
+            "over_range_duration_s": 14.61
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.002319594845175743,
+            "p95_rad": 3.175195306539529e-05,
+            "p99_rad": 0.00030867962166666874,
+            "over_range_fraction": 0.8193333333333334,
+            "over_range_duration_s": 12.290000000000001
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.003003997728228569,
+            "p95_rad": 2.247309312224385e-05,
+            "p99_rad": 0.00033445637673139327,
+            "over_range_fraction": 0.9186666666666666,
+            "over_range_duration_s": 13.780000000000001
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.002997051924467087,
+            "p95_rad": 2.906685695052147e-05,
+            "p99_rad": 0.00023091947659849844,
+            "over_range_fraction": 0.419,
+            "over_range_duration_s": 6.285
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.00693647563457489,
+            "p95_rad": 6.30711205303669e-05,
+            "p99_rad": 0.0006287325732409894,
+            "over_range_fraction": 0.9263333333333333,
+            "over_range_duration_s": 13.895
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.006947604939341545,
+            "p95_rad": 6.282608956098554e-05,
+            "p99_rad": 0.0007191777788102611,
+            "over_range_fraction": 0.9183333333333333,
+            "over_range_duration_s": 13.775
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.004540096968412399,
+            "p95_rad": 7.463144138455389e-05,
+            "p99_rad": 0.0007942264713346888,
+            "over_range_fraction": 0.9693333333333334,
+            "over_range_duration_s": 14.540000000000001
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.007791725918650627,
+            "p95_rad": 6.593028083443642e-05,
+            "p99_rad": 0.0010228057391941483,
+            "over_range_fraction": 0.9573333333333334,
+            "over_range_duration_s": 14.36
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.41500000000000004,
+        "state_index": 1082,
+        "task_s": 5.415,
+        "dx_m": -0.010390862015077294,
+        "dy_m": -0.008786946461441974,
+        "dyaw_rad": 0.20150299291961504
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.14432676154092833,
+        "dy_m": -0.0035554046405674444,
+        "dyaw_rad": 0.07371389358043912
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.17662506028376732,
+        "dy_m": 0.0022371434914199434,
+        "dyaw_rad": -0.16095393720103157
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.17702860122488828,
+        "dy_m": 0.002417401640698341,
+        "dyaw_rad": -0.174242379480539
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.03324281476633629,
+        "drift_peak_m": 0.03409105754395624,
+        "coast_dx_dy_m": [
+          -0.032701839683959955,
+          0.005972806281265786
+        ],
+        "coast_dyaw_rad": -0.24795627306097767
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          -0.14129319787025452,
+          -1.9197802543640137,
+          0.031920477747917175
+        ],
+        [
+          -0.13596731424331665,
+          -2.037904739379883,
+          0.02364286780357361
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.14672436001892994,
+            -0.004218921523164419
+          ],
+          "truth_dx_dy_m": [
+            -0.14432676154092833,
+            -0.0035554046405674444
+          ],
+          "xy_error_m": 0.00248771644590111,
+          "public_dyaw_rad": 0.0832622695407137,
+          "truth_dyaw_rad": 0.07371389358043912
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.17988526631509882,
+            0.005225907256074039
+          ],
+          "truth_dx_dy_m": [
+            -0.17662506028376732,
+            0.0022371434914199434
+          ],
+          "xy_error_m": 0.004422855662085262,
+          "public_dyaw_rad": -0.16234540433015,
+          "truth_dyaw_rad": -0.16095393720103157
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.18068560310877912,
+            0.005295731464961835
+          ],
+          "truth_dx_dy_m": [
+            -0.17702860122488828,
+            0.002417401640698341
+          ],
+          "xy_error_m": 0.00465386348704234,
+          "public_dyaw_rad": -0.17521595810971036,
+          "truth_dyaw_rad": -0.174242379480539
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.2839793984624036,
+        "wz_saturated_ticks": 0,
+        "public_heading_at_last_active_tick_rad": 0.015239450667427185
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.07371389358043912,
+        "yaw_change_stop_to_plus_1s_rad": -0.2346678307814707,
+        "yaw_walk_peak_abs_rad": 0.21084414379764738
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 4,
+      "case": "back_bias_vx-0.35_d1.6_h+0.20",
+      "replicate": 0,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.02229233644902706,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.0027200039476156235,
+            "p95_rad": 3.440370783209795e-05,
+            "p99_rad": 0.0003172026015818031,
+            "over_range_fraction": 0.34,
+            "over_range_duration_s": 5.1000000000000005
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.00742965005338192,
+            "p95_rad": 5.894219502806661e-05,
+            "p99_rad": 0.0008990021608769873,
+            "over_range_fraction": 0.8643333333333333,
+            "over_range_duration_s": 12.965
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.008755814284086227,
+            "p95_rad": 5.675796419382089e-05,
+            "p99_rad": 0.0005611911043524578,
+            "over_range_fraction": 0.9176666666666666,
+            "over_range_duration_s": 13.765
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.010351685807108879,
+            "p95_rad": 7.520513609051703e-05,
+            "p99_rad": 0.0014183179661631407,
+            "over_range_fraction": 0.9713333333333334,
+            "over_range_duration_s": 14.57
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.011809509247541428,
+            "p95_rad": 6.518559530377388e-05,
+            "p99_rad": 0.000928726121783231,
+            "over_range_fraction": 0.9133333333333333,
+            "over_range_duration_s": 13.700000000000001
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.0042189862579107285,
+            "p95_rad": 6.006453186273574e-05,
+            "p99_rad": 0.0005479312501847712,
+            "over_range_fraction": 0.9556666666666667,
+            "over_range_duration_s": 14.335
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.0026942286640405655,
+            "p95_rad": 6.221123039722442e-05,
+            "p99_rad": 0.0001352354511618607,
+            "over_range_fraction": 0.9733333333333334,
+            "over_range_duration_s": 14.6
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.0029074549674987793,
+            "p95_rad": 3.4915003925561834e-05,
+            "p99_rad": 0.0003930308297276479,
+            "over_range_fraction": 0.86,
+            "over_range_duration_s": 12.9
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.0026125814765691757,
+            "p95_rad": 2.6404112577438267e-05,
+            "p99_rad": 0.0003674542531371004,
+            "over_range_fraction": 0.9223333333333333,
+            "over_range_duration_s": 13.835
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.0019502993673086166,
+            "p95_rad": 2.9786769300699216e-05,
+            "p99_rad": 0.00027149824425577295,
+            "over_range_fraction": 0.44566666666666666,
+            "over_range_duration_s": 6.6850000000000005
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.006549429148435593,
+            "p95_rad": 6.20243139564991e-05,
+            "p99_rad": 0.0011714966781437345,
+            "over_range_fraction": 0.9103333333333333,
+            "over_range_duration_s": 13.655000000000001
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.004858136177062988,
+            "p95_rad": 6.254035979509352e-05,
+            "p99_rad": 0.0008873023837804693,
+            "over_range_fraction": 0.9213333333333333,
+            "over_range_duration_s": 13.82
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.008222060278058052,
+            "p95_rad": 7.637804374098778e-05,
+            "p99_rad": 0.0009151260741054993,
+            "over_range_fraction": 0.971,
+            "over_range_duration_s": 14.565
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.02229233644902706,
+            "p95_rad": 6.986996158957482e-05,
+            "p99_rad": 0.0016530008055269548,
+            "over_range_fraction": 0.968,
+            "over_range_duration_s": 14.52
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.29000000000000004,
+        "state_index": 1057,
+        "task_s": 5.29,
+        "dx_m": -0.010460830744168472,
+        "dy_m": -0.01369578734475343,
+        "dyaw_rad": 0.10137178069297192
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.17413819068548972,
+        "dy_m": -0.02781273763992263,
+        "dyaw_rad": 0.13085787267459725
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.1948242920461867,
+        "dy_m": -0.02456084277322784,
+        "dyaw_rad": -0.0220432487011899
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.19503541097361507,
+        "dy_m": -0.024536738272561337,
+        "dyaw_rad": -0.026357013336566926
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.02115244637448325,
+        "drift_peak_m": 0.022932962969194042,
+        "coast_dx_dy_m": [
+          -0.02089722028812535,
+          0.0032759993673612924
+        ],
+        "coast_dyaw_rad": -0.15721488601116462
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          -0.17919398844242096,
+          0.062308479100465775,
+          0.03289472311735153
+        ],
+        [
+          -0.17547184228897095,
+          -0.057568714022636414,
+          0.023881204426288605
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.1778715150440746,
+            -0.02830379191221121
+          ],
+          "truth_dx_dy_m": [
+            -0.17413819068548972,
+            -0.02781273763992263
+          ],
+          "xy_error_m": 0.003765480721599326,
+          "public_dyaw_rad": 0.12149491724246442,
+          "truth_dyaw_rad": 0.13085787267459725
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.2029450983791349,
+            -0.02151206344226562
+          ],
+          "truth_dx_dy_m": [
+            -0.1948242920461867,
+            -0.02456084277322784
+          ],
+          "xy_error_m": 0.008674246417191184,
+          "public_dyaw_rad": -0.004180280644657586,
+          "truth_dyaw_rad": -0.0220432487011899
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.2031852113911455,
+            -0.021203139931786737
+          ],
+          "truth_dx_dy_m": [
+            -0.19503541097361507,
+            -0.024536738272561337
+          ],
+          "xy_error_m": 0.008805232804599461,
+          "public_dyaw_rad": -0.007486041817192035,
+          "truth_dyaw_rad": -0.026357013336566926
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.5,
+        "wz_saturated_ticks": 1,
+        "public_heading_at_last_active_tick_rad": 0.08042871841524904
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.13085787267459725,
+        "yaw_change_stop_to_plus_1s_rad": -0.15290112137578715,
+        "yaw_walk_peak_abs_rad": 0.2158015602129919
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 5,
+      "case": "back_bias_vx-0.35_d1.6_h+0.20",
+      "replicate": 1,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.019102035090327263,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.004368895664811134,
+            "p95_rad": 4.104981198906896e-05,
+            "p99_rad": 0.0003014473617076841,
+            "over_range_fraction": 0.236,
+            "over_range_duration_s": 3.54
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.007232258096337318,
+            "p95_rad": 5.8636814355850216e-05,
+            "p99_rad": 0.0007509092241525605,
+            "over_range_fraction": 0.802,
+            "over_range_duration_s": 12.030000000000001
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.007010117173194885,
+            "p95_rad": 6.154356524348254e-05,
+            "p99_rad": 0.0009705740585923156,
+            "over_range_fraction": 0.9346666666666666,
+            "over_range_duration_s": 14.02
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.009502371773123741,
+            "p95_rad": 7.516797631978987e-05,
+            "p99_rad": 0.0012797900103032457,
+            "over_range_fraction": 0.9706666666666667,
+            "over_range_duration_s": 14.56
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.005277654156088829,
+            "p95_rad": 6.65697269141674e-05,
+            "p99_rad": 0.0008232910186052322,
+            "over_range_fraction": 0.891,
+            "over_range_duration_s": 13.365
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.006090588867664337,
+            "p95_rad": 6.348751485347742e-05,
+            "p99_rad": 0.001526911389082669,
+            "over_range_fraction": 0.951,
+            "over_range_duration_s": 14.265
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.002992924302816391,
+            "p95_rad": 6.26828521490097e-05,
+            "p99_rad": 0.0002687681093811962,
+            "over_range_fraction": 0.9643333333333334,
+            "over_range_duration_s": 14.465
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.001990312710404396,
+            "p95_rad": 3.28972004354e-05,
+            "p99_rad": 0.00042550640180706497,
+            "over_range_fraction": 0.7763333333333333,
+            "over_range_duration_s": 11.645
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.002933710813522339,
+            "p95_rad": 2.080583944916724e-05,
+            "p99_rad": 0.00028193987905977895,
+            "over_range_fraction": 0.9133333333333333,
+            "over_range_duration_s": 13.700000000000001
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.0018046144396066666,
+            "p95_rad": 3.012027591466897e-05,
+            "p99_rad": 0.00025067949667572867,
+            "over_range_fraction": 0.7606666666666667,
+            "over_range_duration_s": 11.41
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.007442614063620567,
+            "p95_rad": 6.347149610519409e-05,
+            "p99_rad": 0.0008570904098450986,
+            "over_range_fraction": 0.914,
+            "over_range_duration_s": 13.71
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.004218576475977898,
+            "p95_rad": 5.8505777269601556e-05,
+            "p99_rad": 0.0005577269941568331,
+            "over_range_fraction": 0.908,
+            "over_range_duration_s": 13.620000000000001
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.019102035090327263,
+            "p95_rad": 7.749255746603012e-05,
+            "p99_rad": 0.002454595994204267,
+            "over_range_fraction": 0.9646666666666667,
+            "over_range_duration_s": 14.47
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.01218237541615963,
+            "p95_rad": 7.110368460416776e-05,
+            "p99_rad": 0.001872852761298362,
+            "over_range_fraction": 0.9586666666666667,
+            "over_range_duration_s": 14.38
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.29000000000000004,
+        "state_index": 1057,
+        "task_s": 5.29,
+        "dx_m": -0.010535382204096942,
+        "dy_m": -0.0134590253126307,
+        "dyaw_rad": 0.0941457436647033
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.18325609007193555,
+        "dy_m": -0.014726682909183053,
+        "dyaw_rad": 0.10884320810867854
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.2043129922700332,
+        "dy_m": -0.02450781641553269,
+        "dyaw_rad": -0.03392710528271259
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.20382826893574887,
+        "dy_m": -0.024515030021252607,
+        "dyaw_rad": -0.06305781336097116
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.022782148326948637,
+        "drift_peak_m": 0.024878486774453232,
+        "coast_dx_dy_m": [
+          -0.020572178863813323,
+          -0.009788347112069554
+        ],
+        "coast_dyaw_rad": -0.1719010214696497
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          -0.19817274808883667,
+          2.054104804992676,
+          0.018948033452033997
+        ],
+        [
+          -0.15922902524471283,
+          1.9350299835205078,
+          0.031066488474607468
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.17987511173665044,
+            -0.01975099831162001
+          ],
+          "truth_dx_dy_m": [
+            -0.18325609007193555,
+            -0.014726682909183053
+          ],
+          "xy_error_m": 0.006055968937076257,
+          "public_dyaw_rad": 0.14257447087710995,
+          "truth_dyaw_rad": 0.10884320810867854
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.19986079516447447,
+            -0.027256320568816196
+          ],
+          "truth_dx_dy_m": [
+            -0.2043129922700332,
+            -0.02450781641553269
+          ],
+          "xy_error_m": 0.005232239878614332,
+          "public_dyaw_rad": -0.031841648136036405,
+          "truth_dyaw_rad": -0.03392710528271259
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.19941129608738925,
+            -0.027248119426521486
+          ],
+          "truth_dx_dy_m": [
+            -0.20382826893574887,
+            -0.024515030021252607
+          ],
+          "xy_error_m": 0.005194172392242976,
+          "public_dyaw_rad": -0.060018756066253065,
+          "truth_dyaw_rad": -0.06305781336097116
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.4994437414030175,
+        "wz_saturated_ticks": 0,
+        "public_heading_at_last_active_tick_rad": 0.05067623031230948
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.10884320810867854,
+        "yaw_change_stop_to_plus_1s_rad": -0.14277031339139112,
+        "yaw_walk_peak_abs_rad": 0.18897367152295752
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 6,
+      "case": "back_bias_vx-0.35_d1.6_h+0.20",
+      "replicate": 2,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.020703068003058434,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.003283066675066948,
+            "p95_rad": 3.441879525780677e-05,
+            "p99_rad": 0.00027184523642063074,
+            "over_range_fraction": 0.23566666666666666,
+            "over_range_duration_s": 3.535
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.0074553657323122025,
+            "p95_rad": 5.9446692466735834e-05,
+            "p99_rad": 0.0008716470748186098,
+            "over_range_fraction": 0.8746666666666667,
+            "over_range_duration_s": 13.120000000000001
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.008276598528027534,
+            "p95_rad": 5.8632995933294294e-05,
+            "p99_rad": 0.0012270082905888537,
+            "over_range_fraction": 0.908,
+            "over_range_duration_s": 13.620000000000001
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.011715972796082497,
+            "p95_rad": 7.504830136895177e-05,
+            "p99_rad": 0.0012330238334834502,
+            "over_range_fraction": 0.9703333333333334,
+            "over_range_duration_s": 14.555
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.010029327124357224,
+            "p95_rad": 6.347633898258194e-05,
+            "p99_rad": 0.0012567480653524227,
+            "over_range_fraction": 0.9133333333333333,
+            "over_range_duration_s": 13.700000000000001
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.007813487201929092,
+            "p95_rad": 5.982033908367154e-05,
+            "p99_rad": 0.0007218864001333646,
+            "over_range_fraction": 0.965,
+            "over_range_duration_s": 14.475
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.0008903834968805313,
+            "p95_rad": 6.184736266732216e-05,
+            "p99_rad": 9.824723005294624e-05,
+            "over_range_fraction": 0.9816666666666667,
+            "over_range_duration_s": 14.725
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.0015632938593626022,
+            "p95_rad": 3.588926047086714e-05,
+            "p99_rad": 0.00025144895538687506,
+            "over_range_fraction": 0.8753333333333333,
+            "over_range_duration_s": 13.13
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.002910034731030464,
+            "p95_rad": 2.2976845502853367e-05,
+            "p99_rad": 0.0004910164698958359,
+            "over_range_fraction": 0.9226666666666666,
+            "over_range_duration_s": 13.84
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.003309110179543495,
+            "p95_rad": 3.343932330608366e-05,
+            "p99_rad": 0.0002908820472657656,
+            "over_range_fraction": 0.4766666666666667,
+            "over_range_duration_s": 7.15
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.005990564823150635,
+            "p95_rad": 6.166910752654075e-05,
+            "p99_rad": 0.0011620738916099005,
+            "over_range_fraction": 0.9106666666666666,
+            "over_range_duration_s": 13.66
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.0031663868576288223,
+            "p95_rad": 5.972487851977337e-05,
+            "p99_rad": 0.0010034754872322057,
+            "over_range_fraction": 0.9196666666666666,
+            "over_range_duration_s": 13.795
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.008752809837460518,
+            "p95_rad": 7.671955972909927e-05,
+            "p99_rad": 0.0015792147256433796,
+            "over_range_fraction": 0.9733333333333334,
+            "over_range_duration_s": 14.6
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.020703068003058434,
+            "p95_rad": 6.913244724273681e-05,
+            "p99_rad": 0.001262671556323764,
+            "over_range_fraction": 0.9666666666666667,
+            "over_range_duration_s": 14.5
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.29000000000000004,
+        "state_index": 1057,
+        "task_s": 5.29,
+        "dx_m": -0.010004231238889676,
+        "dy_m": -0.013496811263766072,
+        "dyaw_rad": 0.10152199138466544
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.16859553250726417,
+        "dy_m": -0.02274515801129962,
+        "dyaw_rad": 0.15789316954796284
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.18691637052540838,
+        "dy_m": -0.019498497552754693,
+        "dyaw_rad": 0.029992013198647083
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.18704426041889535,
+        "dy_m": -0.01963493513102837,
+        "dyaw_rad": 0.028565313676534476
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.018709063256143056,
+        "drift_peak_m": 0.02104723070284593,
+        "coast_dx_dy_m": [
+          -0.018448727911631185,
+          0.0031102228802712475
+        ],
+        "coast_dyaw_rad": -0.12932785587142792
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          -2.1708385944366455,
+          -1.9346659183502197,
+          0.03249499574303627
+        ],
+        [
+          -2.1645760536193848,
+          -2.057056427001953,
+          0.02434413880109787
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.16531465117809338,
+            -0.018995145846089037
+          ],
+          "truth_dx_dy_m": [
+            -0.16859553250726417,
+            -0.02274515801129962
+          ],
+          "xy_error_m": 0.0049826472417108586,
+          "public_dyaw_rad": 0.15050038421725942,
+          "truth_dyaw_rad": 0.15789316954796284
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.18609479957440506,
+            -0.013872332722651952
+          ],
+          "truth_dx_dy_m": [
+            -0.18691637052540838,
+            -0.019498497552754693
+          ],
+          "xy_error_m": 0.005685834109699079,
+          "public_dyaw_rad": 0.03736338365902414,
+          "truth_dyaw_rad": 0.029992013198647083
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.18627728929885212,
+            -0.013867127683327101
+          ],
+          "truth_dx_dy_m": [
+            -0.18704426041889535,
+            -0.01963493513102837
+          ],
+          "xy_error_m": 0.005818577786086443,
+          "public_dyaw_rad": 0.0373347805414026,
+          "truth_dyaw_rad": 0.028565313676534476
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.499172972597203,
+        "wz_saturated_ticks": 0,
+        "public_heading_at_last_active_tick_rad": 0.0536748894561139
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.15789316954796284,
+        "yaw_change_stop_to_plus_1s_rad": -0.12790115634931576,
+        "yaw_walk_peak_abs_rad": 0.2057132526580454
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    },
+    {
+      "index": 7,
+      "case": "back_bias_vx-0.35_d1.6_h+0.20",
+      "replicate": 3,
+      "vx": -0.35,
+      "command_duration_s": 1.6,
+      "preparation_passed": true,
+      "fell": false,
+      "first_fall_s": null,
+      "mechanical_original": {
+        "finite_state": true,
+        "servo_coordinate_peak_violation_rad": 0.0,
+        "physical_output_peak_violation_rad": 0.0,
+        "mechanical_output_bounds_passed": true,
+        "passive_soft_limit_peak_residual_rad": 0.017141902819275856,
+        "passive_soft_limit_per_joint": [
+          {
+            "joint_index": 0,
+            "peak_rad": 0.004519708454608917,
+            "p95_rad": 3.193179145455354e-05,
+            "p99_rad": 0.00040488855913280527,
+            "over_range_fraction": 0.536,
+            "over_range_duration_s": 8.040000000000001
+          },
+          {
+            "joint_index": 1,
+            "peak_rad": 0.0066968295723199844,
+            "p95_rad": 5.9037655591964705e-05,
+            "p99_rad": 0.001231987364590164,
+            "over_range_fraction": 0.825,
+            "over_range_duration_s": 12.375
+          },
+          {
+            "joint_index": 2,
+            "peak_rad": 0.004200858995318413,
+            "p95_rad": 5.396390333771701e-05,
+            "p99_rad": 0.0007520389556884765,
+            "over_range_fraction": 0.9166666666666666,
+            "over_range_duration_s": 13.75
+          },
+          {
+            "joint_index": 3,
+            "peak_rad": 0.00980439968407154,
+            "p95_rad": 7.542604580521581e-05,
+            "p99_rad": 0.0012299963086843469,
+            "over_range_fraction": 0.9713333333333334,
+            "over_range_duration_s": 14.57
+          },
+          {
+            "joint_index": 4,
+            "peak_rad": 0.009139938279986382,
+            "p95_rad": 6.423080340027793e-05,
+            "p99_rad": 0.0011033485084771982,
+            "over_range_fraction": 0.921,
+            "over_range_duration_s": 13.815
+          },
+          {
+            "joint_index": 5,
+            "peak_rad": 0.0051439013332128525,
+            "p95_rad": 6.0624722391366934e-05,
+            "p99_rad": 0.0009671765752136681,
+            "over_range_fraction": 0.948,
+            "over_range_duration_s": 14.22
+          },
+          {
+            "joint_index": 6,
+            "peak_rad": 0.0009096339344978333,
+            "p95_rad": 6.190342828631401e-05,
+            "p99_rad": 0.00011186515912413284,
+            "over_range_fraction": 0.9766666666666667,
+            "over_range_duration_s": 14.65
+          },
+          {
+            "joint_index": 7,
+            "peak_rad": 0.0024169236421585083,
+            "p95_rad": 3.250697627663604e-05,
+            "p99_rad": 0.0005194595642387831,
+            "over_range_fraction": 0.8416666666666667,
+            "over_range_duration_s": 12.625
+          },
+          {
+            "joint_index": 8,
+            "peak_rad": 0.0030874013900756836,
+            "p95_rad": 2.6158615946769706e-05,
+            "p99_rad": 0.00036059619858859845,
+            "over_range_fraction": 0.9223333333333333,
+            "over_range_duration_s": 13.835
+          },
+          {
+            "joint_index": 9,
+            "peak_rad": 0.002259582281112671,
+            "p95_rad": 3.224853426218025e-05,
+            "p99_rad": 0.00035133533179759936,
+            "over_range_fraction": 0.43633333333333335,
+            "over_range_duration_s": 6.545
+          },
+          {
+            "joint_index": 10,
+            "peak_rad": 0.006807565689086914,
+            "p95_rad": 6.186589598655701e-05,
+            "p99_rad": 0.0009088882803916845,
+            "over_range_fraction": 0.9206666666666666,
+            "over_range_duration_s": 13.81
+          },
+          {
+            "joint_index": 11,
+            "peak_rad": 0.008149107918143272,
+            "p95_rad": 6.018606945872306e-05,
+            "p99_rad": 0.00085868366062641,
+            "over_range_fraction": 0.9143333333333333,
+            "over_range_duration_s": 13.715
+          },
+          {
+            "joint_index": 12,
+            "peak_rad": 0.017141902819275856,
+            "p95_rad": 7.673203945159912e-05,
+            "p99_rad": 0.0021348925307392657,
+            "over_range_fraction": 0.9683333333333334,
+            "over_range_duration_s": 14.525
+          },
+          {
+            "joint_index": 13,
+            "peak_rad": 0.012821001932024956,
+            "p95_rad": 6.969943642616272e-05,
+            "p99_rad": 0.0017951301112770924,
+            "over_range_fraction": 0.9656666666666667,
+            "over_range_duration_s": 14.485
+          }
+        ],
+        "passive_scope": "football-physics-semantics-v2 diagnostic (not a gate); passive_fit_status not calibrated to physical hardware"
+      },
+      "onset": {
+        "onset_s_after_command": 0.29000000000000004,
+        "state_index": 1057,
+        "task_s": 5.29,
+        "dx_m": -0.01043836903275565,
+        "dy_m": -0.013326488500803046,
+        "dyaw_rad": 0.10214508639824338
+      },
+      "at_command_stop": {
+        "state_index": 1319,
+        "task_s": 6.6,
+        "dx_m": -0.15732628272787832,
+        "dy_m": -0.027380204091600933,
+        "dyaw_rad": 0.17920255344985314
+      },
+      "stop_plus_1s": {
+        "state_index": 1519,
+        "task_s": 7.6,
+        "dx_m": -0.1891228767945339,
+        "dy_m": -0.020878013363746183,
+        "dyaw_rad": 0.014594180860512118
+      },
+      "stop_plus_2s": {
+        "state_index": 1719,
+        "task_s": 8.6,
+        "dx_m": -0.18922403856417577,
+        "dy_m": -0.02107902665125735,
+        "dyaw_rad": 0.012949229811590968
+      },
+      "post_stop": {
+        "drift_endpoint_m": 0.032514176362422965,
+        "drift_peak_m": 0.0328911808414677,
+        "coast_dx_dy_m": [
+          -0.03189775583629745,
+          0.006301177440343583
+        ],
+        "coast_dyaw_rad": -0.16625332363826217
+      },
+      "feet_at_stop_world_xyz": [
+        [
+          -2.1581883430480957,
+          0.055465005338191986,
+          0.0327574722468853
+        ],
+        [
+          -2.146519899368286,
+          -0.06171435862779617,
+          0.02361379936337471
+        ]
+      ],
+      "public_sole_odometry": {
+        "chain_ok": true,
+        "error": null,
+        "stop": {
+          "policy_step": 330,
+          "read_s": 8.96,
+          "truth_state_index": 1319,
+          "public_dx_dy_m": [
+            -0.16096244509406288,
+            -0.0275755491735526
+          ],
+          "truth_dx_dy_m": [
+            -0.15732628272787832,
+            -0.027380204091600933
+          ],
+          "xy_error_m": 0.0036414058348801983,
+          "public_dyaw_rad": 0.15496373541472952,
+          "truth_dyaw_rad": 0.17920255344985314
+        },
+        "stop_plus_1s": {
+          "policy_step": 380,
+          "read_s": 9.96,
+          "truth_state_index": 1519,
+          "public_dx_dy_m": [
+            -0.1905475607656723,
+            -0.015666115877424544
+          ],
+          "truth_dx_dy_m": [
+            -0.1891228767945339,
+            -0.020878013363746183
+          ],
+          "xy_error_m": 0.005403110199278237,
+          "public_dyaw_rad": -0.007487504163821157,
+          "truth_dyaw_rad": 0.014594180860512118
+        },
+        "stop_plus_2s": {
+          "policy_step": 430,
+          "read_s": 10.96,
+          "truth_state_index": 1719,
+          "public_dx_dy_m": [
+            -0.19078733405637144,
+            -0.01585013955613272
+          ],
+          "truth_dx_dy_m": [
+            -0.18922403856417577,
+            -0.02107902665125735
+          ],
+          "xy_error_m": 0.00545757758071108,
+          "public_dyaw_rad": -0.007170480342511443,
+          "truth_dyaw_rad": 0.012949229811590968
+        },
+        "scope": "offline replay of recorded packets; never a controller input"
+      },
+      "heading_feedback": {
+        "episode_fault_code": 0,
+        "episode_fault_step": -1,
+        "audit_rederived_fault_code": 0,
+        "wz_abs_max": 0.5,
+        "wz_saturated_ticks": 3,
+        "public_heading_at_last_active_tick_rad": 0.04704000238419731
+      },
+      "yaw_timing": {
+        "yaw_at_stop_rad": 0.17920255344985314,
+        "yaw_change_stop_to_plus_1s_rad": -0.16460837258934102,
+        "yaw_walk_peak_abs_rad": 0.21365527052037825
+      },
+      "gates": {
+        "preparation_passed": true,
+        "no_fall": true,
+        "mechanical_original": true,
+        "onset_le_1s": true,
+        "abs_yaw_stop_plus_1s_le_0p25": true,
+        "abs_lateral_stop_plus_2s_le_0p05": true,
+        "backward_stop_plus_2s_in_0p12_0p24": true,
+        "public_odometry_chain_intact": true,
+        "public_odometry_xy_error_at_stop_le_0p03": true,
+        "post_stop_drift_peak_le_0p04": true,
+        "feedback_no_fault": true
+      },
+      "all_gates_passed": true
+    }
+  ],
+  "scope": "Probe gates only, not full-task success; truth scores only; public odometry is offline replay.",
+  "source_sha256": {
+    "@COURSE@/outputs/migration-20261019/claude-football-backward-bias-v121-v1/candidate/summarize.py": "ed301c177a488109d46cfdeffbde52c7ae9d51494f9e03335defc97f90569506",
+    "@COURSE@/outputs/migration-20261019/claude-football-backward-bias-v121-v1/candidate/odometry_replay.py": "3e3ccf1e8e0dbc88fbdbee8570bcd751fe1273591fc7db7127dc78b3191ec07e",
+    "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/report.json": "4f85adf907ed493b8dcfb8b39dd7cb8cdf36945915a79bb9736689b5dc17f74e",
+    "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/raw-trace.npz": "65bdeeede3c8fb9f40771c5c3f5c805fbb69dfd4c8ef20a33fbed0a0fd7d5ed7",
+    "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/sensor-diagnostics.npz": "547f20cc91f351d9ab05f8957c2f60848baa9adbf6b712052dafc4d52b44ea31",
+    "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/policy-clock-trace.npz": "7e6f57016f72bab266c0883038dc5493173d3d0017318c99641802bc4a1f7ca1",
+    "@COURSE@/outputs/migration-20261019/football-backward-bias-probe-v1/independent-audit.json": "c8376d231d00f92cf08f45fde08f29eaace297d67a0fefbd2d32ece8686487a2"
+  }
+}

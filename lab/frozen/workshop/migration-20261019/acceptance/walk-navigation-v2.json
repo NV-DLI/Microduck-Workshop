@@ -1,0 +1,257 @@
+{
+  "schema": "microduck.functional-protocol.v2",
+  "id": "walk-navigation-v2",
+  "created_at_utc": "2026-10-19T06:46:57.187900+00:00",
+  "status": "frozen_prospective_not_run",
+  "runtime_id": "newton-bam-20261019",
+  "hardware_profile_id": "beta-gc2093-l8cx-v1",
+  "prior_protocol": "walk-fixed-v1 and walk-stop-v1 remain unchanged and failed where measured",
+  "scope": "Function and declared simulation output limits only, not gear reliability or physical sim2real qualification",
+  "required_model_lines": [
+    "community-adapter",
+    "from-scratch"
+  ],
+  "model_freeze_before_qualification": true,
+  "required_model_bundle": [
+    "network_sha256",
+    "action_adapter_sha256",
+    "action_parameters_sha256",
+    "observation_parameters_sha256",
+    "native_bam_parameters_sha256",
+    "robot_usd_sha256",
+    "DR_recipe_sha256"
+  ],
+  "sampling": {
+    "physics_hz": 200,
+    "policy_hz": 50,
+    "BAM_delay_nominal_s": 0.02,
+    "native_bam_required": true,
+    "actual_physics_ticks_required": true,
+    "no_automatic_reset": true,
+    "all_failures_retained": true,
+    "clock": "simulated seconds, never video playback or wall seconds"
+  },
+  "hard_safety": {
+    "servo_bound_source": "actual official28joint servo coordinate ranges",
+    "effective_output_bound_source": "official14joint body limits, never servo range plus passive range",
+    "effective_output_definition": "q_servo + q_passive, encoder bias excluded from physical safety",
+    "maximum_servo_violation_rad": 0.001,
+    "maximum_effective_output_violation_rad": 0.001,
+    "nonfinite_allowed": false,
+    "falls_allowed_per_successful_episode": 0,
+    "external_support_during_task_max_N": 0,
+    "state_projection_allowed": false
+  },
+  "passive_backlash": {
+    "hard_mechanical_failure_gate": false,
+    "hardware_fit_status": "unverified",
+    "required_diagnostics": [
+      "per_joint_peak_p95_p99_residual_rad",
+      "per_joint_over_range_duration_s",
+      "per_joint_over_range_fraction",
+      "torque_and_voltage_trace",
+      "solver_solref_solimp",
+      "physics_step_hz"
+    ],
+    "no_physical_gear_reliability_claim": true
+  },
+  "group_rule": {
+    "seeds": [
+      1813891942,
+      658909903,
+      273291313
+    ],
+    "trials_per_seed_case": 64,
+    "conditions": {
+      "nominal": 32,
+      "full_official_DR": 32
+    },
+    "minimum_success_each_32_subgroup": 31,
+    "minimum_success_each_64_group": 61,
+    "all_cases_must_pass": true,
+    "aggregate_wilson95_report_required": true,
+    "DR_ranges_source": "Exact frozen official/current training DR recipe; no post-result range narrowing"
+  },
+  "fixed_commands": {
+    "cases": {
+      "forward_-0.025": [
+        -0.025,
+        0,
+        0
+      ],
+      "forward_+0.025": [
+        0.025,
+        0,
+        0
+      ],
+      "forward_-0.060": [
+        -0.06,
+        0,
+        0
+      ],
+      "forward_+0.060": [
+        0.06,
+        0,
+        0
+      ],
+      "forward_-0.100": [
+        -0.1,
+        0,
+        0
+      ],
+      "forward_+0.100": [
+        0.1,
+        0,
+        0
+      ],
+      "lateral_-0.025": [
+        0,
+        -0.025,
+        0
+      ],
+      "lateral_+0.025": [
+        0,
+        0.025,
+        0
+      ],
+      "lateral_-0.060": [
+        0,
+        -0.06,
+        0
+      ],
+      "lateral_+0.060": [
+        0,
+        0.06,
+        0
+      ],
+      "yaw_-0.200": [
+        0,
+        0,
+        -0.2
+      ],
+      "yaw_+0.200": [
+        0,
+        0,
+        0.2
+      ],
+      "yaw_-0.400": [
+        0,
+        0,
+        -0.4
+      ],
+      "yaw_+0.400": [
+        0,
+        0,
+        0.4
+      ],
+      "hold": [
+        0,
+        0,
+        0
+      ]
+    },
+    "episode_s": 20,
+    "initial_hold_s": 3,
+    "command_start_s": 3,
+    "transient_excluded_until_s": 4,
+    "evaluation_end_s": 20,
+    "linear_mean_rmse_threshold_m_s": {
+      "definition": "max(.01, .20 * norm(command_vxy))",
+      "minimum": 0.01,
+      "fraction": 0.2
+    },
+    "yaw_mean_rmse_threshold_rad_s": {
+      "definition": "max(.06, .20 * abs(command_yaw))",
+      "minimum": 0.06,
+      "fraction": 0.2
+    },
+    "filter": {
+      "type": "causal trailing rectangular mean",
+      "window_s": 1.0,
+      "apply_to": "measured body vx,vy,yaw; command constant across included window",
+      "resampling": "none; true200Hz 200sample window"
+    },
+    "translation_path": {
+      "reference": "straight line through root pose at command onset, oriented by commanded body XY transformed by onset heading",
+      "cross_track_rmse_max_m": 0.04,
+      "cross_track_peak_max_m": 0.08,
+      "heading_drift_max_rad": 0.1745329252
+    },
+    "pure_yaw": {
+      "translation_peak_from_onset_max_m": 0.05,
+      "final_unwrapped_yaw_error_max_rad": 0.1745329252,
+      "expected_yaw": "command_yaw * (20 - 3); no wrapped endpoint shortcut"
+    },
+    "hold": {
+      "position_peak_from_3s_max_m": 0.03,
+      "yaw_peak_from_3s_max_rad": 0.0872664626
+    },
+    "expected_trials_per_model": 2880
+  },
+  "stop_restart": {
+    "cases": {
+      "forward_positive": [
+        0.06,
+        0,
+        0
+      ],
+      "forward_negative": [
+        -0.06,
+        0,
+        0
+      ],
+      "yaw_positive": [
+        0,
+        0,
+        0.2
+      ],
+      "yaw_negative": [
+        0,
+        0,
+        -0.2
+      ]
+    },
+    "cycles": 3,
+    "initial_hold_s": 3,
+    "cycle_schedule": [
+      {
+        "duration_s": 5,
+        "command": "case"
+      },
+      {
+        "duration_s": 20,
+        "command": [
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "total_episode_s": 78,
+    "stop_settle_deadline_s": 2,
+    "settle_definition": "causal1s mean planar norm<=.02m/s and mean|yaw|<=.1rad/s for continuously .5s; instantaneous diagnostics also retained",
+    "post_settle_hold_position_peak_m": 0.03,
+    "post_settle_hold_yaw_peak_rad": 0.0872664626,
+    "post_settle_reference": "first instant meeting continuous settling gate; hold until next movement command",
+    "restart_required_every_cycle": true,
+    "restart_deadline_s": 2,
+    "restart_definition": "causal1s mean active commanded component has correct sign and magnitude>=50% target; then fixed-command mean error criteria",
+    "expected_trials_per_model": 768
+  },
+  "v1_diagnostics_always_report": [
+    "unfiltered_planar_velocity_RMSE",
+    "unfiltered_yaw_velocity_RMSE",
+    "all28joint_max_violation",
+    "per_joint_soft_limit_residual",
+    "original_v1_outcome"
+  ],
+  "football_protocol_changed": false,
+  "football_contract": "180s, empty then known one-obstacle;100 episodes/layout in4x25; Wilson95lower>=.80,eachgroup>=20/25,falls<=1/25;true foot-ball contact and wholeball across goal",
+  "selection_rules": [
+    "Development data may tune candidate before model freeze",
+    "Qualification seeds never used for training or development",
+    "Failed candidates stay recorded; a new model/version must use fresh qualification seeds",
+    "Do not pool different models/action recipes/runtime IDs",
+    "Initialization failures remain denominator; support only before scored clock, all support traced"
+  ]
+}

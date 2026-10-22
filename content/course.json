@@ -1,0 +1,2596 @@
+[
+  {
+    "id": "index",
+    "title": {
+      "zh": "让 Microduck 学会自主射门",
+      "en": "Teach Microduck to score a goal"
+    },
+    "summary": {
+      "zh": "从看懂一台双足机器人开始，用仿真、强化学习和视觉感知，把“看到足球”变成一次完整的自主行动。",
+      "en": "Start with a small biped. Use simulation, reinforcement learning, and visual perception to turn seeing a football into a complete autonomous action."
+    },
+    "meta": {
+      "zh": "7 章 · 中文 / English · 仿真实践",
+      "en": "7 chapters · 中文 / English · Simulation labs"
+    },
+    "number": "",
+    "group": {
+      "zh": "学习准备",
+      "en": "Getting started"
+    },
+    "sections": [
+      {
+        "id": "outcome",
+        "title": {
+          "zh": "你将完成什么",
+          "en": "What you will build"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "最终场景只有一台 Microduck、一个足球和一个球门。机器人需要找到球，判断球门方向，走到合适的出脚位置，踢球，并重新站稳。你会逐步了解每个环节负责什么，以及它们如何交接。",
+            "en": "The final scene contains one Microduck, one football, and one goal. The robot must find the ball, locate the goal, approach a useful kicking position, make contact, and recover its stance. You will learn what each part of this system does and how the parts work together."
+          },
+          {
+            "type": "pipeline",
+            "zh": [
+              "认识机构",
+              "控制与训练",
+              "视觉与导航",
+              "自主射门"
+            ],
+            "en": [
+              "Understand the mechanism",
+              "Control and train",
+              "See and navigate",
+              "Score autonomously"
+            ]
+          },
+          {
+            "type": "media",
+            "file": "football-full.gif",
+            "poster": "football-full.jpg",
+            "alt": {
+              "zh": "完整任务示例：第一人称与场外视角同步显示。按原仿真时间播放；这是一个成功示例，不能单独代表成功率。",
+              "en": "A complete task in synchronized robot and external views. Playback follows simulation time. This successful example alone is not a success-rate measurement."
+            },
+            "zh": "完整任务示例：第一人称与场外视角同步显示。按原仿真时间播放；这是一个成功示例，不能单独代表成功率。",
+            "en": "A complete task in synchronized robot and external views. Playback follows simulation time. This successful example alone is not a success-rate measurement."
+          }
+        ]
+      },
+      {
+        "id": "learn",
+        "title": {
+          "zh": "学完之后，你能够",
+          "en": "By the end, you can"
+        },
+        "blocks": [
+          {
+            "type": "list",
+            "zh": [
+              "说明关节、执行器、观测、动作和奖励之间的关系。",
+              "启动 Newton / Isaac Lab 仿真，加载固定策略并观察机器人行为。",
+              "运行一次有预算限制的训练练习，找到检查点并解释训练曲线。",
+              "把相机检测、ToF 距离和身体姿态联系起来，解释自主射门的状态切换。",
+              "记录完整任务的成功与失败，区分模型指标和任务指标。"
+            ],
+            "en": [
+              "Explain how joints, actuators, observations, actions, and rewards relate.",
+              "Launch a Newton / Isaac Lab simulation and inspect a fixed policy in action.",
+              "Run a bounded training exercise, locate checkpoints, and interpret training curves.",
+              "Connect camera detections, ToF ranges, and body attitude to autonomous task states.",
+              "Record both successes and failures, distinguishing model metrics from task metrics."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "route",
+        "title": {
+          "zh": "课程路线",
+          "en": "Course route"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "章节",
+                "要解决的问题"
+              ],
+              "en": [
+                "Chapter",
+                "The question you will answer"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "1 · 认识机器人",
+                  "哪些部件在运动？软件究竟控制什么？"
+                ],
+                [
+                  "2 · 第一次仿真",
+                  "如何启动场景，并让固定策略控制关节？"
+                ],
+                [
+                  "3 · 学习行走",
+                  "策略怎样从奖励中学习？怎样保存自己的训练？"
+                ],
+                [
+                  "4 · 从动作到技能",
+                  "为什么“能动”与“完成动作”是两回事？"
+                ],
+                [
+                  "5 · 让机器人看见球",
+                  "图像中的方框怎样变成可用的空间信息？"
+                ],
+                [
+                  "6 · 导航与站位",
+                  "看到了球，为什么还不能立即踢？"
+                ],
+                [
+                  "7 · 完成自主射门",
+                  "如何连接所有模块，并判断整次任务成功？"
+                ]
+              ],
+              "en": [
+                [
+                  "1 · Meet the robot",
+                  "Which parts move, and what does software control?"
+                ],
+                [
+                  "2 · Your first simulation",
+                  "How do you launch a scene and apply a fixed policy?"
+                ],
+                [
+                  "3 · Learning to walk",
+                  "How do rewards shape a policy, and where is training saved?"
+                ],
+                [
+                  "4 · From actions to skills",
+                  "Why is motion different from completing a skill?"
+                ],
+                [
+                  "5 · Seeing the ball",
+                  "How does an image box become useful spatial information?"
+                ],
+                [
+                  "6 · Navigation and alignment",
+                  "Why can’t the robot kick as soon as it sees the ball?"
+                ],
+                [
+                  "7 · Autonomous shooting",
+                  "How do you connect the modules and judge the whole task?"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "html",
+            "zh": "<p><a href=\"how-to-learn.html\">选择适合你的学习方式 →</a></p>",
+            "en": "<p><a href=\"how-to-learn.html\">Choose your learning path →</a></p>"
+          }
+        ]
+      }
+    ],
+    "references": []
+  },
+  {
+    "id": "how-to-learn",
+    "title": {
+      "zh": "如何学习本课程",
+      "en": "How to take this course"
+    },
+    "summary": {
+      "zh": "选择观看、固定模型实践或训练练习。三种方式共用同一条知识主线。",
+      "en": "Choose observation, fixed-model labs, or training practice. All three follow the same learning sequence."
+    },
+    "meta": {
+      "zh": "阅读约 5 分钟 · 无需 GPU",
+      "en": "About 5 minutes · No GPU required"
+    },
+    "number": "",
+    "group": {
+      "zh": "学习准备",
+      "en": "Getting started"
+    },
+    "sections": [
+      {
+        "id": "paths",
+        "title": {
+          "zh": "选择学习方式",
+          "en": "Choose a learning path"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "方式",
+                "你要做什么",
+                "需要什么"
+              ],
+              "en": [
+                "Path",
+                "What you do",
+                "What you need"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "观看学习",
+                  "阅读解释，操作 3D 模型，播放 GIF，回答检查题。",
+                  "现代浏览器"
+                ],
+                [
+                  "固定模型实践（推荐）",
+                  "复制命令，在本机终端运行仿真，观察与记录结果。",
+                  "已准备好的 GPU 环境"
+                ],
+                [
+                  "训练练习",
+                  "在实践基础上自己训练、导出和评估。",
+                  "更多运行时间和磁盘空间"
+                ]
+              ],
+              "en": [
+                [
+                  "Observe",
+                  "Read, inspect the 3D assembly, play GIFs, and answer checks.",
+                  "A modern browser"
+                ],
+                [
+                  "Use fixed models (recommended)",
+                  "Copy terminal commands, run simulation, and record observations.",
+                  "A prepared GPU environment"
+                ],
+                [
+                  "Practice training",
+                  "Add your own training, export, and evaluation.",
+                  "Additional runtime and disk space"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "首次学习建议先按固定模型完成主线，再回到第三章和第五章练习训练。没有 GPU 也可以按顺序读完，交互模型和示例不需要启动 Isaac。",
+            "en": "For a first pass, complete the fixed-model path, then return to Chapters 3 and 5 for training. Without a GPU, follow the reading path in order. The interactive model and examples do not launch Isaac."
+          }
+        ]
+      },
+      {
+        "id": "prerequisites",
+        "title": {
+          "zh": "你需要知道什么",
+          "en": "Prerequisites"
+        },
+        "blocks": [
+          {
+            "type": "list",
+            "zh": [
+              "能够在 Linux 中打开终端、切换目录和复制多行命令。",
+              "能读懂简单的 Python 函数、数组和参数。无需先掌握 PPO。",
+              "知道坐标、角度和速度的含义；课程会解释机器人坐标系。"
+            ],
+            "en": [
+              "Open a Linux terminal, change directories, and copy multiline commands.",
+              "Read basic Python functions, arrays, and parameters. Prior PPO knowledge is not required.",
+              "Understand positions, angles, and velocities; robot coordinate frames are introduced in the course."
+            ]
+          },
+          {
+            "type": "note",
+            "title": {
+              "zh": "关于训练结果",
+              "en": "About your training results"
+            },
+            "zh": "你自己的检查点只用于练习。后续章节默认使用 <code>models/</code> 中的课程模型，不会自动挑选“最近训练的模型”。如果希望使用自己的策略，需要显式指定检查点，并重新评估。",
+            "en": "Your checkpoint is a practice artifact. Later chapters explicitly use the course models in <code>models/</code>; they never select the latest training run automatically. Using your own policy requires an explicit checkpoint and a new evaluation."
+          }
+        ]
+      },
+      {
+        "id": "routine",
+        "title": {
+          "zh": "每次实验怎么做",
+          "en": "A useful lab routine"
+        },
+        "blocks": [
+          {
+            "type": "list",
+            "zh": [
+              "先读“预期结果”，知道自己应该观察什么。",
+              "在课程仓库根目录执行命令。每个输出目录只用于一次运行。",
+              "保存命令、随机种子和结果；失败也保留。",
+              "回答本章检查题，再进入下一章。"
+            ],
+            "en": [
+              "Read the expected result before running a command.",
+              "Run commands from the repository root. Use a new output directory for every run.",
+              "Keep the command, seed, and result—including failures.",
+              "Answer the chapter check before moving on."
+            ]
+          },
+          {
+            "type": "p",
+            "zh": "正文给出的阅读与练习时长是学习安排，不是训练耗时保证。首次启动可能需要下载资源、编译内核和建立渲染缓存。",
+            "en": "Reading and exercise durations are planning estimates, not training-time guarantees. The first launch may download assets, compile kernels, and populate rendering caches."
+          }
+        ]
+      }
+    ],
+    "references": []
+  },
+  {
+    "id": "setup",
+    "title": {
+      "zh": "准备环境与获取代码",
+      "en": "Prepare your environment"
+    },
+    "summary": {
+      "zh": "把课程页面、实验代码和固定模型放到同一个工作目录，然后检查运行环境。",
+      "en": "Keep the course, lab code, and fixed models in one workspace, then check the runtime."
+    },
+    "meta": {
+      "zh": "操作实验 · Ubuntu 24.04 / DGX Spark",
+      "en": "Hands-on lab · Ubuntu 24.04 / DGX Spark"
+    },
+    "number": "",
+    "group": {
+      "zh": "学习准备",
+      "en": "Getting started"
+    },
+    "sections": [
+      {
+        "id": "requirements",
+        "title": {
+          "zh": "运行条件",
+          "en": "Runtime requirements"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "本课程的参考运行环境是 Ubuntu 24.04、DGX Spark（aarch64）、Python 3.12、Isaac Sim 6.2 和锁定版本的 Isaac Lab / Newton。仿真使用 Newton 的原生执行器路径。其他 GPU 或版本可能可以运行，但不能直接沿用课程的测试结果。",
+            "en": "The reference environment is Ubuntu 24.04 on DGX Spark (aarch64), Python 3.12, Isaac Sim 6.2, and pinned Isaac Lab / Newton revisions. Simulation uses Newton’s native actuator path. Other GPUs or versions may run, but the course results do not automatically apply to them."
+          },
+          {
+            "type": "p",
+            "zh": "需要 NVIDIA 驱动、支持 GPU 的图形桌面、Git、Docker 和可访问 NVIDIA 软件源的网络。观看网页不需要安装这些组件。安装 Isaac Sim 前，请阅读其软件许可。",
+            "en": "You need an NVIDIA driver, a GPU-enabled graphical desktop, Git, Docker, and network access to NVIDIA package sources. None of these are required for reading the website. Review the Isaac Sim license before installing the simulator."
+          }
+        ]
+      },
+      {
+        "id": "get-code",
+        "title": {
+          "zh": "下载课程与模型",
+          "en": "Download the course and models"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "mkdir -p \"$HOME/microduck\"\ncd \"$HOME/microduck\"\ngit clone https://github.com/NV-DLI/Microduck-Workshop.git\ncd Microduck-Workshop\npython3 scripts/workshop.py verify-models",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "模型随仓库下载，不需要单独登录 Hugging Face。校验命令逐个核对文件的 SHA-256；所有文件一致才继续。课程固定权重和你自己的输出分开保存。",
+            "en": "The models are included in the repository, so no Hugging Face login is required. The verification command checks every model’s SHA-256. Continue only when all files match. Course weights and student outputs are stored separately."
+          },
+          {
+            "type": "code",
+            "code": "Microduck-Workshop/\n├── web/          # HTML course\n├── lab/          # simulation and learning code\n├── models/       # fixed course models\n├── scripts/      # lab entry points\n└── outputs/      # your runs (created when needed)",
+            "label": "Workspace"
+          }
+        ]
+      },
+      {
+        "id": "install",
+        "title": {
+          "zh": "准备仿真环境",
+          "en": "Prepare the simulator"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先确认系统工具可用。下面安装 Git、Python 虚拟环境支持和录像编码工具。Docker 需先按其 <a href=\"https://docs.docker.com/engine/install/ubuntu/\">Ubuntu 安装说明</a> 准备好；<code>docker info</code> 应能显示服务信息，不应报权限错误。",
+            "en": "First prepare system tools. The commands below install Git, Python virtual-environment support, and video encoding. Set up Docker using its <a href=\"https://docs.docker.com/engine/install/ubuntu/\">Ubuntu instructions</a>; <code>docker info</code> should show server information without a permission error."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "sudo apt-get update\nsudo apt-get install -y git python3-venv ffmpeg\ndocker info\nexport UV_HTTP_TIMEOUT=600"
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py setup\npython3 scripts/workshop.py doctor",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "<code>setup</code> 显示并执行锁定版本的安装步骤；如果已有符合版本的 Isaac Lab，可以用 <code>--isaaclab /你的/IsaacLab目录</code> 绑定。<code>doctor</code> 检查 Python、模型、GPU、桌面显示变量和导航依赖；显示的失败项必须先处理。",
+            "en": "<code>setup</code> prepares the pinned runtime. If you already have a matching Isaac Lab checkout, bind it using <code>--isaaclab /path/to/IsaacLab</code>. <code>doctor</code> checks Python, models, GPU, rendering, and navigation dependencies. Resolve failed checks before continuing."
+          },
+          {
+            "type": "note",
+            "title": {
+              "zh": "在桌面终端启动",
+              "en": "Launch from your desktop terminal"
+            },
+            "zh": "需要图形界面的命令应在 GPU 机器的桌面终端执行。网页只提供教材与命令，不会把 Isaac 窗口嵌入浏览器。首次打开场景时，请等待着色器和资源加载完成。",
+            "en": "Run GUI commands in a terminal on the GPU machine’s desktop. The website provides lessons and commands; Isaac opens in its own window. On the first launch, allow shaders and assets to finish loading."
+          }
+        ]
+      },
+      {
+        "id": "check",
+        "title": {
+          "zh": "确认可以开始",
+          "en": "Before you continue"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py inspect-model --model models/walk.onnx",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "预期结果：模型输入与输出的名称、形状和固定模型校验信息。看不到 GPU 时先阅读故障排查；不应通过更换物理引擎或随机下载一个模型来绕过检查。",
+            "en": "Expected result: input and output names, tensor shapes, and model identity. If the GPU is unavailable, use the troubleshooting page before proceeding. Keep the pinned physics backend and model combination."
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/newton-physics/newton",
+        "zh": "Newton 物理引擎",
+        "en": "Newton physics engine"
+      },
+      {
+        "url": "https://docs.isaacsim.omniverse.nvidia.com/latest/installation/requirements.html",
+        "zh": "Isaac Sim 系统要求",
+        "en": "Isaac Sim system requirements"
+      }
+    ]
+  },
+  {
+    "id": "01-anatomy",
+    "title": {
+      "zh": "认识 Microduck 的机械结构",
+      "en": "Meet Microduck’s mechanism"
+    },
+    "summary": {
+      "zh": "先把外壳、关节、执行器和传感器分开理解，再看它们如何组成一台可控制的机器人。",
+      "en": "Separate shells, joints, actuators, and sensors, then see how they form a controllable robot."
+    },
+    "meta": {
+      "zh": "第 1 章 · 阅读与交互约 25 分钟 · 无需 GPU",
+      "en": "Chapter 1 · About 25 minutes · No GPU required"
+    },
+    "number": "1",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "assembly",
+        "title": {
+          "zh": "从整体到组件",
+          "en": "From assembly to components"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "Microduck 是一台小型双足机器人。双腿承担支撑与移动，颈部机构调整视线，机身容纳计算、电源和连接部件。外观网格描述“看起来是什么样”，关节与碰撞模型描述“允许怎样运动和接触”。这两类数据在仿真中承担不同职责。",
+            "en": "Microduck is a small biped. Its legs support and move the body, the neck directs its view, and the trunk houses computing, power, and connections. Visual meshes describe appearance. Joints and collision geometry describe permitted motion and contact. These play different roles in simulation."
+          },
+          {
+            "type": "anatomy"
+          },
+          {
+            "type": "p",
+            "zh": "操作：先把展开滑块移到中间，找到左右腿的舵机；再完全展开，选择头部镜头、外壳与主板。最后复位，观察这些部件如何通过连接件构成运动链。",
+            "en": "Try this: move the explosion slider halfway and find the leg servos. Fully expand the assembly and select the lens, shells, and boards. Reset the view and trace how the connectors form a kinematic chain."
+          },
+          {
+            "type": "note",
+            "title": {
+              "zh": "硬件版本与仿真关节",
+              "en": "Hardware revision and simulation joints"
+            },
+            "zh": "这份机械 CAD 包含 15 个舵机实体。对应的仿真导出有 14 个活动关节，喙部机构未作为独立策略关节。CAD 中电子部件的形状属于其原始硬件版本；第五章使用的 Beta 传感器配置另行说明。",
+            "en": "This CAD assembly contains 15 servo bodies. Its simulation export exposes 14 active joints; the beak is not an independent policy joint. Electronic shapes belong to the source CAD revision. Chapter 5 separately describes the Beta sensing configuration."
+          },
+          {
+            "type": "media",
+            "file": "../robot/exploded-cycle.gif",
+            "poster": "../robot/poster.png",
+            "zh": "Blender 机械装配示意：组件展开后回到装配位置。用于认识结构，不是物理仿真。",
+            "en": "Blender mechanical assembly illustration: components separate and reassemble. This explains structure; it is not a physics simulation.",
+            "alt": {
+              "zh": "Blender 机械装配示意：组件展开后回到装配位置。用于认识结构，不是物理仿真。",
+              "en": "Blender mechanical assembly illustration: components separate and reassemble. This explains structure; it is not a physics simulation."
+            }
+          }
+        ]
+      },
+      {
+        "id": "joint-map",
+        "title": {
+          "zh": "先分清零件、关节和自由度",
+          "en": "Parts, joints, and degrees of freedom"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "拿起一支笔绕笔尖转动，你可以同时改变三个方向；一个铰链却通常只允许绕一条固定轴旋转。机器人关节也有这样的约束。自由度描述需要多少个独立变量才能表示允许的运动，零件数量则描述装配由多少实体构成；两者不相等。网页中的 70 个组件不意味着策略有 70 个动作。",
+            "en": "A pen held at its tip can rotate in several directions, while a hinge normally rotates around one fixed axis. Robot joints impose similar constraints. A degree of freedom is an independent variable needed to describe permitted motion; a component count describes physical pieces. The 70 components in this viewer do not imply 70 policy actions."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "区域",
+                "活动关节",
+                "主要作用"
+              ],
+              "en": [
+                "Region",
+                "Active joints",
+                "Main role"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "每条腿",
+                  "髋偏航、髋侧倾、髋俯仰、膝、踝，共 5 个",
+                  "控制支撑与脚的位置"
+                ],
+                [
+                  "颈部与头部",
+                  "颈俯仰、头俯仰、头偏航、头侧倾，共 4 个",
+                  "改变相机朝向与头部姿态"
+                ],
+                [
+                  "喙部",
+                  "实物有舵机；本课程策略不控制",
+                  "CAD 展示，不计入 14 维策略动作"
+                ]
+              ],
+              "en": [
+                [
+                  "Each leg",
+                  "Hip yaw, roll, pitch; knee; ankle: 5 joints",
+                  "Support the body and place the foot"
+                ],
+                [
+                  "Neck and head",
+                  "Neck pitch; head pitch, yaw, roll: 4 joints",
+                  "Orient the camera and head"
+                ],
+                [
+                  "Beak",
+                  "Physical servo; not controlled by this policy",
+                  "Shown in CAD, excluded from the 14-action interface"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "选中一个髋部舵机，观察它的输出轴与附近轴承。舵机控制主动转角，轴承支撑旋转部件，支架把相邻关节连接起来。材料、形状与装配间隙都会影响运动。网页模型保留原 CAD 的细节，但没有模拟螺丝预紧、塑料弹性或线缆受力；它用于理解结构，而不是替代制造图纸。",
+            "en": "Select a hip servo and inspect its output shaft and nearby bearing. The servo controls an active angle, the bearing supports rotation, and brackets connect adjacent joints. Material, shape, and assembly clearance affect motion. The viewer preserves CAD detail but does not simulate screw preload, plastic elasticity, or cable forces; it is an anatomy aid rather than manufacturing documentation."
+          }
+        ]
+      },
+      {
+        "id": "control",
+        "title": {
+          "zh": "软件如何让部件运动",
+          "en": "How software moves the mechanism"
+        },
+        "blocks": [
+          {
+            "type": "pipeline",
+            "zh": [
+              "策略输出动作",
+              "转换关节目标",
+              "执行器产生力矩",
+              "物理更新状态",
+              "传感器提供新观测"
+            ],
+            "en": [
+              "Policy action",
+              "Joint targets",
+              "Actuator torque",
+              "Physics update",
+              "New observation"
+            ]
+          },
+          {
+            "type": "p",
+            "zh": "策略并不直接移动机器人到指定位置。它输出一组动作，经动作接口变为关节目标。执行器依据目标与实际状态的差异产生力矩；机器人是否真的向前移动，还取决于接触、重力、惯量和摩擦。",
+            "en": "A policy does not teleport the robot to a desired position. It outputs actions that become joint targets. Actuators produce torque based on the difference between target and measured state. The resulting motion depends on contact, gravity, inertia, and friction."
+          },
+          {
+            "type": "p",
+            "zh": "本课程的控制循环为 50 Hz，物理步进为 200 Hz：每个策略动作保持四个物理步。齿隙模型还引入被动关节，描述传动中的间隙；这些被动关节不是额外的策略输出。",
+            "en": "The policy runs at 50 Hz and physics at 200 Hz: each action spans four physics steps. Backlash introduces passive joints representing transmission play. Passive joints are not additional policy outputs."
+          }
+        ]
+      },
+      {
+        "id": "frames",
+        "title": {
+          "zh": "用坐标系描述运动",
+          "en": "Describe motion with frames"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "坐标系",
+                "你会在这里看到什么"
+              ],
+              "en": [
+                "Frame",
+                "What is expressed here"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "世界坐标系",
+                  "场地、球门和机器人整体位置"
+                ],
+                [
+                  "身体坐标系",
+                  "前进、侧移、转向指令以及球相对身体的位置"
+                ],
+                [
+                  "相机坐标系",
+                  "图像射线与检测目标方向"
+                ],
+                [
+                  "关节局部坐标系",
+                  "一个关节的旋转轴与角度"
+                ]
+              ],
+              "en": [
+                [
+                  "World",
+                  "Pitch, goal, and overall robot position"
+                ],
+                [
+                  "Body",
+                  "Forward, lateral, and turn commands; ball relative to the robot"
+                ],
+                [
+                  "Camera",
+                  "Image rays and detected target directions"
+                ],
+                [
+                  "Joint-local",
+                  "A joint’s axis and angle"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "头部关节保持不动时，相机画面一定稳定吗？",
+              "en": "If the head joints stay fixed, is the camera image necessarily stable?"
+            },
+            "answer": {
+              "zh": "不一定。身体会俯仰和滚转，颈部也随身体运动。要判断取景稳定，需要观察相机相对世界的姿态，而不只是关节角度。",
+              "en": "No. Body pitch and roll move the neck and camera. Image stability depends on camera orientation relative to the world, not only on joint angles."
+            }
+          }
+        ]
+      },
+      {
+        "id": "read-assembly",
+        "title": {
+          "zh": "练习：沿一条受力路径找部件",
+          "en": "Exercise: trace one load path"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先把模型保持在装配状态，找到左脚，再沿脚踝、小腿、膝部、大腿与髋部向上追踪。脚落地时，支撑力通过这条路径传到身体。现在展开模型，点选关节附近的舵机与支架，观察哪个部件固定在上一级，哪个部件随输出轴旋转。爆炸图只改变显示位置，不代表真实关节可移动到这些位置。",
+            "en": "Start with the assembled model. Trace a path from the left foot through the ankle, shin, knee, thigh, and hip. Ground support reaches the body through this chain. Explode the assembly and select the servos and brackets around a joint. Identify the fixed housing and the part driven by its output. Explosion offsets are display positions, not physically reachable joint poses."
+          },
+          {
+            "type": "p",
+            "zh": "一个舵机既包含电机，也包含减速齿轮、位置反馈和控制电路。给定目标角度后，它需要时间追踪目标，受可用扭矩、速度、摩擦和齿隙限制。因此，“策略输出一个角度”与“关节立刻到达这个角度”是两回事。第二章会观察这个差别；第三章解释如何让策略适应它。",
+            "en": "A servo combines a motor, reduction gears, position feedback, and control electronics. Reaching a target takes time and is limited by torque, speed, friction, and backlash. A policy issuing an angle does not mean the joint instantly reaches it. Chapter 2 observes this difference; Chapter 3 explains how a policy learns around it."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "在爆炸图中把脚部拉得更远，会改变仿真的腿长吗？",
+              "en": "Does moving the foot farther out in the exploded view change the simulated leg length?"
+            },
+            "answer": {
+              "zh": "不会。网页爆炸图用于认识组件；仿真中的长度和关节连接由机器人描述文件定义。",
+              "en": "No. The web view explains components. Robot description files define simulated dimensions and joint connections."
+            }
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/pollen-robotics/microduck",
+        "zh": "Pollen Robotics：Microduck 硬件",
+        "en": "Pollen Robotics: Microduck hardware"
+      },
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
+        "zh": "Isaac Lab：Microduck 任务源码",
+        "en": "Isaac Lab: Microduck task source"
+      },
+      {
+        "url": "https://github.com/newton-physics/newton",
+        "zh": "Newton 物理引擎",
+        "en": "Newton physics engine"
+      }
+    ]
+  },
+  {
+    "id": "02-simulation",
+    "title": {
+      "zh": "启动你的第一次仿真",
+      "en": "Run your first simulation"
+    },
+    "summary": {
+      "zh": "用课程固定行走模型连接观测、动作和物理，先观察稳定的控制循环。",
+      "en": "Connect observations, actions, and physics using the fixed walking model."
+    },
+    "meta": {
+      "zh": "第 2 章 · 实验约 30 分钟 · GPU",
+      "en": "Chapter 2 · About 30 minutes · GPU"
+    },
+    "number": "2",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "ready",
+        "title": {
+          "zh": "实验前准备",
+          "en": "Before the lab"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "football-recovery.gif",
+            "poster": "football-recovery.jpg",
+            "alt": {
+              "zh": "完整任务中的行走与重新观察示例，双视角按原仿真时间播放。它帮助你识别身体移动和相机视野变化；本章的简化行走命令不包含这些感知与恢复状态。",
+              "en": "Walking and re-observation within a full task, synchronized at simulation-time speed. Identify body motion and camera-view changes. The simpler walking command in this chapter does not include these perception and recovery states."
+            },
+            "zh": "完整任务中的行走与重新观察示例，双视角按原仿真时间播放。它帮助你识别身体移动和相机视野变化；本章的简化行走命令不包含这些感知与恢复状态。",
+            "en": "Walking and re-observation within a full task, synchronized at simulation-time speed. Identify body motion and camera-view changes. The simpler walking command in this chapter does not include these perception and recovery states."
+          },
+          {
+            "type": "p",
+            "zh": "完成环境准备和模型校验。在 GPU 机器的桌面打开终端，进入 <code>Microduck-Workshop</code>。本章不训练模型，重点是读懂一次运行的输入、输出和可见行为。",
+            "en": "Complete setup and model verification. Open a desktop terminal on the GPU machine and enter <code>Microduck-Workshop</code>. This chapter loads an existing model and focuses on a run’s inputs, outputs, and visible behavior."
+          }
+        ]
+      },
+      {
+        "id": "policy-interface",
+        "title": {
+          "zh": "策略收到什么，又输出什么",
+          "en": "What the policy receives and produces"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "第二章使用已经训练好的策略做推理。它把当前观测映射为 14 个关节动作；运行时没有更新神经网络参数。这个区别很重要：更换速度指令是在测试同一个模型的行为，不是重新训练。改变模型文件才会更换策略。",
+            "en": "This chapter runs inference with a trained policy. It maps the current observation to 14 joint actions without updating neural-network parameters. Changing the velocity command tests the same model under a different request; it is not training. Choosing a different model file changes the policy."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "观测项（按接口顺序）",
+                "维数",
+                "帮助策略判断什么"
+              ],
+              "en": [
+                "Observation, in interface order",
+                "Width",
+                "What it tells the policy"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "角速度与身体坐标下的重力方向",
+                  "6",
+                  "身体正在怎样转动、倾斜"
+                ],
+                [
+                  "相对关节位置",
+                  "14",
+                  "当前姿态与默认姿态的差异"
+                ],
+                [
+                  "关节速度",
+                  "14",
+                  "各关节正在怎样运动"
+                ],
+                [
+                  "上一动作",
+                  "14",
+                  "上一次控制输出，帮助保持时间连续性"
+                ],
+                [
+                  "速度、头部与身体姿态指令",
+                  "3 + 4 + 6",
+                  "这一步希望机器人做什么"
+                ]
+              ],
+              "en": [
+                [
+                  "Angular velocity and projected gravity",
+                  "6",
+                  "Body rotation and tilt"
+                ],
+                [
+                  "Relative joint positions",
+                  "14",
+                  "Pose relative to the nominal posture"
+                ],
+                [
+                  "Joint velocities",
+                  "14",
+                  "Motion at each joint"
+                ],
+                [
+                  "Previous action",
+                  "14",
+                  "Previous control output and temporal context"
+                ],
+                [
+                  "Velocity, head, and body commands",
+                  "3 + 4 + 6",
+                  "Requested behavior"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "这些值合计 61 维。把关节顺序打乱，即使输入形状仍是 61，也会破坏语义：策略可能把膝关节读成髋关节。课程入口负责保持顺序、默认姿态和控制节拍一致。你先通过指令、时间预算和输出目录做实验，再在理解接口后修改底层观测。",
+            "en": "These values total 61. Reordering joints breaks their meaning even if the input still has 61 entries: the policy might read a knee as a hip. Course entry points preserve ordering, nominal posture, and control timing. Begin by changing commands, duration, and output directories; modify observation construction only after understanding the interface."
+          }
+        ]
+      },
+      {
+        "id": "run",
+        "title": {
+          "zh": "加载固定行走策略",
+          "en": "Load the fixed walking policy"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py walk \\\n  --model models/walk.onnx \\\n  --velocity 0.30 0.00 0.00 \\\n  --seconds 12 \\\n  --seed 42 \\\n  --output outputs/walk-forward-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "参数",
+                "含义"
+              ],
+              "en": [
+                "Argument",
+                "Meaning"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "<code>--model</code>",
+                  "明确加载的 ONNX 策略"
+                ],
+                [
+                  "<code>--velocity</code>",
+                  "前进、侧移、转向的策略指令；不是实测速度"
+                ],
+                [
+                  "<code>--seconds</code>",
+                  "仿真持续时间"
+                ],
+                [
+                  "<code>--seed</code>",
+                  "随机数种子"
+                ],
+                [
+                  "<code>--output</code>",
+                  "本次运行的新结果目录"
+                ]
+              ],
+              "en": [
+                [
+                  "<code>--model</code>",
+                  "Explicit ONNX policy file"
+                ],
+                [
+                  "<code>--velocity</code>",
+                  "Forward, lateral, and turn policy commands—not measured velocity"
+                ],
+                [
+                  "<code>--seconds</code>",
+                  "Simulation duration"
+                ],
+                [
+                  "<code>--seed</code>",
+                  "Random seed"
+                ],
+                [
+                  "<code>--output</code>",
+                  "A new directory for this run"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "预期结果：独立的仿真窗口打开，机器人由固定策略控制。关注脚掌是否交替支撑、身体有没有持续偏转，以及停止前后是否存在漂移。每次使用新的输出目录，避免覆盖上一次观察。",
+            "en": "Expected result: a separate simulation window opens with the fixed policy controlling the robot. Watch alternating support, persistent body rotation, and drift around stopping. Use a new output directory for each observation."
+          }
+        ]
+      },
+      {
+        "id": "observe",
+        "title": {
+          "zh": "比较两组指令",
+          "en": "Compare two commands"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py walk \\\n  --model models/walk.onnx \\\n  --velocity 0.00 0.00 0.00 \\\n  --seconds 12 \\\n  --seed 42 \\\n  --output outputs/walk-hold-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "保持模型、时长和种子不变，只把指令改成零。零指令要求策略站立，并不保证身体完全没有微动。小幅速度指令也不一定产生等比例的移动；策略是学出来的控制器，其响应需要实际观察。",
+            "en": "Keep the model, duration, and seed unchanged, and set the command to zero. A zero command requests standing, but does not guarantee a perfectly motionless body. Small commands may not produce proportionally small motion; learned responses must be observed."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "把前进指令从 0.30 改成 0.15，能直接断言机器人走得恰好慢一半吗？",
+              "en": "Does changing the forward command from 0.30 to 0.15 guarantee exactly half the walking speed?"
+            },
+            "answer": {
+              "zh": "不能。指令是输入，实际速度是结果。需要用同样条件测量位移和时间，还要记录是否摔倒、转向或进入了不响应的小指令范围。",
+              "en": "No. A command is an input; achieved speed is an outcome. Measure displacement and time under comparable conditions, including falls, unwanted turning, and command dead zones."
+            }
+          }
+        ]
+      },
+      {
+        "id": "read-output",
+        "title": {
+          "zh": "读懂一次运行留下的数据",
+          "en": "Read the outputs of one run"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "仿真每 0.005 秒推进一次物理状态；策略每 0.02 秒产生一次动作。也就是同一个策略动作经过 4 个物理小步，再根据新的观测更新。界面绘制、物理频率和策略频率是不同的量：窗口刷新慢，不自动意味着仿真时间已经改变。",
+            "en": "Physics advances every 0.005 seconds. The policy produces an action every 0.02 seconds, so four physics steps occur before the next policy update. Display refresh, physics frequency, and policy frequency are different quantities: a slow window does not automatically change simulated time."
+          },
+          {
+            "type": "p",
+            "zh": "实验先保持两秒零速度指令，然后施加你填写的速度。运行结束后，<code>report.json</code> 给出实际模拟时长、模型身份和是否摔倒；<code>trajectory.json</code> 按时间保存位置与实际速度。若机器人摔倒，实验提前结束，不会悄悄重置后继续累计“成功时间”。这是一项单机器人名义条件观察实验，不能替代第七章包含感知和恢复的完整任务评测。",
+            "en": "The lab holds a zero velocity command for two seconds, then applies your command. After the run, <code>report.json</code> records elapsed simulation time, model identity, and whether a fall occurred. <code>trajectory.json</code> records positions and measured velocities over time. A fall ends the run instead of silently resetting it. This nominal single-robot observation does not replace the full perception-and-recovery task in Chapter 7."
+          },
+          {
+            "type": "p",
+            "zh": "比较前进与站立两次结果时，先看 <code>fell</code>，再比较位置变化和速度。前进指令的第一个参数是身体前方速度，第二个是横向速度，第三个是偏航角速度。位置以米计，线速度以米/秒计，偏航角速度以弧度/秒计。保持种子相同并每次只改一个参数，才能解释观察到的差异。",
+            "en": "Compare <code>fell</code> first, then displacement and measured velocity. Command entries are forward body velocity, lateral body velocity, and yaw rate. Units are meters, meters per second, and radians per second. Keep the seed fixed and change one parameter at a time so you can interpret the difference."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "指令是 0.30 m/s，平均实际速度只有 0.20 m/s，但机器人未摔倒。应记为速度追踪完全成功吗？",
+              "en": "The command is 0.30 m/s and measured speed averages 0.20 m/s without a fall. Is velocity tracking perfect?"
+            },
+            "answer": {
+              "zh": "不是。未摔倒描述稳定性；速度误差描述追踪效果。需要分别记录。",
+              "en": "No. Survival describes stability; velocity error describes tracking. Record them separately."
+            }
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
+        "zh": "Isaac Lab：Microduck 任务源码",
+        "en": "Isaac Lab: Microduck task source"
+      }
+    ]
+  },
+  {
+    "id": "03-learning",
+    "title": {
+      "zh": "让策略学习行走",
+      "en": "Learning to walk"
+    },
+    "summary": {
+      "zh": "体验一次 PPO 训练，理解观测、动作、奖励和检查点，同时保持后续课程使用固定模型。",
+      "en": "Experience PPO training and understand observations, actions, rewards, and checkpoints while keeping downstream labs on fixed models."
+    },
+    "meta": {
+      "zh": "第 3 章 · 阅读约 30 分钟 · 训练练习可选",
+      "en": "Chapter 3 · About 30 minutes reading · Optional training"
+    },
+    "number": "3",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "loop",
+        "title": {
+          "zh": "一次强化学习循环",
+          "en": "One reinforcement-learning loop"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "balance-training.gif",
+            "poster": "balance-training.jpg",
+            "alt": {
+              "zh": "真实并行强化学习训练录像：此处演示篮球平衡任务的多环境采样，说明训练如何收集交互；不是行走练习的成绩，也不表示篮球技能已成功。",
+              "en": "Recorded parallel reinforcement learning: this basketball-balance run illustrates multi-environment sampling. It is not the walking exercise result or evidence of a successful basketball skill."
+            },
+            "zh": "真实并行强化学习训练录像：此处演示篮球平衡任务的多环境采样，说明训练如何收集交互；不是行走练习的成绩，也不表示篮球技能已成功。",
+            "en": "Recorded parallel reinforcement learning: this basketball-balance run illustrates multi-environment sampling. It is not the walking exercise result or evidence of a successful basketball skill."
+          },
+          {
+            "type": "p",
+            "zh": "先给策略一个观测向量，包括身体姿态、角速度、关节状态、速度指令和上一动作。策略输出关节动作，物理引擎推进场景，奖励函数再评价这一步是否接近目标。PPO 收集一批这样的交互后更新参数，然后继续采样。",
+            "en": "The policy receives a vector containing body attitude, angular velocity, joint state, a velocity command, and the previous action. It outputs joint actions, physics advances, and rewards measure progress toward the objective. PPO collects a batch of interactions, updates the policy, and samples again."
+          },
+          {
+            "type": "pipeline",
+            "zh": [
+              "收集观测",
+              "采样动作",
+              "推进仿真",
+              "计算奖励",
+              "PPO 更新"
+            ],
+            "en": [
+              "Observe",
+              "Sample actions",
+              "Simulate",
+              "Compute rewards",
+              "Update PPO"
+            ]
+          },
+          {
+            "type": "p",
+            "zh": "“环境数量”决定同时运行多少个机器人副本；“迭代次数”决定重复多少轮采样和更新。增大环境数会提高并行采样量，也会增加内存需求。训练奖励上升意味着优化目标正在改善，仍需要在独立情形中检查真实行为。",
+            "en": "The environment count is the number of simultaneous robot copies. Iterations repeat collection and optimization. More environments increase parallel sampling and memory demand. A rising training reward means the optimized objective is improving; independent behavior checks are still necessary."
+          }
+        ]
+      },
+      {
+        "id": "ppo",
+        "title": {
+          "zh": "PPO 为什么不是“每一步奖励高就保留”",
+          "en": "Why PPO looks beyond immediate reward"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "机器人迈步时，短暂抬起一只脚可能降低眼前的稳定性，却是向前移动必需的动作。强化学习因此关心一段时间内的累计回报，而不只看当前一步。折扣因子让较远未来的奖励权重逐渐减小，平衡短期反馈与长期效果。",
+            "en": "Lifting a foot can briefly reduce stability while being necessary for forward progress. Reinforcement learning therefore considers return over time rather than just the current reward. A discount factor reduces the weight of more distant rewards, balancing immediate feedback with longer-term consequences."
+          },
+          {
+            "type": "p",
+            "zh": "PPO 中，actor 根据观测选择动作；critic 估计当前状态以后可能得到的回报。某次动作带来的结果比 critic 预期更好，就得到正的优势估计，更新会倾向增加它的概率；比预期差则相反。PPO 限制一次更新偏离旧策略的程度，减少策略突然变化带来的不稳定。它并不保证每次更新都让真实任务成功率提高。",
+            "en": "In PPO, the actor chooses actions and the critic estimates future return. An outcome better than the critic expected receives a positive advantage estimate, encouraging a higher probability for the corresponding action; a worse outcome does the opposite. PPO limits how far an update moves from the old policy to reduce abrupt changes. It does not guarantee that every update improves real task success."
+          },
+          {
+            "type": "p",
+            "zh": "训练时可以给 critic 更多仿真信息，帮助它评价轨迹，但部署的 actor 必须只依赖运行时确实能提供的观测。例如仿真引擎知道精确身体速度，不代表真实机器人有一个无误差的速度传感器。不要把仅用于训练或评分的真值偷偷接入部署控制器。",
+            "en": "A critic may receive additional simulation information to evaluate trajectories, but the deployed actor must depend only on observations available at runtime. A simulator knowing exact body velocity does not imply that hardware has a perfect velocity sensor. Keep training or scoring ground truth out of the deployed controller."
+          },
+          {
+            "type": "p",
+            "zh": "设计奖励时，先列出期望行为，再考虑可能的捷径。“奖励球移动”可能鼓励身体撞球；“奖励保持不动”可能让机器人拒绝行走。一个可操作的检查办法是同时记录目标指标和约束：速度误差、回合长度、摔倒、关节范围、触球方式。第三章只练习训练循环，完整任务的成功定义留到第七章检验。",
+            "en": "When designing rewards, list desired behaviors and then consider shortcuts. Rewarding ball motion may encourage body collisions; rewarding stillness may discourage walking. Track both goals and constraints: velocity error, episode length, falls, joint limits, and contact type. This chapter practices the training loop; Chapter 7 tests the complete task definition."
+          }
+        ]
+      },
+      {
+        "id": "practice",
+        "title": {
+          "zh": "运行一次短训练练习",
+          "en": "Run a short training exercise"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py train-walk \\\n  --num-envs 64 \\\n  --iterations 20 \\\n  --seed 101 \\\n  --output outputs/student-walk-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "这是一段训练流程练习，不承诺 20 轮就能行走。预期结果：终端显示训练进度，新目录中出现训练记录、检查点和导出的策略。你可以观察损失、回报、回合长度如何变化，而不用等待长时间训练完成。",
+            "en": "This is a workflow exercise, not a promise that 20 iterations will learn to walk. Expected result: terminal progress, a new run directory, checkpoints, and an exported policy. Observe loss, return, and episode length without committing to a long training run."
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py tensorboard \\\n  --logdir outputs/student-walk-01 \\\n  --port 6006",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "在浏览器打开终端给出的本地 TensorBoard 地址。观察回报与回合长度是否同时改善。若回报增长但回合仍很短，检查奖励是否允许机器人通过短暂动作得分后摔倒。",
+            "en": "Open the local TensorBoard address printed in the terminal. Compare reward with episode length. If reward grows while episodes remain short, consider whether the objective rewards a brief action followed by a fall."
+          }
+        ]
+      },
+      {
+        "id": "checkpoint",
+        "title": {
+          "zh": "显式测试自己的策略",
+          "en": "Explicitly test your own policy"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py walk \\\n  --model outputs/student-walk-01/exported/policy.onnx \\\n  --velocity 0.30 0.00 0.00 \\\n  --seconds 12 \\\n  --seed 202 \\\n  --output outputs/student-walk-test-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "这是你主动选择自己的模型。比较它与第二章固定模型的支撑、漂移和摔倒情况。完成练习后，后续章节仍使用 <code>models/walk.onnx</code>，不会因为这次导出改变默认策略。",
+            "en": "Here you deliberately select your own model. Compare support, drift, and falls with the fixed model from Chapter 2. Later lessons still use <code>models/walk.onnx</code>; this export does not change their default."
+          },
+          {
+            "type": "note",
+            "title": {
+              "zh": "进一步练习",
+              "en": "Go further"
+            },
+            "zh": "如果希望增加训练预算，新建目录并把环境数和迭代数改为例如 1024 与 500。先确认内存与可用时间。保存检查点不等于策略已合格；用未参与训练的种子评估，并保留失败结果。",
+            "en": "To increase the budget, choose a new output directory and try, for example, 1,024 environments and 500 iterations. Check available memory and time first. A saved checkpoint is not a qualification result. Evaluate unseen seeds and retain failures."
+          }
+        ]
+      },
+      {
+        "id": "randomization",
+        "title": {
+          "zh": "为什么要做域随机化",
+          "en": "Why domain randomization matters"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "真实舵机的摩擦、延迟和齿隙不会每次完全相同。训练时改变这些参数，可以让策略接触更多可能情形。随机化范围过窄可能过拟合；范围过宽则可能让任务难以学会。它帮助提高鲁棒性，但不能代替真机验证。",
+            "en": "Real actuators do not have identical friction, delay, and backlash on every run. Varying parameters in training exposes the policy to more conditions. A narrow range can overfit; an excessively broad range can make learning difficult. Randomization can improve robustness but does not replace hardware testing."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "为什么不能把训练过程中回报最高的一次，当作独立测试结果？",
+              "en": "Why is the highest-reward training episode not an independent test?"
+            },
+            "answer": {
+              "zh": "因为它参与了学习或选型，且奖励未必等于任务成功。独立测试需要提前确定场景和成功标准，用未参与选型的条件统计所有结果。",
+              "en": "It contributed to learning or selection, and reward may differ from task success. Independent testing uses predetermined scenarios and success criteria and counts every outcome."
+            }
+          }
+        ]
+      },
+      {
+        "id": "read-curves",
+        "title": {
+          "zh": "检查点、训练曲线与独立测试",
+          "en": "Checkpoints, curves, and independent tests"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "训练从随机参数开始，不加载课程行走权重。每轮 PPO 先收集多个环境的轨迹，再用这些轨迹更新策略。奖励通常组合速度追踪、身体姿态、动作平滑和接触相关项。总奖励相同的两个策略，可能分别靠“速度更准”与“少动更稳”得到分数，因此必须同时观察行为和各个奖励项。",
+            "en": "Practice starts from random parameters rather than the course walking weights. Each PPO iteration gathers trajectories from several environments and then updates the policy. Rewards combine velocity tracking, body attitude, action smoothness, and contact-related terms. Two policies with similar total rewards may obtain them through accurate motion or simply moving less; inspect both behavior and individual reward terms."
+          },
+          {
+            "type": "p",
+            "zh": "<code>initial.pt</code> 保存训练起点；<code>model_*.pt</code> 保存训练检查点；<code>env.yaml</code> 和 <code>agent.yaml</code> 保存环境与优化配置；<code>exported/policy.onnx</code> 是用于推理的导出。检查点可包含优化器等训练状态，ONNX 通常只保留推理需要的计算图。不要把两者当成可以随意互换的文件格式。",
+            "en": "<code>initial.pt</code> records initialization; <code>model_*.pt</code> files are checkpoints; <code>env.yaml</code> and <code>agent.yaml</code> preserve environment and optimizer settings; <code>exported/policy.onnx</code> is the inference export. A checkpoint can contain optimizer state, while ONNX normally preserves the inference graph. They are not interchangeable file formats."
+          },
+          {
+            "type": "p",
+            "zh": "建议记录三列：训练预算、未参与训练的测试种子、实际行为。20 轮练习的目标是走通采样、更新、保存与导出；不要因它表现差就替换后续章节的固定模型。增加预算时保留原实验，使用新输出目录，并说明你改变的是环境数、迭代数还是奖励。",
+            "en": "Record the training budget, held-out test seeds, and observed behavior. The 20-iteration exercise teaches sampling, updates, saving, and export. A weak practice policy is no reason to replace downstream course defaults. For a larger budget, keep the earlier run, use a new output directory, and state whether you changed environment count, iteration count, or rewards."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "只保存 ONNX 文件，能否保证从中精确续训？",
+              "en": "Does saving only ONNX guarantee an exact training continuation?"
+            },
+            "answer": {
+              "zh": "不能。精确续训还需要优化器、归一化状态、随机状态及相同配置等信息；应保留完整检查点与训练配置。",
+              "en": "No. Exact continuation also needs optimizer, normalization and random states, together with matching configuration. Preserve full checkpoints and training settings."
+            }
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://arxiv.org/abs/1707.06347",
+        "zh": "PPO 原论文",
+        "en": "Proximal Policy Optimization paper"
+      },
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
+        "zh": "Isaac Lab：Microduck 任务源码",
+        "en": "Isaac Lab: Microduck task source"
+      }
+    ]
+  },
+  {
+    "id": "04-skills",
+    "title": {
+      "zh": "从关节动作到完整技能",
+      "en": "From actions to complete skills"
+    },
+    "summary": {
+      "zh": "把“踢到了球”拆成准备、触球、收脚和恢复，理解技能为何需要入口与出口条件。",
+      "en": "Break a kick into preparation, contact, withdrawal, and recovery. Understand why skills need entry and exit conditions."
+    },
+    "meta": {
+      "zh": "第 4 章 · 阅读与观察约 25 分钟",
+      "en": "Chapter 4 · About 25 minutes"
+    },
+    "number": "4",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "contract",
+        "title": {
+          "zh": "给技能定义边界",
+          "en": "Define a skill’s boundaries"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "一个行走策略可以持续接收速度指令；踢球则是一个有开始和结束的短技能。要接入自主任务，除了动作本身，还需要说明何时允许开始、结束后应处于什么状态，以及失败时如何停止。",
+            "en": "Walking continuously accepts velocity commands. A kick is a short skill with a start and an end. Integrating it into an autonomous task requires entry conditions, a defined exit state, and a way to stop when conditions are unsafe."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "阶段",
+                "需要检查什么"
+              ],
+              "en": [
+                "Phase",
+                "What to check"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "准备",
+                  "球是否在可踢区域，身体朝向是否合适，观测是否仍新鲜"
+                ],
+                [
+                  "触球",
+                  "由真实足部接触推动球，而不是直接修改球状态"
+                ],
+                [
+                  "收脚",
+                  "及时结束出脚并回到支撑状态"
+                ],
+                [
+                  "恢复",
+                  "机器人保持稳定，没有摔倒或关节越界"
+                ]
+              ],
+              "en": [
+                [
+                  "Prepare",
+                  "Ball in the kick region, acceptable heading, and fresh observations"
+                ],
+                [
+                  "Contact",
+                  "Real foot contact moves the ball; ball state is not overwritten"
+                ],
+                [
+                  "Withdraw",
+                  "End the kick and return to support"
+                ],
+                [
+                  "Recover",
+                  "Remain stable without falling or exceeding joint limits"
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "residual",
+        "title": {
+          "zh": "理解固定教师与残差",
+          "en": "Understand a teacher and a residual"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "课程踢球组合包括一个固定的基础动作策略和一个已训练的残差模型。残差在基础动作上做调整，因此其输入、动作尺度、执行器和时序都必须匹配。单独拿走其中一个文件，不能认为剩下的文件仍是同一个技能。",
+            "en": "The course kick combines a fixed base policy with a trained residual model. The residual adjusts the base behavior, so observations, action scale, actuators, and timing must match. Removing one model does not leave an equivalent skill."
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py inspect-model --model models/kick-teacher.onnx\npython3 scripts/workshop.py inspect-model --model models/kick-residual.onnx",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "在模型清单中找出这两份文件。比较输入与输出形状，写下“哪些输入来自机器人状态，哪些来自任务目标”。它们会在第七章被完整任务调用；本章不要求重新训练。",
+            "en": "Find both files in the model inventory. Compare their input and output shapes and distinguish robot-state inputs from task inputs. The complete task uses the pair in Chapter 7; retraining is not required here."
+          }
+        ]
+      },
+      {
+        "id": "compatible",
+        "title": {
+          "zh": "为什么两个 ONNX 不能随意互换",
+          "en": "Why ONNX files are not interchangeable"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "ONNX 是模型表示格式，不是统一的机器人技能协议。行走模型读 61 维输入，当前踢球残差读 62 维输入；即使它们都输出 14 个数，也不能直接互换。输入的顺序、附加状态、动作缩放、教师混合方式和结束条件都属于运行契约。",
+            "en": "ONNX is a model representation, not a universal robot-skill protocol. The walking model takes 61 inputs, while the kicking residual takes 62. Both output 14 numbers, yet they are not interchangeable. Input ordering, additional state, action scaling, teacher blending, and termination conditions are all part of the runtime contract."
+          },
+          {
+            "type": "p",
+            "zh": "运行本章的模型检查命令后，把输入、输出形状分别记下来。然后解释：为什么“能成功载入文件”只能说明模型格式可以读取，而不能说明机器人会完成动作？一个文件可能完全合法，却被喂入错误单位或错误关节顺序。固定任务入口将权重和这些约定一起使用。",
+            "en": "After inspecting the models, record their input and output shapes. Explain why successfully loading a file only proves that its format is readable, not that the robot will perform a skill. A valid file can still receive the wrong units or joint order. The fixed task entry point uses weights together with their required conventions."
+          },
+          {
+            "type": "p",
+            "zh": "观看出脚过程时，分三段观察：出脚前，球和支撑脚是否处于合适位置；出脚中，实际接触来自脚还是身体其他部位；出脚后，机器人是否恢复支撑。练习在每个阶段暂停一次 GIF，用自己的话描述进入条件和完成条件。这比只观察“球有没有动”更接近机器人系统的真实要求。",
+            "en": "Watch the kick in three phases: before it, inspect ball and support-foot positions; during it, identify whether contact comes from the foot or another body part; afterwards, inspect recovery of support. Pause the GIF in each phase and describe the entry and completion conditions. This is more informative than asking only whether the ball moved."
+          }
+        ]
+      },
+      {
+        "id": "watch",
+        "title": {
+          "zh": "观察出脚与恢复",
+          "en": "Watch contact and recovery"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "football-recovery.gif",
+            "poster": "football-recovery.jpg",
+            "alt": {
+              "zh": "固定模型示例：机器人重新观察和接近，再完成出脚与站稳。请把注意力放在“何时允许踢”以及“踢完后发生了什么”。",
+              "en": "Fixed-model example: the robot reobserves and approaches, then kicks and recovers. Focus on when a kick is permitted and what happens afterward."
+            },
+            "zh": "固定模型示例：机器人重新观察和接近，再完成出脚与站稳。请把注意力放在“何时允许踢”以及“踢完后发生了什么”。",
+            "en": "Fixed-model example: the robot reobserves and approaches, then kicks and recovers. Focus on when a kick is permitted and what happens afterward."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "球进门了，但机器人随后摔倒。这次技能是否完整成功？",
+              "en": "The ball enters the goal, but the robot falls afterward. Is the full skill successful?"
+            },
+            "answer": {
+              "zh": "按本课程标准不算。完成技能包括真实触球、进球和踢后恢复。只检查球的位置，会遗漏机器人稳定性和动作安全边界。",
+              "en": "Not under this course’s criteria. Success includes physical contact, a goal, and recovery. Checking ball position alone misses stability and motion limits."
+            }
+          }
+        ]
+      },
+      {
+        "id": "extension",
+        "title": {
+          "zh": "扩展观察：篮球平衡",
+          "en": "Optional observation: balancing on a ball"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "balance-training.gif",
+            "poster": "balance-training.jpg",
+            "alt": {
+              "zh": "并行篮球平衡训练片段，用于观察探索与奖励反馈。它展示训练过程，不表示已经学会稳定平衡；不影响射门主线。",
+              "en": "Parallel ball-balancing training illustrates exploration and reward feedback. This is training footage, not evidence of a reliable balancing skill, and it is not required for shooting."
+            },
+            "zh": "并行篮球平衡训练片段，用于观察探索与奖励反馈。它展示训练过程，不表示已经学会稳定平衡；不影响射门主线。",
+            "en": "Parallel ball-balancing training illustrates exploration and reward feedback. This is training footage, not evidence of a reliable balancing skill, and it is not required for shooting."
+          },
+          {
+            "type": "p",
+            "zh": "试着为平衡技能写出成功定义：持续多久、允许多大身体倾角、球是否可移动。你会发现“训练完成”只是程序状态，技能是否学会需要另行评估。",
+            "en": "Propose success criteria for balancing: duration, allowable body tilt, and whether ball motion is permitted. Finishing a training process is a program state; learning the skill requires a separate evaluation."
+          }
+        ]
+      },
+      {
+        "id": "handoff",
+        "title": {
+          "zh": "用输入、输出与结束条件描述技能",
+          "en": "Describe a skill by its contract"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "把一个技能写成“进入条件、使用哪些观测、输出什么动作、何时退出”四部分。以射门为例：球要在适合右脚出脚的位置，身体朝向球门，支撑稳定，且目标观测没有过期。技能执行期间会使用踢球教师与残差修正；结束后必须回到稳定的站立或行走状态，不能把“已经碰到球”直接当作任务结束。",
+            "en": "Describe a skill using entry conditions, observations, actions, and exit conditions. A kick requires a useful right-foot ball position, goal alignment, stable support, and fresh target information. Execution combines the kicking teacher with a residual correction. It must then return to a stable standing or walking state; touching the ball alone does not finish the task."
+          },
+          {
+            "type": "p",
+            "zh": "残差可以理解为在既有动作上添加一个受约束的修正。它缩小了需要从头学习的问题，但也继承了教师的适用范围。把局部射门技能放到远离球的位置，并不会让它自动学会找球或走近。导航负责创造技能能接手的条件，技能负责完成自己的局部动作。",
+            "en": "A residual adds a constrained correction to an existing action. This reduces what must be learned from scratch but inherits the teacher’s operating range. Starting a local kick far from the ball does not make it search or approach. Navigation creates a valid handoff state; the skill performs its local action."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "机器人已走到球旁，但球的位置记忆过期。应立刻运行踢球技能吗？",
+              "en": "The robot is beside the ball, but its remembered position has expired. Should the kick start immediately?"
+            },
+            "answer": {
+              "zh": "不应。先重新观察并确认进入条件。仅仅靠近目标不足以保证技能输入有效。",
+              "en": "No. Observe again and confirm the entry conditions. Proximity alone does not guarantee valid inputs."
+            }
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
+        "zh": "Isaac Lab：Microduck 任务源码",
+        "en": "Isaac Lab: Microduck task source"
+      }
+    ]
+  },
+  {
+    "id": "05-perception",
+    "title": {
+      "zh": "让机器人看见足球",
+      "en": "Seeing the football"
+    },
+    "summary": {
+      "zh": "将图像检测、距离观测和身体姿态结合，得到导航可使用的信息。",
+      "en": "Combine detections, range measurements, and body attitude into information navigation can use."
+    },
+    "meta": {
+      "zh": "第 5 章 · 实验约 40 分钟 · 检测训练可选",
+      "en": "Chapter 5 · About 40 minutes · Optional detector training"
+    },
+    "number": "5",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "sensors",
+        "title": {
+          "zh": "三个互补的信息来源",
+          "en": "Three complementary sources"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "来源",
+                "提供的信息",
+                "局限"
+              ],
+              "en": [
+                "Source",
+                "Information",
+                "Limit"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "RGB",
+                  "目标在图像中的位置",
+                  "不直接给出绝对距离"
+                ],
+                [
+                  "ToF",
+                  "前方 64 分区距离",
+                  "无效分区不能当作空地"
+                ],
+                [
+                  "身体 IMU",
+                  "身体姿态与角速度",
+                  "不是球或球门定位器"
+                ]
+              ],
+              "en": [
+                [
+                  "RGB",
+                  "Image target location",
+                  "No direct absolute range"
+                ],
+                [
+                  "ToF",
+                  "64 forward range zones",
+                  "Invalid zones are not free space"
+                ],
+                [
+                  "Body IMU",
+                  "Attitude and angular velocity",
+                  "Does not locate the ball or goal"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "RGB 检测器回答“图像里哪里像球”。ToF 提供前方 8 × 8 分区的距离；它不是环绕机器人一圈的激光雷达。身体 IMU 帮助估计姿态，让距离和图像射线有合适的坐标解释。任何一个传感器都不能单独提供完整世界状态。",
+            "en": "The RGB detector finds image regions resembling a ball. ToF measures ranges across an 8 × 8 forward-facing grid; it is not a 360-degree lidar. A body IMU estimates attitude so image rays and ranges can be interpreted in the right frame. No single sensor supplies the complete world state."
+          },
+          {
+            "type": "p",
+            "zh": "本课程仿真使用 GC2093 相机配置和 VL53L8CX ToF 配置；图像处理为 960 × 540、15 Hz。镜头视场与噪声参数属于仿真假设，真实设备需重新标定。",
+            "en": "The Beta simulation uses GC2093 camera and VL53L8CX ToF profiles. Images are processed at 960 × 540 and 15 Hz. Lens field of view and noise settings are simulation assumptions; physical devices require calibration."
+          }
+        ]
+      },
+      {
+        "id": "detect",
+        "title": {
+          "zh": "先运行固定检测器",
+          "en": "Run the fixed detector first"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "detections.gif",
+            "poster": "detections.jpg",
+            "alt": {
+              "zh": "固定检测器在练习集八张不同图像上的真实输出。每秒展示一张图，这是一组静态样本，不是连续相机视频或推理速度测量。",
+              "en": "Actual fixed-detector outputs on eight different sample images, one image per second. These are separate static samples, not a continuous camera video or inference-speed measurement."
+            },
+            "zh": "固定检测器在练习集八张不同图像上的真实输出。每秒展示一张图，这是一组静态样本，不是连续相机视频或推理速度测量。",
+            "en": "Actual fixed-detector outputs on eight different sample images, one image per second. These are separate static samples, not a continuous camera video or inference-speed measurement."
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py detect \\\n  --model models/detector.pt \\\n  --source datasets/sample/images \\\n  --output outputs/detection-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "预期结果：生成带有球与球门检测框的图片。逐张检查球较小、接近画面边缘或被遮挡时的表现。检测置信度是模型的输出分数，不是“这个目标一定正确”的保证。",
+            "en": "Expected result: images with ball and goal detections. Inspect small targets, image boundaries, and occlusion. Confidence is a model score, not a guarantee that a detection is correct."
+          },
+          {
+            "type": "pipeline",
+            "zh": [
+              "RGB 图像",
+              "检测框",
+              "图像射线",
+              "距离与地面约束",
+              "身体坐标下的目标"
+            ],
+            "en": [
+              "RGB image",
+              "Detection box",
+              "Image ray",
+              "Range and ground constraints",
+              "Target in the body frame"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "training",
+        "title": {
+          "zh": "练习训练一个检测器",
+          "en": "Practice training a detector"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py train-detector \\\n  --data datasets/sample/data.yaml \\\n  --epochs 5 \\\n  --batch 8 \\\n  --seed 303 \\\n  --output outputs/student-detector-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "小样本和 5 个 epoch 用来体验数据、标签、训练和验证流程，不是完整训练配方。打开输出中的损失曲线与验证图片，检查标签是否覆盖了球和球门。正式提高效果时，应增加场景多样性，并保持训练、验证、测试场景分离。",
+            "en": "The small dataset and five epochs introduce data, labels, training, and validation; this is not a full training recipe. Inspect loss curves and validation images. To improve quality, diversify scenes and keep training, validation, and test scenes separate."
+          },
+          {
+            "type": "note",
+            "title": {
+              "zh": "后续仍使用课程检测器",
+              "en": "Keep the course detector downstream"
+            },
+            "zh": "第六、七章默认加载 <code>models/detector.pt</code>。短训练得到的模型不会替换它。检测 mAP 衡量检测质量，不等于机器人射门成功率。",
+            "en": "Chapters 6 and 7 use <code>models/detector.pt</code> by default. The practice model does not replace it. Detection mAP measures detection quality, not shooting success."
+          }
+        ]
+      },
+      {
+        "id": "projection",
+        "title": {
+          "zh": "从一个像素到一条空间射线",
+          "en": "From a pixel to a spatial ray"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "设检测框中心为像素 (u, v)，相机内参包含焦距 (fx, fy) 与主点 (cx, cy)。在常用的相机坐标约定中，射线方向与 ((u−cx)/fx, (v−cy)/fy, 1) 成比例。这个公式只告诉你目标朝哪个方向，无法区分近处的小球和远处的大球；还需要距离或已知几何约束。",
+            "en": "Let a detection center be pixel (u, v), with camera focal lengths (fx, fy) and principal point (cx, cy). In a common camera convention, the viewing ray is proportional to ((u−cx)/fx, (v−cy)/fy, 1). This gives direction but cannot distinguish a small nearby object from a larger distant one. Range or a known geometric constraint is still needed."
+          },
+          {
+            "type": "p",
+            "zh": "相机坐标常用 x 向右、y 向下、z 向前；身体坐标在本课程中用 x 向前、y 向左、z 向上。必须先使用相机相对身体的旋转和平移进行变换，不能直接把两种坐标中的同名轴相加。头部转动也会改变这个变换，所以目标定位需要对应时间的头部关节状态。",
+            "en": "Camera coordinates commonly use x right, y down, z forward. Here the body convention is x forward, y left, z up. Transform using the camera’s rotation and translation relative to the body rather than mixing same-named axes. Head motion changes this transform, so localization requires joint state at the appropriate time."
+          },
+          {
+            "type": "p",
+            "zh": "ToF 的 8 × 8 距离格不是 64 个独立的物体标签。一个格可能同时覆盖地面和球，近处反射也可能无效。应先检查距离状态与有效范围，再考虑它是否支持图像中的目标。将“没有有效测量”解释为“前方没有障碍”，会让后续导航建立在错误前提上。",
+            "en": "An 8 × 8 ToF grid does not provide 64 independent object labels. One cell may cover both floor and ball, and close reflections may be invalid. Check measurement status and range before associating a return with an image target. Treating an invalid reading as an obstacle-free direction gives navigation a false premise."
+          }
+        ]
+      },
+      {
+        "id": "freshness",
+        "title": {
+          "zh": "看见过，不等于现在仍知道",
+          "en": "A past observation can become stale"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "机器人移动或低头后，球可能暂时离开画面。可以用里程计短暂更新球的相对位置，但记忆会积累误差。观测过期、ToF 无效或地面约束丢失时，应停止并重新观察，不能把缺失数据当作空地。",
+            "en": "After moving or tilting its head, the robot may lose the ball from view. Odometry can update a remembered relative position briefly, but error accumulates. Stale observations, invalid ranges, or lost ground constraints require stopping and reobserving. Missing data is not free space."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "检测器画出了准确的球框，就可以直接把球框中心当作世界坐标吗？",
+              "en": "If a ball box is accurate, can its center be used directly as a world coordinate?"
+            },
+            "answer": {
+              "zh": "不能。像素位置给出的是图像方向。还需要相机模型、相机姿态和距离或几何约束，才能估计空间位置。",
+              "en": "No. Pixels give an image direction. Spatial position also requires a camera model, camera pose, and distance or geometric constraints."
+            }
+          }
+        ]
+      },
+      {
+        "id": "labels",
+        "title": {
+          "zh": "检查标签与检测结果",
+          "en": "Inspect labels and detections"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "练习集有 40 张图像，按 24 / 8 / 8 分为训练、验证、测试。类别编号 0 表示球，1 表示球门。YOLO 标签每行写为 <code>class cx cy width height</code>；后四项用图像宽高归一化。例如中心横坐标 0.5 表示画面宽度的一半，不是世界坐标中的 0.5 米。",
+            "en": "The sample has 40 images split into 24 training, 8 validation, and 8 test images. Class 0 is the ball and class 1 the goal. Each YOLO label row is <code>class cx cy width height</code>, with the last four values normalized by image dimensions. A horizontal center of 0.5 means halfway across the image, not 0.5 meters in the world."
+          },
+          {
+            "type": "p",
+            "zh": "从推理输出中选一张正确图和一张困难图，分别检查是否漏检、多检、框偏移。再看同一物体的大小与位置变化。较高置信度不能修复镜头标定错误，也不能让二维框自动获得深度。进入导航之前，还需要距离、姿态、时间戳和有效性检查。",
+            "en": "Choose one clear prediction and one difficult example. Check missed objects, false detections, and misplaced boxes, then compare object size and position. High confidence cannot repair camera calibration or turn a 2D box into depth. Navigation still requires range, attitude, timestamps, and validity checks."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "标签中的球框中心为 (0.6, 0.4)，是否可以直接作为导航目标 (0.6 m, 0.4 m)？",
+              "en": "Can a ball label centered at (0.6, 0.4) be used directly as a navigation target at (0.6 m, 0.4 m)?"
+            },
+            "answer": {
+              "zh": "不能。这是归一化图像坐标。需要相机模型和距离或地面约束，才能得到机器人坐标中的位置。",
+              "en": "No. These are normalized image coordinates. A camera model and range or ground constraint are needed to obtain robot-relative position."
+            }
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://docs.ultralytics.com/tasks/detect/",
+        "zh": "Ultralytics：目标检测",
+        "en": "Ultralytics: object detection"
+      },
+      {
+        "url": "https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html",
+        "zh": "ST：VL53L8CX",
+        "en": "ST: VL53L8CX"
+      }
+    ]
+  },
+  {
+    "id": "06-navigation",
+    "title": {
+      "zh": "走到正确的出脚位置",
+      "en": "Navigate to a useful kicking position"
+    },
+    "summary": {
+      "zh": "从“朝球走”进阶到“站到球后方，并对准球门”。",
+      "en": "Move beyond chasing the ball: approach from behind it and align with the goal."
+    },
+    "meta": {
+      "zh": "第 6 章 · 阅读与实验约 30 分钟",
+      "en": "Chapter 6 · About 30 minutes"
+    },
+    "number": "6",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "target",
+        "title": {
+          "zh": "目的地不是球心",
+          "en": "The ball center is not the destination"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "直接朝球心前进容易提前撞球，也可能到达无法出脚的一侧。更合适的目标位于球的后方：由球指向球门的方向确定射门轴，再沿反方向退开一段距离，并考虑出脚脚掌的横向偏移。",
+            "en": "Walking straight toward the ball center can cause premature contact or approach from the wrong side. A useful target lies behind the ball. The ball-to-goal direction defines the shooting axis; move backward along it and account for the kicking foot’s lateral offset."
+          },
+          {
+            "type": "html",
+            "zh": "<div class=\"note\"><strong>二维几何练习</strong><p>方向 <code>d = (goal − ball) / ‖goal − ball‖</code><br>站位 <code>target = ball − distance × d + lateral × normal(d)</code></p></div>",
+            "en": "<div class=\"note\"><strong>A planar geometry exercise</strong><p>Direction <code>d = (goal − ball) / ‖goal − ball‖</code><br>Target <code>target = ball − distance × d + lateral × normal(d)</code></p></div>"
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py plan \\\n  --ball 0.00 -0.02 \\\n  --goal 0.93 0.00 \\\n  --distance 0.18 \\\n  --lateral 0.035 \\\n  --output outputs/plan-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "预期结果：输出站位坐标、朝向以及平面示意图。改变球的横向位置，再观察目标怎样随之移动。这里用已知二维点练习几何；真正自主运行时，输入来自传感器估计。",
+            "en": "Expected result: a target position, heading, and a planar diagram. Change the ball’s lateral coordinate and observe how the target moves. This exercise uses known 2D points to teach geometry; autonomous execution uses sensor estimates."
+          }
+        ]
+      },
+      {
+        "id": "planner",
+        "title": {
+          "zh": "路径规划和走路控制怎样分工",
+          "en": "How path planning and walking divide the work"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "路径规划器在一个空间表示中寻找从起点到终点的路线。例如占据栅格把地面划成小格，记录障碍、可通行区域和未知区域；机器人有体积，不能把自己当成一个数学点从任意窄缝中穿过。为机器人外形保留余量，是从几何路径走向可执行运动的必要一步。",
+            "en": "A planner searches for a route through a representation of space. An occupancy grid divides the floor into cells for obstacles, free space, and unknown space. A robot has a footprint: it cannot pass through every gap that admits a mathematical point. Reserving clearance is necessary when turning a geometric route into executable motion."
+          },
+          {
+            "type": "p",
+            "zh": "Nav2 在完整任务中提供 CPU 导航服务，但真正保持双足平衡的是行走策略。上层提出目标或速度需求，底层策略通过舵机产生运动；执行器延迟和步态误差会让实际轨迹偏离计划。因此系统必须重新测量、重新判断，而不是假定每一条速度命令都精确执行。",
+            "en": "Nav2 provides CPU navigation services in the full task, while the walking policy maintains bipedal balance. The upper layer requests a target or velocity; the lower layer drives servos. Actuator delay and gait error can move the robot away from its plan, so the system must observe and reconsider instead of assuming exact command execution."
+          },
+          {
+            "type": "p",
+            "zh": "本章的手算实验只研究出脚目标，不调用 Nav2，也不放置障碍。完整任务使用单鸭、单球、单球门空场。若自行加入障碍，应重新检查传感器覆盖、未知区域处理、路径余量与碰撞结果；课程已有的空场成绩不能外推为避障成绩。",
+            "en": "The hand-calculation exercise studies stance geometry only: it does not call Nav2 or place obstacles. The full task uses one robot, ball, and goal in an empty field. Adding obstacles requires new checks for sensor coverage, unknown space, clearance, and collisions. Empty-field results do not establish obstacle-avoidance performance."
+          }
+        ]
+      },
+      {
+        "id": "phases",
+        "title": {
+          "zh": "把接近分成几个阶段",
+          "en": "Approach in stages"
+        },
+        "blocks": [
+          {
+            "type": "pipeline",
+            "zh": [
+              "搜索与观察",
+              "远距离接近",
+              "近距离对准",
+              "检查出脚条件",
+              "踢球与恢复"
+            ],
+            "en": [
+              "Search and observe",
+              "Coarse approach",
+              "Fine alignment",
+              "Check kick conditions",
+              "Kick and recover"
+            ]
+          },
+          {
+            "type": "p",
+            "zh": "远处可以优先缩短距离。近处则需要降低移动幅度，同时关注球是否仍可见、身体朝向是否正确、脚掌与球的位置是否合适。只有位置接近但方向不对，仍然不应出脚。",
+            "en": "At a distance, reducing range is the main priority. Nearby, motion must become more precise while preserving visibility, heading, and foot placement. Being close enough is not sufficient if heading is wrong."
+          },
+          {
+            "type": "p",
+            "zh": "导航规划器提供路线或方向建议，行走策略负责执行。规划路径通过并不代表机器人已经沿路走完。完整系统还要处理策略跟踪误差、接触与传感器更新。",
+            "en": "A planner supplies a route or direction; the walking policy executes it. A valid planned path does not prove the robot has traversed it. The system must handle tracking errors, contact, and sensor updates."
+          }
+        ]
+      },
+      {
+        "id": "recovery",
+        "title": {
+          "zh": "失去信息时重新观察",
+          "en": "Reobserve when information is lost"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "football-recovery.gif",
+            "poster": "football-recovery.jpg",
+            "alt": {
+              "zh": "观察机器人先后退，再重新观察和接近的片段。后退的目的不是“离目标更近”，而是恢复可用的观察与动作空间。",
+              "en": "Watch the retreat, reobservation, and renewed approach. Retreat restores observation and maneuvering space rather than immediately reducing target distance."
+            },
+            "zh": "观察机器人先后退，再重新观察和接近的片段。后退的目的不是“离目标更近”，而是恢复可用的观察与动作空间。",
+            "en": "Watch the retreat, reobservation, and renewed approach. Retreat restores observation and maneuvering space rather than immediately reducing target distance."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "接近过程中 ToF 数据无效，但记忆里的球位看起来仍然合理，是否应继续向前？",
+              "en": "ToF becomes invalid during approach, but the remembered ball position looks plausible. Should the robot continue forward?"
+            },
+            "answer": {
+              "zh": "不应仅凭“看起来合理”继续。先检查记忆时效与当前可用的地面、距离和姿态信息；不满足条件时停止并重新观察。",
+              "en": "Not merely because it looks plausible. Check memory age and current ground, range, and attitude information. Stop and reobserve when the required conditions are absent."
+            }
+          }
+        ]
+      },
+      {
+        "id": "worked-example",
+        "title": {
+          "zh": "手算一次出脚站位",
+          "en": "Work through a stance target"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先取球门中心减去球的位置，得到从球指向球门的方向，再将它归一化。站位在球后方：从球的位置沿该方向退回 <code>distance</code>，再沿垂直方向偏移 <code>lateral</code>，为出脚腿留出空间。偏移方向属于这个几何练习的约定，不应直接替代真实技能入口的标定值。",
+            "en": "Subtract the ball position from the goal center and normalize the result to obtain the shooting direction. The stance lies behind the ball: move back by <code>distance</code> along that direction, then sideways by <code>lateral</code> to allow space for the kicking leg. This exercise defines its own offset convention; it does not replace calibrated entry values in the physical skill."
+          },
+          {
+            "type": "p",
+            "zh": "打开生成的 <code>plan.svg</code>，确认目标点、球、球门的相对关系；<code>plan.json</code> 给出目标坐标与朝向。将距离由 0.18 改为 0.25，使用另一个输出目录，预测目标会向哪个方向移动，再验证预测。这个命令只计算已知点的几何关系，没有运行物理，也没有证明该目标可达。",
+            "en": "Open <code>plan.svg</code> to inspect the stance, ball, and goal. <code>plan.json</code> gives the target position and heading. Change distance from 0.18 to 0.25 with a new output directory; predict the direction of movement and check it. This command computes geometry from known points. It runs no physics and does not prove reachability."
+          },
+          {
+            "type": "p",
+            "zh": "完整任务还要处理机器人会偏航、步态有延迟、近距离目标会离开视野等问题。为此，接近过程不断更新观测并检查停止条件。有效距离或地面支持丢失时，先停下或受约束地退回，再重新观察；未知区域不能直接标为空闲区域。",
+            "en": "The full task also handles yaw drift, delayed gait response, and targets leaving view at close range. Approach therefore updates observations and checks stopping conditions repeatedly. If valid range or floor support is lost, stop or retreat within constraints and observe again. Unknown space cannot be declared free space."
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://docs.nav2.org/",
+        "zh": "Nav2：导航概念与组件",
+        "en": "Nav2: navigation concepts and components"
+      }
+    ]
+  },
+  {
+    "id": "07-football",
+    "title": {
+      "zh": "完成自主射门",
+      "en": "Complete the autonomous task"
+    },
+    "summary": {
+      "zh": "加载同一套固定模型，让感知、导航、出脚与恢复协同工作，并按完整任务判定结果。",
+      "en": "Load the fixed model set, connect perception, navigation, kicking, and recovery, and evaluate the complete task."
+    },
+    "meta": {
+      "zh": "第 7 章 · 综合实验约 40 分钟 · GPU",
+      "en": "Chapter 7 · About 40 minutes · GPU"
+    },
+    "number": "7",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "sections": [
+      {
+        "id": "system",
+        "title": {
+          "zh": "先看清完整系统",
+          "en": "Understand the complete system"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "这不是一个单独网络直接输出“进球”。固定行走策略控制身体，检测器提供视觉目标，距离与姿态约束帮助估计相对位置，状态机决定何时观察、行走和踢球，踢球组合负责出脚与恢复。",
+            "en": "This is not a single network issuing a “score” command. A walking policy controls the body, a detector supplies visual targets, range and attitude constrain relative position, a state machine decides when to observe, walk, and kick, and the kick models execute contact and recovery."
+          },
+          {
+            "type": "pipeline",
+            "zh": [
+              "RGB + ToF + IMU",
+              "目标估计",
+              "导航与对准",
+              "固定踢球组合",
+              "任务判定"
+            ],
+            "en": [
+              "RGB + ToF + IMU",
+              "Target estimates",
+              "Navigate and align",
+              "Fixed kick models",
+              "Task evaluation"
+            ]
+          },
+          {
+            "type": "media",
+            "file": "football-full.gif",
+            "poster": "football-full.jpg",
+            "zh": "完整自主射门成功示例，第一人称与场外视角同步，按原仿真时间播放。单次示例不代表独立成功率。",
+            "en": "A complete successful autonomous kick, synchronized robot and external views at simulation-time speed. A single example is not an independent success-rate measurement.",
+            "alt": {
+              "zh": "完整自主射门成功示例，第一人称与场外视角同步，按原仿真时间播放。单次示例不代表独立成功率。",
+              "en": "A complete successful autonomous kick, synchronized robot and external views at simulation-time speed. A single example is not an independent success-rate measurement."
+            }
+          }
+        ]
+      },
+      {
+        "id": "run",
+        "title": {
+          "zh": "运行完整教学场景",
+          "en": "Run the complete teaching scene"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py football \\\n  --seed 983102 \\\n  --seconds 180 \\\n  --output outputs/football-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "预期结果：Isaac 仿真窗口打开，一台机器人自主完成找球、接近、对准和射门。程序使用仓库中的固定模型，并保存视频、轨迹与结果。180 秒是仿真任务预算，不是电脑上的等待时间；首次初始化和渲染可能需要更久。",
+            "en": "Expected result: an Isaac simulation window opens and one robot searches, approaches, aligns, and attempts a kick autonomously. The program uses the repository’s fixed models and saves video, traces, and results. The 180-second budget is simulation time, not wall-clock waiting time. Initialization and rendering can take longer."
+          },
+          {
+            "type": "p",
+            "zh": "这个种子用于教学观察，已经从成功示例中选出。它帮助你比较相同场景，不应再作为新的独立成功率样本。运行过程中不要手动移动机器人或球；需要中止时在终端按 Ctrl+C，保留已产生的日志。",
+            "en": "This seed is a selected teaching fixture drawn from successful examples. It supports comparison on the same scene and is not a new independent success-rate sample. Do not manually move the robot or ball during execution. To stop, press Ctrl+C in the terminal and retain the logs."
+          }
+        ]
+      },
+      {
+        "id": "result",
+        "title": {
+          "zh": "判断“完整成功”",
+          "en": "Judge complete success"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py report --run outputs/football-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "list",
+            "zh": [
+              "确实发生足部与球的接触。",
+              "整个球越过球门线，并位于有效门框内。",
+              "机器人没有摔倒，动作没有超出规定机械范围。",
+              "没有在正式出脚前意外碰球，踢完后恢复站稳。"
+            ],
+            "en": [
+              "A real foot–ball contact occurred.",
+              "The entire ball crossed the goal plane inside the opening.",
+              "The robot did not fall or exceed the specified mechanical bounds.",
+              "There was no premature ball contact, and the robot recovered after kicking."
+            ]
+          },
+          {
+            "type": "note",
+            "title": {
+              "zh": "怎样理解课程参考结果",
+              "en": "Interpreting the reference result"
+            },
+            "zh": "固定组合曾在 10 个独立空场回合中完成 9 次完整任务。它是特定版本与场景分布下的小样本观察，不保证任意种子、障碍物或真实机器人都达到同样成绩。简单障碍与真机不是本课的已验证主线。",
+            "en": "The fixed combination completed 9 of 10 independent empty-field episodes. This is a small-sample observation for specific versions and a scene distribution, not a guarantee for arbitrary seeds, obstacles, or hardware. Obstacles and real-robot deployment are outside the validated main path."
+          }
+        ]
+      },
+      {
+        "id": "evaluate",
+        "title": {
+          "zh": "设计自己的小评测",
+          "en": "Design a small evaluation"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先写下测试种子与成功标准，再开始运行。至少把每个回合的进球、摔倒、触球和恢复情况填入记录；失败不能悄悄重跑后替换。改变模型或参数后，应当作为另一组实验比较。",
+            "en": "Write down seeds and success criteria before running. Record goals, falls, contact, and recovery for every episode. Do not replace a failure with a retry. A model or parameter change defines a separate experiment."
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py football \\\n  --seed 990001 \\\n  --seconds 180 \\\n  --output outputs/football-new-seed-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "检测器 mAP 很高、行走模型也能保持站立，为什么整次任务仍可能失败？",
+              "en": "Why can the task fail even when detection mAP is high and the walking policy stays upright?"
+            },
+            "answer": {
+              "zh": "完整任务依赖模块之间的交接：目标可能暂时不可见，坐标或观测时效可能不合适，站位和朝向也可能不满足出脚条件。各模块指标不能代替端到端评测。",
+              "en": "Success depends on interfaces between modules. Targets can leave view, coordinates or observation age can become unsuitable, and position or heading may fail the kick conditions. Module metrics do not replace end-to-end evaluation."
+            }
+          }
+        ]
+      },
+      {
+        "id": "capstone",
+        "title": {
+          "zh": "结课练习：交一份可复核的结果",
+          "en": "Capstone: produce a reviewable result"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先运行默认教学情形并保存完整输出。提交一段简短说明：模型来自哪里、种子和时间预算是什么、最终是否通过、你从两个视角观察到了什么。若失败，保留失败目录并定位到感知、接近、触球、进门或恢复中的一个阶段。不要为完成作业反复重跑后只交最好的一次。",
+            "en": "Run the default teaching case and retain the complete output. Submit a short account of model origin, seed, time budget, final outcome, and observations from both views. If it fails, preserve the directory and identify the perception, approach, contact, scoring, or recovery stage. Do not repeatedly rerun and submit only the best attempt."
+          },
+          {
+            "type": "p",
+            "zh": "有更多计算时间时，运行前先写下五个新种子，例如 990001–990005。每次使用相同固定模型、相同 180 秒预算和独立输出目录，逐个执行。记录所有五个结果，包括没有进球和程序异常；程序异常应单列原因，不能悄悄从报告中删除。五次样本只能作为小实验，统计不确定性仍很大。",
+            "en": "With additional compute time, declare five new seeds in advance, for example 990001–990005. Use identical fixed models, a 180-second budget, and separate output directories, running sequentially. Record all five outcomes, including missed goals and execution errors. Report errors separately with their causes rather than silently deleting them. Five trials remain a small experiment with substantial statistical uncertainty."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "记录项",
+                "示例或要求"
+              ],
+              "en": [
+                "Field",
+                "Example or requirement"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "模型",
+                  "课程固定模型；保留 manifest 校验结果"
+                ],
+                [
+                  "运行参数",
+                  "seed、seconds、输出目录"
+                ],
+                [
+                  "行为",
+                  "触球、整球越线、摔倒、恢复是否通过"
+                ],
+                [
+                  "证据",
+                  "result.json、轨迹、完整双视角录像"
+                ],
+                [
+                  "解释",
+                  "一个观察到的现象，以及能支持它的证据"
+                ]
+              ],
+              "en": [
+                [
+                  "Models",
+                  "Fixed course models; retain identity checks"
+                ],
+                [
+                  "Parameters",
+                  "Seed, seconds, output directory"
+                ],
+                [
+                  "Behavior",
+                  "Contact, whole-ball crossing, fall, recovery"
+                ],
+                [
+                  "Evidence",
+                  "result.json, traces, complete synchronized video"
+                ],
+                [
+                  "Interpretation",
+                  "One observed phenomenon and its supporting evidence"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "完成标准是能运行系统、解释环节职责并诚实判断结果，而不是在自己的短训练中复制课程全部性能。你已经知道怎样保留一个可用模型，怎样尝试新训练而不破坏基线，以及为什么一个局部指标不能代替完整任务。继续做真机实验前，还需独立标定传感器、检查执行器限制并重新验证控制接口。",
+            "en": "Completion means running the system, explaining its parts, and assessing results honestly. It does not require a short personal training run to match all course performance. You now know how to preserve a working model, try new training without damaging a baseline, and distinguish local metrics from task success. Hardware work additionally requires independent sensor calibration, actuator-limit checks, and control-interface validation."
+          }
+        ]
+      },
+      {
+        "id": "finish",
+        "title": {
+          "zh": "你已经走过的路径",
+          "en": "What you have connected"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "从机械结构出发，你连接了关节控制、强化学习、视觉感知、距离与姿态估计、导航和短技能。继续探索时，一次只改变一个明确因素，并保持模型、环境与结果记录能够对应。",
+            "en": "Starting from the mechanism, you connected joint control, reinforcement learning, vision, range and attitude estimation, navigation, and a short motion skill. In further experiments, change one clear factor at a time and preserve the mapping between models, environments, and results."
+          }
+        ]
+      },
+      {
+        "id": "read-failure",
+        "title": {
+          "zh": "从失败结果定位问题",
+          "en": "Locate a problem from a failed run"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先检查程序是否正常产生 <code>result.json</code>。如果没有，读取终端末尾的错误并排查安装或运行条件；这属于执行失败。若结果存在，再区分“没有找到球”“无法形成出脚站位”“球被碰到但未进门”“进门后未稳定恢复”等行为失败。一个程序正常退出，并不意味着机器人完成了目标。",
+            "en": "First check whether <code>result.json</code> was produced. If not, inspect the terminal error and installation or runtime conditions: that is an execution failure. If results exist, distinguish failure to find the ball, failure to reach a kicking stance, contact without a goal, and failure to recover after scoring. A normal process exit does not mean the robot completed the task."
+          },
+          {
+            "type": "p",
+            "zh": "结果中的 <code>course_evaluation.passed</code> 综合完整物理评分与相关复核；<code>scorer</code> 保存接触、越线和摔倒等信息。回看同步视角时，对照第一次触球前的站位以及出脚后的姿态。不要只截取球越线的几秒来判断全流程。",
+            "en": "<code>course_evaluation.passed</code> combines physical scoring and applicable checks. <code>scorer</code> retains contact, goal crossing, and fall information. In synchronized views, inspect the stance before first contact and posture after kicking. A short clip of the ball crossing the line is insufficient for a full-task judgment."
+          },
+          {
+            "type": "p",
+            "zh": "课程固定组合在已记录的空场独立测试中完成 9/10；这是特定环境、分布和时间预算下的历史结果。默认种子 983102 用于教学演示，重复运行它不构成新的独立成功率。自选种子、不同设备、障碍物或真实硬件都需要另外评测。",
+            "en": "The fixed combination completed 9/10 recorded independent empty-field trials under a particular environment, distribution, and time budget. The default seed 983102 is a teaching example; repeating it does not establish a new independent success rate. New seeds, different devices, obstacles, and real hardware require separate evaluation."
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
+        "zh": "Isaac Lab：Microduck 任务源码",
+        "en": "Isaac Lab: Microduck task source"
+      },
+      {
+        "url": "https://github.com/newton-physics/newton",
+        "zh": "Newton 物理引擎",
+        "en": "Newton physics engine"
+      }
+    ]
+  },
+  {
+    "id": "models",
+    "title": {
+      "zh": "模型与数据",
+      "en": "Models and data"
+    },
+    "summary": {
+      "zh": "所有主线实验使用明确命名的固定文件。下载一次，即可在各章节重复使用。",
+      "en": "Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters."
+    },
+    "meta": {
+      "zh": "快速参考 · 无需重新训练",
+      "en": "Quick reference · No retraining required"
+    },
+    "number": "",
+    "group": {
+      "zh": "参考与帮助",
+      "en": "Reference and help"
+    },
+    "sections": [
+      {
+        "id": "inventory",
+        "title": {
+          "zh": "课程模型清单",
+          "en": "Course model inventory"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "文件",
+                "用途"
+              ],
+              "en": [
+                "File",
+                "Purpose"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "<code>walk.onnx</code>",
+                  "固定行走策略"
+                ],
+                [
+                  "<code>kick-teacher.onnx</code>",
+                  "踢球基础动作"
+                ],
+                [
+                  "<code>kick-residual.onnx</code>",
+                  "踢球残差修正"
+                ],
+                [
+                  "<code>kick-checkpoint.pt</code>",
+                  "保留的踢球训练检查点"
+                ],
+                [
+                  "<code>detector.pt</code>",
+                  "固定视觉检测器"
+                ],
+                [
+                  "<code>detector.onnx</code>",
+                  "检测器 ONNX 导出"
+                ]
+              ],
+              "en": [
+                [
+                  "<code>walk.onnx</code>",
+                  "Fixed walking policy"
+                ],
+                [
+                  "<code>kick-teacher.onnx</code>",
+                  "Base kicking action"
+                ],
+                [
+                  "<code>kick-residual.onnx</code>",
+                  "Residual kick adjustment"
+                ],
+                [
+                  "<code>kick-checkpoint.pt</code>",
+                  "Retained kick training checkpoint"
+                ],
+                [
+                  "<code>detector.pt</code>",
+                  "Fixed visual detector"
+                ],
+                [
+                  "<code>detector.onnx</code>",
+                  "ONNX detector export"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py verify-models",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "这些文件随 Git 仓库提供，不需要 Git LFS 或额外模型账户。<code>models/manifest.json</code> 记录大小、来源和 SHA-256。课程运行前会核对身份，避免误用同名文件。",
+            "en": "These files are included in Git without Git LFS or a separate model account. <code>models/manifest.json</code> records sizes, sources, and SHA-256 identities. Model identity checks guard against accidental same-name replacements."
+          }
+        ]
+      },
+      {
+        "id": "practice-data",
+        "title": {
+          "zh": "练习数据与自己的输出",
+          "en": "Practice data and your outputs"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "<code>datasets/sample/</code> 是小型图像与标签练习集，用于检测推理和短训练体验。它不足以证明模型能泛化到真实环境。学生模型与训练日志保存在 <code>outputs/</code>；不要把它们复制到 <code>models/</code> 覆盖课程文件。",
+            "en": "<code>datasets/sample/</code> is a small image-and-label practice set for detector inference and short training. It is not enough to establish real-world generalization. Student checkpoints and logs belong in <code>outputs/</code>; do not copy them over the course files in <code>models/</code>."
+          }
+        ]
+      },
+      {
+        "id": "licenses",
+        "title": {
+          "zh": "来源与使用条款",
+          "en": "Sources and usage terms"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "机器人几何、社区策略和依赖组件保留各自来源与许可。课程代码的许可不会覆盖第三方资产条款。需要分发修改版时，请先查看仓库的 <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md\">来源与许可说明</a>。",
+            "en": "Robot geometry, community policies, and dependencies retain their source terms. The course-code license does not override third-party asset licenses. Before redistributing changes, read the repository’s <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md\">attribution and license notices</a>."
+          }
+        ]
+      }
+    ],
+    "references": []
+  },
+  {
+    "id": "troubleshooting",
+    "title": {
+      "zh": "故障排查",
+      "en": "Troubleshooting"
+    },
+    "summary": {
+      "zh": "从环境、文件和参数开始检查，保留失败输出，以便比较下一次运行。",
+      "en": "Check environment, files, and arguments first. Preserve failed outputs for comparison."
+    },
+    "meta": {
+      "zh": "快速参考",
+      "en": "Quick reference"
+    },
+    "number": "",
+    "group": {
+      "zh": "参考与帮助",
+      "en": "Reference and help"
+    },
+    "sections": [
+      {
+        "id": "doctor",
+        "title": {
+          "zh": "先收集基本信息",
+          "en": "Start with the environment report"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py doctor\npython3 scripts/workshop.py verify-models",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "记录第一条失败信息，比重复执行完整训练更有帮助。检查命令是否在仓库根目录运行、当前 Python 是否属于锁定环境，以及模型校验是否全部通过。",
+            "en": "The first failure is more useful than repeatedly launching a full training run. Check the repository directory, the selected runtime, and all model checks."
+          }
+        ]
+      },
+      {
+        "id": "common",
+        "title": {
+          "zh": "常见问题",
+          "en": "Common issues"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "现象",
+                "检查与处理"
+              ],
+              "en": [
+                "Symptom",
+                "What to check"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "窗口没有打开",
+                  "使用 GPU 机器的桌面终端；检查 DISPLAY 与驱动，不要把远程纯命令行会话当作图形桌面。"
+                ],
+                [
+                  "第一次启动很慢",
+                  "查看日志是否仍在下载资源或编译；等待初始化，不要反复启动多个实例。"
+                ],
+                [
+                  "提示输出目录已存在",
+                  "为新实验换一个目录名。保留上一场的结果。"
+                ],
+                [
+                  "显存或内存不足",
+                  "先减少学生训练的环境数或检测 batch；不要同时运行多个仿真。"
+                ],
+                [
+                  "模型校验失败",
+                  "重新获取仓库中的原模型，确认没有覆盖固定文件。"
+                ],
+                [
+                  "自己的模型走不好",
+                  "短训练只保证体验流程。比较奖励、回合长度和独立表现；下一章使用固定模型继续。"
+                ],
+                [
+                  "机器人停止或没有进球",
+                  "查看任务结果与观测有效性。停止可能是信息不足时的正确行为，不能直接算作进球成功。"
+                ]
+              ],
+              "en": [
+                [
+                  "No GUI window",
+                  "Use the GPU desktop terminal and check DISPLAY and the driver. A remote text shell is not a graphical desktop."
+                ],
+                [
+                  "First launch is slow",
+                  "Check for downloads and compilation. Allow initialization and avoid starting duplicate instances."
+                ],
+                [
+                  "Output directory exists",
+                  "Choose a new run name and preserve the previous result."
+                ],
+                [
+                  "Out of memory",
+                  "Reduce training environments or detector batch size. Avoid concurrent simulations."
+                ],
+                [
+                  "Model hash mismatch",
+                  "Restore the repository model and check for accidental overwrites."
+                ],
+                [
+                  "Practice policy walks poorly",
+                  "A short run teaches the workflow. Inspect reward, episode length, and evaluation. Continue with fixed models."
+                ],
+                [
+                  "Robot stops or does not score",
+                  "Inspect the task report and observation validity. Stopping can be appropriate when information is missing; it is not a goal."
+                ]
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "id": "report",
+        "title": {
+          "zh": "查看一次运行",
+          "en": "Inspect a run"
+        },
+        "blocks": [
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py report --run outputs/football-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "提交问题时提供命令、随机种子、环境检查结果和第一条报错。不要只提供“成功”或“失败”两个字，也不要发送账户密码或访问令牌。",
+            "en": "When reporting an issue, include the command, seed, environment report, and first error. A success/failure label alone is not enough. Do not include passwords or access tokens."
+          }
+        ]
+      }
+    ],
+    "references": []
+  },
+  {
+    "id": "references",
+    "title": {
+      "zh": "继续学习与参考资料",
+      "en": "Further learning and references"
+    },
+    "summary": {
+      "zh": "按课程主题查阅官方源码、文档和论文。",
+      "en": "Find official source code, documentation, and papers by topic."
+    },
+    "meta": {
+      "zh": "阅读资源",
+      "en": "Reading resources"
+    },
+    "number": "",
+    "group": {
+      "zh": "参考与帮助",
+      "en": "Reference and help"
+    },
+    "sections": [
+      {
+        "id": "robotics",
+        "title": {
+          "zh": "机器人与仿真",
+          "en": "Robotics and simulation"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先从任务配置阅读观测、动作与奖励，再深入物理引擎和传感器接口。课程运行固定版本；官方文档可能描述更新版本，比较参数前先核对版本。",
+            "en": "Begin with task observations, actions, and rewards, then explore physics and sensors. Course commands target fixed versions; current documentation may describe newer versions. Check the version before applying changes."
+          }
+        ]
+      },
+      {
+        "id": "next",
+        "title": {
+          "zh": "建议的延伸练习",
+          "en": "Suggested extensions"
+        },
+        "blocks": [
+          {
+            "type": "list",
+            "zh": [
+              "改变第三章的训练预算，比较相同独立种子下的表现。",
+              "为第五章补充不同背景和光照的图像，检查检测器泛化。",
+              "在第六章可视化不同球位对应的站位和朝向。",
+              "为第七章预先定义一组新种子，保留完整成功与失败统计。"
+            ],
+            "en": [
+              "Vary the Chapter 3 training budget and compare on the same unseen seeds.",
+              "Add backgrounds and lighting conditions to Chapter 5 and evaluate generalization.",
+              "Visualize Chapter 6 target positions and headings for different ball locations.",
+              "Predefine new seeds for Chapter 7 and retain all successes and failures."
+            ]
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/pollen-robotics/microduck",
+        "zh": "Pollen Robotics：Microduck 硬件",
+        "en": "Pollen Robotics: Microduck hardware"
+      },
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
+        "zh": "Isaac Lab：Microduck 任务源码",
+        "en": "Isaac Lab: Microduck task source"
+      },
+      {
+        "url": "https://github.com/newton-physics/newton",
+        "zh": "Newton 物理引擎",
+        "en": "Newton physics engine"
+      },
+      {
+        "url": "https://arxiv.org/abs/1707.06347",
+        "zh": "PPO 原论文",
+        "en": "Proximal Policy Optimization paper"
+      },
+      {
+        "url": "https://github.com/leggedrobotics/rsl_rl",
+        "zh": "RSL-RL：强化学习实现",
+        "en": "RSL-RL: reinforcement-learning implementation"
+      },
+      {
+        "url": "https://docs.nav2.org/",
+        "zh": "Nav2 文档",
+        "en": "Nav2 documentation"
+      },
+      {
+        "url": "https://docs.ultralytics.com/",
+        "zh": "Ultralytics 文档",
+        "en": "Ultralytics documentation"
+      },
+      {
+        "url": "https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html",
+        "zh": "VL53L8CX 传感器资料",
+        "en": "VL53L8CX sensor documentation"
+      }
+    ]
+  }
+]

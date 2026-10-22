@@ -1,0 +1,68 @@
+{
+  "schema": "microduck.football-media-cpu-shadow.v1",
+  "testsRun": 13,
+  "passed": true,
+  "failures": [],
+  "errors": [],
+  "checks": [
+    {
+      "name": "test_01_actual18_frame_lossless_and_original_realtime_video",
+      "finished": true
+    },
+    {
+      "name": "test_02_saturated_queue_blocks_without_loss",
+      "finished": true
+    },
+    {
+      "name": "test_03_producer_reuse_does_not_mutate_queued_pixels_or_packets",
+      "finished": true
+    },
+    {
+      "name": "test_04_write_failure_retains_committed_prefix_and_exits",
+      "finished": true
+    },
+    {
+      "name": "test_05_encoder_failure_is_not_a_success",
+      "finished": true
+    },
+    {
+      "name": "test_06_missing_control_and_existing_outputs_are_explicit",
+      "finished": true
+    },
+    {
+      "name": "test_07_candidate_inverse_patch_matches_entire_original",
+      "finished": true
+    },
+    {
+      "name": "test_08_worker_termination_retains_explicit_failure",
+      "finished": true
+    },
+    {
+      "name": "test_09_bounded_drain_timeout_cleans_worker",
+      "finished": true
+    },
+    {
+      "name": "test_10_started_encoder_processes_all_reaped_after_pipe_error",
+      "finished": true
+    },
+    {
+      "name": "test_11_hung_encoder_is_terminated_before_pipe_flush",
+      "finished": true
+    },
+    {
+      "name": "test_12_corrupt_worker_report_still_closes_and_has_failure_result",
+      "finished": true
+    },
+    {
+      "name": "test_13_parent_report_disk_error_preserves_in_memory_result",
+      "finished": true
+    }
+  ],
+  "scope": "CPU-only original retained RGB/ToF replay. NoGPU/Kit/YOLO run, no model/controller/success qualification or executor speed claim.",
+  "sourceSHA256": {
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/test_cpu.py": "ba09619d31b29410585867d028f95aee0d97d9a1995475d35e878d030e4e492d",
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/media_archive.py": "09419695795185461d8489b41d2a3939b27330a6f48c22107f2080146d96446d",
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/executor.py": "d19498e420541d929d48408c85bf907a89e49ee6d0676a5fd284610bdbca1954",
+    "@COURSE@/workshop/migration-20261019/football/media_archive_v1/execute.py": "798608923a74b6f959c34b32fe6af4989335602c96570d2f0a8b67c0720be1cb"
+  }
+}

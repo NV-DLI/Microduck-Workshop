@@ -1,0 +1,8 @@
+/.runtime/
+/.local/
+/outputs/
+/weights/
+__pycache__/
+*.pyc
+node_modules/
+.blender*
