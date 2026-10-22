@@ -1,5 +1,5 @@
 {
-  "01-anatomy": [
+  "02-anatomy": [
     {
       "id": "kinematic-chain",
       "title": {
@@ -54,13 +54,11 @@
         },
         {
           "type": "p",
-          "zh": "验证方法：展开后分别点击膝关节舵机、躯干外壳和脚，辨认哪些部件用于驱动、哪些用于承载、哪些与地面接触。然后返回总览，沿一条腿说明力如何传回躯干。本章使用 CAD 几何与装配参数，不需要训练数据，也没有训练步骤。"
+          "zh": "验证方法：展开后分别点击膝关节舵机、电池和脚，辨认哪些部件用于驱动、哪些用于承载、哪些与地面接触。然后返回总览，沿一条腿说明力如何传回躯干。本章使用 CAD 几何与装配参数，不需要训练数据，也没有训练步骤。"
         }
       ],
       "before": "joint-map"
-    }
-  ],
-  "02-simulation": [
+    },
     {
       "id": "control-loop",
       "title": {
@@ -69,7 +67,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "本章使用 Isaac Lab 的 Microduck 任务加载固定行走策略，以 Newton 作为物理后端，并通过 Isaac Sim 窗口观察给定速度指令下的运动。Isaac Lab 3 把物理、渲染与可视化分开：Newton 可以在不启动 Kit 的轻量路径中运行，而本章入口为了显示场景显式要求 Isaac Sim 6.2。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。"
+          "zh": "第一章的实验使用 Isaac Lab 的 Microduck 任务加载固定行走策略，以 Newton 作为物理后端，并通过 Isaac Sim 窗口观察给定速度指令下的运动。Isaac Lab 3 把物理、渲染与可视化分开：Newton 可以在不启动 Kit 的轻量路径中运行，而交互实验入口为了显示场景显式要求 Isaac Sim 6.2。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。"
         },
         {
           "type": "platform",
@@ -200,17 +198,6 @@
         {
           "type": "p",
           "zh": "训练时，策略网络根据 61 维可部署观测选择动作；价值网络可以使用额外的仿真信息估计回报。两者分工不同，导出的行走策略仍使用 61 维输入，不会因为训练时使用了额外信息，就在部署时获得机器人世界坐标。"
-        },
-        {
-          "type": "media",
-          "file": "balance-training.gif",
-          "poster": "balance-training.jpg",
-          "alt": {
-            "zh": "真实的并行强化学习训练录像：画面展示篮球平衡任务如何在多个环境中采样，用于说明训练过程如何收集交互数据。这不是行走练习的成绩，也不能证明篮球技能已经训练成功。",
-            "en": "Recorded parallel reinforcement learning: this basketball-balance run illustrates multi-environment sampling. It is not the walking exercise result or evidence of a successful basketball skill."
-          },
-          "zh": "真实的并行强化学习训练录像：画面展示篮球平衡任务如何在多个环境中采样，用于说明训练过程如何收集交互数据。这不是行走练习的成绩，也不能证明篮球技能已经训练成功。",
-          "en": "Recorded parallel reinforcement learning: this basketball-balance run illustrates multi-environment sampling. It is not the walking exercise result or evidence of a successful basketball skill."
         }
       ],
       "replace": "loop"
@@ -464,7 +451,196 @@
       "before": "checkpoint"
     }
   ],
-  "04-skills": [
+  "05-skills": [
+    {
+      "id": "kick-example",
+      "title": {
+        "zh": "技能的开始与结束同样重要"
+      },
+      "blocks": [
+        {
+          "type": "media",
+          "file": "kick-contact.gif",
+          "alt": {
+            "zh": "只观察出脚、触球与恢复站立。该片段使用第 7 章的课程组合策略，不是跳跃或篮球技能的评测。",
+            "en": "Focus on the kick, contact and standing recovery using Chapter 7’s course policy combination."
+          },
+          "zh": "只观察出脚、触球与恢复站立。该片段使用第 7 章的课程组合策略，不是跳跃或篮球技能的评测。",
+          "en": "Focus on the kick, contact and standing recovery using Chapter 7’s course policy combination."
+        }
+      ],
+      "before": "eyes"
+    }
+  ],
+  "06-autonomy": [
+    {
+      "id": "vision-task",
+      "title": {
+        "zh": "任务：把图像中的目标变成可用观测"
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "zh": "行走策略知道如何控制身体，却不知道足球在哪里。Isaac Sim 可以在同一 USD 场景中让 RTX RGB、深度和机器人头部姿态按统一时钟更新，便于重复检查视角、遮挡与时间对齐。本章先理解检测器如何在图像中找出足球与球门，以及这些二维结果如何与 ToF、IMU 和头部运动学结合。目标检测回答“是什么、在图像中的哪里”；距离、方向和观测是否仍有效，则需要额外的几何与时间信息。"
+        },
+        {
+          "type": "flow",
+          "label": "从相机图像到控制输入",
+          "nodes": [
+            [
+              "相机图像",
+              "保留分辨率与采集时间"
+            ],
+            [
+              "目标检测",
+              "类别、框、置信度"
+            ],
+            [
+              "几何与有效性检查",
+              "转换坐标，检查时间与范围"
+            ]
+          ],
+          "zh": "检测置信度是模型对检测结果的评分，不是距离误差，也不直接等于完整任务成功概率。"
+        },
+        {
+          "type": "p",
+          "zh": "之所以选择学习型检测器，是因为目标大小、视角和背景都会变化。与手工设定颜色阈值相比，检测模型可以从标注样本中学习特征；代价是需要覆盖目标条件的数据和独立验证。Isaac Sim 支持在受控场景中生成图像和标注，适合系统改变相机位姿、光照和遮挡；但当前课程传感器 rig 明确不输出物体语义真值，练习集标签也不是运行时从场景自动读取。课程先提供固定模型作为基准，再用现有小数据集体验训练。"
+        },
+        {
+          "type": "code",
+          "code": "results = YOLO(str(a.model)).predict(\n    source=[str(x) for x in paths], imgsz=640, save=True,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device='cpu'\n)",
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/detector.py"
+        },
+        {
+          "type": "p",
+          "zh": "这里加载课程固定权重，以 640 的推理图像尺寸运行，并将检测框保存到新的输出目录。界面中的框会映射回原图坐标；不能将缩放后图像中的像素坐标直接用于原始相机内参。"
+        },
+        {
+          "type": "p",
+          "zh": "在代码中，Isaac Lab 的 Camera 配置把相机放到场景中的指定位置，并选择 Isaac Sim 的 RTX 渲染器输出 RGB 图像。下面的内参矩阵用于相机投影，渲染尺寸按标定参数在图像边缘预留了额外范围（过扫描）。渲染完成后，再经过标定重映射得到检测器使用的图像；代码中的 render_width/height 表示重映射前的尺寸。相机的安装姿态、内参和输出类型因此可以与机器人模型一起检查。"
+        },
+        {
+          "type": "code",
+          "label": "Python · Isaac Sim RTX 相机配置节选",
+          "code": "self.rgb_camera = Camera(CameraCfg(\n    prim_path=rgb_path, update_period=0.,\n    width=self.render_width, height=self.render_height,\n    data_types=['rgb'], renderer_cfg=IsaacRtxRendererCfg(),\n    spawn=sim_utils.PinholeCameraCfg.from_intrinsic_matrix(\n        render_k.flatten().tolist(),\n        self.render_width, self.render_height,\n        clipping_range=(.03, 20.), focal_length=15.),\n))",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/sensors/isaac_beta_sensor_rig.py"
+        }
+      ],
+      "before": "sensors"
+    },
+    {
+      "id": "camera-geometry",
+      "title": {
+        "zh": "从像素射线理解距离估计"
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "zh": "单个像素只能确定一条观测方向，不能直接给出距离。先用内参矩阵 K 将像素坐标反投影到相机坐标系，再用相机外参把射线转换到所需坐标系。下面以“射线与地面相交”为例，说明几何约束如何提供尺度；实际足球中心高于地面，必须使用与球体和相机相符的几何模型，不能把边界框中心直接视为地面接触点。"
+        },
+        {
+          "type": "equation",
+          "label": "针孔相机的反投影",
+          "tex": "\\widetilde{\\mathbf d}_C=K^{-1}[u,v,1]^{\\mathsf T},\\qquad \\mathbf d_B=R_{BC}\\frac{\\widetilde{\\mathbf d}_C}{\\|\\widetilde{\\mathbf d}_C\\|},\\qquad \\mathbf p_B=\\mathbf o_B+\\lambda\\mathbf d_B"
+        },
+        {
+          "type": "diagram",
+          "kind": "projection",
+          "label": "图像像素对应空间射线，与地面相交后才确定一个位置",
+          "zh": "图中的地面交点用于解释投影，不是对球心位置的直接估计。射线接近平行于地面时，小角度误差可能带来很大的距离误差。"
+        },
+        {
+          "type": "equation",
+          "label": "已知平面时的射线交点",
+          "tex": "\\mathbf n^{\\mathsf T}\\mathbf p+d_0=0\\quad\\Rightarrow\\quad\\lambda=-\\frac{\\mathbf n^{\\mathsf T}\\mathbf o+d_0}{\\mathbf n^{\\mathsf T}\\mathbf d}"
+        },
+        {
+          "type": "p",
+          "zh": "分母接近 0 时，射线与平面几乎平行；λ ≤ 0 时，交点不在射线前方。遇到这些情况应拒绝该结果，而不是强行给出距离。相机姿态还必须与图像采集时刻对齐；头部转动后若用新姿态解释旧图像，会引入偏差。"
+        },
+        {
+          "type": "code",
+          "code": "ray_camera = inv_K @ np.array([u, v, 1.0])\nray_camera /= np.linalg.norm(ray_camera)\nray_body = R_body_camera @ ray_camera\ndenominator = normal @ ray_body\n# 使用交点前，检查分母是否接近零以及距离的符号。\ndistance = -(normal @ origin + plane_offset) / denominator\npoint_body = origin + distance * ray_body",
+          "label": "Python · 几何原理示意，不是独立运行脚本"
+        },
+        {
+          "type": "p",
+          "zh": "这段示意代码用于对应公式；完整任务还会使用 Isaac Sim RTX 图像、32 × 32 深度产品采样得到的 8 × 8 ToF 近似、头部运动学和有效性检查。传感器挂载到实际 Newton 头部连杆姿态，而不是保持世界水平的虚拟云台。验证时，应同时检查检测框、相机内参、估计位置和时间戳；检测框正确并不意味着三维位置一定正确。"
+        }
+      ],
+      "before": "projection"
+    },
+    {
+      "id": "navigation-model",
+      "title": {
+        "zh": "把射门几何转成导航目标"
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "zh": "足球是要踢向球门的目标物，并非机器人的最终站位。若导航器直接将球心设为终点，机器人可能提前撞球，或因站得太近而无法出脚。本章先计算球后方的准备位置，再理解完整链路：Isaac Sim 提供带时间戳的感知快照，课程桥接器把地图与目标交给独立的 ROS 2 Nav2/Navfn 服务，上层控制逻辑根据返回路径生成速度指令，再由固定行走策略产生关节动作。"
+        },
+        {
+          "type": "equation",
+          "label": "出脚站位的几何形式",
+          "tex": "\\mathbf u=\\frac{\\mathbf g-\\mathbf b}{\\|\\mathbf g-\\mathbf b\\|},\\quad\\mathbf n=[-u_y,u_x]^{\\mathsf T},\\quad\\mathbf p^*=\\mathbf b-d\\mathbf u+\\ell\\mathbf n"
+        },
+        {
+          "type": "p",
+          "zh": "b 是足球位置，g 是球门方向上的目标点，u 是射门单位方向。d 为球后方的准备距离，ℓ 为横向偏移，用于让踢球脚与球对齐。d 和 ℓ 依赖机器人的尺寸及技能工作范围；下图只用于观察几何关系，不代表任何滑块值都能成功出脚。"
+        },
+        {
+          "type": "diagram",
+          "kind": "stance",
+          "label": "从足球与球门位置计算准备站位",
+          "zh": "改变 d 会使机器人沿射门方向前后移动，改变 ℓ 会使其沿垂直于射门方向的方向横移。实际任务还必须满足朝向、接近路径和观测有效性等条件。"
+        },
+        {
+          "type": "code",
+          "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [a.ball[i] - a.distance * direction[i]\n          + a.lateral * normal[i] for i in range(2)]",
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py"
+        },
+        {
+          "type": "p",
+          "zh": "这是第 7 章 <code>plan</code> 命令所用的几何计算节选。完整程序会检查输入是否为有限值、准备距离是否为正，以及球与球门点是否重合。该命令只根据已知二维点计算站位，不调用真实相机，也不能证明机器人能够到达该位置。"
+        },
+        {
+          "type": "flow",
+          "label": "规划与控制的三个层次",
+          "nodes": [
+            [
+              "站位计算",
+              "球与球门 → 准备位置"
+            ],
+            [
+              "ROS 2 Nav2 规划",
+              "传感器快照与目标 → 路径"
+            ],
+            [
+              "固定行走策略",
+              "速度指令 → 关节动作"
+            ]
+          ],
+          "zh": "几何目标正确、路径可行、机器人能稳定跟踪，是三个需要分别验证的条件。"
+        },
+        {
+          "type": "p",
+          "zh": "完整任务的桥接器按序号和仿真时间提交不可变快照，Nav2/Navfn 在隔离的 CPU 容器中使用 ROS 2 墙钟计算路径，再返回与请求匹配的结果。它不直接访问仿真器内部对象或 GPU，也不直接发布 <code>/cmd_vel</code>；Isaac Sim 官方支持 ROS 2 导航集成，但本课程采用的是上述显式文件桥接。在第 7 章运行 <code>plan</code> 命令时只做二维几何，不会启动这项服务。完整任务还要检查机器人是否在球后方停稳并满足出脚条件；后退或重新观察属于任务控制逻辑，不能仅因距离暂时增大就判定导航失败。"
+        },
+        {
+          "type": "note",
+          "title": {
+            "zh": "扩展工具要与机器人问题匹配"
+          },
+          "zh": "NVIDIA cuMotion 面向机械臂的碰撞感知运动生成，适合关节臂抓取与轨迹规划；Microduck 当前需要的是双足步态稳定、足球站位和短时出脚，因此本课程不把 cuMotion 接入控制链。Isaac ROS nvblox、TensorRT 等组件也没有出现在当前可执行入口中。评估新组件时，应先明确它替换哪一层、需要哪些输入、怎样与现有评测比较，再决定是否集成。"
+        }
+      ],
+      "before": "target"
+    }
+  ],
+  "07-football": [
     {
       "id": "skill-design",
       "title": {
@@ -551,7 +727,55 @@
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/executor.py"
         }
       ],
-      "before": "contract"
+      "before": "residual"
+    },
+    {
+      "id": "dataset-and-metrics",
+      "title": {
+        "zh": "数据集、标签与检测指标"
+      },
+      "blocks": [
+        {
+          "type": "p",
+          "zh": "练习集包含 40 张图像，按 24 / 8 / 8 划分为训练集、验证集和测试集。训练集用于更新参数，验证集用于观察训练过程与选择模型，测试集应留到方案确定后再使用。无论标签来自人工标注还是另行搭建的 Isaac Sim 合成数据管线，都应把图像、标签、场景参数和划分规则一起保存，防止相邻近似帧跨集合泄漏。当前小样本集仅用于跑通训练流程，不能代表真实部署中的全部光照、遮挡、距离和背景条件。"
+        },
+        {
+          "type": "equation",
+          "label": "YOLO 边界框标签归一化",
+          "tex": "x_c=\\frac{x_{\\min}+x_{\\max}}{2W},\\quad y_c=\\frac{y_{\\min}+y_{\\max}}{2H},\\quad w=\\frac{x_{\\max}-x_{\\min}}{W},\\quad h=\\frac{y_{\\max}-y_{\\min}}{H}"
+        },
+        {
+          "type": "p",
+          "zh": "每行标签按 <code>class x_center y_center width height</code> 排列；类别 0 为足球，类别 1 为球门，四个坐标量均按图像尺寸归一化。训练前，应将标签绘制回原图，检查边界框是否贴合目标；这比只确认文本文件存在更有意义。"
+        },
+        {
+          "type": "equation",
+          "label": "检测质量的三个基本量",
+          "tex": "\\mathrm{IoU}=\\frac{|B_p\\cap B_g|}{|B_p\\cup B_g|},\\qquad P=\\frac{TP}{TP+FP},\\qquad R=\\frac{TP}{TP+FN}"
+        },
+        {
+          "type": "p",
+          "zh": "IoU 衡量预测框与标注框的重合程度；精确率 P 表示检出目标中有多少是正确的，召回率 R 表示真实目标中有多少被检出。mAP 综合各类别的精确率—召回率表现；mAP50 使用 IoU = 0.5，mAP50–95 则对多个 IoU 阈值取平均。这些指标都不同于射门成功率。"
+        },
+        {
+          "type": "code",
+          "code": "YOLO('yolo26n.yaml').train(\n    data=str(config), epochs=a.epochs, batch=a.batch,\n    seed=a.seed, imgsz=640, pretrained=False,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device=0, workers=2, plots=True\n)",
+          "label": "Python · 核心代码节选"
+        },
+        {
+          "type": "p",
+          "zh": "与前面的固定权重推理不同，本练习根据模型结构配置创建网络，并设置 <code>pretrained=False</code>，从随机参数开始训练。5 个 epoch 仅用于观察数据加载、损失计算和模型保存流程，不足以让检测器达到可用水平。"
+        },
+        {
+          "type": "p",
+          "zh": "在一次相同配置的运行记录中，<code>results.csv</code> 第 5 轮的累计时间约为 6.05 秒，验证 mAP50 约为 0.00132，完整程序的启动耗时另计。这表明短练习工作流能够跑通，但模型效果很差；后续任务仍使用课程固定检测器。还应查看保存的标注图、漏检和误检，不能只关注损失是否下降。"
+        },
+        {
+          "type": "p",
+          "zh": "扩充数据时，可利用 Isaac Sim 对相机位姿、光照、材质与遮挡做受控变化，并保存与每张图像对应的场景参数和标签来源；仍应按场景或序列划分数据，避免相邻近似帧同时进入训练集和测试集。合成覆盖不能替代真实相机测试，尤其是镜头畸变、噪声和材质反射差异。训练时间取决于数据量与预算；可先用短练习测量每轮耗时，再安排后续实验。"
+        }
+      ],
+      "before": "training"
     },
     {
       "id": "residual-code",
@@ -603,227 +827,7 @@
           "zh": "三个画面对应同一条已保存轨迹中的出脚前、摆腿和恢复时刻。依次观察支撑脚是否稳定、摆动腿与足球的相对位置，以及出脚后双脚重新形成支撑时的机身姿态。接触、进球和恢复站稳的判断方法见后面的验证步骤。点击任一图片可放大。"
         }
       ]
-    }
-  ],
-  "05-perception": [
-    {
-      "id": "vision-task",
-      "title": {
-        "zh": "任务：把图像中的目标变成可用观测"
-      },
-      "blocks": [
-        {
-          "type": "p",
-          "zh": "行走策略知道如何控制身体，却不知道足球在哪里。Isaac Sim 可以在同一 USD 场景中让 RTX RGB、深度和机器人头部姿态按统一时钟更新，便于重复检查视角、遮挡与时间对齐。本章先用固定检测器在图像中找出足球与球门，再理解这些二维结果如何与 ToF、IMU 和头部运动学结合。目标检测回答“是什么、在图像中的哪里”；距离、方向和观测是否仍有效，则需要额外的几何与时间信息。"
-        },
-        {
-          "type": "flow",
-          "label": "从相机图像到控制输入",
-          "nodes": [
-            [
-              "相机图像",
-              "保留分辨率与采集时间"
-            ],
-            [
-              "目标检测",
-              "类别、框、置信度"
-            ],
-            [
-              "几何与有效性检查",
-              "转换坐标，检查时间与范围"
-            ]
-          ],
-          "zh": "检测置信度是模型对检测结果的评分，不是距离误差，也不直接等于完整任务成功概率。"
-        },
-        {
-          "type": "p",
-          "zh": "之所以选择学习型检测器，是因为目标大小、视角和背景都会变化。与手工设定颜色阈值相比，检测模型可以从标注样本中学习特征；代价是需要覆盖目标条件的数据和独立验证。Isaac Sim 支持在受控场景中生成图像和标注，适合系统改变相机位姿、光照和遮挡；但当前课程传感器 rig 明确不输出物体语义真值，练习集标签也不是运行时从场景自动读取。课程先提供固定模型作为基准，再用现有小数据集体验训练。"
-        },
-        {
-          "type": "code",
-          "code": "results = YOLO(str(a.model)).predict(\n    source=[str(x) for x in paths], imgsz=640, save=True,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device='cpu'\n)",
-          "label": "Python · 核心代码节选",
-          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/detector.py"
-        },
-        {
-          "type": "p",
-          "zh": "这里加载课程固定权重，以 640 的推理图像尺寸运行，并将检测框保存到新的输出目录。界面中的框会映射回原图坐标；不能将缩放后图像中的像素坐标直接用于原始相机内参。"
-        },
-        {
-          "type": "p",
-          "zh": "在代码中，Isaac Lab 的 Camera 配置把相机放到场景中的指定位置，并选择 Isaac Sim 的 RTX 渲染器输出 RGB 图像。下面的内参矩阵用于相机投影，渲染尺寸按标定参数在图像边缘预留了额外范围（过扫描）。渲染完成后，再经过标定重映射得到检测器使用的图像；代码中的 render_width/height 表示重映射前的尺寸。相机的安装姿态、内参和输出类型因此可以与机器人模型一起检查。"
-        },
-        {
-          "type": "code",
-          "label": "Python · Isaac Sim RTX 相机配置节选",
-          "code": "self.rgb_camera = Camera(CameraCfg(\n    prim_path=rgb_path, update_period=0.,\n    width=self.render_width, height=self.render_height,\n    data_types=['rgb'], renderer_cfg=IsaacRtxRendererCfg(),\n    spawn=sim_utils.PinholeCameraCfg.from_intrinsic_matrix(\n        render_k.flatten().tolist(),\n        self.render_width, self.render_height,\n        clipping_range=(.03, 20.), focal_length=15.),\n))",
-          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/sensors/isaac_beta_sensor_rig.py"
-        }
-      ],
-      "before": "sensors"
     },
-    {
-      "id": "dataset-and-metrics",
-      "title": {
-        "zh": "数据集、标签与检测指标"
-      },
-      "blocks": [
-        {
-          "type": "p",
-          "zh": "练习集包含 40 张图像，按 24 / 8 / 8 划分为训练集、验证集和测试集。训练集用于更新参数，验证集用于观察训练过程与选择模型，测试集应留到方案确定后再使用。无论标签来自人工标注还是另行搭建的 Isaac Sim 合成数据管线，都应把图像、标签、场景参数和划分规则一起保存，防止相邻近似帧跨集合泄漏。当前小样本集仅用于跑通训练流程，不能代表真实部署中的全部光照、遮挡、距离和背景条件。"
-        },
-        {
-          "type": "equation",
-          "label": "YOLO 边界框标签归一化",
-          "tex": "x_c=\\frac{x_{\\min}+x_{\\max}}{2W},\\quad y_c=\\frac{y_{\\min}+y_{\\max}}{2H},\\quad w=\\frac{x_{\\max}-x_{\\min}}{W},\\quad h=\\frac{y_{\\max}-y_{\\min}}{H}"
-        },
-        {
-          "type": "p",
-          "zh": "每行标签按 <code>class x_center y_center width height</code> 排列；类别 0 为足球，类别 1 为球门，四个坐标量均按图像尺寸归一化。训练前，应将标签绘制回原图，检查边界框是否贴合目标；这比只确认文本文件存在更有意义。"
-        },
-        {
-          "type": "equation",
-          "label": "检测质量的三个基本量",
-          "tex": "\\mathrm{IoU}=\\frac{|B_p\\cap B_g|}{|B_p\\cup B_g|},\\qquad P=\\frac{TP}{TP+FP},\\qquad R=\\frac{TP}{TP+FN}"
-        },
-        {
-          "type": "p",
-          "zh": "IoU 衡量预测框与标注框的重合程度；精确率 P 表示检出目标中有多少是正确的，召回率 R 表示真实目标中有多少被检出。mAP 综合各类别的精确率—召回率表现；mAP50 使用 IoU = 0.5，mAP50–95 则对多个 IoU 阈值取平均。这些指标都不同于射门成功率。"
-        },
-        {
-          "type": "code",
-          "code": "YOLO('yolo26n.yaml').train(\n    data=str(config), epochs=a.epochs, batch=a.batch,\n    seed=a.seed, imgsz=640, pretrained=False,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device=0, workers=2, plots=True\n)",
-          "label": "Python · 核心代码节选"
-        },
-        {
-          "type": "p",
-          "zh": "与前面的固定权重推理不同，本练习根据模型结构配置创建网络，并设置 <code>pretrained=False</code>，从随机参数开始训练。5 个 epoch 仅用于观察数据加载、损失计算和模型保存流程，不足以让检测器达到可用水平。"
-        },
-        {
-          "type": "p",
-          "zh": "在一次相同配置的运行记录中，<code>results.csv</code> 第 5 轮的累计时间约为 6.05 秒，验证 mAP50 约为 0.00132，完整程序的启动耗时另计。这表明短练习工作流能够跑通，但模型效果很差；后续任务仍使用课程固定检测器。还应查看保存的标注图、漏检和误检，不能只关注损失是否下降。"
-        },
-        {
-          "type": "p",
-          "zh": "扩充数据时，可利用 Isaac Sim 对相机位姿、光照、材质与遮挡做受控变化，并保存与每张图像对应的场景参数和标签来源；仍应按场景或序列划分数据，避免相邻近似帧同时进入训练集和测试集。合成覆盖不能替代真实相机测试，尤其是镜头畸变、噪声和材质反射差异。训练时间取决于数据量与预算；可先用短练习测量每轮耗时，再安排后续实验。"
-        }
-      ],
-      "before": "training"
-    },
-    {
-      "id": "camera-geometry",
-      "title": {
-        "zh": "从像素射线理解距离估计"
-      },
-      "blocks": [
-        {
-          "type": "p",
-          "zh": "单个像素只能确定一条观测方向，不能直接给出距离。先用内参矩阵 K 将像素坐标反投影到相机坐标系，再用相机外参把射线转换到所需坐标系。下面以“射线与地面相交”为例，说明几何约束如何提供尺度；实际足球中心高于地面，必须使用与球体和相机相符的几何模型，不能把边界框中心直接视为地面接触点。"
-        },
-        {
-          "type": "equation",
-          "label": "针孔相机的反投影",
-          "tex": "\\widetilde{\\mathbf d}_C=K^{-1}[u,v,1]^{\\mathsf T},\\qquad \\mathbf d_B=R_{BC}\\frac{\\widetilde{\\mathbf d}_C}{\\|\\widetilde{\\mathbf d}_C\\|},\\qquad \\mathbf p_B=\\mathbf o_B+\\lambda\\mathbf d_B"
-        },
-        {
-          "type": "diagram",
-          "kind": "projection",
-          "label": "图像像素对应空间射线，与地面相交后才确定一个位置",
-          "zh": "图中的地面交点用于解释投影，不是对球心位置的直接估计。射线接近平行于地面时，小角度误差可能带来很大的距离误差。"
-        },
-        {
-          "type": "equation",
-          "label": "已知平面时的射线交点",
-          "tex": "\\mathbf n^{\\mathsf T}\\mathbf p+d_0=0\\quad\\Rightarrow\\quad\\lambda=-\\frac{\\mathbf n^{\\mathsf T}\\mathbf o+d_0}{\\mathbf n^{\\mathsf T}\\mathbf d}"
-        },
-        {
-          "type": "p",
-          "zh": "分母接近 0 时，射线与平面几乎平行；λ ≤ 0 时，交点不在射线前方。遇到这些情况应拒绝该结果，而不是强行给出距离。相机姿态还必须与图像采集时刻对齐；头部转动后若用新姿态解释旧图像，会引入偏差。"
-        },
-        {
-          "type": "code",
-          "code": "ray_camera = inv_K @ np.array([u, v, 1.0])\nray_camera /= np.linalg.norm(ray_camera)\nray_body = R_body_camera @ ray_camera\ndenominator = normal @ ray_body\n# 使用交点前，检查分母是否接近零以及距离的符号。\ndistance = -(normal @ origin + plane_offset) / denominator\npoint_body = origin + distance * ray_body",
-          "label": "Python · 几何原理示意，不是独立运行脚本"
-        },
-        {
-          "type": "p",
-          "zh": "这段示意代码用于对应公式；完整任务还会使用 Isaac Sim RTX 图像、32 × 32 深度产品采样得到的 8 × 8 ToF 近似、头部运动学和有效性检查。传感器挂载到实际 Newton 头部连杆姿态，而不是保持世界水平的虚拟云台。验证时，应同时检查检测框、相机内参、估计位置和时间戳；检测框正确并不意味着三维位置一定正确。"
-        }
-      ],
-      "before": "projection"
-    }
-  ],
-  "06-navigation": [
-    {
-      "id": "navigation-model",
-      "title": {
-        "zh": "把射门几何转成导航目标"
-      },
-      "blocks": [
-        {
-          "type": "p",
-          "zh": "足球是要踢向球门的目标物，并非机器人的最终站位。若导航器直接将球心设为终点，机器人可能提前撞球，或因站得太近而无法出脚。本章先计算球后方的准备位置，再理解完整链路：Isaac Sim 提供带时间戳的感知快照，课程桥接器把地图与目标交给独立的 ROS 2 Nav2/Navfn 服务，上层控制逻辑根据返回路径生成速度指令，再由固定行走策略产生关节动作。"
-        },
-        {
-          "type": "equation",
-          "label": "出脚站位的几何形式",
-          "tex": "\\mathbf u=\\frac{\\mathbf g-\\mathbf b}{\\|\\mathbf g-\\mathbf b\\|},\\quad\\mathbf n=[-u_y,u_x]^{\\mathsf T},\\quad\\mathbf p^*=\\mathbf b-d\\mathbf u+\\ell\\mathbf n"
-        },
-        {
-          "type": "p",
-          "zh": "b 是足球位置，g 是球门方向上的目标点，u 是射门单位方向。d 为球后方的准备距离，ℓ 为横向偏移，用于让踢球脚与球对齐。d 和 ℓ 依赖机器人的尺寸及技能工作范围；下图只用于观察几何关系，不代表任何滑块值都能成功出脚。"
-        },
-        {
-          "type": "diagram",
-          "kind": "stance",
-          "label": "从足球与球门位置计算准备站位",
-          "zh": "改变 d 会使机器人沿射门方向前后移动，改变 ℓ 会使其沿垂直于射门方向的方向横移。实际任务还必须满足朝向、接近路径和观测有效性等条件。"
-        },
-        {
-          "type": "code",
-          "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [a.ball[i] - a.distance * direction[i]\n          + a.lateral * normal[i] for i in range(2)]",
-          "label": "Python · 核心代码节选",
-          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py"
-        },
-        {
-          "type": "p",
-          "zh": "这是下方 <code>plan</code> 命令所用的几何计算节选。完整程序会检查输入是否为有限值、准备距离是否为正，以及球与球门点是否重合。本章命令只根据已知二维点计算站位，不调用真实相机，也不能证明机器人能够到达该位置。"
-        },
-        {
-          "type": "flow",
-          "label": "规划与控制的三个层次",
-          "nodes": [
-            [
-              "站位计算",
-              "球与球门 → 准备位置"
-            ],
-            [
-              "ROS 2 Nav2 规划",
-              "传感器快照与目标 → 路径"
-            ],
-            [
-              "固定行走策略",
-              "速度指令 → 关节动作"
-            ]
-          ],
-          "zh": "几何目标正确、路径可行、机器人能稳定跟踪，是三个需要分别验证的条件。"
-        },
-        {
-          "type": "p",
-          "zh": "完整任务的桥接器按序号和仿真时间提交不可变快照，Nav2/Navfn 在隔离的 CPU 容器中使用 ROS 2 墙钟计算路径，再返回与请求匹配的结果。它不直接访问仿真器内部对象或 GPU，也不直接发布 <code>/cmd_vel</code>；Isaac Sim 官方支持 ROS 2 导航集成，但本课程采用的是上述显式文件桥接。运行本章 <code>plan</code> 命令时只做二维几何，不会启动这项服务。完整任务还要检查机器人是否在球后方停稳并满足出脚条件；后退或重新观察属于任务控制逻辑，不能仅因距离暂时增大就判定导航失败。"
-        },
-        {
-          "type": "note",
-          "title": {
-            "zh": "扩展工具要与机器人问题匹配"
-          },
-          "zh": "NVIDIA cuMotion 面向机械臂的碰撞感知运动生成，适合关节臂抓取与轨迹规划；Microduck 当前需要的是双足步态稳定、足球站位和短时出脚，因此本课程不把 cuMotion 接入控制链。Isaac ROS nvblox、TensorRT 等组件也没有出现在当前可执行入口中。评估新组件时，应先明确它替换哪一层、需要哪些输入、怎样与现有评测比较，再决定是否集成。"
-        }
-      ],
-      "before": "target"
-    }
-  ],
-  "07-football": [
     {
       "id": "complete-contract",
       "title": {

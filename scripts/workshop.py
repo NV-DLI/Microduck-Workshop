@@ -36,6 +36,9 @@ def main():
  setup=sub.add_parser('setup');setup.add_argument('--isaaclab',type=Path);setup.add_argument('--detector-python',type=Path);setup.add_argument('--ffmpeg',type=Path);setup.add_argument('--nav2-image')
  ins=sub.add_parser('inspect-model');ins.add_argument('--model',type=Path,required=True)
  walk=sub.add_parser('walk');walk.add_argument('--model',type=Path,required=True);walk.add_argument('--velocity',nargs=3,type=float,default=[.3,0.,0.]);walk.add_argument('--seconds',type=float,default=12);walk.add_argument('--seed',type=int,default=42);walk.add_argument('--output',type=Path,required=True);walk.add_argument('--headless',action='store_true')
+ manual=sub.add_parser('manual');manual.add_argument('--seconds',type=float,default=600);manual.add_argument('--output',type=Path,required=True)
+ terrain=sub.add_parser('terrain');terrain.add_argument('--model',type=Path,required=True);terrain.add_argument('--slope',type=float,default=5);terrain.add_argument('--num-envs',type=int,default=5);terrain.add_argument('--seconds',type=float,default=20);terrain.add_argument('--seed',type=int,default=42001);terrain.add_argument('--output',type=Path,required=True);terrain.add_argument('--headless',action='store_true');terrain.add_argument('--record',action='store_true')
+ slope_train=sub.add_parser('train-terrain');slope_train.add_argument('--yaw-precision',action='store_true');slope_train.add_argument('--resume',type=Path);slope_train.add_argument('--refine-heading',action='store_true');slope_train.add_argument('--model',type=Path,required=True);slope_train.add_argument('--num-envs',type=int,default=256);slope_train.add_argument('--iterations',type=int,default=1000);slope_train.add_argument('--seed',type=int,default=43001);slope_train.add_argument('--output',type=Path,required=True)
  train=sub.add_parser('train-walk');train.add_argument('--num-envs',type=int,default=64);train.add_argument('--iterations',type=int,default=20);train.add_argument('--seed',type=int,default=101);train.add_argument('--output',type=Path,required=True)
  tb=sub.add_parser('tensorboard');tb.add_argument('--logdir',type=Path,required=True);tb.add_argument('--port',type=int,default=6006)
  det=sub.add_parser('detect');det.add_argument('--model',type=Path,required=True);det.add_argument('--source',type=Path,required=True);det.add_argument('--output',type=Path,required=True)
@@ -62,7 +65,7 @@ def main():
  if a.command=='report':
   for path in [a.run/'result.json',a.run/'manifest.json',a.run/'report.json',a.run/'training-ledger.json']:
    if path.is_file():
-    data=json.loads(path.read_text());print(json.dumps({k:data[k]for k in ['status','state','seed','task_seconds','terminal_reason','scorer','course_evaluation','model_sha256','episodes','training_wall_seconds']if k in data},indent=2));return 0
+    data=json.loads(path.read_text());print(json.dumps({k:data[k]for k in ['status','state','seed','task_seconds','terminal_reason','scorer','course_evaluation','model_sha256','episodes','training_wall_seconds','passed','fell','reached_landing','upright_velocity_rmse','simulated_seconds']if k in data},indent=2));return 0
   raise FileNotFoundError('No result manifest yet. Inspect the run log or wait for the run to finish.')
  c=config();py=c['python'];m=Path(c['materialized'])
  if a.command=='doctor':
@@ -77,6 +80,21 @@ def main():
   if not all(math.isfinite(x)for x in a.velocity):ap.error('Velocity must be finite')
   out=fresh(a.output);cmd=[py,ROOT/'lab/walk.py','--runtime',m,'--model',a.model.resolve(),'--seconds',a.seconds,'--seed',a.seed,'--output',out,'--velocity',*a.velocity]
   if a.headless:cmd+=['--headless']
+  return run(cmd,c)
+ if a.command=='manual':
+  if not math.isfinite(a.seconds) or not 1<=a.seconds<=3600:ap.error('seconds must be in [1,3600]')
+  verify();return run([py,ROOT/'lab/manual.py','--runtime',m,'--models',ROOT/'models','--output',fresh(a.output),'--seconds',a.seconds],c)
+ if a.command=='terrain':
+  cmd=[py,ROOT/'lab/terrain.py','--runtime',m,'--model',a.model.resolve(),'--slope',a.slope,'--num-envs',a.num_envs,'--seconds',a.seconds,'--seed',a.seed,'--output',fresh(a.output)]
+  if a.headless:cmd+=['--headless']
+  if a.record:cmd+=['--record']
+  return run(cmd,c)
+ if a.command=='train-terrain':
+  if a.num_envs<1 or a.iterations<1:ap.error('Use positive training counts')
+  cmd=[py,ROOT/'lab/train_terrain.py','--runtime',m,'--model',a.model.resolve(),'--num-envs',a.num_envs,'--iterations',a.iterations,'--seed',a.seed,'--output',fresh(a.output)]
+  if a.resume:cmd+=['--resume',a.resume.resolve()]
+  if a.refine_heading:cmd+=['--refine-heading']
+  if a.yaw_precision:cmd+=['--yaw-precision']
   return run(cmd,c)
  if a.command=='train-walk':
   if a.num_envs<1 or a.iterations<1:ap.error('Use positive training counts')

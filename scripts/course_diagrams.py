@@ -3,6 +3,9 @@ from html import escape as e
 import hashlib, unicodedata
 
 def lines(text, limit=23):
+    if text.isascii():
+        import textwrap
+        return textwrap.wrap(text, width=limit, break_long_words=False, break_on_hyphens=False)
     result=[];line='';width=0
     for char in text:
         n=2 if unicodedata.east_asian_width(char) in ('W','F') else 1

@@ -42,8 +42,16 @@
       "bytes": 9748295,
       "source": "Microduck course retained trained model",
       "role": "detector"
+    },
+    {
+      "file": "terrain-walk.onnx",
+      "sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "bytes": 793215,
+      "source": "Course terrain adaptation of the Pollen Robotics official walking actor",
+      "role": "terrain-walk"
     }
   ],
-  "training_performed": false,
-  "downstream_default": "course models; student outputs require explicit opt-in"
+  "training_performed": true,
+  "downstream_default": "course models; student outputs require explicit opt-in",
+  "training_scope": "Terrain actor added; previous six model files retained unchanged"
 }

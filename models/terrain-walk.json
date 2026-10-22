@@ -1,0 +1,54 @@
+{
+  "file": "terrain-walk.onnx",
+  "sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+  "bytes": 793215,
+  "parent_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "architecture": {
+    "observations": 61,
+    "hidden_units": [
+      512,
+      256,
+      128
+    ],
+    "actions": 14,
+    "activation": "ELU",
+    "normalization": "embedded, frozen from official actor"
+  },
+  "training": {
+    "algorithm": "PPO via RSL-RL in Isaac Lab",
+    "physics_backend": "Newton",
+    "environments": 256,
+    "rollout_steps": 24,
+    "stages": [
+      {
+        "iterations": 1000,
+        "seed": 43001,
+        "wall_seconds": 488.05511641700286
+      },
+      {
+        "iterations": 1500,
+        "seed": 43002,
+        "wall_seconds": 585.0435538939782
+      },
+      {
+        "iterations": 2000,
+        "seed": 43003,
+        "wall_seconds": 790.2012678550091
+      }
+    ],
+    "terrain_mix": {
+      "flat": 0.25,
+      "pyramidal": 0.375,
+      "inverted_pyramidal": 0.375
+    },
+    "slope_tangent": [
+      0.03,
+      0.22
+    ],
+    "critic": "new critic at initial warm start",
+    "first_actor_parity_max_absolute_error": 1.639e-07
+  },
+  "evaluation": "datasets/terrain/evaluation.json",
+  "default_scope": "Chapter4 only; keyboard and autonomous football retain original walking actor",
+  "license": "Apache-2.0, derived from Pollen Robotics official actor"
+}

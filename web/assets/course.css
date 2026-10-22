@@ -30,3 +30,8 @@ body,button,input,select,textarea{font-family:var(--course-font)}
 @media(max-width:760px){.code-block pre{font-size:12px}.code-block pre code.hljs{padding:16px}.concept-figure{padding:14px 10px}.code-toolbar>span{min-width:0;overflow-wrap:anywhere}.brand-course{font-size:15px}}
 
 .brand-course{border-left:0;padding-left:0}.diagram-scroll-hint{display:none}@media(max-width:760px){.diagram-scroll-hint{display:block;color:#57606a;font-size:12px;margin:0 0 8px}}
+
+/* Progressive 3D loading: expose controls only when a model is ready. */
+.anatomy:not([data-loaded="true"]) .viewer-toolbar{display:none}
+.load-robot{display:flex;align-items:center;gap:12px;padding:14px 22px;border:1px solid #a8bcce;border-radius:10px;background:#243342;color:#fff;box-shadow:0 8px 25px #10213040;font:600 16px 'Open Sans','Noto Sans SC',sans-serif;cursor:pointer}
+.load-robot::before{content:'◇';font-size:27px;font-weight:400;color:#c4e69b}.load-robot:hover{background:#34495c;border-color:#c4e69b}

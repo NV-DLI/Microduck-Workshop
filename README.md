@@ -15,7 +15,7 @@ python3 -m http.server 8080 --directory web --bind 127.0.0.1
 
 Open http://127.0.0.1:8080/zh/index.html or `/en/index.html`. Reading, demonstrations, search, and the interactive mechanical assembly work without installing Isaac Sim. Serve the folder over HTTP; browser module loading may not work through `file://`.
 
-The seven chapters cover anatomy, simulation, reinforcement learning, skill composition, perception, navigation, and autonomous football. Each lesson explains concepts, provides terminal commands and parameters, describes expected outputs, and includes self-checks. The expanded Chinese edition adds locally rendered equations, interactive theory diagrams, real training curves, seekable demonstration videos, and clickable part labels. Illustrative code excerpts link directly to the full source; terminal commands include copy controls.
+The eight chapters move from keyboard football to mechanical structure, walking training, terrain adaptation, community skills, autonomy theory, autonomous football implementation, and an extension challenge. Each lesson explains concepts, provides terminal commands and parameters, describes expected outputs, and includes self-checks. The expanded Chinese edition adds locally rendered equations, interactive theory diagrams, real training curves, seekable demonstration videos, and clickable part labels. Illustrative code excerpts link directly to the full source; terminal commands include copy controls.
 
 ## Run the labs
 
@@ -24,13 +24,16 @@ Reference platform: Ubuntu 24.04 on DGX Spark (aarch64), a working NVIDIA graphi
 ```bash
 python3 scripts/workshop.py setup
 python3 scripts/workshop.py doctor
+python3 scripts/workshop.py manual --seconds 600 --output outputs/manual-football-01
 python3 scripts/workshop.py football --seed 983102 --seconds 180 --output outputs/football-01
 python3 scripts/workshop.py report --run outputs/football-01
 ```
 
 Run graphical commands from the GPU machine's desktop terminal. The website is a textbook; simulation opens in a native window. New runs require new output directories. Use `--help` on any subcommand for parameters.
 
-The six fixed model files total about 22 MB and are included directly in Git. Their identities are checked against `models/manifest.json`. Student training is optional practice in `outputs/`; it never replaces downstream course defaults. An explicit `walk --model ...` command can evaluate a student's own ONNX export.
+The seven fixed model files total about 23 MB and are included directly in Git. Their identities are checked against `models/manifest.json`. Student training is optional practice in `outputs/`; it never replaces downstream course defaults. An explicit `walk --model ...` command can evaluate a student's own ONNX export.
+
+The separate `terrain-walk.onnx` actor adapts walking to flat and sloped ground; see `datasets/terrain/evaluation.json` for matched results and limits. It does not replace the original walking actor in football.
 
 The retained full-task combination scored **9/10** in its recorded independent empty-field trials. This is a result for a specific environment and trial distribution, not a guarantee for every seed or device. The default seed is a teaching example. Obstacle courses and physical hardware have not been qualified by that result.
 

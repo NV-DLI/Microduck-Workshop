@@ -25,7 +25,7 @@ def render_block(b,lang,t):
  if k=='list':return '<ul>'+''.join('<li>'+x+'</li>' for x in b[lang])+'</ul>'
  if k=='table':return '<div class="table-scroll"><table><thead><tr>'+''.join('<th>'+x+'</th>'for x in b['headers'][lang])+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+x+'</td>'for x in row)+'</tr>'for row in b['rows'][lang])+'</tbody></table></div>'
  if k=='quiz':return '<div class="quiz"><h3>'+t['check']+'</h3><p>'+b['question'][lang]+'</p><details><summary>'+t['answer']+'</summary><p>'+b['answer'][lang]+'</p></details></div>'
- if k=='anatomy':return '<div class="anatomy" data-robot-viewer><div class="viewer-stage"><img class="robot-fallback" src="../assets/robot/studio-hd.webp" alt="Microduck"><div class="viewer-status" role="status"></div><button type="button" class="load-robot">'+('打开交互模型' if lang=='zh' else 'Open interactive model')+'</button></div><div class="viewer-toolbar"><label>'+('装配'if lang=='zh'else'Assembled')+' <input type="range" min="0" max="100" value="0" class="explode" aria-label="'+('结构展开程度'if lang=='zh'else'Explosion amount')+'"> '+('展开'if lang=='zh'else'Exploded')+'</label><button type="button" class="view-reset">'+('返回总览'if lang=='zh'else'Reset view')+'</button></div><div class="component-info" aria-live="polite"><strong>'+('点击部件或名称，即可放大查看'if lang=='zh'else'Click a part or its label to inspect it')+'</strong><p>'+('拖动旋转，滚轮或双指缩放；移动滑块可逐步展开结构。'if lang=='zh'else'Drag to orbit, scroll or pinch to zoom. Use the slider to separate the parts.')+'</p></div></div>'
+ if k=='anatomy':return '<div class="anatomy" data-robot-viewer><div class="viewer-stage"><img class="robot-fallback" src="../assets/robot/studio-hd.webp" alt="Microduck"><div class="viewer-status" role="status"></div><button type="button" class="load-robot">'+('加载交互模型' if lang=='zh' else 'Open interactive model')+'</button></div><div class="viewer-toolbar"><label>'+('装配'if lang=='zh'else'Assembled')+' <input type="range" min="0" max="100" value="0" class="explode" aria-label="'+('结构展开程度'if lang=='zh'else'Explosion amount')+'"> '+('展开'if lang=='zh'else'Exploded')+'</label><button type="button" class="view-reset">'+('返回总览'if lang=='zh'else'Reset view')+'</button></div><div class="component-info" aria-live="polite"><strong>'+('点击部件或名称，即可放大查看'if lang=='zh'else'Click a part or its label to inspect it')+'</strong><p>'+('左键拖动旋转，按住滚轮拖动平移，滚轮或双指缩放；移动滑块可展开结构。'if lang=='zh'else'Left-drag to orbit, middle-drag to pan, scroll or pinch to zoom. Use the slider to separate the parts.')+'</p></div></div>'
  if k=='pipeline':return '<ol class="pipeline">'+''.join('<li><span>'+str(i+1)+'</span>'+v+'</li>'for i,v in enumerate(b[lang]))+'</ol>'
  raise ValueError(k)
 def build():
@@ -68,6 +68,9 @@ def build():
    search.append(dict(id=p['id'],title=title,text=re.sub('<[^>]+>',' ',content)))
   (out/'search.json').write_text(json.dumps(search,ensure_ascii=False))
  (ROOT/'web/index.html').write_text('<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=zh/index.html"><title>Microduck Workshop</title></head><body><a href="zh/index.html">中文课程</a> · <a href="en/index.html">English course</a></body></html>')
+ for old,new in json.loads((ROOT/'content/redirects.json').read_text()).items():
+  for lang in I18N:
+   (ROOT/'web'/lang/(old+'.html')).write_text('<!doctype html><html lang="'+lang+'"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url='+new+'.html"><title>Microduck Workshop</title></head><body><a href="'+new+'.html">'+('查看课程章节' if lang=='zh' else 'Open lesson')+'</a></body></html>')
  (ROOT/'web/.nojekyll').touch()
  print(f'Built {len(PAGES)*2} lesson pages')
 if __name__=='__main__':build()

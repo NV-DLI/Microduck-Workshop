@@ -1,0 +1,477 @@
+{
+  "protocol": {
+    "seed": 44001,
+    "environments_per_angle": 5,
+    "seconds": 20,
+    "standing_seconds": 2,
+    "forward_command_m_s": 0.25,
+    "arrival_x_m": 1.45,
+    "arrival_abs_y_less_than_m": 0.3,
+    "remain_upright_entire_episode": true,
+    "automatic_resets": false,
+    "physics_hz": 200,
+    "policy_hz": 50,
+    "physics_backend": "Newton",
+    "initial_y_m": [
+      -0.025,
+      0.025
+    ],
+    "initial_yaw_rad": [
+      -0.025,
+      0.025
+    ]
+  },
+  "models": {
+    "official": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+    "terrain": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2"
+  },
+  "results": [
+    {
+      "slope_deg": 0,
+      "official": {
+        "passed": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.13942822813987732,
+          0.14035430550575256,
+          0.14078432321548462,
+          0.1400822550058365,
+          0.13875211775302887
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.09422378242015839,
+          0.09369739890098572,
+          0.09541177749633789,
+          0.09316626191139221,
+          0.09442420303821564
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      }
+    },
+    {
+      "slope_deg": 5,
+      "official": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.1804439276456833,
+          0.1744924932718277,
+          0.1743067055940628,
+          0.17792122066020966,
+          0.17828193306922913
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.10404963046312332,
+          0.10403027385473251,
+          0.10424624383449554,
+          0.10497815161943436,
+          0.1048889011144638
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      }
+    },
+    {
+      "slope_deg": -5,
+      "official": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "upright_velocity_rmse": [
+          0.14285260438919067,
+          0.1446572244167328,
+          0.1374201774597168,
+          0.14542272686958313,
+          0.1466297060251236
+        ],
+        "velocity_samples": [
+          238.0,
+          214.0,
+          239.0,
+          239.0,
+          215.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.0889439806342125,
+          0.08831804990768433,
+          0.08839242160320282,
+          0.08781198412179947,
+          0.08930972963571548
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      }
+    },
+    {
+      "slope_deg": 10,
+      "official": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.23619242012500763,
+          0.23557808995246887,
+          0.23574329912662506,
+          0.2360176146030426,
+          0.2355787754058838
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.12165415287017822,
+          0.12133847922086716,
+          0.1214536726474762,
+          0.12128470838069916,
+          0.11956309527158737
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      }
+    },
+    {
+      "slope_deg": -10,
+      "official": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "upright_velocity_rmse": [
+          0.15114322304725647,
+          0.15533028542995453,
+          0.15939456224441528,
+          0.15254126489162445,
+          0.1558624505996704
+        ],
+        "velocity_samples": [
+          215.0,
+          216.0,
+          217.0,
+          214.0,
+          216.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          false,
+          true,
+          true,
+          true,
+          true
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.08960048109292984,
+          0.08963663130998611,
+          0.08923929184675217,
+          0.0906900092959404,
+          0.09081301093101501
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      }
+    },
+    {
+      "slope_deg": 15,
+      "official": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "upright_velocity_rmse": [
+          0.23485340178012848,
+          0.23477894067764282,
+          0.2348327338695526,
+          0.2347598373889923,
+          0.23515141010284424
+        ],
+        "velocity_samples": [
+          900.0,
+          900.0,
+          900.0,
+          900.0,
+          900.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          false,
+          false,
+          false,
+          true,
+          false
+        ],
+        "fell": [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        "upright_velocity_rmse": [
+          0.22225360572338104,
+          0.24416722357273102,
+          0.19881440699100494,
+          0.1590319275856018,
+          0.28479093313217163
+        ],
+        "velocity_samples": [
+          337.0,
+          281.0,
+          733.0,
+          900.0,
+          656.0
+        ]
+      }
+    },
+    {
+      "slope_deg": -15,
+      "official": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "upright_velocity_rmse": [
+          0.17112834751605988,
+          0.1859728842973709,
+          0.16888634860515594,
+          0.17283238470554352,
+          0.17063665390014648
+        ],
+        "velocity_samples": [
+          212.0,
+          211.0,
+          212.0,
+          212.0,
+          214.0
+        ]
+      },
+      "terrain": {
+        "passed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "fell": [
+          true,
+          true,
+          true,
+          true,
+          true
+        ],
+        "upright_velocity_rmse": [
+          0.19826844334602356,
+          0.09954867511987686,
+          0.23854070901870728,
+          0.19827091693878174,
+          0.15798084437847137
+        ],
+        "velocity_samples": [
+          183.0,
+          159.0,
+          184.0,
+          186.0,
+          175.0
+        ]
+      }
+    }
+  ],
+  "scope": "Small matched simulation benchmark; development seed42001 excluded. Fixed nominal physical settings. No hardware, obstacle, arbitrary terrain, or football qualification.",
+  "export_parity": {
+    "max_absolute_error": 0.0,
+    "samples": 32,
+    "passed": true
+  }
+}

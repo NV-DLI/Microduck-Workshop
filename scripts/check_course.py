@@ -31,11 +31,11 @@ for f,p in parsed.items():
   elif u.fragment and target in parsed and unquote(u.fragment)not in parsed[target].ids:errors.append(f'Missing fragment: {f.name} {link}')
   count+=1
 pages=json.loads((R/'content/course.json').read_text());chapters=[p for p in pages if p.get('number')]
-assert len(chapters)==7
+assert len(chapters)==8
 for p in pages:
  for lang in ['zh','en']:
   if not (W/lang/(p['id']+'.html')).exists():errors.append('Missing language page '+p['id'])
- if p.get('number')and not any(b['type'] in ('media','anatomy','image','flow','diagram') for s in p['sections']for b in s['blocks']):errors.append('Missing visual explanation '+p['id'])
+ if p.get('number')and not any(b['type'] in ('media','anatomy','image','flow','diagram','pipeline') for s in p['sections']for b in s['blocks']):errors.append('Missing visual explanation '+p['id'])
  for s in p['sections']+json.loads((R/'content/zh-depth.json').read_text()).get(p['id'],[]):
   for b in s['blocks']:
    if b['type']=='code'and b.get('label','').startswith('Terminal'):
@@ -61,4 +61,4 @@ if errors:raise SystemExit('\n'.join(errors))
 for f in (R/'lab/runtime').rglob('*'):
  if f.is_file() and re.search(r'migration-\d+|[_-]v\d+(?=[_.-]|$)|candidate|experimental|development|kick_runtime_early',str(f.relative_to(R))):errors.append('Non-teaching source name: '+str(f))
 if errors:raise SystemExit('\n'.join(errors))
-print(json.dumps(dict(pages=len(parsed),local_links=count,chapters=7,models=6,components=70,passed=True)))
+print(json.dumps(dict(pages=len(parsed),local_links=count,chapters=8,models=len(json.loads((R/'models/manifest.json').read_text())['files']),components=70,passed=True)))
