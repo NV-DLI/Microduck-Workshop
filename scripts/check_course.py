@@ -10,13 +10,13 @@ class Page(HTMLParser):
  def handle_starttag(self,tag,attrs):
   a=dict(attrs)
   if 'id'in a:self.ids.append(a['id'])
-  for key in ('href','src','data-gif'):
+  for key in ('href','src','poster'):
    if a.get(key):self.links.append(a[key])
 parsed={}
 for f in W.rglob('*.html'):
  p=Page();p.feed(f.read_text());parsed[f.resolve()]=p
  if len(p.ids)!=len(set(p.ids)):errors.append(f'Duplicate IDs: {f}')
- for pattern in ['/home/yuki/','@COURSE@','@REPO@','localhost:8018']:
+ for pattern in ['/home/yuki/','@COURSE@','@REPO@','localhost:8018','mark-complete','local-progress']:
   if pattern in f.read_text():errors.append(f'Internal path in page: {f}')
 for f,p in parsed.items():
  for link in p.links:
@@ -32,8 +32,8 @@ assert len(chapters)==7
 for p in pages:
  for lang in ['zh','en']:
   if not (W/lang/(p['id']+'.html')).exists():errors.append('Missing language page '+p['id'])
- if p.get('number')and not any(b['type']=='media'for s in p['sections']for b in s['blocks']):errors.append('Missing demonstration '+p['id'])
- for s in p['sections']:
+ if p.get('number')and not any(b['type'] in ('media','anatomy','image','flow','diagram') for s in p['sections']for b in s['blocks']):errors.append('Missing visual explanation '+p['id'])
+ for s in p['sections']+json.loads((R/'content/zh-depth.json').read_text()).get(p['id'],[]):
   for b in s['blocks']:
    if b['type']=='code'and b.get('label','').startswith('Terminal'):
     result=subprocess.run(['bash','-n'],input=b['code'],capture_output=True,text=True)

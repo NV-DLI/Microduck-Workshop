@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-22",
+  "scope": "Chinese teaching and presentation refinement; existing English retained; no additional languages",
+  "local_browser_pages": 52,
+  "local_browser_errors": 0,
+  "chapters": 7,
+  "expanded_chinese_sections": 15,
+  "model_files": 6,
+  "preserved_model_bytes": 22359337,
+  "new_training_runs": 0,
+  "new_physics_runs": 0,
+  "viewer_parts": 70,
+  "visible_exploded_labels": 8,
+  "language_review": {
+    "translator": "gpt-5.6-sol",
+    "translator_effort": "medium",
+    "reviewer": "claude-sonnet-5",
+    "reviewer_effort": "high",
+    "full_review_items": 183,
+    "correction_review_items": 17,
+    "final_metadata_review_items": 13,
+    "unresolved_findings": 0
+  },
+  "rendering": {
+    "studio": [
+      2560,
+      1920
+    ],
+    "recorded_pose_images": [
+      1920,
+      1080
+    ],
+    "detector_contact_sheet": [
+      1968,
+      2352
+    ],
+    "paired_video": [
+      1920,
+      540
+    ],
+    "training_video": [
+      1920,
+      1080
+    ],
+    "note": "Offline CAD poses and studio lighting are presentation; original physics recordings and fixed-model identities retained. Not a cinematic remake of all footage."
+  },
+  "local_checks": {
+    "pages": 27,
+    "local_links": 891,
+    "frozen_model_and_runtime_hashes": "passed",
+    "browser_page_layouts": 52,
+    "browser_errors": 0,
+    "diagram_coordinate_and_notation_checks": "passed"
+  }
+}

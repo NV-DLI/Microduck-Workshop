@@ -8,7 +8,7 @@
     "license": "CC BY-NC-SA 4.0",
     "xml_sha256": "ec9d2f731596cfc847a7fc3898ef8b5e67a548928abc23216537f1da8af2729c",
     "pose": "STAND",
-    "variant_note_zh": "原始 CAD 展示 Raspberry Pi Zero 2 W、Robot HAT 和 NP-F970 外形；不代表新版本电子器件的工程图。",
+    "variant_note_zh": "原始 CAD 展示的是 Raspberry Pi Zero 2 W、Robot HAT 和 NP-F970 的外形包络，并非新版电子器件的工程图。",
     "variant_note_en": "The source CAD depicts Raspberry Pi Zero 2 W, Robot HAT and NP-F970 envelopes; it is not an engineering drawing of newer electronics.",
     "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     "license_declaration": "https://github.com/pollen-robotics/microduck_rl/blob/develop/LICENSE-MODELS.md"
@@ -32,7 +32,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 左髋偏航",
       "label_en": "Thin-section ball bearing 22x16x4 - L hip yaw",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「左髋偏航」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于左髋偏航关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the left hip yaw joint axis.",
       "explode": [
         -0.065,
@@ -47,9 +47,9 @@
       "source_mesh": "seeed_bearing__configuration__22x16x4.stl"
     },
     {
-      "label_zh": "右侧躯干外壳",
+      "label_zh": "右躯干外壳",
       "label_en": "Right torso shell",
-      "description_zh": "躯干右半外壳，包覆髋偏航舵机与电池。",
+      "description_zh": "位于躯干右侧的半壳，与左壳对合并包覆髋偏航舵机和电池。",
       "description_en": "Right half of the torso cover enclosing the hip-yaw servos and battery.",
       "explode": [
         -0.065,
@@ -66,7 +66,7 @@
     {
       "label_zh": "香蕉插头板锁扣",
       "label_en": "Banana-connector PCB locker",
-      "description_zh": "躯干后上方的锁扣件（源名 Banana_PCB_locker）；被锁定的电路板本身不在源 CAD 中。",
+      "description_zh": "位于躯干后上方的电路板锁扣（源名 Banana_PCB_locker），用于固定相应电路板；该电路板本身未包含在源 CAD 中。",
       "description_en": "Retainer at the rear top of the torso (source name Banana_PCB_locker); the PCB it locks is not in the source CAD.",
       "explode": [
         -0.13,
@@ -83,7 +83,7 @@
     {
       "label_zh": "躯干底板",
       "label_en": "Trunk base plate",
-      "description_zh": "躯干主承力板，承载两侧髋偏航舵机、电池支架与左右外壳。",
+      "description_zh": "位于躯干底部的主承力板，用于安装两侧髋偏航舵机、电池支架和左右外壳。",
       "description_en": "Main load-bearing torso plate carrying both hip-yaw servos, the battery support and the side shells.",
       "explode": [
         -0.065,
@@ -100,7 +100,7 @@
     {
       "label_zh": "XL330 舵机 · 左髋偏航",
       "label_en": "Dynamixel XL330 servo - L hip yaw",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「左髋偏航」关节（left_hip_yaw）。",
+      "description_zh": "位于躯干左侧的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动左髋偏航关节（left_hip_yaw）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint left_hip_yaw (left hip yaw).",
       "explode": [
         -0.065,
@@ -118,7 +118,7 @@
     {
       "label_zh": "电池支架",
       "label_en": "Battery support bracket",
-      "description_zh": "固定于躯干底板后部，夹持 NP-F 系列电池。",
+      "description_zh": "固定在躯干底板后部的支架，用于承托并固定 NP-F 系列电池。",
       "description_en": "Bracket at the rear of the trunk plate that cradles the NP-F series battery pack.",
       "explode": [
         -0.11,
@@ -135,7 +135,7 @@
     {
       "label_zh": "NP-F 系列电池",
       "label_en": "NP-F series battery pack",
-      "description_zh": "原始 CAD 的 NP-F970 电池组件；其位置会影响整机重心。",
+      "description_zh": "位于躯干后部的 NP-F970 电池组件外形，来自原始 CAD；其安装位置会影响整机重心。",
       "description_en": "NP-F970 battery component in the source CAD; its position affects the center of mass.",
       "explode": [
         -0.155,
@@ -152,7 +152,7 @@
     {
       "label_zh": "XL330 舵机 · 右髋偏航",
       "label_en": "Dynamixel XL330 servo - R hip yaw",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「右髋偏航」关节（right_hip_yaw）。",
+      "description_zh": "位于躯干右侧的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动右髋偏航关节（right_hip_yaw）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint right_hip_yaw (right hip yaw).",
       "explode": [
         -0.065,
@@ -168,9 +168,9 @@
       "drives_joint": "right_hip_yaw"
     },
     {
-      "label_zh": "左侧躯干外壳",
+      "label_zh": "左躯干外壳",
       "label_en": "Left torso shell",
-      "description_zh": "躯干左半外壳，与右壳沿中面对合。",
+      "description_zh": "位于躯干左侧的半壳，与右壳沿中面对合，共同形成躯干外罩。",
       "description_en": "Left half of the torso cover; mates with the right shell on the mid-plane.",
       "explode": [
         -0.065,
@@ -187,7 +187,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 右髋偏航",
       "label_en": "Thin-section ball bearing 22x16x4 - R hip yaw",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「右髋偏航」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于右髋偏航关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the right hip yaw joint axis.",
       "explode": [
         -0.065,
@@ -204,7 +204,7 @@
     {
       "label_zh": "左髋偏航-滚转支架",
       "label_en": "Left hip yaw-to-roll bracket",
-      "description_zh": "连接髋偏航输出与髋滚转舵机的支架。",
+      "description_zh": "位于左髋偏航与滚转关节之间的支架，用于连接髋偏航输出端和髋滚转舵机。",
       "description_en": "Bracket joining the hip-yaw output to the hip-roll servo.",
       "explode": [
         0.0,
@@ -221,7 +221,7 @@
     {
       "label_zh": "XL330 舵机 · 左髋滚转",
       "label_en": "Dynamixel XL330 servo - L hip roll",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「左髋滚转」关节（left_hip_roll）。",
+      "description_zh": "位于左髋偏航-滚转支架上的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动左髋滚转关节（left_hip_roll）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint left_hip_roll (left hip roll).",
       "explode": [
         -0.04,
@@ -239,7 +239,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 左髋滚转",
       "label_en": "Thin-section ball bearing 22x16x4 - L hip roll",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「左髋滚转」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于左髋滚转关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the left hip roll joint axis.",
       "explode": [
         0.018,
@@ -256,7 +256,7 @@
     {
       "label_zh": "左髋滚转轴承板",
       "label_en": "Left hip-roll bearing plate",
-      "description_zh": "髋滚转关节非驱动侧的轴承安装板。",
+      "description_zh": "位于左髋滚转关节非驱动侧的安装板，用于固定该侧轴承。",
       "description_en": "Plate that seats the bearing on the idle side of the hip-roll joint.",
       "explode": [
         0.025,
@@ -273,7 +273,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 左髋俯仰",
       "label_en": "Thin-section ball bearing 22x16x4 - L hip pitch",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「左髋俯仰」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于左髋俯仰关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the left hip pitch joint axis.",
       "explode": [
         0.02,
@@ -290,7 +290,7 @@
     {
       "label_zh": "左髋滚转-俯仰支架",
       "label_en": "Left hip roll-to-pitch bracket",
-      "description_zh": "U 形支架，将髋滚转输出转接到髋俯仰轴。",
+      "description_zh": "位于左髋滚转与俯仰关节之间的 U 形支架，用于将髋滚转输出连接到髋俯仰轴。",
       "description_en": "U-bracket transferring the hip-roll output onto the hip-pitch axis.",
       "explode": [
         0.02,
@@ -307,7 +307,7 @@
     {
       "label_zh": "左大腿外壳",
       "label_en": "Left thigh shell",
-      "description_zh": "左大腿结构外壳，内含髋俯仰与膝关节舵机。",
+      "description_zh": "位于左侧髋部与膝部之间的结构外壳，用于容纳髋俯仰舵机和膝关节舵机。",
       "description_en": "Left thigh structural shell housing the hip-pitch and knee servos.",
       "explode": [
         0.0,
@@ -324,7 +324,7 @@
     {
       "label_zh": "XL330 舵机 · 左膝",
       "label_en": "Dynamixel XL330 servo - L knee",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「左膝」关节（left_knee）。",
+      "description_zh": "位于左大腿内的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动左膝关节（left_knee）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint left_knee (left knee).",
       "explode": [
         0.0,
@@ -342,7 +342,7 @@
     {
       "label_zh": "左大腿加强板",
       "label_en": "Left thigh rigidity plate",
-      "description_zh": "大腿内侧的加强板，与外壳夹持两颗舵机。",
+      "description_zh": "位于左大腿内侧的加强板，与外壳配合夹持髋俯仰和膝关节两颗舵机。",
       "description_en": "Inner stiffening plate that clamps the two thigh servos against the shell.",
       "explode": [
         0.0,
@@ -359,7 +359,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 左膝",
       "label_en": "Thin-section ball bearing 22x16x4 - L knee",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「左膝」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于左膝关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the left knee joint axis.",
       "explode": [
         -0.0,
@@ -376,7 +376,7 @@
     {
       "label_zh": "XL330 舵机 · 左髋俯仰",
       "label_en": "Dynamixel XL330 servo - L hip pitch",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「左髋俯仰」关节（left_hip_pitch）。",
+      "description_zh": "位于左大腿上部的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动左髋俯仰关节（left_hip_pitch）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint left_hip_pitch (left hip pitch).",
       "explode": [
         0.0,
@@ -394,7 +394,7 @@
     {
       "label_zh": "左小腿支架",
       "label_en": "Left shank bracket",
-      "description_zh": "小腿主结构，连接膝关节输出与踝关节舵机。",
+      "description_zh": "位于左膝与踝部之间的小腿主支架，用于连接膝关节输出端和踝关节舵机。",
       "description_en": "Main shank member linking the knee output to the ankle servo.",
       "explode": [
         0.0,
@@ -411,7 +411,7 @@
     {
       "label_zh": "XL330 舵机 · 左踝",
       "label_en": "Dynamixel XL330 servo - L ankle",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「左踝」关节（left_ankle）。",
+      "description_zh": "位于左小腿下端的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动左踝关节（left_ankle）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint left_ankle (left ankle).",
       "explode": [
         0.0,
@@ -429,7 +429,7 @@
     {
       "label_zh": "左脚底垫",
       "label_en": "Left sole pad",
-      "description_zh": "左脚接地底垫（MJCF 中亦用作左脚接触几何）。",
+      "description_zh": "位于左脚底部的接地垫，用于接触地面；在 MJCF 中也作为左脚的接触几何体。",
       "description_en": "Left ground-contact sole pad (also the left foot contact geom in the MJCF).",
       "explode": [
         0.0,
@@ -446,7 +446,7 @@
     {
       "label_zh": "左鸭掌",
       "label_en": "Left duck foot",
-      "description_zh": "左脚掌主体，橙色鸭掌造型。",
+      "description_zh": "位于左踝下方的脚掌主体，构成橙色鸭掌外形并承接脚底垫。",
       "description_en": "Left foot body with the orange webbed duck-foot form.",
       "explode": [
         0.0,
@@ -463,7 +463,7 @@
     {
       "label_zh": "小型球轴承 · 左踝",
       "label_en": "Small ball bearing - L ankle",
-      "description_zh": "Seeed 球轴承（源默认配置，外径约 15 mm）。位于「左踝」关节轴线上。",
+      "description_zh": "Seeed 球轴承（源默认配置，外径约 15 mm），位于左踝关节轴线上，用于支撑踝部转轴。",
       "description_en": "Seeed ball bearing (source default configuration, about 15 mm OD). Sits on the left ankle joint axis.",
       "explode": [
         -0.0,
@@ -480,7 +480,7 @@
     {
       "label_zh": "左踝外壳",
       "label_en": "Left ankle housing",
-      "description_zh": "左脚上方的踝部外壳，连接踝关节舵机输出。",
+      "description_zh": "位于左脚上方的踝部外壳，与踝关节舵机输出端连接，用于带动脚部运动。",
       "description_en": "Left ankle housing above the foot, driven by the ankle servo.",
       "explode": [
         0.0,
@@ -497,7 +497,7 @@
     {
       "label_zh": "颈部侧板",
       "label_en": "Neck side plate",
-      "description_zh": "两块平行侧板之一，夹持颈部俯仰与头部俯仰两颗舵机。",
+      "description_zh": "位于颈部一侧，是两块平行侧板之一；与另一块侧板共同夹持颈部俯仰和头部俯仰舵机。",
       "description_en": "One of two parallel side plates holding the neck-pitch and head-pitch servos.",
       "explode": [
         0.0,
@@ -514,7 +514,7 @@
     {
       "label_zh": "XL330 舵机 · 颈部俯仰",
       "label_en": "Dynamixel XL330 servo - neck pitch",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「颈部俯仰」关节（neck_pitch）。",
+      "description_zh": "安装在颈部侧板之间的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动颈部俯仰关节（neck_pitch）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint neck_pitch (neck pitch).",
       "explode": [
         0.0,
@@ -532,7 +532,7 @@
     {
       "label_zh": "XL330 舵机 · 头部俯仰",
       "label_en": "Dynamixel XL330 servo - head pitch",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「头部俯仰」关节（head_pitch）。",
+      "description_zh": "安装在颈部侧板之间的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动头部俯仰关节（head_pitch）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint head_pitch (head pitch).",
       "explode": [
         0.0,
@@ -550,7 +550,7 @@
     {
       "label_zh": "颈部侧板",
       "label_en": "Neck side plate",
-      "description_zh": "两块平行侧板之一，夹持颈部俯仰与头部俯仰两颗舵机。",
+      "description_zh": "位于颈部另一侧，是两块平行侧板之一；与另一块侧板共同夹持颈部俯仰和头部俯仰舵机。",
       "description_en": "One of two parallel side plates holding the neck-pitch and head-pitch servos.",
       "explode": [
         0.0,
@@ -567,7 +567,7 @@
     {
       "label_zh": "头部俯仰支架",
       "label_en": "Head-pitch bracket",
-      "description_zh": "头部俯仰关节输出支架，上方承接头部偏航轴承。",
+      "description_zh": "位于头部俯仰关节输出端的支架，用于在上方安装头部偏航轴承并承接头部组件。",
       "description_en": "Output bracket of the head-pitch joint; seats the head-yaw bearing above.",
       "explode": [
         0.035,
@@ -584,7 +584,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 头部偏航",
       "label_en": "Thin-section ball bearing 22x16x4 - head yaw",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「头部偏航」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于头部偏航关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the head yaw joint axis.",
       "explode": [
         0.035,
@@ -601,7 +601,7 @@
     {
       "label_zh": "头部偏航-滚转支架",
       "label_en": "Head yaw-to-roll bracket",
-      "description_zh": "承载头部偏航舵机并提供头部滚转轴的支架。",
+      "description_zh": "位于头部俯仰支架上方的转接支架，用于安装头部偏航舵机并形成头部滚转轴。",
       "description_en": "Bracket carrying the head-yaw servo and providing the head-roll axis.",
       "explode": [
         0.035,
@@ -618,7 +618,7 @@
     {
       "label_zh": "XL330 舵机 · 头部偏航",
       "label_en": "Dynamixel XL330 servo - head yaw",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「头部偏航」关节（head_yaw）。",
+      "description_zh": "安装在头部偏航-滚转支架上的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动头部偏航关节（head_yaw）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint head_yaw (head yaw).",
       "explode": [
         0.035,
@@ -636,7 +636,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 头部滚转",
       "label_en": "Thin-section ball bearing 22x16x4 - head roll",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「头部滚转」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于头部滚转关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the head roll joint axis.",
       "explode": [
         0.017,
@@ -653,7 +653,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 头部滚转",
       "label_en": "Thin-section ball bearing 22x16x4 - head roll",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「头部滚转」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于头部滚转关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the head roll joint axis.",
       "explode": [
         0.043,
@@ -670,7 +670,7 @@
     {
       "label_zh": "M12 镜头",
       "label_en": "M12 camera lens",
-      "description_zh": "头部相机的 M12 螺纹镜头。",
+      "description_zh": "安装在头部正面的 M12 螺纹相机镜头，用于形成相机的光学成像通道。",
       "description_en": "M12-thread lens of the head camera.",
       "explode": [
         0.24,
@@ -687,7 +687,7 @@
     {
       "label_zh": "面部框架",
       "label_en": "Face frame",
-      "description_zh": "头部前方面板，定位相机镜头与眼圈。",
+      "description_zh": "位于头部正面的框架面板，用于定位相机镜头和镜头眼圈。",
       "description_en": "Front face panel that locates the camera lens and eye ring.",
       "explode": [
         0.217,
@@ -704,7 +704,7 @@
     {
       "label_zh": "XL330 舵机 · 喙部开合",
       "label_en": "Dynamixel XL330 servo - beak open/close",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件为喙部开合舵机；源 MJCF 未建模喙部关节，下喙固定在头部刚体上。",
+      "description_zh": "安装在头部内部的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于喙部开合；源 MJCF 未建模喙部关节，因此下喙固定在头部刚体上。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Beak open/close servo; the source MJCF has no beak joint, so the jaw is fixed to the head body.",
       "explode": [
         0.125,
@@ -722,7 +722,7 @@
     {
       "label_zh": "下喙软垫",
       "label_en": "Soft lower-beak pad",
-      "description_zh": "下喙前端的柔性垫片。",
+      "description_zh": "位于下喙前端的柔性垫片，用于覆盖下喙的前缘。",
       "description_en": "Flexible pad on the front of the lower beak.",
       "explode": [
         0.195,
@@ -739,7 +739,7 @@
     {
       "label_zh": "头部舵机支架",
       "label_en": "Head motor support",
-      "description_zh": "头部内部骨架，安装头部滚转舵机与喙部舵机。",
+      "description_zh": "位于头部内部的支撑骨架，用于安装头部滚转舵机和喙部舵机。",
       "description_en": "Internal head frame mounting the head-roll servo and the beak servo.",
       "explode": [
         0.125,
@@ -756,7 +756,7 @@
     {
       "label_zh": "头部上壳",
       "label_en": "Upper head shell",
-      "description_zh": "头顶外壳，白色鸭头造型。",
+      "description_zh": "位于头部上方的米白色外壳，与下壳对合并形成鸭头上半部外形。",
       "description_en": "Upper head cover giving the off-white duck head form.",
       "explode": [
         0.125,
@@ -773,7 +773,7 @@
     {
       "label_zh": "XL330 舵机 · 头部滚转",
       "label_en": "Dynamixel XL330 servo - head roll",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「头部滚转」关节（head_roll）。",
+      "description_zh": "安装在头部内部支架上的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动头部滚转关节（head_roll）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint head_roll (head roll).",
       "explode": [
         0.125,
@@ -791,7 +791,7 @@
     {
       "label_zh": "小型球轴承 · 喙部转轴",
       "label_en": "Small ball bearing - beak pivot",
-      "description_zh": "Seeed 球轴承（源默认配置，外径约 15 mm）。与喙部舵机输出轴同轴，为下喙转轴另一侧的支撑。",
+      "description_zh": "Seeed 球轴承（源默认配置，外径约 15 mm），与喙部舵机输出轴同轴，位于下喙转轴另一侧并为其提供支撑。",
       "description_en": "Seeed ball bearing (source default configuration, about 15 mm OD). Coaxial with the beak servo shaft; supports the far side of the jaw pivot.",
       "explode": [
         0.125,
@@ -806,9 +806,9 @@
       "source_mesh": "seeed_bearing__configuration_default.stl"
     },
     {
-      "label_zh": "树莓派扩展板",
+      "label_zh": "树莓派 Robot HAT 扩展板",
       "label_en": "Raspberry Pi robot HAT PCB",
-      "description_zh": "原始 CAD 的机器人扩展电路板，用于理解电子组件的安装空间。",
+      "description_zh": "位于头部内部的 Robot HAT 扩展板外形，来自原始 CAD，用于表示该电子组件的安装空间。",
       "description_en": "Robot expansion circuit board from the source CAD, showing the electronics mounting envelope.",
       "explode": [
         0.15,
@@ -825,7 +825,7 @@
     {
       "label_zh": "上喙软垫",
       "label_en": "Soft upper-beak pad",
-      "description_zh": "上喙前端的柔性垫片。",
+      "description_zh": "位于上喙前端的柔性垫片，用于覆盖上喙的前缘。",
       "description_en": "Flexible pad on the front of the upper beak.",
       "explode": [
         0.195,
@@ -842,7 +842,7 @@
     {
       "label_zh": "镜头眼圈",
       "label_en": "Lens eye ring",
-      "description_zh": "与 M12 镜头同轴的面部饰圈（源名 noenoeil，功能由位置推断）。",
+      "description_zh": "位于头部正面、与 M12 镜头同轴的饰圈（源名 noenoeil）；其装饰作用依据安装位置推断。",
       "description_en": "Face ring concentric with the M12 lens (source name noenoeil; role inferred from its position).",
       "explode": [
         0.26,
@@ -859,7 +859,7 @@
     {
       "label_zh": "下颌（下喙）",
       "label_en": "Jaw (lower beak)",
-      "description_zh": "由喙部舵机驱动的下喙刚性件；源 MJCF 将其并入 jaw_soft 刚体，无独立关节。",
+      "description_zh": "位于头部前下方的下喙刚性件，由喙部舵机带动；源 MJCF 将其并入 jaw_soft 刚体，未设置独立关节。",
       "description_en": "Rigid lower beak driven by the beak servo; the source MJCF merges it into the jaw_soft body without a joint.",
       "explode": [
         0.16,
@@ -876,7 +876,7 @@
     {
       "label_zh": "头部下壳",
       "label_en": "Lower head shell",
-      "description_zh": "头部下半外壳，橙色，与上壳对合。",
+      "description_zh": "位于头部下方的橙色外壳，与上壳对合并形成头部下半部外形。",
       "description_en": "Orange lower half of the head cover; mates with the upper shell.",
       "explode": [
         0.125,
@@ -893,7 +893,7 @@
     {
       "label_zh": "M12 镜头座",
       "label_en": "M12 lens holder",
-      "description_zh": "安装 M12 镜头的镜头座。",
+      "description_zh": "位于头部正面、相机镜头后方的安装座，用于固定 M12 镜头。",
       "description_en": "Mount that holds the M12 lens.",
       "explode": [
         0.193,
@@ -908,9 +908,9 @@
       "source_mesh": "m12_lens_holder.stl"
     },
     {
-      "label_zh": "树莓派 Zero 2 W",
+      "label_zh": "Raspberry Pi Zero 2 W",
       "label_en": "Raspberry Pi Zero 2 W",
-      "description_zh": "原始 CAD 中的 Raspberry Pi Zero 2 W 计算板外形，不代表运行课程的工作站。",
+      "description_zh": "位于头部内部的 Raspberry Pi Zero 2 W 计算板外形，来自原始 CAD；它不代表运行本课程的工作站。",
       "description_en": "Raspberry Pi Zero 2 W compute-board envelope in the source CAD, not the workstation running this course.",
       "explode": [
         0.17,
@@ -927,7 +927,7 @@
     {
       "label_zh": "扬声器",
       "label_en": "Speaker",
-      "description_zh": "原始 CAD 用简化外形表示扬声器安装空间。",
+      "description_zh": "位于头部内部的扬声器简化外形，来自原始 CAD，用于表示扬声器的安装空间。",
       "description_en": "The source CAD uses a simplified envelope for the speaker mounting space.",
       "explode": [
         0.125,
@@ -944,7 +944,7 @@
     {
       "label_zh": "右髋偏航-滚转支架",
       "label_en": "Right hip yaw-to-roll bracket",
-      "description_zh": "连接髋偏航输出与髋滚转舵机的支架。",
+      "description_zh": "位于右髋偏航与滚转关节之间的支架，用于连接髋偏航输出端和髋滚转舵机。",
       "description_en": "Bracket joining the hip-yaw output to the hip-roll servo.",
       "explode": [
         0.0,
@@ -961,7 +961,7 @@
     {
       "label_zh": "XL330 舵机 · 右髋滚转",
       "label_en": "Dynamixel XL330 servo - R hip roll",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「右髋滚转」关节（right_hip_roll）。",
+      "description_zh": "位于右髋偏航-滚转支架上的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动右髋滚转关节（right_hip_roll）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint right_hip_roll (right hip roll).",
       "explode": [
         -0.04,
@@ -979,7 +979,7 @@
     {
       "label_zh": "右髋滚转轴承板",
       "label_en": "Right hip-roll bearing plate",
-      "description_zh": "髋滚转关节非驱动侧的轴承安装板。",
+      "description_zh": "位于右髋滚转关节非驱动侧的安装板，用于固定该侧轴承。",
       "description_en": "Plate that seats the bearing on the idle side of the hip-roll joint.",
       "explode": [
         0.025,
@@ -996,7 +996,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 右髋滚转",
       "label_en": "Thin-section ball bearing 22x16x4 - R hip roll",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「右髋滚转」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于右髋滚转关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the right hip roll joint axis.",
       "explode": [
         0.018,
@@ -1013,7 +1013,7 @@
     {
       "label_zh": "右髋滚转-俯仰支架",
       "label_en": "Right hip roll-to-pitch bracket",
-      "description_zh": "U 形支架，将髋滚转输出转接到髋俯仰轴。",
+      "description_zh": "位于右髋滚转与俯仰关节之间的 U 形支架，用于将髋滚转输出连接到髋俯仰轴。",
       "description_en": "U-bracket transferring the hip-roll output onto the hip-pitch axis.",
       "explode": [
         0.02,
@@ -1030,7 +1030,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 右髋俯仰",
       "label_en": "Thin-section ball bearing 22x16x4 - R hip pitch",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「右髋俯仰」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于右髋俯仰关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the right hip pitch joint axis.",
       "explode": [
         0.02,
@@ -1047,7 +1047,7 @@
     {
       "label_zh": "XL330 舵机 · 右膝",
       "label_en": "Dynamixel XL330 servo - R knee",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「右膝」关节（right_knee）。",
+      "description_zh": "位于右大腿内的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动右膝关节（right_knee）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint right_knee (right knee).",
       "explode": [
         -0.0,
@@ -1065,7 +1065,7 @@
     {
       "label_zh": "薄壁球轴承 22×16×4 · 右膝",
       "label_en": "Thin-section ball bearing 22x16x4 - R knee",
-      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），为关节的非驱动侧提供支撑。位于「右膝」关节轴线上。",
+      "description_zh": "Seeed 薄壁球轴承（源配置 22x16x4），位于右膝关节轴线上，用于支撑关节的非驱动侧。",
       "description_en": "Seeed thin-section ball bearing (source configuration 22x16x4) supporting the idle side of a joint. Sits on the right knee joint axis.",
       "explode": [
         0.0,
@@ -1082,7 +1082,7 @@
     {
       "label_zh": "右大腿加强板",
       "label_en": "Right thigh rigidity plate",
-      "description_zh": "大腿内侧的加强板，与外壳夹持两颗舵机。",
+      "description_zh": "位于右大腿内侧的加强板，与外壳配合夹持髋俯仰和膝关节两颗舵机。",
       "description_en": "Inner stiffening plate that clamps the two thigh servos against the shell.",
       "explode": [
         0.0,
@@ -1099,7 +1099,7 @@
     {
       "label_zh": "右大腿外壳",
       "label_en": "Right thigh shell",
-      "description_zh": "右大腿结构外壳，内含髋俯仰与膝关节舵机。",
+      "description_zh": "位于右侧髋部与膝部之间的结构外壳，用于容纳髋俯仰舵机和膝关节舵机。",
       "description_en": "Right thigh structural shell housing the hip-pitch and knee servos.",
       "explode": [
         0.0,
@@ -1116,7 +1116,7 @@
     {
       "label_zh": "XL330 舵机 · 右髋俯仰",
       "label_en": "Dynamixel XL330 servo - R hip pitch",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「右髋俯仰」关节（right_hip_pitch）。",
+      "description_zh": "位于右大腿上部的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动右髋俯仰关节（right_hip_pitch）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint right_hip_pitch (right hip pitch).",
       "explode": [
         -0.0,
@@ -1134,7 +1134,7 @@
     {
       "label_zh": "XL330 舵机 · 右踝",
       "label_en": "Dynamixel XL330 servo - R ankle",
-      "description_zh": "ROBOTIS Dynamixel XL330 智能舵机，输出轴为零件局部 +X 方向。本件驱动「右踝」关节（right_ankle）。",
+      "description_zh": "位于右小腿下端的 ROBOTIS Dynamixel XL330 智能舵机，输出轴沿零件局部 +X 方向，用于驱动右踝关节（right_ankle）。",
       "description_en": "ROBOTIS Dynamixel XL330 smart servo; its output shaft lies on the part's local +X axis. Drives joint right_ankle (right ankle).",
       "explode": [
         0.0,
@@ -1152,7 +1152,7 @@
     {
       "label_zh": "右小腿支架",
       "label_en": "Right shank bracket",
-      "description_zh": "小腿主结构，连接膝关节输出与踝关节舵机。",
+      "description_zh": "位于右膝与踝部之间的小腿主支架，用于连接膝关节输出端和踝关节舵机。",
       "description_en": "Main shank member linking the knee output to the ankle servo.",
       "explode": [
         0.0,
@@ -1169,7 +1169,7 @@
     {
       "label_zh": "右踝外壳",
       "label_en": "Right ankle housing",
-      "description_zh": "右脚上方的踝部外壳，连接踝关节舵机输出。",
+      "description_zh": "位于右脚上方的踝部外壳，与踝关节舵机输出端连接，用于带动脚部运动。",
       "description_en": "Right ankle housing above the foot, driven by the ankle servo.",
       "explode": [
         0.0,
@@ -1186,7 +1186,7 @@
     {
       "label_zh": "右脚底垫",
       "label_en": "Right sole pad",
-      "description_zh": "右脚接地底垫（MJCF 中亦用作右脚接触几何）。",
+      "description_zh": "位于右脚底部的接地垫，用于接触地面；在 MJCF 中也作为右脚的接触几何体。",
       "description_en": "Right ground-contact sole pad (also the right foot contact geom in the MJCF).",
       "explode": [
         0.0,
@@ -1203,7 +1203,7 @@
     {
       "label_zh": "小型球轴承 · 右踝",
       "label_en": "Small ball bearing - R ankle",
-      "description_zh": "Seeed 球轴承（源默认配置，外径约 15 mm）。位于「右踝」关节轴线上。",
+      "description_zh": "Seeed 球轴承（源默认配置，外径约 15 mm），位于右踝关节轴线上，用于支撑踝部转轴。",
       "description_en": "Seeed ball bearing (source default configuration, about 15 mm OD). Sits on the right ankle joint axis.",
       "explode": [
         0.0,
@@ -1220,7 +1220,7 @@
     {
       "label_zh": "右鸭掌",
       "label_en": "Right duck foot",
-      "description_zh": "右脚掌主体，橙色鸭掌造型。",
+      "description_zh": "位于右踝下方的脚掌主体，构成橙色鸭掌外形并承接脚底垫。",
       "description_en": "Right foot body with the orange webbed duck-foot form.",
       "explode": [
         0.0,

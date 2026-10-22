@@ -13,3 +13,13 @@ Fixed models in `models/` are the downstream default. Training is a separate pra
 Blender component assets retain CAD provenance and licensing. Check assembly and explosion renders from the same camera; validate mesh identities, transforms and browser selection. Do not claim electronic components from one hardware revision represent another revision.
 
 Build with `python3 scripts/build_site.py`. Run `python3 scripts/check_course.py` for links, command references, bilingual topology and fixed-model identities. Inspect desktop and mobile pages, copy controls, quiz feedback, local search, language links, media loading, and the actual 3D viewer in a browser before publication. Check the deployed revision after publishing; a local build is not evidence of remote publication.
+
+## Chinese teaching refinement
+
+Prioritize the Chinese edition until the user approves additional languages. Follow the invoked DLI localization methodology: protect code, URLs and mathematical notation; review every learner-visible Chinese segment contextually; use an independent reviewer and retain coverage records outside the student site.
+
+For each theory/practice unit connect the task, motivation, method, equations, actual core implementation, data generation, measured timing and verification. Distinguish pseudocode from executable snippets. Read actual pinned configuration and measured outputs instead of inventing results. Use local KaTeX and accessible responsive vector diagrams; make interactive illustrations state what they do and do not represent.
+
+Do not include completion markers or learner progress. Use a universal language menu, native seekable video controls for long clips, and a static expandable contact sheet for detection examples. Anatomy uses a darker 3D stage with direct clickable labels and a single reset; no redundant selection dropdown or anatomy movie. Preserve the authored Chinese component metadata when rebuilding geometry.
+
+High-resolution studio or trajectory re-renders must identify presentation changes and retain source pose/data provenance. Never present an offline render as a fresh simulation or as proof of success. Keep original recordings and all model identities unchanged.

@@ -15,7 +15,7 @@ python3 -m http.server 8080 --directory web --bind 127.0.0.1
 
 Open http://127.0.0.1:8080/zh/index.html or `/en/index.html`. Reading, demonstrations, search, and the Blender-derived interactive assembly work without installing Isaac Sim. Serve the folder over HTTP; browser module loading may not work through `file://`.
 
-The seven chapters cover anatomy, simulation, reinforcement learning, skill composition, perception, navigation, and autonomous football. Each lesson explains concepts, provides terminal commands and parameters, describes expected outputs, and includes self-checks.
+The seven chapters cover anatomy, simulation, reinforcement learning, skill composition, perception, navigation, and autonomous football. Each lesson explains concepts, provides terminal commands and parameters, describes expected outputs, and includes self-checks. The expanded Chinese edition adds locally rendered equations, interactive theory diagrams, real training curves, seekable demonstration videos, and clickable part labels. No completion tracking is required. Additional languages are deferred until the Chinese edition is approved.
 
 ## Run the labs
 
@@ -38,8 +38,8 @@ The retained full-task combination scored **9/10** in its recorded independent e
 
 | Directory | Contents |
 |---|---|
-| `content/` | Shared bilingual lesson source |
-| `web/` | Static HTML, local JavaScript, GIFs and 3D assets |
+| `content/` | Bilingual base lessons and Chinese teaching-depth sections |
+| `web/` | Static HTML, local JavaScript, images, seekable videos and 3D assets |
 | `scripts/` | Course builder and terminal lab entry points |
 | `lab/` | Pinned runtime templates, environment locks and lab code |
 | `models/` | Fixed policies and detector, with SHA-256 manifest |

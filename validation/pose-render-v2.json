@@ -1,0 +1,119 @@
+{
+  "source_trace_sha256": "b659ff84fe5475c61eab08319b971bbb9c9adba4576dd99bded93d2acb1c3047",
+  "model_updates": 0,
+  "physics_steps": 0,
+  "frames": [
+    {
+      "frame": 1,
+      "timestamp_s": 15.84,
+      "task_time_s": 13.5,
+      "root_position_world_m": [
+        -0.05687218904495239,
+        0.04924359917640686,
+        0.11601612716913223
+      ],
+      "root_quaternion_xyzw": [
+        0.000940319849178195,
+        -0.002610910451039672,
+        -0.01651952788233757,
+        0.9998597502708435
+      ],
+      "effective_joint_positions_rad": {
+        "left_hip_yaw": -0.001079753041267395,
+        "left_hip_roll": -0.0854998268187046,
+        "left_hip_pitch": -0.43914711102843285,
+        "left_knee": 0.021451717242598534,
+        "left_ankle": 0.48912288621068,
+        "neck_pitch": 0.20944868586957455,
+        "head_pitch": 0.4582268036901951,
+        "head_yaw": -0.0496048170607537,
+        "head_roll": -0.005621453747153282,
+        "right_hip_yaw": -0.021840562112629414,
+        "right_hip_roll": 0.08734488673508167,
+        "right_hip_pitch": 0.4080663025379181,
+        "right_knee": -0.040653202682733536,
+        "right_ankle": -0.45419321209192276
+      },
+      "ball_position_world_m": [
+        0.03282046690583229,
+        0.005582163576036692,
+        0.034632813185453415
+      ]
+    },
+    {
+      "frame": 2,
+      "timestamp_s": 16.06,
+      "task_time_s": 13.719999999999999,
+      "root_position_world_m": [
+        -0.04363761842250824,
+        0.051250722259283066,
+        0.12202969193458557
+      ],
+      "root_quaternion_xyzw": [
+        -0.05708683654665947,
+        -0.00019378046272322536,
+        0.004136133939027786,
+        0.9983606934547424
+      ],
+      "effective_joint_positions_rad": {
+        "left_hip_yaw": -0.0790344811975956,
+        "left_hip_roll": 0.027482300996780396,
+        "left_hip_pitch": -0.4548202957957983,
+        "left_knee": -0.28218661062419415,
+        "left_ankle": 0.16342609375715256,
+        "neck_pitch": 0.5136594013310969,
+        "head_pitch": 0.3068372532725334,
+        "head_yaw": -0.39937105402350426,
+        "head_roll": -0.00951281189918518,
+        "right_hip_yaw": 0.05035764048807323,
+        "right_hip_roll": 0.1940244371071458,
+        "right_hip_pitch": 0.460259098559618,
+        "right_knee": -0.16952515952289104,
+        "right_ankle": -0.8016624427400529
+      },
+      "ball_position_world_m": [
+        0.03282046690583229,
+        0.005582163576036692,
+        0.034632813185453415
+      ]
+    },
+    {
+      "frame": 3,
+      "timestamp_s": 19.945,
+      "task_time_s": 17.605,
+      "root_position_world_m": [
+        -0.061379771679639816,
+        0.011030294001102448,
+        0.11617231369018555
+      ],
+      "root_quaternion_xyzw": [
+        0.004225068259984255,
+        -0.0013845916837453842,
+        -0.23054029047489166,
+        0.9730527400970459
+      ],
+      "effective_joint_positions_rad": {
+        "left_hip_yaw": -0.010589153040200472,
+        "left_hip_roll": -0.08283328264951706,
+        "left_hip_pitch": -0.47440094128251076,
+        "left_knee": 0.00806050468236208,
+        "left_ankle": 0.5034634508192539,
+        "neck_pitch": 0.2930075731128454,
+        "head_pitch": 0.5422374848276377,
+        "head_yaw": 0.09838814102113247,
+        "head_roll": -0.07602829858660698,
+        "right_hip_yaw": -0.030168681405484676,
+        "right_hip_roll": 0.06499026715755463,
+        "right_hip_pitch": 0.4232791708782315,
+        "right_knee": -0.02046298934146762,
+        "right_ankle": -0.4428751803934574
+      },
+      "ball_position_world_m": [
+        3.997629404067993,
+        -0.07908067107200623,
+        0.03463289886713028
+      ]
+    }
+  ],
+  "scope": "Offline CAD rendering of recorded root, effective joint and ball poses; materials, lighting and visible goal posts are presentation, not another physical trial"
+}
