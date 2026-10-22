@@ -6,7 +6,7 @@
       "en": "Teach Microduck to score a goal"
     },
     "summary": {
-      "zh": "从看懂一台双足机器人开始，用仿真、强化学习和视觉感知，把“看到足球”变成一次完整的自主行动。",
+      "zh": "围绕 NVIDIA Isaac 机器人工作流，从场景与传感器仿真、GPU 并行训练到完整任务验证，把“看到足球”变成一次可复核的自主射门。",
       "en": "Start with a small biped. Use simulation, reinforcement learning, and visual perception to turn seeing a football into a complete autonomous action."
     },
     "meta": {
@@ -28,7 +28,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "最终场景中只有一台 Microduck、一个足球和一个球门。机器人要先找到球、判断球门方向，再走到合适的出脚位置完成踢球，并恢复稳定站姿。课程将逐步说明各环节的职责及其衔接方式。",
+            "zh": "最终场景中只有一台 Microduck、一个足球和一个球门。机器人要先找到球、判断球门方向，再走到合适的出脚位置完成踢球，并恢复稳定站姿。课程以 NVIDIA Isaac 生态的完整工作流组织这些环节：Isaac Lab 定义任务、观测、动作与并行环境，Newton 推进接触丰富的物理状态，Isaac Sim 提供可视化、RTX 相机与场景验证。您会看到每项工具解决的具体问题，也会学习如何用记录与评测判断整条链路。",
             "en": "The final scene contains one Microduck, one football, and one goal. The robot must find the ball, locate the goal, approach a useful kicking position, make contact, and recover its stance. You will learn what each part of this system does and how the parts work together."
           },
           {
@@ -70,9 +70,9 @@
             "type": "list",
             "zh": [
               "说明关节、执行器、观测、动作和奖励之间的关系。",
-              "启动 Newton / Isaac Lab 仿真，加载固定策略并观察机器人行为。",
-              "运行一次有预算限制的训练练习，找到检查点并解释训练曲线。",
-              "把相机检测、ToF 距离和身体姿态联系起来，解释自主射门的状态切换。",
+              "说明 Isaac Lab 3 如何分离物理、渲染与可视化，并在课程的 Newton / Isaac Sim 组合中加载固定策略。",
+              "利用 Isaac Lab 的并行环境运行一次有预算限制的 GPU 并行训练练习，找到检查点并解释训练曲线。",
+              "把 Isaac Sim 相机、ToF 距离和身体姿态联系起来，解释感知信息如何驱动自主射门的状态切换。",
               "记录完整任务的成功与失败，区分模型指标和任务指标。"
             ],
             "en": [
@@ -488,6 +488,13 @@
         "blocks": [
           {
             "type": "p",
+            "languages": [
+              "zh"
+            ],
+            "zh": "在 Isaac Sim 中，机器人模型不仅包含外观，还定义关节、碰撞几何和质量属性。先认识 Microduck 的机械结构，后续才能把关节名称、动作向量与仿真中的运动对应起来。Isaac Lab 会在此基础上组织观测、动作和训练任务。"
+          },
+          {
+            "type": "p",
             "zh": "Microduck 是一台小型双足机器人：双腿承担支撑与移动，颈部机构负责调整视线，机身则容纳计算、电源和连接部件。视觉网格用于呈现外观，关节与碰撞模型用于规定可发生的运动和接触，二者在仿真中承担不同职责。",
             "en": "Microduck is a small biped. Its legs support and move the body, the neck directs its view, and the trunk houses computing, power, and connections. Visual meshes describe appearance. Joints and collision geometry describe permitted motion and contact. These play different roles in simulation."
           },
@@ -739,11 +746,11 @@
   {
     "id": "02-simulation",
     "title": {
-      "zh": "启动第一次仿真",
+      "zh": "用 Isaac Sim 观察机器人仿真",
       "en": "Run your first simulation"
     },
     "summary": {
-      "zh": "用课程固定行走模型连接观测、动作和物理，先观察稳定的控制循环。",
+      "zh": "在 Isaac Lab 3 中用 Newton 推进物理、用 Isaac Sim 显示场景，把固定行走模型接入可观察的控制闭环。",
       "en": "Connect observations, actions, and physics using the fixed walking model."
     },
     "meta": {
@@ -776,7 +783,7 @@
           },
           {
             "type": "p",
-            "zh": "请先完成环境准备和模型校验，再在 GPU 机器的桌面环境中打开终端并进入 <code>Microduck-Workshop</code>。本章不进行模型训练，重点是理解一次运行的输入、输出及可观察行为。",
+            "zh": "请先完成环境准备和模型校验，再在 GPU 机器的桌面环境中打开终端并进入 <code>Microduck-Workshop</code>。Isaac Lab 3 将物理、渲染和可视化分开配置；Newton 本身支持不启动 Isaac Sim 的轻量路径，但本章命令会显式启动 Isaac Sim 6.2，以便在窗口中观察机器人和场景。本章不训练模型，重点是理解这条已固定执行路径的输入、输出与行为。",
             "en": "Complete setup and model verification. Open a desktop terminal on the GPU machine and enter <code>Microduck-Workshop</code>. This chapter loads an existing model and focuses on a run’s inputs, outputs, and visible behavior."
           }
         ]
@@ -993,7 +1000,7 @@
           },
           {
             "type": "p",
-            "zh": "实验先保持两秒零速度指令，然后施加设定的速度。运行结束后，<code>report.json</code> 给出实际仿真时长、模型标识和是否摔倒；<code>trajectory.json</code> 按时间记录位置和实际速度。若机器人摔倒，实验会提前结束，不会自动重置后继续累计“成功时间”。这只是单机器人在标称条件下的观察实验，不能替代第七章包含感知和恢复的完整任务评测。",
+            "zh": "实验先保持两秒零速度指令，然后施加设定的速度。Isaac Lab 的观测管理器生成策略输入，动作管理器把 14 维输出转换为关节目标，Newton 再处理执行器、重力与足地接触。运行结束后，<code>report.json</code> 给出实际仿真时长、模型标识和是否摔倒；<code>trajectory.json</code> 按时间记录位置和实际速度。若机器人摔倒，实验会提前结束，不会自动重置后继续累计“成功时间”。这只是单机器人在标称条件下的观察实验，不能替代第七章包含感知和恢复的完整任务评测。",
             "en": "The lab holds a zero velocity command for two seconds, then applies your command. After the run, <code>report.json</code> records elapsed simulation time, model identity, and whether a fall occurred. <code>trajectory.json</code> records positions and measured velocities over time. A fall ends the run instead of silently resetting it. This nominal single-robot observation does not replace the full perception-and-recovery task in Chapter 7."
           },
           {
@@ -1026,11 +1033,11 @@
   {
     "id": "03-learning",
     "title": {
-      "zh": "让策略学习行走",
+      "zh": "用 Isaac Lab 训练行走策略",
       "en": "Learning to walk"
     },
     "summary": {
-      "zh": "体验一次 PPO 训练，理解观测、动作、奖励和检查点，同时保持后续课程使用固定模型。",
+      "zh": "用 Isaac Lab 的并行环境在 GPU 上体验一次 PPO 训练，理解观测、动作、奖励、管理器和检查点，并学习如何验证策略。",
       "en": "Experience PPO training and understand observations, actions, rewards, and checkpoints while keeping downstream labs on fixed models."
     },
     "meta": {
@@ -1063,7 +1070,7 @@
           },
           {
             "type": "p",
-            "zh": "策略首先接收观测向量，其中包含机身姿态、角速度、关节状态、速度指令和上一步动作；随后输出关节动作，由物理引擎推进场景，奖励函数再判断这一步是否更接近目标。PPO 会在收集一批此类交互后更新参数，然后继续采样。",
+            "zh": "Isaac Lab 把一项机器人学习任务拆成可组合的场景、观测、动作、命令、奖励、事件和终止项。策略接收机身姿态、角速度、关节状态、速度指令和上一动作，输出关节动作；Newton 在 GPU 上并行推进多个环境，奖励管理器计算反馈，PPO 收集一批交互后更新参数，再继续采样。这样可以在同一份任务定义中批量生成训练数据，也能逐项检查奖励和终止条件。",
             "en": "The policy receives a vector containing body attitude, angular velocity, joint state, a velocity command, and the previous action. It outputs joint actions, physics advances, and rewards measure progress toward the objective. PPO collects a batch of interactions, updates the policy, and samples again."
           },
           {
@@ -1085,7 +1092,7 @@
           },
           {
             "type": "p",
-            "zh": "“环境数量”决定并行运行多少个机器人副本，“迭代次数”决定重复多少轮采样与更新。增加环境数量可以提高并行采样量，但也会占用更多内存。训练奖励上升只说明策略在优化目标上的表现有所改善，实际行为仍需在独立场景中检验。",
+            "zh": "“环境数量”决定 Isaac Lab 在 GPU 上向量化运行多少个机器人副本，“迭代次数”决定重复多少轮采样与更新。每个副本都保留独立状态；事件与终止管理器可以只重置已结束的环境，使其他副本继续采样。增加环境数量通常能提高每轮采样量，但也会占用更多显存。训练奖励上升只说明策略在优化目标上的表现有所改善，实际行为仍需在独立场景中检验。",
             "en": "The environment count is the number of simultaneous robot copies. Iterations repeat collection and optimization. More environments increase parallel sampling and memory demand. A rising training reward means the optimized objective is improving; independent behavior checks are still necessary."
           }
         ]
@@ -1185,7 +1192,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "真实舵机的摩擦、延迟和齿隙并不会在每次运行中完全一致。训练时改变这些参数，可以让策略接触更丰富的情形。随机化范围过窄可能造成过拟合，范围过宽又可能使任务难以学会。随机化有助于提高鲁棒性，但不能取代真机验证。",
+            "zh": "真实舵机的摩擦、延迟和齿隙并不会在每次运行中完全一致。Isaac Lab 的事件管理器可以在环境重置或指定时刻为各并行副本改变这些参数，让策略在同一训练批次中接触更丰富的情形。随机化范围过窄可能造成过拟合，范围过宽又可能使任务难以学会。课程使用保存于 <code>env.yaml</code> 的实际配置作为解释依据；域随机化有助于提高鲁棒性，但不能取代真机验证。",
             "en": "Real actuators do not have identical friction, delay, and backlash on every run. Varying parameters in training exposes the policy to more conditions. A narrow range can overfit; an excessively broad range can make learning difficult. Randomization can improve robustness but does not replace hardware testing."
           },
           {
@@ -1253,11 +1260,11 @@
   {
     "id": "04-skills",
     "title": {
-      "zh": "从关节动作到完整技能",
+      "zh": "在仿真中组合运动技能",
       "en": "From actions to complete skills"
     },
     "summary": {
-      "zh": "把“踢到了球”拆成准备、触球、收脚和恢复，理解技能为何需要入口与出口条件。",
+      "zh": "借助 Isaac Lab 的任务接口与 Newton 接触记录，理解踢球技能的准备、触球、收脚和恢复，以及每一步的进入与退出条件。",
       "en": "Break a kick into preparation, contact, withdrawal, and recovery. Understand why skills need entry and exit conditions."
     },
     "meta": {
@@ -1279,7 +1286,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "行走策略可以持续接收速度指令，而踢球是一个有明确起止点的短时技能。要把踢球接入自主任务，除了定义动作本身，还必须说明何时允许启动、结束后应进入什么状态，以及发生失败时如何停止。",
+            "zh": "行走策略可以持续接收速度指令，而踢球是一个有明确起止点的短时技能。Isaac Lab 的任务结构便于复用相同的观测、动作与执行器接口，并用命令、事件和终止条件表达技能边界；Newton 的接触与机身状态则让“脚确实碰球”和“机器人恢复站稳”成为可检查条件。要把踢球接入自主任务，除了定义动作本身，还必须说明何时允许启动、结束后应进入什么状态，以及发生失败时如何停止。",
             "en": "Walking continuously accepts velocity commands. A kick is a short skill with a start and an end. Integrating it into an autonomous task requires entry conditions, a defined exit state, and a way to stop when conditions are unsafe."
           },
           {
@@ -1378,7 +1385,7 @@
           },
           {
             "type": "p",
-            "zh": "观看出脚过程时，可以分三个阶段观察：出脚前，检查球与支撑脚的位置是否合适；出脚过程中，确认实际接触来自脚部还是身体其他部位；出脚后，观察机器人能否恢复支撑。请在每个阶段暂停视频，并分别描述技能的进入条件与完成条件。相比只看“球有没有动”，这种观察方式更能反映机器人系统的实际要求。",
+            "zh": "观看出脚过程时，可以分三个阶段观察：出脚前，检查球与支撑脚的位置是否合适；出脚过程中，观察摆动腿是否形成足够空间，并用物理接触记录确认接触来自脚部而非身体其他部位；出脚后，观察重心是否重新回到支撑区域、机身倾角是否收敛。请分别描述技能的进入条件与完成条件。相比只看“球有没有动”，这种观察方式更能反映机器人系统的实际要求。",
             "en": "Watch the kick in three phases: before it, inspect ball and support-foot positions; during it, identify whether contact comes from the foot or another body part; afterwards, inspect recovery of support. Pause the video in each phase and describe the entry and completion conditions. This is more informative than asking only whether the ball moved."
           }
         ]
@@ -1481,11 +1488,11 @@
   {
     "id": "05-perception",
     "title": {
-      "zh": "让机器人看见足球",
+      "zh": "用 Isaac Sim 相机感知足球",
       "en": "Seeing the football"
     },
     "summary": {
-      "zh": "将图像检测、距离观测和身体姿态结合，得到导航可使用的信息。",
+      "zh": "用 Isaac Sim 的 RTX 相机与深度观测复现传感器链路，再把图像检测、距离和身体姿态转换成导航可用信息。",
       "en": "Combine detections, range measurements, and body attitude into information navigation can use."
     },
     "meta": {
@@ -1558,12 +1565,12 @@
           },
           {
             "type": "p",
-            "zh": "RGB 检测器用于判断图像中哪些区域可能是球，ToF 则提供前方 8 × 8 个分区的距离信息，但它并不是覆盖机器人四周的激光雷达。机身 IMU 用于辅助估计姿态，使距离数据和图像射线能够在正确的坐标系中解释。任何一种传感器都无法独立给出完整的世界状态。",
+            "zh": "Isaac Sim 在同一 USD 场景中生成与机器人头部姿态同步的 RTX RGB 和深度图，课程再把深度按 VL53L8CX 的 8 × 8 视区采样。RGB 检测器判断哪些区域可能是球，ToF 提供前方分区距离，机身 IMU 帮助在正确坐标系中解释射线。这样可重复改变视角、距离和姿态并保留时间戳；但 ToF 不是环视激光雷达，任何一种传感器也不能独立给出完整世界状态。",
             "en": "The RGB detector finds image regions resembling a ball. ToF measures ranges across an 8 × 8 forward-facing grid; it is not a 360-degree lidar. A body IMU estimates attitude so image rays and ranges can be interpreted in the right frame. No single sensor supplies the complete world state."
           },
           {
             "type": "p",
-            "zh": "本课程的 Beta 仿真配置采用 GC2093 相机和 VL53L8CX ToF，图像处理分辨率为 960 × 540，频率为 15 Hz。镜头视场和噪声参数都属于仿真假设，迁移到真实设备时必须重新标定。",
+            "zh": "本课程的 Beta 仿真配置采用 GC2093 相机和 VL53L8CX ToF，图像处理分辨率为 960 × 540，频率为 15 Hz。镜头视场、畸变、噪声和安装位姿都是明确的仿真假设，迁移到真实设备时必须重新标定。当前传感器 rig 只提供 RGB、深度、IMU 和时间信息，没有把 Isaac Sim 的物体语义真值交给控制器，也不会自动生成本章练习集的 YOLO 标签。",
             "en": "The Beta simulation uses GC2093 camera and VL53L8CX ToF profiles. Images are processed at 960 × 540 and 15 Hz. Lens field of view and noise settings are simulation assumptions; physical devices require calibration."
           }
         ]
@@ -1701,7 +1708,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "练习集共包含 40 张图像，按照 24 / 8 / 8 划分为训练集、验证集和测试集。类别编号 0 表示球，1 表示球门。YOLO 标签的每一行采用 <code>class cx cy width height</code> 格式，后四项均按图像宽高归一化。例如，中心横坐标 0.5 表示画面宽度的一半，而不是世界坐标中的 0.5 米。",
+            "zh": "练习集共包含 40 张图像，按照 24 / 8 / 8 划分为训练集、验证集和测试集。类别编号 0 表示球，1 表示球门。YOLO 标签的每一行采用 <code>class cx cy width height</code> 格式，后四项均按图像宽高归一化。例如，中心横坐标 0.5 表示画面宽度的一半，而不是世界坐标中的 0.5 米。Isaac Sim 支持为受控场景构建合成数据与标注流程，这有助于系统覆盖视角、光照和遮挡；本课程当前小数据集仍应按其现有标签检查，不能把场景中的物理真值或语义 ID 当作检测器已经见过的答案。",
             "en": "The sample has 40 images split into 24 training, 8 validation, and 8 test images. Class 0 is the ball and class 1 the goal. Each YOLO label row is <code>class cx cy width height</code>, with the last four values normalized by image dimensions. A horizontal center of 0.5 means halfway across the image, not 0.5 meters in the world."
           },
           {
@@ -1725,6 +1732,11 @@
     ],
     "references": [
       {
+        "url": "https://developer.nvidia.com/isaac/sim",
+        "zh": "NVIDIA Isaac Sim：传感器仿真与合成数据",
+        "en": "NVIDIA Isaac Sim: sensors and synthetic data"
+      },
+      {
         "url": "https://docs.ultralytics.com/tasks/detect/",
         "zh": "Ultralytics：目标检测",
         "en": "Ultralytics: object detection"
@@ -1739,11 +1751,11 @@
   {
     "id": "06-navigation",
     "title": {
-      "zh": "走到正确的出脚位置",
+      "zh": "连接仿真与导航规划",
       "en": "Navigate to a useful kicking position"
     },
     "summary": {
-      "zh": "从“朝球走”进阶到“站到球后方，并对准球门”。",
+      "zh": "把 Isaac Sim 中的传感器快照交给 ROS 2 Nav2 规划，再由固定行走策略执行到球后方的站位。",
       "en": "Move beyond chasing the ball: approach from behind it and align with the goal."
     },
     "meta": {
@@ -1799,7 +1811,7 @@
           },
           {
             "type": "p",
-            "zh": "在完整任务中，Nav2 提供 CPU 导航服务，真正维持双足平衡的仍是行走策略。上层给出目标或速度需求，底层策略再通过舵机产生运动；执行器延迟和步态误差会使实际轨迹偏离计划。因此，系统必须持续重新测量和判断，不能假设每条速度命令都会被精确执行。",
+            "zh": "在完整任务中，Isaac Sim 提供带时间戳的 RGB/ToF 观测，课程桥接器把一次不可变的传感器快照、地图和目标交给隔离运行的 ROS 2 Nav2/Navfn CPU 服务，再取回路径。这里没有使用 Isaac Sim 内置 ROS 2 Action Graph，也没有让 Nav2 直接发布 <code>/cmd_vel</code>；真正维持双足平衡的仍是固定行走策略。上层路径与目标、下层步态执行分开后，可以分别检查规划输入、路径结果和实际跟踪误差。",
             "en": "Nav2 provides CPU navigation services in the full task, while the walking policy maintains bipedal balance. The upper layer requests a target or velocity; the lower layer drives servos. Actuator delay and gait error can move the robot away from its plan, so the system must observe and reconsider instead of assuming exact command execution."
           },
           {
@@ -1840,7 +1852,7 @@
           },
           {
             "type": "p",
-            "zh": "导航规划器负责给出路线或方向，行走策略负责实际执行。规划器找到可行路径，并不代表机器人已经沿该路径走完全程；完整系统还必须处理策略跟踪误差、接触事件和传感器更新。",
+            "zh": "导航规划器负责给出路线或方向，行走策略负责实际执行。规划器找到可行路径，并不代表机器人已经沿该路径走完全程；Isaac Sim 的可重复场景便于同时回看相机、俯视轨迹和物理接触，完整系统仍必须处理策略跟踪误差、执行器延迟、接触事件和传感器更新。",
             "en": "A planner supplies a route or direction; the walking policy executes it. A valid planned path does not prove the robot has traversed it. The system must handle tracking errors, contact, and sensor updates."
           }
         ]
@@ -1895,13 +1907,18 @@
           },
           {
             "type": "p",
-            "zh": "完整任务还需要应对机器人偏航、步态延迟以及近距离目标离开视野等情况。因此，接近过程中必须持续更新观测并检查停止条件。当有效距离信息或地面支持丢失时，应先停止或在约束下后退，再重新观察；未知区域不能直接当作空闲区域。",
+            "zh": "完整任务还需要应对机身偏航漂移、步态延迟以及近距离目标离开视野等情况。因此，接近过程中必须持续更新观测并检查停止条件。当有效距离信息或地面支持丢失时，应先停止或在约束下后退，再重新观察；未知区域不能直接当作空闲区域。",
             "en": "The full task also handles yaw drift, delayed gait response, and targets leaving view at close range. Approach therefore updates observations and checks stopping conditions repeatedly. If valid range or floor support is lost, stop or retreat within constraints and observe again. Unknown space cannot be declared free space."
           }
         ]
       }
     ],
     "references": [
+      {
+        "url": "https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_navigation.html",
+        "zh": "NVIDIA Isaac Sim：ROS 2 导航集成教程",
+        "en": "NVIDIA Isaac Sim: ROS 2 navigation integration"
+      },
       {
         "url": "https://docs.nav2.org/",
         "zh": "Nav2：导航概念与组件",
@@ -1916,7 +1933,7 @@
       "en": "Complete the autonomous task"
     },
     "summary": {
-      "zh": "加载同一套固定模型，让感知、导航、出脚与恢复协同工作，并按完整任务判定结果。",
+      "zh": "在同一套 Isaac Lab / Newton / Isaac Sim 工作流中加载固定模型，让感知、导航、出脚与恢复协同工作并接受完整判定。",
       "en": "Load the fixed model set, connect perception, navigation, kicking, and recovery, and evaluate the complete task."
     },
     "meta": {
@@ -1938,7 +1955,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "完整系统并不是由单个网络直接输出“进球”指令。固定行走策略负责控制机身，检测器提供视觉目标，距离与姿态约束用于估计相对位置，状态机决定何时观察、行走和踢球，最后由踢球组合完成出脚与恢复。",
+            "zh": "完整系统并不是由单个网络直接输出“进球”指令。Isaac Lab 组织任务接口与控制管理器，Newton 推进物理和执行器状态，Isaac Sim 6.2 提供 GUI、RTX 相机与深度传感器；独立的 ROS 2 Nav2 CPU 服务负责路径规划。固定行走策略控制机身，检测器提供视觉目标，ToF 测距和 IMU 姿态用于约束目标的相对位置，状态机决定何时观察、行走和踢球，最后由踢球组合完成出脚与恢复。",
             "en": "This is not a single network issuing a “score” command. A walking policy controls the body, a detector supplies visual targets, range and attitude constrain relative position, a state machine decides when to observe, walk, and kick, and the kick models execute contact and recovery."
           },
           {
@@ -1985,7 +2002,7 @@
           },
           {
             "type": "p",
-            "zh": "预期结果：Isaac 仿真窗口打开后，机器人自主执行找球、接近和对准，并尝试完成射门。程序使用仓库中的固定模型，同时保存视频、轨迹和结果。180 秒指仿真中的任务预算，并不是现实中的等待时长；首次初始化和渲染可能耗时更久。",
+            "zh": "预期结果：Isaac Sim 窗口打开后，机器人自主执行找球、接近和对准，并尝试完成射门。程序使用仓库中的固定模型，同时保存视频、轨迹和结果。控制器只接收带时间戳的相机、ToF 与本体观测；Newton 中的精确物体位姿和接触真值只用于独立评分。180 秒指仿真中的任务预算，并不是现实中的等待时长；首次初始化和 RTX 渲染可能耗时更久。",
             "en": "Expected result: an Isaac simulation window opens and one robot searches, approaches, aligns, and attempts a kick autonomously. The program uses the repository’s fixed models and saves video, traces, and results. The 180-second budget is simulation time, not wall-clock waiting time. Initialization and rendering can take longer."
           },
           {
@@ -2156,7 +2173,7 @@
           {
             "type": "p",
             "zh": "课程从机械结构出发，依次连接了关节控制、强化学习、视觉感知、距离与姿态估计、导航和短时技能。继续探索时，请一次只改变一个明确因素，并确保模型、环境和结果记录能够相互对应。",
-            "en": "Starting from the mechanism, you connected joint control, reinforcement learning, vision, range and attitude estimation, navigation, and a short motion skill. In further experiments, change one clear factor at a time and preserve the mapping between models, environments, and results."
+            "en": "Starting from the mechanism, you connected joint control, reinforcement learning, vision, range and attitude estimation, navigation, and a short motion skill. In further training, change one clear factor at a time and preserve the mapping between models, environments, and results."
           }
         ]
       },

@@ -16,12 +16,15 @@ parsed={}
 for f in W.rglob('*.html'):
  p=Page();p.feed(f.read_text());parsed[f.resolve()]=p
  if len(p.ids)!=len(set(p.ids)):errors.append(f'Duplicate IDs: {f}')
- for pattern in ['/home/yuki/','@COURSE@','@REPO@','localhost:8018','mark-complete','local-progress']:
+ for pattern in ['/home/yuki/','@COURSE@','@REPO@','localhost:8018','mark-complete','local-progress','migration-20261019','lab/frozen/','brand-mark']:
   if pattern in f.read_text():errors.append(f'Internal path in page: {f}')
 for f,p in parsed.items():
  for link in p.links:
   u=urlsplit(link)
-  if u.scheme or u.netloc:continue
+  if u.scheme or u.netloc:
+   prefix='/NV-DLI/Microduck-Workshop/blob/main/'
+   if u.netloc=='github.com' and u.path.startswith(prefix) and not (R/unquote(u.path[len(prefix):])).is_file():errors.append('Missing public source: '+link)
+   continue
   target=(f.parent/unquote(u.path)).resolve()if u.path else f
   if not target.is_relative_to(W):errors.append(f'Outside web root: {f.name} {link}')
   elif not target.exists():errors.append(f'Missing: {f.name} {link}')
@@ -48,11 +51,14 @@ for folder in ['scripts','lab']:
   try:ast.parse(f.read_text(),filename=str(f))
   except SyntaxError:errors.append('Python syntax '+str(f))
 for item in json.loads((R/'lab/bundle-manifest.json').read_text())['files']:
- f=R/'lab/frozen'/item['path']
+ f=R/'lab/runtime'/item['path']
  if hashlib.sha256(f.read_bytes()).hexdigest()!=item['template_sha256']:errors.append('Bundle mismatch '+str(f))
 meta=json.loads((W/'assets/robot/components.json').read_text())
 assert len(meta['parts'])==70
 ids=[p['id']for p in meta['parts']]
 assert len(set(ids))==70
+if errors:raise SystemExit('\n'.join(errors))
+for f in (R/'lab/runtime').rglob('*'):
+ if f.is_file() and re.search(r'migration-\d+|[_-]v\d+(?=[_.-]|$)|candidate|experimental|development|kick_runtime_early',str(f.relative_to(R))):errors.append('Non-teaching source name: '+str(f))
 if errors:raise SystemExit('\n'.join(errors))
 print(json.dumps(dict(pages=len(parsed),local_links=count,chapters=7,models=6,components=70,passed=True)))

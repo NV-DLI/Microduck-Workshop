@@ -1,0 +1,122 @@
+{
+  "schema": "microduck.native-backward-heading-bias-probe.v1",
+  "qualification_claimed": false,
+  "purpose": "Changed closed-loop parameters retreat: vx -0.35, vy 0, 1.6 s, public BODY50 gyro heading feedback with a frozen positive (left) target heading offset during the active walk only, neutral head, then exactly zero. Not a gate relaxation; measurement and final shooting gate untouched. No training, no ball, no task success claim.",
+  "derived_from": "claude-football-backward-feedback-v120-v1/parameters (feedback probe v1: audits pass, 8 survive, 3/4 per duration, no eligible case); only change: per-world desired heading offset initialising heading and heading_lp",
+  "predeclaration_source": "Root 2026-10-21 approval after football-backward-feedback-probe-v1 (root-final-decision-v1.json). Seed 981131 reserved; 981129/981130 Stage B remain unrun.",
+  "seed": 981131,
+  "model": "models/reference/velstand.onnx",
+  "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "worlds_per_case": 4,
+  "cases": [
+    {
+      "name": "back_bias_vx-0.35_d1.6_h+0.10",
+      "velocity_command": [
+        -0.35,
+        0.0,
+        0.0
+      ],
+      "head_delta_target_rad": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "feedback": false,
+      "body_heading_feedback": true,
+      "command_duration_s": 1.6,
+      "desired_heading_offset_rad": 0.1
+    },
+    {
+      "name": "back_bias_vx-0.35_d1.6_h+0.20",
+      "velocity_command": [
+        -0.35,
+        0.0,
+        0.0
+      ],
+      "head_delta_target_rad": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "feedback": false,
+      "body_heading_feedback": true,
+      "command_duration_s": 1.6,
+      "desired_heading_offset_rad": 0.2
+    }
+  ],
+  "physics_hz": 200,
+  "policy_hz": 50,
+  "physical_DR": false,
+  "extra_observation_DR": false,
+  "sensor": "finite BODY50 tau2 (sensors/processing/body50_finite_range), vector producer; not a hardware calibration",
+  "preparation": "Actual native raw/zero body/neutral head, original physical fixture, all worlds retained. No task support, no reset, no state write.",
+  "fixed_condition": "Same nominal white/orange USD, 7.4V, 4-substep delay, original motor/friction/limits. Parallel initial trajectories may differ; no cross-world bitwise identity claim.",
+  "motion": {
+    "task_steps": 750,
+    "task_duration_s": 15.0,
+    "movement_start_task_step": 250,
+    "movement_start_task_s": 5.0,
+    "command": "[vx, 0, wz(public heading feedback)] for exactly round(command_duration_s*50) policy steps from step 250 unless the world faults; exactly zero before, at/after the stop step and after a fault (latched); no ramp, no post-stop or quiet correction, no after-stop turn",
+    "head": "native head command exactly zero for the whole task (v3 HeadSetpointFeedback with nominal 0 and feedback disabled)",
+    "control": "Closed-loop on the same delivered BODY50 packet the actor observes; private pose is evaluation only."
+  },
+  "feedback_contract": {
+    "feedback_enabled": false,
+    "source": "native_command_precision_probe_v3/feedback.py unchanged (head path, nominal 0, disabled)"
+  },
+  "endpoints": {
+    "frame": "start heading frame: root XY and yaw at state index 999 (task 5.000 s, last tick before movement)",
+    "onset": "first state index >= 1000 whose start-frame dx <= -0.01 m; onset_s = its task time minus 5.0",
+    "stop": "state index 4*(250+move_steps)-1 (last tick of the last commanded policy step)",
+    "stop_plus_1s": "stop + 200 ticks",
+    "stop_plus_2s": "stop + 400 ticks",
+    "post_stop_drift": "peak |XY - XY(stop)| over [stop, stop+2s]",
+    "public_odometry": "frozen public adapter v2 + v117 SoleContactLegOdometry replay of the recorded packets; displacement between the reads at policy steps 250 and the stop step vs truth between the same physics instants"
+  },
+  "frozen_gates_per_world": {
+    "preparation_passed": true,
+    "fell": false,
+    "servo_coordinate_peak_violation_rad_max": 0.001,
+    "physical_output_peak_violation_rad_max": 0.001,
+    "finite_state": true,
+    "onset_s_max": 1.0,
+    "abs_yaw_change_at_stop_plus_1s_rad_max": 0.25,
+    "abs_lateral_at_stop_plus_2s_m_max": 0.05,
+    "backward_distance_at_stop_plus_2s_m": [
+      0.12,
+      0.24
+    ],
+    "public_odometry_xy_error_at_stop_m_max": 0.03,
+    "public_odometry_chain_intact": true,
+    "post_stop_drift_m_max": 0.04,
+    "passive_soft_limit": "reported per joint (peak/P95/P99/fraction/duration) under football-physics-semantics-v2; diagnostic, not a gate",
+    "feedback_no_fault": true
+  },
+  "selection": "A case is eligible only if ALL 4 worlds pass every frozen gate AND the independent audit passed. Choose the eligible case with the smaller offset (+0.10 before +0.20). No eligible case => no adoption, no integration, no workaround.",
+  "scope": "No RGB/ToF, no ball, no autonomous success, no Stage B. Probe gates are not the full-task 70% target. Model weights unchanged.",
+  "heading_feedback": {
+    "source": "parameters/heading_feedback.py (form of evaluation/baseline/neutral_fine_step.py motion_heading 213-230 + track_filtered 247-262)",
+    "k_heading": 2.5,
+    "k_rate": 0.25,
+    "tau_heading_lp_s": 0.12,
+    "tau_rate_lp_s": 0.1,
+    "wz_clamp_rad_s": 0.5,
+    "rate": "dot(gyro_body, -gravity_body/||gravity_body||) from the same delivered packet; ||gravity|| >= 0.5 and finite",
+    "entry": "heading = heading_lp = desired_heading_offset_rad of the world (positive = desired actual yaw LEFT of the movement-entry heading), rate_lp = current rate; wz = clip(2.5*offset - 0.25*rate) at the first active tick",
+    "integration": "on each new read: heading = wrap(heading - rate*(read_s - previous_read_s)); unchanged duplicate: no integration",
+    "lp_timing": "both LPs update on every active policy tick after entry with the policy clock dt (v117 track_filtered convention); nominally read dt = policy dt = 0.02 s",
+    "freshness": {
+      "max_read_dt_s": 0.025,
+      "max_sample_and_read_age_s": 0.08,
+      "max_policy_dt_s": 0.025,
+      "encoder_read_equals_read": true
+    },
+    "faults": "invalid/unready packet, nonfinite/null gravity or gyro, stale/future/noncausal clocks, non-monotone seq/read, changed duplicate, read gap > 0.025 s, policy clock gap -> immediate zero, latched, world cannot pass; any fault fails the audit (adoption fails)",
+    "root_yaw_used": false,
+    "gains_identical_for_both_durations": true,
+    "tuning_grid": false,
+    "offset_scope": "Only the entry value of the goal-relative reference changes; gyro integration, LPs, gains, clamp, timing, freshness and faults are identical to v120. No post-stop authority, no ramp."
+  }
+}

@@ -34,7 +34,7 @@ def setup_runtime(a):
   if hashlib.sha256((lab/name).read_bytes()).digest()!=hashlib.sha256((ROOT/'lab/environment'/name).read_bytes()).digest():raise RuntimeError('The supplied Isaac Lab environment does not match the course '+name)
  detector=a.detector_python.absolute()if a.detector_python else local/'detector/bin/python'
  if not detector.is_file():
-  prepare_script=ROOT/'lab/frozen/workshop/migration-20261019/perception/prepare_environment.py'
+  prepare_script=ROOT/'lab/runtime/simulation/core/perception/prepare_environment.py'
   subprocess.run([str(py),str(prepare_script),'--source-python',str(py),'--venv',str(local/'detector'),'--install'],check=True)
  navimage=a.nav2_image or IMAGE
  if subprocess.run(['docker','image','inspect',navimage],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode:
@@ -48,5 +48,5 @@ def setup_runtime(a):
  overlay=m/'perception/.venv';overlay.parent.mkdir(parents=True,exist_ok=True)
  if not overlay.exists():overlay.symlink_to(detector.parent.parent,target_is_directory=True)
  data['materialized']=str(m);(local/'runtime.json').write_text(json.dumps(data,indent=2)+'\n')
- subprocess.run([str(py),str(m/'acceptance/native_football_v121/execute_media.py'),'--verify-only'],check=True)
+ subprocess.run([str(py),str(m/'evaluation/football/execute_media.py'),'--verify-only'],check=True)
  print('Runtime ready. Run: python3 scripts/workshop.py doctor')

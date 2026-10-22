@@ -1,0 +1,49 @@
+{
+  "scope": "Course content, presentation and stable source packaging",
+  "model_weights_changed": false,
+  "training_runs": 0,
+  "physics_trials": 0,
+  "historical_task_result": {
+    "passed": 9,
+    "total": 10,
+    "scope": "preserved independent empty-field cohort; not a new trial result"
+  },
+  "static_check": {
+    "html_pages": 27,
+    "chapters": 7,
+    "fixed_models": 6,
+    "mechanical_components": 70
+  },
+  "runtime": {
+    "template_files": 366,
+    "python_ast_equivalence_files": 291,
+    "self_contained_cpu_tests_before": 275,
+    "self_contained_cpu_tests_after": 275,
+    "archive_dependent_and_prerelease_tests": "Excluded from the self-contained comparison; original source and fixtures retained separately.",
+    "controller_source_bindings": 111,
+    "media_source_bindings": 109,
+    "entrypoint_help_checks": 3
+  },
+  "browser": {
+    "desktop_mobile_page_views": 52,
+    "interactions_passed": true,
+    "source_excerpt_copy_controls": false,
+    "terminal_copy_controls": true,
+    "actual_fonts": [
+      "Open Sans",
+      "Noto Sans SC"
+    ]
+  },
+  "diagrams": {
+    "accessible_svg_checks": 8,
+    "geometry_findings": 0
+  },
+  "language_review": {
+    "primary_items": 183,
+    "followup_items": 22,
+    "reviewer": "Claude Sonnet 5",
+    "effort": "high",
+    "status": "Complete; findings adjudicated against source and final minor wording applied",
+    "additional_items": 3
+  }
+}

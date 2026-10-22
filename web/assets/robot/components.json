@@ -842,7 +842,7 @@
     {
       "label_zh": "镜头眼圈",
       "label_en": "Lens eye ring",
-      "description_zh": "位于头部正面、与 M12 镜头同轴的饰圈（源名 noenoeil）；其装饰作用依据安装位置推断。",
+      "description_zh": "位于头部正面、与 M12 镜头同轴的饰圈（源名 noenoeil）；其具体作用依据安装位置推断。",
       "description_en": "Face ring concentric with the M12 lens (source name noenoeil; role inferred from its position).",
       "explode": [
         0.26,
@@ -857,7 +857,7 @@
       "source_mesh": "noenoeil.stl"
     },
     {
-      "label_zh": "下颌（下喙）",
+      "label_zh": "下喙（下颌）",
       "label_en": "Jaw (lower beak)",
       "description_zh": "位于头部前下方的下喙刚性件，由喙部舵机带动；源 MJCF 将其并入 jaw_soft 刚体，未设置独立关节。",
       "description_en": "Rigid lower beak driven by the beak servo; the source MJCF merges it into the jaw_soft body without a joint.",

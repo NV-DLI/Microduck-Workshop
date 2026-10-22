@@ -1,5 +1,6 @@
 """Accessible, local course diagrams, mathematical notation and seekable media."""
 from html import escape as e
+from course_diagrams import flow_svg, platform_svg
 
 def render_teaching_block(b,lang):
  k=b['type'];zh=lang=='zh';caption=b.get(lang,'')
@@ -13,15 +14,14 @@ def render_teaching_block(b,lang):
  if k=='media':
   f=b['file']
   if 'exploded-cycle' in f:return ''
-  if f=='detections.gif':return render_teaching_block(dict(type='image',file='media/detection-contact-v2.webp',alt={'zh':'固定检测器在八张图像上的检测框与置信度','en':'Fixed detector boxes and scores on eight separate images'},zh='固定检测器的八组实际输出。每格展示一张图像，框旁标有类别与置信度。点击图片可放大，对比远近、视角和目标大小对检测结果的影响；这组示例不用于估计整体准确率。',en='Eight actual fixed-detector outputs on separate images, with class labels and confidence scores. Click to enlarge. These examples do not estimate overall accuracy.'),lang)
-  name=f.removesuffix('.gif')+'-v2'
+  if f=='detections.gif':return render_teaching_block(dict(type='image',file='media/detection-contact-hd.webp',alt={'zh':'固定检测器在八张图像上的检测框与置信度','en':'Fixed detector boxes and scores on eight separate images'},zh='固定检测器的八组实际输出。每格展示一张图像，框旁标有类别与置信度。点击图片可放大，对比远近、视角和目标大小对检测结果的影响；这组示例不用于估计整体准确率。',en='Eight actual fixed-detector outputs on separate images, with class labels and confidence scores. Click to enlarge. These examples do not estimate overall accuracy.'),lang)
+  name=f.removesuffix('.gif')+'-hd'
   return '<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/'+name+'.jpg" aria-label="'+e(b['alt'][lang])+'"><source src="../assets/media/'+name+'.mp4" type="video/mp4"></video><figcaption>'+caption+'</figcaption></figure>'
- if k=='flow':
-  nodes=''.join('<div class="diagram-node"><strong>'+e(n[0])+'</strong><small>'+e(n[1])+'</small></div>' for n in b['nodes'])
-  return '<figure class="concept-figure" aria-label="'+e(b['label'])+'"><div class="diagram-flow '+('flow-six' if len(b['nodes'])==6 else '')+'">'+nodes+'</div><figcaption class="diagram-caption">'+caption+'</figcaption></figure>'
+ if k=='platform':return '<figure class="concept-figure"><p class="diagram-scroll-hint">'+('左右滑动查看完整图示' if zh else 'Scroll horizontally to view the full diagram')+'</p><div class="diagram-scroll">'+platform_svg()+'</div><figcaption class="diagram-caption">'+caption+'</figcaption></figure>'
+ if k=='flow':return '<figure class="concept-figure"><p class="diagram-scroll-hint">'+('左右滑动查看完整图示' if zh else 'Scroll horizontally to view the full diagram')+'</p><div class="diagram-scroll">'+flow_svg(b)+'</div><figcaption class="diagram-caption">'+caption+'</figcaption></figure>'
  if k=='diagram':
   name=b['kind'];controls='';svg=''
-  start='<svg viewBox="0 0 640 320" role="img" aria-label="'+e(b['label'])+'" font-family="system-ui, sans-serif" font-size="15"><defs><marker id="arrow-'+name+'" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#577642"/></marker></defs>'
+  start='<svg viewBox="0 0 640 320" role="img" aria-label="'+e(b['label'])+'" font-family="Open Sans, Noto Sans SC, sans-serif" font-size="15"><defs><marker id="arrow-'+name+'" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#577642"/></marker></defs>'
   if name=='ppo':
    svg=start+'''<rect x="233" y="30" width="164" height="230" fill="#e3efd7" class="clip-band"/><path d="M64 30V260H574" stroke="#8a9981" fill="none"/><path class="ppo-original" d="" stroke="#87958b" stroke-width="2" stroke-dasharray="5 5" fill="none"/><path class="ppo-clipped" d="" stroke="#527d22" stroke-width="3" fill="none"/><circle class="ppo-point" r="6" fill="#d48125" stroke="white" stroke-width="2"/><text x="65" y="18">单个样本的代理目标</text><text x="58" y="281">0.5</text><text x="312" y="281">1.0</text><text x="565" y="281">1.5</text><text x="257" y="308">新旧动作概率之比 ρ</text><text class="ppo-low" x="205" y="50" fill="#526a41">0.8</text><text class="ppo-high" x="404" y="50" fill="#526a41">1.2</text><text class="ppo-ymax" x="54" y="38" text-anchor="end">1.6</text><text class="ppo-ymin" x="54" y="263" text-anchor="end">0.4</text></svg>'''
    controls='<div class="concept-controls"><label>优势 <select class="advantage"><option value="1">A = +1（好于预期）</option><option value="-1">A = −1（差于预期）</option></select></label><label>概率比 ρ <input class="prob-ratio" type="range" min="0.5" max="1.5" step="0.01" value="1.3"></label><label>裁剪范围 ε <input class="clip-epsilon" type="range" min="0.05" max="0.4" step="0.05" value="0.2"></label></div><p class="concept-output" aria-live="polite"></p>'

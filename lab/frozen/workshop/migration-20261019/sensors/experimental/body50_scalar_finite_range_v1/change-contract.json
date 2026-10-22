@@ -1,9 +1,0 @@
-{
-  "parent": "@COURSE@/workshop/migration-20261019/sensors/beta_head_imu.py",
-  "parent_sha256": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
-  "replace": [
-    "if gap or any(gs):",
-    "if gap:"
-  ],
-  "scope": "Finite measured gyro is still clipped and integrated. Initial saturation is rejected by unchanged initializer; real sample gap invalidates fusion. No true orientation initialization or copy. Explicit candidate, not a validated ST firmware clone."
-}

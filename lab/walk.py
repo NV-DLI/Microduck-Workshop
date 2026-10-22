@@ -12,7 +12,7 @@ try:
   import isaaclab_tasks
   from isaaclab_tasks.utils import parse_env_cfg
   cfg=parse_env_cfg('IsaacContrib-Velocity-Flat-MicroDuck',device='cuda:0',num_envs=1,overrides=['presets=backlash']);cfg.seed=a.seed;cfg.curriculum=None;cfg.episode_length_s=a.seconds+10
-  cfg.scene.robot.spawn.usd_path=str(a.runtime/'visuals/assets/microduck_white_orange_v2.usda')
+  cfg.scene.robot.spawn.usd_path=str(a.runtime/'visuals/assets/microduck_white_orange.usda')
   cfg.commands.base_velocity.resampling_time_range=(1e8,1e8);cfg.commands.base_velocity.debug_vis=False
   cfg.commands.head_pose.ranges=tuple((0.,0.)for _ in range(4));cfg.commands.body_pose.ranges=tuple((0.,0.)for _ in range(6));cfg.events.reset_base.params['pose_range']={}
   for name in ['foot_friction','encoder_bias','mass_inertia','randomize_com','randomize_head_com','randomize_joint_friction','randomize_armature','push_robot']:setattr(cfg.events,name,None)

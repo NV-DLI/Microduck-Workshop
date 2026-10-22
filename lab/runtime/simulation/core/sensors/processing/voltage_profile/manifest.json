@@ -1,0 +1,26 @@
+[
+  {
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/docs/design/robotd-design.md",
+    "commit": "53230463927095ea890f231d29089bb0a538c06f",
+    "path": "@COURSE@/simulation/core/sensors/processing/voltage_profile/docs__design__robotd-design.md",
+    "sha256": "37c1ee8a7c80b492d190f34d5de27b736ad237aede0a5c06916013566192af04"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/model.rs",
+    "commit": "53230463927095ea890f231d29089bb0a538c06f",
+    "path": "@COURSE@/simulation/core/sensors/processing/voltage_profile/duck-control__src__model.rs",
+    "sha256": "0d6f1c81ae18d928b309db5150e5a89ecf5c633c45eb593d0f87282355cab804"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs",
+    "commit": "53230463927095ea890f231d29089bb0a538c06f",
+    "path": "@COURSE@/simulation/core/sensors/processing/voltage_profile/robotd-params__src__board.rs",
+    "sha256": "f5022ef8b1f475e304bafe1a1a5566383eb50c2c90849643cf44b82d8b64a1a1"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/pollen-robotics/microduck/53230463927095ea890f231d29089bb0a538c06f/deploy/robotd.toml",
+    "commit": "53230463927095ea890f231d29089bb0a538c06f",
+    "path": "@COURSE@/simulation/core/sensors/processing/voltage_profile/deploy__robotd.toml",
+    "sha256": "0828664ce05c11dbf97019e1528004a2fec88dff2502de4e8fffec3d77903401"
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "schema": "microduck.capture-proprio-contract.v2",
+  "source_sha256": "e5b7100dd2163b0e0a66ed65a91f51173ae2fa196fbd056deb506e7b38c92ae7",
+  "API": "estimate_capture_proprio(packet, available_at_s=actual_delivery_availability, capture_timestamp_s=image_time, now_s=current_same_clock_time, joint_names=native14names)",
+  "input_source": "Actual delivered BODY50 packet, same-read4096-count positions/.229rpm velocities; no simulator encoder query",
+  "maximum_read_prediction_s": 0.02000001,
+  "capture_age_limit_s": 0.2,
+  "output": "accepted + observation(exact BetaPerception schema) + provenance(original times, raw values, derivative method, hash)",
+  "method": "q_capture_est=q_read+qd_read*(capture-read). Hold actual gyro/gravity, without modifying packet, simulation, or image.",
+  "important_semantics": [
+    "observation.timestamp_s describes derived capture-pose estimate, not a new hardware measurement",
+    "Caller retains original packet and validates temporal history; choose latest read already available before the image",
+    "Public capture estimate does not reduce geometric uncertainty, verify contact, or authorize kicking",
+    "No hardware calibration or whole-task success claimed"
+  ],
+  "cpu_review": "@COURSE@/configuration/core/capture-proprio-v2-cpu-review.json",
+  "independent_geometry_shadow": "@COURSE@/configuration/core/grounded-same-read-shadow-independent-review-v1.json",
+  "installed": false,
+  "qualification_claimed": false,
+  "maximum_sample_age_at_read_s": 0.01000001,
+  "maximum_sample_age_at_capture_s": 0.03000001,
+  "acquisition_age_rationale": "Explicit engineering bounds for current synthetic 120 Hz acquisition observed on 200 Hz physics and 50 Hz reads: at most 10 ms sample-to-read plus 20 ms read-to-capture. These are simulator admission assumptions, not verified hardware latency or uncertainty calibration.",
+  "prior_version": {
+    "source": "@COURSE@/simulation/core/sensors/processing/joint_observations/adapter.py",
+    "sha256": "e1ee84471b09f435942d6cddfc6161ca54a9408a5437b443a9ea80ea45726b30",
+    "review_finding": "@COURSE@/configuration/core/capture-proprio-v1-web-independent-review-v1.json"
+  },
+  "cpu_review_sha256": "6f11191222afc1f43c5e9f46052c655cd69ad4aed0da4f295291688d4fc786c7"
+}

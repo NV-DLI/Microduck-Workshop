@@ -1,0 +1,471 @@
+{
+  "schema": "microduck.football-media-release.v1",
+  "scope": "Independent frozen v40 controller with a private media-only executor; not formal qualification. No other source/registry/web changes.",
+  "controllerEntry": "@COURSE@/simulation/core/evaluation/navigation_base/execute.py",
+  "originalExecutorSHA256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
+  "sourceFiles": [
+    {
+      "path": "@COURSE@/configuration/core/beta-detector/football_detector/deployment.json",
+      "sha256": "c40b2e743d08e9ab370e0b2d4d4817066eb1e54c104f699895eb9770a25cc99f"
+    },
+    {
+      "path": "@COURSE@/runs/detect/configuration/core/beta-detector/football_detector/run/weights/best.onnx",
+      "sha256": "d65b14f68f55a75474d76953f86fbd9be9b0b4f99d1c6402e2c6edfaf196641b"
+    },
+    {
+      "path": "@COURSE@/runs/detect/configuration/core/beta-detector/football_detector/run/weights/best.pt",
+      "sha256": "6eba38e35bc7f58b9bf73f75c762d38491c0206adc50bcb6de163ce5e7fd12e9"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/bounded_image_head_servo.py",
+      "sha256": "f2c1b68ce19be41764dd040bfe2865492f862ef07ad67d6beed822f86246253e"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/execute_long_episode.py",
+      "sha256": "9a6a9948bec5250ae87002044853acf5be6bbdbedd9e3285308ae58229ae5f04"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/execute_observed_ball_turn.py",
+      "sha256": "eb6e1039f478da27b4ebb00c15015c66365625c9f8ac9605404b3e368947ae3f"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/execute_active_view.py",
+      "sha256": "8e149be387ccba8e34d0ab2221054b76b1e6b83ccac2f24798aaec312288c70c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/execute_velocity_policy.py",
+      "sha256": "e48ed17b2249be02fced96080a31bc58edf44cdedea63702f674b517dbf03236"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/execute_navigation.py",
+      "sha256": "5495f0cbec5070f7d010f92edfb666454090258da622ec42f8057d514e052af0"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/execute_observed_attention.py",
+      "sha256": "3e290f497ad35ef8c0ed847f3a26ffb307ab3c0ca746b122a331e85ad7f60e27"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/guarded_navigation_feedback.py",
+      "sha256": "c97c5bd869538cb9606aa4db73af4376671d754cb9141cebe50cdd2a87e3656b"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/image_head_servo.py",
+      "sha256": "342cada9cc79dca91bcc13b32e728cf1b0164269105688288f0d83f7baf333f7"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/measured_yaw_feedback.py",
+      "sha256": "1fa0a317ba93c24f02652865dfaa9ac5484592ab9f520e34fbc5c9642f1e9281"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/angular_navigation_native.py",
+      "sha256": "b0aaa44e9df97fa70a5da6c3c96ab26fd0e62ec5c3ec20e22d70494fe5a1dc87"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/command_navigation_native.py",
+      "sha256": "1af32049427a6a0eb07a21086826bad97cb19b74dcb0f8a1b00483c3c428ba7c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/design.json",
+      "sha256": "9fa199ee8e5e92f284d7884dde49df85819f61f53e665d7abc0f20259731376c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/execute.py",
+      "sha256": "1f2998d18d97c04bd644f985cb8b0869d2329e5eb23c400bbdc6c217fdaced50"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/goal_reacquisition_native.py",
+      "sha256": "98dddf9ad8790af59a8a9cc3b473cd7acb26f49daf658f54fef1ace0e9f98920"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/image_attention_native.py",
+      "sha256": "8f9358f0f600f723bee99eb98965c403caaf775864e4a58134131058e038be46"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/native_head_domain.py",
+      "sha256": "8f14ff23f03ee30c1623bc5ebb13f342ef1480f9cac5fdd0e7e0a59719b2f8e3"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/near_ball_phase_native.py",
+      "sha256": "4f5499f443e84e6c12eff4837fc17b37a8a166d9b5830d1ba79c4d98abd07768"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/test_command_guards.py",
+      "sha256": "255112dd5a81f15f597acdc6fd8be335c33cac8ed13b644385f2e2255a7b65c0"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/navigation_base/test_goal_reacquisition.py",
+      "sha256": "299c92bf0e4249b4466ad2688f505c9bc9d576d9b8d4bd42d430dd72fbeb9c54"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/observed_ball_attention.py",
+      "sha256": "9660e7ea5b39c476b721fa4611ccb7acfa4d780edb16dee1ce61c19efd3efa18"
+    },
+    {
+      "path": "@COURSE@/simulation/core/evaluation/tof_ball_association.py",
+      "sha256": "a9cca16efffdb8d3b5df839e2cd7cc1e11b9b20eba30012043eb16baca66db70"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/audit_fifo_prediction.py",
+      "sha256": "20d54c528c375870ccc5396556cd83e3389b74977b89b8801f8c851b6fcbd82c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/audit_policy_sensor_trace.py",
+      "sha256": "b9c52330708b3150bf1c9d81d4315fb61df18394dd3fcc9a36423ce4b144b83c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/audit_replay_geometry.py",
+      "sha256": "eeccc4ca89f1cd1b66b4894aff79957b633d47bfa0108ebaa82b12b3842a613d"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/body_imu_input.py",
+      "sha256": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/contact_scoring.py",
+      "sha256": "9d8909267a375f97097add3e7ab1db5add1bd7b933432c33c4d2c18e5d207589"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/controller.py",
+      "sha256": "4c3e2b2cfe31d0e8547b3581a4076d2bf44dd7e4b317981b9204e6d2ce2c1e7e"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/detector_client.py",
+      "sha256": "d5cd26bb049800890ce672050be50468ed7145447b3c13d4913e5abcc75e93dd"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/extract_collision_geometry.py",
+      "sha256": "1a6ddf63b4671d17433b49c056111304157b0820eaf37a4657452e35a636840b"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/gaze_tracking.py",
+      "sha256": "2609ae9417ba6a664ff8e2be310a5e5c87f9d4d50a27e90a78018ee0b51dd445"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/ground_plane.py",
+      "sha256": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/hardware_head_fk.py",
+      "sha256": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/head_adapter.py",
+      "sha256": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/http_client.py",
+      "sha256": "31c9620abc6d1b1de21be95073d011beeee8fcae0c13b220754032e3f1894698"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/imu_predictor.py",
+      "sha256": "f60f6277a712cb017a774ed559e01671026df7d5bda6f5d92163bf353f626efd"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/isaac_execute.py",
+      "sha256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/kick_control.py",
+      "sha256": "d3155cc59b7be1832c8b572261401058a2ebf3bdc4e96ab47f22c7879678f034"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/leg_odometry.py",
+      "sha256": "c88eb06e2ef0017e25b9c087884915ba477b4af2888d70eef07799504d3b2e7f"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/mechanical_scoring.py",
+      "sha256": "9c7c47080d2cd37dc928904cfb6dedb8c4384fbd026e3b359f5bc0e1aeec77a3"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/recording/execute.py",
+      "sha256": "798608923a74b6f959c34b32fe6af4989335602c96570d2f0a8b67c0720be1cb"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/recording/executor.py",
+      "sha256": "d19498e420541d929d48408c85bf907a89e49ee6d0676a5fd284610bdbca1954"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/recording/media_archive.py",
+      "sha256": "09419695795185461d8489b41d2a3939b27330a6f48c22107f2080146d96446d"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/recording/test_cpu.py",
+      "sha256": "ba09619d31b29410585867d028f95aee0d97d9a1995475d35e878d030e4e492d"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_bridge.py",
+      "sha256": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_service/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_service/client.py",
+      "sha256": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_service/contract.py",
+      "sha256": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_service/map_contract.py",
+      "sha256": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_service/obstacle_contract.py",
+      "sha256": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/nav2_service/owner.py",
+      "sha256": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/perception.py",
+      "sha256": "6312c31a6331f92e9616a990a9b915798606b15f6e719a68e3993cf2857ec368"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/prepare_calibration.py",
+      "sha256": "1cb0a7a46324fdecc0223b0f3887ada8fccb349692bf46561bcdb5bbf15cf6e4"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/replay_actual_rgb.py",
+      "sha256": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/scoring.py",
+      "sha256": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/server.py",
+      "sha256": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/startup_support.py",
+      "sha256": "fba79bfc789833ef2ada6aeee9db32a369f0448c5d9d50eb8339721306a5e134"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/student_entry.py",
+      "sha256": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_beta_image_geometry.py",
+      "sha256": "761efd7009c189a5f6f21afc32f6e43d53f5c7300d726a2f94ee1b14fd298115"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_body_imu_input.py",
+      "sha256": "255359ecb5a41f4d168a2b9cf7e49d9318af575582d15ee0f20cdda1ce8b2985"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_controller_cpu.py",
+      "sha256": "fdd2452e14fc04a12af2152d4547293ce95957abfdfcc33320f5bff315d5af29"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_cpu.py",
+      "sha256": "7ebfb45372564af57da88cce78eec80077858b89e7a6511f2cdc29a24a71791b"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_gaze_tracking.py",
+      "sha256": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_head_adapter.py",
+      "sha256": "46e26147ad0759191790bc37bc3ad2435cfb16902aff9a9169e389eac948db7b"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_imu_predictor.py",
+      "sha256": "d12415b4ec201ebcb9ac37fdfb5ed7a6e2e006ba389efcb27447e7994431b6fb"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_mechanical_scoring.py",
+      "sha256": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_nav2_actual.py",
+      "sha256": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/test_startup_support.py",
+      "sha256": "e805771249e360aed03aa14e5269c459bf2820de5ef45fa3ea5e9856e3ff32ae"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/beta_box_geometry.py",
+      "sha256": "8a91078c5a4ca1b05f00e6190a55f74076328616d767a9dca027652743dc8090"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/beta_goal_points.py",
+      "sha256": "e3b3543518ed07ee5d687e01a669301bbdb78f540884434c07682f01d9238fee"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/contour.py",
+      "sha256": "99fdfad1f418a0ed41b84f17001161685dc5b0ac682395a0e756e31d2d011212"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/goal_geometry.py",
+      "sha256": "66aacd0504c20f0c7588340481a67d4a00941246228e5eceacdccf0a6e939f96"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/goal_points.py",
+      "sha256": "3c91b899ef19af4aa7278046ada695a581b968fee16fb92780127aa75eac9160"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/grounded_direction.py",
+      "sha256": "7a9ec2f802a7de227125f464ee037de2410c7dc02945fa9577178b1367905b16"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/known_goal_geometry.py",
+      "sha256": "3f4eac071f0bb6eecfe00edb7fcc189c8ad80fd7e9f1f9387e45b7d80e777e8a"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/vision/sphere_geometry.py",
+      "sha256": "0d0c41c4477898521cba45aab57c93d83e91874d7be71306af93eabd3592647d"
+    },
+    {
+      "path": "@COURSE@/simulation/core/football/visual_localization.py",
+      "sha256": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1"
+    },
+    {
+      "path": "@COURSE@/simulation/core/gait/batch_policy.py",
+      "sha256": "96699402dc689ca2dec56a048b90b8e2d45202b9aec27e09e122013d5562992a"
+    },
+    {
+      "path": "@COURSE@/simulation/core/gait/bounded-action-limits.json",
+      "sha256": "b5ee7082137620880ff8a9d2b492e9c834f750bf52ac8f593f4235b190f04f5d"
+    },
+    {
+      "path": "@COURSE@/simulation/core/gait/bounded_actions.py",
+      "sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa"
+    },
+    {
+      "path": "@COURSE@/simulation/core/models/reference/manifest.json",
+      "sha256": "c566390738dd90a54c1e2de829aaab0e904c636949e2c2c6158ee7bbb889b818"
+    },
+    {
+      "path": "@COURSE@/simulation/core/models/reference/velstand.onnx",
+      "sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492"
+    },
+    {
+      "path": "@COURSE@/simulation/core/perception/detector.py",
+      "sha256": "c1d7a71289f04af28cd0e6679f097cefdaf82489e350ba8383b6b09332e457c7"
+    },
+    {
+      "path": "@COURSE@/simulation/core/perception/serve_detector.py",
+      "sha256": "ad617e26b2b8ab718c519585da03ee1bf4e2f71e7ef9195a7e1b897c78d5c5e8"
+    },
+    {
+      "path": "@FFMPEG@",
+      "sha256": "6bb182d0d75d23028db82e9e4f723ca69b853d055698486e6984ddb2c06fb8ce"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/beta_body_imu.py",
+      "sha256": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/beta_head_imu.py",
+      "sha256": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/beta_mounts.py",
+      "sha256": "ba18d0cf6812412b5805cac92503f2bc7303b0fb0adb7fe4129d53ecb0aeee8e"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/beta_perception_geometry.py",
+      "sha256": "c6e84f14c0ba4f30d7620bc86cc54ca5303a319450fcfa752766a06c1e140eca"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/beta_sensor_profile.py",
+      "sha256": "d7ebc2fab16125ab4a0fd2679b96384199493a03ecad7eae634664bee72caa3a"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/beta_tof_geometry.py",
+      "sha256": "2972b464cbaeeeb2913d85c6ab6045b42d622d926c67333677767795e8d03244"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/capture_clock.py",
+      "sha256": "6ae284fffab7c984b4f5c1003165a939c9621f70e264f173a096597017d1af68"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/processing/body50_scalar_finite_range/adapter.py",
+      "sha256": "e89a75dab743496e2557328e3e3bc02077f42baef5d2fb05a0f165c55b88a525"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/processing/body50_scalar_finite_range/finite_range_chip.py",
+      "sha256": "22092450706b661503d420d4a76566918ce3b6c92c64b1d421aeb9daf4284d21"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/processing/body50_scalar_finite_range/test_contract.py",
+      "sha256": "750f43d5dafc3784d1a63ecd7702f11f163fe30b9307fded9c07e8208552c837"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/processing/body50_scalar_finite_range/test_vector_equivalence.py",
+      "sha256": "da54aa69849db9cbc1f87b8e266520afe2142ca0e96653589dab6d329962124e"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/processing/packed_readback.py",
+      "sha256": "272e2b57304f65d53b775e06da6d996c0836377dcb640a81de2f46d0f5c42568"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/processing/shared_imu_snapshot.py",
+      "sha256": "71b9307bc0abe32524530cd59aa87e8c4f331eb5d0fc95d5170a9fb21b3cc14f"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/isaac_beta_body_imu.py",
+      "sha256": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/isaac_beta_sensor_rig.py",
+      "sha256": "8aa46f6ec9513a8276e24f3886dbb79954a3660d2239427842df4d65fb9a8d08"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/isaac_beta_sensors_smoke.py",
+      "sha256": "ae092018c47190403d0fdf3f6636f3ea4e8d4d3c45cae824120f174449021f5a"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/make_sensor_matrix.py",
+      "sha256": "1aa71466cf39bdb49d801896ecf29b30d6433ad271e035ef9bd4b43a46b697a6"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/verify_body_hardware_profile.py",
+      "sha256": "ae9fbff8cf53f3d755a99814e46e320d8841b2962bac38b2656f8d82748df12b"
+    },
+    {
+      "path": "@COURSE@/simulation/core/sensors/verify_hardware_profile.py",
+      "sha256": "892d7647a9d552bcf59ab4b1621981808a71360dabd630afb657185837dff1bc"
+    }
+  ],
+  "cpuEvidence": [
+    {
+      "path": "@COURSE@/configuration/core/recording_config/report.json",
+      "sha256": "2e68c52a52978b35b4afb020bda32f9fddaa4e018a71f5cd97ac5c59ac65f645"
+    },
+    {
+      "path": "@COURSE@/configuration/core/recording_config/capture-verification.json",
+      "sha256": "d13a940f1022a7819541d97a794e5d0bdb33d355f25c9fdd0e5a8dc9c4733ec2"
+    }
+  ],
+  "expectedPackages": {
+    "Pillow": "12.3.0",
+    "numpy": "2.5.1"
+  },
+  "queue": {
+    "capacity": 16,
+    "compressionLevel": 1,
+    "fullPolicy": "block; error on bounded timeout, never overwrite/drop"
+  },
+  "video": {
+    "fps": 15,
+    "postEpisode": true,
+    "views": 3,
+    "sourceOrderPreserved": true
+  },
+  "actualKitRunCompleted": false,
+  "qualificationClaimed": false
+}

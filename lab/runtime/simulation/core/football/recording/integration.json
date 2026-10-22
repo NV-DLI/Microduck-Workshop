@@ -1,0 +1,31 @@
+{
+  "schema": "microduck.football-media-integration.v1",
+  "release": "@COURSE@/simulation/core/football/recording/release.json",
+  "launchPlan": "@COURSE@/simulation/core/football/recording/launch-plan.json",
+  "privateEntry": "@COURSE@/simulation/core/football/recording/execute.py",
+  "whatChanged": [
+    "Private executor ROOT anchored back to originalfootball dir; private module preinstalled beforefrozenv40 imports.",
+    "Capture rows and copied960x540RGBpair/32x32rawToF enter boundedspawnworker beforeYOLO; same originalRGB/ToF still go to synchronousYOLO/control.",
+    "RawRGB andoverhead pixelSHA and rawfloat32ToFSHAchecked bothends; PNGlevel1newbytes/NPYfileSHAlogged.",
+    "Originalcontrol,200Hzphysics/IMU and50Hzpolicy traces remain on theoriginal path, unchanged.",
+    "Allcaptures archived, temporarylatest preview throttled to1wallsecond and markedRECORDING; finalvideo annotates theexact sameframe recordedcontrol.",
+    "Finally closes alloriginaltracefiles, drainsmedia, generates3videos15fps then originaldetector/Nav2/envcleanup. Media failure marks evidenceincomplete,retainsphysicalterminalreason and allfiles, raises instead of qualifying."
+  ],
+  "unchanged": [
+    "Nochange toFv40/sharedisaac_execute/activev41/currenttrain/webv44",
+    "No change inRGB/ToF15Hz orphysics200Hz/policy50Hz, sourcecalibration/YOLOweights/backend/commands/score",
+    "No asynchronous latest-frame inference, noframe selection, noimplicitreset orfailed-episode removal"
+  ],
+  "evaluationBeforeFormalUse": [
+    "Actual8s stageverify completecapturedfiles/tracecounters/SHA/detections binding/queuedrain/videochildren; preserve anyfailedattempt.",
+    "Compareactualcounter/actor/control andsourceconditions againstfrozenbaseline; CPUshadow aloneisnottiming/trajectoryqualification.",
+    "Run appropriatelypredeclaredlongerpaired check beforeformal100+100; GPU async/sharedload andnewCPUworker can affectwalltiming."
+  ],
+  "retention": [
+    "Failure outputfolder notdeleted orreused. Existingoutputrejected. Sensorline committedafter itsfiles.",
+    "Report catches corrupt/unreadableworkerreport andparentreportwritefailure; fallback exactPID/startticks cleans onlyownedffmpeg.",
+    "Queue delay/worker drain/cumulativeCPU costs separate inreport.",
+    "No power-lossdurability claim: atomic files andfsyncedrowjournals preserve process-error evidence; not tested against machine powerfailure."
+  ],
+  "rollback": "Choose original frozen v40 execute.py for a new independent output. No shared source or published route was replaced."
+}

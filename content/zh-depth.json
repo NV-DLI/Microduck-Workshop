@@ -45,15 +45,12 @@
         {
           "type": "code",
           "code": "M = mul(parent_M, M_rest)\nJ = mul(mul(tf(None, jpos), tf(axis_angle_rot(axis, q))),\n        tf(None, [-c for c in jpos]))\nM = mul(M, J)",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/artwork/cad_assembly.py"
         },
         {
           "type": "p",
           "zh": "<code>M_rest</code> 表示静态装配关系，<code>axis</code> 和 <code>jpos</code> 定义转轴，<code>q</code> 是关节角度。J 表示绕该转轴旋转，再与父部件的变换相乘。课程结构模型沿这条机械链放置 CAD 零件；展开滑块只改变展示位置，不改变实际的关节定义。"
-        },
-        {
-          "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/artwork/cad_assembly.py\" target=\"_blank\" rel=\"noopener\">artwork/cad_assembly.py</a>。先阅读本节节选，再结合完整文件理解上下文。"
         },
         {
           "type": "p",
@@ -72,7 +69,11 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "本章使用固定行走策略执行给定速度指令，观察机器人能否保持站立并朝指定方向运动。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。"
+          "zh": "本章使用 Isaac Lab 的 Microduck 任务加载固定行走策略，以 Newton 作为物理后端，并通过 Isaac Sim 窗口观察给定速度指令下的运动。Isaac Lab 3 把物理、渲染与可视化分开：Newton 可以在不启动 Kit 的轻量路径中运行，而本章入口为了显示场景显式要求 Isaac Sim 6.2。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。"
+        },
+        {
+          "type": "platform",
+          "zh": "Isaac Lab 统一组织学习任务，Newton 负责物理推进；需要相机图像或交互界面时，再使用 Isaac Sim 的渲染与传感器能力。区分这些职责，有助于按训练和验证任务选择运行方式。"
         },
         {
           "type": "flow",
@@ -91,7 +92,9 @@
               "执行动作，产生下一次观测"
             ]
           ],
-          "zh": "速度指令决定“往哪里、以多快的速度走”；策略负责把它转为协调的关节动作。"
+          "zh": "速度指令决定“往哪里、以多快的速度走”；策略负责把它转为协调的关节动作。",
+          "loop": true,
+          "loop_label": "下一次观测 oₜ₊₁"
         },
         {
           "type": "equation",
@@ -111,15 +114,12 @@
         {
           "type": "code",
           "code": "action = policy(env.observation_manager.compute(update_history=True)['policy'])\nenv.action_manager.process_action(action)\nfor tick in range(4):\n    env.action_manager.apply_action()\n    env.scene.write_data_to_sim()\n    env.sim.step(render=not a.headless and tick==3)\n    env.scene.update(.005)",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py"
         },
         {
           "type": "p",
-          "zh": "这段节选对应图中的闭环：先生成观测，再推理动作，随后执行四个 5 ms 物理步。完整程序还会更新计数器并检查是否跌倒。下面的命令先保持约 2 秒站姿，再发送速度指令；不要把启动阶段的静止误判为策略无响应。"
-        },
-        {
-          "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py\" target=\"_blank\" rel=\"noopener\">lab/walk.py</a>。先阅读本节节选，再结合完整文件理解上下文。"
+          "zh": "这段节选对应图中的闭环：Isaac Lab 的观测管理器生成策略输入，动作管理器处理动作并驱动执行器，Newton 随后执行四个 5 ms 物理步。完整程序还会更新计数器并检查是否跌倒。下面的命令先保持约 2 秒站姿，再发送速度指令；不要把启动阶段的静止误判为策略无响应。"
         },
         {
           "type": "p",
@@ -132,7 +132,7 @@
         },
         {
           "type": "p",
-          "zh": "本章只做推理，不更新模型参数，也不需要带标签的数据集。仿真中的观测、动作和轨迹就是本次实验的数据。后续训练会把相同的交互扩展到多个并行环境。"
+          "zh": "本章只做推理，不更新模型参数，也不需要带标签的数据集。仿真中的观测、动作、接触状态和轨迹就是本次实验的数据。Newton 处理足地接触、执行器延迟与齿隙后，实际关节不一定立即到达策略给出的目标；这正是闭环观测不可省略的原因。后续训练会用 Isaac Lab 把相同交互扩展到多个 GPU 并行环境。"
         }
       ],
       "before": "policy-interface"
@@ -151,7 +151,7 @@
         },
         {
           "type": "p",
-          "zh": "强化学习通过“尝试动作 → 得到反馈 → 调整策略”学习控制。这里没有“每个状态对应正确关节角度”的标准答案数据集；仿真器生成状态转移，奖励函数表达期望行为。监督学习或模仿学习也能训练控制器，但需要相应的动作示例；本章使用现有仿真任务与奖励定义，通过强化学习走完整个训练流程。"
+          "zh": "强化学习通过“尝试动作 → 得到反馈 → 调整策略”学习控制。这里没有“每个状态对应正确关节角度”的标准答案数据集；Newton 生成状态转移，Isaac Lab 的奖励管理器表达期望行为。监督学习或模仿学习也能训练控制器，但需要相应的动作示例；本章使用现有任务与奖励定义，通过强化学习走完整个训练流程。"
         },
         {
           "type": "flow",
@@ -182,7 +182,11 @@
               "用更新后的策略收集新数据"
             ]
           ],
-          "zh": "数据分布会随策略变化。PPO 用一批新采集的数据进行有限次更新，然后重新与环境交互。"
+          "zh": "Isaac Lab 在 GPU 上把多个环境表示为批量状态：观测、动作、奖励和终止标记都按环境索引组织。发生跌倒或超时的副本由事件与终止逻辑独立重置，其余副本继续采样。数据分布会随策略变化；PPO 用一批新采集的数据进行有限次更新，然后重新与环境交互。",
+          "groups": [
+            "Isaac Lab + Newton：GPU 并行采样",
+            "RSL-RL：整理样本、更新并继续采样"
+          ]
         },
         {
           "type": "equation",
@@ -196,6 +200,17 @@
         {
           "type": "p",
           "zh": "训练时，策略网络根据 61 维可部署观测选择动作；价值网络可以使用额外的仿真信息估计回报。两者分工不同，导出的行走策略仍使用 61 维输入，不会因为训练时使用了额外信息，就在部署时获得机器人世界坐标。"
+        },
+        {
+          "type": "media",
+          "file": "balance-training.gif",
+          "poster": "balance-training.jpg",
+          "alt": {
+            "zh": "真实的并行强化学习训练录像：画面展示篮球平衡任务如何在多个环境中采样，用于说明训练过程如何收集交互数据。这不是行走练习的成绩，也不能证明篮球技能已经训练成功。",
+            "en": "Recorded parallel reinforcement learning: this basketball-balance run illustrates multi-environment sampling. It is not the walking exercise result or evidence of a successful basketball skill."
+          },
+          "zh": "真实的并行强化学习训练录像：画面展示篮球平衡任务如何在多个环境中采样，用于说明训练过程如何收集交互数据。这不是行走练习的成绩，也不能证明篮球技能已经训练成功。",
+          "en": "Recorded parallel reinforcement learning: this basketball-balance run illustrates multi-environment sampling. It is not the walking exercise result or evidence of a successful basketball skill."
         }
       ],
       "replace": "loop"
@@ -222,7 +237,8 @@
         {
           "type": "code",
           "code": "xy_error = torch.sum(torch.square(command[:, :2] - actual[:, :2]), dim=1)\nz_error = torch.square(actual[:, 2])\nreturn zero_non_finite(torch.exp(-(xy_error + z_error) / std**2))",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck/mdp/rewards.py"
         },
         {
           "type": "p",
@@ -280,7 +296,8 @@
         {
           "type": "code",
           "code": "ratio = torch.exp(actions_log_prob - torch.squeeze(batch.old_actions_log_prob))\nsurrogate = -torch.squeeze(batch.advantages) * ratio\nsurrogate_clipped = -torch.squeeze(batch.advantages) * torch.clamp(\n    ratio, 1.0 - self.clip_param, 1.0 + self.clip_param\n)\nsurrogate_loss = torch.max(surrogate, surrogate_clipped).mean()",
-          "label": "Python · RSL-RL 5.5.1 的 PPO 实现节选"
+          "label": "Python · RSL-RL 5.5.1 的 PPO 实现节选",
+          "source": "https://github.com/leggedrobotics/rsl_rl/blob/v5.5.1/rsl_rl/algorithms/ppo.py"
         },
         {
           "type": "p",
@@ -310,7 +327,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "本次练习从随机初始化开始，不读取固定行走模型继续训练。64 个环境各采集 24 步交互，形成一轮采样数据；每条记录包含观测、动作、奖励、旧策略对数概率、价值估计和结束标记。这些记录保存在训练期间的内存缓冲区中，并非预先下载的图像或动作标签。"
+          "zh": "本次练习从随机初始化开始，不读取固定行走模型继续训练。脚本通过 Isaac Lab 的实际任务配置创建 64 个 Newton 环境，而不是另写一套简化训练器；每个环境各采集 24 步交互，形成一轮采样数据。每条记录包含观测、动作、奖励、旧策略对数概率、价值估计和结束标记，保存在训练期间的内存缓冲区中，并非预先下载的图像或动作标签。"
         },
         {
           "type": "equation",
@@ -368,15 +385,12 @@
         {
           "type": "code",
           "code": "base = gym.make(task, cfg=cfg).unwrapped\nenv = RslRlVecEnvWrapper(base, clip_actions=agent.clip_actions)\nrunner = OnPolicyRunner(env, to_dict(agent), log_dir=str(args.output), device='cuda:0')\nrunner.learn(num_learning_iterations=args.iterations, init_at_random_ep_len=True)",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/gait/student_train.py"
         },
         {
           "type": "p",
-          "zh": "环境提供状态转移和奖励，包装器将其接入 RSL-RL，<code>OnPolicyRunner</code> 负责反复采样和更新。下面保留可直接执行的短训练命令；其目的只是跑通并观察完整工作流，不是在数秒内得到可靠的行走策略。"
-        },
-        {
-          "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/frozen/workshop/migration-20261019/gait/student_train.py\" target=\"_blank\" rel=\"noopener\">训练脚本 student_train.py</a>。先阅读本节节选，再结合完整文件理解上下文。"
+          "zh": "Isaac Lab 任务提供状态转移、管理器和批量重置，包装器将其接入 RSL-RL，<code>OnPolicyRunner</code> 负责反复采样和更新。Newton 的 Warp/CUDA 路径让这些环境在 GPU 上并行推进；优势来自批量执行与统一任务接口，不能把一次 13.1 秒记录外推成通用加速倍数。下面保留可直接执行的短训练命令；其目的只是跑通并观察完整工作流，不是在数秒内得到可靠的行走策略。"
         }
       ],
       "before": "practice"
@@ -398,7 +412,7 @@
         },
         {
           "type": "image",
-          "file": "media/walk-training-curves-v2.svg",
+          "file": "media/walk-training-curves-hd.svg",
           "alt": {
             "zh": "64 个环境、20 轮真实短训练的平均回合回报与平均回合长度曲线"
           },
@@ -459,7 +473,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "行走需要持续跟踪速度并维持周期性支撑；射门则要在合适时刻快速摆动一条腿、接触足球，再恢复支撑。两者的目标、时间尺度和结束条件不同。如果只把“碰到球”加入行走奖励，可能得到失衡碰撞，而非可重复的踢球动作。"
+          "zh": "行走需要持续跟踪速度并维持周期性支撑；射门则要在合适时刻快速摆动一条腿、接触足球，再恢复支撑。Isaac Lab 允许两项技能复用相同的机器人、观测管理器、动作管理器和 Newton 执行器配置，同时分别定义命令、事件与终止条件。这样既减少接口漂移，也不会抹平两项技能在目标和时间尺度上的差异。如果只把“碰到球”加入行走奖励，可能得到失衡碰撞，而非可重复的踢球动作。"
         },
         {
           "type": "flow",
@@ -524,7 +538,17 @@
         },
         {
           "type": "p",
-          "zh": "验证不能止于“文件可以加载”。先用下方命令检查模型接口，再观看带进度条的任务录像，分别定位接近、出脚和恢复时刻。最后根据完整任务结果确认脚与球的真实接触、足球过门和恢复情况，避免仅凭单帧截图判断成功。"
+          "zh": "验证不能止于“文件可以加载”。先用下方命令检查模型接口，再观看带进度条的任务录像，分别定位接近、出脚和恢复时刻。观察出脚前球与支撑脚的间距、摆动腿是否留出空间，以及恢复后机身倾角是否收敛；脚球接触与过门仍要依据 Newton 物理记录，不能凭画面重叠或单帧截图判断成功。"
+        },
+        {
+          "type": "p",
+          "zh": "技能控制器决定本次使用行走动作还是踢球动作，随后仍通过 Isaac Lab 的同一套动作管理器执行。下面节选了两个频率层次中的调用：策略以 50 Hz 提交关节目标，物理循环以 200 Hz 应用动作、写入场景并推进 Newton。这样，切换技能时可以继续使用相同的机器人、执行器和接触模型。"
+        },
+        {
+          "type": "code",
+          "label": "Python · Isaac Lab 动作接口节选",
+          "code": "env.action_manager.process_action(last_action)\n\n# 每个物理步执行\nenv.action_manager.apply_action()\nenv.scene.write_data_to_sim()\nsim.step(render=False)\nenv.scene.update(.005)",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/executor.py"
         }
       ],
       "before": "contract"
@@ -548,7 +572,8 @@
         {
           "type": "code",
           "label": "Python · 固定踢球组合的核心节选",
-          "code": "actor = np.concatenate((obs, np.array([np.clip(phase, -1, 4)/np.float32(4)], np.float32)))\nstanding = self._infer(0, obs)\nkicking = self._infer(1, obs)\nresidual = self._infer(2, actor)\nu = np.clip((phase-np.float32(.14))/np.float32(.12), np.float32(0), np.float32(1))\nweight = np.float32(1)-u*u*(np.float32(3)-np.float32(2)*u)\nteacher = weight*kicking+(np.float32(1)-weight)*standing\ndelta = np.float32(.2)*np.tanh(residual)"
+          "code": "actor = np.concatenate((obs, np.array([np.clip(phase, -1, 4)/np.float32(4)], np.float32)))\nstanding = self._infer(0, obs)\nkicking = self._infer(1, obs)\nresidual = self._infer(2, actor)\nu = np.clip((phase-np.float32(.14))/np.float32(.12), np.float32(0), np.float32(1))\nweight = np.float32(1)-u*u*(np.float32(3)-np.float32(2)*u)\nteacher = weight*kicking+(np.float32(1)-weight)*standing\ndelta = np.float32(.2)*np.tanh(residual)",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/kick_runtime.py"
         },
         {
           "type": "p",
@@ -559,27 +584,23 @@
           "zh": "完整函数还检查观测是否有效、外层是否允许出脚、头部是否回到指定状态，以及上一动作是否与实际发送值一致。只有满足条件，才进入上面的混合过程；因此，不能绕过任务入口，单独调用这个节选来操纵机器人。"
         },
         {
-          "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/frozen/workshop/migration-20261019/acceptance/native_football_v121/kick_runtime_early.py\" target=\"_blank\" rel=\"noopener\">固定踢球运行模块</a>。本章只阅读和检查接口，完整调用见第七章。"
-        },
-        {
           "type": "sequence",
           "label": "一次真实轨迹中的三个动作时刻",
           "items": [
             {
-              "file": "media/kick-pose-1-v2.webp",
+              "file": "media/kick-pose-1-hd.webp",
               "label": "出脚前"
             },
             {
-              "file": "media/kick-pose-2-v2.webp",
+              "file": "media/kick-pose-2-hd.webp",
               "label": "出脚阶段"
             },
             {
-              "file": "media/kick-pose-3-v2.webp",
+              "file": "media/kick-pose-3-hd.webp",
               "label": "恢复后"
             }
           ],
-          "zh": "根据同一次运行保存的身体姿态、实际关节角度和足球位置，使用 Blender 重绘的三个时刻。几何与时序来自记录；材质、灯光和球门外观用于展示。这不是新的仿真试验，接触与成功判定仍以物理日志为准。点击任一图片可放大。"
+          "zh": "三个画面对应同一条已保存轨迹中的出脚前、摆腿和恢复时刻。依次观察支撑脚是否稳定、摆动腿与足球的相对位置，以及出脚后双脚重新形成支撑时的机身姿态。接触、进球和恢复站稳的判断方法见后面的验证步骤。点击任一图片可放大。"
         }
       ]
     }
@@ -593,7 +614,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "行走策略知道如何控制身体，却不知道足球在哪里。本章先用固定检测器在图像中找出足球与球门，再理解这些二维检测结果如何用于后续几何估计。目标检测回答“是什么、在图像中的哪里”；距离、方向和观测是否仍有效，则需要额外的几何与时间信息。"
+          "zh": "行走策略知道如何控制身体，却不知道足球在哪里。Isaac Sim 可以在同一 USD 场景中让 RTX RGB、深度和机器人头部姿态按统一时钟更新，便于重复检查视角、遮挡与时间对齐。本章先用固定检测器在图像中找出足球与球门，再理解这些二维结果如何与 ToF、IMU 和头部运动学结合。目标检测回答“是什么、在图像中的哪里”；距离、方向和观测是否仍有效，则需要额外的几何与时间信息。"
         },
         {
           "type": "flow",
@@ -616,12 +637,13 @@
         },
         {
           "type": "p",
-          "zh": "之所以选择学习型检测器，是因为目标大小、视角和背景都会变化。与手工设定颜色阈值相比，检测模型可以从标注样本中学习特征；代价是需要覆盖目标条件的数据和独立验证。课程先提供固定模型作为基准，再用小数据集体验训练。"
+          "zh": "之所以选择学习型检测器，是因为目标大小、视角和背景都会变化。与手工设定颜色阈值相比，检测模型可以从标注样本中学习特征；代价是需要覆盖目标条件的数据和独立验证。Isaac Sim 支持在受控场景中生成图像和标注，适合系统改变相机位姿、光照和遮挡；但当前课程传感器 rig 明确不输出物体语义真值，练习集标签也不是运行时从场景自动读取。课程先提供固定模型作为基准，再用现有小数据集体验训练。"
         },
         {
           "type": "code",
           "code": "results = YOLO(str(a.model)).predict(\n    source=[str(x) for x in paths], imgsz=640, save=True,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device='cpu'\n)",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/detector.py"
         },
         {
           "type": "p",
@@ -629,7 +651,13 @@
         },
         {
           "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/detector.py\" target=\"_blank\" rel=\"noopener\">lab/detector.py</a>。先阅读本节节选，再结合完整文件理解上下文。"
+          "zh": "在代码中，Isaac Lab 的 Camera 配置把相机放到场景中的指定位置，并选择 Isaac Sim 的 RTX 渲染器输出 RGB 图像。下面的内参矩阵用于相机投影，渲染尺寸按标定参数在图像边缘预留了额外范围（过扫描）。渲染完成后，再经过标定重映射得到检测器使用的图像；代码中的 render_width/height 表示重映射前的尺寸。相机的安装姿态、内参和输出类型因此可以与机器人模型一起检查。"
+        },
+        {
+          "type": "code",
+          "label": "Python · Isaac Sim RTX 相机配置节选",
+          "code": "self.rgb_camera = Camera(CameraCfg(\n    prim_path=rgb_path, update_period=0.,\n    width=self.render_width, height=self.render_height,\n    data_types=['rgb'], renderer_cfg=IsaacRtxRendererCfg(),\n    spawn=sim_utils.PinholeCameraCfg.from_intrinsic_matrix(\n        render_k.flatten().tolist(),\n        self.render_width, self.render_height,\n        clipping_range=(.03, 20.), focal_length=15.),\n))",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/sensors/isaac_beta_sensor_rig.py"
         }
       ],
       "before": "sensors"
@@ -642,7 +670,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "练习集包含 40 张图像，按 24 / 8 / 8 划分为训练集、验证集和测试集。训练集用于更新参数，验证集用于观察训练过程与选择模型，测试集应留到方案确定后再使用。该小样本集仅用于跑通训练流程，不能代表真实部署中的全部光照、遮挡、距离和背景条件。"
+          "zh": "练习集包含 40 张图像，按 24 / 8 / 8 划分为训练集、验证集和测试集。训练集用于更新参数，验证集用于观察训练过程与选择模型，测试集应留到方案确定后再使用。无论标签来自人工标注还是另行搭建的 Isaac Sim 合成数据管线，都应把图像、标签、场景参数和划分规则一起保存，防止相邻近似帧跨集合泄漏。当前小样本集仅用于跑通训练流程，不能代表真实部署中的全部光照、遮挡、距离和背景条件。"
         },
         {
           "type": "equation",
@@ -677,7 +705,7 @@
         },
         {
           "type": "p",
-          "zh": "扩充数据时，应增加对不同距离、朝向、遮挡和背景的覆盖，并按采集场景或序列划分数据，避免相邻的近似帧同时进入训练集和测试集。训练时间取决于数据量与预算；可先用短练习测量每轮耗时，再安排后续实验。"
+          "zh": "扩充数据时，可利用 Isaac Sim 对相机位姿、光照、材质与遮挡做受控变化，并保存与每张图像对应的场景参数和标签来源；仍应按场景或序列划分数据，避免相邻近似帧同时进入训练集和测试集。合成覆盖不能替代真实相机测试，尤其是镜头畸变、噪声和材质反射差异。训练时间取决于数据量与预算；可先用短练习测量每轮耗时，再安排后续实验。"
         }
       ],
       "before": "training"
@@ -714,12 +742,12 @@
         },
         {
           "type": "code",
-          "code": "ray_camera = inv_K @ np.array([u, v, 1.0])\nray_camera /= np.linalg.norm(ray_camera)\nray_body = R_body_camera @ ray_camera\ndenominator = normal @ ray_body\n# Check the denominator and the sign of the distance before using the intersection.\ndistance = -(normal @ origin + plane_offset) / denominator\npoint_body = origin + distance * ray_body",
+          "code": "ray_camera = inv_K @ np.array([u, v, 1.0])\nray_camera /= np.linalg.norm(ray_camera)\nray_body = R_body_camera @ ray_camera\ndenominator = normal @ ray_body\n# 使用交点前，检查分母是否接近零以及距离的符号。\ndistance = -(normal @ origin + plane_offset) / denominator\npoint_body = origin + distance * ray_body",
           "label": "Python · 几何原理示意，不是独立运行脚本"
         },
         {
           "type": "p",
-          "zh": "这段示意代码用于对应公式；完整任务还会使用检测框几何、ToF 观测、头部运动学和有效性检查。验证时，应同时检查检测框是否贴合目标、像素是否使用正确内参、估计位置是否合理，以及图像是否过期。检测框正确并不意味着三维位置一定正确。"
+          "zh": "这段示意代码用于对应公式；完整任务还会使用 Isaac Sim RTX 图像、32 × 32 深度产品采样得到的 8 × 8 ToF 近似、头部运动学和有效性检查。传感器挂载到实际 Newton 头部连杆姿态，而不是保持世界水平的虚拟云台。验证时，应同时检查检测框、相机内参、估计位置和时间戳；检测框正确并不意味着三维位置一定正确。"
         }
       ],
       "before": "projection"
@@ -734,7 +762,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "足球是要踢向球门的目标物，并非机器人的最终站位。若导航器直接将球心设为终点，机器人可能提前撞球，或因站得太近而无法出脚。本章先计算球后方的准备位置，再理解路径规划、路径跟踪与行走控制之间的分工。"
+          "zh": "足球是要踢向球门的目标物，并非机器人的最终站位。若导航器直接将球心设为终点，机器人可能提前撞球，或因站得太近而无法出脚。本章先计算球后方的准备位置，再理解完整链路：Isaac Sim 提供带时间戳的感知快照，课程桥接器把地图与目标交给独立的 ROS 2 Nav2/Navfn 服务，上层控制逻辑根据返回路径生成速度指令，再由固定行走策略产生关节动作。"
         },
         {
           "type": "equation",
@@ -754,15 +782,12 @@
         {
           "type": "code",
           "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [a.ball[i] - a.distance * direction[i]\n          + a.lateral * normal[i] for i in range(2)]",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py"
         },
         {
           "type": "p",
           "zh": "这是下方 <code>plan</code> 命令所用的几何计算节选。完整程序会检查输入是否为有限值、准备距离是否为正，以及球与球门点是否重合。本章命令只根据已知二维点计算站位，不调用真实相机，也不能证明机器人能够到达该位置。"
-        },
-        {
-          "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py\" target=\"_blank\" rel=\"noopener\">scripts/workshop.py</a>。先阅读本节节选，再结合完整文件理解上下文。"
         },
         {
           "type": "flow",
@@ -773,8 +798,8 @@
               "球与球门 → 准备位置"
             ],
             [
-              "Nav2 与路径跟踪",
-              "地图与目标 → 路径及速度指令"
+              "ROS 2 Nav2 规划",
+              "传感器快照与目标 → 路径"
             ],
             [
               "固定行走策略",
@@ -785,7 +810,14 @@
         },
         {
           "type": "p",
-          "zh": "规划器根据几何关系与地图计算路径；本章不训练导航模型，也不使用导航训练数据集。运行 <code>plan</code> 后，先通过手算核对目标位置；运行完整任务时，再检查实际路径是否绕开受限区域、机器人是否在球后方停稳，以及是否满足出脚条件。后退或重新观察属于任务控制逻辑，不能仅因距离暂时增大就判定导航失败。"
+          "zh": "完整任务的桥接器按序号和仿真时间提交不可变快照，Nav2/Navfn 在隔离的 CPU 容器中使用 ROS 2 墙钟计算路径，再返回与请求匹配的结果。它不直接访问仿真器内部对象或 GPU，也不直接发布 <code>/cmd_vel</code>；Isaac Sim 官方支持 ROS 2 导航集成，但本课程采用的是上述显式文件桥接。运行本章 <code>plan</code> 命令时只做二维几何，不会启动这项服务。完整任务还要检查机器人是否在球后方停稳并满足出脚条件；后退或重新观察属于任务控制逻辑，不能仅因距离暂时增大就判定导航失败。"
+        },
+        {
+          "type": "note",
+          "title": {
+            "zh": "扩展工具要与机器人问题匹配"
+          },
+          "zh": "NVIDIA cuMotion 面向机械臂的碰撞感知运动生成，适合关节臂抓取与轨迹规划；Microduck 当前需要的是双足步态稳定、足球站位和短时出脚，因此本课程不把 cuMotion 接入控制链。Isaac ROS nvblox、TensorRT 等组件也没有出现在当前可执行入口中。评估新组件时，应先明确它替换哪一层、需要哪些输入、怎样与现有评测比较，再决定是否集成。"
         }
       ],
       "before": "target"
@@ -800,7 +832,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "最后一章的目标不是“播放一次踢球动作”，而是让机器人从起始状态自主找到足球、选择站位、接近、对准、出脚并恢复。之所以采用分层结构，是因为各模块解决的问题不同：检测提供目标线索，几何确定位置关系，规划选择接近方式，行走与踢球策略执行动作，状态机决定何时切换。"
+          "zh": "最后一章的目标不是“播放一次踢球动作”，而是让机器人从起始状态自主找到足球、选择站位、接近、对准、出脚并恢复。Isaac Lab 负责组织场景与控制接口，Newton 负责物理和执行器，Isaac Sim 6.2 负责 GUI 与 RTX 传感器，独立 ROS 2 Nav2 服务负责路径规划。分层结构让检测、几何、规划、行走、踢球和状态切换各自拥有可检查的输入与输出，便于定位整条任务链中的失败。"
         },
         {
           "type": "flow",
@@ -831,7 +863,11 @@
               "检查接触、过门与恢复记录"
             ]
           ],
-          "zh": "任一步的前置条件不满足，都可能触发停止、重新观察或恢复，而不是继续盲目出脚。"
+          "zh": "任一步的前置条件不满足，都可能触发停止、重新观察或恢复，而不是继续盲目出脚。",
+          "groups": [
+            "观察与接近",
+            "执行技能与检验结果"
+          ]
         },
         {
           "type": "equation",
@@ -845,7 +881,8 @@
         {
           "type": "code",
           "code": "passed = bool(\n    score['physical_episode_success']\n    and not score['contact']['pre_kick_ball_contact_observed']\n    and recovered\n    and not any(codes)\n)",
-          "label": "Python · 核心代码节选"
+          "label": "Python · 核心代码节选",
+          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/evaluate_task.py"
         },
         {
           "type": "p",
@@ -853,11 +890,7 @@
         },
         {
           "type": "p",
-          "zh": "代码位置：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/evaluate_task.py\" target=\"_blank\" rel=\"noopener\">lab/evaluate_task.py</a>。先阅读本节节选，再结合完整文件理解上下文。"
-        },
-        {
-          "type": "p",
-          "zh": "完整任务只加载课程固定模型，运行期间不会继续训练。输入数据包括带时间戳的相机、ToF 和本体观测；物理真值仅用于评测，不应直接进入机器人控制的感知通路。视频用于理解行为，记录与报告用于复核结果。"
+          "zh": "完整任务只加载课程固定模型，运行期间不会继续训练。控制器输入包括带时间戳的相机、ToF 和本体观测；Newton 中的精确物体位姿、接触力与球门几何只用于评测，不应直接进入感知通路。Isaac Sim 的双视角视频用于理解行为，轨迹、接触记录与报告用于复核结果。这样既能利用仿真提供可重复、可观测的验证环境，又不会把评分真值泄漏给机器人。"
         }
       ],
       "before": "system"

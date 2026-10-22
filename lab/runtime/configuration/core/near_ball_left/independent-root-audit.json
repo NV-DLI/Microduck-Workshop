@@ -1,0 +1,215 @@
+{
+  "schema": "microduck.football-development-audit.v4",
+  "run": "@COURSE@/configuration/core/near_ball_left",
+  "planned_seconds": 180.0,
+  "budget_source_launcher": "@COURSE@/configuration/core/near_ball_left-native-backward_approached_nearball_v1-launcher.json",
+  "budget_source_sha256": "c1f4d932688863836d3f4218c8652561a80ea4547bd403a782f69c1bbb33b96e",
+  "actual_task_seconds": 18.8,
+  "terminal_reason": "calibration_completed",
+  "fine_entries": [
+    {
+      "t": 3.0,
+      "reason": "settled_coarse_track_current_path",
+      "point": [
+        0.6441868227379559,
+        0.04512644836293639,
+        -0.08785126215475403
+      ],
+      "goal_heading": 0.11072896932562579,
+      "measured_quiet_at_entry": true,
+      "gyro_rms_at_entry": 0.11829067183778283,
+      "final_stride": false,
+      "motion_kind": "TRACK"
+    },
+    {
+      "t": 8.335,
+      "reason": "settled_neutral_head_continuous_track",
+      "point": [
+        0.3532176132233205,
+        -0.022815441117896507,
+        -0.07954133212489115
+      ],
+      "goal_heading": 0.0416870861677927,
+      "measured_quiet_at_entry": true,
+      "gyro_rms_at_entry": 0.011263798441962824,
+      "final_stride": false,
+      "motion_kind": "TRACK"
+    }
+  ],
+  "kick_policy_ticks": 0,
+  "whole_ball_goal": false,
+  "kick_contact": false,
+  "pre_kick_contact": false,
+  "fell": false,
+  "first_contact": null,
+  "peak_contact_force_n": 0.0,
+  "memory_audit": {
+    "attempt1:0-4.5s": {
+      "samples": 226,
+      "max_xy_error_m": 0.025106346727288464,
+      "under10mm": false
+    },
+    "attempt2:0-4.5s": {
+      "samples": 210,
+      "max_xy_error_m": 0.010117948579159763,
+      "under10mm": false
+    }
+  },
+  "camera_frames": 317,
+  "policy_updates": 1057,
+  "physics_samples": 4228,
+  "sources_unchanged": true,
+  "original_task_scorer": {
+    "scoring_version": "whole_ball_v2_ground_tolerance_1mm",
+    "goal_time_s": null,
+    "real_foot_ball_contact": false,
+    "whole_ball_crossed_inside_goal": false,
+    "fell": false,
+    "obstacle_collision": false,
+    "joint_limit_violation_rad": 0.021806014701724052,
+    "contact": {
+      "kick_contact_observed": false,
+      "pre_kick_ball_contact_observed": false,
+      "kick_contact_impulse_ns": 0.0,
+      "max_kick_contact_force_n": 0.0,
+      "contact_samples": 3760,
+      "contact_threshold_n": 0.001
+    },
+    "controller_must_not_read": true,
+    "physics_semantics_id": "football-beta-180s-mechanical-v2",
+    "protocol_sha256": "a2aaa6ae660d9f8d8ad2fb30fa62d133cccdcb08a04a6cf54f3cce5c6a948c08",
+    "servo_coordinate_peak_violation_rad": 0.0,
+    "physical_output_peak_violation_rad": 0.0,
+    "legacy_all28_peak_violation_rad": 0.021806014701724052,
+    "passive_soft_limit_peak_residual_rad": 0.021806014701724052,
+    "passive_soft_limit_per_joint": [
+      {
+        "joint": "left_hip_yaw",
+        "peak_rad": 0.003336077556014061,
+        "p95_rad": 7.634926587343168e-05,
+        "p99_rad": 0.0008270461671054323,
+        "over_range_fraction": 0.36409574468085104,
+        "over_range_duration_s": 6.845000000000001
+      },
+      {
+        "joint": "left_hip_roll",
+        "peak_rad": 0.006317043676972389,
+        "p95_rad": 0.0005636926740407927,
+        "p99_rad": 0.002299288008362051,
+        "over_range_fraction": 0.6747340425531915,
+        "over_range_duration_s": 12.684999999999999
+      },
+      {
+        "joint": "left_hip_pitch",
+        "peak_rad": 0.007768562063574791,
+        "p95_rad": 0.0003627601079642763,
+        "p99_rad": 0.0019352888502180538,
+        "over_range_fraction": 0.7747340425531914,
+        "over_range_duration_s": 14.564999999999998
+      },
+      {
+        "joint": "left_knee",
+        "peak_rad": 0.018234046176075935,
+        "p95_rad": 0.0005960080772638317,
+        "p99_rad": 0.004097272101789703,
+        "over_range_fraction": 0.9066489361702128,
+        "over_range_duration_s": 17.045000000000005
+      },
+      {
+        "joint": "left_ankle",
+        "peak_rad": 0.011593533679842949,
+        "p95_rad": 0.00046118739992380046,
+        "p99_rad": 0.00251821057870984,
+        "over_range_fraction": 0.7170212765957447,
+        "over_range_duration_s": 13.480000000000015
+      },
+      {
+        "joint": "neck_pitch",
+        "peak_rad": 0.006127703934907913,
+        "p95_rad": 0.0003071211278438549,
+        "p99_rad": 0.0020725110545754353,
+        "over_range_fraction": 0.8776595744680851,
+        "over_range_duration_s": 16.500000000000004
+      },
+      {
+        "joint": "head_pitch",
+        "peak_rad": 0.0023157335817813873,
+        "p95_rad": 6.79568387567997e-05,
+        "p99_rad": 0.0002660344913601874,
+        "over_range_fraction": 0.9654255319148937,
+        "over_range_duration_s": 18.15
+      },
+      {
+        "joint": "head_yaw",
+        "peak_rad": 0.004397070035338402,
+        "p95_rad": 0.0002628969028592104,
+        "p99_rad": 0.0015965637378394537,
+        "over_range_fraction": 0.6071808510638298,
+        "over_range_duration_s": 11.415
+      },
+      {
+        "joint": "head_roll",
+        "peak_rad": 0.0020917952060699463,
+        "p95_rad": 8.748099207878102e-05,
+        "p99_rad": 0.000575645044445991,
+        "over_range_fraction": 0.7667553191489361,
+        "over_range_duration_s": 14.415
+      },
+      {
+        "joint": "right_hip_yaw",
+        "peak_rad": 0.003414878621697426,
+        "p95_rad": 0.000198087934404611,
+        "p99_rad": 0.000928077213466167,
+        "over_range_fraction": 0.5539893617021276,
+        "over_range_duration_s": 10.415000000000001
+      },
+      {
+        "joint": "right_hip_roll",
+        "peak_rad": 0.00673697330057621,
+        "p95_rad": 0.0005399570800364015,
+        "p99_rad": 0.0025503830611705736,
+        "over_range_fraction": 0.811968085106383,
+        "over_range_duration_s": 15.265000000000008
+      },
+      {
+        "joint": "right_hip_pitch",
+        "peak_rad": 0.007832081988453865,
+        "p95_rad": 0.00045036152005195574,
+        "p99_rad": 0.0022617481835186448,
+        "over_range_fraction": 0.7845744680851063,
+        "over_range_duration_s": 14.750000000000009
+      },
+      {
+        "joint": "right_knee",
+        "peak_rad": 0.013952435925602913,
+        "p95_rad": 0.000427609868347644,
+        "p99_rad": 0.0027202321588993042,
+        "over_range_fraction": 0.9053191489361702,
+        "over_range_duration_s": 17.019999999999996
+      },
+      {
+        "joint": "right_ankle",
+        "peak_rad": 0.021806014701724052,
+        "p95_rad": 0.00039718113839626263,
+        "p99_rad": 0.003177415262907737,
+        "over_range_fraction": 0.8077127659574468,
+        "over_range_duration_s": 15.185000000000002
+      }
+    ],
+    "passive_fit_status": "not calibrated to physical hardware",
+    "mechanical_output_bounds_passed": true,
+    "physical_episode_success": false,
+    "qualification_claimed": false
+  },
+  "qualification_claimed": false,
+  "audit_only": true,
+  "formal_test_started": false,
+  "memory_audit_scope": "Before or at actual K10 onset only (later stationary-ball memory is not an action input). Actual root and ball truth projected into the contemporaneous public gravity-level frame. Audit only; no truth authorizes movement.",
+  "source_sha256": {
+    "@COURSE@/configuration/core/near_ball_left/manifest.json": "c5a5f2010810b52b9528a52ad11a619ebe1f5783a6401a9d409c6e8e0cac1fe2",
+    "@COURSE@/configuration/core/near_ball_left/control.jsonl": "6965a8c50308edf53a43dd14b376c287a5b5945ba84012d1bf19005b8e4541bc",
+    "@COURSE@/configuration/core/near_ball_left/policy-trace.jsonl": "daffd165a4675ac10097d9d480dfc2ed4a36a80c5979aa5968ccfa12715b3353",
+    "@COURSE@/configuration/core/near_ball_left/physics-trace.jsonl": "aae92805f4c7201879b6f87bcaebf2cabc74c943431d50756a7eb4ec05ad3ffe",
+    "@COURSE@/configuration/core/near_ball_left/public-memory-readback.jsonl": "d92bfb890c48f993038eed59b82b1ecbef144325abfd4ee080f2dc9803d2d978"
+  }
+}

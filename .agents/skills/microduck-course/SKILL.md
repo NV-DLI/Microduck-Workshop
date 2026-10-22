@@ -22,4 +22,8 @@ For each theory/practice unit connect the task, motivation, method, equations, a
 
 Do not include completion markers or learner progress. Use a universal language menu, native seekable video controls for long clips, and a static expandable contact sheet for detection examples. Anatomy uses a darker 3D stage with direct clickable labels and a single reset; no redundant selection dropdown or anatomy movie. Preserve the authored Chinese component metadata when rebuilding geometry.
 
-High-resolution studio or trajectory re-renders must identify presentation changes and retain source pose/data provenance. Never present an offline render as a fresh simulation or as proof of success. Keep original recordings and all model identities unchanged.
+High-resolution studio or trajectory re-renders retain source pose/data provenance in validation records. Student captions describe the observation and its limits without narrating Blender or authoring steps. Never present an offline render as a fresh simulation or as proof of success. Keep original recordings and all model identities unchanged.
+
+## NVIDIA workflow and source presentation
+
+Center lessons on the actual Isaac Sim, Isaac Lab and Newton responsibilities, with algorithms explained in that workflow. Distinguish optional NVIDIA ecosystem integrations from the implemented path. Use self-hosted Open Sans and Noto Sans SC. Do not display a NVIDIA logo in the course header. Public source paths use stable functional names; authoring chronology belongs outside the student repository. Source excerpts have integrated full-file links and no copy control; executable terminal blocks retain copy controls. Use accessible SVG with explicit connectors and semantic grouping, and inspect reference-course rendering before revising its visual language.

@@ -87,7 +87,7 @@ def main():
   return run(cmd,c)
  if a.command=='football':
   verify();out=fresh(a.output)
-  cmd=[py,m/'acceptance/native_football_v121/execute_media.py','--model',m/'models/community-v8/velstand.onnx','--output',out,'--development','--seconds',a.seconds,'--seed',a.seed,'--body-fusion-tau-s','2','--body-added-delay-s','0','--policy-imu','body50','--detector-deployment',m.parents[1]/'outputs/migration-20261019/beta-detector/train-random-001/deployment.json','--detector-backend','torch','--detector-device','cuda:0','--shared-imu-readback','--packed-physics-readback','--root-x','-0.66','--recovery-approval',m/'acceptance/native_football_v121/recovery-approval-v2.json']
+  cmd=[py,m/'evaluation/football/execute_media.py','--model',m/'models/reference/velstand.onnx','--output',out,'--development','--seconds',a.seconds,'--seed',a.seed,'--body-fusion-tau-s','2','--body-added-delay-s','0','--policy-imu','body50','--detector-deployment',m.parents[1]/'configuration/core/beta-detector/football_detector/deployment.json','--detector-backend','torch','--detector-device','cuda:0','--shared-imu-readback','--packed-physics-readback','--root-x','-0.66','--recovery-approval',m/'evaluation/football/recovery-approval.json']
   if a.headless:cmd+=['--headless']
   result=run(cmd,c)
   if result:return result

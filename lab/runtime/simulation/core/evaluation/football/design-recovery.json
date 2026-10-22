@@ -1,0 +1,54 @@
+{
+  "schema": "microduck.v121-retreat-recovery-design.v1",
+  "status": "CPU-prepared parameters; NOT frozen; NOT physically validated; executor refuses without root v2 approval manifest binding Stage A + Stage B exact motion",
+  "base": {
+    "controller": "@COURSE@/simulation/core/evaluation/baseline",
+    "unchanged": "final TRACK heading target 0, final lateral -.035, original .16 s latched brake, original training box x[.075,.105] y[-.05,-.02], |heading|<=.08, goal<=.5 s, capture<=.2 s, neutral head + .5 s quiet, memory TTL 4.5 s, K10 runtime, scorer, physics, contact, mechanical audits",
+    "v119_heading_bias": "not included"
+  },
+  "entry": {
+    "only_reasons": [
+      "propagated_point_outside_training_box",
+      "goal_heading_outside_development_gate"
+    ],
+    "only_from": "original HeadHandoff HEAD_RETURN rejection, kick never started",
+    "max_recoveries": 3,
+    "task_clock": "original task clock, limit min(180 s, --seconds), entry needs >=30 s remaining",
+    "memory": "available at rejection, ball age<=4.5 s, read age<=.02 s, point x in (.06,.14], |y|<=.10",
+    "otherwise": "original terminal public_handoff_failed with original reason; rejection archived"
+  },
+  "lifecycle": "HOLD(zero, actual sent neutral head, .5 s quiet, <=3 s) -> AUTHORIZE(<=.5 s, same-capture guard_safe + original 10 cm check_path on surveyed empty prior to fixed rear endpoint at the newly declared plan distance .28 m) -> RETREAT(fresh helper, exactly 80 real 50 Hz ticks of [vx -.35, 0, helper wz], start time = first motion tick; per-capture guard+path recheck, .2 s capture watchdog; any helper fault or forward>.01/backward>.24/|yaw|>.25/|lateral|>.05/onset(1.0 s)/guard/head/odometry stop is TERMINAL) -> normal stop: public backward <.10 fails else SETTLE(zero, neutral, .5 s quiet, <=3 s, public travel within plan) -> REACQUIRE(zero, original attention-owner head-only permission, <=8 s) -> RELEASED to original APPROACH",
+  "ownership": {
+    "body": "recovery only (zero or approved command); controller.external_fine_step_active held so FinalApproach/coarse budgets are not consumed, counters unchanged",
+    "head": "neutral commanded in HOLD/AUTHORIZE/RETREAT/SETTLE (controller navigation head paused, attention deadlines continue); REACQUIRE uses controller gaze only under current BALL_REACQUIRE/GOAL_REFRESH permission, otherwise holds the actually sent head",
+    "head_feedback": "handoff_state RECOVERY is not ordinary: no integration; any withdrawal or non-neutral actually sent head zeroes a retreat command and fails recovery",
+    "kick": "never; release returns APPROACH, original gates re-run; attempts, rejections and kick-ever-started preserved"
+  },
+  "odometry": "public same-read BallMemory relative pose; any memory invalidate/reset after entry permanently ends continuity for this recovery",
+  "anchors": "only current complete grounded same-capture ball in REACQUIRE; never refreshed/extended otherwise",
+  "rear_source": "original surveyed empty-field static prior + original 10 cm check_path to a fixed endpoint at newly declared plan distance .28 m (.24 max travel + original .04 post-stop); NOT rear sensing, NOT traversed history; unknown never free; layout empty only",
+  "calibration_gate": {
+    "status": "PENDING: Stage A heading-offset probe and Stage B near-ball not done; v120 open-loop and headingfeedback8 Stage A failed",
+    "provisional_cpu_only": {
+      "retreat_vx": -0.35,
+      "duration_s": 1.6,
+      "move_steps": 80,
+      "heading_offset_rad": 0.1
+    },
+    "production": "parameters only from verified root approval v2 (exact helper sha/duration/offset/vx in Stage A selection, Stage B tests and parameters; evidence hashes); test_only and v1 refused"
+  },
+  "archive": "recovery-trace.jsonl adds per motion tick: helper index, raw helper inputs, helper diagnostics, expected helper command, actual command; policy-trace keeps IMU_prediction raw for independent re-derivation",
+  "qualification_claimed": false,
+  "success_rate_claimed": false,
+  "superseded": "v120 constant-command variable-duration retreat: open-loop Stage A failed; its approval schema v1 is refused by the loader",
+  "motion": {
+    "helper": "heading_feedback.BackwardHeadingFeedback (byte copy of heading_calibration finished helper, sha256 eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2)",
+    "law": "rate=gyro.(-g/|g|); h=h_lp=+offset at entry, rate_lp=entry rate; h=wrap(h-rate*dread) on new reads; LP .12/.10 s on policy dt; wz=clip(2.5 h_lp-.25 rate_lp, +-.5)",
+    "inputs": "current delivered BODY50 packet only (seq, sample/read/encoder clocks, gyro, gravity, orientation_valid); no truth",
+    "start_step": 0,
+    "move_steps": 80,
+    "post_stop_authority": false,
+    "stage_a": "seed 981131, 8 worlds, vx -.35, vy 0, 1.6 s, offsets +.10/+.20 x4; selection = smaller eligible offset; NO PASS KNOWN",
+    "stage_b": "root validates exact selected helper/duration/offset/vx on >=2 new near-ball fixtures after Stage A"
+  }
+}

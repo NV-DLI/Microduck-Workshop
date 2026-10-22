@@ -1,0 +1,22 @@
+{
+  "schema": "microduck.approached-nearball-evidence-correction.v3",
+  "original_protocol": {
+    "path": "@COURSE@/configuration/core/near_ball_conditions/protocol.json",
+    "sha256": "422f7301020afeb61c736e12e5c563a4e4478f751a347baf5412427c8799d5d8"
+  },
+  "original_auditor": {
+    "path": "@COURSE@/simulation/core/evaluation/audit_backward_approached_nearball_v1.py",
+    "sha256": "7e0e20f16b5428141eb62e17aec91f6bdb1ae6b718f9e9822fbc8a8e927fa209"
+  },
+  "corrected_auditor": {
+    "path": "@COURSE@/simulation/core/evaluation/audit_backward_approached_nearball_v3.py",
+    "sha256": "dcd18725eec8ba795cbdcada1db32a55cd45999e1b4872278a2228ba01e93a22"
+  },
+  "reason": "Original executor deliberately retains handoff.kick_start from the suppressed public KICK verdict as physics kick_onset_s. v1 auditor conflated permission metadata with actual execution. Actual policy/K10 request/rawactor are WALK throughout. Correct interpretation, not relaxed no-kick/contact criterion.",
+  "changes": "Require explicit actualpolicy=walk, actualkick_requested=false, physicalkickcontact=false everyphysicsrow; preservednominalonset must be null beforecutoff and exactcutofftime afterward onlyforKICKverdict. All original noforce/shift/mechanical/nearball/source/helper/rawgates unchanged.",
+  "old_failed_audit_and_summary_retained": true,
+  "physics_repeated": false,
+  "second_seed_pending": 981135,
+  "training_updates": 0,
+  "v2_preserved_failure": "v2 required scorer-policy fields in startup rows, but original schema only provides them after task scoring begins. v3 checks actualpolicy flags for alltask rows, verifies startup has no positivekick flags and whole-run policy/rawONNX remainswalk; alltimeforce/ball checks unchanged."
+}

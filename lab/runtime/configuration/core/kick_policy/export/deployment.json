@@ -1,0 +1,37 @@
+{
+  "schema": "microduck.native-residual-kick-export.v10",
+  "qualification_claimed": false,
+  "onnx": "@COURSE@/configuration/core/kick_policy/export/residual.onnx",
+  "onnx_sha256": "37d7344daeb3001a2485eacbd9354bb8bf54ae736b1ad6a10b1a0648be291aee",
+  "checkpoint": "@COURSE@/configuration/core/kick_policy/checkpoint.pt",
+  "checkpoint_sha256": "e2e0511a0f17b32556fea909b43f98a306f4809099489d1a93c8b0d28031c06b",
+  "ledger_sha256": "0230110c7f771e764e40e1867bb030cd0dc67ea0227dbfb0e575c91c12675c18",
+  "training_ledger_snapshot_sha256": "0230110c7f771e764e40e1867bb030cd0dc67ea0227dbfb0e575c91c12675c18",
+  "input_dimension": 62,
+  "output_dimension": 14,
+  "output_semantics": "Raw residual; add.2*tanh to the unprojected frozen61D teacher mixture and pass raw targets through the original scale1/home/bias native BAM action. No target box, EMA, or8rad-s limiter. Never send residual alone to motors.",
+  "teacher_sha256": {
+    "@COURSE@/simulation/core/models/reference/velstand.onnx": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+    "@COURSE@/simulation/core/football/sources/ball_kick_right.onnx": "147a32c388c6b19111b3ac3b550a9a6dc8b8bf267118af4d8c3712522eedb5af"
+  },
+  "phase_contract": {
+    "kick_s": 0.5,
+    "recovery_blend_s": 0.4,
+    "episode_s": 4.0,
+    "phase_input": "clip(phase_seconds,-1,4)/4"
+  },
+  "action_history": "Original mixed teacher raw14 plus.2tanh residual; next61D history explicitly restored. No projection.",
+  "adapter": "kick_training_v10_goal/native-raw-mixture-with-original-history",
+  "training_rollout_iterations": 500,
+  "iterations_cumulative": 500,
+  "optimizer_steps": 4000,
+  "training_wall_seconds": 4674.287464043999,
+  "preparation_wall_seconds": 74.48802184399392,
+  "parity": {
+    "samples": 64,
+    "maximum_absolute_error": 2.086162567138672e-07,
+    "tolerance": 1e-05,
+    "passed": true
+  },
+  "source_sha256": "8f63b92c68d462410bde5dd8a4f78553d348c6425a1fdbb620b9d9dac4261920"
+}

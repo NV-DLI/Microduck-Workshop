@@ -1,4 +1,5 @@
 (()=>{
+window.hljs?.highlightAll();
 const zh=document.body.dataset.lang==='zh',lang=document.body.dataset.lang,page=document.body.dataset.page;
 const $=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
 const menu=$('.menu-toggle');menu?.addEventListener('click',()=>{const open=$('.sidebar').classList.toggle('open');menu.setAttribute('aria-expanded',open)});

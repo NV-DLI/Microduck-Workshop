@@ -1,0 +1,27 @@
+{
+  "schema": "microduck.body50-finite-range-sensitivity.v1",
+  "parent": "@COURSE@/simulation/core/evaluation/body50_training/vector_body_imu.py",
+  "parent_sha256": "a02b50ce8bcaf64d8a35ece84d29904019166019a16b7775e0566f2e7d0ad67d",
+  "parameters": "@COURSE@/simulation/core/sensors/processing/body50_finite_range/finite_range_core.py",
+  "parameters_sha256": "0818992be9cd76725b5713196f01f09dc757701dedd1fe5660e4788d0e9579cf",
+  "only_executable_change": {
+    "from": "lost=acquire&(gap|gc.any(-1))",
+    "to": "lost=acquire&gap"
+  },
+  "unchanged": [
+    "500dps finite range and17.5mdps quantization",
+    "4g accelerometer",
+    "120Hz synthesis/50Hz bus/median3",
+    "gyro noise/bias and accelerometer noise",
+    "sensor-only gyro+accel fusion, tau2 correction",
+    "startup25sample/25read gates",
+    "gap>40ms forces reinitialization",
+    "80ms stale delivery guard",
+    "same-read encoders"
+  ],
+  "changed": "Already initialized fusion integrates clipped gyroscope without entering forced static reinitialization. Initial clipped measurements still cannot initialize.",
+  "orientation_valid_meaning": "Current virtual fusion initialized and packet fresh, not guarantee of attitude accuracy; clipped flag and error audit remain.",
+  "firmware_exact": false,
+  "hardware_calibrated": false,
+  "physical_success_claimed": false
+}
