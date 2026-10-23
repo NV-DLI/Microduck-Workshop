@@ -1,4 +1,5 @@
 """Optional new-process estimator wrapper; no shared source edits or installation."""
+
 import functools
 
 
@@ -8,6 +9,7 @@ def wrap_estimator(original_estimator, *, border_checker=None):
         raise ValueError("Border guard must be installed exactly once")
     if border_checker is None:
         from guard import check_observed_ball_border
+
         border_checker = check_observed_ball_border
 
     @functools.wraps(original_estimator)

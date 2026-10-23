@@ -10,7 +10,7 @@ A self-paced NVIDIA Isaac robotics workshop: use Isaac Sim for scenes and sensor
 git clone https://github.com/NV-DLI/Microduck-Workshop.git
 cd Microduck-Workshop
 python3 scripts/workshop.py verify-models
-python3 -m http.server 8080 --directory web --bind 127.0.0.1
+python3 scripts/serve_site.py --port 8080
 ```
 
 Open http://127.0.0.1:8080/zh/index.html or `/en/index.html`. Reading, demonstrations, search, and the interactive mechanical assembly work without installing Isaac Sim. Serve the folder over HTTP; browser module loading may not work through `file://`.
@@ -19,7 +19,7 @@ The eight chapters move from keyboard football to mechanical structure, walking 
 
 ## Run the labs
 
-Reference platform: Ubuntu 24.04 on DGX Spark (aarch64), a working NVIDIA graphical desktop, Docker, Python 3.12, Isaac Sim 6.2, and the pinned Isaac Lab / Newton environment. Read the course setup page before installation. Runtime installation downloads substantial third-party dependencies and requires evaluation of their licenses.
+Reference platform: Ubuntu 24.04 on DGX Spark (aarch64), a working NVIDIA graphical desktop, Docker, Python 3.12, Isaac Sim 6, and the pinned Isaac Lab / Newton environment. Read the course setup page before installation. Runtime installation downloads substantial third-party dependencies and requires evaluation of their licenses.
 
 ```bash
 python3 scripts/workshop.py setup
@@ -55,6 +55,6 @@ Rebuild and check the site with `python3 scripts/build_site.py` and `python3 scr
 
 ## 来源与许可 / Attribution and licenses
 
-See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Software, community policies, robot CAD, and the Ultralytics detector have distinct terms. In particular, the robot geometry is under Pollen Robotics' noncommercial share-alike terms; a source-code license does not remove those restrictions.
+See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). Software, community policies, robot 3D models, and the Ultralytics detector have distinct terms. In particular, the robot geometry is under Pollen Robotics' noncommercial share-alike terms; a source-code license does not remove those restrictions.
 
 中文学习主线：先观看和理解，再加载课程固定模型运行；训练只是独立练习。不要覆盖 `models/`，不要把某一次成功演示当作独立成功率。HTML、实验代码和固定模型都在本仓库；课程不依赖网页内嵌 Isaac 窗口。

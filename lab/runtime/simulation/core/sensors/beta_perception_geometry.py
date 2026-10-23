@@ -7,6 +7,7 @@ The default K/D is an explicit uncalibrated Beta pinhole experiment, not the
 alpha calibration or a measured calibration of a Beta unit. A bounding-box centre is not automatically the
 projection of a ball centre; silhouette/keypoint estimation remains upstream.
 """
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -82,23 +83,34 @@ class CaptureCameraPose:
     def __post_init__(self):
         _nonempty(self.reference_frame, "reference_frame")
         _nonempty(self.source, "pose_source")
-        object.__setattr__(self, "timestamp_s", _finite(self.timestamp_s, "pose_timestamp"))
-        object.__setattr__(self, "translation_m", _vector(self.translation_m, 3, "translation"))
+        object.__setattr__(
+            self, "timestamp_s", _finite(self.timestamp_s, "pose_timestamp")
+        )
+        object.__setattr__(
+            self, "translation_m", _vector(self.translation_m, 3, "translation")
+        )
         try:
             if len(self.rotation_reference_from_raw) != 3:
                 raise GeometryError("rotation_wrong_shape")
-            rotation = tuple(_vector(row, 3, "rotation") for row in self.rotation_reference_from_raw)
+            rotation = tuple(
+                _vector(row, 3, "rotation") for row in self.rotation_reference_from_raw
+            )
         except TypeError:
             raise GeometryError("rotation_wrong_shape") from None
         for i in range(3):
             for j in range(3):
-                if abs(_dot(rotation[i], rotation[j]) - (1. if i == j else 0.)) > 1e-6:
+                if (
+                    abs(_dot(rotation[i], rotation[j]) - (1.0 if i == j else 0.0))
+                    > 1e-6
+                ):
                     raise GeometryError("rotation_not_orthonormal")
         a, b, c = rotation
-        determinant = (a[0] * (b[1]*c[2]-b[2]*c[1]) -
-                       a[1] * (b[0]*c[2]-b[2]*c[0]) +
-                       a[2] * (b[0]*c[1]-b[1]*c[0]))
-        if abs(determinant - 1.) > 1e-6:
+        determinant = (
+            a[0] * (b[1] * c[2] - b[2] * c[1])
+            - a[1] * (b[0] * c[2] - b[2] * c[0])
+            + a[2] * (b[0] * c[1] - b[1] * c[0])
+        )
+        if abs(determinant - 1.0) > 1e-6:
             raise GeometryError("rotation_not_proper")
         object.__setattr__(self, "rotation_reference_from_raw", rotation)
 
@@ -122,7 +134,7 @@ class PlaneEstimate:
         _nonempty(self.reference_frame, "reference_frame")
         _nonempty(self.source, "plane_source")
         normal = _vector(self.normal, 3, "plane_normal")
-        if abs(_dot(normal, normal) - 1.) > 1e-6:
+        if abs(_dot(normal, normal) - 1.0) > 1e-6:
             raise GeometryError("plane_normal_not_unit")
         object.__setattr__(self, "normal", normal)
         object.__setattr__(self, "offset_m", _finite(self.offset_m, "plane_offset"))
@@ -143,10 +155,16 @@ class PlaneProjection:
 
 
 def _camera(camera):
-    if (type(camera.width_px) is not int or type(camera.height_px) is not int
-            or camera.width_px <= 0 or camera.height_px <= 0
-            or camera.mount_rotation_cw_deg != 0):
-        raise GeometryError("beta_camera_requires_positive_raw_dimensions_and_native_rotation")
+    if (
+        type(camera.width_px) is not int
+        or type(camera.height_px) is not int
+        or camera.width_px <= 0
+        or camera.height_px <= 0
+        or camera.mount_rotation_cw_deg != 0
+    ):
+        raise GeometryError(
+            "beta_camera_requires_positive_raw_dimensions_and_native_rotation"
+        )
     for name in ("fx", "fy", "cx", "cy"):
         _finite(getattr(camera, name), "camera_" + name)
     if camera.fx <= 0 or camera.fy <= 0:
@@ -156,7 +174,7 @@ def _camera(camera):
 
 def _pixel(pixel, width, height):
     u, v = _vector(pixel, 2, "pixel")
-    if not 0 <= u <= width-1 or not 0 <= v <= height-1:
+    if not 0 <= u <= width - 1 or not 0 <= v <= height - 1:
         raise GeometryError("pixel_outside_original_image_centres")
     return u, v
 
@@ -176,20 +194,26 @@ def upright_to_raw(pixel: Sequence[float], camera: CameraProfile = CAMERA_PROFIL
 
 def _brown_with_jacobian(x, y, coefficients):
     k1, k2, p1, p2, k3 = coefficients
-    r2 = x*x+y*y
-    radial = 1+k1*r2+k2*r2*r2+k3*r2*r2*r2
-    derivative = k1+2*k2*r2+3*k3*r2*r2
-    dx, dy = 2*x*derivative, 2*y*derivative
-    distorted = (x*radial+2*p1*x*y+p2*(r2+2*x*x),
-                 y*radial+p1*(r2+2*y*y)+2*p2*x*y)
-    jacobian = (radial+x*dx+2*p1*y+6*p2*x,
-                x*dy+2*p1*x+2*p2*y,
-                y*dx+2*p1*x+2*p2*y,
-                radial+y*dy+6*p1*y+2*p2*x)
+    r2 = x * x + y * y
+    radial = 1 + k1 * r2 + k2 * r2 * r2 + k3 * r2 * r2 * r2
+    derivative = k1 + 2 * k2 * r2 + 3 * k3 * r2 * r2
+    dx, dy = 2 * x * derivative, 2 * y * derivative
+    distorted = (
+        x * radial + 2 * p1 * x * y + p2 * (r2 + 2 * x * x),
+        y * radial + p1 * (r2 + 2 * y * y) + 2 * p2 * x * y,
+    )
+    jacobian = (
+        radial + x * dx + 2 * p1 * y + 6 * p2 * x,
+        x * dy + 2 * p1 * x + 2 * p2 * y,
+        y * dx + 2 * p1 * x + 2 * p2 * y,
+        radial + y * dy + 6 * p1 * y + 2 * p2 * x,
+    )
     return distorted, jacobian
 
 
-def raw_pixel_to_unit_ray(pixel: Sequence[float], camera: CameraProfile = CAMERA_PROFILE):
+def raw_pixel_to_unit_ray(
+    pixel: Sequence[float], camera: CameraProfile = CAMERA_PROFILE
+):
     """Invert five-coefficient Brown–Conrady with checked damped Newton steps.
 
     Returns a forward unit ray in RAW optical axes. The small central inverse
@@ -200,29 +224,33 @@ def raw_pixel_to_unit_ray(pixel: Sequence[float], camera: CameraProfile = CAMERA
     """
     _camera(camera)
     u, v = _pixel(pixel, camera.width_px, camera.height_px)
-    target = ((u-camera.cx)/camera.fx, (v-camera.cy)/camera.fy)
+    target = ((u - camera.cx) / camera.fx, (v - camera.cy) / camera.fy)
     x, y = target
     for _ in range(32):
-        if math.hypot(x, y) > 2.:
+        if math.hypot(x, y) > 2.0:
             raise GeometryError("distortion_inverse_outside_supported_branch")
-        distorted, jacobian = _brown_with_jacobian(x, y, camera.distortion_k1_k2_p1_p2_k3)
-        ex, ey = distorted[0]-target[0], distorted[1]-target[1]
+        distorted, jacobian = _brown_with_jacobian(
+            x, y, camera.distortion_k1_k2_p1_p2_k3
+        )
+        ex, ey = distorted[0] - target[0], distorted[1] - target[1]
         a, b, c, d = jacobian
-        determinant = a*d-b*c
+        determinant = a * d - b * c
         if not math.isfinite(determinant) or determinant <= 1e-12:
             raise GeometryError("distortion_inverse_singular_or_folded")
-        residual = math.hypot(ex*camera.fx, ey*camera.fy)
+        residual = math.hypot(ex * camera.fx, ey * camera.fy)
         if residual <= 1e-8:
-            norm = math.sqrt(x*x+y*y+1.)
-            return x/norm, y/norm, 1./norm
-        dx, dy = (d*ex-b*ey)/determinant, (-c*ex+a*ey)/determinant
+            norm = math.sqrt(x * x + y * y + 1.0)
+            return x / norm, y / norm, 1.0 / norm
+        dx, dy = (d * ex - b * ey) / determinant, (-c * ex + a * ey) / determinant
         for backtrack in range(16):
-            scale = 2.**-backtrack
-            nx, ny = x-scale*dx, y-scale*dy
-            if not all(math.isfinite(t) for t in (nx, ny)) or math.hypot(nx, ny) > 2.:
+            scale = 2.0**-backtrack
+            nx, ny = x - scale * dx, y - scale * dy
+            if not all(math.isfinite(t) for t in (nx, ny)) or math.hypot(nx, ny) > 2.0:
                 continue
             nd, _ = _brown_with_jacobian(nx, ny, camera.distortion_k1_k2_p1_p2_k3)
-            next_residual = math.hypot((nd[0]-target[0])*camera.fx, (nd[1]-target[1])*camera.fy)
+            next_residual = math.hypot(
+                (nd[0] - target[0]) * camera.fx, (nd[1] - target[1]) * camera.fy
+            )
             if next_residual < residual:
                 x, y = nx, ny
                 break
@@ -231,12 +259,19 @@ def raw_pixel_to_unit_ray(pixel: Sequence[float], camera: CameraProfile = CAMERA
     raise GeometryError("distortion_inverse_no_convergence")
 
 
-def project_pixel_to_plane(pixel: Sequence[float], *, pixel_space: str,
-                           image_size: tuple[int, int], capture_timestamp_s: float,
-                           pose: CaptureCameraPose, plane: PlaneEstimate,
-                           camera: CameraProfile = CAMERA_PROFILE,
-                           max_range_m: float = 4., min_abs_incidence: float = 1e-6,
-                           timestamp_tolerance_s: float = 1e-6) -> PlaneProjection:
+def project_pixel_to_plane(
+    pixel: Sequence[float],
+    *,
+    pixel_space: str,
+    image_size: tuple[int, int],
+    capture_timestamp_s: float,
+    pose: CaptureCameraPose,
+    plane: PlaneEstimate,
+    camera: CameraProfile = CAMERA_PROFILE,
+    max_range_m: float = 4.0,
+    min_abs_incidence: float = 1e-6,
+    timestamp_tolerance_s: float = 1e-6,
+) -> PlaneProjection:
     """Project a pixel using the explicit image-time SE(3) and declared plane.
 
     image_size is (width, height), after detector preprocessing is reversed.
@@ -248,11 +283,17 @@ def project_pixel_to_plane(pixel: Sequence[float], *, pixel_space: str,
     _camera(camera)
     if pixel_space not in ("raw", "upright"):
         raise GeometryError("pixel_space_must_be_raw_or_upright")
-    expected = ((camera.width_px, camera.height_px) if pixel_space == "raw"
-                else (camera.width_px, camera.height_px))
-    if (not isinstance(image_size, (tuple, list)) or len(image_size) != 2
-            or any(type(value) is not int for value in image_size)
-            or tuple(image_size) != expected):
+    expected = (
+        (camera.width_px, camera.height_px)
+        if pixel_space == "raw"
+        else (camera.width_px, camera.height_px)
+    )
+    if (
+        not isinstance(image_size, (tuple, list))
+        or len(image_size) != 2
+        or any(type(value) is not int for value in image_size)
+        or tuple(image_size) != expected
+    ):
         raise GeometryError("original_image_size_mismatch_undo_letterbox_first")
     timestamp = _finite(capture_timestamp_s, "capture_timestamp")
     tolerance = _finite(timestamp_tolerance_s, "timestamp_tolerance")
@@ -260,32 +301,53 @@ def project_pixel_to_plane(pixel: Sequence[float], *, pixel_space: str,
     minimum = _finite(min_abs_incidence, "min_abs_incidence")
     if tolerance < 0 or maximum <= 0 or not 0 < minimum < 1:
         raise GeometryError("invalid_projection_limits")
-    if abs(timestamp-pose.timestamp_s) > tolerance:
+    if abs(timestamp - pose.timestamp_s) > tolerance:
         raise GeometryError("capture_pose_timestamp_mismatch")
     if pose.reference_frame != plane.reference_frame:
         raise GeometryError("plane_pose_reference_frame_mismatch")
-    raw = (upright_to_raw(pixel, camera) if pixel_space == "upright"
-           else _pixel(pixel, camera.width_px, camera.height_px))
+    raw = (
+        upright_to_raw(pixel, camera)
+        if pixel_space == "upright"
+        else _pixel(pixel, camera.width_px, camera.height_px)
+    )
     ray_raw = raw_pixel_to_unit_ray(raw, camera)
     ray_reference = _matvec(pose.rotation_reference_from_raw, ray_raw)
     incidence = _dot(plane.normal, ray_reference)
     if abs(incidence) < minimum:
         raise GeometryError("ray_near_plane_horizon")
-    distance = (plane.offset_m-_dot(plane.normal, pose.translation_m))/incidence
+    distance = (plane.offset_m - _dot(plane.normal, pose.translation_m)) / incidence
     if not math.isfinite(distance) or distance <= 1e-9:
         raise GeometryError("plane_intersection_not_in_front_of_camera")
     if distance > maximum:
         raise GeometryError("plane_intersection_beyond_max_range")
-    point = tuple(origin+distance*direction for origin, direction in zip(pose.translation_m, ray_reference))
+    point = tuple(
+        origin + distance * direction
+        for origin, direction in zip(pose.translation_m, ray_reference)
+    )
     if not all(math.isfinite(value) for value in point):
         raise GeometryError("projection_not_finite")
-    return PlaneProjection(point, distance, raw, ray_raw, ray_reference, timestamp,
-                           pose.reference_frame, pose.source, plane.source, plane.offset_m)
+    return PlaneProjection(
+        point,
+        distance,
+        raw,
+        ray_raw,
+        ray_reference,
+        timestamp,
+        pose.reference_frame,
+        pose.source,
+        plane.source,
+        plane.offset_m,
+    )
 
 
-def project_grounded_ball_center(pixel: Sequence[float], *, radius_m: float,
-                                 ground: PlaneEstimate, pose: CaptureCameraPose,
-                                 **projection_options) -> PlaneProjection:
+def project_grounded_ball_center(
+    pixel: Sequence[float],
+    *,
+    radius_m: float,
+    ground: PlaneEstimate,
+    pose: CaptureCameraPose,
+    **projection_options,
+) -> PlaneProjection:
     """Intersect a supplied BALL-CENTRE ray with ground offset by known radius.
 
     Assumes a spherical ball resting on the declared ground. Does not infer a
@@ -298,9 +360,15 @@ def project_grounded_ball_center(pixel: Sequence[float], *, radius_m: float,
         raise GeometryError("ball_radius_not_positive")
     if pose.reference_frame != ground.reference_frame:
         raise GeometryError("plane_pose_reference_frame_mismatch")
-    offset = ground.offset_m+radius
-    if _dot(ground.normal, pose.translation_m)-offset <= 1e-9:
+    offset = ground.offset_m + radius
+    if _dot(ground.normal, pose.translation_m) - offset <= 1e-9:
         raise GeometryError("camera_not_above_grounded_ball_centre_plane")
-    centre_plane = PlaneEstimate(ground.reference_frame, ground.normal, offset,
-                                ground.source + "; grounded sphere radius offset")
-    return project_pixel_to_plane(pixel, pose=pose, plane=centre_plane, **projection_options)
+    centre_plane = PlaneEstimate(
+        ground.reference_frame,
+        ground.normal,
+        offset,
+        ground.source + "; grounded sphere radius offset",
+    )
+    return project_pixel_to_plane(
+        pixel, pose=pose, plane=centre_plane, **projection_options
+    )

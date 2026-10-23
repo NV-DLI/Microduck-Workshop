@@ -31,30 +31,42 @@
         },
         {
           "type": "p",
-          "zh": "描述一个零件的位置，还需要说明它相对于哪个坐标系。齐次变换矩阵统一表示旋转 R 和平移 t；沿机械链依次相乘，就能把脚坐标系中的点转换到躯干坐标系。这就是正向运动学：根据已知关节角度计算末端位置。"
+          "zh": "关节角度决定连杆的相对姿态；沿一条机械链组合这些姿态，就能算出脚或相机相对于机身的位置。先理解这个关系，后面就能区分“头转了”和“身体转了”。",
+          "languages": [
+            "zh"
+          ]
         },
         {
-          "type": "equation",
-          "label": "齐次变换与机械链",
-          "tex": "T=\\begin{bmatrix}R&\\mathbf t\\\\\\mathbf 0^{\\mathsf T}&1\\end{bmatrix},\\qquad {}^{B}T_F(q)= {}^{B}T_1(q_1)\\,{}^{1}T_2(q_2)\\cdots{}^{k}T_F(q_k)"
+          "type": "enrichment",
+          "title": {
+            "zh": "拓展：怎样沿机械链计算位置",
+            "en": "拓展：怎样沿机械链计算位置"
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "zh": "描述一个零件的位置，还需要说明它相对于哪个坐标系。齐次变换矩阵统一表示旋转 R 和平移 t；沿机械链依次相乘，就能把脚坐标系中的点转换到躯干坐标系。这就是正向运动学：根据已知关节角度计算末端位置。"
+            },
+            {
+              "type": "equation",
+              "label": "齐次变换与机械链",
+              "tex": "T=\\begin{bmatrix}R&\\mathbf t\\\\\\mathbf 0^{\\mathsf T}&1\\end{bmatrix},\\qquad {}^{B}T_F(q)= {}^{B}T_1(q_1)\\,{}^{1}T_2(q_2)\\cdots{}^{k}T_F(q_k)"
+            },
+            {
+              "type": "p",
+              "zh": "上标 B 表示躯干坐标系，下标 F 表示脚坐标系；每一项变换都来自零件的装配位置和关节转角。把相机安装在头上时，也需要沿颈部和头部的机械链计算相机朝向，不能把头部转动误认为整个身体转动。"
+            }
+          ],
+          "languages": [
+            "zh"
+          ]
         },
         {
           "type": "p",
-          "zh": "上标 B 表示躯干坐标系，下标 F 表示脚坐标系；每一项变换都来自零件的装配位置和关节转角。把相机安装在头上时，也需要沿颈部和头部的机械链计算相机朝向，不能把头部转动误认为整个身体转动。"
-        },
-        {
-          "type": "code",
-          "code": "M = mul(parent_M, M_rest)\nJ = mul(mul(tf(None, jpos), tf(axis_angle_rot(axis, q))),\n        tf(None, [-c for c in jpos]))\nM = mul(M, J)",
-          "label": "Python · 核心代码节选",
-          "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/artwork/cad_assembly.py"
-        },
-        {
-          "type": "p",
-          "zh": "<code>M_rest</code> 表示静态装配关系，<code>axis</code> 和 <code>jpos</code> 定义转轴，<code>q</code> 是关节角度。J 表示绕该转轴旋转，再与父部件的变换相乘。课程结构模型沿这条机械链放置 CAD 零件；展开滑块只改变展示位置，不改变实际的关节定义。"
-        },
-        {
-          "type": "p",
-          "zh": "验证方法：展开后分别点击膝关节舵机、电池和脚，辨认哪些部件用于驱动、哪些用于承载、哪些与地面接触。然后返回总览，沿一条腿说明力如何传回躯干。本章使用 CAD 几何与装配参数，不需要训练数据，也没有训练步骤。"
+          "zh": "展开模型，分别找到膝关节舵机、电池和脚，说明它们在驱动、供电和支撑中的作用。再回到装配状态，沿一条腿解释支撑力如何传回躯干。",
+          "languages": [
+            "zh"
+          ]
         }
       ],
       "before": "joint-map"
@@ -67,7 +79,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "第一章的实验使用 Isaac Lab 的 Microduck 任务加载固定行走策略，以 Newton 作为物理后端，并通过 Isaac Sim 窗口观察给定速度指令下的运动。Isaac Lab 3 把物理、渲染与可视化分开：Newton 可以在不启动 Kit 的轻量路径中运行，而交互实验入口为了显示场景显式要求 Isaac Sim 6.2。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。"
+          "zh": "第一章的实验使用 Isaac Lab 的 Microduck 任务加载固定行走策略，以 Newton 作为物理后端，并通过 Isaac Sim 窗口观察给定速度指令下的运动。Isaac Lab 3 把物理、渲染与可视化分开：Newton 可以在不启动 Kit 的轻量路径中运行，而交互实验入口为了显示场景显式要求 Isaac Sim 6。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。"
         },
         {
           "type": "platform",
@@ -111,7 +123,7 @@
         },
         {
           "type": "code",
-          "code": "action = policy(env.observation_manager.compute(update_history=True)['policy'])\nenv.action_manager.process_action(action)\nfor tick in range(4):\n    env.action_manager.apply_action()\n    env.scene.write_data_to_sim()\n    env.sim.step(render=not a.headless and tick==3)\n    env.scene.update(.005)",
+          "code": "action = policy(\n    env.observation_manager.compute(update_history=True)[\"policy\"]\n)\nenv.action_manager.process_action(action)\nfor tick in range(4):\n    env.action_manager.apply_action()\n    env.scene.write_data_to_sim()\n    env.sim.step(render=not a.headless and tick == 3)\n    env.scene.update(0.005)",
           "label": "Python · 核心代码节选",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py"
         },
@@ -143,6 +155,13 @@
         "zh": "任务：让机器人按速度指令稳定行走"
       },
       "blocks": [
+        {
+          "type": "p",
+          "zh": "前两章运行的是官方已经训练好的行走策略，我们只给它指令，没有更新网络权重。现在换一个问题：从随机初始化的策略开始，能否通过仿真中的反复尝试，学出相近的行走能力？本章会定义奖励、用 Isaac Lab 并行采集经验、执行 PPO 更新，并把自己的 ONNX 策略放回同一场景测试。短练习先走通流程；是否达到官方模型的水平，要靠后面的对照结果判断。",
+          "languages": [
+            "zh"
+          ]
+        },
         {
           "type": "p",
           "zh": "希望机器人接收前进、横移和转向指令后，自己协调 14 个关节：迈步时保持平衡，支撑脚尽量不打滑，动作不要突然跳变。直接给每个关节编写固定的周期轨迹，往往难以同时适应不同速度、受力和初始状态。"
@@ -229,7 +248,7 @@
         },
         {
           "type": "p",
-          "zh": "节选来自固定版本 Isaac Lab 的 <code>microduck/mdp/rewards.py</code>。<code>command</code> 对应目标速度，<code>actual</code> 对应实际速度，<code>std</code> 对应公式中的 σᵥ。练习配置中线速度跟踪权重为 2.0，动作变化惩罚权重为 −0.1；这些值用于理解当前任务，不是适用于所有机器人的最优参数。"
+          "zh": "节选来自固定版本 Isaac Lab 的 <code>microduck/mdp/rewards.py</code>。<code>command</code> 对应目标速度，<code>actual</code> 对应实际速度，<code>std</code> 对应公式中的 σᵥ。训练开始时，线速度跟踪权重为 2.0，动作变化惩罚权重为 −0.1。继续长训时，还要查看课程学习设置：动作变化惩罚会随训练进展加大。这些值用于理解当前任务，不是适用于所有机器人的最优参数。"
         },
         {
           "type": "p",
@@ -246,7 +265,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "策略更新幅度过大时，刚学会的平衡行为可能在下一次采样中丢失。PPO（近端策略优化）通过裁剪代理目标，抑制某些过大概率变化带来的收益。它适合连续关节控制，也便于在大量并行仿真环境中收集数据；课程采用现成的 RSL-RL 实现，便于对应公式、配置与训练日志。PPO 不保证每次更新都能改善行为，也并非所有任务的最优算法。"
+          "zh": "策略更新幅度过大时，刚学会的平衡行为可能在下一次采样中丢失。PPO（近端策略优化）通过裁剪代理目标，抑制某些过大概率变化带来的收益。它适合连续关节控制，也便于在大量并行仿真环境中收集数据；这里采用现成的 RSL-RL 实现，便于对应公式、配置与训练日志。PPO 不保证每次更新都能改善行为，也并非所有任务的最优算法。"
         },
         {
           "type": "p",
@@ -282,7 +301,7 @@
         },
         {
           "type": "code",
-          "code": "ratio = torch.exp(actions_log_prob - torch.squeeze(batch.old_actions_log_prob))\nsurrogate = -torch.squeeze(batch.advantages) * ratio\nsurrogate_clipped = -torch.squeeze(batch.advantages) * torch.clamp(\n    ratio, 1.0 - self.clip_param, 1.0 + self.clip_param\n)\nsurrogate_loss = torch.max(surrogate, surrogate_clipped).mean()",
+          "code": "ratio = torch.exp(\n    actions_log_prob - torch.squeeze(batch.old_actions_log_prob)\n)\nsurrogate = -torch.squeeze(batch.advantages) * ratio\nsurrogate_clipped = -torch.squeeze(batch.advantages) * torch.clamp(\n    ratio, 1.0 - self.clip_param, 1.0 + self.clip_param\n)\nsurrogate_loss = torch.max(surrogate, surrogate_clipped).mean()",
           "label": "Python · RSL-RL 5.5.1 的 PPO 实现节选",
           "source": "https://github.com/leggedrobotics/rsl_rl/blob/v5.5.1/rsl_rl/algorithms/ppo.py"
         },
@@ -371,7 +390,7 @@
         },
         {
           "type": "code",
-          "code": "base = gym.make(task, cfg=cfg).unwrapped\nenv = RslRlVecEnvWrapper(base, clip_actions=agent.clip_actions)\nrunner = OnPolicyRunner(env, to_dict(agent), log_dir=str(args.output), device='cuda:0')\nrunner.learn(num_learning_iterations=args.iterations, init_at_random_ep_len=True)",
+          "code": "base = gym.make(task, cfg=cfg).unwrapped\nenv = RslRlVecEnvWrapper(base, clip_actions=agent.clip_actions)\nrunner = OnPolicyRunner(\n    env, to_dict(agent), log_dir=str(args.output), device=\"cuda:0\"\n)\nrunner.learn(\n    num_learning_iterations=args.iterations, init_at_random_ep_len=True\n)",
           "label": "Python · 核心代码节选",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/gait/student_train.py"
         },
@@ -390,7 +409,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "在一次 DGX Spark 运行记录中（当时 GPU 为共享使用），64 个环境、20 轮训练的训练阶段耗时约为 13.1 秒，其中包含该阶段的保存与导出，不包含此前的环境初始化。该数字仅表示这次短练习的耗时，不能用于预测收敛时间；机器负载、环境数量和训练预算都会影响耗时。"
+          "zh": "在 DGX Spark 上的一次 20 轮短训练中（实际耗时会受 GPU 负载影响），64 个环境、20 轮训练的训练阶段耗时约为 13.1 秒，其中包含该阶段的保存与导出，不包含此前的环境初始化。该数字仅表示这次短练习的耗时，不能用于预测收敛时间；机器负载、环境数量和训练预算都会影响耗时。"
         },
         {
           "type": "code",
@@ -445,7 +464,7 @@
         },
         {
           "type": "p",
-          "zh": "同一次 20 轮练习导出的策略，在种子 202 的独立行走测试中约 0.78 秒即跌倒。这表明保存、导出、加载和评测工作流已经跑通，但不代表训练成功：策略尚未学会稳定行走。后续章节继续使用课程固定模型；如需研究自己的策略，应另设训练预算，并在未用于调参的种子与指令上重复测试。"
+          "zh": "同一次 20 轮练习导出的策略，在种子 202 的独立行走测试中约 0.78 秒即跌倒。这表明保存、导出、加载和评测工作流可以正常运行，但不代表训练成功：策略尚未学会稳定行走。后续章节继续使用提供的固定模型；如需研究自己的策略，应另设训练预算，并在未用于调参的种子与指令上重复测试。"
         }
       ],
       "before": "checkpoint"
@@ -462,10 +481,10 @@
           "type": "media",
           "file": "kick-contact.gif",
           "alt": {
-            "zh": "只观察出脚、触球与恢复站立。该片段使用第 7 章的课程组合策略，不是跳跃或篮球技能的评测。",
+            "zh": "只观察出脚、触球与恢复站立。该片段使用第 7 章的踢球组合策略，不是跳跃或篮球技能的评测。",
             "en": "Focus on the kick, contact and standing recovery using Chapter 7’s course policy combination."
           },
-          "zh": "只观察出脚、触球与恢复站立。该片段使用第 7 章的课程组合策略，不是跳跃或篮球技能的评测。",
+          "zh": "只观察出脚、触球与恢复站立。该片段使用第 7 章的踢球组合策略，不是跳跃或篮球技能的评测。",
           "en": "Focus on the kick, contact and standing recovery using Chapter 7’s course policy combination."
         }
       ],
@@ -504,17 +523,17 @@
         },
         {
           "type": "p",
-          "zh": "之所以选择学习型检测器，是因为目标大小、视角和背景都会变化。与手工设定颜色阈值相比，检测模型可以从标注样本中学习特征；代价是需要覆盖目标条件的数据和独立验证。Isaac Sim 支持在受控场景中生成图像和标注，适合系统改变相机位姿、光照和遮挡；但当前课程传感器 rig 明确不输出物体语义真值，练习集标签也不是运行时从场景自动读取。课程先提供固定模型作为基准，再用现有小数据集体验训练。"
+          "zh": "之所以选择学习型检测器，是因为目标大小、视角和背景都会变化。与手工设定颜色阈值相比，检测模型可以从标注样本中学习特征；代价是需要覆盖目标条件的数据和独立验证。Isaac Sim 支持在受控场景中生成图像和标注，适合系统改变相机位姿、光照和遮挡；但当前课程传感器 rig 明确不输出物体语义真值，练习集标签也不是运行时从场景自动读取。这里先使用固定模型作为基准，再用现有小数据集体验训练。"
         },
         {
           "type": "code",
-          "code": "results = YOLO(str(a.model)).predict(\n    source=[str(x) for x in paths], imgsz=640, save=True,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device='cpu'\n)",
+          "code": "results = YOLO(str(a.model)).predict(\n    source=[str(x) for x in paths],\n    imgsz=640,\n    save=True,\n    project=str(a.output.parent),\n    name=a.output.name,\n    exist_ok=False,\n    device=\"cpu\",\n)",
           "label": "Python · 核心代码节选",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/detector.py"
         },
         {
           "type": "p",
-          "zh": "这里加载课程固定权重，以 640 的推理图像尺寸运行，并将检测框保存到新的输出目录。界面中的框会映射回原图坐标；不能将缩放后图像中的像素坐标直接用于原始相机内参。"
+          "zh": "这里加载提供的固定权重，以 640 的推理图像尺寸运行，并将检测框保存到新的输出目录。界面中的框会映射回原图坐标；不能将缩放后图像中的像素坐标直接用于原始相机内参。"
         },
         {
           "type": "p",
@@ -523,7 +542,7 @@
         {
           "type": "code",
           "label": "Python · Isaac Sim RTX 相机配置节选",
-          "code": "self.rgb_camera = Camera(CameraCfg(\n    prim_path=rgb_path, update_period=0.,\n    width=self.render_width, height=self.render_height,\n    data_types=['rgb'], renderer_cfg=IsaacRtxRendererCfg(),\n    spawn=sim_utils.PinholeCameraCfg.from_intrinsic_matrix(\n        render_k.flatten().tolist(),\n        self.render_width, self.render_height,\n        clipping_range=(.03, 20.), focal_length=15.),\n))",
+          "code": "self.rgb_camera = Camera(\n    CameraCfg(\n        prim_path=rgb_path,\n        update_period=0.0,\n        width=self.render_width,\n        height=self.render_height,\n        data_types=[\"rgb\"],\n        renderer_cfg=IsaacRtxRendererCfg(),\n        spawn=sim_utils.PinholeCameraCfg.from_intrinsic_matrix(\n            render_k.flatten().tolist(),\n            self.render_width,\n            self.render_height,\n            clipping_range=(0.03, 20.0),\n            focal_length=15.0,\n        ),\n    )\n)",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/sensors/isaac_beta_sensor_rig.py"
         }
       ],
@@ -532,41 +551,86 @@
     {
       "id": "camera-geometry",
       "title": {
-        "zh": "从像素射线理解距离估计"
+        "zh": "从图像中的位置，到机器人能使用的位置"
       },
       "blocks": [
         {
           "type": "p",
-          "zh": "单个像素只能确定一条观测方向，不能直接给出距离。先用内参矩阵 K 将像素坐标反投影到相机坐标系，再用相机外参把射线转换到所需坐标系。下面以“射线与地面相交”为例，说明几何约束如何提供尺度；实际足球中心高于地面，必须使用与球体和相机相符的几何模型，不能把边界框中心直接视为地面接触点。"
+          "zh": "检测器回答的是“球出现在画面的哪里”，导航需要的却是“球在机器人前方多远、左侧或右侧多远”。像素坐标没有米制距离，不能直接送给路径规划器。这里把图像检测、相机参数、头部姿态与距离信息结合起来，转换成相对于机器人坐标系的位置。",
+          "languages": [
+            "zh"
+          ]
         },
         {
-          "type": "equation",
-          "label": "针孔相机的反投影",
-          "tex": "\\widetilde{\\mathbf d}_C=K^{-1}[u,v,1]^{\\mathsf T},\\qquad \\mathbf d_B=R_{BC}\\frac{\\widetilde{\\mathbf d}_C}{\\|\\widetilde{\\mathbf d}_C\\|},\\qquad \\mathbf p_B=\\mathbf o_B+\\lambda\\mathbf d_B"
-        },
-        {
-          "type": "diagram",
-          "kind": "projection",
-          "label": "图像像素对应空间射线，与地面相交后才确定一个位置",
-          "zh": "图中的地面交点用于解释投影，不是对球心位置的直接估计。射线接近平行于地面时，小角度误差可能带来很大的距离误差。"
-        },
-        {
-          "type": "equation",
-          "label": "已知平面时的射线交点",
-          "tex": "\\mathbf n^{\\mathsf T}\\mathbf p+d_0=0\\quad\\Rightarrow\\quad\\lambda=-\\frac{\\mathbf n^{\\mathsf T}\\mathbf o+d_0}{\\mathbf n^{\\mathsf T}\\mathbf d}"
-        },
-        {
-          "type": "p",
-          "zh": "分母接近 0 时，射线与平面几乎平行；λ ≤ 0 时，交点不在射线前方。遇到这些情况应拒绝该结果，而不是强行给出距离。相机姿态还必须与图像采集时刻对齐；头部转动后若用新姿态解释旧图像，会引入偏差。"
-        },
-        {
-          "type": "code",
-          "code": "ray_camera = inv_K @ np.array([u, v, 1.0])\nray_camera /= np.linalg.norm(ray_camera)\nray_body = R_body_camera @ ray_camera\ndenominator = normal @ ray_body\n# 使用交点前，检查分母是否接近零以及距离的符号。\ndistance = -(normal @ origin + plane_offset) / denominator\npoint_body = origin + distance * ray_body",
-          "label": "Python · 几何原理示意，不是独立运行脚本"
+          "type": "flow",
+          "label": "从视觉观测到可用的空间位置",
+          "nodes": [
+            [
+              "输入",
+              "目标像素、相机参数、姿态与距离线索"
+            ],
+            [
+              "几何估计与校验",
+              "对齐采集时刻，检查距离与坐标系"
+            ],
+            [
+              "输出",
+              "相对位置（米）、时间戳、有效性"
+            ]
+          ],
+          "zh": "规划模块据此计算出脚站位和朝向。时间戳与有效性同样重要：机器人走动后，旧的位置估计需要更新；无效的测距不能当成零距离。"
         },
         {
           "type": "p",
-          "zh": "这段示意代码用于对应公式；完整任务还会使用 Isaac Sim RTX 图像、32 × 32 深度产品采样得到的 8 × 8 ToF 近似、头部运动学和有效性检查。传感器挂载到实际 Newton 头部连杆姿态，而不是保持世界水平的虚拟云台。验证时，应同时检查检测框、相机内参、估计位置和时间戳；检测框正确并不意味着三维位置一定正确。"
+          "zh": "一个像素只能确定一条视线；要知道球沿这条视线离相机多远，还需要球体尺寸、地面约束或测距等信息。实际任务还会检查相机姿态与图像时间是否一致。先掌握输入和输出的关系，下面的推导可在需要实现或排查定位误差时展开阅读。",
+          "languages": [
+            "zh"
+          ]
+        },
+        {
+          "type": "enrichment",
+          "title": {
+            "zh": "拓展：像素射线、距离公式与实现细节",
+            "en": "拓展：像素射线、距离公式与实现细节"
+          },
+          "blocks": [
+            {
+              "type": "p",
+              "zh": "单个像素只能确定一条观测方向，不能直接给出距离。先用内参矩阵 K 将像素坐标反投影到相机坐标系，再用相机外参把射线转换到所需坐标系。下面以“射线与地面相交”为例，说明几何约束如何提供尺度；实际足球中心高于地面，必须使用与球体和相机相符的几何模型，不能把边界框中心直接视为地面接触点。"
+            },
+            {
+              "type": "equation",
+              "label": "针孔相机的反投影",
+              "tex": "\\widetilde{\\mathbf d}_C=K^{-1}[u,v,1]^{\\mathsf T},\\qquad \\mathbf d_B=R_{BC}\\frac{\\widetilde{\\mathbf d}_C}{\\|\\widetilde{\\mathbf d}_C\\|},\\qquad \\mathbf p_B=\\mathbf o_B+\\lambda\\mathbf d_B"
+            },
+            {
+              "type": "diagram",
+              "kind": "projection",
+              "label": "图像像素对应空间射线，与地面相交后才确定一个位置",
+              "zh": "图中的地面交点用于解释投影，不是对球心位置的直接估计。射线接近平行于地面时，小角度误差可能带来很大的距离误差。"
+            },
+            {
+              "type": "equation",
+              "label": "已知平面时的射线交点",
+              "tex": "\\mathbf n^{\\mathsf T}\\mathbf p+d_0=0\\quad\\Rightarrow\\quad\\lambda=-\\frac{\\mathbf n^{\\mathsf T}\\mathbf o+d_0}{\\mathbf n^{\\mathsf T}\\mathbf d}"
+            },
+            {
+              "type": "p",
+              "zh": "分母接近 0 时，射线与平面几乎平行；λ ≤ 0 时，交点不在射线前方。遇到这些情况应拒绝该结果，而不是强行给出距离。相机姿态还必须与图像采集时刻对齐；头部转动后若用新姿态解释旧图像，会引入偏差。"
+            },
+            {
+              "type": "code",
+              "code": "ray_camera = inv_K @ np.array([u, v, 1.0])\nray_camera /= np.linalg.norm(ray_camera)\nray_body = R_body_camera @ ray_camera\ndenominator = normal @ ray_body\n# 使用交点前，检查分母是否接近零以及距离的符号。\ndistance = -(normal @ origin + plane_offset) / denominator\npoint_body = origin + distance * ray_body",
+              "label": "Python · 几何原理示意，不是独立运行脚本"
+            },
+            {
+              "type": "p",
+              "zh": "这段示意代码用于对应公式；完整任务还会使用 Isaac Sim RTX 图像、32 × 32 深度图采样得到的 8 × 8 ToF 近似、头部运动学和有效性检查。传感器挂载到实际 Newton 头部连杆姿态，而不是保持世界水平的虚拟云台。验证时，应同时检查检测框、相机内参、估计位置和时间戳；检测框正确并不意味着三维位置一定正确。"
+            }
+          ],
+          "languages": [
+            "zh"
+          ]
         }
       ],
       "before": "projection"
@@ -579,7 +643,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "足球是要踢向球门的目标物，并非机器人的最终站位。若导航器直接将球心设为终点，机器人可能提前撞球，或因站得太近而无法出脚。本章先计算球后方的准备位置，再理解完整链路：Isaac Sim 提供带时间戳的感知快照，课程桥接器把地图与目标交给独立的 ROS 2 Nav2/Navfn 服务，上层控制逻辑根据返回路径生成速度指令，再由固定行走策略产生关节动作。"
+          "zh": "足球是要踢向球门的目标物，并非机器人的最终站位。若导航器直接将球心设为终点，机器人可能提前撞球，或因站得太近而无法出脚。本章先计算球后方的准备位置，再理解完整链路：Isaac Sim 提供带时间戳的感知快照，桥接程序把地图与目标交给独立的 ROS 2 Nav2/Navfn 服务，上层控制逻辑根据返回路径生成速度指令，再由固定行走策略产生关节动作。"
         },
         {
           "type": "equation",
@@ -598,7 +662,7 @@
         },
         {
           "type": "code",
-          "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [a.ball[i] - a.distance * direction[i]\n          + a.lateral * normal[i] for i in range(2)]",
+          "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [\n    a.ball[i] - a.distance * direction[i] + a.lateral * normal[i]\n    for i in range(2)\n]",
           "label": "Python · 核心代码节选",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py"
         },
@@ -627,14 +691,14 @@
         },
         {
           "type": "p",
-          "zh": "完整任务的桥接器按序号和仿真时间提交不可变快照，Nav2/Navfn 在隔离的 CPU 容器中使用 ROS 2 墙钟计算路径，再返回与请求匹配的结果。它不直接访问仿真器内部对象或 GPU，也不直接发布 <code>/cmd_vel</code>；Isaac Sim 官方支持 ROS 2 导航集成，但本课程采用的是上述显式文件桥接。在第 7 章运行 <code>plan</code> 命令时只做二维几何，不会启动这项服务。完整任务还要检查机器人是否在球后方停稳并满足出脚条件；后退或重新观察属于任务控制逻辑，不能仅因距离暂时增大就判定导航失败。"
+          "zh": "完整任务的桥接器按序号和仿真时间提交不可变快照，Nav2/Navfn 在隔离的 CPU 容器中使用 ROS 2 墙钟计算路径，再返回与请求匹配的结果。它不直接访问仿真器内部对象或 GPU，也不直接发布 <code>/cmd_vel</code>；Isaac Sim 官方支持 ROS 2 导航集成，但这里采用的是上述显式文件桥接。在第 7 章运行 <code>plan</code> 命令时只做二维几何，不会启动这项服务。完整任务还要检查机器人是否在球后方停稳并满足出脚条件；后退或重新观察属于任务控制逻辑，不能仅因距离暂时增大就判定导航失败。"
         },
         {
           "type": "note",
           "title": {
             "zh": "扩展工具要与机器人问题匹配"
           },
-          "zh": "NVIDIA cuMotion 面向机械臂的碰撞感知运动生成，适合关节臂抓取与轨迹规划；Microduck 当前需要的是双足步态稳定、足球站位和短时出脚，因此本课程不把 cuMotion 接入控制链。Isaac ROS nvblox、TensorRT 等组件也没有出现在当前可执行入口中。评估新组件时，应先明确它替换哪一层、需要哪些输入、怎样与现有评测比较，再决定是否集成。"
+          "zh": "NVIDIA cuMotion 面向机械臂的碰撞感知运动生成，适合关节臂抓取与轨迹规划；Microduck 当前需要的是双足步态稳定、足球站位和短时出脚，因此这里没有把 cuMotion 接入控制链。Isaac ROS nvblox、TensorRT 等组件也没有出现在当前可执行入口中。评估新组件时，应先明确它替换哪一层、需要哪些输入、怎样与现有评测比较，再决定是否集成。"
         }
       ],
       "before": "target"
@@ -672,7 +736,7 @@
         },
         {
           "type": "p",
-          "zh": "残差学习保留教师策略的基本行为，再学习有限的动作修正，从而利用已有动作，不必从零学习全部关节协调。下面的公式仅表达这一思想：课程中的踢球控制还包含阶段调度、动作限幅和恢复逻辑，不能直接将任意两份模型输出相加。"
+          "zh": "残差学习保留教师策略的基本行为，再学习有限的动作修正，从而利用已有动作，不必从零学习全部关节协调。下面的公式仅表达这一思想：实际踢球控制还包含阶段调度、动作限幅和恢复逻辑，不能直接将任意两份模型输出相加。"
         },
         {
           "type": "equation",
@@ -723,7 +787,7 @@
         {
           "type": "code",
           "label": "Python · Isaac Lab 动作接口节选",
-          "code": "env.action_manager.process_action(last_action)\n\n# 每个物理步执行\nenv.action_manager.apply_action()\nenv.scene.write_data_to_sim()\nsim.step(render=False)\nenv.scene.update(.005)",
+          "code": "env.action_manager.process_action(last_action)\n\n# 每个物理步执行\nenv.action_manager.apply_action()\nenv.scene.write_data_to_sim()\nsim.step(render=False)\nenv.scene.update(0.005)",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/executor.py"
         }
       ],
@@ -759,7 +823,7 @@
         },
         {
           "type": "code",
-          "code": "YOLO('yolo26n.yaml').train(\n    data=str(config), epochs=a.epochs, batch=a.batch,\n    seed=a.seed, imgsz=640, pretrained=False,\n    project=str(a.output.parent), name=a.output.name,\n    exist_ok=False, device=0, workers=2, plots=True\n)",
+          "code": "YOLO(\"yolo26n.yaml\").train(\n    data=str(config),\n    epochs=a.epochs,\n    batch=a.batch,\n    seed=a.seed,\n    imgsz=640,\n    pretrained=False,\n    project=str(a.output.parent),\n    name=a.output.name,\n    exist_ok=False,\n    device=0,\n    workers=2,\n    plots=True,\n)",
           "label": "Python · 核心代码节选"
         },
         {
@@ -768,7 +832,7 @@
         },
         {
           "type": "p",
-          "zh": "在一次相同配置的运行记录中，<code>results.csv</code> 第 5 轮的累计时间约为 6.05 秒，验证 mAP50 约为 0.00132，完整程序的启动耗时另计。这表明短练习工作流能够跑通，但模型效果很差；后续任务仍使用课程固定检测器。还应查看保存的标注图、漏检和误检，不能只关注损失是否下降。"
+          "zh": "在一次相同配置的运行记录中，<code>results.csv</code> 第 5 轮的累计时间约为 6.05 秒，验证 mAP50 约为 0.00132，完整程序的启动耗时另计。这表明短练习工作流可以正常运行，但模型效果很差；后续任务仍使用固定检测器。还应查看保存的标注图、漏检和误检，不能只关注损失是否下降。"
         },
         {
           "type": "p",
@@ -786,7 +850,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "课程的实际组合同时使用站立教师、踢球教师和残差模型。出脚阶段先按时间权重混合两个教师，再添加经过双曲正切限制的残差；这使基础动作逐渐回到站立，并限制修正幅度。下面的公式与当前固定运行代码对应，不是建议您直接更改这些参数。"
+          "zh": "实际运行时同时使用站立教师、踢球教师和残差模型。出脚阶段先按时间权重混合两个教师，再添加经过双曲正切限制的残差；这使基础动作逐渐回到站立，并限制修正幅度。下面的公式与当前固定运行代码对应，不是建议您直接更改这些参数。"
         },
         {
           "type": "equation",
@@ -796,7 +860,7 @@
         {
           "type": "code",
           "label": "Python · 固定踢球组合的核心节选",
-          "code": "actor = np.concatenate((obs, np.array([np.clip(phase, -1, 4)/np.float32(4)], np.float32)))\nstanding = self._infer(0, obs)\nkicking = self._infer(1, obs)\nresidual = self._infer(2, actor)\nu = np.clip((phase-np.float32(.14))/np.float32(.12), np.float32(0), np.float32(1))\nweight = np.float32(1)-u*u*(np.float32(3)-np.float32(2)*u)\nteacher = weight*kicking+(np.float32(1)-weight)*standing\ndelta = np.float32(.2)*np.tanh(residual)",
+          "code": "actor = np.concatenate(\n    (obs, np.array([np.clip(phase, -1, 4) / np.float32(4)], np.float32))\n)\nstanding = self._infer(0, obs)\nkicking = self._infer(1, obs)\nresidual = self._infer(2, actor)\nu = np.clip(\n    (phase - np.float32(0.14)) / np.float32(0.12),\n    np.float32(0),\n    np.float32(1),\n)\nweight = np.float32(1) - u * u * (np.float32(3) - np.float32(2) * u)\nteacher = weight * kicking + (np.float32(1) - weight) * standing\ndelta = np.float32(0.2) * np.tanh(residual)",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/kick_runtime.py"
         },
         {
@@ -836,7 +900,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "最后一章的目标不是“播放一次踢球动作”，而是让机器人从起始状态自主找到足球、选择站位、接近、对准、出脚并恢复。Isaac Lab 负责组织场景与控制接口，Newton 负责物理和执行器，Isaac Sim 6.2 负责 GUI 与 RTX 传感器，独立 ROS 2 Nav2 服务负责路径规划。分层结构让检测、几何、规划、行走、踢球和状态切换各自拥有可检查的输入与输出，便于定位整条任务链中的失败。"
+          "zh": "这一章的目标不是“播放一次踢球动作”，而是让机器人从起始状态自主找到足球、选择站位、接近、对准、出脚并恢复。Isaac Lab 负责组织场景与控制接口，Newton 负责物理和执行器，Isaac Sim 6 负责 GUI 与 RTX 传感器，独立 ROS 2 Nav2 服务负责路径规划。分层结构让检测、几何、规划、行走、踢球和状态切换各自拥有可检查的输入与输出，便于定位整条任务链中的失败。"
         },
         {
           "type": "flow",
@@ -884,7 +948,7 @@
         },
         {
           "type": "code",
-          "code": "passed = bool(\n    score['physical_episode_success']\n    and not score['contact']['pre_kick_ball_contact_observed']\n    and recovered\n    and not any(codes)\n)",
+          "code": "passed = bool(\n    score[\"physical_episode_success\"]\n    and not score[\"contact\"][\"pre_kick_ball_contact_observed\"]\n    and recovered\n    and not any(codes)\n)",
           "label": "Python · 核心代码节选",
           "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/evaluate_task.py"
         },
@@ -894,7 +958,7 @@
         },
         {
           "type": "p",
-          "zh": "完整任务只加载课程固定模型，运行期间不会继续训练。控制器输入包括带时间戳的相机、ToF 和本体观测；Newton 中的精确物体位姿、接触力与球门几何只用于评测，不应直接进入感知通路。Isaac Sim 的双视角视频用于理解行为，轨迹、接触记录与报告用于复核结果。这样既能利用仿真提供可重复、可观测的验证环境，又不会把评分真值泄漏给机器人。"
+          "zh": "完整任务只加载提供的固定模型，运行期间不会继续训练。控制器输入包括带时间戳的相机、ToF 和本体观测；Newton 中的精确物体位姿、接触力与球门几何只用于评测，不应直接进入感知通路。Isaac Sim 的双视角视频用于理解行为，轨迹、接触记录与报告用于复核结果。这样既能利用仿真提供可重复、可观测的验证环境，又不会把评分真值泄漏给机器人。"
         }
       ],
       "before": "system"
@@ -907,7 +971,7 @@
       "blocks": [
         {
           "type": "p",
-          "zh": "固定方案在一次指定初始分布、180 秒上限的 10 个独立种子评测中完成了 9 次任务。该 9/10 仅是这组种子的记录，不意味着任何摆球方式或新场景都有 90% 成功率。默认教学种子用于演示流程，反复运行该种子不能视为增加了独立评测样本。"
+          "zh": "固定方案在一次指定初始分布、180 秒上限的 10 个独立种子评测中完成了 9 次任务。该 9/10 仅是这组种子的记录，不意味着任何摆球方式或新场景都有 90% 成功率。默认演示种子用于演示流程，反复运行该种子不能视为增加了独立评测样本。"
         },
         {
           "type": "equation",

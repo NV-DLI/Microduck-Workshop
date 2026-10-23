@@ -10,7 +10,7 @@
       "en": "Play with keyboard controls, learn training and perception, then connect the full autonomous task."
     },
     "meta": {
-      "zh": "7 章 · 中文 / English · 仿真实践",
+      "zh": "8 章 · 中文 / English · 仿真实践",
       "en": "8 chapters · 中文 / English · Simulation labs"
     },
     "number": "",
@@ -28,7 +28,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "最终场景中只有一台 Microduck、一个足球和一个球门。机器人要先找到球、判断球门方向，再走到合适的出脚位置完成踢球，并恢复稳定站姿。课程以 NVIDIA Isaac 生态的完整工作流组织这些环节：Isaac Lab 定义任务、观测、动作与并行环境，Newton 推进接触丰富的物理状态，Isaac Sim 提供可视化、RTX 相机与场景验证。您会看到每项工具解决的具体问题，也会学习如何用记录与评测判断整条链路。",
+            "zh": "最终场景中只有一台 Microduck、一个足球和一个球门。机器人要先找到球、判断球门方向，再走到合适的出脚位置完成踢球，并恢复稳定站姿。我们用 NVIDIA Isaac 生态的完整工作流组织这些环节：Isaac Lab 定义任务、观测、动作与并行环境，Newton 推进接触丰富的物理状态，Isaac Sim 提供可视化、RTX 相机与场景验证。您会看到每项工具解决的具体问题，也会学习如何用记录与评测判断整条链路。",
             "en": "The final scene contains one Microduck, one football, and one goal. The robot must find the ball, locate the goal, approach a useful kicking position, make contact, and recover its stance. You will learn what each part of this system does and how the parts work together."
           },
           {
@@ -59,7 +59,7 @@
             "type": "list",
             "zh": [
               "说明关节、执行器、观测、动作和奖励之间的关系。",
-              "说明 Isaac Lab 3 如何分离物理、渲染与可视化，并在课程的 Newton / Isaac Sim 组合中加载固定策略。",
+              "启动 Isaac Sim 场景并加载固定策略，说明 Isaac Lab 3、Newton 与渲染模块如何分工。",
               "利用 Isaac Lab 的并行环境运行一次有预算限制的 GPU 并行训练练习，找到检查点并解释训练曲线。",
               "把 Isaac Sim 相机、ToF 距离和身体姿态联系起来，解释感知信息如何驱动自主射门的状态切换。",
               "记录完整任务的成功与失败，区分模型指标和任务指标。"
@@ -346,8 +346,8 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "本课程以 Ubuntu 24.04、DGX Spark（aarch64）、Python 3.12、Isaac Sim 6.2 以及锁定版本的 Isaac Lab / Newton 作为参考运行环境，仿真采用 Newton 的原生执行器路径。其他 GPU 或软件版本或许也能运行，但课程测试结果不能直接套用。",
-            "en": "The reference environment is Ubuntu 24.04 on DGX Spark (aarch64), Python 3.12, Isaac Sim 6.2, and pinned Isaac Lab / Newton revisions. Simulation uses Newton’s native actuator path. Other GPUs or versions may run, but the course results do not automatically apply to them."
+            "zh": "这里以 Ubuntu 24.04、DGX Spark（aarch64）、Python 3.12、Isaac Sim 6 以及锁定版本的 Isaac Lab / Newton 作为参考运行环境，仿真采用 Newton 的原生执行器路径。其他 GPU 或软件版本或许也能运行，但这些测试结果不能直接套用。",
+            "en": "The reference environment is Ubuntu 24.04 on DGX Spark (aarch64), Python 3.12, Isaac Sim 6, and pinned Isaac Lab / Newton revisions. Simulation uses Newton’s native actuator path. Other GPUs or versions may run, but the course results do not automatically apply to them."
           },
           {
             "type": "p",
@@ -370,7 +370,7 @@
           },
           {
             "type": "p",
-            "zh": "模型会随仓库一同下载，无需另行登录 Hugging Face。校验命令会逐一核对文件的 SHA-256；只有全部一致后才能继续。课程固定权重应与自行生成的输出分开保存。",
+            "zh": "模型会随仓库一同下载，无需另行登录 Hugging Face。校验命令会逐一核对文件的 SHA-256；只有全部一致后才能继续。提供的固定权重应与自行生成的输出分开保存。",
             "en": "The models are included in the repository, so no Hugging Face login is required. The verification command checks every model’s SHA-256. Continue only when all files match. Course weights and student outputs are stored separately."
           },
           {
@@ -480,7 +480,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "Microduck 是 Pollen Robotics 与 Hugging Face 推出的开源双足机器人。它有 14 个主动关节，可以通过训练获得行走、踢腿等技能。本课程使用 NVIDIA Isaac Sim 搭建可反复试验的场景，用 Isaac Lab 组织训练与评测，逐步让机器人自己找到足球并完成射门。先不训练：加载官方已经训练好的行走与右脚踢球 ONNX 策略，体验一次手动射门。",
+            "zh": "Microduck 是 Pollen Robotics 与 Hugging Face 推出的开源双足机器人。它有 14 个主动关节，可以通过训练获得行走、踢腿等技能。我们用 NVIDIA Isaac Sim 搭建可反复试验的场景，用 Isaac Lab 组织训练与评测，逐步让机器人自己找到足球并完成射门。先不训练：加载官方已经训练好的行走与右脚踢球 ONNX 策略，体验一次手动射门。",
             "en": "Microduck is an open biped from Pollen Robotics and Hugging Face with 14 actuated joints. Start with the official walking and right-foot kick ONNX policies in Isaac Sim, then learn how Isaac Lab trains and evaluates new skills."
           }
         ]
@@ -581,7 +581,7 @@
           },
           {
             "type": "p",
-            "zh": "先走到球旁边，再停下来：球应位于右脚前方，身体朝向球门。按空格出脚。若踢空，先调整站位；若失去平衡，按 R 重来。这里由您判断球在哪里、应该朝哪走，策略只负责把指令变成关节动作。一次没有进球，也能帮助您发现自主射门系统必须解决什么问题。",
+            "zh": "先走到球旁边，再停下来：球应位于右脚前方，身体朝向球门。按空格出脚。若踢空，先调整站位；若失去平衡，按 R 重来。这里由您判断球在哪里、应该朝哪走，策略只负责把指令变成关节动作。如果某次尝试没能进球，可以想一想：是站位偏了、朝向不对，还是出脚时机不合适？这些判断正是后面要交给自主射门系统的任务。",
             "en": "Walk toward the ball, stop with the ball in front of the right foot, and face the goal before pressing Space. Reposition after a miss; press R after a fall. You choose the target and direction; the policies coordinate the joints."
           }
         ]
@@ -633,12 +633,12 @@
           },
           {
             "type": "p",
-            "zh": "机器人 USD 不只是一张好看的网格：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型影响目标角度如何变成实际运动。球的半径为 3.5 cm、质量为 45 g；球门内宽为 24 cm。Isaac Sim 提供场景与渲染，课程使用 Isaac Lab 的任务配置接入 Newton 物理后端。",
+            "zh": "机器人 USD 不只是一张好看的网格：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型影响目标角度如何变成实际运动。球的半径为 3.5 cm、质量为 45 g；球门内宽为 24 cm。Isaac Sim 提供场景与渲染，这里通过 Isaac Lab 的任务配置接入 Newton 物理后端。",
             "en": "The robot USD includes joints, collision geometry and inertial properties. The ball has a 3.5 cm radius and 45 g mass; the goal opening is 24 cm wide. Isaac Sim provides the scene and rendering; Isaac Lab configures the Newton physics backend."
           },
           {
             "type": "code",
-            "code": "cfg.scene.ball = RigidObjectCfg(\n    prim_path='{ENV_REGEX_NS}/Ball',\n    spawn=sim_utils.SphereCfg(\n        radius=.035,\n        mass_props=sim_utils.MassPropertiesCfg(mass=.045),\n        collision_props=sim_utils.CollisionPropertiesCfg(),\n        rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True)),\n    init_state=RigidObjectCfg.InitialStateCfg(pos=(0., 0., .035)))",
+            "code": "cfg.scene.ball = RigidObjectCfg(\n    prim_path=\"{ENV_REGEX_NS}/Ball\",\n    spawn=sim_utils.SphereCfg(\n        radius=0.035,\n        mass_props=sim_utils.MassPropertiesCfg(mass=0.045),\n        collision_props=sim_utils.CollisionPropertiesCfg(),\n        rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True),\n    ),\n    init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.035)),\n)",
             "label": "Python · 核心代码节选",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py"
           }
@@ -694,12 +694,17 @@
           },
           {
             "type": "p",
-            "zh": "两个官方策略都接收 61 维观测，输出 14 个关节动作。网络包含 512、256、128 个单元的三个隐藏层，使用 ELU 激活；输入归一化参数已包含在 ONNX 中，不要再做一次不匹配的归一化。键盘没有逐个操纵关节，而是改变速度指令。出脚时速度归零，短时调用踢球策略，再平滑切回站立。这里不加载课程的踢球残差模型。",
+            "zh": "两个官方策略都接收 61 维观测，输出 14 个关节动作。网络包含 512、256、128 个单元的三个隐藏层，使用 ELU 激活；输入归一化参数已包含在 ONNX 中，不要再做一次不匹配的归一化。键盘没有逐个操纵关节，而是改变速度指令。出脚时速度归零，短时调用踢球策略，再平滑切回站立。这里不加载踢球残差模型。",
             "en": "Both actors map 61 observations to 14 joint actions through hidden layers of 512, 256 and 128 units with ELU activations. Their input normalization is embedded in ONNX. Keyboard commands set velocity, not individual joint angles. A bounded kick blends back to standing; this lab does not load the course residual actor."
           },
           {
+            "type": "network",
+            "zh": "每列圆点只代表这一层的部分单元；数字才是实际维数。两个官方策略的结构相同、权重不同，因此能产生不同的动作技能。图中是推理用的策略网络，训练时使用的价值网络不在其中。",
+            "en": "Circles show a subset of units; numbers give actual dimensions. The official walking and kick actors share this structure but have different weights. The training critic is not shown."
+          },
+          {
             "type": "code",
-            "code": "obs = env.observation_manager.compute(update_history=True)['policy']\naction = walk(obs)\nif kick_start is not None:\n    phase = (step - kick_start) * .02\n    weight = 1. if phase < .14 else max(0., 1. - (phase - .14) / .12)\n    if weight:\n        action = torch.lerp(action, kick(obs), weight)\nenv.action_manager.process_action(action)",
+            "code": "# Read the state once per policy step, then select the active skill.\nobs = env.observation_manager.compute(update_history=True)[\"policy\"]\naction = walk(obs)\n\nif kick_start is not None:\n    phase = (step - kick_start) * 0.02\n    weight = 1.0 if phase < 0.14 else max(0.0, 1.0 - (phase - 0.14) / 0.12)\n    if weight:\n        action = torch.lerp(action, kick(obs), weight)\n\n# The action manager maps network outputs to joint targets.\nenv.action_manager.process_action(action)",
             "label": "Python · 核心代码节选",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py"
           },
@@ -798,8 +803,8 @@
           },
           {
             "type": "p",
-            "zh": "操作时，先把爆炸滑块移到中间位置，通过可点击标签找到左右腿的舵机；再把滑块移到最右端，依次点击头部镜头、外壳和主板的标签。最后复位滑块，观察各部件如何借助连接件组成运动链。",
-            "en": "Try this: move the explosion slider halfway and find the leg servos. Fully expand the assembly and select the lens, shells, and boards. Reset the view and trace how the connectors form a kinematic chain."
+            "zh": "将展开滑块移到中间，先找出左右腿和头颈部的舵机，再点击名称查看它们驱动的关节。继续展开，观察相机、主控板和电池的位置。最后返回总览，沿一条腿追踪关节之间的连接关系。",
+            "en": "Move the separation slider to inspect the leg and head servos. Click their labels to identify the driven joints, then inspect the camera, controller board and battery. Reset to trace the leg joints."
           },
           {
             "type": "note",
@@ -807,8 +812,8 @@
               "zh": "硬件版本与仿真关节",
               "en": "Hardware revision and simulation joints"
             },
-            "zh": "这份机械 CAD 包含 15 个舵机实体，而对应的仿真导出包含 14 个活动关节；喙部机构没有作为独立的策略关节。CAD 中电子部件的外形对应原始硬件版本，第六章会另行说明所用的 Beta 传感器配置。",
-            "en": "This CAD assembly contains 15 servo bodies. Its simulation export exposes 14 active joints; the beak is not an independent policy joint. Electronic shapes belong to the source CAD revision. Chapter 5 separately describes the Beta sensing configuration."
+            "zh": "Microduck 配有 15 个舵机：两条腿各 5 个，头颈部 4 个，喙部 1 个。这里的仿真策略控制其中 14 个关节，喙部保持固定。图中的主控板为 Raspberry Pi Zero 2 W；不同硬件版本可能使用不同的电子组件，第六章会介绍仿真实验采用的传感器配置。",
+            "en": "There are 15 servos: five per leg, four for the head and neck, and one for the beak. The policy drives 14 joints; the beak remains fixed. The model shows a Raspberry Pi Zero 2 W controller board. Chapter 6 introduces the simulated sensors."
           }
         ]
       },
@@ -853,7 +858,7 @@
                 [
                   "喙部",
                   "实物有舵机；本课程策略不控制",
-                  "仅用于 CAD 展示，不计入 14 维策略动作"
+                  "仅用于 3D 模型 展示，不计入 14 维策略动作"
                 ]
               ],
               "en": [
@@ -870,15 +875,15 @@
                 [
                   "Beak",
                   "Physical servo; not controlled by this policy",
-                  "Shown in CAD, excluded from the 14-action interface"
+                  "Shown in 3D model, excluded from the 14-action interface"
                 ]
               ]
             }
           },
           {
             "type": "p",
-            "zh": "点击髋部舵机的标签，观察输出轴及其附近的轴承。舵机控制主动转角，轴承支撑旋转部件，支架则连接相邻关节。材料、几何形状和装配间隙都会影响运动。网页模型保留了原 CAD 的细节，但没有模拟螺钉预紧、塑料弹性或线缆受力，因此只能帮助理解结构，不能替代制造图纸。",
-            "en": "Select a hip servo and inspect its output shaft and nearby bearing. The servo controls an active angle, the bearing supports rotation, and brackets connect adjacent joints. Material, shape, and assembly clearance affect motion. The viewer preserves CAD detail but does not simulate screw preload, plastic elasticity, or cable forces; it is an anatomy aid rather than manufacturing documentation."
+            "zh": "点击髋部舵机，观察输出轴及其附近的轴承。舵机驱动关节转动，轴承支撑旋转部件，支架连接相邻关节。对照模型，区分哪些零件随输出轴转动、哪些零件固定在上一级连杆上。",
+            "en": "Select a hip servo and inspect its output shaft and nearby bearing. The servo controls an active angle, the bearing supports rotation, and brackets connect adjacent joints. Material, shape, and assembly clearance affect motion. The viewer preserves 3D model detail but does not simulate screw preload, plastic elasticity, or cable forces; it is an anatomy aid rather than manufacturing documentation."
           }
         ]
       },
@@ -913,7 +918,7 @@
           },
           {
             "type": "p",
-            "zh": "本课程的控制循环频率为 50 Hz，物理步进频率为 200 Hz，因此每个策略动作会持续四个物理步。齿隙模型还会引入被动关节来描述传动间隙，但这些关节并不是额外的策略输出。",
+            "zh": "这里的控制循环频率为 50 Hz，物理步进频率为 200 Hz，因此每个策略动作会持续四个物理步。齿隙模型还会引入被动关节来描述传动间隙，但这些关节并不是额外的策略输出。",
             "en": "The policy runs at 50 Hz and physics at 200 Hz: each action spans four physics steps. Backlash introduces passive joints representing transmission play. Passive joints are not additional policy outputs."
           }
         ]
@@ -998,7 +1003,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "先让模型保持装配状态，找到左脚，并沿脚踝、小腿、膝部、大腿和髋部向上追踪。脚掌着地后，支撑力会沿这条路径传到机身。随后拖动爆炸滑块展开模型，点击关节附近的舵机和支架标签，辨认哪个部件固定在上一级、哪个部件随输出轴旋转。爆炸图只改变部件的显示位置，并不代表真实关节能够运动到这些位置。",
+            "zh": "先在装配状态下沿脚踝、小腿、膝部、大腿和髋部向上追踪。脚掌着地后，支撑力会沿这条路径传到机身。随后展开模型，点击关节附近的舵机，辨认相邻连杆的连接方式。",
             "en": "Start with the assembled model. Trace a path from the left foot through the ankle, shin, knee, thigh, and hip. Ground support reaches the body through this chain. Explode the assembly and select the servos and brackets around a joint. Identify the fixed housing and the part driven by its output. Explosion offsets are display positions, not physically reachable joint poses."
           },
           {
@@ -1009,11 +1014,11 @@
           {
             "type": "quiz",
             "question": {
-              "zh": "在爆炸图中把脚部拉得更远，会改变仿真的腿长吗？",
+              "zh": "在拆解图中把脚部拉得更远，会改变仿真的腿长吗？",
               "en": "Does moving the foot farther out in the exploded view change the simulated leg length?"
             },
             "answer": {
-              "zh": "不会。网页中的爆炸图只用于认识组件，仿真里的部件长度和关节连接仍由机器人描述文件定义。",
+              "zh": "不会。网页中的拆解图只用于认识组件，仿真里的部件长度和关节连接仍由机器人描述文件定义。",
               "en": "No. The web view explains components. Robot description files define simulated dimensions and joint connections."
             }
           }
@@ -1103,9 +1108,21 @@
             }
           },
           {
+            "type": "network",
+            "zh": "61 维观测按固定顺序拼接，归一化后经过三个隐藏层，得到 14 维动作。圆点数量为示意，层宽以数字为准。动作管理器再将动作转换为关节目标；相机图像不在这个行走策略的输入中。",
+            "en": "Circles show a subset of units; numbers give actual dimensions. The official walking and kick actors share this structure but have different weights. The training critic is not shown."
+          },
+          {
             "type": "p",
-            "zh": "这些数值合计构成 61 维输入。即使输入形状仍为 61，只要打乱关节顺序，语义就会被破坏，例如策略可能把膝关节状态误当成髋关节状态。课程入口会保持关节顺序、默认姿态和控制节拍一致。应先通过指令、时间预算和输出目录开展实验，理解接口后再修改底层观测。",
+            "zh": "这些数值合计构成 61 维输入。即使输入形状仍为 61，只要打乱关节顺序，语义就会被破坏，例如策略可能把膝关节状态误当成髋关节状态。实验入口会保持关节顺序、默认姿态和控制节拍一致。应先通过指令、时间预算和输出目录开展实验，理解接口后再修改底层观测。",
             "en": "These values total 61. Reordering joints breaks their meaning even if the input still has 61 entries: the policy might read a knee as a hip. Course entry points preserve ordering, nominal posture, and control timing. Begin by changing commands, duration, and output directories; modify observation construction only after understanding the interface."
+          },
+          {
+            "type": "p",
+            "zh": "现在已经知道策略如何读取状态、输出动作，以及舵机和物理仿真怎样执行这些动作。下一章从加载现成模型转向训练模型：用 Isaac Lab 让策略通过反复尝试学会行走。",
+            "languages": [
+              "zh"
+            ]
           }
         ]
       }
@@ -1135,7 +1152,7 @@
       "en": "Learning to walk"
     },
     "summary": {
-      "zh": "用 Isaac Lab 的并行环境在 GPU 上体验一次 PPO 训练，理解观测、动作、奖励、管理器和检查点，并学习如何验证策略。",
+      "zh": "前面直接加载了官方行走模型。这一章用 Isaac Lab 从头训练自己的策略，观察回报和行为如何变化，再与官方模型比较。",
       "en": "Experience PPO training and understand observations, actions, rewards, and checkpoints while keeping downstream labs on fixed models."
     },
     "meta": {
@@ -1220,6 +1237,13 @@
           "en": "Run a short training exercise"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "下面的命令不加载官方行走权重，也不恢复旧检查点，而是从头开始训练。先用小预算确认完整流程可以运行，再决定是否增加训练轮数。",
+            "languages": [
+              "zh"
+            ]
+          },
           {
             "type": "code",
             "code": "python3 scripts/workshop.py train-walk \\\n  --num-envs 64 \\\n  --iterations 20 \\\n  --seed 101 \\\n  --output outputs/student-walk-01",
@@ -1313,7 +1337,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "真实舵机的摩擦、延迟和齿隙并不会在每次运行中完全一致。Isaac Lab 的事件管理器可以在环境重置或指定时刻为各并行副本改变这些参数，让策略在同一训练批次中接触更丰富的情形。随机化范围过窄可能造成过拟合，范围过宽又可能使任务难以学会。课程使用保存于 <code>env.yaml</code> 的实际配置作为解释依据；域随机化有助于提高鲁棒性，但不能取代真机验证。",
+            "zh": "真实舵机的摩擦、延迟和齿隙并不会在每次运行中完全一致。Isaac Lab 的事件管理器可以在环境重置或指定时刻为各并行副本改变这些参数，让策略在同一训练批次中接触更丰富的情形。随机化范围过窄可能造成过拟合，范围过宽又可能使任务难以学会。分析时以保存于 <code>env.yaml</code> 的实际配置作为解释依据；域随机化有助于提高鲁棒性，但不能取代真机验证。",
             "en": "Real actuators do not have identical friction, delay, and backlash on every run. Varying parameters in training exposes the policy to more conditions. A narrow range can overfit; an excessively broad range can make learning difficult. Randomization can improve robustness but does not replace hardware testing."
           },
           {
@@ -1373,7 +1397,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "现在有了一个行走策略，也知道怎样用 Isaac Lab 收集数据、更新 PPO、导出 ONNX 并独立测试。但训练时脚下大多是平地：如果把球场换成坡道，原来的抬脚高度、落脚位置和重心调整还够用吗？先写下您的预测，再到下一章用相同的策略做对照实验。",
+            "zh": "现在已经走过采样、PPO 更新、导出和测试的流程。自己的策略是否学会行走，仍以实际评测为准。接下来提出一个新问题：即使一个策略在平地上走得很好，遇到坡道时，原来的抬脚高度、落脚位置和重心调整还够用吗？先写下预测，再到下一章用官方行走策略建立统一的坡地基线。",
             "en": "You can now collect rollouts, update PPO, export ONNX and test a policy. Will its foot clearance and balance adjustments work on a slope? Predict the outcome, then test the same policy in Chapter 4."
           }
         ]
@@ -1500,7 +1524,7 @@
           },
           {
             "type": "code",
-            "code": "slope = math.tan(math.radians(cfg.slope_deg))\nxs = [0., 2.35, 3.35, 6.]\nzs = [0., 0., slope, slope]\nvertices = [(x, y, z) for x, z in zip(xs, zs) for y in [0., 4.]]",
+            "code": "slope = math.tan(math.radians(cfg.slope_deg))\nxs = [0.0, 2.35, 3.35, 6.0]\nzs = [0.0, 0.0, slope, slope]\nvertices = [(x, y, z) for x, z in zip(xs, zs) for y in [0.0, 4.0]]",
             "label": "Python · 核心代码节选",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/terrain.py"
           },
@@ -1644,14 +1668,56 @@
             "en": "A slope changes foot clearance, gravity along the surface and usable friction. Insufficient clearance or propulsion can stall ascent; downhill landing and balance changes can cause falls. Survival alone misses stalled traversal."
           },
           {
-            "type": "equation",
-            "label": "坡面上的重力分量与简化摩擦约束",
-            "tex": "F_{\\parallel}=mg\\sin\\alpha,\\qquad N\\approx mg\\cos\\alpha,\\qquad |F_{\\mathrm{tangent}}|\\leq\\mu N"
+            "type": "p",
+            "zh": "Newton 会在每个物理步计算重力、接触和执行器响应；Isaac Lab 则让同一策略在多种坡度上反复试验。我们不必手写一套上坡步态，但需要让训练场景和奖励覆盖这些变化。",
+            "languages": [
+              "zh"
+            ]
           },
           {
-            "type": "p",
-            "zh": "这只是帮助理解的准静态近似。双足行走还涉及惯性、单脚支撑和碰撞；Newton 按每个物理步推进这些动力学与接触，不能用上式直接推出一个策略一定能走多陡的坡。Isaac Lab 3 将学习任务与物理后端分开，本章继续使用 Newton 的原生执行器与相同控制周期。",
-            "en": "These are quasi-static intuitions, not a maximum-slope guarantee. Newton advances dynamics, contact and actuators at every physics step. Isaac Lab 3 separates the learning task from its physics backend; this lesson retains native Newton actuators."
+            "type": "enrichment",
+            "title": {
+              "zh": "拓展：坡度怎样改变重力与摩擦",
+              "en": "拓展：坡度怎样改变重力与摩擦"
+            },
+            "blocks": [
+              {
+                "type": "p",
+                "zh": "把重力沿坡面和垂直坡面两个方向分解，就能理解为什么上坡需要更多推进、下坡更需要控制速度。这里把机器人暂时看作坡面上的一个物体，用准静态近似说明趋势。",
+                "languages": [
+                  "zh"
+                ]
+              },
+              {
+                "type": "equation",
+                "label": "坡面上的重力分量与简化摩擦约束",
+                "tex": "F_{\\parallel}=mg\\sin\\alpha,\\qquad N\\approx mg\\cos\\alpha,\\qquad |F_{\\mathrm{tangent}}|\\leq\\mu N"
+              },
+              {
+                "type": "p",
+                "zh": "m 是质量，g 是重力加速度，α 在这里取坡面与水平面的夹角大小；前面测试中的正负号只用来区分上坡和下坡。沿坡向下的分量 mg sin α 会阻碍上坡、促进下坡；垂直坡面的分量 mg cos α 决定近似支持力 N。α = 0 时，沿坡分量为零；坡越陡，这个分量越大。",
+                "languages": [
+                  "zh"
+                ]
+              },
+              {
+                "type": "p",
+                "zh": "μ 是摩擦系数，F_tangent 是接触面所需的切向力。要保持不滑动，所需切向力的大小不能超过 μN。以 10° 坡道为例，沿坡重力约为重量的 17%，支持力约为重量的 98%；这些比例说明受力趋势，不能直接变成策略的最大坡度。",
+                "languages": [
+                  "zh"
+                ]
+              },
+              {
+                "type": "p",
+                "zh": "这个近似忽略了迈步加速、单脚支撑和足底碰撞。实际行走时支持力会变化，Newton 会逐步求解相应动力学。判断策略是否适用，仍要同时检查到达、跌倒和速度误差。",
+                "languages": [
+                  "zh"
+                ]
+              }
+            ],
+            "languages": [
+              "zh"
+            ]
           }
         ]
       },
@@ -1679,7 +1745,7 @@
           },
           {
             "type": "code",
-            "code": "sub_terrains={\n    'flat': MeshPlaneTerrainCfg(proportion=.25),\n    'slopes': HfPyramidSlopedTerrainCfg(\n        proportion=.375, slope_range=(.03, .22), platform_width=.7),\n    'descending': HfInvertedPyramidSlopedTerrainCfg(\n        proportion=.375, slope_range=(.03, .22), platform_width=.7),\n}",
+            "code": "sub_terrains = {\n    \"flat\": MeshPlaneTerrainCfg(proportion=0.25),\n    \"slopes\": HfPyramidSlopedTerrainCfg(\n        proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7\n    ),\n    \"descending\": HfInvertedPyramidSlopedTerrainCfg(\n        proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7\n    ),\n}",
             "label": "Python · 核心代码节选",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py"
           }
@@ -1694,24 +1760,98 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "地形适应后，还要检查方向是否准确。机器人即使一直迈步，也可能因小幅偏航逐渐偏离目标。速度跟踪、身体稳定和方向保持应分别观察：若把转向误差与步态正常的横滚、俯仰运动混在同一个狭窄奖励范围里，训练信号可能不够清晰。这里增加一个只针对身体 z 轴角速度的跟踪项，同时保留姿态与动作平滑约束。",
-            "en": "After adapting balance, check direction. Small turn-rate errors can accumulate into missed targets. A separate body-z angular-velocity term avoids mixing turn accuracy with ordinary gait roll and pitch; posture and smoothness terms remain."
+            "zh": "在坡道上，站稳只是第一步。机器人还要朝目标方向走：即使一直迈步，只要出现持续的小幅转向，走过一段距离后也会偏离落脚平台。前进速度奖励主要约束机身坐标系下的速度，身体转偏后仍可能“向自己的前方走得很好”，因此需要单独检查转向速度。",
+            "languages": [
+              "zh"
+            ]
+          },
+          {
+            "type": "p",
+            "zh": "先把期望行为写清楚：指令要求直行时，绕身体 z 轴的角速度应接近零；指令要求转弯时，实际角速度应接近指令。这里约束的是转向速度，不是身体始终朝向某个固定世界方向；它也不能直接修正已经积累的航向误差。坡面上身体 z 轴与世界竖直方向不完全重合，这仍是一个局部控制指标。",
+            "languages": [
+              "zh"
+            ]
           },
           {
             "type": "equation",
-            "label": "转向速度跟踪奖励",
-            "tex": "r_{\\omega}=\\exp\\!\\left[-\\left(\\frac{\\omega_z-\\omega_z^*}{0.15}\\right)^2\\right]"
+            "label": "第一步：定义有物理含义的误差",
+            "tex": "e_{\\omega}=\\omega_z-\\omega_z^*,\\qquad u=\\frac{e_{\\omega}}{\\sigma}"
+          },
+          {
+            "type": "p",
+            "zh": "ωz 是机身坐标系中绕 z 轴的角速度，训练时从仿真状态读取；ωz* 是转向指令，单位都是 rad/s。误差可以为正也可以为负，两边都需要惩罚，所以用平方；再除以容忍尺度 σ，把不同量级的误差变为无量纲数。这里取 σ = 0.15 rad/s，表示我们希望重点区分这一量级附近的转向误差。",
+            "languages": [
+              "zh"
+            ]
+          },
+          {
+            "type": "equation",
+            "label": "第二步：把误差转换为平滑、有界的奖励",
+            "tex": "r_{\\omega}=\\exp(-u^2)=\\exp\\!\\left[-\\left(\\frac{\\omega_z-\\omega_z^*}{0.15}\\right)^2\\right]"
+          },
+          {
+            "type": "p",
+            "zh": "误差为零时奖励为 1；误差增大时奖励平滑降向 0，而且左右转偏受到同样的影响。这个指数形式是便于优化的一种设计选择，不是由物理定律唯一推出的公式。σ 太小，大多数动作都只能得到接近零的奖励；σ 太大，又难以区分方向保持得好不好。",
+            "languages": [
+              "zh"
+            ]
+          },
+          {
+            "type": "table",
+            "languages": [
+              "zh"
+            ],
+            "headers": {
+              "zh": [
+                "转向误差的大小",
+                "原始奖励 rω",
+                "如何理解"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "0 rad/s",
+                  "1.000",
+                  "完全跟随转向指令"
+                ],
+                [
+                  "0.075 rad/s（0.5σ）",
+                  "0.779",
+                  "小幅偏差仍有较高奖励"
+                ],
+                [
+                  "0.15 rad/s（1σ）",
+                  "0.368",
+                  "误差达到容忍尺度，奖励明显降低"
+                ],
+                [
+                  "0.30 rad/s（2σ）",
+                  "0.018",
+                  "偏差较大，几乎得不到这一项奖励"
+                ]
+              ]
+            }
           },
           {
             "type": "code",
             "label": "Python · 核心代码节选",
-            "code": "def yaw_rate_tracking(env, std=.15):\n    velocity = env.scene['robot'].data.root_link_ang_vel_b.torch\n    target = env.command_manager.get_command('base_velocity')[:, 2]\n    return torch.exp(-((velocity[:, 2] - target) / std).square())\n\ncfg.rewards.yaw_precision = RewardTermCfg(\n    func=yaw_rate_tracking, weight=4., params={'std': .15})",
+            "code": "def yaw_rate_tracking(env, std=0.15):\n    # Match the commanded turn rate without penalizing normal roll/pitch motion.\n    velocity = env.scene[\"robot\"].data.root_link_ang_vel_b.torch\n    target = env.command_manager.get_command(\"base_velocity\")[:, 2]\n\n    # Squared, normalized error gives a symmetric reward in (0, 1].\n    return torch.exp(-((velocity[:, 2] - target) / std).square())\n\n\ncfg.rewards.yaw_precision = RewardTermCfg(\n    func=yaw_rate_tracking, weight=4.0, params={\"std\": 0.15}\n)",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py"
           },
           {
             "type": "p",
-            "zh": "其中 ωz 为身体 z 轴角速度，ωz* 为转向指令，单位均为 rad/s；0.15 控制误差容忍范围。权重 4 决定这个奖励与其他奖励项的相对重要性。转向奖励衡量角速度跟踪情况；能否完成坡地行走，仍由到达与跌倒条件判断。沿用上一阶段的检查点，可以继续改进已有动作，无需重新从随机策略开始。",
-            "en": "Both angular velocities use rad/s; 0.15 sets tolerance and weight4 controls relative importance. This is not a task-success metric. Resume the previous checkpoint to improve the existing motion rather than restarting from random parameters."
+            "zh": "代码取出所有并行环境的机身角速度和转向指令，按环境逐项计算上式。weight = 4 把原始奖励乘以 4，再交给 Isaac Lab 的奖励管理器与其他项组合；管理器还按策略步长统一缩放。它表示相对重视程度，不是“成功率提高 4 倍”。姿态、动作平滑和前进速度项仍然保留，防止策略只顾停止转动而不走路。",
+            "languages": [
+              "zh"
+            ]
+          },
+          {
+            "type": "p",
+            "zh": "为什么单独取 z 分量？行走本身伴随横滚和俯仰角速度。如果把三轴误差一起放进过窄的奖励范围，正常步态的晃动也可能压低得分。单独的 z 轴项让转向反馈更明确，同时继续用其他奖励约束身体稳定。",
+            "languages": [
+              "zh"
+            ]
           },
           {
             "type": "code",
@@ -1720,23 +1860,50 @@
           },
           {
             "type": "p",
-            "zh": "第一条续训命令加强角速度跟踪，并固定名义物理参数；第二条加入独立转向奖励。这里是受控地形适应实验，尚不覆盖广泛的摩擦、质量和传感器噪声变化。检查点编号由训练器保存；若自行改变前面的轮数，请以输出目录中的实际文件名为准。每阶段保留独立日志和导出文件，原官方策略始终保留。",
-            "en": "The first continuation strengthens angular tracking and fixes nominal physical parameters. The second adds the separate turn-rate reward. Broad friction, mass and sensor-noise robustness is outside this controlled experiment. If you change iteration budgets, use the checkpoint filenames actually saved. Every stage keeps separate logs and exports."
+            "zh": "第一条命令继续训练并加强原有角速度跟踪，同时固定名义物理参数。第二条增加独立的 z 轴转向奖励，也调整了原角速度项和线速度项的权重。每一步都从已有检查点继续，原官方模型保留；改变训练轮数后，请以实际保存的检查点文件名为准。",
+            "languages": [
+              "zh"
+            ]
           },
           {
             "type": "p",
-            "zh": "本课程固定坡地策略采用以上 256 个环境、共 4500 轮的训练预算。DGX Spark 上记录的三个训练阶段分别约为 8.1、9.8、13.2 分钟，合计约 31.1 分钟；计时不含环境初始化与评测。每轮采集 256 × 24 = 6144 条状态转换。并行环境共享同一策略，但提供不同地形和状态下的经验；更多环境并不意味着总耗时一定按比例缩短。",
-            "en": "The fixed terrain actor uses256 environments and4500 total iterations. Recorded training stages on DGX Spark took about8.1,9.8 and13.2 minutes, totaling31.1 minutes, excluding environment initialization and evaluation. Each iteration collects256×24=6144 transitions. Parallel worlds share a policy but provide varied experience; scaling is not necessarily linear."
-          },
-          {
-            "type": "code",
-            "label": "Terminal",
-            "code": "python3 scripts/workshop.py tensorboard \\\n  --logdir outputs/terrain-direction-01 --port 6006"
+            "zh": "怎样验证它是否有用？先在 TensorBoard 看这一项的平均奖励，再用相同坡度、相同速度指令和独立种子比较实际角速度误差、横向偏移、到达率与跌倒率。奖励提高而机器人不前进，或走得更直却频繁摔倒，都不能算改进。奖励是训练信号，任务条件才是最后的验收标准。",
+            "languages": [
+              "zh"
+            ]
           },
           {
             "type": "p",
-            "zh": "在 TensorBoard 中同时查看速度跟踪奖励、转向奖励、地形难度和回合长度。曲线用于定位问题，下面的统一评测用于判断任务是否完成。若只想体验短训练，完成前 1000 轮即可；后续实验直接使用仓库中的固定坡地策略，练习结果不会自动替换它。",
-            "en": "Inspect tracking rewards, terrain difficulty and episode length in TensorBoard. Curves diagnose learning; the matched benchmark checks task completion. For a shorter exercise, stop after the first1000 iterations and use the fixed course terrain actor downstream."
+            "zh": "已有实验提供了什么证据？前一阶段的策略在 +5° 开发测试中走上坡道，却因横向偏离而未通过到达条件；后续策略在相同开发坡度上达到 5/5，固定模型后的独立评测也在 +5° 达到 5/5。不过，后续阶段还改变了其他奖励设置并增加了训练轮数，因此这组结果只能说明整套调整有效，不能单独证明转向奖励的因果贡献。",
+            "languages": [
+              "zh"
+            ]
+          },
+          {
+            "type": "enrichment",
+            "title": {
+              "zh": "拓展：设计一个只检验转向奖励的消融实验",
+              "en": "拓展：设计一个只检验转向奖励的消融实验"
+            },
+            "blocks": [
+              {
+                "type": "p",
+                "zh": "从同一个检查点复制两份训练，保持地形、指令分布、其他奖励、优化器、训练步数和种子配对一致。实验组启用 z 轴转向奖励，对照组只把这一项权重设为零；用多个训练种子重复。这样比较的才是这一项奖励带来的差异。",
+                "languages": [
+                  "zh"
+                ]
+              },
+              {
+                "type": "p",
+                "zh": "训练后冻结两个候选策略，用未参与调参的相同评测种子逐对测试。预先约定比较转向速度误差、横向偏移、到达率和跌倒率，并报告所有结果。如果转向误差下降且到达率提高，同时没有增加跌倒，才有更充分的证据支持这个设计。这里提供的是可选实验设计，尚未完成这组独立消融。",
+                "languages": [
+                  "zh"
+                ]
+              }
+            ],
+            "languages": [
+              "zh"
+            ]
           }
         ]
       },
@@ -1990,7 +2157,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "前两次训练关注行走与地形适应。社区还用强化学习训练了跳跃、篮球平衡等技能：硬件可以相同，但任务、奖励、初始状态与结束条件不同。下面的社区演示来自各项目自己的仿真环境；它们展示技能思路，不代表已在本课程 Newton 场景或真机上通过相同评测。",
+            "zh": "前两次训练关注行走与地形适应。社区还用强化学习训练了跳跃、篮球平衡等技能：硬件可以相同，但任务、奖励、初始状态与结束条件不同。下面的社区演示来自各项目自己的仿真环境；它们展示技能思路，不代表已在这里的 Newton 场景或真机上通过相同评测。",
             "en": "Community projects train jumping and ball balancing using different tasks, rewards and initial states. These demonstrations come from their original simulation environments and do not establish equivalent Newton or hardware performance."
           },
           {
@@ -2066,7 +2233,7 @@
           },
           {
             "type": "p",
-            "zh": "迁移这些技能时，可在 Isaac Sim 添加对应的道具和接触几何，再通过 Isaac Lab 配置观测、奖励与重置分布。输入都是 61 维，也不保证模型能直接互换：例如社区跳跃把速度指令的第一个分量用作起跳开关，必须遵循该技能的接口约定。",
+            "zh": "迁移这些技能时，可在 Isaac Sim 添加对应的道具和接触几何，再通过 Isaac Lab 配置观测、奖励与重置分布。即使观测维度相同，也不保证模型能直接互换：例如社区跳跃把速度指令的第一个分量用作起跳开关，必须遵循该技能的接口约定。",
             "en": "Isaac Sim supplies props and contact geometry; Isaac Lab organizes observations, rewards and reset distributions. Equal observation dimensions do not guarantee compatibility: the jump policy repurposes a command field as a launch trigger."
           }
         ]
@@ -2521,13 +2688,13 @@
           },
           {
             "type": "p",
-            "zh": "Isaac Sim 在同一 USD 场景中生成与机器人头部姿态同步的 RTX RGB 和深度图，课程再把深度按 VL53L8CX 的 8 × 8 视区采样。RGB 检测器判断哪些区域可能是球，ToF 提供前方分区距离，机身 IMU 帮助在正确坐标系中解释射线。这样可重复改变视角、距离和姿态并保留时间戳；但 ToF 不是环视激光雷达，任何一种传感器也不能独立给出完整世界状态。",
+            "zh": "Isaac Sim 在同一 USD 场景中生成与机器人头部姿态同步的 RTX RGB 和深度图，这里再把深度按 VL53L8CX 的 8 × 8 视区采样。RGB 检测器判断哪些区域可能是球，ToF 提供前方分区距离，机身 IMU 帮助在正确坐标系中解释射线。这样可重复改变视角、距离和姿态并保留时间戳；但 ToF 不是环视激光雷达，任何一种传感器也不能独立给出完整世界状态。",
             "en": "The RGB detector finds image regions resembling a ball. ToF measures ranges across an 8 × 8 forward-facing grid; it is not a 360-degree lidar. A body IMU estimates attitude so image rays and ranges can be interpreted in the right frame. No single sensor supplies the complete world state."
           },
           {
             "type": "p",
-            "zh": "本课程的 Beta 仿真配置采用 GC2093 相机和 VL53L8CX ToF，图像处理分辨率为 960 × 540，频率为 15 Hz。镜头视场、畸变、噪声和安装位姿都是明确的仿真假设，迁移到真实设备时必须重新标定。当前传感器 rig 只提供 RGB、深度、IMU 和时间信息，没有把 Isaac Sim 的物体语义真值交给控制器，也不会自动生成本章练习集的 YOLO 标签。",
-            "en": "The Beta simulation uses GC2093 camera and VL53L8CX ToF profiles. Images are processed at 960 × 540 and 15 Hz. Lens field of view and noise settings are simulation assumptions; physical devices require calibration."
+            "zh": "这里的仿真配置采用 GC2093 相机和 VL53L8CX ToF，图像处理分辨率为 960 × 540，频率为 15 Hz。镜头视场、畸变、噪声和安装位姿都是明确的仿真假设，迁移到真实设备时必须重新标定。当前传感器 rig 只提供 RGB、深度、IMU 和时间信息，没有把 Isaac Sim 的物体语义真值交给控制器，也不会自动生成本章练习集的 YOLO 标签。",
+            "en": "The simulation uses GC2093 camera and VL53L8CX ToF profiles. Images are processed at 960 × 540 and 15 Hz. Lens field of view and noise settings are simulation assumptions; physical devices require calibration."
           }
         ]
       },
@@ -2618,7 +2785,7 @@
           },
           {
             "type": "p",
-            "zh": "在完整任务中，Isaac Sim 提供带时间戳的 RGB/ToF 观测，课程桥接器把一次不可变的传感器快照、地图和目标交给隔离运行的 ROS 2 Nav2/Navfn CPU 服务，再取回路径。这里没有使用 Isaac Sim 内置 ROS 2 Action Graph，也没有让 Nav2 直接发布 <code>/cmd_vel</code>；真正维持双足平衡的仍是固定行走策略。上层路径与目标、下层步态执行分开后，可以分别检查规划输入、路径结果和实际跟踪误差。",
+            "zh": "在完整任务中，Isaac Sim 提供带时间戳的 RGB/ToF 观测，桥接程序把一次不可变的传感器快照、地图和目标交给隔离运行的 ROS 2 Nav2/Navfn CPU 服务，再取回路径。这里没有使用 Isaac Sim 内置 ROS 2 Action Graph，也没有让 Nav2 直接发布 <code>/cmd_vel</code>；真正维持双足平衡的仍是固定行走策略。上层路径与目标、下层步态执行分开后，可以分别检查规划输入、路径结果和实际跟踪误差。",
             "en": "Nav2 provides CPU navigation services in the full task, while the walking policy maintains bipedal balance. The upper layer requests a target or velocity; the lower layer drives servos. Actuator delay and gait error can move the robot away from its plan, so the system must observe and reconsider instead of assuming exact command execution."
           },
           {
@@ -2717,7 +2884,7 @@
           },
           {
             "type": "p",
-            "zh": "一次观察可以给出起始目标，但机器人走动后，相对位置会变化，姿态与里程估计也会积累误差。相机低头找球、抬头看球门，解决的是视野与精度问题；必要时再观察，比把过期位置当成当前事实更可靠。当前课程保留出脚前的位置核验。后退仅在观察或站位条件不足时作为恢复选项，正常成功流程可以直接接近并射门。",
+            "zh": "一次观察可以给出起始目标，但机器人走动后，相对位置会变化，姿态与里程估计也会积累误差。相机低头找球、抬头看球门，解决的是视野与精度问题；必要时再观察，比把过期位置当成当前事实更可靠。这里保留出脚前的位置核验。后退仅在观察或站位条件不足时作为恢复选项，正常成功流程可以直接接近并射门。",
             "en": "A first observation supplies an initial target, but motion changes relative geometry and estimation error accumulates. The current controller verifies position before kicking. Retreat is a recovery option, not a mandatory phase."
           },
           {
@@ -2730,6 +2897,13 @@
               "zh": "目标可能因机器人运动而改变相对位置，最后一次估计也可能过期。应先检查时间戳、姿态与站位条件，必要时重新观察。",
               "en": "Motion changes relative position and the estimate may be stale. Check time, pose and stance before kicking; reobserve when necessary."
             }
+          },
+          {
+            "type": "p",
+            "zh": "到这里，我们已经明确每个环节需要什么输入、输出什么结果，以及何时需要重新观察。下一章把这些接口逐一接起来：先跑检测和几何计算，再运行完整的自主射门系统。",
+            "languages": [
+              "zh"
+            ]
           }
         ]
       }
@@ -2866,7 +3040,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "练习集共包含 40 张图像，按照 24 / 8 / 8 划分为训练集、验证集和测试集。类别编号 0 表示球，1 表示球门。YOLO 标签的每一行采用 <code>class cx cy width height</code> 格式，后四项均按图像宽高归一化。例如，中心横坐标 0.5 表示画面宽度的一半，而不是世界坐标中的 0.5 米。Isaac Sim 支持为受控场景构建合成数据与标注流程，这有助于系统覆盖视角、光照和遮挡；本课程当前小数据集仍应按其现有标签检查，不能把场景中的物理真值或语义 ID 当作检测器已经见过的答案。",
+            "zh": "练习集共包含 40 张图像，按照 24 / 8 / 8 划分为训练集、验证集和测试集。类别编号 0 表示球，1 表示球门。YOLO 标签的每一行采用 <code>class cx cy width height</code> 格式，后四项均按图像宽高归一化。例如，中心横坐标 0.5 表示画面宽度的一半，而不是世界坐标中的 0.5 米。Isaac Sim 支持为受控场景构建合成数据与标注流程，这有助于系统覆盖视角、光照和遮挡；这里的小数据集仍应按其现有标签检查，不能把场景中的物理真值或语义 ID 当作检测器已经见过的答案。",
             "en": "The sample has 40 images split into 24 training, 8 validation, and 8 test images. Class 0 is the ball and class 1 the goal. Each YOLO label row is <code>class cx cy width height</code>, with the last four values normalized by image dimensions. A horizontal center of 0.5 means halfway across the image, not 0.5 meters in the world."
           },
           {
@@ -2915,7 +3089,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "课程中的踢球组合由固定的基础动作策略和已经训练好的残差模型构成。残差模型在基础动作之上进行修正，因此两者的输入、动作尺度、执行器和时序必须相互匹配。缺少其中任意一个文件，剩余部分都不能再视为同一项完整技能。",
+            "zh": "这里的踢球组合由固定的基础动作策略和已经训练好的残差模型构成。残差模型在基础动作之上进行修正，因此两者的输入、动作尺度、执行器和时序必须相互匹配。缺少其中任意一个文件，剩余部分都不能再视为同一项完整技能。",
             "en": "The course kick combines a fixed base policy with a trained residual model. The residual adjusts the base behavior, so observations, action scale, actuators, and timing must match. Removing one model does not leave an equivalent skill."
           },
           {
@@ -2939,7 +3113,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "完整系统并不是由单个网络直接输出“进球”指令。Isaac Lab 组织任务接口与控制管理器，Newton 推进物理和执行器状态，Isaac Sim 6.2 提供 GUI、RTX 相机与深度传感器；独立的 ROS 2 Nav2 CPU 服务负责路径规划。固定行走策略控制机身，检测器提供视觉目标，ToF 测距和 IMU 姿态用于约束目标的相对位置，状态机决定何时观察、行走和踢球，最后由踢球组合完成出脚与恢复。",
+            "zh": "完整系统并不是由单个网络直接输出“进球”指令。Isaac Lab 组织任务接口与控制管理器，Newton 推进物理和执行器状态，Isaac Sim 6 提供 GUI、RTX 相机与深度传感器；独立的 ROS 2 Nav2 CPU 服务负责路径规划。固定行走策略控制机身，检测器提供视觉目标，ToF 测距和 IMU 姿态用于约束目标的相对位置，状态机决定何时观察、行走和踢球，最后由踢球组合完成出脚与恢复。",
             "en": "This is not a single network issuing a “score” command. A walking policy controls the body, a detector supplies visual targets, range and attitude constrain relative position, a state machine decides when to observe, walk, and kick, and the kick models execute contact and recovery."
           },
           {
@@ -2961,20 +3135,35 @@
           },
           {
             "type": "media",
-            "file": "autonomous-direct.gif",
+            "file": "autonomous-explained.gif",
             "alt": {
               "zh": "一次完整的直接射门示例，保留开始、观察、接近、出脚和站稳，没有后退。按仿真时间播放，单次示例不代表总体成功率。",
               "en": "One complete direct-shot example, including observation, approach, kick and recovery with no retreat. Playback follows simulation time; one example is not a success-rate estimate."
             },
-            "zh": "一次完整的直接射门示例，保留开始、观察、接近、出脚和站稳，没有后退。按仿真时间播放，单次示例不代表总体成功率。",
-            "en": "One complete direct-shot example, including observation, approach, kick and recovery with no retreat. Playback follows simulation time; one example is not a success-rate estimate."
+            "zh": "观看时留意画面上方的阶段提示：先确认目标并规划，再接近、复核位置、出脚和恢复站立。可以拖动进度条对照每一步的输入与动作。这次直接射门没有后退，但接近过程中仍会重新观察。单次演示不代表整体成功率。",
+            "en": "One complete direct-shot example, including observation, approach, kick and recovery with no retreat. Playback follows simulation time; one example is not a success-rate estimate.",
+            "stages": true,
+            "languages": [
+              "zh"
+            ]
+          },
+          {
+            "type": "media",
+            "languages": [
+              "en"
+            ],
+            "file": "autonomous-direct.gif",
+            "alt": {
+              "en": "Complete direct-shot example"
+            },
+            "en": "One complete direct-shot example; one demonstration is not a success-rate estimate."
           }
         ]
       },
       {
         "id": "run",
         "title": {
-          "zh": "运行完整教学场景",
+          "zh": "运行完整场景",
           "en": "Run the complete teaching scene"
         },
         "blocks": [
@@ -2990,7 +3179,7 @@
           },
           {
             "type": "p",
-            "zh": "这个种子是从成功示例中选出的，仅用于教学观察和相同场景下的对照，不能再计入新的独立成功率样本。运行期间不要手动移动机器人或球；如需中止，请在终端按 Ctrl+C，并保留已经生成的日志。",
+            "zh": "这个种子是从成功示例中选出的，仅用于观察和相同场景下的对照，不能再计入新的独立成功率样本。运行期间不要手动移动机器人或球；如需中止，请在终端按 Ctrl+C，并保留已经生成的日志。",
             "en": "This seed is a selected teaching fixture drawn from successful examples. It supports comparison on the same scene and is not a new independent success-rate sample. Do not manually move the robot or ball during execution. To stop, press Ctrl+C in the terminal and retain the logs."
           }
         ]
@@ -3028,7 +3217,7 @@
               "zh": "怎样理解课程参考结果",
               "en": "Interpreting the reference result"
             },
-            "zh": "在课程记录的那组测试中，这组固定模型在 10 个独立空场回合里完成了 9 次完整任务。该结果只是特定版本和场景分布下的小样本记录，不能推广为任意种子、障碍场景或真实机器人的普遍成功率。障碍场景和真实机器人均不属于本课程已经验证的主线。",
+            "zh": "在已完成的那组测试中，这组固定模型在 10 个独立空场回合里完成了 9 次完整任务。该结果只是特定版本和场景分布下的小样本记录，不能推广为任意种子、障碍场景或真实机器人的普遍成功率。障碍场景和真实机器人均不属于已经验证的实验范围。",
             "en": "The fixed combination completed 9 of 10 independent empty-field episodes. This is a small-sample observation for specific versions and a scene distribution, not a guarantee for arbitrary seeds, obstacles, or hardware. Obstacles and real-robot deployment are outside the validated main path."
           }
         ]
@@ -3036,7 +3225,7 @@
       {
         "id": "evaluate",
         "title": {
-          "zh": "设计自己的小评测",
+          "zh": "设计自己的评测",
           "en": "Design a small evaluation"
         },
         "blocks": [
@@ -3082,8 +3271,15 @@
           },
           {
             "type": "p",
-            "zh": "在课程记录的那组空场独立测试中，这组固定模型完成了 9/10。该数字仅是特定环境、场景分布和时间预算下的历史结果，不能视为一般成功率。默认种子 983102 用于教学演示，重复运行同一种子不会产生新的独立样本；自选种子、不同设备、障碍物和真实硬件都必须另行评测。",
+            "zh": "在已完成的那组空场独立测试中，这组固定模型完成了 9/10。该数字仅是特定环境、场景分布和时间预算下的历史结果，不能视为一般成功率。默认种子 983102 用于演示，重复运行同一种子不会产生新的独立样本；自选种子、不同设备、障碍物和真实硬件都必须另行评测。",
             "en": "The fixed combination completed 9/10 recorded independent empty-field trials under a particular environment, distribution, and time budget. The default seed 983102 is a teaching example; repeating it does not establish a new independent success rate. New seeds, different devices, obstacles, and real hardware require separate evaluation."
+          },
+          {
+            "type": "p",
+            "zh": "完整运行后，请结合结果和日志，判断失败来自感知、站位、技能切换还是执行。下一章回顾这条从技能到任务的路径，再思考：地面不再平整、球会自行滚动或出现障碍物时，哪些假设需要重新检验？",
+            "languages": [
+              "zh"
+            ]
           }
         ]
       }
@@ -3241,7 +3437,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "假设足球在一个有坡度、局部不平整并带有障碍的球场中。机器人还能像第 7 章一样完成射门吗？本课程暂不实现这个任务，请先设计方案，明确哪些已有能力可复用、哪些假设必须修改。",
+            "zh": "假设足球在一个有坡度、局部不平整并带有障碍的球场中。机器人还能像第 7 章一样完成射门吗？这个任务留作延伸思考，请先设计方案，明确哪些已有能力可复用、哪些假设必须修改。",
             "en": "Suppose the pitch has slopes, uneven patches and obstacles. Can the robot still score? This is a design challenge only; it is not implemented in the course."
           },
           {
@@ -3442,7 +3638,7 @@
           },
           {
             "type": "p",
-            "zh": "这些文件随 Git 仓库一同提供，不需要 Git LFS 或额外的模型账户。<code>models/manifest.json</code> 记录了文件大小、来源和 SHA-256；课程在运行前会核对模型身份，避免误用同名文件。",
+            "zh": "这些文件随 Git 仓库一同提供，不需要 Git LFS 或额外的模型账户。<code>models/manifest.json</code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。",
             "en": "These files are included in Git without Git LFS or a separate model account. <code>models/manifest.json</code> records sizes, sources, and SHA-256 identities. Model identity checks guard against accidental same-name replacements."
           }
         ]
@@ -3652,7 +3848,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "建议先从任务配置入手，理解观测、动作和奖励，再进一步研究物理引擎与传感器接口。课程使用的是固定版本，而官方文档可能已经介绍更新版本，因此比较参数前必须先核对版本。",
+            "zh": "建议先从任务配置入手，理解观测、动作和奖励，再进一步研究物理引擎与传感器接口。这里使用的是固定版本，而官方文档可能已经介绍更新版本，因此比较参数前必须先核对版本。",
             "en": "Begin with task observations, actions, and rewards, then explore physics and sensors. Course commands target fixed versions; current documentation may describe newer versions. Check the version before applying changes."
           }
         ]

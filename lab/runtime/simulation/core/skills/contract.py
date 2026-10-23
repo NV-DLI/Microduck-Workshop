@@ -59,7 +59,9 @@ BODY_COMMAND_RANGES = (
 
 def validate_contract() -> None:
     if len(POLICY_JOINTS) != ACTION_SIZE or len(HOME_POSE) != ACTION_SIZE:
-        raise AssertionError("MicroDuck action and home-pose contracts must remain 14-dimensional")
+        raise AssertionError(
+            "MicroDuck action and home-pose contracts must remain 14-dimensional"
+        )
     if 3 + 3 + ACTION_SIZE * 3 + COMMAND_SIZE != OBSERVATION_SIZE:
         raise AssertionError("MicroDuck actor observation must remain 61-dimensional")
 

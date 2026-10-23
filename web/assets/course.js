@@ -1,12 +1,113 @@
-(()=>{
-window.hljs?.highlightAll();
-const zh=document.body.dataset.lang==='zh',lang=document.body.dataset.lang,page=document.body.dataset.page;
-const $=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
-const menu=$('.menu-toggle');menu?.addEventListener('click',()=>{const open=$('.sidebar').classList.toggle('open');menu.setAttribute('aria-expanded',open)});
-all('.copy').forEach(button=>button.addEventListener('click',async()=>{const value=button.closest('.code-block').querySelector('code').textContent;try{await navigator.clipboard.writeText(value)}catch{const t=document.createElement('textarea');t.value=value;document.body.append(t);t.select();document.execCommand('copy');t.remove()}const label=button.textContent;button.textContent=button.dataset.done;setTimeout(()=>button.textContent=label,1500)}));
-const dialog=$('.search-dialog'),input=$('#search-input');let index;
-async function search(){const q=input.value.trim().toLowerCase(),box=$('.search-results');box.replaceChildren();if(!q)return;try{index??=await(await fetch('search.json')).json();const hits=index.filter(x=>(x.title+' '+x.text).toLowerCase().includes(q)).slice(0,12);for(const hit of hits){const a=document.createElement('a');a.href=hit.id+'.html';a.textContent=hit.title;const small=document.createElement('small'),start=Math.max(0,hit.text.toLowerCase().indexOf(q)-35);small.textContent=hit.text.slice(start,start+150);a.append(small);box.append(a)}if(!hits.length)box.textContent=zh?'没有找到结果，试试“模型”或“训练”。':'No results. Try “model” or “training”.'}catch{box.textContent=zh?'搜索暂不可用，请使用左侧目录。':'Search unavailable. Use the chapter navigation.'}}
-function openSearch(){dialog.showModal();input.focus()}$('.search-open').addEventListener('click',openSearch);input.addEventListener('input',search);document.addEventListener('keydown',e=>{if(e.key==='/'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)){e.preventDefault();openSearch()}});
-const headingObserver=new IntersectionObserver(entries=>{for(const ent of entries)if(ent.isIntersecting){all('.toc a').forEach(a=>a.classList.toggle('active',a.hash==='#'+ent.target.id))}},{rootMargin:'-90px 0px -65% 0px'});all('main section[id]').forEach(s=>headingObserver.observe(s));
-all('[data-robot-viewer]').forEach(v=>v.querySelector('.load-robot').addEventListener('click',async()=>{const button=v.querySelector('.load-robot');button.disabled=true;button.textContent=zh?'加载模型…':'Loading model…';try{const {mountRobot}=await import('./robot-viewer.js');await mountRobot(v,lang);button.remove();v.querySelector('.robot-fallback').remove()}catch(error){v.querySelector('.viewer-status').textContent=zh?'交互模型加载失败，仍可查看装配图。':'Interactive model unavailable; assembly render remains visible.';button.disabled=false;button.textContent=zh?'重新加载':'Retry';console.error(error)}}));
+(() => {
+  window.hljs?.highlightAll();
+  const zh = document.body.dataset.lang === "zh",
+    lang = document.body.dataset.lang,
+    page = document.body.dataset.page;
+  const $ = (s) => document.querySelector(s),
+    all = (s) => [...document.querySelectorAll(s)];
+  const menu = $(".menu-toggle");
+  menu?.addEventListener("click", () => {
+    const open = $(".sidebar").classList.toggle("open");
+    menu.setAttribute("aria-expanded", open);
+  });
+  all(".copy").forEach((button) =>
+    button.addEventListener("click", async () => {
+      const value = button
+        .closest(".code-block")
+        .querySelector("code").textContent;
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        const t = document.createElement("textarea");
+        t.value = value;
+        document.body.append(t);
+        t.select();
+        document.execCommand("copy");
+        t.remove();
+      }
+      const label = button.textContent;
+      button.textContent = button.dataset.done;
+      setTimeout(() => (button.textContent = label), 1500);
+    }),
+  );
+  const dialog = $(".search-dialog"),
+    input = $("#search-input");
+  let index;
+  async function search() {
+    const q = input.value.trim().toLowerCase(),
+      box = $(".search-results");
+    box.replaceChildren();
+    if (!q) return;
+    try {
+      index ??= await (await fetch("search.json")).json();
+      const hits = index
+        .filter((x) => (x.title + " " + x.text).toLowerCase().includes(q))
+        .slice(0, 12);
+      for (const hit of hits) {
+        const a = document.createElement("a");
+        a.href = hit.id + ".html";
+        a.textContent = hit.title;
+        const small = document.createElement("small"),
+          start = Math.max(0, hit.text.toLowerCase().indexOf(q) - 35);
+        small.textContent = hit.text.slice(start, start + 150);
+        a.append(small);
+        box.append(a);
+      }
+      if (!hits.length)
+        box.textContent = zh
+          ? "没有找到结果，试试“模型”或“训练”。"
+          : "No results. Try “model” or “training”.";
+    } catch {
+      box.textContent = zh
+        ? "搜索暂不可用，请使用左侧目录。"
+        : "Search unavailable. Use the chapter navigation.";
+    }
+  }
+  function openSearch() {
+    dialog.showModal();
+    input.focus();
+  }
+  $(".search-open").addEventListener("click", openSearch);
+  input.addEventListener("input", search);
+  document.addEventListener("keydown", (e) => {
+    if (
+      e.key === "/" &&
+      !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement.tagName)
+    ) {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+  const headingObserver = new IntersectionObserver(
+    (entries) => {
+      for (const ent of entries)
+        if (ent.isIntersecting) {
+          all(".toc a").forEach((a) =>
+            a.classList.toggle("active", a.hash === "#" + ent.target.id),
+          );
+        }
+    },
+    { rootMargin: "-90px 0px -65% 0px" },
+  );
+  all("main section[id]").forEach((s) => headingObserver.observe(s));
+  all("[data-robot-viewer]").forEach((v) =>
+    v.querySelector(".load-robot").addEventListener("click", async () => {
+      const button = v.querySelector(".load-robot");
+      button.disabled = true;
+      button.textContent = zh ? "加载模型…" : "Loading model…";
+      try {
+        const { mountRobot } = await import("./robot-viewer.js");
+        await mountRobot(v, lang);
+        button.remove();
+        v.querySelector(".robot-fallback").remove();
+      } catch (error) {
+        v.querySelector(".viewer-status").textContent = zh
+          ? "交互模型加载失败，仍可查看装配图。"
+          : "Interactive model unavailable; assembly render remains visible.";
+        button.disabled = false;
+        button.textContent = zh ? "重新加载" : "Retry";
+        console.error(error);
+      }
+    }),
+  );
 })();

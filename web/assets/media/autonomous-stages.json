@@ -1,0 +1,170 @@
+[
+  {
+    "start": 0.0,
+    "source_time": 0.07,
+    "state": "IMU_WARMUP",
+    "title": "准备 · 读取 IMU",
+    "detail": "等待稳定的重力方向估计，暂不执行行走策略。",
+    "end": 0.8
+  },
+  {
+    "start": 0.8,
+    "source_time": 0.87,
+    "state": "SUPPORTED_STAND",
+    "title": "准备 · 建立站立状态",
+    "detail": "零速度指令下运行行走策略，逐渐撤去启动支撑。",
+    "end": 1.3333333333333333
+  },
+  {
+    "start": 1.3333333333333333,
+    "source_time": 1.4000000000000001,
+    "state": "RELEASE",
+    "title": "准备 · 撤去启动支撑",
+    "detail": "保持站立，等待传感器与控制状态就绪。",
+    "end": 2.3333333333333335
+  },
+  {
+    "start": 2.3333333333333335,
+    "source_time": 2.4,
+    "state": "SEARCH_GOAL",
+    "title": "检测 · 确认球门",
+    "detail": "从相机图像检测球门，积累可用的球门底部观测。",
+    "end": 2.466666666666667
+  },
+  {
+    "start": 2.466666666666667,
+    "source_time": 2.535,
+    "state": "NAV2_APPROACH",
+    "title": "规划 · 计算接近路径",
+    "detail": "用球与球门的估计位置确定站位，Nav2 Navfn 生成路径。",
+    "end": 3.066666666666667
+  },
+  {
+    "start": 3.066666666666667,
+    "source_time": 3.1350000000000002,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 3.933333333333333
+  },
+  {
+    "start": 3.933333333333333,
+    "source_time": 4.0,
+    "state": "NEUTRAL_FINE_TRACK",
+    "title": "执行 · 沿目标方向接近",
+    "detail": "根据目标位置和运动估计给出速度指令，行走策略协调关节。",
+    "end": 5.933333333333334
+  },
+  {
+    "start": 5.933333333333334,
+    "source_time": 6.0,
+    "state": "NEUTRAL_FINE_SETTLE",
+    "title": "执行 · 停稳再观察",
+    "detail": "停止接近，减小身体晃动，等待更新足球位置。",
+    "end": 7.0
+  },
+  {
+    "start": 7.0,
+    "source_time": 7.07,
+    "state": "NEUTRAL_FINE_REACQUIRE",
+    "title": "检测 · 更新足球位置",
+    "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
+    "end": 7.4
+  },
+  {
+    "start": 7.4,
+    "source_time": 7.47,
+    "state": "NAV2_APPROACH",
+    "title": "规划 · 计算接近路径",
+    "detail": "用球与球门的估计位置确定站位，Nav2 Navfn 生成路径。",
+    "end": 7.8
+  },
+  {
+    "start": 7.8,
+    "source_time": 7.87,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 8.8
+  },
+  {
+    "start": 8.8,
+    "source_time": 8.870000000000001,
+    "state": "NEUTRAL_FINE_TRACK",
+    "title": "执行 · 沿目标方向接近",
+    "detail": "根据目标位置和运动估计给出速度指令，行走策略协调关节。",
+    "end": 9.2
+  },
+  {
+    "start": 9.2,
+    "source_time": 9.27,
+    "state": "NEUTRAL_FINE_SETTLE",
+    "title": "执行 · 停稳再观察",
+    "detail": "停止接近，减小身体晃动，等待更新足球位置。",
+    "end": 10.266666666666667
+  },
+  {
+    "start": 10.266666666666667,
+    "source_time": 10.335,
+    "state": "NEUTRAL_FINE_REACQUIRE",
+    "title": "检测 · 更新足球位置",
+    "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
+    "end": 11.066666666666666
+  },
+  {
+    "start": 11.066666666666666,
+    "source_time": 11.135,
+    "state": "REACQUIRE_BALL",
+    "title": "检测 · 确认近处足球",
+    "detail": "检查近处足球观测，准备最后的站位调整。",
+    "end": 11.133333333333333
+  },
+  {
+    "start": 11.133333333333333,
+    "source_time": 11.200000000000001,
+    "state": "FINAL_ALIGN",
+    "title": "规划与执行 · 对准出脚位置",
+    "detail": "检查球相对身体的位置，调整接近指令。",
+    "end": 11.466666666666667
+  },
+  {
+    "start": 11.466666666666667,
+    "source_time": 11.535,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 12.6
+  },
+  {
+    "start": 12.6,
+    "source_time": 12.67,
+    "state": "NEUTRAL_FINE_TRACK",
+    "title": "执行 · 沿目标方向接近",
+    "detail": "根据目标位置和运动估计给出速度指令，行走策略协调关节。",
+    "end": 14.333333333333334
+  },
+  {
+    "start": 14.333333333333334,
+    "source_time": 14.4,
+    "state": "HEAD_RETURN",
+    "title": "技能交接 · 准备出脚",
+    "detail": "停止行走并使头部回到适合踢球的姿态，检查交接条件。",
+    "end": 15.6
+  },
+  {
+    "start": 15.6,
+    "source_time": 15.67,
+    "state": "KICK",
+    "title": "执行 · 踢球",
+    "detail": "调用踢球教师策略与残差修正，随后平滑返回站立。",
+    "end": 15.866666666666667
+  },
+  {
+    "start": 15.866666666666667,
+    "source_time": 15.935,
+    "state": "RECOVER",
+    "title": "执行与检查 · 恢复站立",
+    "detail": "保持站立并观察足球运动；评测器检查进球、接触与跌倒。",
+    "end": 19.6
+  }
+]

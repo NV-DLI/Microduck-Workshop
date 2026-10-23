@@ -1,34 +1,295 @@
-import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
-import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
-export async function mountRobot(root,lang){
- const zh=lang==='zh',stage=root.querySelector('.viewer-stage'),status=root.querySelector('.viewer-status'),info=root.querySelector('.component-info');
- const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
- renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setClearColor(0x35414d);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.95;
- const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(34,1,.001,50),controls=new OrbitControls(camera,renderer.domElement);
- controls.enableDamping=true;controls.mouseButtons.MIDDLE=THREE.MOUSE.PAN;controls.dampingFactor=.08;controls.maxDistance=3;controls.minDistance=.02;controls.maxPolarAngle=Math.PI*.94;
- const pmrem=new THREE.PMREMGenerator(renderer),room=new RoomEnvironment(),environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();
- scene.add(new THREE.HemisphereLight(0xe4efff,0x303741,.6));
- for(const [color,power,pos] of [[0xfff3df,2,[1,2,2]],[0xc4ddff,1,[-1,.7,-1]]]){const l=new THREE.DirectionalLight(color,power);l.position.set(...pos);scene.add(l)}
- const [{scene:model},meta]=await Promise.all([new GLTFLoader().loadAsync(new URL('./robot/microduck.glb',import.meta.url).href),fetch(new URL('./robot/components.json',import.meta.url)).then(r=>{if(!r.ok)throw Error('Missing components');return r.json()})]);
- scene.add(model);model.updateMatrixWorld(true);
- const descriptions=new Map(meta.parts.map(p=>[p.id,p])),box=new THREE.Box3().setFromObject(model),center=box.getCenter(new THREE.Vector3()),size=box.getSize(new THREE.Vector3()),radius=Math.max(size.x,size.y,size.z),parts=[];
- model.traverse(o=>{if(o.isMesh){o.material=o.material.clone();const data=descriptions.get(o.userData.id)||o.userData;o.userData={...o.userData,...data};parts.push({object:o,position:o.position.clone(),material:o.material,emissive:o.material.emissive?.clone()||new THREE.Color(0),vector:new THREE.Vector3(...(o.userData.explode||[0,0,0]))})}});
- const overlay=document.createElement('div');overlay.className='part-labels';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('aria-hidden','true');overlay.append(svg);stage.append(overlay);
- let current=null,amount=0;
- const keys=[['ankle_left--foot_left--01','左脚','Left foot',true],['ankle_right--foot_right--03','右脚','Right foot',true],['jaw_soft--lens--00','相机镜头','Camera lens'],['jaw_soft--pcb__raspberry_pi_zero_2_w--14','计算板','Compute board'],['trunk_base--np_f970--06','电池','Battery'],['upper_leg_left--xl330--01','膝关节舵机','Knee servo']];
- const labels=keys.map(([id,cn,en,always])=>{const part=parts.find(p=>p.object.userData.id===id);if(!part)return null;const button=document.createElement('button');button.type='button';button.className='part-label';button.textContent=zh?cn:en;button.setAttribute('aria-label',(zh?'放大查看：':'Inspect: ')+button.textContent);button.addEventListener('click',()=>select(part,true));overlay.append(button);const line=document.createElementNS(svg.namespaceURI,'path');svg.append(line);return{part,button,line,always}}).filter(Boolean);
- function fit(object=model,padding=1.2){const b=new THREE.Box3().setFromObject(object),c=b.getCenter(new THREE.Vector3()),d=camera.position.clone().sub(controls.target).normalize();if(!d.length())d.set(1,.5,1).normalize();const right=new THREE.Vector3(d.z,0,-d.x).normalize(),up=new THREE.Vector3().crossVectors(d,right),tv=Math.tan(camera.fov*Math.PI/360),th=tv*camera.aspect;let distance=.035;for(const x of[b.min.x,b.max.x])for(const y of[b.min.y,b.max.y])for(const z of[b.min.z,b.max.z]){const v=new THREE.Vector3(x,y,z).sub(c);distance=Math.max(distance,v.dot(d)+Math.max(Math.abs(v.dot(right))/th,Math.abs(v.dot(up))/tv)*padding)}camera.position.copy(c).addScaledVector(d,distance);controls.target.copy(c);controls.update()}
- function select(part,zoom=false){current=part;renderer.toneMappingExposure=part?1.25:.95;status.textContent=part?(zh?'部件细节 · 拖动旋转':'Part detail · Drag to orbit'):(zh?`${parts.length} 个独立部件 · 拖动旋转`:`${parts.length} parts · Drag to orbit`);for(const p of parts){p.object.visible=!part||p===part;p.material.emissive?.copy(p.emissive);p.material.emissiveIntensity=1}info.replaceChildren();const title=document.createElement('strong'),description=document.createElement('p');if(part){title.textContent=part.object.userData['label_'+lang]||part.object.name;description.textContent=part.object.userData['description_'+lang]||'';if(zoom)fit(part.object,1.2)}else{title.textContent=zh?'点击部件或名称，即可放大查看':'Click a part or its label to inspect it';description.textContent=zh?'左键拖动旋转，按住滚轮拖动平移，滚轮或双指缩放；移动滑块可展开结构。':'Left-drag to orbit, middle-drag to pan, scroll or pinch to zoom. Use the slider to separate the parts.'}info.append(title,description);root.dataset.selectedPart=part?.object.userData.id||'';}
- function explode(value){amount=value;select(null);for(const p of parts)p.object.position.copy(p.position).addScaledVector(p.vector,amount);model.updateMatrixWorld(true);fit(model,1.35)}
- function reset(){camera.position.copy(center).add(new THREE.Vector3(radius*1.65,radius*.65,radius*2));controls.target.copy(center);root.querySelector('.explode').value=0;explode(0)}
- root.querySelector('.explode').addEventListener('input',e=>explode(Number(e.target.value)/100));root.querySelector('.view-reset').addEventListener('click',reset);
- const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();let down;
- renderer.domElement.addEventListener('pointerdown',e=>{down=e.button===0?[e.clientX,e.clientY]:null});renderer.domElement.addEventListener('pointerup',e=>{if(!down||Math.hypot(e.clientX-down[0],e.clientY-down[1])>5)return;const r=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(parts.map(p=>p.object),false)[0];if(hit)select(parts.find(p=>p.object===hit.object),true)});
- function placeLabels(){const w=stage.clientWidth,h=stage.clientHeight,groups=[[],[]];svg.setAttribute('viewBox',`0 0 ${w} ${h}`);for(const l of labels){const v=new THREE.Box3().setFromObject(l.part.object).getCenter(new THREE.Vector3()).project(camera);const show=!current&&(l.always||amount>.12)&&v.z<1&&v.z> -1;l.button.hidden=!show;l.line.style.display=show?'':'none';if(show){l.x=(v.x+1)*w/2;l.y=(1-v.y)*h/2;groups[l.x<w/2?0:1].push(l)}}for(let side=0;side<2;side++){const list=groups[side].sort((a,b)=>a.y-b.y),gap=36;let previous=40;list.forEach((l,i)=>{const y=Math.max(previous,Math.min(h-30-(list.length-i-1)*gap,l.y));previous=y+gap;const bw=l.button.offsetWidth,x=side?w-bw-10:10;l.button.style.left=x+'px';l.button.style.top=(y-14)+'px';const edge=side?x:x+bw;l.line.setAttribute('d',`M ${l.x} ${l.y} L ${edge+(side?-12:12)} ${y} L ${edge} ${y}`)})}}
- stage.append(renderer.domElement);camera.aspect=stage.clientWidth/stage.clientHeight;camera.updateProjectionMatrix();reset();
- const resize=new ResizeObserver(()=>{renderer.setSize(stage.clientWidth,stage.clientHeight);camera.aspect=stage.clientWidth/stage.clientHeight;camera.updateProjectionMatrix();fit(current?.object||model,current?1.2:1.35)});resize.observe(stage);
- let visible=true;new IntersectionObserver(es=>{visible=es[0].isIntersecting}).observe(stage);renderer.setAnimationLoop(()=>{if(visible&&!document.hidden){controls.update();renderer.render(scene,camera);placeLabels()}});
- status.textContent=zh?`${parts.length} 个独立部件 · 拖动旋转`:`${parts.length} parts · Drag to orbit`;root.dataset.loaded='true';root.dataset.componentCount=parts.length;
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+export async function mountRobot(root, lang) {
+  const zh = lang === "zh",
+    stage = root.querySelector(".viewer-stage"),
+    status = root.querySelector(".viewer-status"),
+    info = root.querySelector(".component-info");
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setClearColor(0x35414d);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.95;
+  const scene = new THREE.Scene(),
+    camera = new THREE.PerspectiveCamera(34, 1, 0.001, 50),
+    controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.mouseButtons.MIDDLE = THREE.MOUSE.PAN;
+  controls.dampingFactor = 0.08;
+  controls.maxDistance = 3;
+  controls.minDistance = 0.02;
+  controls.maxPolarAngle = Math.PI * 0.94;
+  const pmrem = new THREE.PMREMGenerator(renderer),
+    room = new RoomEnvironment(),
+    environment = pmrem.fromScene(room, 0.04);
+  scene.environment = environment.texture;
+  room.dispose();
+  pmrem.dispose();
+  scene.add(new THREE.HemisphereLight(0xe4efff, 0x303741, 0.6));
+  for (const [color, power, pos] of [
+    [0xfff3df, 2, [1, 2, 2]],
+    [0xc4ddff, 1, [-1, 0.7, -1]],
+  ]) {
+    const l = new THREE.DirectionalLight(color, power);
+    l.position.set(...pos);
+    scene.add(l);
+  }
+  const [{ scene: model }, meta] = await Promise.all([
+    new GLTFLoader().loadAsync(
+      new URL("./robot/microduck.glb", import.meta.url).href,
+    ),
+    fetch(new URL("./robot/components.json", import.meta.url)).then((r) => {
+      if (!r.ok) throw Error("Missing components");
+      return r.json();
+    }),
+  ]);
+  scene.add(model);
+  model.updateMatrixWorld(true);
+  const descriptions = new Map(meta.parts.map((p) => [p.id, p])),
+    box = new THREE.Box3().setFromObject(model),
+    center = box.getCenter(new THREE.Vector3()),
+    size = box.getSize(new THREE.Vector3()),
+    radius = Math.max(size.x, size.y, size.z),
+    parts = [];
+  model.traverse((o) => {
+    if (o.isMesh) {
+      o.material = o.material.clone();
+      const data = descriptions.get(o.userData.id) || o.userData;
+      o.userData = { ...o.userData, ...data };
+      parts.push({
+        object: o,
+        position: o.position.clone(),
+        material: o.material,
+        emissive: o.material.emissive?.clone() || new THREE.Color(0),
+        vector: new THREE.Vector3(...(o.userData.explode || [0, 0, 0])),
+      });
+    }
+  });
+  const overlay = document.createElement("div");
+  overlay.className = "part-labels";
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("aria-hidden", "true");
+  overlay.append(svg);
+  stage.append(overlay);
+  let current = null,
+    amount = 0;
+  // Servo names come from the same component metadata as the detail panel.
+  const servoKeys = meta.parts
+    .filter((p) => p.source_mesh === "xl330.stl")
+    .map((p) => [
+      p.id,
+      p.label_zh.replace("XL330 舵机 · ", "") + "舵机",
+      p.label_en.replace("Dynamixel XL330 servo - ", "") + " servo",
+      false,
+      p.drives_joint?.startsWith("right_")
+        ? 1
+        : p.drives_joint?.startsWith("left_")
+          ? 0
+          : 1,
+    ]);
+  const keys = [
+    ["jaw_soft--lens--00", "相机镜头", "Camera lens", false, 0],
+    [
+      "jaw_soft--pcb__raspberry_pi_zero_2_w--14",
+      "主控板",
+      "Controller board",
+      false,
+      0,
+    ],
+    ["trunk_base--np_f970--06", "电池", "Battery", false, 0],
+    ...servoKeys,
+  ];
+  const labels = keys
+    .map(([id, cn, en, always, side]) => {
+      const part = parts.find((p) => p.object.userData.id === id);
+      if (!part) return null;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "part-label";
+      button.textContent = zh ? cn : en;
+      button.setAttribute(
+        "aria-label",
+        (zh ? "放大查看：" : "Inspect: ") + button.textContent,
+      );
+      button.addEventListener("click", () => select(part, true));
+      overlay.append(button);
+      const line = document.createElementNS(svg.namespaceURI, "path");
+      svg.append(line);
+      return { part, button, line, always, side };
+    })
+    .filter(Boolean);
+  function fit(object = model, padding = 1.2) {
+    const b = new THREE.Box3().setFromObject(object),
+      c = b.getCenter(new THREE.Vector3()),
+      d = camera.position.clone().sub(controls.target).normalize();
+    if (!d.length()) d.set(1, 0.5, 1).normalize();
+    const right = new THREE.Vector3(d.z, 0, -d.x).normalize(),
+      up = new THREE.Vector3().crossVectors(d, right),
+      tv = Math.tan((camera.fov * Math.PI) / 360),
+      th = tv * camera.aspect;
+    let distance = 0.035;
+    for (const x of [b.min.x, b.max.x])
+      for (const y of [b.min.y, b.max.y])
+        for (const z of [b.min.z, b.max.z]) {
+          const v = new THREE.Vector3(x, y, z).sub(c);
+          distance = Math.max(
+            distance,
+            v.dot(d) +
+              Math.max(Math.abs(v.dot(right)) / th, Math.abs(v.dot(up)) / tv) *
+                padding,
+          );
+        }
+    camera.position.copy(c).addScaledVector(d, distance);
+    controls.target.copy(c);
+    controls.update();
+  }
+  function select(part, zoom = false) {
+    current = part;
+    renderer.toneMappingExposure = part ? 1.25 : 0.95;
+    status.textContent = part
+      ? zh
+        ? "部件细节 · 拖动旋转"
+        : "Part detail · Drag to orbit"
+      : zh
+        ? `${parts.length} 个独立部件 · 拖动旋转`
+        : `${parts.length} parts · Drag to orbit`;
+    for (const p of parts) {
+      p.object.visible = !part || p === part;
+      p.material.emissive?.copy(p.emissive);
+      p.material.emissiveIntensity = 1;
+    }
+    info.replaceChildren();
+    const title = document.createElement("strong"),
+      description = document.createElement("p");
+    if (part) {
+      title.textContent =
+        part.object.userData["label_" + lang] || part.object.name;
+      description.textContent =
+        part.object.userData["description_" + lang] || "";
+      if (zoom) fit(part.object, 1.2);
+    } else {
+      title.textContent = zh
+        ? "点击部件或名称，即可放大查看"
+        : "Click a part or its label to inspect it";
+      description.textContent = zh
+        ? "左键拖动旋转，按住滚轮拖动平移，滚轮或双指缩放；移动滑块可展开结构。"
+        : "Left-drag to orbit, middle-drag to pan, scroll or pinch to zoom. Use the slider to separate the parts.";
+    }
+    info.append(title, description);
+    root.dataset.selectedPart = part?.object.userData.id || "";
+  }
+  function explode(value) {
+    amount = value;
+    select(null);
+    for (const p of parts)
+      p.object.position.copy(p.position).addScaledVector(p.vector, amount);
+    model.updateMatrixWorld(true);
+    fit(model, 1.35);
+  }
+  function reset() {
+    camera.position
+      .copy(center)
+      .add(new THREE.Vector3(radius * 1.65, radius * 0.65, radius * 2));
+    controls.target.copy(center);
+    root.querySelector(".explode").value = 0;
+    explode(0);
+  }
+  root
+    .querySelector(".explode")
+    .addEventListener("input", (e) => explode(Number(e.target.value) / 100));
+  root.querySelector(".view-reset").addEventListener("click", reset);
+  const raycaster = new THREE.Raycaster(),
+    pointer = new THREE.Vector2();
+  let down;
+  renderer.domElement.addEventListener("pointerdown", (e) => {
+    down = e.button === 0 ? [e.clientX, e.clientY] : null;
+  });
+  renderer.domElement.addEventListener("pointerup", (e) => {
+    if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 5)
+      return;
+    const r = renderer.domElement.getBoundingClientRect();
+    pointer.set(
+      ((e.clientX - r.left) / r.width) * 2 - 1,
+      (-(e.clientY - r.top) / r.height) * 2 + 1,
+    );
+    raycaster.setFromCamera(pointer, camera);
+    const hit = raycaster.intersectObjects(
+      parts.map((p) => p.object),
+      false,
+    )[0];
+    if (hit)
+      select(
+        parts.find((p) => p.object === hit.object),
+        true,
+      );
+  });
+  function placeLabels() {
+    const w = stage.clientWidth,
+      h = stage.clientHeight,
+      groups = [[], []];
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    for (const l of labels) {
+      const v = new THREE.Box3()
+        .setFromObject(l.part.object)
+        .getCenter(new THREE.Vector3())
+        .project(camera);
+      const show =
+        !current && (l.always || amount > 0.12) && v.z < 1 && v.z > -1;
+      l.button.hidden = !show;
+      l.line.style.display = show ? "" : "none";
+      if (show) {
+        l.x = ((v.x + 1) * w) / 2;
+        l.y = ((1 - v.y) * h) / 2;
+        groups[l.side].push(l);
+      }
+    }
+    for (let side = 0; side < 2; side++) {
+      // Keep clickable labels still while the projected connector endpoints move.
+      // This avoids a moving pointer target after orbiting or panning the model.
+      const list = groups[side];
+      const gap = Math.min(38, (h - 95) / Math.max(1, list.length - 1));
+      const top = Math.max(55, (h - (list.length - 1) * gap) / 2);
+      list.forEach((l, i) => {
+        const y = Math.round(top + i * gap);
+        const bw = l.button.offsetWidth,
+          x = side ? w - bw - 10 : 10;
+        l.button.style.left = x + "px";
+        l.button.style.top = y - 14 + "px";
+        const edge = side ? x : x + bw;
+        l.line.setAttribute(
+          "d",
+          `M ${l.x} ${l.y} L ${edge + (side ? -12 : 12)} ${y} L ${edge} ${y}`,
+        );
+      });
+    }
+  }
+  stage.append(renderer.domElement);
+  camera.aspect = stage.clientWidth / stage.clientHeight;
+  camera.updateProjectionMatrix();
+  reset();
+  const resize = new ResizeObserver(() => {
+    renderer.setSize(stage.clientWidth, stage.clientHeight);
+    camera.aspect = stage.clientWidth / stage.clientHeight;
+    camera.updateProjectionMatrix();
+    fit(current?.object || model, current ? 1.2 : 1.35);
+  });
+  resize.observe(stage);
+  let visible = true;
+  new IntersectionObserver((es) => {
+    visible = es[0].isIntersecting;
+  }).observe(stage);
+  renderer.setAnimationLoop(() => {
+    if (visible && !document.hidden) {
+      controls.update();
+      renderer.render(scene, camera);
+      placeLabels();
+    }
+  });
+  status.textContent = zh
+    ? `${parts.length} 个独立部件 · 拖动旋转`
+    : `${parts.length} parts · Drag to orbit`;
+  root.dataset.loaded = "true";
+  root.dataset.componentCount = parts.length;
 }

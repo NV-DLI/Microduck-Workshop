@@ -11,8 +11,8 @@
     {
       "path": "configuration/core/heading_calibration/parameters/heading_feedback.py",
       "original_sha256": "eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2",
-      "template_sha256": "edb6b9ce7db85b01c5779278caf4b324c5f0e18e9643a47003aa268a92f0e877",
-      "bytes": 4906
+      "template_sha256": "49028efdd74ed282569188f5fd120074600a91fd6c3f66f0ae8c73ad72e4e18a",
+      "bytes": 6886
     },
     {
       "path": "configuration/core/heading_calibration/parameters/protocol.json",
@@ -143,80 +143,80 @@
     {
       "path": "simulation/core/evaluation/body50_training/physics_producer.py",
       "original_sha256": "b38e91ee2ba3d5e62844265460dc0d22487fe63f789692c5820e98f3e26503e1",
-      "template_sha256": "b38e91ee2ba3d5e62844265460dc0d22487fe63f789692c5820e98f3e26503e1",
-      "bytes": 4364
+      "template_sha256": "be191b22b089c08a5b3bd9c991d8a8d4cd7336e9066fa57fe217e531ccf5d464",
+      "bytes": 5723
     },
     {
       "path": "simulation/core/evaluation/body50_training/vector_body_imu.py",
       "original_sha256": "a02b50ce8bcaf64d8a35ece84d29904019166019a16b7775e0566f2e7d0ad67d",
-      "template_sha256": "a02b50ce8bcaf64d8a35ece84d29904019166019a16b7775e0566f2e7d0ad67d",
-      "bytes": 12362
+      "template_sha256": "ac1b358dc04e6469fd04ad8414d98c730da03087a23ed8e26f07eacbb2719afb",
+      "bytes": 16689
     },
     {
       "path": "simulation/core/evaluation/bounded_image_head_servo.py",
       "original_sha256": "f2c1b68ce19be41764dd040bfe2865492f862ef07ad67d6beed822f86246253e",
-      "template_sha256": "fe159cbf88ac43d7efb4355a6ed476ae769c20b8b9a8cb4a35253ef8851aef70",
-      "bytes": 2438
+      "template_sha256": "84859bc4ee706be40d73429703a2ffc8e03339cc581cb55a67e06de3c05956cf",
+      "bytes": 2895
     },
     {
       "path": "simulation/core/evaluation/execute_long_episode.py",
       "original_sha256": "9a6a9948bec5250ae87002044853acf5be6bbdbedd9e3285308ae58229ae5f04",
-      "template_sha256": "22d000979d5ddc22c4d7bf48f2528b2e461a7bc337aa18822c67ed58a5fc93a8",
-      "bytes": 1711
+      "template_sha256": "b6beefe62f00096af1d307187ce1b8ad8152ffcb99f4b5497a256fee7f0565aa",
+      "bytes": 2235
     },
     {
       "path": "simulation/core/evaluation/execute_observed_ball_turn.py",
       "original_sha256": "eb6e1039f478da27b4ebb00c15015c66365625c9f8ac9605404b3e368947ae3f",
-      "template_sha256": "5a4c62fb099b2073c7db28c00dbd4a7c76e7db7e17eed543238f46ea3cef7edc",
-      "bytes": 1699
+      "template_sha256": "5680293f92ea544d38ca2c89d5549478e2cf800633b66daa923fe76252f5ba38",
+      "bytes": 1989
     },
     {
       "path": "simulation/core/evaluation/execute_active_view.py",
       "original_sha256": "8e149be387ccba8e34d0ab2221054b76b1e6b83ccac2f24798aaec312288c70c",
-      "template_sha256": "bc1b117db8746833011f9398010d35d5a678b2baa900fcfb5a8084b49a9e919c",
-      "bytes": 2128
+      "template_sha256": "131964cbece2dda4ef3e965ebf1667a12e9ef68d8e593066b905a86afaf3e273",
+      "bytes": 2458
     },
     {
       "path": "simulation/core/evaluation/execute_velocity_policy.py",
       "original_sha256": "e48ed17b2249be02fced96080a31bc58edf44cdedea63702f674b517dbf03236",
-      "template_sha256": "8a7eb3eb176b0bfdccd73a9e267bb4c1b6d962506553f451a009178daab2a5ac",
-      "bytes": 2760
+      "template_sha256": "5236f38eb2d26fd9814992f2eed6e6f8c60aab889b3cd98f4c5dc4765b31ef55",
+      "bytes": 3462
     },
     {
       "path": "simulation/core/evaluation/execute_navigation.py",
       "original_sha256": "5495f0cbec5070f7d010f92edfb666454090258da622ec42f8057d514e052af0",
-      "template_sha256": "88992ddf659435ce451ae0a7f7b574f8a899dc8fa19940468ab3eddb408856d9",
-      "bytes": 1264
+      "template_sha256": "f8ecb59da2dbf5a78d42a03eb2b2708055fb92b86a2ca501cbcb9bbcd08d5890",
+      "bytes": 1555
     },
     {
       "path": "simulation/core/evaluation/execute_observed_attention.py",
       "original_sha256": "3e290f497ad35ef8c0ed847f3a26ffb307ab3c0ca746b122a331e85ad7f60e27",
-      "template_sha256": "239b4feeed92c39f006689286a313836d3e3bc48cb97810de4d0371cc9fb08b0",
-      "bytes": 1686
+      "template_sha256": "c1705e07d4207932264a4d2a94d33dd49a713f2c9006200f1ed07d484cefecc6",
+      "bytes": 1948
     },
     {
       "path": "simulation/core/evaluation/ground_contact_evidence.py",
       "original_sha256": "7b011526850bf9fb0031fb82846fe7012e15178ca7be5be20c32e6edc80245b8",
-      "template_sha256": "7b011526850bf9fb0031fb82846fe7012e15178ca7be5be20c32e6edc80245b8",
-      "bytes": 3911
+      "template_sha256": "a2869efeadc8cd09041f174603e085140d9d6f4e1f7ff10acc8760613d3673a9",
+      "bytes": 4698
     },
     {
       "path": "simulation/core/evaluation/guarded_navigation_feedback.py",
       "original_sha256": "c97c5bd869538cb9606aa4db73af4376671d754cb9141cebe50cdd2a87e3656b",
-      "template_sha256": "8e329d1106c806938e1607e4e8d9b9cfaf0c2e49c18e484e04ac22b0e579f03d",
-      "bytes": 3616
+      "template_sha256": "22abd239950837f136f3df91b0c815a6c577fc33f376129bd319f3abeff21b98",
+      "bytes": 3836
     },
     {
       "path": "simulation/core/evaluation/image_head_servo.py",
       "original_sha256": "342cada9cc79dca91bcc13b32e728cf1b0164269105688288f0d83f7baf333f7",
-      "template_sha256": "342cada9cc79dca91bcc13b32e728cf1b0164269105688288f0d83f7baf333f7",
-      "bytes": 2572
+      "template_sha256": "c8b83d549b4785b240f8b4f20ed1f73e3aa94640db6d17ee4df5ea894ed91416",
+      "bytes": 2808
     },
     {
       "path": "simulation/core/evaluation/measured_yaw_feedback.py",
       "original_sha256": "1fa0a317ba93c24f02652865dfaa9ac5484592ab9f520e34fbc5c9642f1e9281",
-      "template_sha256": "1fa0a317ba93c24f02652865dfaa9ac5484592ab9f520e34fbc5c9642f1e9281",
-      "bytes": 1938
+      "template_sha256": "bb3cf3613c54f0003e56acb2ad5e9650b276754906ae3d793fb13a515377c875",
+      "bytes": 2388
     },
     {
       "path": "simulation/core/evaluation/baseline/release.json",
@@ -227,38 +227,38 @@
     {
       "path": "simulation/core/evaluation/football/angular_navigation_native.py",
       "original_sha256": "b0aaa44e9df97fa70a5da6c3c96ab26fd0e62ec5c3ec20e22d70494fe5a1dc87",
-      "template_sha256": "e7ac7427664e247b76e4cf43a32aac4fc30f4fbc4f3dbe3917f15377cb34ed10",
-      "bytes": 2944
+      "template_sha256": "491a630fa4e5cccf8c9df7fa1da3aaebd1dfc4c190a60839ea6b7dc8fb624ea5",
+      "bytes": 3917
     },
     {
       "path": "simulation/core/evaluation/football/attention_head_permission.py",
       "original_sha256": "276dfcbc9d142a814b23da560bdf9902a574446b55656453d907ddc1eb0ecb87",
-      "template_sha256": "276dfcbc9d142a814b23da560bdf9902a574446b55656453d907ddc1eb0ecb87",
-      "bytes": 2019
+      "template_sha256": "9590b5bfad00443aac00b8887b762e34a1e10a4de7f6bb6ad3f25b2714d20c54",
+      "bytes": 2086
     },
     {
       "path": "simulation/core/evaluation/football/attention_owner.py",
       "original_sha256": "f445f1a32fa8e1708205c834b1e3c5b5dfc4ceafcf821805e4a17afe272f501b",
-      "template_sha256": "f445f1a32fa8e1708205c834b1e3c5b5dfc4ceafcf821805e4a17afe272f501b",
-      "bytes": 3670
+      "template_sha256": "0b6cabe9e556e232f9c7c456da7c96c66cff63328209c0b761aa2576729481f5",
+      "bytes": 4014
     },
     {
       "path": "simulation/core/evaluation/football/audit_retreat_recovery.py",
       "original_sha256": "0980df2d18028786f994ad8055c831fd316a4daea756244c498e86e002bef72b",
-      "template_sha256": "8a4348ad6ad269f6a9f4e92674a1d434f1e0e5b312bbaf873b54ac44362f1011",
-      "bytes": 38396
+      "template_sha256": "699fd96855268116319a54956d967d8595d69f02e00a50d97f7709eae7f2113e",
+      "bytes": 47355
     },
     {
       "path": "simulation/core/evaluation/football/ball_reacquisition.py",
       "original_sha256": "36f80ca5157c626b8b8612b3b4bc5dbc3e1146d00463361faaaeb128cf44d99d",
-      "template_sha256": "0259ed2fe71c452df31547ce77088dabffceb6df6a0ad990536ffa87ce027316",
-      "bytes": 13921
+      "template_sha256": "0f90683383353d4e102aae5a924d2455cb622d68b3b3102f140df1dcdadfaf0c",
+      "bytes": 17866
     },
     {
       "path": "simulation/core/evaluation/football/ball_view_hint.py",
       "original_sha256": "306e2078dc397313288d8673c67e7658c278785346c5469da8c044ccb0a9179c",
-      "template_sha256": "306e2078dc397313288d8673c67e7658c278785346c5469da8c044ccb0a9179c",
-      "bytes": 2865
+      "template_sha256": "7d4621c9849af19f93cb16ce45e52196de29f1bdfad2fed943c6b8c923196d75",
+      "bytes": 3068
     },
     {
       "path": "simulation/core/evaluation/football/base-release.json",
@@ -275,20 +275,20 @@
     {
       "path": "simulation/core/evaluation/football/coarse_track.py",
       "original_sha256": "a5bea49d962324dc384330208165670574ac50eea5b2002d5ac3042d1a7c717c",
-      "template_sha256": "a5bea49d962324dc384330208165670574ac50eea5b2002d5ac3042d1a7c717c",
-      "bytes": 4706
+      "template_sha256": "5b1d02e173435610802334ade73af320ba1050fffd2e9434a846feb9249fe14c",
+      "bytes": 6207
     },
     {
       "path": "simulation/core/evaluation/football/command_navigation_native.py",
       "original_sha256": "0462de3bf03db49172b3b6fc0f09ffbc8b23afcb97512089d13010762905b355",
-      "template_sha256": "0462de3bf03db49172b3b6fc0f09ffbc8b23afcb97512089d13010762905b355",
-      "bytes": 15082
+      "template_sha256": "69b26c9b771684f50671307d747c34d8c7c549d82d5b18b5a186c33eb1935e11",
+      "bytes": 17163
     },
     {
       "path": "simulation/core/evaluation/football/contact_odometry.py",
       "original_sha256": "1020f9d19dbd07248c4392c1cf1a6cac487c16d18af2a4be49675002e6554e67",
-      "template_sha256": "7e11c4360ae669c7432f449bd9234ac9b7db352ebf91c9fc0ffd770e445d67b7",
-      "bytes": 3962
+      "template_sha256": "ee2cc776fdcf27cb5e60cdbc7bb6911f8e706bdc909162396953d99f98f16565",
+      "bytes": 4529
     },
     {
       "path": "simulation/core/evaluation/football/design.json",
@@ -305,98 +305,98 @@
     {
       "path": "simulation/core/evaluation/football/execute.py",
       "original_sha256": "3e1ab3dbb6b04a169298f280626becf04d5ddcf6e33b42514a535efd798b78c9",
-      "template_sha256": "314ac858a90c9a45460221c91abda01657ed2e5c64cf0ccbc3bb59c515990eb1",
-      "bytes": 7761
+      "template_sha256": "42c40851afd709d57c0906debc20151233c29fae1ed8118e5e5ca9567799c4bf",
+      "bytes": 8790
     },
     {
       "path": "simulation/core/evaluation/football/execute_media.py",
       "original_sha256": "1d8c90e04177f7e605506ea5182e8de422c235fe2aaf4a33b737feef206384e5",
-      "template_sha256": "132387c758c0628b4228da7828ccd8c554978413a1a8b318614fd3c9f0b0d380",
-      "bytes": 2124
+      "template_sha256": "fc92f0ed668b0546549f458b674dcd9565aff28fccffc13407b5ae7c130c4cb8",
+      "bytes": 2276
     },
     {
       "path": "simulation/core/evaluation/football/executor.py",
       "original_sha256": "ea0637d2d52fb3c7086185c42a51e7d35490edcead6ea2b34cc69e513d6b0abc",
-      "template_sha256": "0e84fa240707e5e54e3290ac66ea70c57b7fb86fb5224d231a11fd172c41b43e",
-      "bytes": 78192
+      "template_sha256": "68851994807786470804fce0e3955ab95de79352c04ab7521ea3ba90bcb420c3",
+      "bytes": 114199
     },
     {
       "path": "simulation/core/evaluation/football/final_approach.py",
       "original_sha256": "1498a7071ebf601518536d22927b4a2d7e452427f561ab37dde27c202f097981",
-      "template_sha256": "43df0161332d0f3a42839e64a4dd3141a6d8bf099ca0f83207d3fe9bbd994259",
-      "bytes": 12797
+      "template_sha256": "66192c5ec7b5e61deb71ea1e7c9b940a177dbad17c9f1f1e6764d7eb91a5b159",
+      "bytes": 16858
     },
     {
       "path": "simulation/core/evaluation/football/fine_feedback_permission.py",
       "original_sha256": "a1068426d1197ac0469d8ffcce351f611d1d1e5b130b4df2ef2d8a1152585d36",
-      "template_sha256": "a1068426d1197ac0469d8ffcce351f611d1d1e5b130b4df2ef2d8a1152585d36",
-      "bytes": 2147
+      "template_sha256": "dddf73ad5255cc27022f2233745a6a50be7c77e4da8823639df539a07bf8f022",
+      "bytes": 2356
     },
     {
       "path": "simulation/core/evaluation/football/fine_kick.py",
       "original_sha256": "37f2e5c00db56d3a7de60fa753b6175ad00510b02991d449df17be722dd0fd38",
-      "template_sha256": "173cedbd2ed9eebc75183f90c069ff2f98762c3e1e9fb18a42a256bd1dc21a12",
-      "bytes": 6562
+      "template_sha256": "2f42ca11ad26f079b042954876433b524728a7db3ac18dbb3f40a60923f2936e",
+      "bytes": 7324
     },
     {
       "path": "simulation/core/evaluation/football/fine_transition_latch.py",
       "original_sha256": "78e7dfc02df0eb7d57fcc501867adbad280366c0b1841026eb90385c85f44fb8",
-      "template_sha256": "7b5d2f6c38d8edcdb393bb5c4160eb4a83e6555a0cecaa11d20d925e3dc39bde",
-      "bytes": 9319
+      "template_sha256": "6d0af2c2e231536a6171fd7f755a9801d8c7fb88a53b8b5b788c81b6b6a982cf",
+      "bytes": 11538
     },
     {
       "path": "simulation/core/evaluation/football/fixture_leg.py",
       "original_sha256": "6d8d96beb9b217a932f33aa55944126f2aed878140091243f21add76b3e5f42e",
-      "template_sha256": "6d8d96beb9b217a932f33aa55944126f2aed878140091243f21add76b3e5f42e",
-      "bytes": 524
+      "template_sha256": "f7a7ecfffd296cbc29582142b6afa3d033c13281635e91e129f7c49ce2abb3a6",
+      "bytes": 560
     },
     {
       "path": "simulation/core/evaluation/football/verify_release.py",
       "original_sha256": "065ed0232870c5179ba5897c25f05674336dddab014f857c9c1371a1dd091b10",
-      "template_sha256": "40b88f7c0d48ddcc1ea0eb37e88b6fb0e3a4c1acb18a1526a30f5bf93b3b2477",
-      "bytes": 6863
+      "template_sha256": "d86ccf2b74350794f2ef414cab0a8031d8a48d19c4eff287234b7a8360046124",
+      "bytes": 7515
     },
     {
       "path": "simulation/core/evaluation/football/goal_reacquisition_native.py",
       "original_sha256": "3ea585fb356e1dfca0874fdf4567d42f1e3012957875908d1f5e46ad28aa47f3",
-      "template_sha256": "374e9a07d333fa7efb939cb6710135c990febf45630eba4dab88d5584a4877a0",
-      "bytes": 7180
+      "template_sha256": "119fe89297f9858477f9c35c170ad14e1e2967a9abaa2e310ad690a7fe2df4be",
+      "bytes": 8975
     },
     {
       "path": "simulation/core/evaluation/football/head_feedback.py",
       "original_sha256": "32f2b1df64d9322c0b6c3e6ff7e1a34604f6aa25d0f6343b90d1d6316b0b655d",
-      "template_sha256": "32f2b1df64d9322c0b6c3e6ff7e1a34604f6aa25d0f6343b90d1d6316b0b655d",
-      "bytes": 6399
+      "template_sha256": "97210634b23a8b3448496ce54c3afa734fb8de43a89c7ec17c23899bbb84485a",
+      "bytes": 8195
     },
     {
       "path": "simulation/core/evaluation/football/head_feedback_core.py",
       "original_sha256": "1ac8a3877d71f1ad50c461189dda2129e3a0e21138d2b133035560227740f721",
-      "template_sha256": "1ac8a3877d71f1ad50c461189dda2129e3a0e21138d2b133035560227740f721",
-      "bytes": 4556
+      "template_sha256": "b9b850bc4f06c54b1a6a723ae2ee57c19df70efc1acda2d66fb2018dc0b01617",
+      "bytes": 5714
     },
     {
       "path": "simulation/core/evaluation/football/head_handoff.py",
       "original_sha256": "6c014294e598367773b44003616f09c41db8930140c186340525798dae145f8a",
-      "template_sha256": "3a93cdcf66917ad0d1fc39cb159f4e05918aa63933f48e50c04eb4efe9cf12a7",
-      "bytes": 5794
+      "template_sha256": "ad9e401db7cd02f44bd8d05623c344c396089eba28b2ed617953d094b97f8fa4",
+      "bytes": 7078
     },
     {
       "path": "simulation/core/evaluation/football/heading_feedback.py",
       "original_sha256": "eb55fe2ba8c61d7407c8046e131ca78411bd128251d210584c4bcdb95c32faf2",
-      "template_sha256": "edb6b9ce7db85b01c5779278caf4b324c5f0e18e9643a47003aa268a92f0e877",
-      "bytes": 4906
+      "template_sha256": "49028efdd74ed282569188f5fd120074600a91fd6c3f66f0ae8c73ad72e4e18a",
+      "bytes": 6886
     },
     {
       "path": "simulation/core/evaluation/football/image_attention_native.py",
       "original_sha256": "8f9358f0f600f723bee99eb98965c403caaf775864e4a58134131058e038be46",
-      "template_sha256": "c313e023553a87da1f695f0a56ab5570ee6d7fa5fd3f8f404f5142ba5560ce8c",
-      "bytes": 1748
+      "template_sha256": "bdd0d16cca783f3835b8758d682662db957c71a55973a5de4893873dd97f62db",
+      "bytes": 2089
     },
     {
       "path": "simulation/core/evaluation/football/image_head_servo.py",
       "original_sha256": "13a8896f1488245d947f89480f92d0e72b66042e5d6a03eb6e3a051ff9573411",
-      "template_sha256": "13a8896f1488245d947f89480f92d0e72b66042e5d6a03eb6e3a051ff9573411",
-      "bytes": 2574
+      "template_sha256": "baba793059f9f3ee5deb8080d59b480563a936e8ab503acdabbd488ce806aae1",
+      "bytes": 2810
     },
     {
       "path": "simulation/core/evaluation/football/install-manifest.json",
@@ -407,26 +407,26 @@
     {
       "path": "simulation/core/evaluation/football/kick_runtime.py",
       "original_sha256": "2dbafc467d850609fb9ded5cc2c473106c2829e37231f7d4f8e408fd00244a86",
-      "template_sha256": "ed8eaefa3120df398fe9f75e23b5c64dd703546d78c27c132009a75cf7a537fe",
-      "bytes": 6653
+      "template_sha256": "2150bab8b88b16e06d7e115ee24d1fcdf1d13d4fd655cd57d249221a20b50e93",
+      "bytes": 7298
     },
     {
       "path": "simulation/core/evaluation/football/native_head_domain.py",
       "original_sha256": "8f14ff23f03ee30c1623bc5ebb13f342ef1480f9cac5fdd0e7e0a59719b2f8e3",
-      "template_sha256": "24058d55bd2cad8bbcd2de506fc9f2987ecd9bf78b2fccc5e685b04c2e152467",
-      "bytes": 3016
+      "template_sha256": "fdcc42d6cdb1707ff7e17eeb23052a1bdead4043ad80553e588be124562ffcf6",
+      "bytes": 3329
     },
     {
       "path": "simulation/core/evaluation/football/near_ball_phase_native.py",
       "original_sha256": "e9c3090d0e6861ce627e8a7ad9ff2336878b64a120da20f0313223945ecef529",
-      "template_sha256": "e9c3090d0e6861ce627e8a7ad9ff2336878b64a120da20f0313223945ecef529",
-      "bytes": 6525
+      "template_sha256": "88870b8986ac076139da6f074f4f4d2e46f9a534e4471437d2b5ec412b07dec3",
+      "bytes": 7431
     },
     {
       "path": "simulation/core/evaluation/football/neutral_fine_step.py",
       "original_sha256": "c35484e30727652c6ce3cfce50a2c4a6ca3f2cbaa3afb6b76d4c111ffc66a26c",
-      "template_sha256": "31f15841b3d2cf1a9090ba1bdb141a80470b3d230255591720534e1c936682f8",
-      "bytes": 24242
+      "template_sha256": "15ac24528cf99519cf74786d771b3a6d2ac5f8f50cd30d59c4809d504a2ad0c3",
+      "bytes": 32920
     },
     {
       "path": "simulation/core/evaluation/football/odometry-selection-source.json",
@@ -437,8 +437,8 @@
     {
       "path": "simulation/core/evaluation/football/range_progress.py",
       "original_sha256": "7b7b8b924fe013e7a18d4bf92142cef7872590a4430416893272bd2810596173",
-      "template_sha256": "e3335fed0007e3710ac1032c414d12979267cf935c8c7d7b42c6886203c062ab",
-      "bytes": 4274
+      "template_sha256": "f385443aaf8835e6fd49bf97db2f2fc9c9da2ee95b11de5224f137d88cabc3de",
+      "bytes": 4667
     },
     {
       "path": "simulation/core/evaluation/football/recovery-approval.json",
@@ -449,20 +449,20 @@
     {
       "path": "simulation/core/evaluation/football/recovery_config.py",
       "original_sha256": "1bafb47da9dacdc52c60e0caab1d8b629b7e20b3adae629b05871964ee413f14",
-      "template_sha256": "be5e8748fe738fa633c31cbdb6c75f1e43701de1144d51b13ba4ece3b00a2f7b",
-      "bytes": 9454
+      "template_sha256": "c664542991f8b64dba35334ca0d74b5db986f736b0992ce1cd5df1e5cd1e15db",
+      "bytes": 10142
     },
     {
       "path": "simulation/core/evaluation/football/recovery_fixture.py",
       "original_sha256": "907591bd47f1078b2ca6487764bec6b5b684b7bcac50cccc77ac42e9a6f06aa7",
-      "template_sha256": "b977d8d949ecc62c82a96a630f39f302328fab1e4960329120b138f2c47d516d",
-      "bytes": 17798
+      "template_sha256": "cc6efcdce8ddabf7fbb46057d8dddd5eef09c1b63fcdee5c83b04a7f5dc933c4",
+      "bytes": 21347
     },
     {
       "path": "simulation/core/evaluation/football/recovery_handoff.py",
       "original_sha256": "09185cec87247816935b998c08f482380af865623552589f32ecdf97317b7b6a",
-      "template_sha256": "72a3f61a642d847b8d9d12a698fc7c2ed878ad4d37a4bb3bab26266d308e5610",
-      "bytes": 20373
+      "template_sha256": "4e9411d273002b6f33d6d308c01db2ee868c6751035bed49ee019ae108031323",
+      "bytes": 23182
     },
     {
       "path": "simulation/core/evaluation/football/release.json",
@@ -473,14 +473,14 @@
     {
       "path": "simulation/core/evaluation/football/retreat_recovery.py",
       "original_sha256": "122a7d2fd3063dea289fbe721f4e14dcfcb24d4c4f8122a757db46c338a12e46",
-      "template_sha256": "56aafc12db7ea74bcc857f3a0bcb298128b481fa17206086b3af1f5e7ce89c63",
-      "bytes": 24948
+      "template_sha256": "dd475643f7ea2d047a7ca13503b0b68c8cf2ce2a498bfc1158878c3212fb7f4d",
+      "bytes": 27993
     },
     {
       "path": "simulation/core/evaluation/football/settled_entry.py",
       "original_sha256": "a4f45285040c40c9dce6d4807650480e1c7375f26dede1eff3ffeaae0759b0c5",
-      "template_sha256": "0e77feb1221ec87862853b90f1a01184af8d58a24b44d642d1e949f8be7d1cc5",
-      "bytes": 4719
+      "template_sha256": "c4e26accf0988255e95b6c80ed55e2459427a559167162a09b8406f80214ac87",
+      "bytes": 5868
     },
     {
       "path": "simulation/core/evaluation/football/short-step-table.json",
@@ -491,8 +491,8 @@
     {
       "path": "simulation/core/evaluation/football/short_primitive.py",
       "original_sha256": "d67928151d97a6056b953766b884d811d44718f50c3145e9c54f4ec620947b38",
-      "template_sha256": "431ae17c59351a0ffe63d738db99986398ff85fca7b512c9134452ddf568cbd3",
-      "bytes": 2642
+      "template_sha256": "fbcdc10ce3dbe6151d76b0bda70935deba261f0205ed1243c8c1d5b7b607e6dd",
+      "bytes": 3824
     },
     {
       "path": "simulation/core/evaluation/football/sole-hull-vertices.json",
@@ -503,410 +503,410 @@
     {
       "path": "simulation/core/evaluation/football/sole_kinematics.py",
       "original_sha256": "77e2de4904f7755c17aa16276a497dc666afaf73a45c5c700d886bb81119e644",
-      "template_sha256": "f2a4c525b758ac51b1737dfaecd4982b2365ab4dbc9bda73600906a8f4f999f2",
-      "bytes": 3857
+      "template_sha256": "9aa7cccefd8da62fc061b7456eb24c5a21d46fb03d033f529e180c0a4252af9d",
+      "bytes": 4468
     },
     {
       "path": "simulation/core/evaluation/football/task_navigation.py",
       "original_sha256": "e37f9c6fe8400bbd47585c476be902f3bf744f94e9c2e3087b72fd09cb2de27e",
-      "template_sha256": "326fc97cdf90cd2d6a3df7861e77558f46f34eff25ae792c336002cf83561bfc",
-      "bytes": 6473
+      "template_sha256": "46329688a2e1bd1e942a069337f8d2538a5e1ab892beb054816cffe229087f5e",
+      "bytes": 8621
     },
     {
       "path": "simulation/core/evaluation/football/test_attention_head_permission.py",
       "original_sha256": "5e721a8a8fcc73a60ba68e205e403372038673b3beb1c00cac5d00aca6e82817",
-      "template_sha256": "cb7351b691735d9063dfc4defd81d9e3092f4cc596caba926eaaf04fb9e9baf6",
-      "bytes": 7648
+      "template_sha256": "b1f611aa583102f6da7637987d42ef195c1d1c26b68665c2c89eef88bc72d12e",
+      "bytes": 8772
     },
     {
       "path": "simulation/core/evaluation/football/test_attention_owner.py",
       "original_sha256": "9e0d08bb782b1cf1f209abac24108916fb647e52655e1fd97c4c6dd5e7d109aa",
-      "template_sha256": "9e0d08bb782b1cf1f209abac24108916fb647e52655e1fd97c4c6dd5e7d109aa",
-      "bytes": 4544
+      "template_sha256": "77029bf0a959f4de9a32299550612b355828c410e2bebd5c62fbab65680256ec",
+      "bytes": 6302
     },
     {
       "path": "simulation/core/evaluation/football/test_audit_retreat_recovery.py",
       "original_sha256": "7cb412bc7c16d6f6e21f68fe549c1cbb2fbfa4f5d5efa424af1ac56615c0342a",
-      "template_sha256": "6f972f9f23f3f0067119306d9460b497b9ed91c12d1da56e9c9fccec27adeaab",
-      "bytes": 13941
+      "template_sha256": "2a40b28bacf9957f6209599f8f679ea9624bd04f9323760831c1b82e29d98db8",
+      "bytes": 16191
     },
     {
       "path": "simulation/core/evaluation/football/test_ball_reacquisition.py",
       "original_sha256": "f95696e4c0adaa4d00919712ecbe8235fde40fcded48e44e0d3af6d69d884f98",
-      "template_sha256": "e3b2ffbe8d565577fbca7ab81a432a421b6fc4537bf34c34c1fddc14f2bc4374",
-      "bytes": 4640
+      "template_sha256": "566efd15df5aa21c9978ec78c74dcd81e08d97c9dd178e4776dc86fd64288ae5",
+      "bytes": 6190
     },
     {
       "path": "simulation/core/evaluation/football/test_ball_view_hint.py",
       "original_sha256": "12e425a67c16af422bd28d71043d5bbe52f2556e20a70601de526ad134deed94",
-      "template_sha256": "6ef25ba957aa506f56b4117289f2abf131ca1cf33ed3c17863f84f65dc3d96a0",
-      "bytes": 6173
+      "template_sha256": "11a179d7e43f07912e25429a9f3317cfdbbf22c131d87506bdace7a84b022a04",
+      "bytes": 6980
     },
     {
       "path": "simulation/core/evaluation/football/test_close_forward.py",
       "original_sha256": "275520391e083adaa7c2c9259ccbe1ec78f6bc3c3abb75a3b96a4f0ab50f21ef",
-      "template_sha256": "275520391e083adaa7c2c9259ccbe1ec78f6bc3c3abb75a3b96a4f0ab50f21ef",
-      "bytes": 1950
+      "template_sha256": "517456f14d08abbe622d5089fc396b6791c7ecc137de7738f8a9bfdb7b02d11d",
+      "bytes": 2603
     },
     {
       "path": "simulation/core/evaluation/football/test_coarse_track.py",
       "original_sha256": "e7178e1903a371eb23b995dab9aa3c0f0fe7b59259549f361b0c137bb5f7bd2b",
-      "template_sha256": "e55a1ed0ec49a387392bde648e01c3503d8aa13bf326265fca2f5e7c7145361d",
-      "bytes": 6242
+      "template_sha256": "637c51c0ca5a40af370830c57cf601ea2dc949107245309e85eb23da2ec7225a",
+      "bytes": 8747
     },
     {
       "path": "simulation/core/evaluation/football/test_command_guards.py",
       "original_sha256": "54ef91413809f3e9a422ccdb971553d32216aae03226074706ae379724fdcd76",
-      "template_sha256": "54ef91413809f3e9a422ccdb971553d32216aae03226074706ae379724fdcd76",
-      "bytes": 14370
+      "template_sha256": "875e9167f173ae0d6ea402bfe950448c493686f913b6042c8f7ebe68f705cfe0",
+      "bytes": 18240
     },
     {
       "path": "simulation/core/evaluation/football/test_continuous_final_track.py",
       "original_sha256": "ed7165035d3fe3298db53e656a55d71c72243eb1bd49b2f94b3148ff89894355",
-      "template_sha256": "ed7165035d3fe3298db53e656a55d71c72243eb1bd49b2f94b3148ff89894355",
-      "bytes": 1369
+      "template_sha256": "1ba28a0b80cf3e2c95d053768f5204b381b171194735517196a53beaa694b6d7",
+      "bytes": 1823
     },
     {
       "path": "simulation/core/evaluation/football/test_continuous_track.py",
       "original_sha256": "7e9701db857856b69747b7671596efef61ca214a779fd3a06ca0f7f9586e05f7",
-      "template_sha256": "7e9701db857856b69747b7671596efef61ca214a779fd3a06ca0f7f9586e05f7",
-      "bytes": 1450
+      "template_sha256": "1362364fa341aac4d3ec0d5849851953d1647821c4d2ea0ea414b59709cc31e6",
+      "bytes": 1982
     },
     {
       "path": "simulation/core/evaluation/football/test_deep_ball_search.py",
       "original_sha256": "e6a51aa5997a3078e47a3d5eb0eb63fed377940275c6b130975f1809a3a47ee9",
-      "template_sha256": "e6a51aa5997a3078e47a3d5eb0eb63fed377940275c6b130975f1809a3a47ee9",
-      "bytes": 519
+      "template_sha256": "00849ec96491aafb55b344d7b1a6c63cb6139309e2fd68059ef89a9bb7aa624e",
+      "bytes": 616
     },
     {
       "path": "simulation/core/evaluation/football/test_executor_contract.py",
       "original_sha256": "6aaff48061409cd00865b5863f2706948bccbe38cb8affc03574cf68c6e73241",
-      "template_sha256": "f2fba54f4e25125a045bf0f6962920afab44f5304e4461c073916eb39777e52f",
-      "bytes": 8873
+      "template_sha256": "173e60bb9992e44c5281602becae2f41d3cb8e2a9d46cea4afe7347868a5da84",
+      "bytes": 10051
     },
     {
       "path": "simulation/core/evaluation/football/test_final_stride.py",
       "original_sha256": "f2c540fe83c6381ace78df9f51460ed2a4c92f700e77c3ed3228abc32f8e7f1f",
-      "template_sha256": "f2c540fe83c6381ace78df9f51460ed2a4c92f700e77c3ed3228abc32f8e7f1f",
-      "bytes": 1203
+      "template_sha256": "61bc13754b7915658ff1814049073d51daccffeb360c3746ac492f10d0a0dfc3",
+      "bytes": 1610
     },
     {
       "path": "simulation/core/evaluation/football/test_fine_attention_commit.py",
       "original_sha256": "d24c0bd307c2efc06e2f38f521c26d4eff77b1e16797fed0fcd95a0a0d3b1a54",
-      "template_sha256": "d5e799253a84d9434787597c7a6b776ba2cc37c18d9facb954bd2d0816e7e05f",
-      "bytes": 7183
+      "template_sha256": "2f02454daaa9e553a667b0ae22e496f6b41102b81e1cb3ff89fda837744c7a02",
+      "bytes": 10108
     },
     {
       "path": "simulation/core/evaluation/football/test_fine_feedback_permission.py",
       "original_sha256": "1d4d34b5b717125c28dd7b00a79731ca86da2342a66722dc297e52356fea8060",
-      "template_sha256": "1d4d34b5b717125c28dd7b00a79731ca86da2342a66722dc297e52356fea8060",
-      "bytes": 5754
+      "template_sha256": "dbcd7f49c90fd84deee6fe16093ec9654328cc86e56d90d9ea3b7c45101d9374",
+      "bytes": 6657
     },
     {
       "path": "simulation/core/evaluation/football/test_fine_kick.py",
       "original_sha256": "e2194f3c618c244bbe3188d53b3f46ef2f3137ec80bf483728a43b295c10a1a3",
-      "template_sha256": "04e6778479cd5054ff5419a9848aebbd4125aefed97305a1642e94afb1e1775d",
-      "bytes": 10751
+      "template_sha256": "600004b8b68608220f9d4d10ab7ad070c0030bd3530c8963a142be36ebf4c35c",
+      "bytes": 13168
     },
     {
       "path": "simulation/core/evaluation/football/test_fine_transition_latch.py",
       "original_sha256": "07bc242ab9d62a229ce468b417e31fd19c81c58d0feadee18f79818ef90c0ecd",
-      "template_sha256": "0045921964dcf3e0cce36c0402257db546680fc3ca8814496d11ec57fe2835da",
-      "bytes": 11388
+      "template_sha256": "bf559ae85c95abbc46160972c65a89dde5844604823e06d372d91bc234d852d9",
+      "bytes": 14175
     },
     {
       "path": "simulation/core/evaluation/football/test_fixed_closedloop_primitive.py",
       "original_sha256": "483cea4d204828a53109498816f3e538958e391895d774a7c15ac9ea1c6756f0",
-      "template_sha256": "483cea4d204828a53109498816f3e538958e391895d774a7c15ac9ea1c6756f0",
-      "bytes": 860
+      "template_sha256": "a7e9e15e595544de9cc090ac76e2999f777c4607a3c65c026a968e95b19e0dc6",
+      "bytes": 1152
     },
     {
       "path": "simulation/core/evaluation/football/test_goal_reacquisition.py",
       "original_sha256": "299c92bf0e4249b4466ad2688f505c9bc9d576d9b8d4bd42d430dd72fbeb9c54",
-      "template_sha256": "a7d644cbb0f674849f6d5c4845bd72ccde777ccb3ed4132f2c0089cda400383f",
-      "bytes": 5274
+      "template_sha256": "be6360a686ccf2b8dad8f4b5222a12180d9028be87eb3d0ee3eff9938d37dd96",
+      "bytes": 6457
     },
     {
       "path": "simulation/core/evaluation/football/test_goal_turn_progress.py",
       "original_sha256": "31178905d0dd4a962fc8d9809c14dee371aa327aa5938031a1337614a081eab7",
-      "template_sha256": "31178905d0dd4a962fc8d9809c14dee371aa327aa5938031a1337614a081eab7",
-      "bytes": 1043
+      "template_sha256": "50b1e40b1e0e995bd247252d21086c73c309e4b7c42f24722b34b7e9a6505650",
+      "bytes": 1408
     },
     {
       "path": "simulation/core/evaluation/football/test_guard_stop_reobserve.py",
       "original_sha256": "0a1872ab7aed09700a9a9fc2027505a4e78becb0df0d5e3da67f803c00fecac1",
-      "template_sha256": "7eaec03f29e624a675005944b9a27b8e04a98d59e52be4a7fcbe3fa3d9d4bd21",
-      "bytes": 2031
+      "template_sha256": "ca0012b89321b8088baf4e0803040c4d6a2e51deb04b8600eea889961a5b4f17",
+      "bytes": 2969
     },
     {
       "path": "simulation/core/evaluation/football/test_head_feedback.py",
       "original_sha256": "88b3ef2beb55049f8de0a545cffad1e350668dfbddfd6f358bfb50af156a7e4c",
-      "template_sha256": "88b3ef2beb55049f8de0a545cffad1e350668dfbddfd6f358bfb50af156a7e4c",
-      "bytes": 5380
+      "template_sha256": "f5f4ca1b9f720901d5ab4bb77a56c4c673b363b8f3f14d2bf0c7dcf14f151435",
+      "bytes": 6872
     },
     {
       "path": "simulation/core/evaluation/football/test_head_feedback_core.py",
       "original_sha256": "9ed24a0457bdac2050e5664c7fc75ffca3d732effa3ab277bc5cdb68c604f3f7",
-      "template_sha256": "9ed24a0457bdac2050e5664c7fc75ffca3d732effa3ab277bc5cdb68c604f3f7",
-      "bytes": 2660
+      "template_sha256": "9db34b4e6c697ba2ebc5e8ca7f7996bc6594b331da159e8492eac19a83a86896",
+      "bytes": 3200
     },
     {
       "path": "simulation/core/evaluation/football/test_hold_complete_near_view.py",
       "original_sha256": "5a9d1c447a49359e9cf86684cb7f9b63faa0acf5e179276e464560ac0f15c608",
-      "template_sha256": "5a9d1c447a49359e9cf86684cb7f9b63faa0acf5e179276e464560ac0f15c608",
-      "bytes": 1206
+      "template_sha256": "69778979e80e5d8fd764bf09dd2009429081a7bb61966ef4bef46882bd4c6d46",
+      "bytes": 1593
     },
     {
       "path": "simulation/core/evaluation/football/test_interpolated_primitives.py",
       "original_sha256": "8fe6be70f48aeb4597a14843aaf5fc4e26a6de463e5d82154a618cd7106ccfc7",
-      "template_sha256": "063052afcfe79be96a17fc432c3ab9d9f6f8a07f0e3e08e10e1fd66314bd295d",
-      "bytes": 750
+      "template_sha256": "2e5737414e2d33ab6cbd56c93f0a018330ecdb307d62161e26699d52882d9e3a",
+      "bytes": 1026
     },
     {
       "path": "simulation/core/evaluation/football/test_json_trace.py",
       "original_sha256": "4179dfb05ad34b6fd9cbc7b7fa9dacbbdbdc4f66704330fdc7e7b19b40230f0f",
-      "template_sha256": "4179dfb05ad34b6fd9cbc7b7fa9dacbbdbdc4f66704330fdc7e7b19b40230f0f",
-      "bytes": 663
+      "template_sha256": "e3cc67f85ae7679ffdeee2e9bf922b77c1ffd0ad8c3fc3bea538271c0a7c1806",
+      "bytes": 1052
     },
     {
       "path": "simulation/core/evaluation/football/test_macro_capture_domain.py",
       "original_sha256": "b132a74f19c34b42d09144a8b3237862a3106a5ea2cb2c79381c2adb7c03090f",
-      "template_sha256": "b132a74f19c34b42d09144a8b3237862a3106a5ea2cb2c79381c2adb7c03090f",
-      "bytes": 634
+      "template_sha256": "7d94ea333ca8d111aba66ea09556bb20e1100017e60cac416703da92f73ac9c2",
+      "bytes": 860
     },
     {
       "path": "simulation/core/evaluation/football/test_macro_decoupled_heading.py",
       "original_sha256": "9bae1fbb7f71d2c1271c6fba91d8234eda84ff5926eec96390a2088bd3a40dd3",
-      "template_sha256": "9bae1fbb7f71d2c1271c6fba91d8234eda84ff5926eec96390a2088bd3a40dd3",
-      "bytes": 630
+      "template_sha256": "bc0ea7659ea1b6d8eebbdfb2eda753ccc511532ae51acef5090a366beeb68c94",
+      "bytes": 766
     },
     {
       "path": "simulation/core/evaluation/football/test_macro_head_return.py",
       "original_sha256": "b6f68278b4b95d40e5a22aafe9637ad64432a0dfa515a6352e56c32f4b6e5583",
-      "template_sha256": "b6f68278b4b95d40e5a22aafe9637ad64432a0dfa515a6352e56c32f4b6e5583",
-      "bytes": 1487
+      "template_sha256": "b97f74da5f23e0eaeca80d3df5d6ef951771699c68b6307465a12f5acf7d6612",
+      "bytes": 2060
     },
     {
       "path": "simulation/core/evaluation/football/test_macro_shot_frame.py",
       "original_sha256": "e0677388259c7eddf8d9d34dae4e5894b0f19c025568a577d5a6afb29e440b0a",
-      "template_sha256": "e0677388259c7eddf8d9d34dae4e5894b0f19c025568a577d5a6afb29e440b0a",
-      "bytes": 823
+      "template_sha256": "1614a59a1d43e1e0d8c1b14aa3375b56845fd0b070d9aec1b4ecf70fb7487da1",
+      "bytes": 1070
     },
     {
       "path": "simulation/core/evaluation/football/test_motion_heading_reference.py",
       "original_sha256": "2b09b1babeca6b7d3392313ee48040c309dbd78c11fe1eed103039f707feee6c",
-      "template_sha256": "2b09b1babeca6b7d3392313ee48040c309dbd78c11fe1eed103039f707feee6c",
-      "bytes": 1173
+      "template_sha256": "79382d72d808c49c5d3f11b9125288b06074cfd4a220ddd7b50bbccab51e9f4e",
+      "bytes": 1452
     },
     {
       "path": "simulation/core/evaluation/football/test_neutral_fine_step.py",
       "original_sha256": "be8b7b19862ac6ae24a9198eee480af805c219b9e551958e66f44e72bbf49f0e",
-      "template_sha256": "be8b7b19862ac6ae24a9198eee480af805c219b9e551958e66f44e72bbf49f0e",
-      "bytes": 6686
+      "template_sha256": "eca6ea5d45ff5bc9846eb1e7de4b6e2468363c8cba89430ce1eb116bc301da02",
+      "bytes": 9934
     },
     {
       "path": "simulation/core/evaluation/football/test_neutral_turn.py",
       "original_sha256": "d55556a35d405943416f9b6b8493ba6c6c2bdf2d4e9585bc9a9023fc95d3e8a9",
-      "template_sha256": "d55556a35d405943416f9b6b8493ba6c6c2bdf2d4e9585bc9a9023fc95d3e8a9",
-      "bytes": 1529
+      "template_sha256": "a1ca44fa7bb7d69db944a00ddc0617e907dff8bbf72f019c3d13609fad89ba9d",
+      "bytes": 2125
     },
     {
       "path": "simulation/core/evaluation/football/test_observation_tolerance.py",
       "original_sha256": "ed8e8570fd614959d40664aa4869f92b3c350890f4dd7bbdd8354000c52854bd",
-      "template_sha256": "ed8e8570fd614959d40664aa4869f92b3c350890f4dd7bbdd8354000c52854bd",
-      "bytes": 658
+      "template_sha256": "fdf360658f0ff8386ddca3203a552f21f29d5eafe50ce9676ec88f7e926a6afc",
+      "bytes": 936
     },
     {
       "path": "simulation/core/evaluation/football/test_phase_direction.py",
       "original_sha256": "8b3b2da0ab3fbf198553e7a83b05420e939319037bce0aa85a9550a1dbd1bffd",
-      "template_sha256": "8b3b2da0ab3fbf198553e7a83b05420e939319037bce0aa85a9550a1dbd1bffd",
-      "bytes": 2631
+      "template_sha256": "3b6e858bfc9817e1c01583f77280ca6426ff423e2d8f8be74ca2b94b4b519c41",
+      "bytes": 3658
     },
     {
       "path": "simulation/core/evaluation/football/test_pitch_redistribution.py",
       "original_sha256": "8f20f03b42024e79e6ea218ca08045da3b6ae404450ff9971a563733d932200d",
-      "template_sha256": "3f169a161bc9e3da42782f0556a4dc3f51e0d019c3a407944d277976e41bbdcb",
-      "bytes": 5620
+      "template_sha256": "5ddf3238638ea44882dd79ef99c4a0cec142b58b5f3c78cc89798f0af5a90b17",
+      "bytes": 5847
     },
     {
       "path": "simulation/core/evaluation/football/test_pulse_clock.py",
       "original_sha256": "dcdc09eb9dd642f2089293ce92a15c30b3bea3f0e15b0f816785e3585a00fd93",
-      "template_sha256": "dcdc09eb9dd642f2089293ce92a15c30b3bea3f0e15b0f816785e3585a00fd93",
-      "bytes": 1031
+      "template_sha256": "06657dadeb5580bc88827650f753fea638207565f24130df90ebec1872664f86",
+      "bytes": 1428
     },
     {
       "path": "simulation/core/evaluation/football/test_range_progress.py",
       "original_sha256": "507ccbb83821b75fbed45ad93ebd313c0dd55fbfee8dd021d585b27444edc7cb",
-      "template_sha256": "507ccbb83821b75fbed45ad93ebd313c0dd55fbfee8dd021d585b27444edc7cb",
-      "bytes": 6510
+      "template_sha256": "44824d766a1acd9ebd025a0af82e091d89898e20434a8ec19de36388a38b6e40",
+      "bytes": 6853
     },
     {
       "path": "simulation/core/evaluation/football/test_reacquire_scope.py",
       "original_sha256": "9ccf51f92a809c05b7cd4159bd65f6b0813263ecb7fb1c532d072952764cb3fd",
-      "template_sha256": "e5e8987a5b4f2f0eeacab4fe231c52a2ee71b0cf7ce232ca82713f241ca6583b",
-      "bytes": 7099
+      "template_sha256": "a5e0a27ae5f9f70f4f95d30dc4954ea1785c8e6ff6a3b04e38431b87c3e8a69b",
+      "bytes": 8061
     },
     {
       "path": "simulation/core/evaluation/football/test_recovery_config.py",
       "original_sha256": "e2b5d33c43f376d6071dadad4f32725812be09ca74e8ac8819245c415ae5ca95",
-      "template_sha256": "d71b6e75971884be72c20aefd08c155eda283f79eff65db2f58b1ddcbe9c663b",
-      "bytes": 7878
+      "template_sha256": "289f5846748446b19dd7bb388850a0362be478a1c2d7127a49a5bd3e2b66341e",
+      "bytes": 8750
     },
     {
       "path": "simulation/core/evaluation/football/test_recovery_handoff.py",
       "original_sha256": "1b15360042599dff257fdc8763a1af11a50a5a0750df25d31bad76cd95a9f620",
-      "template_sha256": "c0cc5641db1773889bf63ee7c0b1806cb528c83d7c752a6521d547c26a8cd6fe",
-      "bytes": 11759
+      "template_sha256": "a3643e76651489f93ca63988e05edc5c6653bd3aee0cba97db9604251d914c46",
+      "bytes": 13234
     },
     {
       "path": "simulation/core/evaluation/football/test_retreat_recovery_unit.py",
       "original_sha256": "c143b21b26a2f1c3421394f1a1d818f75c39143a50667858e5058839f518d278",
-      "template_sha256": "e70586b679fb249eb585aba271d09da73318d6f36c3d42d71bba4bd512a5f669",
-      "bytes": 13840
+      "template_sha256": "d58015191c021870d16dc95c2159b567b848ca3e55517f010ece38378f08dd90",
+      "bytes": 16713
     },
     {
       "path": "simulation/core/evaluation/football/test_return_margin.py",
       "original_sha256": "17a66a688c474205b832bfe30216618d402fbcf462608f9083b2aaa568f887c8",
-      "template_sha256": "17a66a688c474205b832bfe30216618d402fbcf462608f9083b2aaa568f887c8",
-      "bytes": 1398
+      "template_sha256": "390b1906221ac44200998ab3ef647d8869349602639b6b01f2ac0a1203f35cea",
+      "bytes": 1901
     },
     {
       "path": "simulation/core/evaluation/football/test_search_domain.py",
       "original_sha256": "46896027b8efce138b8b2c8a9e347909a79c8bc42e572c952f37c4e82123d2e7",
-      "template_sha256": "2ee8258f98a9bfcb2fa630b49f0e256b138b207fe44f28ef63e5aa6cb31cfbb6",
-      "bytes": 3239
+      "template_sha256": "505f60aa85c768a7f158c6b11d02533ef3a2eef7fc18340f76cecf1a9115f865",
+      "bytes": 3899
     },
     {
       "path": "simulation/core/evaluation/football/test_settle_guard_hold.py",
       "original_sha256": "c1fba8923fd4e2cf325439374ebd9ff26cf6d02325a61e9a6ed78f653b23893c",
-      "template_sha256": "c1fba8923fd4e2cf325439374ebd9ff26cf6d02325a61e9a6ed78f653b23893c",
-      "bytes": 1336
+      "template_sha256": "5b9925351d9ff414e57d0f137618f164c2881bb247a241ef687e4fdd4306c8da",
+      "bytes": 1649
     },
     {
       "path": "simulation/core/evaluation/football/test_short_primitive.py",
       "original_sha256": "965bedfff70c408212e8df71a2dd8fb1b86bb0329dba3dd974046bedffddab3a",
-      "template_sha256": "965bedfff70c408212e8df71a2dd8fb1b86bb0329dba3dd974046bedffddab3a",
-      "bytes": 575
+      "template_sha256": "4a8d260e53dc21900ba367ca187bf9da5ab628c6e4fc368570a7e6d688a513e7",
+      "bytes": 742
     },
     {
       "path": "simulation/core/evaluation/football/test_sole_odometry_invariants.py",
       "original_sha256": "4c7a99289590c1ca58fae48ac77e48febaca602d0cd455003a6c0ccc3467cfa1",
-      "template_sha256": "4c7a99289590c1ca58fae48ac77e48febaca602d0cd455003a6c0ccc3467cfa1",
-      "bytes": 2095
+      "template_sha256": "f18156c41609a807108e1525fb9f66a10944be3ecff4bb83461382877325acd1",
+      "bytes": 2748
     },
     {
       "path": "simulation/core/evaluation/football/test_standoff.py",
       "original_sha256": "f61a0d83a89773feafad5e69cd4ef13b1c01f697d4bab3207e9250a3a1403499",
-      "template_sha256": "946f2486c8123d1d6e92d39478094417fa676b7bf7ab1bd31ffc15ba4b69aebd",
-      "bytes": 3977
+      "template_sha256": "088a6494cbadae62fe7d50838d91ea8df79bd97040575ec07a91086b58c4aa12",
+      "bytes": 4372
     },
     {
       "path": "simulation/core/evaluation/football/test_task_phases.py",
       "original_sha256": "7749269646b5b4f207c26ea1b02ccc29bc30e7f3da6009247621f888bcdfff0b",
-      "template_sha256": "20ac8f920a6e49012edc3bf12c6500cfe420baeadbfe00f68abf40a200fbdac5",
-      "bytes": 4389
+      "template_sha256": "267ac3b6175b8176bebd5a40ccb4f22e226b7d9cd301d74773010cf856a42902",
+      "bytes": 6514
     },
     {
       "path": "simulation/core/evaluation/football/test_track_brake.py",
       "original_sha256": "b04bf3aa6778bbad1076640ac7f141c1a4e5237c102e86c67507b306141a623a",
-      "template_sha256": "b04bf3aa6778bbad1076640ac7f141c1a4e5237c102e86c67507b306141a623a",
-      "bytes": 1290
+      "template_sha256": "c07144ec958715d81f0587c5d660ae38271a9ab278413eacc09772278fea05de",
+      "bytes": 1678
     },
     {
       "path": "simulation/core/evaluation/football/test_track_deceleration.py",
       "original_sha256": "7d556c5eb63f93de15dd92fcb20ca7bb83bbb3f5c6a13e5c221ffecea4f11a4a",
-      "template_sha256": "7d556c5eb63f93de15dd92fcb20ca7bb83bbb3f5c6a13e5c221ffecea4f11a4a",
-      "bytes": 511
+      "template_sha256": "0afcbf343de9306360492adefc25f310ae969aa93ae108849de6baf780a585c4",
+      "bytes": 676
     },
     {
       "path": "simulation/core/evaluation/football/test_track_goal_reobserve.py",
       "original_sha256": "78e2b49b37b9532d0eae99e3cca241ebb5e61d667f17218db55bb48e59103f82",
-      "template_sha256": "dfe4a7edf93f8a31b64fb952aaf0bba51f01f068a5321f06f77c4c81dd4f279e",
-      "bytes": 2099
+      "template_sha256": "eea05508b06a849248f0f6bcc6aa8165a303087e008ec0e4f13e566a88c37b9f",
+      "bytes": 2964
     },
     {
       "path": "simulation/core/evaluation/football/test_track_prealignment.py",
       "original_sha256": "39217fa13df8a379135a27b9ddf3060611d26e399e8fcfeab80a5b293100c1b5",
-      "template_sha256": "39217fa13df8a379135a27b9ddf3060611d26e399e8fcfeab80a5b293100c1b5",
-      "bytes": 1344
+      "template_sha256": "008cf12957ce68980af4c28d8abaf547f6e558f31051af38eab3f6f1bd44a754",
+      "bytes": 1856
     },
     {
       "path": "simulation/core/evaluation/football/test_track_stop_margin.py",
       "original_sha256": "1eb92b01ffc5d344c88539f00c8e70a8efdca085b82b5e5e31f4a53d6ccea05d",
-      "template_sha256": "1eb92b01ffc5d344c88539f00c8e70a8efdca085b82b5e5e31f4a53d6ccea05d",
-      "bytes": 576
+      "template_sha256": "50e2cd77aec5bab53d4703518aa6a3aef7ef0b49defeebfd3c2635a69c5d1392",
+      "bytes": 676
     },
     {
       "path": "simulation/core/evaluation/football/test_turn_commitment.py",
       "original_sha256": "5f5bf4683f96793cfcc37640f5eb8e0b50e8691426654dbbd8e09e1dc84dc253",
-      "template_sha256": "5f5bf4683f96793cfcc37640f5eb8e0b50e8691426654dbbd8e09e1dc84dc253",
-      "bytes": 1623
+      "template_sha256": "31fcc1e34c759249da663ea97d17fc5f9369daf87d0f5a749f5c491c6ab465dd",
+      "bytes": 2164
     },
     {
       "path": "simulation/core/evaluation/football/test_turn_goal_view.py",
       "original_sha256": "cb8d1cd949b132f51472cd21dd88f111388f56e0782aa4019c57ac4cafb98563",
-      "template_sha256": "cb8d1cd949b132f51472cd21dd88f111388f56e0782aa4019c57ac4cafb98563",
-      "bytes": 1378
+      "template_sha256": "a0105890100cce59cd8d83775d6923e236eb968d385f4c953e557374a087f850",
+      "bytes": 1877
     },
     {
       "path": "simulation/core/evaluation/football/test_turn_prediction.py",
       "original_sha256": "bd278201819648740cb60375307828bcd644b68962b45445aad12c265b246654",
-      "template_sha256": "bd278201819648740cb60375307828bcd644b68962b45445aad12c265b246654",
-      "bytes": 2747
+      "template_sha256": "13b124d4b5cf463e5cd57bfb2e5792025ec40744efb92c31536c4bcee7dc6a6e",
+      "bytes": 2954
     },
     {
       "path": "simulation/core/evaluation/football/test_contract.py",
       "original_sha256": "11f2f9b7103a81f24fdbd61fee0dcbca921e8577d5efa06ff567e99e6c7ecdfb",
-      "template_sha256": "11f2f9b7103a81f24fdbd61fee0dcbca921e8577d5efa06ff567e99e6c7ecdfb",
-      "bytes": 1750
+      "template_sha256": "8e53e4cfd9208f36b9afada2ae1d31b817a99f7f9c2d758f8297c3a4c16de4cc",
+      "bytes": 1882
     },
     {
       "path": "simulation/core/evaluation/football/test_visibility_consumers.py",
       "original_sha256": "ea880a3d83508395da36a6c66a83c7995ac88292380d7a7c6b95bb8f0ea1ad0b",
-      "template_sha256": "a914e7e97eea1313dff8dda9dc93194eb131c9502e03c888347418b54a19cd83",
-      "bytes": 5389
+      "template_sha256": "10516129cd6b29e4ad16dad9896f9d63e94aa0f77c35b8332f5058ee115adc8e",
+      "bytes": 5961
     },
     {
       "path": "simulation/core/evaluation/football/test_zone_floor_projection.py",
       "original_sha256": "c0336b53b69dafbbcd6159860174ee4645c34410295278169102864fab984d3b",
-      "template_sha256": "3858da744c39e239d00ee0c75cb1be09e92b58777f69a56d9f7bb4d08794ef8a",
-      "bytes": 3135
+      "template_sha256": "601831e8ae113e6b2046e6d2faa26f9326631fd327cd1f1b23e22fe40fe8a55d",
+      "bytes": 3895
     },
     {
       "path": "simulation/core/evaluation/football/turn_prediction.py",
       "original_sha256": "43490889c1dc30058a659b1af323825c8ebb417d230d4aecf3709dac0d3702d2",
-      "template_sha256": "43490889c1dc30058a659b1af323825c8ebb417d230d4aecf3709dac0d3702d2",
-      "bytes": 1123
+      "template_sha256": "f09d41d9ee7401d8f4744420e4c4fb6c421369a78b629c97d6b33a07da6c953b",
+      "bytes": 1208
     },
     {
       "path": "simulation/core/evaluation/football/paths.py",
       "original_sha256": "3b2a8ba0d2d3022c84b60f0bd8e362ce641607498fd1a56db46530f847c74444",
-      "template_sha256": "fa32c213f6e4bb071eb01eeedeef312b0a890f0e6c4eb2d8840c4075de44502b",
-      "bytes": 572
+      "template_sha256": "5b6652018106dae292f36e1015bea70c229f1b13ac11f667d1dfdf8eb58d8bf4",
+      "bytes": 595
     },
     {
       "path": "simulation/core/evaluation/football/visibility_gate.py",
       "original_sha256": "5d3055727d1dca2cd2a41ab2287e53a053cd26b459ea4d044f76cc96786009e7",
-      "template_sha256": "5287a169b09d8478bd81ee0a0850fc983077b91e388269505e94b1f899875a2b",
-      "bytes": 851
+      "template_sha256": "f05e25c8d5d440dc481d82149d1f9e459c23e3828d9d20da461fa0dda44f8526",
+      "bytes": 858
     },
     {
       "path": "simulation/core/evaluation/football/zone_floor_projection.py",
       "original_sha256": "d6af215deb76b913ba072a46208fccb80906ed88ce0e5021e7c30a6e51cf5e1d",
-      "template_sha256": "6f5d001609f708402c6578e6165f4dd7fb040cf42e213a6f1e9d54953ba15ea2",
-      "bytes": 3796
+      "template_sha256": "d87b8881f8188c2f5f03ab4152ec40c177f12418c55f12e8fc7054546770f9f3",
+      "bytes": 4619
     },
     {
       "path": "simulation/core/evaluation/navigation_base/angular_navigation_native.py",
       "original_sha256": "b0aaa44e9df97fa70a5da6c3c96ab26fd0e62ec5c3ec20e22d70494fe5a1dc87",
-      "template_sha256": "e7ac7427664e247b76e4cf43a32aac4fc30f4fbc4f3dbe3917f15377cb34ed10",
-      "bytes": 2944
+      "template_sha256": "491a630fa4e5cccf8c9df7fa1da3aaebd1dfc4c190a60839ea6b7dc8fb624ea5",
+      "bytes": 3917
     },
     {
       "path": "simulation/core/evaluation/navigation_base/command_navigation_native.py",
       "original_sha256": "1af32049427a6a0eb07a21086826bad97cb19b74dcb0f8a1b00483c3c428ba7c",
-      "template_sha256": "1af32049427a6a0eb07a21086826bad97cb19b74dcb0f8a1b00483c3c428ba7c",
-      "bytes": 11046
+      "template_sha256": "60539350d8b29cd30cc998f6b91ade092614698ee0abc0b6821a53d5cc9b6df0",
+      "bytes": 12455
     },
     {
       "path": "simulation/core/evaluation/navigation_base/design.json",
@@ -917,68 +917,68 @@
     {
       "path": "simulation/core/evaluation/navigation_base/execute.py",
       "original_sha256": "1f2998d18d97c04bd644f985cb8b0869d2329e5eb23c400bbdc6c217fdaced50",
-      "template_sha256": "f9d570b7d5b430c7ebf4ffe1ec876c4c7d5f8b593dd3f9460fe90e31a7e15534",
-      "bytes": 6209
+      "template_sha256": "7602f1d8e8c263214eddabe5b62c6c19708392f31d86a0de47dd956a0d3f64c4",
+      "bytes": 6859
     },
     {
       "path": "simulation/core/evaluation/navigation_base/goal_reacquisition_native.py",
       "original_sha256": "98dddf9ad8790af59a8a9cc3b473cd7acb26f49daf658f54fef1ace0e9f98920",
-      "template_sha256": "4babcc84cd1f2b03f05fdf41915ed70d9e73cf835cc009bc1ecfe3f8a23940e1",
-      "bytes": 6957
+      "template_sha256": "1cfb1cbafe0c5da1eda39f9ee3d9733951163f92a276c1f6176560a5f3672baa",
+      "bytes": 8680
     },
     {
       "path": "simulation/core/evaluation/navigation_base/image_attention_native.py",
       "original_sha256": "8f9358f0f600f723bee99eb98965c403caaf775864e4a58134131058e038be46",
-      "template_sha256": "c313e023553a87da1f695f0a56ab5570ee6d7fa5fd3f8f404f5142ba5560ce8c",
-      "bytes": 1748
+      "template_sha256": "bdd0d16cca783f3835b8758d682662db957c71a55973a5de4893873dd97f62db",
+      "bytes": 2089
     },
     {
       "path": "simulation/core/evaluation/navigation_base/native_head_domain.py",
       "original_sha256": "8f14ff23f03ee30c1623bc5ebb13f342ef1480f9cac5fdd0e7e0a59719b2f8e3",
-      "template_sha256": "24058d55bd2cad8bbcd2de506fc9f2987ecd9bf78b2fccc5e685b04c2e152467",
-      "bytes": 3016
+      "template_sha256": "fdcc42d6cdb1707ff7e17eeb23052a1bdead4043ad80553e588be124562ffcf6",
+      "bytes": 3329
     },
     {
       "path": "simulation/core/evaluation/navigation_base/near_ball_phase_native.py",
       "original_sha256": "4f5499f443e84e6c12eff4837fc17b37a8a166d9b5830d1ba79c4d98abd07768",
-      "template_sha256": "4f5499f443e84e6c12eff4837fc17b37a8a166d9b5830d1ba79c4d98abd07768",
-      "bytes": 6525
+      "template_sha256": "25e309319352cff7cd61180579c9cad9841515f403bcdd411f301748459a2077",
+      "bytes": 7431
     },
     {
       "path": "simulation/core/evaluation/navigation_base/test_command_guards.py",
       "original_sha256": "255112dd5a81f15f597acdc6fd8be335c33cac8ed13b644385f2e2255a7b65c0",
-      "template_sha256": "255112dd5a81f15f597acdc6fd8be335c33cac8ed13b644385f2e2255a7b65c0",
-      "bytes": 13287
+      "template_sha256": "85ae469fc57b47f11afe7f40d845e67d4bf754ee6cc38c44f9720c59d7266aad",
+      "bytes": 17041
     },
     {
       "path": "simulation/core/evaluation/navigation_base/test_goal_reacquisition.py",
       "original_sha256": "299c92bf0e4249b4466ad2688f505c9bc9d576d9b8d4bd42d430dd72fbeb9c54",
-      "template_sha256": "a7d644cbb0f674849f6d5c4845bd72ccde777ccb3ed4132f2c0089cda400383f",
-      "bytes": 5274
+      "template_sha256": "be6360a686ccf2b8dad8f4b5222a12180d9028be87eb3d0ee3eff9938d37dd96",
+      "bytes": 6457
     },
     {
       "path": "simulation/core/evaluation/observed_ball_attention.py",
       "original_sha256": "9660e7ea5b39c476b721fa4611ccb7acfa4d780edb16dee1ce61c19efd3efa18",
-      "template_sha256": "d6598a4e785a61d7e13255ffab1e34a5585385b43efe8459a2b34821d7db6a1f",
-      "bytes": 1496
+      "template_sha256": "3e86cf97a9ae58c8eabfec91d3a9afc923eed0496aab50f6d55181bece24995e",
+      "bytes": 1700
     },
     {
       "path": "simulation/core/evaluation/ball_read_adapter.py",
       "original_sha256": "6a4667dbe20daed4276da590d286a5d21aa8606b7d0e240f960b8d547f3d8a9b",
-      "template_sha256": "e5fab0f514719e80f5569a96e55b80f23adfe6f9780bef073a4df51fd36d10f4",
-      "bytes": 4859
+      "template_sha256": "5605e092c23d7f0ff9735e1a823e985ac7cf39838a5ab33fcf3a8d9850435895",
+      "bytes": 5497
     },
     {
       "path": "simulation/core/evaluation/ball_status_adapter.py",
       "original_sha256": "dd0ec4f6de33e4f7c1d14e8a9503925273c1ee1db8245f91b754356eaf5d6654",
-      "template_sha256": "bd3f92a2fd7cfffd4de291876fd50fc877078304f6805f4f68e45d650e5ed5e7",
-      "bytes": 4345
+      "template_sha256": "fb8c0f429fd018ac7a6570edbc56b78039faa4852aa214ef532b6a036faec648",
+      "bytes": 4615
     },
     {
       "path": "simulation/core/evaluation/tof_ball_association.py",
       "original_sha256": "a9cca16efffdb8d3b5df839e2cd7cc1e11b9b20eba30012043eb16baca66db70",
-      "template_sha256": "9a405ee8ad1fef07b2fe937821688ef354f804d52ead1d3631454d73616d0360",
-      "bytes": 3576
+      "template_sha256": "9e850b8e4ecbeca079577a60936a5a93a72c44709561cd3c0e189ea0a76fadb0",
+      "bytes": 4168
     },
     {
       "path": "simulation/core/football/__init__.py",
@@ -989,98 +989,98 @@
     {
       "path": "simulation/core/football/audit_fifo_prediction.py",
       "original_sha256": "20d54c528c375870ccc5396556cd83e3389b74977b89b8801f8c851b6fcbd82c",
-      "template_sha256": "a6efd09b6afa2f6288bc687774134fecdbd1b5f6068986e0e4009b938bb1fb54",
-      "bytes": 3241
+      "template_sha256": "99a43a50ac8b5341a1533aa2ad9f39b9d2595eef9c6c2bcf67349fbd4c07b98a",
+      "bytes": 4686
     },
     {
       "path": "simulation/core/football/audit_policy_sensor_trace.py",
       "original_sha256": "b9c52330708b3150bf1c9d81d4315fb61df18394dd3fcc9a36423ce4b144b83c",
-      "template_sha256": "efcd719825ae29e16d0703085d955d752183195be0efc1811127537e3402440b",
-      "bytes": 4891
+      "template_sha256": "5dd9b3d3805351aaa556e56563199d30da394dfa7cc3c250a096ce2f1f242eeb",
+      "bytes": 6576
     },
     {
       "path": "simulation/core/football/audit_replay_geometry.py",
       "original_sha256": "eeccc4ca89f1cd1b66b4894aff79957b633d47bfa0108ebaa82b12b3842a613d",
-      "template_sha256": "eeccc4ca89f1cd1b66b4894aff79957b633d47bfa0108ebaa82b12b3842a613d",
-      "bytes": 3316
+      "template_sha256": "f71bfe0ce268a94ea501bca877653af82de2595be1eec31ed5ca101859112d57",
+      "bytes": 4361
     },
     {
       "path": "simulation/core/football/body_imu_input.py",
       "original_sha256": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a",
-      "template_sha256": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a",
-      "bytes": 3863
+      "template_sha256": "71bc977c359bb655026f6bfd2c0f666ec8c77e115882dda565657f92d33e876c",
+      "bytes": 4216
     },
     {
       "path": "simulation/core/football/contact_scoring.py",
       "original_sha256": "9d8909267a375f97097add3e7ab1db5add1bd7b933432c33c4d2c18e5d207589",
-      "template_sha256": "9d8909267a375f97097add3e7ab1db5add1bd7b933432c33c4d2c18e5d207589",
-      "bytes": 5320
+      "template_sha256": "81f6df14c0e9d10109733f31db40aeacff0c4569e83b66019cecb9f4ef7ee8e5",
+      "bytes": 6319
     },
     {
       "path": "simulation/core/football/controller.py",
       "original_sha256": "4c3e2b2cfe31d0e8547b3581a4076d2bf44dd7e4b317981b9204e6d2ce2c1e7e",
-      "template_sha256": "a83eb9292b8d886f77106e6dfec2f2c6c2ba07cc17b44f924e104f8e9dc0861d",
-      "bytes": 13293
+      "template_sha256": "0c19d755f21071c3afc883b75520d69d1aeeab86bb85098a63a014fec2ea82a2",
+      "bytes": 19217
     },
     {
       "path": "simulation/core/football/detector_client.py",
       "original_sha256": "d5cd26bb049800890ce672050be50468ed7145447b3c13d4913e5abcc75e93dd",
-      "template_sha256": "d5cd26bb049800890ce672050be50468ed7145447b3c13d4913e5abcc75e93dd",
-      "bytes": 3681
+      "template_sha256": "b7cd0ddc358f18e4446cfb644dfcab6f44c6b8fd4eb8ace91eb435eb419b732f",
+      "bytes": 5344
     },
     {
       "path": "simulation/core/football/extract_collision_geometry.py",
       "original_sha256": "1a6ddf63b4671d17433b49c056111304157b0820eaf37a4657452e35a636840b",
-      "template_sha256": "1a6ddf63b4671d17433b49c056111304157b0820eaf37a4657452e35a636840b",
-      "bytes": 2535
+      "template_sha256": "c00212b444aa48b1071b586fba02606a5355aade04830a4b39cd70c23b02ad70",
+      "bytes": 2969
     },
     {
       "path": "simulation/core/football/gaze_tracking.py",
       "original_sha256": "2609ae9417ba6a664ff8e2be310a5e5c87f9d4d50a27e90a78018ee0b51dd445",
-      "template_sha256": "268ae40f878a55d1e9b556568b2daa94bedaaa1aecac3bb4b339ad43cbd3f354",
-      "bytes": 1821
+      "template_sha256": "65b983f9a13b4d8f1ef57d4b7ba82703a904f2c81314c5a950b7a3cdb018367b",
+      "bytes": 2064
     },
     {
       "path": "simulation/core/football/ground_plane.py",
       "original_sha256": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44",
-      "template_sha256": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44",
-      "bytes": 4965
+      "template_sha256": "f118fe0ae51b806e29d0508e9fc78bcc892159679bd20299f5cd18d27fa0d566",
+      "bytes": 6487
     },
     {
       "path": "simulation/core/football/hardware_head_fk.py",
       "original_sha256": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
-      "template_sha256": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
-      "bytes": 5495
+      "template_sha256": "7478176136487ed7205c54d049c5c82991928dda7ed923bb3d44e430c74d4742",
+      "bytes": 6296
     },
     {
       "path": "simulation/core/football/head_adapter.py",
       "original_sha256": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787",
-      "template_sha256": "b0a0cbad1c51bca391906c0e81b05c2866336969358c6a6b5e9e9821ef545787",
-      "bytes": 4168
+      "template_sha256": "49b766da3f4b6200c29466d3ea97dd70d007de07563754031647c6f834b4114a",
+      "bytes": 5334
     },
     {
       "path": "simulation/core/football/http_client.py",
       "original_sha256": "31c9620abc6d1b1de21be95073d011beeee8fcae0c13b220754032e3f1894698",
-      "template_sha256": "31c9620abc6d1b1de21be95073d011beeee8fcae0c13b220754032e3f1894698",
-      "bytes": 1288
+      "template_sha256": "fa4c211795f1b96ae0181087260d75263ed9bc218c71d3073ce24a01262a860e",
+      "bytes": 1469
     },
     {
       "path": "simulation/core/football/imu_predictor.py",
       "original_sha256": "f60f6277a712cb017a774ed559e01671026df7d5bda6f5d92163bf353f626efd",
-      "template_sha256": "f60f6277a712cb017a774ed559e01671026df7d5bda6f5d92163bf353f626efd",
-      "bytes": 3234
+      "template_sha256": "84f82ec43308d315a8b66d1ce1e39787fe904bf17f23bad083c9091190b4d8e0",
+      "bytes": 4552
     },
     {
       "path": "simulation/core/football/isaac_execute.py",
       "original_sha256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
-      "template_sha256": "e3153c4f3ff2233f5cd0681c22b629d68a30c544aaf2d649d7c22d8568cc2065",
-      "bytes": 53959
+      "template_sha256": "de2c3a79d491c6839c8ef3d932492368008643dd0f4d5f3e84dc7f42144ae0cb",
+      "bytes": 75836
     },
     {
       "path": "simulation/core/football/kick_control.py",
       "original_sha256": "d3155cc59b7be1832c8b572261401058a2ebf3bdc4e96ab47f22c7879678f034",
-      "template_sha256": "8196c7c6aa3993eb56676e374d4c30d152a50df5eb6619cc44c7aaefe4deb35c",
-      "bytes": 1443
+      "template_sha256": "3b04a3a8260cbd21005fd39a113cb231ede795072af256253952669e55d95c43",
+      "bytes": 1827
     },
     {
       "path": "simulation/core/football/kick_policy/contract.json",
@@ -1091,26 +1091,26 @@
     {
       "path": "simulation/core/football/kick_policy/runtime.py",
       "original_sha256": "a2781a733ecd0b9aad5b987835022ecbcfd1384a214ee031af8604d96382e32a",
-      "template_sha256": "71b53e4def35c9302f1b84651eb3ec2e9e3c0334558d14a2d4f17d837ca7abee",
-      "bytes": 6494
+      "template_sha256": "9ec458e9cd6464ef9f363c26f6e736af64040e962637f47d2f4b7d6f6b9abcb2",
+      "bytes": 7070
     },
     {
       "path": "simulation/core/football/leg_odometry.py",
       "original_sha256": "c88eb06e2ef0017e25b9c087884915ba477b4af2888d70eef07799504d3b2e7f",
-      "template_sha256": "c587d3b70f48c1b49971a55f93e0efc45f65d082becba679caae89e59193e902",
-      "bytes": 7008
+      "template_sha256": "b07982e602b4793776e9d9ebf929e11109f577f6918c1ff61d1bee97f369e5f2",
+      "bytes": 8003
     },
     {
       "path": "simulation/core/football/mechanical_scoring.py",
       "original_sha256": "9c7c47080d2cd37dc928904cfb6dedb8c4384fbd026e3b359f5bc0e1aeec77a3",
-      "template_sha256": "b4e002a1d683bbba9f434ecc320ff3f603610a0f898c0a6bd443e988b26f23c1",
-      "bytes": 3388
+      "template_sha256": "d067476e93b1ba5795f714aeb6373d34e8cceab837eefd2d609b72a41543610e",
+      "bytes": 4390
     },
     {
       "path": "simulation/core/football/recording/execute.py",
       "original_sha256": "798608923a74b6f959c34b32fe6af4989335602c96570d2f0a8b67c0720be1cb",
-      "template_sha256": "50e6ba9a5bd7a7201a759646c82bed57b958e25319a4db1a17ccb1972aa9a42f",
-      "bytes": 1529
+      "template_sha256": "082e1693e3cc39b35c3c15a76d52d82df2c8f52524b7405994319b5bd6e11ac7",
+      "bytes": 1823
     },
     {
       "path": "simulation/core/football/recording/executor-contract.json",
@@ -1121,8 +1121,8 @@
     {
       "path": "simulation/core/football/recording/executor.py",
       "original_sha256": "d19498e420541d929d48408c85bf907a89e49ee6d0676a5fd284610bdbca1954",
-      "template_sha256": "f563e454d134f017d380c651eb4084b535c06830de5e69e26586c1f89fdcc6f8",
-      "bytes": 53581
+      "template_sha256": "f5f29078877e5287dc1a8305516f856d3b13a0e5b84e433f6114a70474f3716d",
+      "bytes": 75045
     },
     {
       "path": "simulation/core/football/recording/integration.json",
@@ -1139,8 +1139,8 @@
     {
       "path": "simulation/core/football/recording/media_archive.py",
       "original_sha256": "09419695795185461d8489b41d2a3939b27330a6f48c22107f2080146d96446d",
-      "template_sha256": "09419695795185461d8489b41d2a3939b27330a6f48c22107f2080146d96446d",
-      "bytes": 19311
+      "template_sha256": "17a311a63e474b1f48596a66234bacce262db713d7afe68bd7afee777d9ce427",
+      "bytes": 26622
     },
     {
       "path": "simulation/core/football/recording/release.json",
@@ -1151,14 +1151,14 @@
     {
       "path": "simulation/core/football/recording/test_cpu.py",
       "original_sha256": "ba09619d31b29410585867d028f95aee0d97d9a1995475d35e878d030e4e492d",
-      "template_sha256": "b09419ce199ee944291f8199521fbf353c7601d3643ce6e0d33660b9e309fa59",
-      "bytes": 15103
+      "template_sha256": "c57bf1ac133a51064aae8117cddd36100a0753d1d2280d7d3d4e4ed631fe98c4",
+      "bytes": 19106
     },
     {
       "path": "simulation/core/football/nav2_bridge.py",
       "original_sha256": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
-      "template_sha256": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
-      "bytes": 2674
+      "template_sha256": "d15e602d94a279dc8ab9b5fb2b379345e77c162b0d13c221b643427c3e5b8b48",
+      "bytes": 3633
     },
     {
       "path": "simulation/core/football/nav2_service/__init__.py",
@@ -1169,14 +1169,14 @@
     {
       "path": "simulation/core/football/nav2_service/client.py",
       "original_sha256": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c",
-      "template_sha256": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c",
-      "bytes": 1582
+      "template_sha256": "800a1c44b4f07760d599e83d0e4efdbcec64d0b51ad6706d6e6b3205f2b0f03f",
+      "bytes": 2067
     },
     {
       "path": "simulation/core/football/nav2_service/contract.py",
       "original_sha256": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79",
-      "template_sha256": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79",
-      "bytes": 3910
+      "template_sha256": "9bc87e8562423e42e4bdb45c81d611bd444e673637bbdeea58ad37d1545c3a9b",
+      "bytes": 4823
     },
     {
       "path": "simulation/core/football/nav2_service/image-lock.json",
@@ -1187,14 +1187,14 @@
     {
       "path": "simulation/core/football/nav2_service/image_preflight.py",
       "original_sha256": "6288056f4dd336a5881008c5c58db0a1b1120ac5a3af0c55c6e2f65be9a51033",
-      "template_sha256": "6288056f4dd336a5881008c5c58db0a1b1120ac5a3af0c55c6e2f65be9a51033",
-      "bytes": 3471
+      "template_sha256": "49bb85c2bff01ddfd2d0e1d166aa48fca133a1e3c000a5c38178c582716f51ed",
+      "bytes": 3919
     },
     {
       "path": "simulation/core/football/nav2_service/map_contract.py",
       "original_sha256": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285",
-      "template_sha256": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285",
-      "bytes": 10698
+      "template_sha256": "a0ad0b3eff87fe9b686f53db2d0b13a9ceaaa2a64ad102e88f81899416736b47",
+      "bytes": 12458
     },
     {
       "path": "simulation/core/football/nav2_service/nav2.yaml",
@@ -1205,20 +1205,20 @@
     {
       "path": "simulation/core/football/nav2_service/obstacle_contract.py",
       "original_sha256": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07",
-      "template_sha256": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07",
-      "bytes": 752
+      "template_sha256": "558a3a91a4847a6060193fd41c8eb9ef82c49620db830a974665ccb91d5a3c00",
+      "bytes": 939
     },
     {
       "path": "simulation/core/football/nav2_service/owner.py",
       "original_sha256": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2",
-      "template_sha256": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2",
-      "bytes": 6534
+      "template_sha256": "58113510e04238141dfffadfee88273e38e4ffc9763b9619844343a631f0944c",
+      "bytes": 10034
     },
     {
       "path": "simulation/core/football/nav2_service/service.py",
       "original_sha256": "524240ce1240bb565686da959ca80ea306baf310e0935f1c07b680307ed42eaf",
-      "template_sha256": "524240ce1240bb565686da959ca80ea306baf310e0935f1c07b680307ed42eaf",
-      "bytes": 12623
+      "template_sha256": "e304c090c52b7c4a30e30ad73472a79e74e64720c2a79fabced6d7e389c13cd2",
+      "bytes": 17865
     },
     {
       "path": "simulation/core/football/nav2_service/source-manifest.json",
@@ -1229,44 +1229,44 @@
     {
       "path": "simulation/core/football/perception.py",
       "original_sha256": "6312c31a6331f92e9616a990a9b915798606b15f6e719a68e3993cf2857ec368",
-      "template_sha256": "86f7525e17f235e30d4efff46e4f038c3148fac974eb119a5dd80a45f03d8b33",
-      "bytes": 8340
+      "template_sha256": "150bcffc3a74d23681082499855b43449b4057355caf367f6198a11c94830bd2",
+      "bytes": 12588
     },
     {
       "path": "simulation/core/football/prepare_calibration.py",
       "original_sha256": "1cb0a7a46324fdecc0223b0f3887ada8fccb349692bf46561bcdb5bbf15cf6e4",
-      "template_sha256": "6ad7dcd55d8b84b2fb8c3cefb5e53a71c385c46d167a3d7825a1a00dd4f9f531",
-      "bytes": 4531
+      "template_sha256": "f2e6ea3c6ae9a3b6b8c9cc18e79443cf9c96de81e299cae7d4205aa53ef811c3",
+      "bytes": 5760
     },
     {
       "path": "simulation/core/football/ball_memory/memory.py",
       "original_sha256": "6b268da8af9bd0351cb5204809eba247fab2409f53b03fc859b953f087cc0bb6",
-      "template_sha256": "6b268da8af9bd0351cb5204809eba247fab2409f53b03fc859b953f087cc0bb6",
-      "bytes": 9137
+      "template_sha256": "2922faad6710b2485c2b3c783b6d051310601326f194d27fe9dcf22db1cab2c5",
+      "bytes": 9635
     },
     {
       "path": "simulation/core/football/ball_memory/test_memory.py",
       "original_sha256": "35d64d7947b7c42215e9b1d5ffd772ae6fe1bdb1c346443281cae806e5099927",
-      "template_sha256": "35d64d7947b7c42215e9b1d5ffd772ae6fe1bdb1c346443281cae806e5099927",
-      "bytes": 5590
+      "template_sha256": "a6274589ab7ed2f286c9c9ebe4abd1d7f8fc7acb2323697e25813e87eebec55e",
+      "bytes": 6763
     },
     {
       "path": "simulation/core/football/replay_actual_rgb.py",
       "original_sha256": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c",
-      "template_sha256": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c",
-      "bytes": 3978
+      "template_sha256": "ce07b6bb207fc302634eb2e3af030f86718aa58ecfae85672666fafa8ed92afb",
+      "bytes": 5178
     },
     {
       "path": "simulation/core/football/scoring.py",
       "original_sha256": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286",
-      "template_sha256": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286",
-      "bytes": 1923
+      "template_sha256": "161f8fa724156294d9c1bbb40fa1515eb816027c2981389b8c94765159b6fc2b",
+      "bytes": 2291
     },
     {
       "path": "simulation/core/football/server.py",
       "original_sha256": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8",
-      "template_sha256": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8",
-      "bytes": 4383
+      "template_sha256": "e0120bd4960c5bbdc118a0ee5bb2ce48fdd922c67ff583d8fb7a168fb6fd1f07",
+      "bytes": 6298
     },
     {
       "path": "simulation/core/football/sources/microduck_walk.usd",
@@ -1283,74 +1283,74 @@
     {
       "path": "simulation/core/football/startup_support.py",
       "original_sha256": "fba79bfc789833ef2ada6aeee9db32a369f0448c5d9d50eb8339721306a5e134",
-      "template_sha256": "fba79bfc789833ef2ada6aeee9db32a369f0448c5d9d50eb8339721306a5e134",
-      "bytes": 5852
+      "template_sha256": "f32b8528409b4ad50d1e9e18658f87eb503431631162b44cc2ceeea0c03e6822",
+      "bytes": 8008
     },
     {
       "path": "simulation/core/football/student_entry.py",
       "original_sha256": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
-      "template_sha256": "f0007d98db5ce7b4671aa53f926c7a45815675c10f1c95227334dbabf8a6a1e9",
-      "bytes": 7267
+      "template_sha256": "c43693b881ea106f70aabd09009caa8b383d6161b7dfc0092a9bc017d7071eac",
+      "bytes": 8952
     },
     {
       "path": "simulation/core/football/test_beta_image_geometry.py",
       "original_sha256": "761efd7009c189a5f6f21afc32f6e43d53f5c7300d726a2f94ee1b14fd298115",
-      "template_sha256": "761efd7009c189a5f6f21afc32f6e43d53f5c7300d726a2f94ee1b14fd298115",
-      "bytes": 1949
+      "template_sha256": "7877b51e197578f708ab733c38e6bcec6ec0c225b229195bb50dce8cd9fc6472",
+      "bytes": 2535
     },
     {
       "path": "simulation/core/football/test_body_imu_input.py",
       "original_sha256": "255359ecb5a41f4d168a2b9cf7e49d9318af575582d15ee0f20cdda1ce8b2985",
-      "template_sha256": "255359ecb5a41f4d168a2b9cf7e49d9318af575582d15ee0f20cdda1ce8b2985",
-      "bytes": 2152
+      "template_sha256": "16f39956e4d2774601765d0e676978b6b9f034804f890b38c634b96309e065a4",
+      "bytes": 2605
     },
     {
       "path": "simulation/core/football/test_controller_cpu.py",
       "original_sha256": "fdd2452e14fc04a12af2152d4547293ce95957abfdfcc33320f5bff315d5af29",
-      "template_sha256": "fdd2452e14fc04a12af2152d4547293ce95957abfdfcc33320f5bff315d5af29",
-      "bytes": 3406
+      "template_sha256": "303c79c762bc2f9e873941a417d843df970beaf46ff9a7806ca48f0576f77d0e",
+      "bytes": 4970
     },
     {
       "path": "simulation/core/football/test_cpu.py",
       "original_sha256": "7ebfb45372564af57da88cce78eec80077858b89e7a6511f2cdc29a24a71791b",
-      "template_sha256": "7ebfb45372564af57da88cce78eec80077858b89e7a6511f2cdc29a24a71791b",
-      "bytes": 3967
+      "template_sha256": "6a6317303c8a991c3dd4295a6805117e36f044daa65125ffe868096959a3a5a7",
+      "bytes": 5338
     },
     {
       "path": "simulation/core/football/test_gaze_tracking.py",
       "original_sha256": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac",
-      "template_sha256": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac",
-      "bytes": 947
+      "template_sha256": "94e9e8d4932c5d59eb9e582597026fc058d2224617fa7811a0582c69715c442e",
+      "bytes": 1054
     },
     {
       "path": "simulation/core/football/test_head_adapter.py",
       "original_sha256": "46e26147ad0759191790bc37bc3ad2435cfb16902aff9a9169e389eac948db7b",
-      "template_sha256": "46e26147ad0759191790bc37bc3ad2435cfb16902aff9a9169e389eac948db7b",
-      "bytes": 2267
+      "template_sha256": "6455b7c750c39c32d8211ecf821dbaf7023fb05111d2a72af00bba67a5b59f6a",
+      "bytes": 3405
     },
     {
       "path": "simulation/core/football/test_imu_predictor.py",
       "original_sha256": "d12415b4ec201ebcb9ac37fdfb5ed7a6e2e006ba389efcb27447e7994431b6fb",
-      "template_sha256": "d12415b4ec201ebcb9ac37fdfb5ed7a6e2e006ba389efcb27447e7994431b6fb",
-      "bytes": 1777
+      "template_sha256": "9f4a8310649ac63e5533fce263fe2ee8d312bc3a3c76495bb8beb315be8da826",
+      "bytes": 2343
     },
     {
       "path": "simulation/core/football/test_mechanical_scoring.py",
       "original_sha256": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a",
-      "template_sha256": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a",
-      "bytes": 1536
+      "template_sha256": "76a895e341f7f594c5bd7a6369bcd7a5af8c798028c41623d61e3f5dacc36961",
+      "bytes": 1961
     },
     {
       "path": "simulation/core/football/test_nav2_actual.py",
       "original_sha256": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb",
-      "template_sha256": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb",
-      "bytes": 2167
+      "template_sha256": "0d34e0ab570e9d124d2616b98ea19c85223aa2e9d93926effb83819751e9d78e",
+      "bytes": 3018
     },
     {
       "path": "simulation/core/football/test_startup_support.py",
       "original_sha256": "e805771249e360aed03aa14e5269c459bf2820de5ef45fa3ea5e9856e3ff32ae",
-      "template_sha256": "e805771249e360aed03aa14e5269c459bf2820de5ef45fa3ea5e9856e3ff32ae",
-      "bytes": 1900
+      "template_sha256": "72a2a1f2e21b8592883291d0ba45608f95c06d7d7141ca85533493dd9b835f29",
+      "bytes": 2414
     },
     {
       "path": "simulation/core/football/vision/__init__.py",
@@ -1361,62 +1361,62 @@
     {
       "path": "simulation/core/football/vision/beta_box_geometry.py",
       "original_sha256": "8a91078c5a4ca1b05f00e6190a55f74076328616d767a9dca027652743dc8090",
-      "template_sha256": "29acf3819e3d24c88fe90db5ed2437c31e012f1824dc4bcab860f21978307b0e",
-      "bytes": 3450
+      "template_sha256": "dd3eb34adae0a5d53f1eac1e47131d91f3b13107f10de7ffe3f2352ad29fab0a",
+      "bytes": 4267
     },
     {
       "path": "simulation/core/football/vision/beta_goal_points.py",
       "original_sha256": "e3b3543518ed07ee5d687e01a669301bbdb78f540884434c07682f01d9238fee",
-      "template_sha256": "19a19c5177153f19930250e3814e2c1f0c19b39bb1e7c3d3a65ad2cb1a012dbd",
-      "bytes": 3641
+      "template_sha256": "7a2e8ddef248b0e438e2c16bbba06e3c0096734e79c52ff5b50da04661c7f8c7",
+      "bytes": 4808
     },
     {
       "path": "simulation/core/football/vision/contour.py",
       "original_sha256": "99fdfad1f418a0ed41b84f17001161685dc5b0ac682395a0e756e31d2d011212",
-      "template_sha256": "749d4012e7bdb343d88db614a6702625b80566e944e2312d8b0046307b1e8848",
-      "bytes": 9216
+      "template_sha256": "e2589efa43322818e6d0e2cf410a85930613ba189b940dab7476649fb0281e7d",
+      "bytes": 10239
     },
     {
       "path": "simulation/core/football/vision/goal_geometry.py",
       "original_sha256": "66aacd0504c20f0c7588340481a67d4a00941246228e5eceacdccf0a6e939f96",
-      "template_sha256": "33fb44b504eaae1dab63f6ab783ddd8d676627581cd0c1ad8f09c11353c7825c",
-      "bytes": 3937
+      "template_sha256": "cb0aa4c186bb5bf474f0b31381cb0ed95c1a3ffcc1c9ff97d6c970d146940f04",
+      "bytes": 4306
     },
     {
       "path": "simulation/core/football/vision/goal_points.py",
       "original_sha256": "3c91b899ef19af4aa7278046ada695a581b968fee16fb92780127aa75eac9160",
-      "template_sha256": "cff7f1e784d88854281df650fc64675cee1d6134c3b6f3ca4439e5ba7c7182dd",
-      "bytes": 6707
+      "template_sha256": "711abc820a8a232942a9cf49228dc9aafa623bad9f5a87e4eda0d7f02bdbad34",
+      "bytes": 7751
     },
     {
       "path": "simulation/core/football/vision/grounded_direction.py",
       "original_sha256": "7a9ec2f802a7de227125f464ee037de2410c7dc02945fa9577178b1367905b16",
-      "template_sha256": "7a9ec2f802a7de227125f464ee037de2410c7dc02945fa9577178b1367905b16",
-      "bytes": 4576
+      "template_sha256": "f48001c79cc5bf5503b010532fb723a0c1679fa56b623df4b32b6032050035a1",
+      "bytes": 5076
     },
     {
       "path": "simulation/core/football/vision/known_goal_geometry.py",
       "original_sha256": "3f4eac071f0bb6eecfe00edb7fcc189c8ad80fd7e9f1f9387e45b7d80e777e8a",
-      "template_sha256": "f59a33968fed7767b231030e6abd41cb8733bdfb2ede8cf61de9487205f9bfe4",
-      "bytes": 2885
+      "template_sha256": "abecb386d6c29847ea5674f77f699102407470ef81183d1dce91b7c4e5515441",
+      "bytes": 3444
     },
     {
       "path": "simulation/core/football/vision/sphere_geometry.py",
       "original_sha256": "0d0c41c4477898521cba45aab57c93d83e91874d7be71306af93eabd3592647d",
-      "template_sha256": "0d0c41c4477898521cba45aab57c93d83e91874d7be71306af93eabd3592647d",
-      "bytes": 4986
+      "template_sha256": "e6decf715d17cdb5d7d8bc77a4cc924f6e3b6eec426e4f9c45ab49a9a94fdff5",
+      "bytes": 5093
     },
     {
       "path": "simulation/core/football/visual_localization.py",
       "original_sha256": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1",
-      "template_sha256": "67d526bcaae66709bbe0b903fba50a5d3c5db02413885fbdf5ae2d17fa2bfc04",
-      "bytes": 2948
+      "template_sha256": "fbfed2a4b7099727d60660220176926ea300adf033d80d5999087b22597a68c7",
+      "bytes": 3519
     },
     {
       "path": "simulation/core/gait/batch_policy.py",
       "original_sha256": "96699402dc689ca2dec56a048b90b8e2d45202b9aec27e09e122013d5562992a",
-      "template_sha256": "96699402dc689ca2dec56a048b90b8e2d45202b9aec27e09e122013d5562992a",
-      "bytes": 3270
+      "template_sha256": "e8224925bedf33160809c88c7b397c7131cc740d645b60af5e85626fd08ed76f",
+      "bytes": 3795
     },
     {
       "path": "simulation/core/gait/bounded-action-limits.json",
@@ -1427,68 +1427,68 @@
     {
       "path": "simulation/core/gait/bounded_actions.py",
       "original_sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa",
-      "template_sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa",
-      "bytes": 3920
+      "template_sha256": "89d0259c3f8dd766ca30699dec2dc9fbfb57e24741d4bdf591ae67e4123f3053",
+      "bytes": 4765
     },
     {
       "path": "simulation/core/gait/evaluate.py",
       "original_sha256": "426da7ddff604829672e702ca1bdb31ede4256e757688a0f265b3ee3521cce3c",
-      "template_sha256": "d727841b69f341bff6554b849136ca19c6a55c86aba5ed6724787c3cbd2d23f7",
-      "bytes": 5845
+      "template_sha256": "35d85cb000e80feef7944011be5ca0878a5bf970aa5e091cfc921e67eb2dd763",
+      "bytes": 7782
     },
     {
       "path": "simulation/core/gait/training/body_imu/compiled_sensor.py",
       "original_sha256": "0697c302dda679a57f5b595353bea0f792cc229d3ef07b6074be457a0815d311",
-      "template_sha256": "0697c302dda679a57f5b595353bea0f792cc229d3ef07b6074be457a0815d311",
-      "bytes": 2450
+      "template_sha256": "91c88e544b84b4a41e587945b0434b456b074035a3163c3db1f98872d6416a1f",
+      "bytes": 2779
     },
     {
       "path": "simulation/core/gait/training/body_imu/environment_hook.py",
       "original_sha256": "d552cf66869235c25c0246df4ccfcb355ff95b9e579daff17d60b9625e62ef46",
-      "template_sha256": "d552cf66869235c25c0246df4ccfcb355ff95b9e579daff17d60b9625e62ef46",
-      "bytes": 11467
+      "template_sha256": "ba1138b643e9586e7de817b7d9751475f2a25a3e3d7d816ba04807946cd83849",
+      "bytes": 12558
     },
     {
       "path": "simulation/core/gait/training/body_imu/ppo_mask.py",
       "original_sha256": "ce5e66aba928dd33fec324a0cb5d2d850d1960fb0fbf68ff6e4ca58063255313",
-      "template_sha256": "ce5e66aba928dd33fec324a0cb5d2d850d1960fb0fbf68ff6e4ca58063255313",
-      "bytes": 12203
+      "template_sha256": "aa958d303ed467f4e8fd5512634d96d5366a5a08e2de015ed11b0f91dcb52845",
+      "bytes": 13204
     },
     {
       "path": "simulation/core/gait/training/body_imu/probe_compiled_sensor.py",
       "original_sha256": "2dc21188f151b537be7c993c4337eda9d7236df7c2764e5b7adaa5a7da9dc5f6",
-      "template_sha256": "235446e4ec86a03f59f05337407c75db2f609092e6731c532ce659bc57402357",
-      "bytes": 4140
+      "template_sha256": "e9d3ceeb2905e4abdbfa6e924e6c4fa93cdabb70e37f3882d443e3a81db35222",
+      "bytes": 4675
     },
     {
       "path": "simulation/core/gait/training/body_imu/startup_fixture.py",
       "original_sha256": "654929f705098528add2ca2f7a59dd418c5c6ae3d87746cb89fb7b034009a10e",
-      "template_sha256": "654929f705098528add2ca2f7a59dd418c5c6ae3d87746cb89fb7b034009a10e",
-      "bytes": 3709
+      "template_sha256": "5e8dc8a19b727658b3b3e11fb35507473e2c84eea210cd2a2d608c2fcfafde2c",
+      "bytes": 3916
     },
     {
       "path": "simulation/core/gait/training/body_imu/test_compiled_sensor.py",
       "original_sha256": "c13ccafab5221463dda1d23d60b8679443bec0a23e3151ea436db6d864c928f6",
-      "template_sha256": "84386a46b9ba5eaa2918a3adabfe28aefa8d98d35f36fe83d956c499b0844232",
-      "bytes": 2584
+      "template_sha256": "2725b055628ad0cb3ef6c95a19fdc1dfba45a211b65448dfaa2385fbc0523201",
+      "bytes": 2931
     },
     {
       "path": "simulation/core/gait/training/body_imu/test_ppo_mask.py",
       "original_sha256": "c9530795386764fe2c98fc08720636b2cc3826e01702189bb36dedc4c6e52cb8",
-      "template_sha256": "c9530795386764fe2c98fc08720636b2cc3826e01702189bb36dedc4c6e52cb8",
-      "bytes": 8193
+      "template_sha256": "4be16cb829796efe3433a43a54829fe8fd2710559a2d8b18b60a7b49b82be6b1",
+      "bytes": 8808
     },
     {
       "path": "simulation/core/gait/training/body_imu/test_startup_fixture.py",
       "original_sha256": "14eed17355df254b565986e1dd11d9ef9bffb8d7aed30c678f1bb3407fd3cb15",
-      "template_sha256": "14eed17355df254b565986e1dd11d9ef9bffb8d7aed30c678f1bb3407fd3cb15",
-      "bytes": 2717
+      "template_sha256": "d01e8b2fbb52194d8360db367b946253dd42f920a725f3c8d5a32af4153e239d",
+      "bytes": 3185
     },
     {
       "path": "simulation/core/gait/training/body_imu/train.py",
       "original_sha256": "5c0201f3abf9fbb93ecc70c363648e85a95cc4d0b7407de9cf44e7570ba2263d",
-      "template_sha256": "b22c53e0392bca0d1e7c642b66f74932b9048de8cc85ff1d348a6dda9b96d122",
-      "bytes": 12151
+      "template_sha256": "2d6eb253ed2f23a4fefab7309e312b77cf188a1fa4b7890e8085c098e29fd027",
+      "bytes": 13554
     },
     {
       "path": "simulation/core/gait/gaze-command-table.json",
@@ -1499,68 +1499,68 @@
     {
       "path": "simulation/core/gait/gaze_recipe.py",
       "original_sha256": "01a09df7576c770f800b58f41feb9324352414f4980068f11b09181e203d9ce1",
-      "template_sha256": "cc4167cf3665c8ba522f8212535d234987948906b072228418cc9d92717d6046",
-      "bytes": 3371
+      "template_sha256": "374aae29be722737b783ef46fe444dea527aef1f974f5a816fb733bcc1cf7682",
+      "bytes": 3702
     },
     {
       "path": "simulation/core/gait/head_reference_curriculum.py",
       "original_sha256": "5e224a923c028c95cefae5245a29680f677640275618827cceb1c200b141b788",
-      "template_sha256": "04b87d08583baf3cb245ead944c7a49bfdfca9e48e73a8846cb69087d9002348",
-      "bytes": 1113
+      "template_sha256": "29a91906715ffd16cb3b86d2d116819abe9f9451a399520ab27ce0322c6901a2",
+      "bytes": 1152
     },
     {
       "path": "simulation/core/gait/head_reference.py",
       "original_sha256": "c72d11647b0d7d81559662e5f459fe74e4cb04087b0ccffbc9abb018f17d1d9b",
-      "template_sha256": "3e6aa00980d66874e27813d81d7fd4d4a81ef77b26df06bd0b805f7b84652aca",
-      "bytes": 1094
+      "template_sha256": "700019b0d5dfb9d49916a0c462122b5960bf3761c416f74b0162913fdc06a321",
+      "bytes": 1223
     },
     {
       "path": "simulation/core/gait/tracking_rewards.py",
       "original_sha256": "0c4431ba14682d496dd3d2747fdc095fcb2cbdec2f4b504a87152bf5382c1250",
-      "template_sha256": "59e9003594233fe01b8fff58220bd8cde9868af0b9832be75d7b67ad4876deef",
-      "bytes": 2412
+      "template_sha256": "f80538dce2e95133b56f91526bafc96802cc61e20ea7f1d86e1b9c725c73c358",
+      "bytes": 2628
     },
     {
       "path": "simulation/core/gait/bounded_tracking.py",
       "original_sha256": "bfd7af175b1cfc4f112a948da89aaccddd6a3a011472e1266b9f5648424ff5ef",
-      "template_sha256": "ec8d963eb7f727e60b2309a682098bcb0e96e5c1c58bcd5074143eac5066abef",
-      "bytes": 4614
+      "template_sha256": "7f96570a4bf176637c5a6fb15c3986fb0a4c8da35b649a808e7ce8481838e39a",
+      "bytes": 5454
     },
     {
       "path": "simulation/core/gait/cycle_tracking.py",
       "original_sha256": "4a1f98c46d76b91e62c33beeb2f6c1b3b5cec4258256257540e227a8263ca3f1",
-      "template_sha256": "6e4716db20bd298bbab9247188ad977c620408f2003f12b0ed0e01632e3789e3",
-      "bytes": 4779
+      "template_sha256": "7d6a52bffdb202af01d8fcfdbf3c4d29183a3325e9463f10f99d67efd8a2c8d8",
+      "bytes": 5647
     },
     {
       "path": "simulation/core/gait/command_curriculum.py",
       "original_sha256": "86b1ffb9d58d91fdfa7832042639afa4989c4b83af3258e8861b9346dc5b099a",
-      "template_sha256": "d62d87078741eec14001d00fcc7f078bc2f7472c13fcfdf9baa8167fe02fcf92",
-      "bytes": 3495
+      "template_sha256": "b53ab4c8a789bd417703dda7e40e057be771f874cb2dd3aeb0c58092b6882152",
+      "bytes": 4082
     },
     {
       "path": "simulation/core/gait/exploration_curriculum.py",
       "original_sha256": "1b1093aa016c96267de4ca221361e59d2deeffbaa71b5e5c19bacccb1223434f",
-      "template_sha256": "a2e03f63f8736220c563df4ce80dac08c3c87d0d53bd1ba6266a2156eaf4eb8a",
-      "bytes": 3435
+      "template_sha256": "75378865b150bdc5b37aa0dc0220994e78023ec020249bfb77fd41df439c21d1",
+      "bytes": 3828
     },
     {
       "path": "simulation/core/gait/stop_gaze_recipe.py",
       "original_sha256": "58e04d162c7d7d72b02a7083dbbcde35c63b025edd304e0c07344dc194d1d1a5",
-      "template_sha256": "165d4b298c59f0b24b4c6f04660944239710ca13324375dd3c8b86e6263ec868",
-      "bytes": 4129
+      "template_sha256": "07673e7d73f00e4c0d9adf080d95a85d1901eb5880f9d4df57381fe1a58eb56c",
+      "bytes": 4669
     },
     {
       "path": "simulation/core/gait/student_train.py",
       "original_sha256": "747a705e478ce4c0957b64ea395e6badbac0dfce70bbac53cbf71ae740993363",
-      "template_sha256": "747a705e478ce4c0957b64ea395e6badbac0dfce70bbac53cbf71ae740993363",
-      "bytes": 5276
+      "template_sha256": "9c7a111676d86e434ee29fbdef95d4ce96d644688c2f3c5f0bd60ac825d29bd7",
+      "bytes": 5925
     },
     {
       "path": "simulation/core/gait/train.py",
       "original_sha256": "da83def4d72190ea784b6dcf340414f145baafc13585ba4e491718250efc7543",
-      "template_sha256": "da83def4d72190ea784b6dcf340414f145baafc13585ba4e491718250efc7543",
-      "bytes": 4691
+      "template_sha256": "e2f353c0e399393bd8c29ecb91fd85b500e1c3751781dd4da0e06642825f6e17",
+      "bytes": 5164
     },
     {
       "path": "simulation/core/live/community_recipe/bounded-action-limits.json",
@@ -1571,8 +1571,8 @@
     {
       "path": "simulation/core/live/community_recipe/bounded_actions.py",
       "original_sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa",
-      "template_sha256": "87db89b2dbfd859a0d7075f652774d24a241b68470ce68bf5b05aef6ac6a4faa",
-      "bytes": 3920
+      "template_sha256": "89d0259c3f8dd766ca30699dec2dc9fbfb57e24741d4bdf591ae67e4123f3053",
+      "bytes": 4765
     },
     {
       "path": "simulation/core/live/community_recipe/manifest.json",
@@ -1583,14 +1583,14 @@
     {
       "path": "simulation/core/live/community_recipe/tracking_rewards.py",
       "original_sha256": "0c4431ba14682d496dd3d2747fdc095fcb2cbdec2f4b504a87152bf5382c1250",
-      "template_sha256": "59e9003594233fe01b8fff58220bd8cde9868af0b9832be75d7b67ad4876deef",
-      "bytes": 2412
+      "template_sha256": "f80538dce2e95133b56f91526bafc96802cc61e20ea7f1d86e1b9c725c73c358",
+      "bytes": 2628
     },
     {
       "path": "simulation/core/live/community_recipe/cycle_tracking.py",
       "original_sha256": "4a1f98c46d76b91e62c33beeb2f6c1b3b5cec4258256257540e227a8263ca3f1",
-      "template_sha256": "6e4716db20bd298bbab9247188ad977c620408f2003f12b0ed0e01632e3789e3",
-      "bytes": 4779
+      "template_sha256": "7d6a52bffdb202af01d8fcfdbf3c4d29183a3325e9463f10f99d67efd8a2c8d8",
+      "bytes": 5647
     },
     {
       "path": "simulation/core/models/reference/manifest.json",
@@ -1601,140 +1601,140 @@
     {
       "path": "simulation/core/perception/collect_isaac.py",
       "original_sha256": "e47d0de05b60ad75d1b28d04f462580025a67870dc0a8352176f8b518d1f8aa6",
-      "template_sha256": "e47d0de05b60ad75d1b28d04f462580025a67870dc0a8352176f8b518d1f8aa6",
-      "bytes": 11084
+      "template_sha256": "3182d56e7a56a84b7faa1b9f397bf0f0c40464553e2abfa44338df597fee1565",
+      "bytes": 14662
     },
     {
       "path": "simulation/core/perception/detector.py",
       "original_sha256": "c1d7a71289f04af28cd0e6679f097cefdaf82489e350ba8383b6b09332e457c7",
-      "template_sha256": "c1d7a71289f04af28cd0e6679f097cefdaf82489e350ba8383b6b09332e457c7",
-      "bytes": 2154
+      "template_sha256": "a5d2149143960aac7935786c4c2017e0e259ddecf8598ab989bfbc58a2583d9e",
+      "bytes": 2779
     },
     {
       "path": "simulation/core/perception/plan_dataset.py",
       "original_sha256": "23365f6d3312f9592c8bbeef918321c5126b45ffe1e67a7c75af7f508f4ab9d1",
-      "template_sha256": "23365f6d3312f9592c8bbeef918321c5126b45ffe1e67a7c75af7f508f4ab9d1",
-      "bytes": 3110
+      "template_sha256": "16e72ae482b501e3f25d19a5972e74f02f14ded22519da8ece12db2e8a4d4fe8",
+      "bytes": 4307
     },
     {
       "path": "simulation/core/perception/prepare_environment.py",
       "original_sha256": "4a029add7ac715e0db0392232170e2623cb35e112b74e2a0927f7b852ca4bd4d",
-      "template_sha256": "4a029add7ac715e0db0392232170e2623cb35e112b74e2a0927f7b852ca4bd4d",
-      "bytes": 2408
+      "template_sha256": "7fa6d43f77e0cb096d42341dab6771443e193ac777a53784fc6a2001d36961e5",
+      "bytes": 3000
     },
     {
       "path": "simulation/core/perception/prepare_student_dataset.py",
       "original_sha256": "df57d3b40e52620967d7df4d3417cb14f8fab432b36775f78781ef9428c9c0b9",
-      "template_sha256": "df57d3b40e52620967d7df4d3417cb14f8fab432b36775f78781ef9428c9c0b9",
-      "bytes": 2855
+      "template_sha256": "ce44340c25432429d24467d1d6077a4dda10e3f24ab283f2d04472a8d668735b",
+      "bytes": 3254
     },
     {
       "path": "simulation/core/perception/serve_detector.py",
       "original_sha256": "ad617e26b2b8ab718c519585da03ee1bf4e2f71e7ef9195a7e1b897c78d5c5e8",
-      "template_sha256": "ad617e26b2b8ab718c519585da03ee1bf4e2f71e7ef9195a7e1b897c78d5c5e8",
-      "bytes": 2929
+      "template_sha256": "d6085cbb073e135c1434b808cb01d2d1b951b64a8bf3617edd8e9c4fad8dce5f",
+      "bytes": 4105
     },
     {
       "path": "simulation/core/perception/student_entry.py",
       "original_sha256": "cd072c94c330f52e738cb8e7dfff24720993488059409f640adc0b2f7c2145d4",
-      "template_sha256": "ca60fe4e5219fb09f67870e4c2bb05f644fe4fdf573739f36c0d2d5a12a170fd",
-      "bytes": 9419
+      "template_sha256": "803669903f6e25b23161809ca63f12e67fd4cde2f867828ebb8b0ee02d5708e1",
+      "bytes": 12602
     },
     {
       "path": "simulation/core/perception/teacher_labels.py",
       "original_sha256": "95f2eefde0658df21fa245b7619ba5e4b94fa3442b507c785f35db34da97b7fa",
-      "template_sha256": "95f2eefde0658df21fa245b7619ba5e4b94fa3442b507c785f35db34da97b7fa",
-      "bytes": 3518
+      "template_sha256": "cbf9a910f202e0462ce2ee1c14388a3151d4b937abe1beaef115f791877937e5",
+      "bytes": 4520
     },
     {
       "path": "simulation/core/perception/test_cpu.py",
       "original_sha256": "569d10688156ab0730ab279430def74e1b20a76f47fc642eb1a3d723e111a6e2",
-      "template_sha256": "569d10688156ab0730ab279430def74e1b20a76f47fc642eb1a3d723e111a6e2",
-      "bytes": 3281
+      "template_sha256": "f96d6c52437871e61c4f936914646e492be25b1a99c4913d1c2d7034a1cc1313",
+      "bytes": 4353
     },
     {
       "path": "simulation/core/perception/train_detector.py",
       "original_sha256": "cb81696076e905ddba8d72ab790aa60b36f05232588da6f5d422a650f08fc1d1",
-      "template_sha256": "cb81696076e905ddba8d72ab790aa60b36f05232588da6f5d422a650f08fc1d1",
-      "bytes": 7806
+      "template_sha256": "41ec5d6f022ecee34ed8750586ec2d785341d0bcd3d35bd291dc22ec3f23da17",
+      "bytes": 9776
     },
     {
       "path": "simulation/core/perception/validate_export.py",
       "original_sha256": "06e682fbd3be3d3002a60ddf3b5f08781c17ba0b825ac4234d0f673eda8c2511",
-      "template_sha256": "d26068cf69cd382565df7c68c90904fcdddf601ebbeddbd313bec851af6b2a25",
-      "bytes": 6349
+      "template_sha256": "0dcf0bcf5db0eb5684473e3ce954d14301bc7b4db39561cccf773b661ea2c7d9",
+      "bytes": 8342
     },
     {
       "path": "simulation/core/sensors/beta_body_imu.py",
       "original_sha256": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4",
-      "template_sha256": "9c2b906023a896fec61c1d51c69d582b0bc0b0fceb6047d345511720f20435e4",
-      "bytes": 11154
+      "template_sha256": "f999f74a3d5b71d62c26322d1494972572fbb21a6011cfe52278e3e802ef6ad2",
+      "bytes": 11892
     },
     {
       "path": "simulation/core/sensors/beta_head_imu.py",
       "original_sha256": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
-      "template_sha256": "7465e257db48ccd5744b1579e940b7dcf1841f66a9854dec9ddf9ca6fc63fe74",
-      "bytes": 9924
+      "template_sha256": "c6c262d6c19f7ec6d21af8b70758bfbff00cac3faae3c4ec2b68559204b7e2fa",
+      "bytes": 12317
     },
     {
       "path": "simulation/core/sensors/beta_mounts.py",
       "original_sha256": "ba18d0cf6812412b5805cac92503f2bc7303b0fb0adb7fe4129d53ecb0aeee8e",
-      "template_sha256": "ba18d0cf6812412b5805cac92503f2bc7303b0fb0adb7fe4129d53ecb0aeee8e",
-      "bytes": 1673
+      "template_sha256": "70349091621ee73835d2af0783b472074613038ffc2e6bad0d4fdf3fcd2a6011",
+      "bytes": 1952
     },
     {
       "path": "simulation/core/sensors/beta_perception_geometry.py",
       "original_sha256": "c6e84f14c0ba4f30d7620bc86cc54ca5303a319450fcfa752766a06c1e140eca",
-      "template_sha256": "c6e84f14c0ba4f30d7620bc86cc54ca5303a319450fcfa752766a06c1e140eca",
-      "bytes": 13577
+      "template_sha256": "3efb9845cf3f029bdaf66d59df75626cb1418b85da1a2fb5765a6e3a1633ab91",
+      "bytes": 14094
     },
     {
       "path": "simulation/core/sensors/beta_sensor_profile.py",
       "original_sha256": "d7ebc2fab16125ab4a0fd2679b96384199493a03ecad7eae634664bee72caa3a",
-      "template_sha256": "d7ebc2fab16125ab4a0fd2679b96384199493a03ecad7eae634664bee72caa3a",
-      "bytes": 6674
+      "template_sha256": "ed4205852f6bb0031410063e0ec5b5279b6f9001863d6c68e9a45b70e6a0971b",
+      "bytes": 7581
     },
     {
       "path": "simulation/core/sensors/beta_tof_geometry.py",
       "original_sha256": "2972b464cbaeeeb2913d85c6ab6045b42d622d926c67333677767795e8d03244",
-      "template_sha256": "2972b464cbaeeeb2913d85c6ab6045b42d622d926c67333677767795e8d03244",
-      "bytes": 14069
+      "template_sha256": "36736aa55b35aefcdfe098341c05847e52b700667e3e8aaa006e31b73ea64689",
+      "bytes": 15682
     },
     {
       "path": "simulation/core/sensors/capture_clock.py",
       "original_sha256": "6ae284fffab7c984b4f5c1003165a939c9621f70e264f173a096597017d1af68",
-      "template_sha256": "6ae284fffab7c984b4f5c1003165a939c9621f70e264f173a096597017d1af68",
-      "bytes": 1092
+      "template_sha256": "fd75ac0b6925b31fe39b810b1d650e74fb71ae470686fcafa2be852c8e543658",
+      "bytes": 1123
     },
     {
       "path": "simulation/core/sensors/processing/ball_image_border/adapter.py",
       "original_sha256": "ba7deb63b73817ecaed7f82073ba417c52bd7fd067f635db470fd9b686dca63d",
-      "template_sha256": "ba7deb63b73817ecaed7f82073ba417c52bd7fd067f635db470fd9b686dca63d",
-      "bytes": 1200
+      "template_sha256": "935c2bce31755d04e5554ff68b51bf47d99034fe7c39e2c482d4352020190022",
+      "bytes": 1202
     },
     {
       "path": "simulation/core/sensors/processing/ball_image_border/guard.py",
       "original_sha256": "b9c14a42811cb92d80a4a7bc296fc047756105264ae68bf87d54c27bd8dc0506",
-      "template_sha256": "678734de5e17667cf1a3e0e9a68e13d4107745ebc7bfdb91b5c4ed86e0f85d54",
-      "bytes": 4503
+      "template_sha256": "f446e838cd9385767d4444dfdc5b90b3e44b0b0a3fec7f20d31bf2543f988c99",
+      "bytes": 4725
     },
     {
       "path": "simulation/core/sensors/processing/ball_image_border/test_adapter.py",
       "original_sha256": "759d1aff84c9932117906615d5659a05e1d7d8d9139e7fa907d69aa21752214a",
-      "template_sha256": "eae10687e80729a5a9999a2f6256d477cc4130d2658c6a0dc180cd10ae04c18d",
-      "bytes": 1938
+      "template_sha256": "e92d413a31b098114278be39d7f93aff40e3b6768387a2e2612dd9f1984bf6fe",
+      "bytes": 2172
     },
     {
       "path": "simulation/core/sensors/processing/ball_image_border/test_guard.py",
       "original_sha256": "0c1d72377e1d12964b8b9e521e7f912ca58016959303920f55ed03d9df804382",
-      "template_sha256": "0c1d72377e1d12964b8b9e521e7f912ca58016959303920f55ed03d9df804382",
-      "bytes": 2701
+      "template_sha256": "d41bcc07952e398a2c4f693e45cb9b0fc7ab9eed3fa253fb01e27fc2100df4a6",
+      "bytes": 2954
     },
     {
       "path": "simulation/core/sensors/processing/body50_finite_range/adapter.py",
       "original_sha256": "9710ef3a424cee07c34b6519ac441c1ac6da448f8749f95cab4ee035456a99e7",
-      "template_sha256": "94a4bc0f4ead360a84938c3160abf573ec4a5a5611c812786eabba036ea57523",
-      "bytes": 581
+      "template_sha256": "4b42147bce09ae09fdb49b9799585642f009fb5b920b6f1b68cce5ca3084f13c",
+      "bytes": 602
     },
     {
       "path": "simulation/core/sensors/processing/body50_finite_range/change-contract.json",
@@ -1745,26 +1745,26 @@
     {
       "path": "simulation/core/sensors/processing/body50_finite_range/finite_range_core.py",
       "original_sha256": "0818992be9cd76725b5713196f01f09dc757701dedd1fe5660e4788d0e9579cf",
-      "template_sha256": "0818992be9cd76725b5713196f01f09dc757701dedd1fe5660e4788d0e9579cf",
-      "bytes": 12617
+      "template_sha256": "4eb221a213e30f96282a6a30c61953db95cbf7f3b724212362a248efcb1b0a31",
+      "bytes": 16941
     },
     {
       "path": "simulation/core/sensors/processing/body50_finite_range/replay_k8.py",
       "original_sha256": "b8a6dd2b8417ab932aeea60052bd845dc612455d03413f3094929b96be50b466",
-      "template_sha256": "59ad0f7b9f451958ef9e9f5cd3dca023162e544b9578b6e06faaa9a3b5d969b4",
-      "bytes": 5300
+      "template_sha256": "f6a98035c070e38d7255fc144f185231ef1671590f649ae64ab77c2a80fed46c",
+      "bytes": 6176
     },
     {
       "path": "simulation/core/sensors/processing/body50_finite_range/test_contract.py",
       "original_sha256": "3ba17780b4a7b2c518d1680ceb90e4a3a2ef5680a297de221b68a50533f70055",
-      "template_sha256": "ecf4b34607b6c42c5b5da35967e2665f83bbe8a1fd7253c59c93ffb30471e003",
-      "bytes": 3361
+      "template_sha256": "5b2edc7295b3a957f1fbcb28c0724a9fa479761f01a09344249acc6c0e7c275b",
+      "bytes": 3674
     },
     {
       "path": "simulation/core/sensors/processing/body50_scalar_finite_range/adapter.py",
       "original_sha256": "e89a75dab743496e2557328e3e3bc02077f42baef5d2fb05a0f165c55b88a525",
-      "template_sha256": "d5e631ea0b7637d939f080b16cf5aef99941b38b5d4af8ef82777f283f7458bd",
-      "bytes": 1586
+      "template_sha256": "bc844a7dac30f6326584a0d14d8f304f1aefe732d3685ddba451d0549eb3c244",
+      "bytes": 1676
     },
     {
       "path": "simulation/core/sensors/processing/body50_scalar_finite_range/change-contract.json",
@@ -1775,26 +1775,26 @@
     {
       "path": "simulation/core/sensors/processing/body50_scalar_finite_range/finite_range_chip.py",
       "original_sha256": "22092450706b661503d420d4a76566918ce3b6c92c64b1d421aeb9daf4284d21",
-      "template_sha256": "add0b2d97ad15fb11e11df1ced7a6165caddb6b0a1180c04a84aa7710327fb87",
-      "bytes": 10043
+      "template_sha256": "f6d9a6ef718cd210b28931ffa845c60fd04a25c221fe2a336d0ca20fc78bb2fb",
+      "bytes": 12435
     },
     {
       "path": "simulation/core/sensors/processing/body50_scalar_finite_range/test_contract.py",
       "original_sha256": "750f43d5dafc3784d1a63ecd7702f11f163fe30b9307fded9c07e8208552c837",
-      "template_sha256": "914d8e48aa761c853eaff0793eb15c51fc0489a8cb2333f0d55d20a1a2045437",
-      "bytes": 2261
+      "template_sha256": "9be761463b0791bf88f9adc128d4d05b5e18480ea4570157e257ed040f0a5b12",
+      "bytes": 2886
     },
     {
       "path": "simulation/core/sensors/processing/body50_scalar_finite_range/test_vector_equivalence.py",
       "original_sha256": "da54aa69849db9cbc1f87b8e266520afe2142ca0e96653589dab6d329962124e",
-      "template_sha256": "7d622f54f7b71dff2c0505f34eeb5496187073d46c0a63821e4603b4d2c24725",
-      "bytes": 4382
+      "template_sha256": "d952afc8e14f58ce42dd75ef9ff8f8af0eb8f21bfb0933734107db265006f851",
+      "bytes": 6860
     },
     {
       "path": "simulation/core/sensors/processing/joint_observations/adapter.py",
       "original_sha256": "e1ee84471b09f435942d6cddfc6161ca54a9408a5437b443a9ea80ea45726b30",
-      "template_sha256": "e1ee84471b09f435942d6cddfc6161ca54a9408a5437b443a9ea80ea45726b30",
-      "bytes": 4481
+      "template_sha256": "cd8d7ca8a2ab88649d7aac5edf3f0efdc1ff462a0e8fa7de4dd275f04302518f",
+      "bytes": 5411
     },
     {
       "path": "simulation/core/sensors/processing/joint_observations/contract.json",
@@ -1805,8 +1805,8 @@
     {
       "path": "simulation/core/sensors/processing/joint_observation_adapter/adapter.py",
       "original_sha256": "e5b7100dd2163b0e0a66ed65a91f51173ae2fa196fbd056deb506e7b38c92ae7",
-      "template_sha256": "e5b7100dd2163b0e0a66ed65a91f51173ae2fa196fbd056deb506e7b38c92ae7",
-      "bytes": 4815
+      "template_sha256": "795b65a6321ea8b8882bb629a295b46fa13cea07578466cc5e5d6fb853ca75da",
+      "bytes": 5816
     },
     {
       "path": "simulation/core/sensors/processing/joint_observation_adapter/contract.json",
@@ -1817,14 +1817,14 @@
     {
       "path": "simulation/core/sensors/processing/ground_geometry/geometry.py",
       "original_sha256": "08f1ee1183c101953b5d408de76ba63501e661a1b9008ac5574443f48b4df8fe",
-      "template_sha256": "719f0e10073d69fd7a1ce8e6c7e8628adef0a1a5a946c70bfb6f6e9345cfb823",
-      "bytes": 4040
+      "template_sha256": "7a96a418aba5695571e745c67f78531535c113daf9c588507b1a9ce42c10e858",
+      "bytes": 4428
     },
     {
       "path": "simulation/core/sensors/processing/ground_geometry/test_geometry.py",
       "original_sha256": "deec21c130605bdaad7feb5c24013b682b7eb5d1fcefa08d32a7882e1665aecc",
-      "template_sha256": "deec21c130605bdaad7feb5c24013b682b7eb5d1fcefa08d32a7882e1665aecc",
-      "bytes": 3620
+      "template_sha256": "2be8a05f96d4595549509e778723248f54eedc8686eb8c34e2899c4e91c5dc4a",
+      "bytes": 4202
     },
     {
       "path": "simulation/core/sensors/processing/ground_estimator/contract.json",
@@ -1835,26 +1835,26 @@
     {
       "path": "simulation/core/sensors/processing/ground_estimator/geometry.py",
       "original_sha256": "c6fae125fc4051fd75d397a4371f76fc21dac24a129a7f58193c9b3a6cd8be45",
-      "template_sha256": "530eecddf384bb9bbbcbb98f64624068fe04018a9a98e35f97e67355a151af81",
-      "bytes": 3899
+      "template_sha256": "3f2476a7d6c7fdbd1b709bbf65e285d5c2d7a104869b9a5c5000420d32914bd9",
+      "bytes": 4514
     },
     {
       "path": "simulation/core/sensors/processing/ground_estimator/test_geometry.py",
       "original_sha256": "8530f015dc91e558762655aa1d5bacc9ae0e6e5ba7a69962b271ea362b96cd54",
-      "template_sha256": "8530f015dc91e558762655aa1d5bacc9ae0e6e5ba7a69962b271ea362b96cd54",
-      "bytes": 5492
+      "template_sha256": "79dfe0fed418bc5545519ddb0999c0651974cddc6f322ea5e8d9269e64699a09",
+      "bytes": 6759
     },
     {
       "path": "simulation/core/sensors/processing/packed_readback.py",
       "original_sha256": "272e2b57304f65d53b775e06da6d996c0836377dcb640a81de2f46d0f5c42568",
-      "template_sha256": "77bb531c3de286674e094ffd13ed738216f9e993b9afda1e89c2a1483eee6c86",
-      "bytes": 2621
+      "template_sha256": "1871e56f9ba4038f89ad762ff76038132730e0428a553b18984bf122e0ecf0a9",
+      "bytes": 3048
     },
     {
       "path": "simulation/core/sensors/processing/shared_imu_snapshot.py",
       "original_sha256": "71b9307bc0abe32524530cd59aa87e8c4f331eb5d0fc95d5170a9fb21b3cc14f",
-      "template_sha256": "71b9307bc0abe32524530cd59aa87e8c4f331eb5d0fc95d5170a9fb21b3cc14f",
-      "bytes": 7266
+      "template_sha256": "be8126cdace02d44bf9be6e882e7e862c28f75c1476c6e325dbc17c377b72dd2",
+      "bytes": 7854
     },
     {
       "path": "simulation/core/sensors/processing/voltage_profile/manifest.json",
@@ -1865,26 +1865,26 @@
     {
       "path": "simulation/core/sensors/isaac_beta_body_imu.py",
       "original_sha256": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601",
-      "template_sha256": "21b47ce4fea6e99844a5259df001c43e33716cbc2d4bf51d3ab1fe98ea5da601",
-      "bytes": 2804
+      "template_sha256": "14b8a7f081dce0fd3df95eedfc8a5f755fa3cc59145d19e56a8c6f482766fcd4",
+      "bytes": 2965
     },
     {
       "path": "simulation/core/sensors/isaac_beta_sensor_rig.py",
       "original_sha256": "8aa46f6ec9513a8276e24f3886dbb79954a3660d2239427842df4d65fb9a8d08",
-      "template_sha256": "8aa46f6ec9513a8276e24f3886dbb79954a3660d2239427842df4d65fb9a8d08",
-      "bytes": 14152
+      "template_sha256": "9a49831a8a6407bfa87a05d1cb02cd93f75099c200d62d18d7fee768edd461e3",
+      "bytes": 16850
     },
     {
       "path": "simulation/core/sensors/isaac_beta_sensors_smoke.py",
       "original_sha256": "ae092018c47190403d0fdf3f6636f3ea4e8d4d3c45cae824120f174449021f5a",
-      "template_sha256": "ae092018c47190403d0fdf3f6636f3ea4e8d4d3c45cae824120f174449021f5a",
-      "bytes": 15020
+      "template_sha256": "45cae6dd7702641e87cd84db5746eb8492e1b45d2135fae13f3e70c6bd50f31e",
+      "bytes": 18182
     },
     {
       "path": "simulation/core/sensors/make_sensor_matrix.py",
       "original_sha256": "1aa71466cf39bdb49d801896ecf29b30d6433ad271e035ef9bd4b43a46b697a6",
-      "template_sha256": "77990f81a37bc3090a7b5d099911b3bd2944bac9a53ff989f781c3a4e3936a5e",
-      "bytes": 4262
+      "template_sha256": "003d6c9ef235c5cb6bed6911fe73b5451eb8d676ea9fd96550b64f69603e8b98",
+      "bytes": 5883
     },
     {
       "path": "simulation/core/sensors/reports/beta-optics-matrix.json",
@@ -1925,8 +1925,8 @@
     {
       "path": "simulation/core/sensors/sources/sensor_configurations/body_delay_20ms/beta_body_imu.py",
       "original_sha256": "763df76d222165f8f18fa7589aae5feaf5293d3936565db4ba5e81cb513f88ff",
-      "template_sha256": "a28dec1e5e332043ae4fe7d6e68bbb874f8eef14a4d8ed05c37a4def4e660193",
-      "bytes": 10947
+      "template_sha256": "7c723ae9e0f73122f1edf72b07abb46d9ebe85ee6c7a1f2d96b89757ed1ed305",
+      "bytes": 11685
     },
     {
       "path": "simulation/core/sensors/sources/sensor_configurations/body_delay_20ms/camera-profile.json",
@@ -1943,38 +1943,38 @@
     {
       "path": "simulation/core/sensors/sources/sensor_configurations/body_delay_20ms/test_body_imu.py",
       "original_sha256": "c34f627239c057dfccd0c63e610dd8ca2d7c3649f65f1c49cc2500a98273d251",
-      "template_sha256": "c34f627239c057dfccd0c63e610dd8ca2d7c3649f65f1c49cc2500a98273d251",
-      "bytes": 4828
+      "template_sha256": "a99499029e9eff43e31a5062ff4f17568df499bfda118f411b17659022c0e9d5",
+      "bytes": 5523
     },
     {
       "path": "simulation/core/sensors/tests/test_body_imu.py",
       "original_sha256": "a8e4a11429d97286e243abf1cf2a56e45f3a42f99c5f5be88a3cf91af97e00c6",
-      "template_sha256": "a8e4a11429d97286e243abf1cf2a56e45f3a42f99c5f5be88a3cf91af97e00c6",
-      "bytes": 6351
+      "template_sha256": "eef3455e1cd3de49e322ab30f72e667ea9b5ceab653423a5430a7c8c4a704269",
+      "bytes": 7345
     },
     {
       "path": "simulation/core/sensors/verify_body_hardware_profile.py",
       "original_sha256": "ae9fbff8cf53f3d755a99814e46e320d8841b2962bac38b2656f8d82748df12b",
-      "template_sha256": "531e67baa46695d2b31c72f1526e3a047d70894ef3101fd6967fa6b88033fc05",
-      "bytes": 11160
+      "template_sha256": "f84369a77d4c615217b5e87260f51d39861dd0773652fc8289dbfc4875c9025d",
+      "bytes": 13410
     },
     {
       "path": "simulation/core/sensors/verify_hardware_profile.py",
       "original_sha256": "892d7647a9d552bcf59ab4b1621981808a71360dabd630afb657185837dff1bc",
-      "template_sha256": "06922d7e9555686e03b878724502503ba9fee87107c89f669e205e507e314b7c",
-      "bytes": 10428
+      "template_sha256": "fec3d0d245178bd080de5050ee2475384c17ceef0937812243ea1cf77843e66e",
+      "bytes": 12380
     },
     {
       "path": "simulation/core/skills/replay/export_cache.py",
       "original_sha256": "287602586c13b1fd966ada403f7556528a3f56f55569bf7ff1926098952c4037",
-      "template_sha256": "287602586c13b1fd966ada403f7556528a3f56f55569bf7ff1926098952c4037",
-      "bytes": 819
+      "template_sha256": "e92124e8d07edd7050c1565cfeb9e47e57093a2b7169c6e0deb70351c0c5855f",
+      "bytes": 870
     },
     {
       "path": "simulation/core/skills/replay/support.py",
       "original_sha256": "8face7e09c6d7c3d186d0c940ef43560a759b882884a14ca10248a0e13a6f776",
-      "template_sha256": "3188e152fa36b55312749bd3a611176b3cf41117fb74bf1f183730301f71294d",
-      "bytes": 5783
+      "template_sha256": "7c3706b265abcd309e0c134ba143c255b8c2930c3fa3692dcf841c77d3e48ecb",
+      "bytes": 7212
     },
     {
       "path": "simulation/core/visuals/assets/microduck_walk_backlash.upstream.usd",
@@ -1991,86 +1991,86 @@
     {
       "path": "simulation/core/evaluation/audit_media_terminal_cadence.py",
       "original_sha256": "c1f76a28b767a536c1acee79a30b79ebfa9cd04d1eaf9d83aa4443fb2665fdc8",
-      "template_sha256": "664fee82145f3d02a688a9b3fb16ba7c9f6081b6c716c47202b75ec2dbacd3f5",
-      "bytes": 3234
+      "template_sha256": "39c098aa63455c63f1c0aeeb1bfc393b7e7fa280c80789d376a968fd372cb2af",
+      "bytes": 3534
     },
     {
       "path": "simulation/core/evaluation/audit_football.py",
       "original_sha256": "9823cf60f374c3f75d663babb0c4c7b641d44cf54d40691ef099702e8aacc164",
-      "template_sha256": "9ddf43441ca7706b857889dc9ca642462cd6a361eaaaa3ede8fe1a204d0d8c67",
-      "bytes": 5503
+      "template_sha256": "dbd34be6356363ff15f6a89aba539ce7f403c5ca27a2b3c0b9e5c2706488ffe6",
+      "bytes": 6953
     },
     {
       "path": "simulation/core/evaluation/audit_retimed_kick_actual.py",
       "original_sha256": "af1a50ed55a3ffd76046efbee175e6a11155c0ddaca59ee2894edd40ee7665f5",
-      "template_sha256": "f5fe25aade4229a6dcff91c5b993be03d2e7c3a1bdfc16ee90175cab43291975",
-      "bytes": 3569
+      "template_sha256": "fb5902d48c1d96987cc7780fbb79a31686234bbbed6aa456ce331d3c35fda52a",
+      "bytes": 4183
     },
     {
       "path": "simulation/core/evaluation/audit_motion_heading_reference.py",
       "original_sha256": "6647df53a7c5e877cd19515266f117706f8b85357dd8060d284dc8c25432b939",
-      "template_sha256": "6647df53a7c5e877cd19515266f117706f8b85357dd8060d284dc8c25432b939",
-      "bytes": 2620
+      "template_sha256": "66d37e18ccff71fbdc77e07015a697ed4b73e975bc23999733b09be21887bd0c",
+      "bytes": 3364
     },
     {
       "path": "simulation/core/evaluation/audit_sole_memory_actual.py",
       "original_sha256": "7b8ce5d4fd101420d18aaa5765c63c666c82ca26da18d305fe274ca4a6a5d45a",
-      "template_sha256": "5ec4a7203ec5748bf9594ec4e1cc2db2f6e90967c4908bcefbd36bce7bebbef1",
-      "bytes": 4157
+      "template_sha256": "14d62c91795d40583258eea78ccad7e2dbc978040e4ccd091d01cae674fb44ab",
+      "bytes": 5822
     },
     {
       "path": "simulation/core/evaluation/audit_track_commands_actual.py",
       "original_sha256": "7294bd029fa6077f6bceb96a32ebd6026c3b6ea1698dc26dad965a142568c9da",
-      "template_sha256": "0c78dedc3919d2e23fb1aad3878b8e5c0c831d68a6f208059d5edadb3f0baf57",
-      "bytes": 5161
+      "template_sha256": "801cac1d672e2d8daaf820cef0f86a0bce8a3cc1aa541b239f8e22b4e681bcc9",
+      "bytes": 5629
     },
     {
       "path": "simulation/core/evaluation/audit_floor_projection_actual.py",
       "original_sha256": "d5e9ea50b9ec1994a82829a1e9d93f33bdcbd928218113eb5a497b2cf3ecc5a9",
-      "template_sha256": "db5d353864847e6eabe9537bce4b7578ce0132d68572dd8d3411dac690830279",
-      "bytes": 5372
+      "template_sha256": "244a50648d09dcc839b34808b511ff8aba03a8b2f9d5155c8167f2f2bd98d942",
+      "bytes": 7912
     },
     {
       "path": "simulation/core/evaluation/audit_coarse_track_actual.py",
       "original_sha256": "91ce276be4b10883e25fed83c9ebbe316ebd61050e454d41c035c14a7e94def2",
-      "template_sha256": "91ce276be4b10883e25fed83c9ebbe316ebd61050e454d41c035c14a7e94def2",
-      "bytes": 3585
+      "template_sha256": "330bf9ab01183670e13e3326561d3229d21118afa4ac0d3d576f00f40d574530",
+      "bytes": 4849
     },
     {
       "path": "simulation/core/evaluation/audit_guard_stop_actual.py",
       "original_sha256": "f8af9af7e5711615475d299af39995bc10fc6cf18563963c3df1012be1056d39",
-      "template_sha256": "f8af9af7e5711615475d299af39995bc10fc6cf18563963c3df1012be1056d39",
-      "bytes": 3355
+      "template_sha256": "05e74c342f9fd5737f3236394069b48c310f860f99afc0d9b1b197bf2e4d629d",
+      "bytes": 4652
     },
     {
       "path": "simulation/core/evaluation/audit_goal_turn_progress_actual.py",
       "original_sha256": "93b58109c58021f5781a01464dbe2cdb9522d09160c7f43694c308a7b7b64bf0",
-      "template_sha256": "b7c83d49d64ff6c50d113b72d3feb2e32225e2c6a84fdbde3f0ef2cf00c05a39",
-      "bytes": 2636
+      "template_sha256": "5841d98a861e103ce209e92f9ae44188a51d00d20ad74c8f808b076ee5346e33",
+      "bytes": 3840
     },
     {
       "path": "simulation/core/evaluation/audit_retreat_recovery.py",
       "original_sha256": "0980df2d18028786f994ad8055c831fd316a4daea756244c498e86e002bef72b",
-      "template_sha256": "8a4348ad6ad269f6a9f4e92674a1d434f1e0e5b312bbaf873b54ac44362f1011",
-      "bytes": 38396
+      "template_sha256": "699fd96855268116319a54956d967d8595d69f02e00a50d97f7709eae7f2113e",
+      "bytes": 47355
     },
     {
       "path": "simulation/core/evaluation/attention/attention_owner.py",
       "original_sha256": "53dd2914dbbaadaa14a5439273585b2f2796a937054cd3764bf13d83267ac1d5",
-      "template_sha256": "53dd2914dbbaadaa14a5439273585b2f2796a937054cd3764bf13d83267ac1d5",
-      "bytes": 3272
+      "template_sha256": "e96bb7cb1937e87df3e2d2585a58a7796b6e298103514a0f93a2ba50d36bcbc6",
+      "bytes": 3546
     },
     {
       "path": "simulation/core/evaluation/head_feedback/head_feedback_core.py",
       "original_sha256": "360a8bb5f3bbee817795ea7b55359d24107845abba1191e045bcaee200643240",
-      "template_sha256": "360a8bb5f3bbee817795ea7b55359d24107845abba1191e045bcaee200643240",
-      "bytes": 3479
+      "template_sha256": "73a08e259e27bb39228996ab59068cfff0772b55aa589b5a26bf27ca6604ff5e",
+      "bytes": 4435
     },
     {
       "path": "simulation/core/evaluation/fine_step/neutral_fine_step.py",
       "original_sha256": "1e951561eed572ec4f7df9f7b64b550f34227ba590abc5d8822b811826124b46",
-      "template_sha256": "d50d8e7353a6b09e3c4f981617dc8a7609c68f426b7e03ee65b2016c4e140568",
-      "bytes": 9041
+      "template_sha256": "f8c04e20a8f4d7100cd3f9d675d99a064d6f44c9e7baca579cb4cbf98151fc18",
+      "bytes": 12084
     },
     {
       "path": "simulation/core/evaluation/football-physics-semantics.json",
@@ -2099,14 +2099,14 @@
     {
       "path": "simulation/core/evaluation/navigation_metrics.py",
       "original_sha256": "5a748efad6a3d10cf7b94ea8342daa0f57b24674974298f4f42550ca6238a859",
-      "template_sha256": "39c25d48bfdf83b5a45f6f18afa331985d1d8d3e83e0310c0065216424ef210e",
-      "bytes": 8103
+      "template_sha256": "fcaaa93c5fac96c8619b3921d291a47c83894e18eb2aa1841f0aa719e19fe28a",
+      "bytes": 12148
     },
     {
       "path": "simulation/core/evaluation/audit_navigation_delivery.py",
       "original_sha256": "5b0b6e33cc42c9e3c61440945f3c73b49393b70e3dc45ff9c980cb997e6b8ff9",
-      "template_sha256": "ed0db9917ea70deccdeacf039732e1ecabe9216a464a9f8208b97474520421c2",
-      "bytes": 7545
+      "template_sha256": "aba35636471ab5bc8789990ea51fd4c479253d29b226bd9fa42ad4fe226da2f1",
+      "bytes": 8299
     },
     {
       "path": "simulation/core/perception/collection-plan.json",
@@ -2117,8 +2117,8 @@
     {
       "path": "simulation/core/skills/contract.py",
       "original_sha256": "ec44aad5e636512686bbd1f979bf404943a02b2c7c04409c1d6f1c69642a3668",
-      "template_sha256": "ec44aad5e636512686bbd1f979bf404943a02b2c7c04409c1d6f1c69642a3668",
-      "bytes": 1302
+      "template_sha256": "0395a37e88bed0560550b617e14ecfc7f92708d955c56ebe2916d8704ff84348",
+      "bytes": 1324
     },
     {
       "path": "simulation/core/skills/training/bounded/bounded-action-limits.json",
@@ -2129,26 +2129,26 @@
     {
       "path": "simulation/core/gait/training/policy_initialization/recipe.py",
       "original_sha256": "79a385c0a84b79a6709e24d3620e8bf8cdafa60f82aaafbae0b4f0578208e845",
-      "template_sha256": "f33b7ffe8b653f86cc53ce4eaa9f30c19ebdef52bf9300dfef13c4037ab1577a",
-      "bytes": 2407
+      "template_sha256": "88b0db0f13f0511e02194f3723b0497d128c7781019392dc90a60b68cfb66798",
+      "bytes": 2442
     },
     {
       "path": "simulation/core/evaluation/angular_commands/command_navigation_native.py",
       "original_sha256": "5aedb9e99f14ab2338db76eeea00351b694b5eb39f0d6f7511bd4d1979040e1c",
-      "template_sha256": "5aedb9e99f14ab2338db76eeea00351b694b5eb39f0d6f7511bd4d1979040e1c",
-      "bytes": 9060
+      "template_sha256": "1ebfd20cf65a7e7103b4408aa568a8014ba509ccd33c01618d40fe3559f16dd4",
+      "bytes": 10249
     },
     {
       "path": "simulation/core/evaluation/heading_commands/command_navigation_native.py",
       "original_sha256": "9af1cdefcbfeb645d96d54a6deab474a8f907753dc7084ec3bedc06e9d7544da",
-      "template_sha256": "9af1cdefcbfeb645d96d54a6deab474a8f907753dc7084ec3bedc06e9d7544da",
-      "bytes": 9471
+      "template_sha256": "9ac15f0281f3f9ebdedf9824b1fceba9e7b08370a3813fcf453e60ad2aea6b06",
+      "bytes": 10677
     },
     {
       "path": "simulation/core/skills/backlash_contract.py",
       "original_sha256": "60d6525e5a51937d46b6e5433270f43149a829118e267042c0050e2846a46cd3",
-      "template_sha256": "60d6525e5a51937d46b6e5433270f43149a829118e267042c0050e2846a46cd3",
-      "bytes": 1979
+      "template_sha256": "67fc5e7634225918b8eeb39bd9767088f98e3fe64cd645b395594b30726862a4",
+      "bytes": 2108
     },
     {
       "path": "simulation/core/evaluation/walk-navigation.json",
@@ -2177,26 +2177,26 @@
     {
       "path": "simulation/core/evaluation/audit_media_archive_identity.py",
       "original_sha256": "560e35d3ff4033feb1f4bc5f04264b8adc9bd86df76d6917fdb743a129d201e3",
-      "template_sha256": "560e35d3ff4033feb1f4bc5f04264b8adc9bd86df76d6917fdb743a129d201e3",
-      "bytes": 6541
+      "template_sha256": "3c6112def5aefde99fef900d748f74f1a07643f211b41bab7c4580340c30a390",
+      "bytes": 7598
     },
     {
       "path": "simulation/core/evaluation/audit_navigation_motion.py",
       "original_sha256": "467635508f04d666d6525385b4eee143103e5267d86a354401b2c5bcc37abc98",
-      "template_sha256": "c92dc5e046515b333de1e78450b224dde3abdadc36eceabf10740607652e07d7",
-      "bytes": 7945
+      "template_sha256": "c54cedf8724e27d4495f248e7ebff08813b8e22aa0789b45116a09d8abcd01b6",
+      "bytes": 10391
     },
     {
       "path": "simulation/core/evaluation/audit_navigation_imu.py",
       "original_sha256": "ad80b4856d78ef231e0773e92b5dc226f2fcbf33d4808c50c035878080be92f4",
-      "template_sha256": "6c74eff9294c44d9c7a23b2efc5881a69b11c3a5bdfe3d57b17217938a6131b9",
-      "bytes": 4938
+      "template_sha256": "2a82f24b8caf45b1a819cf36a5747929acfe3eea3cbff09a2a97a6911c360bca",
+      "bytes": 5458
     },
     {
       "path": "simulation/core/evaluation/audit_memory_extension.py",
       "original_sha256": "966079fab2a002e05aea4ba5b81c76a9419688e3287c75d7e6e2e8fe80b830b0",
-      "template_sha256": "c8bea6714a9f57119fad96e751cdf16f5abc1b02a6060b11a418c2f18a249a94",
-      "bytes": 4852
+      "template_sha256": "2c04420adc40d82a23bf50056fee21552d59fedb4a2927717c927e7671d2dc02",
+      "bytes": 6313
     }
   ],
   "model_aliases": {

@@ -1,23 +1,26 @@
 """Explicit, gradual change of action mapping for a new training lineage."""
+
 import torch
 from head_reference import DirectHeadReferenceAction
 from cycle_tracking import BoundedTrainingAction
 
 
 class ProgressiveHeadResidualAction(DirectHeadReferenceAction):
-    residual_limit_rad = .15
+    residual_limit_rad = 0.15
 
     @property
     def reference_blend(self):
         # 24 rollout steps/update; the new mapping is complete after300 updates.
-        return min(1., .25 + .75 * self._env.common_step_counter / (24*300))
+        return min(1.0, 0.25 + 0.75 * self._env.common_step_counter / (24 * 300))
 
     def process_actions(self, actions):
         combined = actions.clone()
-        reference = self._env.command_manager.get_command('head_pose')
+        reference = self._env.command_manager.get_command("head_pose")
         residual = self.residual_limit_rad * torch.tanh(actions[:, self.head_channels])
         blend = self.reference_blend
-        combined[:, self.head_channels] = (1-blend)*actions[:,self.head_channels] + blend*(reference+residual)
+        combined[:, self.head_channels] = (1 - blend) * actions[
+            :, self.head_channels
+        ] + blend * (reference + residual)
         self.reference_combined_action = combined
         BoundedTrainingAction.process_actions(self, combined)
 
@@ -25,4 +28,4 @@ class ProgressiveHeadResidualAction(DirectHeadReferenceAction):
 class FinalHeadResidualAction(ProgressiveHeadResidualAction):
     @property
     def reference_blend(self):
-        return 1.
+        return 1.0
