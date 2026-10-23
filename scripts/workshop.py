@@ -92,6 +92,9 @@ def main():
     manual = sub.add_parser("manual")
     manual.add_argument("--seconds", type=float, default=600)
     manual.add_argument("--style", choices=list("ABCD"), default="A")
+    manual.add_argument(
+        "--locomotion", choices=["walking", "rollers"], default="walking"
+    )
     manual.add_argument("--output", type=Path, required=True)
     terrain = sub.add_parser("terrain")
     terrain.add_argument("--model", type=Path, required=True)
@@ -102,6 +105,9 @@ def main():
     terrain.add_argument("--output", type=Path, required=True)
     terrain.add_argument("--headless", action="store_true")
     terrain.add_argument("--record", action="store_true")
+    terrain.add_argument(
+        "--locomotion", choices=["walking", "rollers"], default="walking"
+    )
     slope_train = sub.add_parser("train-terrain")
     slope_train.add_argument("--yaw-precision", action="store_true")
     slope_train.add_argument("--resume", type=Path)
@@ -137,6 +143,7 @@ def main():
     plan.add_argument("--output", type=Path, required=True)
     fb = sub.add_parser("football")
     fb.add_argument("--seed", type=int, default=983102)
+    fb.add_argument("--locomotion", choices=["walking", "rollers"], default="walking")
     fb.add_argument("--scene", choices=["legacy", "indoor"], default="indoor")
     fb.add_argument("--style", choices=list("ABCD"), default="A")
     fb.add_argument("--record-hd", action=argparse.BooleanOptionalAction, default=True)
@@ -198,6 +205,7 @@ def main():
     if a.command == "report":
         for path in [
             a.run / "result.json",
+            a.run / "independent-result.json",
             a.run / "manifest.json",
             a.run / "report.json",
             a.run / "training-ledger.json",
@@ -213,6 +221,11 @@ def main():
                                 "state",
                                 "seed",
                                 "task_seconds",
+                                "task_result",
+                                "autonomous_task_passed",
+                                "real_wheel_ball_contact",
+                                "goal_time_s",
+                                "continuous_final_recovery_s",
                                 "terminal_reason",
                                 "scorer",
                                 "course_evaluation",
@@ -319,6 +332,8 @@ def main():
             [
                 py,
                 ROOT / "lab/manual.py",
+                "--locomotion",
+                a.locomotion,
                 "--style",
                 a.style,
                 "--runtime",
@@ -336,6 +351,8 @@ def main():
         cmd = [
             py,
             ROOT / "lab/terrain.py",
+            "--locomotion",
+            a.locomotion,
             "--runtime",
             m,
             "--model",
@@ -429,6 +446,58 @@ def main():
     if a.command == "football":
         verify()
         out = fresh(a.output)
+        if a.locomotion == "rollers":
+            if a.scene != "indoor":
+                ap.error("Roller shooting requires the indoor scene")
+            cmd = [
+                py,
+                ROOT / "lab/manual.py",
+                "--runtime",
+                m,
+                "--models",
+                ROOT / "models",
+                "--output",
+                out,
+                "--locomotion",
+                "rollers",
+                "--autonomous",
+                "--detector-deployment",
+                ROOT / "models/scene-detector/deployment.json",
+                "--seconds",
+                a.seconds,
+                "--seed",
+                a.seed,
+                "--style",
+                a.style,
+                "--root-x",
+                -0.30,
+                "--root-y",
+                a.root_y if a.root_y is not None else 0.045,
+                "--ball-x",
+                (a.ball_xy or [0.0, 0.0])[0],
+                "--ball-y",
+                (a.ball_xy or [0.0, 0.0])[1],
+                "--shot-push-seconds",
+                2.1,
+            ]
+            if a.headless:
+                cmd += ["--headless-check"]
+            if a.record_hd:
+                cmd += ["--record"]
+            result = run(cmd, c)
+            if result:
+                return result
+            return run(
+                [
+                    py,
+                    ROOT / "lab/evaluate_rollers.py",
+                    "--run",
+                    out,
+                    "--output",
+                    out / "independent-result.json",
+                ],
+                c,
+            )
         cmd = [
             py,
             m / "evaluation/football/execute_media.py",
@@ -462,7 +531,7 @@ def main():
             m / "evaluation/football/recovery-approval.json",
         ]
         if a.scene == "indoor":
-            manifest = ROOT / "models/indoor-detector/deployment.json"
+            manifest = ROOT / "models/scene-detector/deployment.json"
             deployment = json.loads(manifest.read_text())
             for key in ("weights", "onnx"):
                 artifact = manifest.parent / deployment[key]
@@ -472,7 +541,7 @@ def main():
                 ):
                     raise ValueError("Indoor detector artifact changed")
                 deployment[key] = str(artifact)
-            local_deployment = ROOT / ".local/indoor-detector-deployment.json"
+            local_deployment = ROOT / ".local/scene-detector-deployment.json"
             local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
             cmd[1] = ROOT / "lab/football_scene.py"
             cmd += [

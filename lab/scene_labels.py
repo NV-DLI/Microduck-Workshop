@@ -49,7 +49,7 @@ def box_depth(origin, d, center, size):
     return np.where((far >= near) & (near > 0.03), near, np.inf)
 
 
-def labels(profile, camera_pose, measured_ray_depth, ball_world, *, ball_radius=0.035):
+def labels(profile, camera_pose, measured_ray_depth, ball_world, *, ball_radius=0.05):
     depth = np.asarray(measured_ray_depth, float)
     if depth.shape != (profile.height_px, profile.width_px):
         raise ValueError("Actual raw-camera raster depth required")

@@ -1,0 +1,40 @@
+{
+  "scope": "Fixed stationary roller reset posture; servo/backlash positions measured in a zero-command simulation equilibrium and bounded to legal reset limits. Actor home and normalization remain unchanged. No external support or task-object input.",
+  "joint_positions_rad": {
+    "right_hip_yaw": 0.1118532046675682,
+    "passive_right_hip_yaw_backlash": 0.017443292519943296,
+    "right_hip_roll": -0.28643205761909485,
+    "passive_right_hip_roll_backlash": -0.017443292519943296,
+    "right_hip_pitch": 0.2571721076965332,
+    "passive_right_hip_pitch_backlash": 0.017443292519943296,
+    "right_knee": -0.12777483463287354,
+    "passive_right_knee_backlash": -0.017443292519943296,
+    "right_ankle": -0.4286750257015228,
+    "passive_right_ankle_backlash": 0.017443292519943296,
+    "neck_pitch": 0.31968849897384644,
+    "passive_neck_pitch_backlash": 0.017443292519943296,
+    "head_pitch": 0.3258052170276642,
+    "passive_head_pitch_backlash": 0.017443292519943296,
+    "head_yaw": -0.010494116693735123,
+    "passive_head_yaw_backlash": 0.017443292519943296,
+    "head_roll": -0.02208932302892208,
+    "passive_head_roll_backlash": 0.017443292519943296,
+    "left_hip_yaw": 0.04873374477028847,
+    "passive_left_hip_yaw_backlash": -0.017443292519943296,
+    "left_hip_roll": 0.3839,
+    "passive_left_hip_roll_backlash": 0.017443292519943296,
+    "left_hip_pitch": -0.36839917302131653,
+    "passive_left_hip_pitch_backlash": -0.017443292519943296,
+    "left_knee": 0.13769304752349854,
+    "passive_left_knee_backlash": 0.017443292519943296,
+    "left_ankle": 0.5575886964797974,
+    "passive_left_ankle_backlash": -0.017443292519943296
+  },
+  "source": {
+    "kind": "zero-command stationary segment from prior mesh-contact simulation",
+    "timestamp_s": 20.02,
+    "source_report_sha256": "8b316a91e64ad95482c3a2838e3faf108fa66f6f8039a3f07bcaa087a8140c3a",
+    "source_trajectory_sha256": "f62dbfbde421ed0148943749251fe28b7a6b4612a5106b7807d7e32aac461bc7",
+    "reset_note": "Only legal q retained; qd, base orientation, action history and motor state reset normally. Not a full equilibrium-state restore."
+  }
+}

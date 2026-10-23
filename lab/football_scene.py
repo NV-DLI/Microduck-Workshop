@@ -44,6 +44,35 @@ def main():
     from scene_goal_points import extract_scene_goal_bases
 
     perception.extract_beta_goal_bases = extract_scene_goal_bases
+
+    # Frozen legacy functions pass 7 cm explicitly. Override the physical-size
+    # argument at this scene boundary without editing the preserved runtime.
+    def sized_estimator(function):
+        @functools.wraps(function)
+        def estimate(*args, **kwargs):
+            kwargs["radius_m"] = 0.05
+            return function(*args, **kwargs)
+
+        return estimate
+
+    perception.estimate_box_sphere = sized_estimator(perception.estimate_box_sphere)
+    perception.estimate_grounded_direction = sized_estimator(
+        perception.estimate_grounded_direction
+    )
+    from processing.ground_estimator import geometry as grounded_geometry
+    import scene_ball_geometry
+    import task_navigation
+
+    task_navigation.geometry.parent.refine_grounded_complete_ball = (
+        scene_ball_geometry.refine_grounded_complete_ball
+    )
+    grounded_geometry.parent.refine_grounded_complete_ball = (
+        scene_ball_geometry.refine_grounded_complete_ball
+    )
+    import startup_support
+    from grounded_startup import GroundedStartup
+
+    startup_support.StartupSupport = GroundedStartup
     from vision import known_goal_geometry, goal_geometry
     import scene_localization
     from scene_nav2 import map_contract, obstacle_contract, owner, client, contract
@@ -62,7 +91,7 @@ def main():
     controller.BetaNavigator.reset = reset
     original_crossing = contact_scoring.goal_crossing
     contact_scoring.goal_crossing = functools.partial(
-        original_crossing, goal_x=0.68, width=0.388, height=0.244
+        original_crossing, goal_x=0.68, width=0.388, height=0.244, radius=0.05
     )
     old_map.snapshot = map_contract.snapshot
     old_contract.snapshot = map_contract.snapshot
@@ -97,18 +126,41 @@ def main():
                 ]
             }
         )
+        fixture["ball_pose_xyzw"][2] = 0.05
+        fixture["ball_radius_m"] = 0.05
+        fixture["ball_mass_kg"] = 0.03
+        fixture["root_pose_xyzw"][2] = 0.12
+        cfg.scene.robot.init_state.pos = (*cfg.scene.robot.init_state.pos[:2], 0.12)
         fixture["scene_profile"] = scene_record["profile"]
         fixture["scope"] = (
             "New dimensioned indoor fixture; privileged initialization and evaluation only"
         )
+        original_sensor = cfg.events.beta_sensors.func
+
+        def scene_sensor(env, env_ids, width, height, hfov, seed):
+            original_sensor(
+                env, env_ids, width=width, height=height, hfov=hfov, seed=seed
+            )
+            env.course_visual_geometry.update(
+                pitch_visual_top_z_m=0.00005,
+                sphere_radius_m=0.05,
+                sphere_mass_kg=0.03,
+                sphere_visual="official black/white UV mesh",
+            )
+
+        cfg.events.beta_sensors.func = scene_sensor
         if extra.record_hd:
-            original_sensor = cfg.events.beta_sensors.func
 
             def sensor(env, env_ids, width, height, hfov, seed):
-                original_sensor(
+                scene_sensor(
                     env, env_ids, width=width, height=height, hfov=hfov, seed=seed
                 )
-                env.course_visual_geometry["pitch_visual_top_z_m"] = 0.00005
+                env.course_visual_geometry.update(
+                    pitch_visual_top_z_m=0.00005,
+                    sphere_radius_m=0.05,
+                    sphere_mass_kg=0.03,
+                    sphere_visual="official black/white UV mesh",
+                )
                 from terrain_visuals import camera_prestartup, start_recording, capture
 
                 camera_prestartup(env, env_ids)
@@ -127,10 +179,23 @@ def main():
                         )
                         recording.update(camera=camera, process=proc, rows=[])
                     capture(env, recording["camera"], recording["process"])
+
+                    def values(value):
+                        return getattr(value, "torch", value)[0].detach().cpu().tolist()
+
+                    robot_data = env.scene["robot"].data
+                    ball_data = env.scene["ball"].data
                     recording["rows"].append(
                         {
                             "timestamp_s": kwargs["timestamp_s"],
                             "frame": len(recording["rows"]),
+                            "root_position_world_m": values(robot_data.root_pos_w),
+                            "root_quaternion_xyzw": values(robot_data.root_quat_w),
+                            "joint_positions_absolute_rad": values(
+                                robot_data.joint_pos
+                            ),
+                            "ball_position_world_m": values(ball_data.root_pos_w),
+                            "ball_quaternion_xyzw": values(ball_data.root_quat_w),
                         }
                     )
                     return result
@@ -152,6 +217,8 @@ def main():
     files = [
         HERE / "football_scene.py",
         HERE / "scene_style.py",
+        HERE / "grounded_startup.py",
+        HERE / "scene_ball_geometry.py",
         HERE / "scene_localization.py",
         HERE / "scene_goal_points.py",
         HERE / "terrain_visuals.py",

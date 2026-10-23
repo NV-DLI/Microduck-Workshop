@@ -74,8 +74,8 @@ def render_teaching_block(b, lang):
                         "zh": "固定检测器在八张图像上的检测框与置信度",
                         "en": "Fixed detector boxes and scores on eight separate images",
                     },
-                    zh="固定检测器的八组实际输出。每格展示一张图像，框旁标有类别与置信度。点击图片可放大，对比远近、视角和目标大小对检测结果的影响；这组示例不用于估计整体准确率。",
-                    en="Eight actual fixed-detector outputs on separate images, with class labels and confidence scores. Click to enlarge. These examples do not estimate overall accuracy.",
+                    zh="固定检测器在八张保留测试图像上的实际输出，框旁标有类别与置信度。场地背景不同，是因为采集时更换了地面样式，帮助检验检测器能否在背景变化后仍找到球和球门；这些格子不是同一次射门的连续画面。点击图片可放大，对比远近、视角和目标大小对检测结果的影响；这组示例不用于估计整体准确率。",
+                    en="Eight actual fixed-detector outputs on held-out test images, with class labels and confidence scores. Ground styles vary to check recognition under different backgrounds; these are not consecutive frames from one attempt. Click to enlarge. These examples do not estimate overall accuracy.",
                 ),
                 lang,
             )

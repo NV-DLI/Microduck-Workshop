@@ -1,0 +1,45 @@
+{
+  "schema": "microduck.beta-detector-deployment.v1",
+  "runtime_id": "newton-bam-20261019",
+  "hardware_profile_id": "beta-gc2093-l8cx-v1",
+  "weights": "detector.pt",
+  "weights_sha256": "6ff241955baad46f0f4fe4f63c0022e909c08e74d1a8c0783859ac0a472c294f",
+  "onnx": "detector.onnx",
+  "onnx_sha256": "30cf2ae4765a4c02f216da4b7f49c9e5d122195f8c4c58ae0c3cba28efca0c31",
+  "class_names": {
+    "0": "ball",
+    "1": "goal"
+  },
+  "input_raster": [
+    960,
+    540
+  ],
+  "network_image_size": 640,
+  "training_dataset_manifest_sha256": "d6bb0275f8f2cc0cd413545dc88505420d4569080370d2b78611525d1d27dc2a",
+  "smoke_only": false,
+  "heldout_metrics": {
+    "metrics/precision(B)": 0.9971673876541429,
+    "metrics/recall(B)": 0.9620535714285714,
+    "metrics/mAP50(B)": 0.9782310158555523,
+    "metrics/mAP50-95(B)": 0.9344854985201512,
+    "fitness": 0.9344854985201512
+  },
+  "controller_input": "original-pixel detections only; no teacher files/labels/world poses",
+  "physically_validated": false,
+  "deployment_scope": {
+    "rknn_architecture_support": "YOLO26 detection and RK3566 are listed in official Ultralytics documentation",
+    "source": "https://docs.ultralytics.com/integrations/rockchip-rknn",
+    "checked_date": "2026-10-19",
+    "rknn_export_host_requirement": "x86 Linux; not this ARM64 Spark",
+    "this_model_rknn_exported": false,
+    "this_model_rk3566_tested": false,
+    "rk3566_latency_ms": null,
+    "rk3566_camera_to_action_latency_ms": null,
+    "rk3566_thermal_endurance_tested": false,
+    "scope": "Architecture support does not establish accuracy, speed or sustained operation of this course model on the robot"
+  },
+  "initialization": "fine-tune preserved indoor-detector; original weights unchanged",
+  "weights_paths_relative_to_manifest": true,
+  "scene": "official 10cm black-white ball, trapezoidal goal; football A/B, marble C, wood D",
+  "training_wall_seconds": 285.41936753102345
+}

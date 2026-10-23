@@ -14,12 +14,42 @@ def main():
     p.add_argument("--models", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--seconds", type=float, default=600)
+    p.add_argument("--seed", type=int, default=42)
     p.add_argument("--headless-check", action="store_true")
     p.add_argument("--style", choices=list("ABCD"), default="A")
+    p.add_argument("--locomotion", choices=["walking", "rollers"], default="walking")
+    p.add_argument("--record", action="store_true")
+    p.add_argument(
+        "--check-motion", choices=["stand", "drive", "kick"], default="stand"
+    )
+    p.add_argument("--root-x", type=float, default=-0.55)
+    p.add_argument("--root-y", type=float, default=0.0)
+    p.add_argument("--ball-x", type=float, default=0.0)
+    p.add_argument("--ball-y", type=float, default=0.0)
+    p.add_argument("--shot-push-seconds", type=float, default=2.0)
+    p.add_argument("--walking-model", type=Path)
+    p.add_argument("--roller-shot", choices=["glide"], default="glide")
+    p.add_argument("--autonomous", action="store_true")
+    p.add_argument("--detector-deployment", type=Path)
     a = p.parse_args()
+    if a.autonomous and (a.locomotion != "rollers" or a.detector_deployment is None):
+        p.error("Experimental visual servo requires rollers and detector deployment")
     a.output.mkdir(parents=True, exist_ok=False)
+    import shutil
+
+    snapshot = a.output / "source-snapshot"
+    snapshot.mkdir()
+    for source in [
+        Path(__file__),
+        Path(__file__).with_name("roller_vision.py"),
+        Path(__file__).with_name("roller_config.py"),
+        Path(__file__).with_name("roller_imu.py"),
+        Path(__file__).with_name("scene_style.py"),
+    ]:
+        shutil.copy2(source, snapshot / source.name)
     sys.path.insert(0, str(a.runtime / "gait"))
     sys.path.insert(0, str(a.runtime / "football"))
+    sys.path.insert(0, str(a.runtime / "sensors"))
     from scoring import goal_crossing
     import torch
     import gymnasium as gym
@@ -32,6 +62,7 @@ def main():
         {
             "device": "cuda:0",
             "require_kit": True,
+            "enable_cameras": a.record or a.autonomous,
             "visualizer": [] if a.headless_check else ["kit"],
         },
     ):
@@ -51,32 +82,65 @@ def main():
             from isaaclab_visualizers.kit import KitVisualizerCfg
 
             cfg.sim.visualizer_cfgs = [KitVisualizerCfg()]
-        cfg.seed = 42
+        cfg.seed = a.seed
         cfg.curriculum = None
         cfg.episode_length_s = a.seconds + 10
         cfg.scene.robot.spawn.usd_path = str(
             Path(__file__).parent / "assets/microduck_contact.usda"
         )
-        cfg.scene.robot.init_state.pos = (-0.55, 0.0, 0.125)
+        cfg.scene.robot.init_state.pos = (a.root_x, a.root_y, 0.12)
 
         # Physics and visuals share the same ball size and initial position.
         cfg.scene.ball = RigidObjectCfg(
             prim_path="{ENV_REGEX_NS}/Ball",
             spawn=sim_utils.SphereCfg(
-                radius=0.035,
+                radius=0.05,
                 rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True),
-                mass_props=sim_utils.MassPropertiesCfg(mass=0.045),
+                mass_props=sim_utils.MassPropertiesCfg(mass=0.03),
                 collision_props=sim_utils.CollisionPropertiesCfg(),
                 visual_material=sim_utils.PreviewSurfaceCfg(
                     diffuse_color=(0.9, 0.91, 0.88), roughness=0.75
                 ),
             ),
-            init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.035)),
+            init_state=RigidObjectCfg.InitialStateCfg(pos=(a.ball_x, a.ball_y, 0.05)),
         )
 
         from scene_style import configure_football
 
         scene_profile = configure_football(cfg, style=a.style)
+        if a.locomotion == "rollers":
+            from roller_config import configure_rollers
+
+            scene_profile["locomotion"] = configure_rollers(cfg)
+        scene_profile["robot_asset_sha256"] = hashlib.sha256(
+            Path(cfg.scene.robot.spawn.usd_path).read_bytes()
+        ).hexdigest()
+        if a.autonomous or a.record or a.locomotion == "rollers":
+            from isaaclab.managers import EventTermCfg
+            from isaaclab.sensors import ContactSensorCfg
+            from roller_vision import create_sensors
+
+            if a.autonomous:
+                cfg.events.beta_sensors = EventTermCfg(
+                    func=create_sensors, mode="prestartup"
+                )
+            cfg.scene.ball_contact = ContactSensorCfg(
+                prim_path=(
+                    "{ENV_REGEX_NS}/Robot/Geometry/trunk_base/.*/tire(_[2-4])?"
+                    if a.locomotion == "rollers"
+                    else "{ENV_REGEX_NS}/Robot/Geometry/trunk_base/.*/ankle"
+                ),
+                filter_prim_paths_expr=["{ENV_REGEX_NS}/Ball"],
+                history_length=1,
+                update_period=0.005,
+            )
+        if a.record:
+            from terrain_visuals import camera_prestartup
+            from isaaclab.managers import EventTermCfg
+
+            cfg.events.terrain_camera = EventTermCfg(
+                func=camera_prestartup, mode="prestartup"
+            )
         cfg.sim.physics.solver_cfg.nconmax = 300
         cfg.sim.physics.solver_cfg.njmax = 1500
         cfg.commands.base_velocity.resampling_time_range = (1e8, 1e8)
@@ -112,7 +176,32 @@ def main():
             f: hashlib.sha256((a.models / f).read_bytes()).hexdigest()
             for f in ["walk.onnx", "kick-teacher.onnx"]
         }
-        walk = BatchPolicy(a.models / "walk.onnx", hashes["walk.onnx"], "cuda:0")
+        locomotion_path = (
+            a.models / "official-browser/rollers.onnx"
+            if a.locomotion == "rollers"
+            else a.walking_model or a.models / "walk.onnx"
+        )
+        hashes["locomotion"] = hashlib.sha256(locomotion_path.read_bytes()).hexdigest()
+        walk = BatchPolicy(locomotion_path, hashes["locomotion"], "cuda:0")
+        if a.locomotion == "rollers":
+            from roller_config import check_roller_articulation
+
+            scene_profile["articulation"] = check_roller_articulation(
+                env.scene["robot"], env.observation_manager.compute()["policy"]
+            )
+        video = None
+        hd_rows = []
+        if a.record:
+            from terrain_visuals import start_recording, capture
+
+            camera, video = start_recording(
+                env,
+                a.output,
+                eye_offset=(1.4, -1.95, 1.2),
+                target_offset=(0.1, 0, 0.1),
+                fps=25,
+            )
+
         kick = BatchPolicy(
             a.models / "kick-teacher.onnx", hashes["kick-teacher.onnx"], "cuda:0"
         )
@@ -166,11 +255,27 @@ def main():
             panel = ui.Window("Microduck • Keyboard football", width=390, height=235)
             with panel.frame:
                 with ui.VStack(spacing=8):
-                    ui.Label("W/S: forward/back   A/D: step sideways")
-                    ui.Label("Q/E: turn   Space: right-foot kick")
-                    ui.Label("Release keys to stand. R: restart. Esc: exit.")
+                    ui.Label(
+                        "W: push  S: brake  A/D: unused"
+                        if a.locomotion == "rollers"
+                        else "W/S: forward/back   A/D: step sideways"
+                    )
+                    ui.Label(
+                        "Q/E: turn   Space: gliding shot"
+                        if a.locomotion == "rollers"
+                        else "Q/E: turn   Space: right-foot kick"
+                    )
+                    ui.Label(
+                        "Release keys to coast; S to brake. R: restart."
+                        if a.locomotion == "rollers"
+                        else "Release keys to stand. R: restart. Esc: exit."
+                    )
                     ui.Label("After restart, release and press movement keys again.")
-                    ui.Label("Official walking + kicking ONNX policies")
+                    ui.Label(
+                        "Official passive-wheel policy; no walking-mode switch"
+                        if a.locomotion == "rollers"
+                        else "Official walking + kicking ONNX policies"
+                    )
                     ui.Button(
                         "Restart scene", clicked_fn=lambda: flags.update(reset=True)
                     )
@@ -184,6 +289,46 @@ def main():
         def T(x):
             return getattr(x, "torch", x)
 
+        imu = None
+        imu_rows = []
+        if a.locomotion == "rollers":
+            from roller_imu import (
+                IdealTrunkImu,
+                InertialVelocity,
+                RollerBrake,
+                braking_command,
+                turn_command,
+            )
+
+            imu = IdealTrunkImu(T(robot.data.root_lin_vel_w)[0].cpu().tolist())
+            inertial = InertialVelocity()
+            brake = RollerBrake()
+        vision = None
+        kick_issued = False
+        touch = False
+        early_touch = False
+        kick_at = None
+        contact_at = None
+        recovered_since = None
+        recovered_duration = 0.0
+        physics_rows = []
+        action_rows = []
+        planned_push_seconds = a.shot_push_seconds
+        shot_end_s = max(1.0, planned_push_seconds + 0.5)
+        shot_heading_error = 0.0
+        prepare_at = None
+        prepare_quiet_at = None
+        if a.autonomous:
+            from roller_vision import RollerVision
+
+            vision = RollerVision(env, a.detector_deployment, a.output)
+            from isaaclab_assets.robots.microduck import MICRODUCK_JOINT_NAMES
+
+            servo_ids, _ = robot.find_joints(MICRODUCK_JOINT_NAMES, preserve_order=True)
+            play_ids, _ = robot.find_joints(
+                ["passive_" + n + "_backlash" for n in MICRODUCK_JOINT_NAMES],
+                preserve_order=True,
+            )
         with torch.inference_mode():
             for step in range(round(a.seconds / 0.02)):
                 tick_start = time.monotonic()
@@ -191,28 +336,168 @@ def main():
                     break
                 if flags["reset"]:
                     env.reset()
+                    if imu is not None:
+                        imu = IdealTrunkImu(
+                            T(robot.data.root_lin_vel_w)[0].cpu().tolist()
+                        )
+                        inertial = InertialVelocity()
+                        brake = RollerBrake()
                     flags.update(reset=False, kick=False)
                     held.clear()
                     kick_start = None
                     fallen = False
                     scored = False
                     resets += 1
-                if a.headless_check and step == 150:
-                    flags["kick"] = True
+                if a.headless_check:
+                    held.clear()
+                    if a.check_motion == "drive":
+                        if 100 <= step < 250:
+                            held.add("W")
+                        elif 250 <= step < 350 and a.locomotion == "rollers":
+                            held.add("S")
+                        elif 350 <= step < 450:
+                            held.add("Q")
+                    if a.check_motion == "kick" and step == 150:
+                        flags["kick"] = True
+                visual_command = None
+                if vision is not None and step > 0:
+                    observation = dict(
+                        timestamp_s=step * 0.02,
+                        joint_names=list(MICRODUCK_JOINT_NAMES),
+                        q_rad=(
+                            T(robot.data.joint_pos)[0, servo_ids]
+                            + T(robot.data.joint_pos)[0, play_ids]
+                        )
+                        .cpu()
+                        .tolist(),
+                        qd_rad_s=(
+                            T(robot.data.joint_vel)[0, servo_ids]
+                            + T(robot.data.joint_vel)[0, play_ids]
+                        )
+                        .cpu()
+                        .tolist(),
+                        gyro_body_rad_s=T(robot.data.root_ang_vel_b)[0].cpu().tolist(),
+                        gravity_body=T(robot.data.projected_gravity_b)[0]
+                        .cpu()
+                        .tolist(),
+                    )
+                    visual_command, head_offsets, request = vision.step(
+                        step * 0.02, observation, inertial.velocity.tolist()
+                    )
+                    if request and prepare_at is None:
+                        prepare_at = step * 0.02
+                        planned_push_seconds = a.shot_push_seconds + max(
+                            0.0, min(0.5, (float(vision.ball[0]) - 0.18) / 0.35)
+                        )
+                        shot_end_s = planned_push_seconds + 0.5
+                    if prepare_at is not None and not kick_issued:
+                        visual_command = [
+                            0.0,
+                            0.0,
+                            turn_command(
+                                vision.goal_heading or 0.0,
+                                observation["gyro_body_rad_s"][2],
+                            ),
+                        ]
+                        quiet = (
+                            sum(v * v for v in observation["gyro_body_rad_s"]) < 0.25**2
+                        )
+                        prepare_quiet_at = (
+                            (
+                                step * 0.02
+                                if prepare_quiet_at is None
+                                else prepare_quiet_at
+                            )
+                            if quiet
+                            else None
+                        )
+                        elapsed = step * 0.02 - prepare_at
+                        if (
+                            2.0 <= elapsed <= 4.0
+                            and abs(vision.goal_heading or 0.0) < 0.04
+                            and prepare_quiet_at is not None
+                            and step * 0.02 - prepare_quiet_at >= 0.4
+                        ):
+                            flags["kick"] = True
+                        elif elapsed > 4.0:
+                            vision.failure = "neutral_head_handoff_not_quiet"
+                            break
                 if flags["kick"] and kick_start is None and not fallen:
                     kick_start = step
+                    kick_at = step * 0.02
+                    shot_heading_error = (
+                        float(vision.goal_heading or 0.0) if vision is not None else 0.0
+                    )
+                    kick_issued = True
                     flags["kick"] = False
+                brake_requested = False
                 cmd.is_standing_env[:] = False
                 cmd.vel_command_b[:] = 0
                 if kick_start is None and not fallen:
                     cmd.vel_command_b[0] = torch.tensor(
                         [
-                            0.25 * ("W" in held) - 0.18 * ("S" in held),
-                            0.15 * ("A" in held) - 0.15 * ("D" in held),
-                            0.45 * ("Q" in held) - 0.45 * ("E" in held),
+                            (0.6 if a.locomotion == "rollers" else 0.25) * ("W" in held)
+                            - (0.5 if a.locomotion == "rollers" else 0.18)
+                            * ("S" in held),
+                            (
+                                0.0
+                                if a.locomotion == "rollers"
+                                else 0.15 * ("A" in held) - 0.15 * ("D" in held)
+                            ),
+                            (0.3 if a.locomotion == "rollers" else 0.45)
+                            * (("Q" in held) - ("E" in held)),
                         ],
                         device="cuda:0",
                     )
+                if (
+                    kick_issued
+                    and kick_start is None
+                    and a.locomotion == "rollers"
+                    and not held
+                ):
+                    brake_requested = True
+                if (
+                    visual_command is not None
+                    and kick_start is None
+                    and not fallen
+                    and not kick_issued
+                ):
+                    cmd.vel_command_b[0] = torch.tensor(
+                        visual_command, device=env.device
+                    )
+                    if visual_command[0] <= 0.0:
+                        brake_requested = True
+                if (
+                    kick_start is not None
+                    and a.locomotion == "rollers"
+                    and a.roller_shot == "glide"
+                ):
+                    shot_phase = (step - kick_start) * 0.02
+                    # A new gliding strike: propulsion then a brief braking pulse.
+                    # Wheels remain passive; no walking foot or teacher substitution.
+                    cmd.vel_command_b[0, 0] = (
+                        0.6 if shot_phase < planned_push_seconds else 0.0
+                    )
+                    brake_requested = shot_phase >= planned_push_seconds
+                    # Relative heading from the same ideal body gyro already
+                    # declared by this lab; no world yaw or ball pose input.
+                    shot_heading_error -= (
+                        T(robot.data.root_ang_vel_b)[0, 2].item() * 0.02
+                    )
+                    cmd.vel_command_b[0, 2] = (
+                        0.0  # Let the official actor stabilize its own heading during contact.
+                    )
+                if imu is not None:
+                    if brake_requested:
+                        if kick_issued:
+                            brake.reset()
+                            cmd.vel_command_b[0, 0] = braking_command(
+                                inertial.velocity[0]
+                            )
+                        else:
+                            cmd.vel_command_b[0, 0] = brake.update(inertial.velocity[0])
+                    else:
+                        brake.reset()
                 env.command_manager.get_term("head_pose").command[:] = 0
                 env.command_manager.get_term("body_pose").command[:] = 0
                 obs = env.observation_manager.compute(update_history=True)["policy"]
@@ -223,26 +508,147 @@ def main():
                     weight = (
                         1.0 if phase < 0.14 else max(0.0, 1.0 - (phase - 0.14) / 0.12)
                     )
-                    if weight:
+                    if weight and (
+                        a.locomotion != "rollers" or a.roller_shot == "teacher"
+                    ):
                         action = torch.lerp(action, kick(obs), weight)
-                    if phase >= 1.0:
+                    if phase >= shot_end_s:
                         kick_start = None
                         flags["kick"] = False
+                raw_action = action.clone()
+                if vision is not None and step * 0.02 >= 2.0:
+                    # Explicit head controller, recorded in the executed action history.
+                    # Roller policy was not trained for walking gaze commands.
+                    gaze_weight = (
+                        1.0
+                        if prepare_at is None
+                        else max(0.0, 1.0 - (step * 0.02 - prepare_at) / 0.4)
+                    )
+                    action[:, 5:9] = torch.lerp(
+                        action[:, 5:9],
+                        torch.tensor([vision.head_offsets], device=env.device),
+                        gaze_weight,
+                    )
+                action_rows.append(
+                    dict(
+                        timestamp_s=step * 0.02,
+                        observation=obs[0].cpu().tolist(),
+                        raw_action=raw_action[0].cpu().tolist(),
+                        executed_action=action[0].cpu().tolist(),
+                        command=cmd.vel_command_b[0].cpu().tolist(),
+                        inertial_velocity_body_m_s=(
+                            None if imu is None else inertial.velocity.tolist()
+                        ),
+                        brake_active=brake_requested,
+                        brake_integral_m=brake.integral if imu is not None else None,
+                    )
+                )
                 env.action_manager.process_action(action)
                 for tick in range(4):
                     env._sim_step_counter += 1
                     env.action_manager.apply_action()
                     env.scene.write_data_to_sim()
                     before_ball = T(env.scene["ball"].data.root_pos_w)[0].cpu().tolist()
-                    env.sim.step(render=tick == 3)
+                    env.sim.step(render=not a.headless_check and tick == 3)
                     env.scene.update(0.005)
+                    if imu is not None:
+                        packet = imu.sample(
+                            T(robot.data.root_lin_vel_w)[0].cpu().tolist(),
+                            T(robot.data.root_quat_w)[0].cpu().tolist(),
+                            T(robot.data.root_ang_vel_b)[0].cpu().tolist(),
+                            step * 0.02 + (tick + 1) * 0.005,
+                        )
+                        estimate = inertial.update(packet)
+                        imu_rows.append(
+                            dict(
+                                **packet, estimated_velocity_body_m_s=estimate.tolist()
+                            )
+                        )
                     after_ball = T(env.scene["ball"].data.root_pos_w)[0].cpu().tolist()
-                    scored = scored or goal_crossing(
-                        before_ball,
-                        after_ball,
-                        goal_x=scene_profile["goal_plane_x_m"],
-                        width=scene_profile["goal_opening_width_m"],
-                        height=scene_profile["goal_opening_height_m"],
+                    force = 0.0
+                    if a.record or vision is not None or a.locomotion == "rollers":
+                        force = (
+                            T(env.scene["ball_contact"].data.force_matrix_w)
+                            .norm(dim=-1)
+                            .max()
+                            .item()
+                        )
+                        if force > 0.05:
+                            in_window = (
+                                kick_at is not None
+                                and 0
+                                <= (step * 0.02 + (tick + 1) * 0.005) - kick_at
+                                <= shot_end_s
+                            )
+                            touch = touch or in_window
+                            if in_window and contact_at is None:
+                                contact_at = step * 0.02 + (tick + 1) * 0.005
+                            early_touch = early_touch or kick_at is None
+                    scored = scored or (
+                        touch
+                        and goal_crossing(
+                            before_ball,
+                            after_ball,
+                            goal_x=scene_profile["goal_plane_x_m"],
+                            width=scene_profile["goal_opening_width_m"],
+                            height=scene_profile["goal_opening_height_m"],
+                            radius=scene_profile["ball_diameter_m"] / 2,
+                        )
+                    )
+                    stamp = step * 0.02 + (tick + 1) * 0.005
+                    speed = T(robot.data.root_lin_vel_b)[0].norm().item()
+                    angular = T(robot.data.root_ang_vel_b)[0].norm().item()
+                    gz = T(robot.data.projected_gravity_b)[0, 2].item()
+                    quiet = (
+                        kick_at is not None
+                        and stamp >= kick_at + shot_end_s
+                        and speed < 0.02
+                        and angular < 0.3
+                        and gz < -0.94
+                    )
+                    recovered_since = (
+                        (stamp if recovered_since is None else recovered_since)
+                        if quiet
+                        else None
+                    )
+                    recovered_duration = (
+                        0.0 if recovered_since is None else stamp - recovered_since
+                    )
+                    physics_rows.append(
+                        dict(
+                            timestamp_s=stamp,
+                            ball_position=after_ball,
+                            ball_contact_force_n=force,
+                            robot_position=T(robot.data.root_pos_w)[0].cpu().tolist(),
+                            linear_speed=speed,
+                            angular_speed=angular,
+                            gravity_z=gz,
+                            kick_at=kick_at,
+                            scored=scored,
+                            recovered_duration_s=recovered_duration,
+                        )
+                    )
+                if step % 2 == 0:
+                    if video is not None:
+                        capture(env, camera, video)
+
+                    def values(v):
+                        return T(v)[0].cpu().tolist()
+
+                    hd_rows.append(
+                        dict(
+                            timestamp_s=(step + 1) * 0.02,
+                            frame=len(hd_rows),
+                            root_position_world_m=values(robot.data.root_pos_w),
+                            root_quaternion_xyzw=values(robot.data.root_quat_w),
+                            joint_positions_absolute_rad=values(robot.data.joint_pos),
+                            ball_position_world_m=values(
+                                env.scene["ball"].data.root_pos_w
+                            ),
+                            ball_quaternion_xyzw=values(
+                                env.scene["ball"].data.root_quat_w
+                            ),
+                        )
                     )
                 env.episode_length_buf += 1
                 env.common_step_counter += 1
@@ -260,8 +666,24 @@ def main():
                             fell=fallen,
                             kicking=kick_start is not None,
                             command=cmd.vel_command_b[0].cpu().tolist(),
+                            velocity=T(robot.data.root_lin_vel_b)[0].cpu().tolist(),
+                            gravity=T(robot.data.projected_gravity_b)[0].cpu().tolist(),
+                            joint_positions=T(robot.data.joint_pos)[0].cpu().tolist(),
+                            joint_velocities=T(robot.data.joint_vel)[0].cpu().tolist(),
                         )
                     )
+                if vision is not None and (
+                    fallen
+                    or early_touch
+                    or (
+                        kick_at is not None
+                        and (
+                            (scored and recovered_duration >= 1.0)
+                            or (step + 1) * 0.02 >= kick_at + shot_end_s + 8
+                        )
+                    )
+                ):
+                    break
                 if not a.headless_check:
                     status.text = (
                         "Fallen — press R to restart."
@@ -275,10 +697,68 @@ def main():
                     time.sleep(max(0, 0.02 - (time.monotonic() - tick_start)))
         if not a.headless_check:
             inp.unsubscribe_to_keyboard_events(window.get_keyboard(), subscription)
+        if vision is not None:
+            vision.close()
+        if video is not None:
+            video.stdin.close()
+            if video.wait(timeout=30):
+                raise RuntimeError("Recording failed")
         report = dict(
             status="completed",
+            locomotion=a.locomotion,
+            seed=a.seed,
+            check_motion=a.check_motion,
+            roller_shot=a.roller_shot,
+            fixture=dict(
+                root_xy=[a.root_x, a.root_y],
+                ball_xy=[a.ball_x, a.ball_y],
+                shot_push_seconds=a.shot_push_seconds,
+                planned_push_seconds=planned_push_seconds,
+            ),
+            autonomous=a.autonomous,
+            autonomous_scope="RGB/ToF visual servo with ideal trunk IMU and joint encoders; no Nav2 or walking sole odometry",
+            task_result=dict(
+                kick_issued=kick_issued,
+                foot_ball_contact=touch,
+                early_contact=early_touch,
+                whole_ball_in_goal=scored,
+                fallen=fallen,
+                recovered=recovered_duration >= 1.0,
+                recovery_continuous_seconds=recovered_duration,
+                visual_request_at_s=prepare_at,
+                kick_at_s=kick_at,
+                contact_at_s=contact_at,
+                contact_window_s=shot_end_s,
+                passed=bool(
+                    a.autonomous
+                    and kick_issued
+                    and touch
+                    and not early_touch
+                    and scored
+                    and not fallen
+                    and recovered_duration >= 1.0
+                ),
+            ),
+            joint_names=robot.joint_names,
             models=hashes,
             physics_backend=manager.backend_name,
+            brake_controller=(
+                dict(
+                    kind="PI_wait_P_stop",
+                    kp=3.0,
+                    ki=4.0,
+                    limits=[-0.5, 0.35],
+                    integral_limits=[-0.15, 0.15],
+                    dt_s=0.02,
+                )
+                if imu is not None
+                else None
+            ),
+            imu_velocity_estimator=(
+                "ideal specific-force integration from zero reset; no bias/noise calibration"
+                if imu is not None
+                else None
+            ),
             physics_hz=200,
             policy_hz=50,
             resets=resets,
@@ -286,10 +766,34 @@ def main():
             goal_observed=scored,
             scene_profile=scene_profile,
             events=events,
-            scope="keyboard skill exploration; goal position observation is not autonomous-task certification",
+            scope=(
+                "autonomous visual gliding experiment; complete success requires independent scoring"
+                if a.autonomous
+                else "keyboard skill exploration; goal position observation is not autonomous-task certification"
+            ),
+        )
+        (a.output / "imu.jsonl").write_text(
+            "".join(json.dumps(r) + "\n" for r in imu_rows)
         )
         (a.output / "report.json").write_text(json.dumps(report, indent=2))
+        (a.output / "scene-hd-ledger.json").write_text(
+            json.dumps(
+                dict(
+                    frames=hd_rows,
+                    fps=25,
+                    dimensions=[1920, 1080],
+                    encoder_exit_code=0 if video is not None else None,
+                    live_hd_recorded=video is not None,
+                )
+            )
+        )
         (a.output / "trajectory.json").write_text(json.dumps(rows))
+        (a.output / "physical-evaluation.jsonl").write_text(
+            "".join(json.dumps(r) + "\n" for r in physics_rows)
+        )
+        (a.output / "action-trace.jsonl").write_text(
+            "".join(json.dumps(r) + "\n" for r in action_rows)
+        )
         env.close()
 
 

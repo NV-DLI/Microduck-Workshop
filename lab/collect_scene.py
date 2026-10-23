@@ -172,7 +172,7 @@ def run(args, cfg, rows, plan):
                 mode == "far" and request["view_seed"] % 2 == 0
             )
             target = (
-                np.array([bx, by, 0.035]) if aim_ball else np.array([0.68, 0.0, 0.12])
+                np.array([bx, by, 0.05]) if aim_ball else np.array([0.68, 0.0, 0.12])
             )
             dx = target[0] - root_x
             dy = target[1] - root_y
@@ -206,7 +206,7 @@ def run(args, cfg, rows, plan):
             robot.set_joint_position_target_index(target=joint)
             ball.write_root_pose_to_sim_index(
                 root_pose=torch.tensor(
-                    [[bx, by, 0.035, 0, 0, 0, 1]],
+                    [[bx, by, 0.05, 0, 0, 0, 1]],
                     device=env.device,
                     dtype=torch.float32,
                 )

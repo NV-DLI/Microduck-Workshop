@@ -180,8 +180,8 @@
       "en": "Choose observation, fixed-model labs, or training practice. All three follow the same learning sequence."
     },
     "meta": {
-      "zh": "阅读 · 建议预留 5 分钟 · 无需 GPU",
-      "en": "About 5 minutes · No GPU required"
+      "zh": "阅读 · 预计学习时长 5 分钟",
+      "en": "Estimated learning time: 5 minutes"
     },
     "number": "",
     "group": {
@@ -364,6 +364,11 @@
         },
         "blocks": [
           {
+            "type": "p",
+            "zh": "在您希望存放课程的目录打开终端，运行下面的命令下载仓库并进入课程目录。",
+            "en": "Open a terminal in the directory where you want to keep the course, then run the commands below to clone and enter the repository."
+          },
+          {
             "type": "code",
             "code": "mkdir -p \"$HOME/microduck\"\ncd \"$HOME/microduck\"\ngit clone https://github.com/NV-DLI/Microduck-Workshop.git\ncd Microduck-Workshop\npython3 scripts/workshop.py verify-models",
             "label": "Terminal · Bash"
@@ -426,6 +431,11 @@
         },
         "blocks": [
           {
+            "type": "p",
+            "zh": "在课程仓库根目录的终端中运行下面的命令，完成本节操作。若命令包含输出目录，请使用尚不存在的新目录，以保留此前的结果。",
+            "en": "Run the command below in a terminal at the repository root. If it specifies an output directory, use a new one to retain earlier results."
+          },
+          {
             "type": "code",
             "code": "python3 scripts/workshop.py inspect-model --model models/walk.onnx",
             "label": "Terminal · Bash"
@@ -467,8 +477,8 @@
       "en": "Meet Microduck: play football first. Explore the concepts, run the lab, and inspect its results."
     },
     "meta": {
-      "zh": "第 1 章 · 自学与实践",
-      "en": "Chapter 1 · Self-study and practice"
+      "zh": "第 1 章 · 预计学习时长 20 分钟",
+      "en": "Chapter 1 · Estimated learning time: 20 minutes"
     },
     "sections": [
       {
@@ -493,11 +503,6 @@
         },
         "blocks": [
           {
-            "type": "p",
-            "zh": "先完成<a href=\"setup.html\">环境准备</a>，在课程仓库根目录打开终端。命令会打开 Isaac Sim，场景中的机器人、足球和球门与第 7 章自主射门任务采用相同的尺寸与物理配置。将输入法切换到英文，鼠标点击仿真窗口后，用下面的按键操作。若按键没有反应，先检查是否仍处于中文输入状态。",
-            "en": "Complete <a href=\"setup.html\">setup</a> and run this from the repository root. Click the Isaac Sim window to focus it. The robot, ball and goal use the same dimensions and physical settings as the autonomous task. Use an English keyboard input mode so an IME does not consume movement keys."
-          },
-          {
             "type": "image",
             "file": "media/keyboard-football.png",
             "alt": {
@@ -506,6 +511,11 @@
             },
             "zh": "先用行走策略接近足球，再停稳并切换到右脚踢球动作。",
             "en": "Walk toward the ball, stop, then switch to the right-foot kick."
+          },
+          {
+            "type": "p",
+            "zh": "先完成<a href=\"setup.html\">环境准备</a>，在课程仓库根目录打开终端。下面的命令会打开 Isaac Sim，场景中的机器人、足球和球门与第 7 章自主射门任务采用相同的尺寸与物理配置。将输入法切换到英文，鼠标点击仿真窗口后，用下面的按键操作。若按键没有反应，先检查是否仍处于中文输入状态。",
+            "en": "Complete <a href=\"setup.html\">setup</a> and run the command below from the repository root. Click the Isaac Sim window to focus it. The robot, ball and goal use the same dimensions and physical settings as the autonomous task. Use an English keyboard input mode so an IME does not consume movement keys."
           },
           {
             "type": "code",
@@ -583,6 +593,112 @@
             "type": "p",
             "zh": "先走到球旁边，再停下来：球应位于右脚前方，身体朝向球门。按空格出脚。若踢空，先调整站位；若失去平衡，按 R 重来。这里由您判断球在哪里、应该朝哪走，策略只负责把指令变成关节动作。如果某次尝试没能进球，可以想一想：是站位偏了、朝向不对，还是出脚时机不合适？这些判断正是后面要交给自主射门系统的任务。",
             "en": "Walk toward the ball, stop with the ball in front of the right foot, and face the goal before pressing Space. Reposition after a miss; press R after a fall. You choose the target and direction; the policies coordinate the joints."
+          },
+          {
+            "type": "p",
+            "zh": "默认站立并不是另一个始终抢占控制的“站起”技能：行走策略持续运行，收到零移动指令时保持站立；摔倒后的站起、坐下和轮滑是不同技能。键盘实验直接在接触面上运行策略；第 7 章自主任务另外等待身体与观测稳定后才开始检测。",
+            "en": "Default standing is the walking policy responding to zero movement commands. Getting up after a fall, sitting and rolling are separate skills. The keyboard lab starts its policy on the contact surface. Chapter 7 additionally gates autonomous detection on settled body motion and observations."
+          }
+        ]
+      },
+      {
+        "id": "rollers",
+        "title": {
+          "zh": "再用轮滑，把球碰进球门",
+          "en": "Try a gliding shot on passive wheels"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "这一次从初始化到结束都使用轮滑模型：四个轮子是被动轮，仍由原来的 14 个舵机调整腿部姿态完成推进、转向和制动。无需切换走路，也不调用踢腿策略。先观察松开按键后仍会滑行，再练习提前减速；目标是把球碰进门，同时让小鸭子停在门前。",
+            "en": "This run uses the roller model from initialization to the end. Its four wheels are passive; the same 14 servos propel, steer and brake through leg posture. It never switches to walking or invokes a leg kick. First observe coasting after key release, then practise slowing early so the ball enters the goal while the robot stops before it."
+          },
+          {
+            "type": "p",
+            "zh": "关闭上一场景后，在同一终端运行下面的命令。<code>--locomotion rollers</code> 选择轮滑的物理模型与固定策略，输出另存到一个新目录。",
+            "en": "Close the previous scene, then run the command below in the same terminal. <code>--locomotion rollers</code> selects the roller physics model and fixed actor, writing to a new output directory."
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py manual \\\n  --locomotion rollers \\\n  --seconds 600 \\\n  --output outputs/manual-rollers-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "按键",
+                "轮滑中的含义"
+              ],
+              "en": [
+                "Key",
+                "Meaning in roller mode"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "W",
+                  "向前推进"
+                ],
+                [
+                  "S",
+                  "制动；短按并观察，持续按住可能开始倒滑"
+                ],
+                [
+                  "Q / E",
+                  "左转 / 右转"
+                ],
+                [
+                  "松开按键",
+                  "滑行，不保证立即停住"
+                ],
+                [
+                  "空格",
+                  "调用一次有限时的滑行推射辅助；不会踢腿"
+                ],
+                [
+                  "R / Esc",
+                  "重置 / 退出；A、D 不用于侧移"
+                ]
+              ],
+              "en": [
+                [
+                  "W",
+                  "Push forward"
+                ],
+                [
+                  "S",
+                  "Brake briefly and observe; holding it can reverse motion"
+                ],
+                [
+                  "Q / E",
+                  "Turn left / right"
+                ],
+                [
+                  "Release keys",
+                  "Coast; this does not guarantee a stop"
+                ],
+                [
+                  "Space",
+                  "Run a bounded gliding-shot helper; no leg kick"
+                ],
+                [
+                  "R / Esc",
+                  "Reset / exit; A and D do not strafe"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "先用 W、Q、E 把球对到前轮前方，再用短促的 S 控制接近速度；您也可以在完成对位后试空格辅助。轮滑的推进量不是以米每秒为单位的速度目标，不能把 W 的内部数值直接当作实际速度。比较两种方式：步行射门先停稳再出脚；轮滑射门通过运动中的接触传递动量，随后制动。",
+            "en": "Use W, Q and E to bring the ball in front of a wheel, then brief S presses to control approach speed; after alignment, you can also try the Space helper. The roller push input is not a velocity target in metres per second. Compare the modes: a walking shot settles before kicking; a gliding shot transfers momentum through moving contact and then brakes."
+          },
+          {
+            "type": "p",
+            "zh": "轮滑从已经展开的静止腿姿初始化，不先播放步行或踢腿动作。四个轮胎保留官方外观、质量和惯量；为了稳定计算滚动接触，碰撞采用直径 30 毫米、宽 7.6 毫米的圆柱近似，简化了胎肩圆角。键盘、射门和坡地的轮滑实验共用这一配置，实际轮胎的摩擦与变形尚未标定。",
+            "en": "Roller mode initializes in a stationary roller posture. Official tyre visuals, mass and inertia are retained; rolling contacts use cylinders 30 mm in diameter and 7.6 mm wide, simplifying the rounded shoulders. Keyboard, football and slope roller experiments share this configuration. Real tyre friction and deformation remain uncalibrated."
           }
         ]
       },
@@ -633,12 +749,12 @@
           },
           {
             "type": "p",
-            "zh": "机器人 USD 不只是一张好看的网格：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型影响目标角度如何变成实际运动。球的半径为 3.5 cm、质量为 45 g；球门内宽为 38.8 cm。Isaac Sim 提供场景与渲染，这里通过 Isaac Lab 的任务配置接入 Newton 物理后端。",
-            "en": "The robot USD includes joints, collision geometry and inertial properties. The ball has a 3.5 cm radius and 45 g mass; the goal opening is 38.8 cm wide. Isaac Sim provides the scene and rendering; Isaac Lab configures the Newton physics backend."
+            "zh": "机器人 USD 不只是一张好看的网格：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型影响目标角度如何变成实际运动。官网黑白足球的半径为 5 cm、质量为 30 g；球门内宽为 38.8 cm。Isaac Sim 提供场景与渲染，这里通过 Isaac Lab 的任务配置接入 Newton 物理后端。",
+            "en": "The robot USD includes joints, collision geometry and inertial properties. The ball has a 5 cm radius and 30 g mass; the goal opening is 38.8 cm wide. Isaac Sim provides the scene and rendering; Isaac Lab configures the Newton physics backend."
           },
           {
             "type": "code",
-            "code": "cfg.scene.ball = RigidObjectCfg(\n    prim_path=\"{ENV_REGEX_NS}/Ball\",\n    spawn=sim_utils.SphereCfg(\n        radius=0.035,\n        mass_props=sim_utils.MassPropertiesCfg(mass=0.045),\n        collision_props=sim_utils.CollisionPropertiesCfg(),\n        rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True),\n    ),\n    init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.035)),\n)",
+            "code": "cfg.scene.ball = RigidObjectCfg(\n    prim_path=\"{ENV_REGEX_NS}/Ball\",\n    spawn=sim_utils.SphereCfg(\n        radius=0.05,\n        mass_props=sim_utils.MassPropertiesCfg(mass=0.03),\n        collision_props=sim_utils.CollisionPropertiesCfg(),\n        rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True),\n    ),\n    init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.05)),\n)\n# Apply the shared official-ball asset, goal and floor materials.\nscene_profile = configure_football(cfg, style=\"A\")",
             "label": "Python · 核心代码节选",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py"
           }
@@ -653,23 +769,23 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "本课程的室内射门场景使用 1 × 1.6 米垫子、外尺寸为宽 40 × 深 20 × 高 25 厘米的固定式钢网球门，以及直径 7 厘米、质量 45 克的球。垫子提供短距离接近和射门空间；它并不代表机器人已能在狭小场地中任意绕行。门框直径暂取 6 毫米，因此两根立柱的中心距为 39.4 厘米，净开口为宽 38.8、高 24.4 厘米。定位使用中心距，进球判定使用净开口，不能互换。",
-            "en": "The indoor scene uses a 1 × 1.6 m mat, a secured steel-mesh goal measuring 40 cm wide × 20 cm deep × 25 cm high, and a 7 cm diameter, 45 g ball. This supports short approaches and shots, not arbitrary obstacle avoidance in a confined space. With an assumed 6 mm frame diameter, post centres are 39.4 cm apart and the clear opening is 38.8 × 24.4 cm. Localization uses centre spacing; scoring uses the clear opening."
+            "zh": "本课程的室内射门场景使用 1 × 1.6 米垫子、外尺寸为宽 40 × 深 20 × 高 25 厘米的固定式钢网球门，以及官网直径 10 厘米、质量 30 克的黑白足球。垫子提供短距离接近和射门空间；它并不代表机器人已能在狭小场地中任意绕行。门框直径暂取 6 毫米，因此两根立柱的中心距为 39.4 厘米，净开口为宽 38.8、高 24.4 厘米。定位使用中心距，进球判定使用净开口，不能互换。",
+            "en": "The indoor scene uses a 1 × 1.6 m mat, a secured steel-mesh goal measuring 40 cm wide × 20 cm deep × 25 cm high, and an official black-and-white ball with a 10 cm diameter and 30 g mass. This supports short approaches and shots, not arbitrary obstacle avoidance in a confined space. With an assumed 6 mm frame diameter, post centres are 39.4 cm apart and the clear opening is 38.8 × 24.4 cm. Localization uses centre spacing; scoring uses the clear opening."
           },
           {
             "type": "p",
-            "zh": "四种垫子图案共用尺寸、机器人、灯光和接触模型。门框与网格有实际几何和碰撞，垫子按铺平后的刚性平面处理；尚未模拟起翘、软垫压缩或松动球门。网丝粗细、摩擦与材质响应仍是建模假设，拿到实物后应测量并校准。画面更精细，并不自动意味着动力学更准确。",
-            "en": "The four mat patterns share dimensions, robot, lighting and contact model. Frame and mesh have collision geometry. The mat uses a flush rigid contact plane; curled edges, compression and an unsecured goal are not modeled. Wire thickness, friction and material response remain assumptions to measure on the actual products. Visual detail alone does not establish physical accuracy."
+            "zh": "地面提供两种足球场图案、浅色大理石和棕色木地板，均使用 1 × 1.6 米的展示区域、同一套机器人和灯光。球门按商品图做成侧面呈梯形、后网倾斜的钢网结构，固定其尺寸和材质。门框、网丝都有碰撞；地面暂按刚性平面处理，尚未模拟软垫压缩或起翘。不同贴图不意味着已经标定了各类实物地面的摩擦。",
+            "en": "Choose two football graphics, pale marble or brown wood within the same 1 × 1.6 m area, robot and lighting. The fixed steel-mesh goal has trapezoidal sides and a sloping back, following the product photo. Frame and wires collide; the floor is a rigid plane without foam compression or raised edges. Different textures do not imply calibrated physical friction for each real surface."
           },
           {
             "type": "image",
             "file": "media/indoor-mats.webp",
             "alt": {
-              "zh": "同一机器人和球门，四种垫子图案",
+              "zh": "同一机器人和球门，四种地面样式",
               "en": "Four mat patterns with the same robot and goal"
             },
-            "zh": "A—D 四种垫子图案。尺寸与物理状态相同，适合单独比较视觉变化；这组姿态展示不代表四次任务结果。",
-            "en": "Mat patterns A–D at identical dimensions and physical state. These illustrations isolate appearance; they are not four task outcomes."
+            "zh": "A：条纹足球场；B：简洁足球场；C：浅色大理石；D：棕色木地板。相同姿态用于观察地面外观变化，不代表四次任务结果。",
+            "en": "A: striped football pitch; B: plain football pitch; C: pale marble; D: brown wood. The same pose isolates appearance; these are not four task outcomes."
           },
           {
             "type": "p",
@@ -691,8 +807,8 @@
       {
         "id": "policies",
         "title": {
-          "zh": "两个不到 1 MB 的策略如何控制全身",
-          "en": "How two small policies control the body"
+          "zh": "步行模式如何切换行走与踢球策略",
+          "en": "How walking mode switches between gait and kick policies"
         },
         "blocks": [
           {
@@ -734,7 +850,14 @@
                   "Right-foot kick"
                 ]
               ]
-            }
+            },
+            "zh": "步行模式中的两个官方策略都接收 61 维观测，输出 14 个关节动作。网络包含 512、256、128 个单元的三个隐藏层，使用 ELU 激活；输入归一化参数已包含在 ONNX 中，不要再做一次不匹配的归一化。键盘没有逐个操纵关节，而是改变速度指令。出脚时速度归零，短时调用踢球策略，再平滑切回站立。这里不加载踢球残差模型。",
+            "en": "The two official policies used in walking mode accept 61 observations and output 14 joint actions. Hidden layers have 512, 256 and 128 units with ELU activation. Input normalization is embedded in ONNX. Keyboard input changes commands rather than individual joint angles. A shot briefly blends to the kick policy and back to the walking policy at zero movement command; this manual lab does not load the kick residual."
+          },
+          {
+            "type": "p",
+            "zh": "课程的步行与踢球组合保留经过原任务验证的固定官方权重；它们不等于官网网页模拟器当天的最新步行权重。轮滑实验单独使用本次核对的官网轮滑模型。硬件参数是否对应、策略文件是否相同、任务是否通过，是三个需要分别检查的问题。",
+            "en": "The walking and kicking combination retains the fixed official weights used in the existing task validation; those files are not the latest browser walking weights. The roller lab separately uses the verified browser roller model. Hardware correspondence, policy identity and task success require separate checks."
           },
           {
             "type": "p",
@@ -814,8 +937,8 @@
       "en": "Separate shells, joints, actuators, and sensors, then see how they form a controllable robot."
     },
     "meta": {
-      "zh": "第 2 章 · 结构交互与原理 · 无需 GPU",
-      "en": "Chapter 2 · Interactive anatomy · No GPU required"
+      "zh": "第 2 章 · 预计学习时长 20 分钟",
+      "en": "Chapter 2 · Estimated learning time: 20 minutes"
     },
     "number": "2",
     "group": {
@@ -1077,7 +1200,7 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "第一章使用已经训练好的策略进行推理：它把当前观测映射为 14 个关节动作，运行过程中不会更新神经网络参数。需要特别区分的是，更改速度指令只是在测试同一个模型的响应，并非重新训练；只有更换模型文件才会改变策略。",
+            "zh": "第一章使用已经训练好的策略进行推理：它把当前观测映射为 14 个关节动作，运行过程中不会更新神经网络参数。需要特别区分的是，更改速度指令只是在测试同一个模型的响应，并非重新训练；更新策略参数需要训练或更换模型权重。",
             "en": "Chapter 1 runs inference with a trained policy. It maps the current observation to 14 joint actions without updating neural-network parameters. Changing the velocity command tests the same model under a different request; it is not training. Choosing a different model file changes the policy."
           },
           {
@@ -1200,8 +1323,8 @@
       "en": "Experience PPO training and understand observations, actions, rewards, and checkpoints while keeping downstream labs on fixed models."
     },
     "meta": {
-      "zh": "第 3 章 · 阅读 · 建议预留 30 分钟 · 训练练习可选",
-      "en": "Chapter 3 · About 30 minutes reading · Optional training"
+      "zh": "第 3 章 · 预计学习时长 30 分钟",
+      "en": "Chapter 3 · Estimated learning time: 30 minutes"
     },
     "number": "3",
     "group": {
@@ -1347,6 +1470,11 @@
         },
         "blocks": [
           {
+            "type": "p",
+            "zh": "在课程仓库根目录的终端中运行下面的命令，完成本节操作。若命令包含输出目录，请使用尚不存在的新目录，以保留此前的结果。",
+            "en": "Run the command below in a terminal at the repository root. If it specifies an output directory, use a new one to retain earlier results."
+          },
+          {
             "type": "code",
             "code": "python3 scripts/workshop.py walk \\\n  --model outputs/student-walk-01/exported/policy.onnx \\\n  --velocity 0.30 0.00 0.00 \\\n  --seconds 12 \\\n  --seed 202 \\\n  --output outputs/student-walk-test-01",
             "label": "Terminal · Bash"
@@ -1481,8 +1609,8 @@
       "en": "Adapt walking to slopes. Explore the concepts, run the lab, and inspect its results."
     },
     "meta": {
-      "zh": "第 4 章 · 自学与实践",
-      "en": "Chapter 4 · Self-study and practice"
+      "zh": "第 4 章 · 预计学习时长 30 分钟",
+      "en": "Chapter 4 · Estimated learning time: 30 minutes"
     },
     "sections": [
       {
@@ -1573,14 +1701,14 @@
           },
           {
             "type": "code",
-            "code": "slope = math.tan(math.radians(cfg.slope_deg))\nxs = [0.0, 2.35, 3.35, 6.0]\nzs = [0.0, 0.0, slope, slope]\nvertices = [(x, y, z) for x, z in zip(xs, zs) for y in [0.0, 4.0]]",
+            "code": "slope = math.tan(math.radians(cfg.slope_deg))\nxs = [-48.0, 2.35, 3.35, 52.0]\nzs = [0.0, 0.0, slope, slope]\nvertices = [(x, y, z) for x, z in zip(xs, zs) for y in [-48.0, 52.0]]\norigin = np.array([2.0, 2.0, 0.0])",
             "label": "Python · 核心代码节选",
             "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/terrain.py"
           },
           {
             "type": "p",
-            "zh": "网格内部使用偏移后的局部坐标；机器人起点对应上式的 x = 0。通过 Isaac Lab 的 TerrainGenerator 和 TerrainImporter，可让同一几何用于可视化与物理测试，并为并行训练批量生成地形。",
-            "en": "The mesh uses offset local coordinates; the robot spawn corresponds to x = 0 in the equation. Isaac Lab TerrainGenerator and TerrainImporter reuse this geometry for visualization, physics and parallel tasks."
+            "zh": "网格坐标的起点为 (2, 2, 0)；减去这个原点后，机器人相对起点为 x = 0，坡道从 x = 0.35 m 延伸到 1.35 m。前后的支撑面总计扩展到 100 × 100 m，避免失败后从小块地形边缘掉落。Isaac Lab 的 TerrainGenerator 和 TerrainImporter 让同一几何用于可视化、物理测试与并行训练。",
+            "en": "The mesh origin is (2, 2, 0). Subtracting it places the robot at relative x = 0 and the ramp between x = 0.35 m and 1.35 m. Continuous approach and landing support extends across 100 × 100 m so failures do not fall off a small terrain tile. Isaac Lab’s TerrainGenerator and TerrainImporter share this geometry across visualization, physics tests and parallel training."
           }
         ]
       },
@@ -1591,6 +1719,11 @@
           "en": "Test the official walking policy first"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "先让官方行走策略在 5° 上坡运行 20 秒。在课程仓库根目录打开终端，运行下面的命令；输出目录应使用尚不存在的新名称。",
+            "en": "Run the official walking policy on a 5° uphill ramp for 20 seconds. Run the command below from the repository root with a new output directory."
+          },
           {
             "type": "code",
             "code": "python3 scripts/workshop.py terrain \\\n  --model models/walk.onnx \\\n  --slope 5 --num-envs 1 --seconds 20 --seed 42001 \\\n  --output outputs/slope-up-05",
@@ -2150,6 +2283,121 @@
         ]
       },
       {
+        "id": "rollers",
+        "title": {
+          "zh": "同一条坡道，再试轮滑模式",
+          "en": "Try the same ramp on passive wheels"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "四个轮子会改变支撑与阻力。上坡时必须通过腿部动作持续提供推进，下坡时松开指令仍可能加速；不能把平地轮滑直接当成坡地技能。这里沿用相同坡面、连续支撑地面、20 秒时限、到达位置与不跌倒标准，另列轮滑结果。推进命令与行走的速度命令语义不同，因此不比较两者的速度跟踪误差。",
+            "en": "Wheels change support and resistance. Climbing requires propulsion through leg motion, while releasing input downhill may still permit acceleration. We retain the same ramp, continuous support surface, 20-second limit, arrival target and no-fall requirement, and report roller results separately. Roller push and walking velocity commands have different meanings, so their velocity-tracking errors are not compared."
+          },
+          {
+            "type": "media",
+            "file": "rollers-slope.gif",
+            "alt": {
+              "zh": "官方轮滑策略在 5 度上坡时发生明显侧偏",
+              "en": "Official roller actor drifts sideways on a 5-degree incline"
+            },
+            "zh": "这是 +5° 上坡回合的前 7 秒：小鸭子保持轮滑姿态，但逐渐横向偏离测试通道。完整 20 秒记录中未跌倒，却没有满足到达位置要求。这次录像使用另一个种子 55012，不计入下表；片段用于观察侧偏过程，不代表成功上坡。",
+            "en": "The first 7 seconds of a +5° trial show the robot remaining on its wheels but drifting out of the test corridor. The complete 20-second record has no fall but fails the arrival criterion. This recording uses a separate seed, 55012, excluded from the table. The clip illustrates drift, not successful climbing."
+          },
+          {
+            "type": "p",
+            "zh": "下面的命令在 +5° 坡道上运行 5 个轮滑副本。先看终端结果中的 <code>passed</code> 与 <code>fell</code>；需要录像时改为一个环境并增加 <code>--record</code>，为每次运行换一个输出目录。",
+            "en": "The command below runs five roller environments on a +5° ramp. Inspect <code>passed</code> and <code>fell</code>. For recording, select one environment and add <code>--record</code>; use a new output directory each time."
+          },
+          {
+            "type": "code",
+            "code": "python3 scripts/workshop.py terrain \\\n  --locomotion rollers \\\n  --model models/official-browser/rollers.onnx \\\n  --slope 5 --seconds 20 --num-envs 5 \\\n  --seed 55011 \\\n  --output outputs/rollers-slope-01",
+            "label": "Terminal · Bash"
+          },
+          {
+            "type": "p",
+            "zh": "进一步试 −5°、+10° 和 −10°。记录“是否到达”和“整段是否跌倒”两个不同结果：下坡滑过终点后摔倒仍不算通过。这里没有换用专门训练的坡地轮滑模型，失败也是这项迁移实验的有效结果。",
+            "en": "Then try −5°, +10° and −10°. Record arrival and whole-episode survival separately: crossing the finish downhill and falling later is still a failure. This experiment does not substitute a slope-trained roller policy; failure is a valid transfer result."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "坡度",
+                "完整通过",
+                "整段未跌倒"
+              ],
+              "en": [
+                "Slope",
+                "Complete pass",
+                "No fall throughout"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "0°",
+                  "5/5",
+                  "5/5"
+                ],
+                [
+                  "5°",
+                  "0/5",
+                  "5/5"
+                ],
+                [
+                  "-5°",
+                  "0/5",
+                  "0/5"
+                ],
+                [
+                  "10°",
+                  "0/5",
+                  "3/5"
+                ],
+                [
+                  "-10°",
+                  "0/5",
+                  "0/5"
+                ]
+              ],
+              "en": [
+                [
+                  "0°",
+                  "5/5",
+                  "5/5"
+                ],
+                [
+                  "5°",
+                  "0/5",
+                  "5/5"
+                ],
+                [
+                  "-5°",
+                  "0/5",
+                  "0/5"
+                ],
+                [
+                  "10°",
+                  "0/5",
+                  "3/5"
+                ],
+                [
+                  "-10°",
+                  "0/5",
+                  "0/5"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "这组固定官方轮滑策略在平地通过 5/5；+5° 上坡虽然全部保持直立，却明显横向偏离，未满足规定的到达位置。它尚不能直接替代坡地行走策略。种子 55011 在轮胎接触修正时复用，属于固定配置核查，不是新增的独立泛化样本；它与前表步行实验的种子也不同。完整记录见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json\">轮滑坡地结果</a>。",
+            "en": "The fixed official roller actor passed 5/5 on level ground. All +5° trials stayed upright but drifted far sideways and missed the required arrival region. It cannot directly replace the slope walking policy. Seed 55011 was reused while correcting tyre contacts: this is a fixed-configuration check, not an additional independent generalization set, and its seed differs from the walking table. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json\">roller slope results</a>."
+          }
+        ]
+      },
+      {
         "id": "next",
         "title": {
           "zh": "同一套平台，还能学会什么",
@@ -2193,8 +2441,8 @@
       "en": "Explore jumping, ball balancing and skill handoffs using the same observation–action–reward framework."
     },
     "meta": {
-      "zh": "第 5 章 · 技能观察与比较",
-      "en": "Chapter 5 · Observe and compare skills"
+      "zh": "第 5 章 · 预计学习时长 20 分钟",
+      "en": "Chapter 5 · Estimated learning time: 20 minutes"
     },
     "number": "5",
     "group": {
@@ -2371,8 +2619,8 @@
           },
           {
             "type": "p",
-            "zh": "运行本章的模型检查命令后，请分别记录输入和输出形状，再解释为什么“文件能够成功加载”只能证明模型格式可读，却不能证明机器人能够完成动作。模型文件本身可能完全合法，但接收到的单位或关节顺序仍可能错误。固定任务入口会把权重与这些运行约定配套使用。",
-            "en": "After inspecting the models, record their input and output shapes. Explain why successfully loading a file only proves that its format is readable, not that the robot will perform a skill. A valid file can still receive the wrong units or joint order. The fixed task entry point uses weights together with their required conventions."
+            "zh": "运行<a href=\"07-football.html#residual\">第 7 章的模型检查命令</a>后，请分别记录输入和输出形状，再解释为什么“文件能够成功加载”只能证明模型格式可读，却不能证明机器人能够完成动作。模型文件本身可能完全合法，但接收到的单位或关节顺序仍可能错误。固定任务入口会把权重与这些运行约定配套使用。",
+            "en": "Use the <a href=\"07-football.html#residual\">model inspection commands in Chapter 7</a>, then record input and output shapes. A readable model file does not guarantee a correct action: units and joint ordering must also match. The fixed task entry point pairs weights with their runtime contract."
           },
           {
             "type": "p",
@@ -2460,8 +2708,8 @@
       "en": "Design the autonomous football pipeline. Explore the concepts, run the lab, and inspect its results."
     },
     "meta": {
-      "zh": "第 6 章 · 自学与实践",
-      "en": "Chapter 6 · Self-study and practice"
+      "zh": "第 6 章 · 预计学习时长 40 分钟",
+      "en": "Chapter 6 · Estimated learning time: 40 minutes"
     },
     "sections": [
       {
@@ -2471,6 +2719,11 @@
           "en": "Turn manual decisions into a system"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "本章讲解步行射门主线：视觉定位、Nav2 规划、步行接近与踢腿恢复。第 7 章另设轮滑分支，采用视觉反馈直接碰球，不复用步行的脚底里程计和踢腿策略。",
+            "en": "This chapter follows the walking-shot pipeline: visual localization, Nav2 planning, walking approach, kicking and recovery. Chapter 7 adds a separate visual-feedback roller branch that contacts the ball directly without walking sole odometry or a kick actor."
+          },
           {
             "type": "flow",
             "label": "自主射门的处理流程",
@@ -3244,8 +3497,8 @@
           },
           {
             "type": "p",
-            "zh": "打开生成的 <code>plan.svg</code>，检查目标点、球和球门之间的相对关系；<code>plan.json</code> 中记录了目标坐标与朝向。把距离从 0.18 改为 0.25，并使用另一个输出目录：先预测目标点会向哪个方向移动，再用结果验证预测。该命令只计算已知点之间的几何关系，既没有运行物理仿真，也不能证明目标实际可达。",
-            "en": "Open <code>plan.svg</code> to inspect the stance, ball, and goal. <code>plan.json</code> gives the target position and heading. Change distance from 0.18 to 0.25 with a new output directory; predict the direction of movement and check it. This command computes geometry from known points. It runs no physics and does not prove reachability."
+            "zh": "先运行<a href=\"07-football.html#plan-practice\">第 7 章的站位计算命令</a>。打开生成的 <code>plan.svg</code>，检查目标点、球和球门之间的相对关系；<code>plan.json</code> 中记录了目标坐标与朝向。把距离从 0.18 改为 0.25，并使用另一个输出目录：先预测目标点会向哪个方向移动，再用结果验证预测。该命令只计算已知点之间的几何关系，既没有运行物理仿真，也不能证明目标实际可达。",
+            "en": "First run the <a href=\"07-football.html#plan-practice\">stance geometry command in Chapter 7</a>. Open <code>plan.svg</code> to inspect the stance, ball, and goal. <code>plan.json</code> gives the target position and heading. Change distance from 0.18 to 0.25 with a new output directory; predict the direction of movement and check it. This command computes geometry from known points. It runs no physics and does not prove reachability."
           },
           {
             "type": "p",
@@ -3346,8 +3599,8 @@
       "en": "Implement detection, localization, stance planning, approach and skill handoff, then run the complete task in Isaac Sim."
     },
     "meta": {
-      "zh": "第 7 章 · 综合实验 · 建议预留 40 分钟 · GPU",
-      "en": "Chapter 7 · About 40 minutes · GPU"
+      "zh": "第 7 章 · 预计学习时长 40 分钟",
+      "en": "Chapter 7 · Estimated learning time: 40 minutes"
     },
     "number": "7",
     "group": {
@@ -3370,12 +3623,17 @@
               "zh": "这是固定检测器对练习集中八张不同图像的真实输出拼图。每个分格都是彼此独立的静态样本，不是动画或连续相机视频，也不能用于衡量推理速度。",
               "en": "Actual fixed-detector outputs on eight different sample images. Each panel is an independent still, not a continuous camera video or an inference-speed measurement."
             },
-            "zh": "这是固定检测器对练习集中八张不同图像的真实输出拼图。每个分格都是彼此独立的静态样本，不是动画或连续相机视频，也不能用于衡量推理速度。",
-            "en": "Actual fixed-detector outputs on eight different sample images. Each panel is an independent still, not a continuous camera video or an inference-speed measurement."
+            "zh": "这是固定检测器对练习集中八张不同图像的真实输出拼图。每个分格都是一张静态样本图，不是动画或连续相机视频，也不能用于衡量推理速度。",
+            "en": "Actual fixed-detector outputs on eight different sample images. Each panel is a separate still, not a continuous camera video or an inference-speed measurement."
+          },
+          {
+            "type": "p",
+            "zh": "八张图并不是一次射门过程中的连续画面，而是检测练习集中的不同静态视图。不同背景、白线、距离和视角用于检查模型是否只记住了某一种场地外观。下面的命令会对这些图片分别检测足球和球门，并把带检测框的结果保存到新目录。",
+            "en": "The eight images are held-out detection views, not consecutive frames from one shot. Different backgrounds, markings, distances and views help check whether the detector relies on one scene appearance. The command below detects the ball and goal in each image and saves annotated results to a new directory."
           },
           {
             "type": "code",
-            "code": "python3 scripts/workshop.py detect \\\n  --model models/indoor-detector/detector.pt \\\n  --source datasets/indoor-sample/images \\\n  --output outputs/detection-01",
+            "code": "python3 scripts/workshop.py detect \\\n  --model models/scene-detector/detector.pt \\\n  --source datasets/scene-sample/images/test \\\n  --output outputs/detection-01",
             "label": "Terminal · Bash"
           },
           {
@@ -3402,8 +3660,8 @@
           },
           {
             "type": "p",
-            "zh": "这里加载适配钢网球门和印花垫子的检测器。八张示例来自独立图像测试集、覆盖四种图案；原检测器与原场景练习集仍保留。图像检测通过后，还要检查门柱底部提取和已知尺寸定位，检测框本身不足以直接规划路径。",
-            "en": "This detector is adapted to the steel-mesh goal and marked mat. Eight illustrations from the held-out image split cover four patterns; the original detector and exercise dataset remain available. Bounding boxes still require post-base extraction and known-dimension localization before planning."
+            "zh": "八张图是检测器的保留测试示例，每种地面各两张：两种足球场地、大理石和棕色木地板。它们不是同一次射门的连续帧。改变背景和光照，是为了检查模型是否认出了球与球门，而不是记住某种草地颜色或白线；机器人和道具尺寸保持一致。检测框通过后，仍需检查门柱底部提取、尺寸定位和实际控制。 部分示例刻意保留了被画面边缘裁切的目标：检测器仍可能给出框，但几何定位应拒绝不完整的轮廓，等待重新观察。",
+            "en": "These eight held-out detection examples contain two views of each surface: two football patterns, marble and brown wood. They are not consecutive frames from one shot. Varying backgrounds and light tests recognition beyond grass colour and field lines; robot and prop dimensions stay fixed. Boxes still require post-base extraction, metric localization and control checks. Some targets are cropped by image edges: a detection box can exist while metric geometry must reject the incomplete contour and request another view."
           }
         ]
       },
@@ -3415,8 +3673,13 @@
         },
         "blocks": [
           {
+            "type": "p",
+            "zh": "下面的命令用小型练习集训练 5 轮，让您观察损失和检测框的变化。请在课程仓库根目录运行，并为输出选择新目录。",
+            "en": "The command below trains for five epochs on the small practice set so you can inspect loss and detection boxes. Run it from the repository root with a new output directory."
+          },
+          {
             "type": "code",
-            "code": "python3 scripts/workshop.py train-detector \\\n  --data datasets/sample/data.yaml \\\n  --epochs 5 \\\n  --batch 8 \\\n  --seed 303 \\\n  --output outputs/student-detector-01",
+            "code": "python3 scripts/workshop.py train-detector \\\n  --data datasets/scene-sample/dataset.yaml \\\n  --epochs 5 \\\n  --batch 8 \\\n  --seed 303 \\\n  --output outputs/student-detector-01",
             "label": "Terminal · Bash"
           },
           {
@@ -3430,8 +3693,8 @@
               "zh": "后续仍使用课程检测器",
               "en": "Keep the course detector downstream"
             },
-            "zh": "本章的检测练习与完整任务默认加载 <code>models/detector.pt</code>，短训练产生的模型不会替换该文件。检测 mAP 衡量的是检测质量，不能等同于机器人的射门成功率。",
-            "en": "Chapters 6 and 7 use <code>models/detector.pt</code> by default. The practice model does not replace it. Detection mAP measures detection quality, not shooting success."
+            "zh": "本章的检测练习与完整任务默认加载 <code>models/scene-detector/detector.pt</code>。40 张练习图按场景种子分为 24 张训练、8 张验证和 8 张测试；短训练不会替换课程模型。检测 mAP 不是射门成功率。",
+            "en": "The detection lab and full task use <code>models/scene-detector/detector.pt</code>. The 40-image practice subset has 24 training, 8 validation and 8 test images, grouped by scene seed. Practice training does not replace the course model; mAP is not shooting success."
           }
         ]
       },
@@ -3468,7 +3731,7 @@
       {
         "id": "task-randomization",
         "title": {
-          "zh": "换垫子、灯光或球门，哪些模型需要适应？",
+          "zh": "地面与光照变化：哪些环节需要域随机化？",
           "en": "What must adapt when the scene changes?"
         },
         "blocks": [
@@ -3476,6 +3739,11 @@
             "type": "p",
             "zh": "域随机化让模型在训练时见到一组有意义的变化，减少对单一场景的依赖。它应针对真正受到变化影响的环节：RGB 检测器会受垫子颜色、白线、光照和网格影响；行走与踢球策略主要受摩擦、电压、延迟、质量和接触影响。当前系统由检测、几何、Nav2 与动作策略组成，并未使用 GR00T 这样的视觉—语言—动作模型。",
             "en": "Domain randomization exposes a model to meaningful variation during training. Apply it to the affected component: mat colours, markings, light and mesh affect RGB detection; friction, voltage, delay, mass and contacts affect locomotion and kicking. This system combines detection, geometry, Nav2 and action policies; it does not use a vision-language-action model such as GR00T."
+          },
+          {
+            "type": "p",
+            "zh": "本练习固定球门的形状、尺寸和材质，把视觉变化集中在两种足球场地、大理石、木地板，以及光照、球位和相机姿态。与让 GR00T 适应试管位置和颜色的思路相通，但系统分别使用目标检测器和运动策略，本次场景适配仅微调检测器，并没有使用 GR00T。",
+            "en": "This exercise fixes the goal shape, size and material. Visual variation covers two football surfaces, marble, wood, illumination, ball position and camera pose. The motivation resembles varying tube placement and colour for GR00T, but this system uses separate detector and motion policies; only the detector was fine-tuned for this scene, and GR00T is not used."
           },
           {
             "type": "quiz",
@@ -3505,7 +3773,7 @@
             "rows": {
               "zh": [
                 [
-                  "垫子 A–D、光照、相机姿态",
+                  "地面 A–D、光照、相机姿态",
                   "检测框与轮廓",
                   "生成多样的 RGB 数据，按场景划分训练与测试"
                 ],
@@ -3527,7 +3795,7 @@
               ],
               "en": [
                 [
-                  "Mat A–D, light, camera pose",
+                  "Surfaces A–D, light, camera pose",
                   "Boxes and contours",
                   "Generate varied RGB data; split by scene"
                 ],
@@ -3551,18 +3819,18 @@
           },
           {
             "type": "p",
-            "zh": "新钢网球门与印有白线的垫子改变了检测任务：原检测器在开发图像中出现球门漏检和场地线误检。因此只针对检测器继续训练，保留原行走、踢球与残差权重。训练数据包含四种垫子与光照、位置、相机变化，共 48 个场景种子、768 张图像；同一场景的不同图案和视角必须分到同一集合，避免相似画面泄漏到测试集。",
-            "en": "The steel-mesh goal and marked mat changed detection: development images showed missed goals and field-line false positives with the original detector. Perception was therefore fine-tuned while the walking, kicking and residual weights were preserved. The dataset contains four mat patterns with lighting, position and camera variations: 48 scene seeds and 768 images. All patterns and views from one scene belong to one split to avoid leakage."
+            "zh": "官网黑白足球的外观与直径、斜背球门和地面纹理都改变了视觉输入。旧室内检测器在同一组 128 张新测试图像上的 mAP50 为 0.379，其中足球类别仅为 0.020，不能直接沿用。因此只微调检测器，保留原步行、踢球和残差权重。数据包含 48 个场景种子、768 张图像；同一种子下的四种地面和视角始终归入同一个训练、验证或测试集合，避免泄漏。",
+            "en": "The official black-and-white ball, its diameter, the sloped-back goal and new surfaces change the visual input. On the same 128 new test images, the previous indoor detector scores mAP50 0.379, with ball AP50 only 0.020. We therefore fine-tune the detector while preserving walking, kicking and residual weights. The dataset has 48 scene seeds and 768 images; all surfaces and views sharing a seed stay in the same split."
           },
           {
             "type": "p",
-            "zh": "这次用 512 张训练、128 张验证、128 张测试图像继续训练 60 轮。固定检测器在保留测试集上的 mAP50 为 0.945，mAP50–95 为 0.920。它们衡量检测框质量，不是自主射门成功率，也不能证明域随机化带来了多少独立提升；后者还需要保持数据量与训练预算相同的消融对照。完整任务仍须单独检查定位、路径、出脚、过门与恢复。",
-            "en": "The detector was fine-tuned for 60 epochs using 512 training, 128 validation and 128 test images. Held-out mAP50 is 0.945 and mAP50–95 is 0.920. These measure detection quality, not autonomous task success or the isolated benefit of randomization; that requires a matched-data, matched-budget ablation. Localization, paths, kicks, goal crossing and recovery require separate task tests."
+            "zh": "这次用 512 张训练、128 张验证、128 张测试图像继续训练 60 轮。固定检测器在保留测试集上的 mAP50 为 0.978，mAP50–95 为 0.934。它们衡量检测框质量，不是自主射门成功率，也不能证明域随机化带来了多少独立提升；后者还需要保持数据量与训练预算相同的消融对照。完整任务仍须单独检查定位、路径、出脚、过门与恢复。",
+            "en": "The detector was fine-tuned for 60 epochs using 512 training, 128 validation and 128 test images. Held-out mAP50 is 0.978 and mAP50–95 is 0.934. These measure detection quality, not autonomous task success or the isolated benefit of randomization; that requires a matched-data, matched-budget ablation. Localization, paths, kicks, goal crossing and recovery require separate task tests."
           },
           {
             "type": "p",
-            "zh": "是否继续扩大随机化范围，应由失败决定。先用同一模型切换四种垫子，再测试未参与训练的光照和球位。如果只在某种白线附近失去球的轮廓，优先检查视觉；如果识别与站位正确，却打滑或恢复失败，再研究物理随机化。不要同时大幅改变所有参数，否则很难判断哪项变化起作用。",
-            "en": "Let failures determine whether to widen randomization. Test one fixed model on all four mats, then on unseen lighting and ball positions. Lost ball contours near white lines point to perception; correct recognition and stance followed by slip or failed recovery point to dynamics. Avoid changing every parameter at once, which obscures the cause."
+            "zh": "是否继续扩大随机化范围，应由失败决定。先用同一模型切换四种地面，再测试未参与训练的光照和球位。如果只在某种白线附近失去球的轮廓，优先检查视觉；如果识别与站位正确，却打滑或恢复失败，再研究物理随机化。不要同时大幅改变所有参数，否则很难判断哪项变化起作用。",
+            "en": "Let failures determine whether to widen randomization. Test one fixed model on all four surfaces, then on unseen lighting and ball positions. Lost ball contours near white lines point to perception; correct recognition and stance followed by slip or failed recovery point to dynamics. Avoid changing every parameter at once, which obscures the cause."
           },
           {
             "type": "p",
@@ -3571,8 +3839,8 @@
           },
           {
             "type": "p",
-            "zh": "本次微调运行 60 个 epoch，训练墙钟约 4.3 分钟，不包含采图、导出和整场仿真。随机化图案与光照属于视觉训练；球门中心距等已知几何不能只在画面里随机变化而继续沿用旧标定。若要换球门尺寸，应同步定位先验、地图和进球判据，或者另行设计尺寸未知的估计方法。",
-            "en": "This fine-tuning run used 60 epochs and about 4.3 minutes of training wall time, excluding collection, export and complete simulations. Appearance and light variation target perception. Changing known goal dimensions also requires matching localization priors, maps and scoring, or a separate method that estimates unknown dimensions."
+            "zh": "本次微调运行 60 个 epoch，训练墙钟约 4.8 分钟，不包含采图、导出和整场仿真。随机化图案与光照属于视觉训练；球门中心距等已知几何不能只在画面里随机变化而继续沿用旧标定。若要换球门尺寸，应同步定位先验、地图和进球判据，或者另行设计尺寸未知的估计方法。",
+            "en": "This fine-tuning run used 60 epochs and about 4.8 minutes of training wall time, excluding collection, export and complete simulations. Appearance and light variation target perception. Changing known goal dimensions also requires matching localization priors, maps and scoring, or a separate method that estimates unknown dimensions."
           },
           {
             "type": "table",
@@ -3591,26 +3859,26 @@
             "rows": {
               "zh": [
                 [
-                  "原检测器",
-                  "0.273",
-                  "0.199"
+                  "旧室内检测器",
+                  "0.379",
+                  "0.314"
                 ],
                 [
                   "适配后的检测器",
-                  "0.945",
-                  "0.920"
+                  "0.978",
+                  "0.934"
                 ]
               ],
               "en": [
                 [
-                  "Original detector",
-                  "0.273",
-                  "0.199"
+                  "Previous indoor detector",
+                  "0.379",
+                  "0.314"
                 ],
                 [
                   "Adapted detector",
-                  "0.945",
-                  "0.920"
+                  "0.978",
+                  "0.934"
                 ]
               ]
             }
@@ -3654,8 +3922,8 @@
       {
         "id": "residual",
         "title": {
-          "zh": "理解固定教师策略与残差模型",
-          "en": "Understand a teacher and a residual"
+          "zh": "步行射门中的教师策略与残差模型",
+          "en": "The teacher and residual in walking shots"
         },
         "blocks": [
           {
@@ -3678,8 +3946,8 @@
       {
         "id": "system",
         "title": {
-          "zh": "先看清完整系统",
-          "en": "Understand the complete system"
+          "zh": "先看清完整的步行射门系统",
+          "en": "Understand the complete walking-shot system"
         },
         "blocks": [
           {
@@ -3725,7 +3993,8 @@
             ],
             "file": "autonomous-direct.gif",
             "alt": {
-              "en": "Complete direct-shot example"
+              "en": "Complete direct-shot example",
+              "zh": ""
             },
             "en": "One complete direct-shot example. The inset shows the actual robot camera synchronized with the full scene. One demonstration is not a success-rate estimate."
           }
@@ -3738,6 +4007,11 @@
           "en": "Run the complete teaching scene"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "在课程仓库根目录运行下面的命令，启动完整自主射门实验。请使用新的输出目录，保存本次视频、传感器记录和评分。",
+            "en": "Run the command below from the repository root to start autonomous football. Use a new output directory for video, sensor records and scoring."
+          },
           {
             "type": "code",
             "code": "python3 scripts/workshop.py football \\\n  --scene indoor --style A --record-hd \\\n  --seed 983102 \\\n  --seconds 180 \\\n  --output outputs/football-01",
@@ -3763,10 +4037,15 @@
       {
         "id": "result",
         "title": {
-          "zh": "判断“完整成功”",
-          "en": "Judge complete success"
+          "zh": "判断步行射门是否完整成功",
+          "en": "Judge complete walking-shot success"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "完成上一节的运行后，用下面的命令读取该次实验的评分。若您使用了其他输出目录，请相应修改 <code>--run</code>。",
+            "en": "After the preceding run, read its score with the command below. Change <code>--run</code> if you used another output directory."
+          },
           {
             "type": "code",
             "code": "python3 scripts/workshop.py report --run outputs/football-01",
@@ -3793,20 +4072,20 @@
               "zh": "怎样理解课程参考结果",
               "en": "Interpreting the reference result"
             },
-            "zh": "原简化空场、窄球门配置曾完成 9/10 独立任务；这份历史成绩不适用于新的垫子、钢网球门与全身碰撞配置。当前 A 款标准起点演示在 17.485 秒任务时间内完成触球、整球越线和恢复，11 项适用检查通过。它是开发示例，不是独立成功率。四种垫子的独立验证应单列，不能与旧 9/10 合并。",
-            "en": "The original simple field and narrower goal completed 9/10 independent tasks. That historical result does not transfer to the marked mat, steel-mesh goal and full-body contacts. The current A-pattern demonstration completed contact, whole-ball crossing and recovery in 17.485 task seconds, passing all 11 applicable checks. It is a development example, not an independent success-rate estimate. New pattern tests must remain separate."
+            "zh": "原简化空场、窄球门配置曾完成 9/10 独立任务；这份历史成绩不适用于新的垫子、钢网球门与全身碰撞配置。当前 A 款标准起点演示在 32.565 秒任务时间内完成触球、整球越线和恢复，11 项适用检查通过。它是开发示例，不是独立成功率。四种地面的独立验证应单列，不能与旧 9/10 合并。",
+            "en": "The original simple field and narrower goal completed 9/10 independent tasks. That historical result does not transfer to the marked mat, steel-mesh goal and full-body contacts. The current A-pattern demonstration completed contact, whole-ball crossing and recovery in 32.565 task seconds, passing all 11 applicable checks. It is a development example, not an independent success-rate estimate. New pattern tests must remain separate."
           },
           {
             "type": "table",
             "headers": {
               "zh": [
-                "垫子 / 独立种子",
+                "地面 / 种子",
                 "完整任务",
                 "任务时间",
                 "跌倒"
               ],
               "en": [
-                "Mat / independent seed",
+                "Surface / seed",
                 "Complete task",
                 "Task time",
                 "Fall"
@@ -3815,53 +4094,53 @@
             "rows": {
               "zh": [
                 [
-                  "A / 50001",
-                  "通过",
-                  "13.565 s",
+                  "A 条纹足球场 / 55001",
+                  "未通过",
+                  "10.755 s",
                   "否"
                 ],
                 [
-                  "B / 50002",
+                  "B 简洁足球场 / 55002",
                   "未通过",
-                  "11.260 s",
+                  "29.165 s",
                   "否"
                 ],
                 [
-                  "C / 50003",
+                  "C 大理石 / 55003",
                   "未通过",
-                  "180.000 s",
+                  "60.000 s",
                   "否"
                 ],
                 [
-                  "D / 50004",
+                  "D 木地板 / 55004",
                   "未通过",
-                  "4.225 s",
+                  "60.000 s",
                   "否"
                 ]
               ],
               "en": [
                 [
-                  "A / 50001",
-                  "Pass",
-                  "13.565 s",
+                  "A / 55001",
+                  "Failed",
+                  "10.755 s",
                   "No"
                 ],
                 [
-                  "B / 50002",
-                  "Fail",
-                  "11.260 s",
+                  "B / 55002",
+                  "Failed",
+                  "29.165 s",
                   "No"
                 ],
                 [
-                  "C / 50003",
-                  "Fail",
-                  "180.000 s",
+                  "C / 55003",
+                  "Failed",
+                  "60.000 s",
                   "No"
                 ],
                 [
-                  "D / 50004",
-                  "Fail",
-                  "4.225 s",
+                  "D / 55004",
+                  "Failed",
+                  "60.000 s",
                   "No"
                 ]
               ]
@@ -3869,13 +4148,189 @@
           },
           {
             "type": "p",
-            "zh": "固定标准起点，事先指定四个新种子、每款垫子一次，本组完整通过 1/4。各次适用记录检查通过不等于任务通过。样式与种子同时变化，不能据此断言某款图案导致失败，也不能据此估计广泛场景的成功率。完整逐回合结果见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/indoor-sample/task-evaluation.json\">新场景评测记录</a>。",
-            "en": "Four predeclared new seeds at the same standard start, one per mat, completed 1/4 full tasks. Passing applicable record audits is distinct from task success. Pattern and seed vary together, so this does not isolate a pattern effect or estimate broad reliability. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/indoor-sample/task-evaluation.json\">new-scene trial records</a>."
+            "zh": "固定标准起点，事先指定四个新种子，每种地面一次、每次最多 60 秒任务时间，本组完整通过 0/4。各次适用记录检查通过不等于任务通过。样式与种子同时变化，不能据此断言某种地面造成失败，也不能据此估计广泛场景的成功率。这一组使用 10 cm 足球，不能与旧 7 cm 场景的成绩合并。完整逐回合结果见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/task-evaluation.json\">当前场景评测记录</a>。",
+            "en": "Four predeclared seeds at the same start, one per surface with a 60-second task limit, completed 0/4 full tasks. Passing record audits is not task success. Surface and seed change together, so these trials do not isolate a surface effect or estimate broad reliability. They use the 10 cm ball and remain separate from historical 7 cm tests. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/task-evaluation.json\">current scene trial records</a>."
           },
           {
             "type": "p",
-            "zh": "这三次失败发生在出脚前：B 的估计球位超出出脚范围，后退恢复又未满足当前身体状态条件，停止时球观测也已过期；C 在重新观察和对齐之间反复切换，直到 180 秒预算结束；D 的小步接近缺少新鲜球门观测而停止。四次均未跌倒。这组证据说明：换场景后不能只更新画面，也不能只看检测分数。下一步应先检查目标点定位、观测有效期和规划交接，再决定是否增加相应训练数据；目前没有足够证据把这些失败归因于行走或踢球策略。",
-            "en": "All three failures occurred before the kick: B estimated the ball outside the kick range, then could not satisfy the current-body guard during retreat recovery; its ball observation had also expired by the stop; C cycled through reacquisition and alignment until the 180-second limit; D stopped its fine approach because a fresh goal observation was unavailable. None fell. A new scene therefore needs more than refreshed media or a strong detection score. Inspect target-point localization, observation validity and planning handoff before choosing additional training data; these trials do not establish a failure of the walking or kicking policies."
+            "zh": "这四次失败都发生在出脚前：A 在交接恢复时未满足当前身体状态条件，球观测随后过期；B 接近过程中无法重新取得完整球观测，在规定的等待时间结束后停止；C 没有形成完整、有效的球观测；D 尚未取得要求的连续球门底端观测，后二者均达到 60 秒任务时限。四次均未跌倒。这说明换场景后不能只更新画面，也不能只看检测分数。应先检查几何定位、视野、观测有效期和规划交接，再决定是否增加训练数据；目前没有足够证据把这些失败归因于行走或踢球策略。",
+            "en": "All four failures preceded the kick: A failed the current-body guard during handoff recovery and its ball observation then expired; B could not reacquire a complete ball observation during fine approach and stopped at the attention deadline; C did not obtain valid complete ball geometry; D did not obtain the required consecutive goal-base observations. C and D reached the 60-second task limit. None fell. Inspect geometry, field of view, observation age and planning handoff before deciding what additional training data are needed; these trials do not establish a failure of the walking or kicking policies."
+          }
+        ]
+      },
+      {
+        "id": "rollers",
+        "title": {
+          "zh": "换成轮滑：观察、碰球、提前停下",
+          "en": "Gliding shot: observe, make contact and stop early"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "轮滑射门沿用相同的 10 cm 足球、球门、相机与检测器，但改变了运动方式：从初始化到结束始终加载官方轮滑策略，轮子是被动的，由腿部动作推进与制动。球靠轮子与球面的真实接触获得动量；这里没有切换走路，也没有执行踢腿动作。 本实验从球后约 30 cm 的固定起点开始，只验证空场内的短距离接近与射门，尚未验证从场地任意位置绕行。",
+            "en": "The gliding task uses the same 10 cm ball, goal, camera and detector. It loads the official roller actor from initialization to the end. Its wheels are passive, with propulsion and braking produced by leg motion. Wheel–ball contact transfers momentum without switching to walking or executing a leg kick. The fixed start is about 30 cm behind the ball: this tests short empty-field approach and shooting, not navigation from arbitrary field positions."
+          },
+          {
+            "type": "media",
+            "file": "rollers-autonomous.gif",
+            "alt": {
+              "zh": "全程保持轮滑模式的自主碰球与制动示例",
+              "en": "Autonomous ball contact and braking, staying in roller mode"
+            },
+            "zh": "轮滑完整示例：从相机观察开始，6.79 秒实际触球、8.13 秒整球越线，随后在门前停稳。初始化、碰球和结束均保持轮滑模式。第三视角按该回合的物理记录重渲染，右上角为同步的原始相机画面；这是开发示例，不计入下方独立测试。",
+            "en": "Complete gliding example: camera observation, physical contact at 6.79 s, whole-ball crossing at 8.13 s and settling before the goal. Initialization, contact and the ending all remain in roller mode. The observer view is re-rendered from this episode’s physical record, synchronized with its original camera frames. This development example is separate from the independent trials below."
+          },
+          {
+            "type": "p",
+            "zh": "控制器先识别球门和足球，用像素、相机几何与 ToF 地面估计确定接近方向；接近时减速、对齐，再把观察用的头部控制逐渐交回轮滑策略。身体稳定后推进一小段，再根据估计速度持续调整制动，保持轮滑姿态停下。等待识别时也要控制滑行；仅松开推进指令并不等于停车。",
+            "en": "The controller detects the goal and ball and estimates approach direction from pixels, camera geometry and a ToF ground plane. It slows, aligns and gradually returns head control to the roller actor. After settling, it propels briefly and adjusts braking using estimated velocity while remaining on its wheels. Waiting for perception also requires coasting control: releasing propulsion is not a stop."
+          },
+          {
+            "type": "flow",
+            "label": "轮滑射门的控制顺序",
+            "nodes": [
+              [
+                "观察",
+                "RGB + ToF：球与球门"
+              ],
+              [
+                "接近和对齐",
+                "减速，确认触球方向"
+              ],
+              [
+                "准备碰球",
+                "交回头部，稳定后推进"
+              ],
+              [
+                "提前制动",
+                "球继续滚动，小鸭子停下"
+              ]
+            ],
+            "zh": "检测结果决定接近与触球准备；真实接触和是否进球由物理记录单独判定。控制器不会读取球的仿真真值坐标。",
+            "en": "Detections guide approach and preparation. Physical records independently determine contact and scoring; the controller does not read simulator ball coordinates.",
+            "english_diagram": {
+              "label": "Gliding-shot control sequence",
+              "nodes": [
+                [
+                  "Observe",
+                  "RGB + ToF: ball and goal"
+                ],
+                [
+                  "Approach and align",
+                  "Slow down and check direction"
+                ],
+                [
+                  "Prepare contact",
+                  "Release gaze control, settle, propel"
+                ],
+                [
+                  "Brake early",
+                  "Ball rolls; robot settles"
+                ]
+              ],
+              "groups": []
+            }
+          },
+          {
+            "type": "p",
+            "zh": "这条轮滑分支采用视觉反馈控制，尚未接入前面的 Nav2 路径规划，也没有复用步行的脚底里程计。制动速度由理想机身质心 IMU 的比力、陀螺仪和重力方向积分得到，起点假定静止；控制器不读取机器人真实速度或球的真值坐标。这并未模拟真实 IMU 的安装偏置、零偏和振动，不能直接作为实机停车方案。下面的命令采用与评测相同的无窗口运行配置，关闭额外的第三视角实时录制，仍渲染相机与 ToF 并保存传感器、动作和物理记录。完整演示可先看上方视频，每次实验使用新的输出目录；固定种子并不保证每次成功。",
+            "en": "This visual-feedback branch does not integrate Nav2 or walking sole odometry. Braking velocity is integrated from ideal trunk-COM specific force, gyro and gravity-direction measurements, starting at zero velocity. The controller does not read true robot velocity or ball coordinates. IMU mounting offsets, bias and vibration are not modeled, so this is not a hardware stopping solution. The command below uses the evaluation configuration: no window or additional live observer recording, while still rendering RGB/ToF and saving sensors, actions and physics. Watch the full demonstration above and use a new output directory per run. A fixed seed does not guarantee success."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 scripts/workshop.py football \\\n  --locomotion rollers --seed 42 --style A \\\n  --headless --no-record-hd \\\n  --seconds 40 \\\n  --output outputs/football-rollers-01"
+          },
+          {
+            "type": "p",
+            "zh": "运行结束后，用下面的命令查看结果。完整成功要求真实触球、整球越过门线、全程未跌倒，并在球门前连续停稳至少 1 秒（平移速度低于 2 cm/s）；仅检测成功或碰到球都不够。结果文件同时保留接触时刻、进球时刻与最后连续稳定的时长。",
+            "en": "Inspect the result with the command below. Complete success requires physical contact, whole-ball crossing, no fall throughout the episode, and at least one continuous second settled before the goal at less than 2 cm/s. Detection or contact alone is insufficient. Results retain contact and crossing times and the final continuous settling duration."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 scripts/workshop.py report \\\n  --run outputs/football-rollers-01"
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "地面 / 新种子",
+                "进球",
+                "完整任务",
+                "结果"
+              ],
+              "en": [
+                "Floor / new seed",
+                "Goal",
+                "Full task",
+                "Outcome"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "A 条纹足球场 / 56001",
+                  "是",
+                  "未通过",
+                  "进球后未在限定时间内连续停稳"
+                ],
+                [
+                  "B 简洁足球场 / 56002",
+                  "是",
+                  "通过",
+                  "触球、进球与停车均通过"
+                ],
+                [
+                  "C 大理石 / 56003",
+                  "否",
+                  "未通过",
+                  "未取得有效的双门柱底端观测"
+                ],
+                [
+                  "D 木地板 / 56004",
+                  "否",
+                  "未通过",
+                  "未取得有效的双门柱底端观测"
+                ]
+              ],
+              "en": [
+                [
+                  "A / 56001",
+                  "Yes",
+                  "Failed",
+                  "Post-shot settling deadline exceeded"
+                ],
+                [
+                  "B / 56002",
+                  "Yes",
+                  "Passed",
+                  "Contact, scoring and stopping passed"
+                ],
+                [
+                  "C / 56003",
+                  "No",
+                  "Failed",
+                  "No valid two-post-base observation"
+                ],
+                [
+                  "D / 56004",
+                  "No",
+                  "Failed",
+                  "No valid two-post-base observation"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "固定模型与控制参数后，事先指定四个新种子，每种地面一次，完整通过 1/4、进球 2/4，四次均未跌倒。每次最多 30 秒，推进与接触窗口结束后，最多再等待 8 秒停车。A 进球后仍有滑动；C、D 在球门定位阶段等待至时限，未触发推进。样式与种子同时改变，这组小样本不能证明地面样式的因果影响。结果说明目前需要继续改善门柱几何提取与制动稳定性，不能只靠更高的检测分数，也没有证据表明必须重训轮滑策略。完整数据见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-task-evaluation.json\">轮滑自主射门记录</a>。",
+            "en": "With models and control parameters fixed, four predeclared new seeds, one per floor, completed 1/4 full tasks and scored 2/4 goals; none fell. Runs have a 30 s ceiling and an 8 s settling deadline after the propulsion/contact window. A continued moving after scoring; C and D waited for valid goal geometry until the limit without propulsion. Surface and seed change together, so these small samples do not isolate a surface effect. Improve post-base extraction and braking consistency; a higher detection score alone is insufficient, and these trials do not establish that the roller actor needs retraining. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-task-evaluation.json\">gliding-shot records</a>."
+          },
+          {
+            "type": "p",
+            "zh": "思考：轮滑推进指令为什么不能直接解释成目标速度？如果球被侧面擦到，继续增大推进量为什么可能使结果更差？先检查触球方向、头部与身体的衔接和制动时机，再判断是否需要重训策略。",
+            "en": "Consider why the roller push command is not a target speed. If the wheel grazes the side of the ball, why might a larger push make the outcome worse? Inspect contact direction, head-to-body handoff and braking before deciding whether policy retraining is necessary."
           }
         ]
       },
@@ -3918,13 +4373,13 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "首先检查程序是否正常生成 <code>result.json</code>。如果文件不存在，请查看终端末尾的错误，并排查安装或运行条件；这种情况属于执行失败。如果结果文件存在，则要进一步区分“没有找到球”“无法形成出脚站位”“球被碰到但未进门”“进门后未稳定恢复”等行为失败。程序正常退出，并不代表机器人已经完成任务。",
-            "en": "First check whether <code>result.json</code> was produced. If not, inspect the terminal error and installation or runtime conditions: that is an execution failure. If results exist, distinguish failure to find the ball, failure to reach a kicking stance, contact without a goal, and failure to recover after scoring. A normal process exit does not mean the robot completed the task."
+            "zh": "首先检查结果文件：步行分支生成 <code>result.json</code>，轮滑分支生成 <code>independent-result.json</code>。如果文件不存在，请查看终端末尾的错误，并排查安装或运行条件；这种情况属于执行失败。如果结果文件存在，则要进一步区分“没有找到球”“无法形成出脚站位”“球被碰到但未进门”“进门后未稳定恢复”等行为失败。程序正常退出，并不代表机器人已经完成任务。",
+            "en": "First check the result file: <code>result.json</code> for walking or <code>independent-result.json</code> for rollers. If not, inspect the terminal error and installation or runtime conditions: that is an execution failure. If results exist, distinguish failure to find the ball, failure to reach a kicking stance, contact without a goal, and failure to recover after scoring. A normal process exit does not mean the robot completed the task."
           },
           {
             "type": "p",
-            "zh": "结果中的 <code>course_evaluation.passed</code> 综合了完整物理评分和适用检查结果，<code>scorer</code> 则保存接触、越线和摔倒等信息。回看同步视角时，应同时检查第一次触球前的站位和出脚后的姿态；不能只截取球越过门线的几秒来判断整个流程。",
-            "en": "<code>course_evaluation.passed</code> combines physical scoring and applicable checks. <code>scorer</code> retains contact, goal crossing, and fall information. In synchronized views, inspect the stance before first contact and posture after kicking. A short clip of the ball crossing the line is insufficient for a full-task judgment."
+            "zh": "步行结果中的 <code>course_evaluation.passed</code> 综合了完整物理评分和适用检查结果，<code>scorer</code> 则保存接触、越线和摔倒等信息。回看同步视角时，应同时检查第一次触球前的站位和出脚后的姿态；不能只截取球越过门线的几秒来判断整个流程。 轮滑结果以 <code>autonomous_task_passed</code> 为完整成功标志，并分别报告真实轮子触球、整球越线和连续停稳时间。",
+            "en": "For walking, <code>course_evaluation.passed</code> combines physical scoring and applicable checks. <code>scorer</code> retains contact, goal crossing, and fall information. In synchronized views, inspect the stance before first contact and posture after kicking. A short clip of the ball crossing the line is insufficient for a full-task judgment. For rollers, <code>autonomous_task_passed</code> marks complete success; wheel contact, whole-ball crossing and continuous settling are reported separately."
           },
           {
             "type": "p",
@@ -3970,8 +4425,8 @@
       "en": "Recap and a harder football challenge. Explore the concepts, run the lab, and inspect its results."
     },
     "meta": {
-      "zh": "第 8 章 · 自学与实践",
-      "en": "Chapter 8 · Self-study and practice"
+      "zh": "第 8 章 · 预计学习时长 15 分钟",
+      "en": "Chapter 8 · Estimated learning time: 15 minutes"
     },
     "sections": [
       {
@@ -4257,7 +4712,19 @@
                 ],
                 [
                   "<code>indoor-detector/detector.pt</code> / <code>indoor-detector/detector.onnx</code>",
-                  "室内钢网球门检测器；新场景默认"
+                  "保留的旧室内检测器，适用于旧 7 cm 球场景"
+                ],
+                [
+                  "<code>scene-detector/detector.pt</code> / <code>scene-detector/detector.onnx</code>",
+                  "官网 10 cm 球与四种地面检测器；当前默认"
+                ],
+                [
+                  "<code>official-browser/rollers.onnx</code>",
+                  "官方四被动轮策略；14 个舵机动作"
+                ],
+                [
+                  "<code>official-browser/walking.onnx</code> / <code>sitstand.onnx</code>",
+                  "官网版本核对与站立试验，未替换完整步行任务的固定策略"
                 ]
               ],
               "en": [
@@ -4291,10 +4758,27 @@
                 ],
                 [
                   "<code>indoor-detector/detector.pt</code> / <code>indoor-detector/detector.onnx</code>",
-                  "Indoor steel-goal detector; new scene default"
+                  "Retained previous indoor detector for the old 7 cm ball scene"
+                ],
+                [
+                  "<code>scene-detector/detector.pt</code> / <code>scene-detector/detector.onnx</code>",
+                  "Official 10 cm ball and four-surface detector; current default"
+                ],
+                [
+                  "<code>official-browser/rollers.onnx</code>",
+                  "Official four-passive-wheel actor, 14 servo actions"
+                ],
+                [
+                  "<code>official-browser/walking.onnx</code> / <code>sitstand.onnx</code>",
+                  "Browser-version checks and standing tests; the complete walking task retains its fixed actor"
                 ]
               ]
             }
+          },
+          {
+            "type": "p",
+            "zh": "在课程仓库根目录运行下面的命令，核对固定模型的文件大小与哈希。",
+            "en": "Run the command below from the repository root to verify fixed-model sizes and hashes."
           },
           {
             "type": "code",
@@ -4303,8 +4787,8 @@
           },
           {
             "type": "p",
-            "zh": "这些文件随 Git 仓库一同提供，不需要 Git LFS 或额外的模型账户。<code>models/manifest.json</code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。 新检测器的相对路径与 SHA-256 单独记录在 <code>models/indoor-detector/deployment.json</code>，原七份文件保持不变。",
-            "en": "These files are included in Git without Git LFS or a separate model account. <code>models/manifest.json</code> records sizes, sources, and SHA-256 identities. Model identity checks guard against accidental same-name replacements. The added detector has a separate models/indoor-detector/deployment.json with relative paths and hashes; the original seven files are unchanged."
+            "zh": "这些文件随 Git 仓库一同提供，不需要 Git LFS 或额外的模型账户。<code>models/manifest.json</code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。 新检测器的相对路径与 SHA-256 单独记录在 <code>models/scene-detector/deployment.json</code>，原七份文件保持不变。",
+            "en": "These files are included in Git without Git LFS or a separate model account. <code>models/manifest.json</code> records sizes, sources, and SHA-256 identities. Model identity checks guard against accidental same-name replacements. The added detector has a separate models/scene-detector/deployment.json with relative paths and hashes; the original seven files are unchanged."
           }
         ]
       },
@@ -4317,8 +4801,8 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "<code>datasets/sample/</code> 是一套小型图像与标签练习集，用于体验检测推理和短训练流程，但不足以证明模型能够泛化到真实环境。自行训练的模型和日志应保存在 <code>outputs/</code>，不要将其复制到 <code>models/</code> 并覆盖课程文件。",
-            "en": "<code>datasets/sample/</code> is a small image-and-label practice set for detector inference and short training. It is not enough to establish real-world generalization. Student checkpoints and logs belong in <code>outputs/</code>; do not copy them over the course files in <code>models/</code>."
+            "zh": "<code>datasets/scene-sample/</code> 是一套小型图像与标签练习集，用于体验检测推理和短训练流程，但不足以证明模型能够泛化到真实环境。自行训练的模型和日志应保存在 <code>outputs/</code>，不要将其复制到 <code>models/</code> 并覆盖课程文件。",
+            "en": "<code>datasets/scene-sample/</code> is a small image-and-label practice set for detector inference and short training. It is not enough to establish real-world generalization. Student checkpoints and logs belong in <code>outputs/</code>; do not copy them over the course files in <code>models/</code>."
           }
         ]
       },
@@ -4366,6 +4850,11 @@
           "en": "Start with the environment report"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "在课程仓库根目录的终端中运行下面的命令，完成本节操作。若命令包含输出目录，请使用尚不存在的新目录，以保留此前的结果。",
+            "en": "Run the command below in a terminal at the repository root. If it specifies an output directory, use a new one to retain earlier results."
+          },
           {
             "type": "code",
             "code": "python3 scripts/workshop.py doctor\npython3 scripts/workshop.py verify-models",
@@ -4469,6 +4958,11 @@
           "en": "Inspect a run"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "在课程仓库根目录的终端中运行下面的命令，完成本节操作。若命令包含输出目录，请使用尚不存在的新目录，以保留此前的结果。",
+            "en": "Run the command below in a terminal at the repository root. If it specifies an output directory, use a new one to retain earlier results."
+          },
           {
             "type": "code",
             "code": "python3 scripts/workshop.py report --run outputs/football-01",

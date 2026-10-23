@@ -1,0 +1,30 @@
+{
+  "scope": "Same 128 held-out images, official 10cm ball and fixed trapezoid goal; not a randomization ablation",
+  "original": {
+    "model_sha256": "ae4bdf4976afa2891c34c290d17ce193b98839a893cf487445f5ac799faf908b",
+    "dataset_manifest_sha256": "d6bb0275f8f2cc0cd413545dc88505420d4569080370d2b78611525d1d27dc2a",
+    "split": "test",
+    "metrics": {
+      "metrics/precision(B)": 0.480364710863689,
+      "metrics/recall(B)": 0.33985496759045825,
+      "metrics/mAP50(B)": 0.3789838161948427,
+      "metrics/mAP50-95(B)": 0.31437051724778475,
+      "fitness": 0.31437051724778475
+    },
+    "per_class_map50": [
+      0.020287069270872888,
+      0.7376805631188126
+    ],
+    "scope": "Frozen original detector evaluated on the same 128 new-scene held-out images after new detector training; no further model selection or tuning"
+  },
+  "adapted": {
+    "metrics/precision(B)": 0.9971673876541429,
+    "metrics/recall(B)": 0.9620535714285714,
+    "metrics/mAP50(B)": 0.9782310158555523,
+    "metrics/mAP50-95(B)": 0.9344854985201512,
+    "fitness": 0.9344854985201512
+  },
+  "training_images": 512,
+  "validation_images": 128,
+  "test_images": 128
+}

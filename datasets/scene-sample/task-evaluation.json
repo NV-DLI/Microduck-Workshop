@@ -1,0 +1,133 @@
+{
+  "scene": "indoor-trapezoid-official-ball-v2",
+  "locomotion": "walking",
+  "ball_diameter_m": 0.1,
+  "task_limit_s": 60,
+  "predeclared_seeds": [
+    55001,
+    55002,
+    55003,
+    55004
+  ],
+  "complete_successes": 0,
+  "trials": [
+    {
+      "style": "A",
+      "seed": 55001,
+      "task_seconds": 10.755,
+      "passed": false,
+      "recovered": false,
+      "terminal_reason": "public_handoff_failed",
+      "contact": false,
+      "goal": false,
+      "fell": false,
+      "audit_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "handoff_reason": "recovery_failed:retreat_current_body_guard_rejected",
+      "fine_step_reason": "released_to_kick_handoff",
+      "source_record_sha256": {
+        "manifest.json": "6a800e71d4c0f56ad06a24ec6637daaffd57e6a1eb9ee8d6120b36c46afb8d7a",
+        "policy-trace.jsonl": "f71f7796b81e4fd626dbb8968cd8700c1fea977d1a12ee879856c2804adc0b6e",
+        "control.jsonl": "adabf413183cebd0cacd0441e023fd77736708d623f239c02714997dd7c5b9d5",
+        "result.json": "ebf0aa9aa592e56f5fb8868186f508a6c9b11c4f503fc52c49d68c5ad63a6d48"
+      }
+    },
+    {
+      "style": "B",
+      "seed": 55002,
+      "task_seconds": 29.165,
+      "passed": false,
+      "recovered": false,
+      "terminal_reason": "public_neutral_fine_step_failed",
+      "contact": false,
+      "goal": false,
+      "fell": false,
+      "audit_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "handoff_reason": null,
+      "fine_step_reason": "public_goal_stop_requires_fresh_reacquisition",
+      "source_record_sha256": {
+        "manifest.json": "5d8343fb4dae184b612dcac5dcf3be74fdef0055a2b50bde7096c4010bd50cb1",
+        "policy-trace.jsonl": "8a3b687b4a704ea69dc1e1254380da8d2aa39211a4a182083d3bc2dd5e38f093",
+        "control.jsonl": "eefbfb66e1d2429b8080cccc13e4882bf9f5abfc897bd895bade372db76ae1da",
+        "result.json": "7afcbedf7ef06ea14cd16dae2e2b9aa69f857f1e50fe75f4052766ba36e45973"
+      },
+      "result_provenance": {
+        "kind": "corrected_independent_audit",
+        "correction": "Deadline comparison permits the first 50 Hz policy tick after 24 s; task remains failed. Original runtime evidence is unchanged.",
+        "original_result_sha256": "ba4916118df25368de94d0bf23ab08e9cf34247ef03a9a438be7bbd40566a4d3",
+        "audited_result_sha256": "7afcbedf7ef06ea14cd16dae2e2b9aa69f857f1e50fe75f4052766ba36e45973"
+      }
+    },
+    {
+      "style": "C",
+      "seed": 55003,
+      "task_seconds": 60.0,
+      "passed": false,
+      "recovered": false,
+      "terminal_reason": "task_duration_limit",
+      "contact": false,
+      "goal": false,
+      "fell": false,
+      "audit_exit_codes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "handoff_reason": null,
+      "fine_step_reason": null,
+      "source_record_sha256": {
+        "manifest.json": "2a852f3b0433e3ca7ff27b5723f4afea357322176c832f6ef6749da1e2872725",
+        "policy-trace.jsonl": "eece5ad6839b25c9896d8f9274d30ad1bde7e2042a739325b040ef3201710204",
+        "control.jsonl": "30efaa547059b4aca38ba41dc76e4c829bfa41eff7d6067699c5ee4463fd435e",
+        "result.json": "f1acd75ac0f3795c900746b7d91944cf9d7db6d0588a42e74f2b8331cbc0dd82"
+      }
+    },
+    {
+      "style": "D",
+      "seed": 55004,
+      "task_seconds": 60.0,
+      "passed": false,
+      "recovered": false,
+      "terminal_reason": "task_duration_limit",
+      "contact": false,
+      "goal": false,
+      "fell": false,
+      "audit_exit_codes": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "handoff_reason": null,
+      "fine_step_reason": null,
+      "source_record_sha256": {
+        "manifest.json": "ba73d1d0a5a5ccea90ce927bcb1af1ffb97f490cff23dcd8e6e40898d763626d",
+        "policy-trace.jsonl": "1c65a2e082226072d46343ba9526f85556b8e44396c0938d692fd03880d5f749",
+        "control.jsonl": "1d96a8135d5db912e17db70df00c98c438e12e6f876151acb38d6b69b467c8d1",
+        "result.json": "85147c65ae1d60d0ef9b33e7dfbaded5d511cec54935c4b8f4cf00de8228824b"
+      }
+    }
+  ],
+  "scope": "One predeclared seed per floor; style and sensor seed change together. Separate from development and old 7 cm results; not a causal surface comparison or real-hardware qualification."
+}

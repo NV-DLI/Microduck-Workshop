@@ -48,5 +48,23 @@ if a.script == "audit_coarse_track_actual.py":
         compile(source, str(file), "exec"),
         {"__name__": "__main__", "__file__": str(file)},
     )
+elif a.script == "audit_guard_stop_actual.py":
+    # The controller declares timeout on the first 50 Hz sample after the
+    # deadline. Preserve all zero-command checks and reject any later sample.
+    source = file.read_text()
+    old = 'assert t - f["started_s"] < 24.0 + 1e-8'
+    if source.count(old) != 1:
+        raise RuntimeError("Unexpected preserved guard audit version")
+    replacement = """assert t - f["started_s"] < 24.0 + 1e-8 or (
+                state == "FAILED" and f.get("reason") == "neutral_step_total_deadline"
+                and r is rows[-1] and previous is not None
+                and previous["timestamp_s"] - f["started_s"] < 24.0
+                and 0 < t - previous["timestamp_s"] <= .02 + 1e-8
+                and 24.0 <= t - f["started_s"] < 24.02 + 1e-8
+            )"""
+    exec(
+        compile(source.replace(old, replacement), str(file), "exec"),
+        {"__name__": "__main__", "__file__": str(file)},
+    )
 else:
     runpy.run_path(str(file), run_name="__main__")

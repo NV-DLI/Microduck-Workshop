@@ -49,9 +49,44 @@
       "bytes": 793215,
       "source": "Course terrain adaptation of the Pollen Robotics official walking actor",
       "role": "terrain-walk"
+    },
+    {
+      "file": "official-browser/walking.onnx",
+      "sha256": "e36332d383997d51401897734cd3e79cf5038406feddb18b4d57ecfb141daa6c",
+      "bytes": 793705,
+      "source": "Pollen Robotics official browser ad9d41",
+      "role": "official-browser"
+    },
+    {
+      "file": "official-browser/sitstand.onnx",
+      "sha256": "c6c40e35e726eabd803d633e090d112994f469921152448367953fbaf9799bc8",
+      "bytes": 793695,
+      "source": "Pollen Robotics official browser ad9d41",
+      "role": "official-browser"
+    },
+    {
+      "file": "official-browser/rollers.onnx",
+      "sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "bytes": 793685,
+      "source": "Pollen Robotics official browser ad9d41",
+      "role": "official-browser"
+    },
+    {
+      "file": "scene-detector/detector.pt",
+      "sha256": "6ff241955baad46f0f4fe4f63c0022e909c08e74d1a8c0783859ac0a472c294f",
+      "bytes": 5365573,
+      "source": "Course detector adapted to official ball and four surfaces",
+      "role": "scene-detector"
+    },
+    {
+      "file": "scene-detector/detector.onnx",
+      "sha256": "30cf2ae4765a4c02f216da4b7f49c9e5d122195f8c4c58ae0c3cba28efca0c31",
+      "bytes": 9748313,
+      "source": "Course detector adapted to official ball and four surfaces",
+      "role": "scene-detector"
     }
   ],
   "training_performed": true,
   "downstream_default": "course models; student outputs require explicit opt-in",
-  "training_scope": "Terrain actor added; previous six model files retained unchanged"
+  "training_scope": "New scene detector fine-tuned; preserved prior models unchanged; additional official browser policies retain source identities."
 }

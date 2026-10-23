@@ -13,7 +13,8 @@ def main():
     p.add_argument("--runtime", type=Path, required=True)
     p.add_argument("--run", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
-    p.add_argument("--times", type=float, nargs="+", required=True)
+    p.add_argument("--times", type=float, nargs="+")
+    p.add_argument("--movie", action="store_true")
     p.add_argument("--overview", action="store_true")
     p.add_argument("--style", choices=list("ABCD"))
     p.add_argument("--mat-gallery", action="store_true")
@@ -26,10 +27,29 @@ def main():
         str(M / "sensors"),
         str(M / "gait"),
     ]
-    manifest = json.loads((a.run / "manifest.json").read_text())
-    scene = json.loads((a.run / "scene-contract.json").read_text())
-    physics = [json.loads(x) for x in (a.run / "physics-trace.jsonl").open()]
-    samples = [min(physics, key=lambda x: abs(x["timestamp_s"] - t)) for t in a.times]
+    manifest = json.loads(
+        (
+            a.run
+            / ("manifest.json" if (a.run / "manifest.json").exists() else "report.json")
+        ).read_text()
+    )
+    scene = (
+        json.loads((a.run / "scene-contract.json").read_text())
+        if (a.run / "scene-contract.json").exists()
+        else manifest["scene_profile"]
+    )
+    ledger = a.run / "scene-hd-ledger.json"
+    if not ledger.exists():
+        raise ValueError("Patterned ball requires recorded ball quaternions")
+    saved = json.loads(ledger.read_text())
+    physics = saved["frames"]
+    if not a.movie and not a.times:
+        p.error("Choose --movie or --times")
+    samples = (
+        physics
+        if a.movie
+        else [min(physics, key=lambda x: abs(x["timestamp_s"] - t)) for t in a.times]
+    )
     from isaaclab.app import launch_simulation
 
     with launch_simulation(
@@ -66,6 +86,13 @@ def main():
         )
         cfg, _ = build_cfg(setup)
         configure_football(cfg, style=a.style or scene["mat_style"])
+        if manifest.get("locomotion") == "rollers":
+            from roller_config import configure_rollers
+
+            configure_rollers(cfg)
+        # This viewer restores recorded states without evaluating contacts.
+        # Walking ankle filters are invalid for the official roller hierarchy.
+        cfg.scene.football_contact = None
         cfg.events.beta_sensors = None
         cfg.events.terrain_camera = EventTermCfg(
             func=camera_prestartup, mode="prestartup"
@@ -74,6 +101,11 @@ def main():
         proc = None
         try:
             env.reset()
+            # No temporal reconstruction of the moving ball in the observer view.
+            # This renderer is separate from the actual perception/physics run.
+            env.sim.set_setting("/rtx/post/aa/op", 2)
+            env.sim.set_setting("/rtx/post/motionblur/enabled", False)
+            env.sim.set_setting("/rtx-transient/dlssg/enabled", False)
             robot = env.scene["robot"]
             ball = env.scene["ball"]
             if list(robot.joint_names) != manifest["joint_names"]:
@@ -97,7 +129,7 @@ def main():
                 robot.write_joint_velocity_to_sim_index(velocity=torch.zeros_like(q))
                 ball.write_root_pose_to_sim_index(
                     root_pose=torch.tensor(
-                        [[*row["ball_position_world_m"], 0.0, 0.0, 0.0, 1.0]],
+                        [[*row["ball_position_world_m"], *row["ball_quaternion_xyzw"]]],
                         device=env.device,
                     )
                 )
@@ -115,8 +147,10 @@ def main():
                         a.output,
                         eye_offset=eye,
                         target_offset=target,
-                        filename="state-previews.mp4",
-                        fps=15,
+                        filename=(
+                            "observer-replay.mp4" if a.movie else "state-previews.mp4"
+                        ),
+                        fps=saved["fps"],
                     )
                 styles = "ABCD" if a.mat_gallery else [a.style or scene["mat_style"]]
                 for style in styles:
@@ -130,15 +164,16 @@ def main():
                                 shader.GetInput("file").Set(
                                     Sdf.AssetPath(str(ASSETS / f"pitch_{style}.png"))
                                 )
-                    for _ in range(40):
+                    for _ in range(8 if a.movie else 40):
                         env.sim.render()
                     capture(env, camera, proc)
                     data = camera.data.output["rgb"]
                     data = getattr(data, "torch", data)
                     name = f"pose-{i+1}-{style}.png"
-                    Image.fromarray(data[0, :, :, :3].cpu().numpy()).save(
-                        a.output / name
-                    )
+                    if not a.movie:
+                        Image.fromarray(data[0, :, :, :3].cpu().numpy()).save(
+                            a.output / name
+                        )
                     records.append(
                         dict(
                             file=name,
@@ -152,8 +187,10 @@ def main():
                     dict(
                         mode="offline RTX state visualization; not new physical validation",
                         source_trace_sha256=hashlib.sha256(
-                            (a.run / "physics-trace.jsonl").read_bytes()
+                            ledger.read_bytes()
                         ).hexdigest(),
+                        anti_aliasing="FXAA, no motion blur or frame generation",
+                        ball_rotation="actual logged quaternion at each source frame",
                         records=records,
                     ),
                     indent=2,

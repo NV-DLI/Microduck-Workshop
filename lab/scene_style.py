@@ -66,6 +66,11 @@ def configure_football(cfg, *, style="A", goal_x=0.68):
     if style not in ("A", "B", "C", "D"):
         raise ValueError("Mat style must be A, B, C, or D")
     configure_lighting(cfg)
+    # Official browser sphere: diameter 10 cm, mass 30 g.
+    cfg.scene.ball.spawn = sim_utils.UsdFileCfg(
+        usd_path=str(ASSETS / "official_ball.usda"),
+    )
+    cfg.scene.ball.init_state.pos = (*cfg.scene.ball.init_state.pos[:2], 0.05)
     cfg.sim.physics.solver_cfg.nconmax = 300
     cfg.sim.physics.solver_cfg.njmax = 1500
     for name in ("goal_left", "goal_right", "goal_bar"):
@@ -82,12 +87,29 @@ def configure_football(cfg, *, style="A", goal_x=0.68):
         init_state=AssetBaseCfg.InitialStateCfg(pos=(goal_x, 0.0, 0.0)),
     )
     return {
-        "profile": "indoor-steel-goal-v1",
+        "profile": "indoor-trapezoid-official-ball-v2",
         "mat_style": style,
+        "surface_name": {
+            "A": "striped football",
+            "B": "plain football",
+            "C": "marble",
+            "D": "walnut planks",
+        }[style],
+        "surface_physics": "rigid flush plane; shared uncalibrated contact parameters",
+        "ball_visual": "official Microduck simulator, original 10 cm diameter",
+        "ball_diameter_m": 0.10,
+        "ball_mass_kg": 0.03,
+        "ball_contact_source": "official browser MuJoCo geom; USD mapping from mujoco-usd-converter0.6.1",
+        "ball_friction_slide_spin_roll": [0.4, 0.01, 0.003],
+        "ball_condim": 6,
+        "ball_solref": [0.03, 0.4],
+        "cross_engine_contact_equivalence_measured": False,
         "mat_dimensions_m": [1.6, 1.0, 0.004],
         "mat_center_xy_m": [0.1, 0.0],
         "mat_edge": "flush contact plane",
         "goal_outer_width_depth_height_m": [0.4, 0.2, 0.25],
+        "goal_top_depth_m": 0.066,
+        "goal_side_profile": "trapezoid, sloping back; inferred from product photograph",
         "goal_frame_diameter_m": 0.006,
         "goal_wire_diameter_m": 0.0008,
         "goal_wire_spacing_m": 0.012,

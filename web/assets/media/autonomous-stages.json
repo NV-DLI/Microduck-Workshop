@@ -1,210 +1,346 @@
 [
   {
     "start": 0.0,
-    "source_time": 0.07,
-    "state": "IMU_WARMUP",
-    "title": "准备 · 读取 IMU",
-    "detail": "等待稳定的重力方向估计，暂不执行行走策略。",
-    "end": 0.8
-  },
-  {
-    "start": 0.8,
-    "source_time": 0.87,
-    "state": "SUPPORTED_STAND",
-    "title": "准备 · 建立站立状态",
-    "detail": "零速度指令下运行行走策略，逐渐撤去启动支撑。",
-    "end": 1.3333333333333333
-  },
-  {
-    "start": 1.3333333333333333,
-    "source_time": 1.4000000000000001,
-    "state": "RELEASE",
-    "title": "准备 · 撤去启动支撑",
-    "detail": "保持站立，等待传感器与控制状态就绪。",
-    "end": 2.3333333333333335
-  },
-  {
-    "start": 2.3333333333333335,
-    "source_time": 2.4,
+    "source_time": 1.8,
     "state": "SEARCH_GOAL",
     "title": "检测 · 确认球门",
     "detail": "从相机图像检测球门，积累可用的球门底部观测。",
-    "end": 2.466666666666667
+    "end": 0.13333333333333333
   },
   {
-    "start": 2.466666666666667,
-    "source_time": 2.535,
+    "start": 0.13333333333333333,
+    "source_time": 1.935,
     "state": "NAV2_APPROACH",
     "title": "规划 · 计算接近路径",
     "detail": "用球与球门的估计位置确定站位，Nav2 Navfn 生成路径。",
-    "end": 3.0
+    "end": 0.4666666666666667
   },
   {
-    "start": 3.0,
-    "source_time": 3.0700000000000003,
+    "start": 0.4666666666666667,
+    "source_time": 2.27,
     "state": "NEUTRAL_FINE_RETURN",
     "title": "执行 · 调整头部姿态",
     "detail": "保持机身控制，调整视线，为接近动作做好准备。",
-    "end": 3.8
+    "end": 1.2
   },
   {
-    "start": 3.8,
-    "source_time": 3.87,
+    "start": 1.2,
+    "source_time": 3.0,
     "state": "NEUTRAL_FINE_TRACK",
     "title": "执行 · 沿目标方向接近",
     "detail": "根据目标位置和运动估计给出速度指令，行走策略协调关节。",
-    "end": 5.333333333333333
+    "end": 2.6
   },
   {
-    "start": 5.333333333333333,
-    "source_time": 5.4,
+    "start": 2.6,
+    "source_time": 4.4,
     "state": "NEUTRAL_FINE_SETTLE",
     "title": "执行 · 停稳再观察",
     "detail": "停止接近，减小身体晃动，等待更新足球位置。",
-    "end": 6.333333333333333
+    "end": 3.8666666666666667
   },
   {
-    "start": 6.333333333333333,
-    "source_time": 6.4,
+    "start": 3.8666666666666667,
+    "source_time": 5.67,
     "state": "NEUTRAL_FINE_REACQUIRE",
     "title": "检测 · 更新足球位置",
     "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
-    "end": 7.0
+    "end": 4.866666666666666
   },
   {
-    "start": 7.0,
+    "start": 4.866666666666666,
+    "source_time": 6.67,
+    "state": "REACQUIRE_BALL",
+    "title": "检测 · 确认近处足球",
+    "detail": "检查近处足球观测，准备最后的站位调整。",
+    "end": 4.933333333333334
+  },
+  {
+    "start": 4.933333333333334,
+    "source_time": 6.735,
+    "state": "FINAL_ALIGN",
+    "title": "规划与执行 · 对准出脚位置",
+    "detail": "检查球相对身体的位置，调整接近指令。",
+    "end": 5.266666666666667
+  },
+  {
+    "start": 5.266666666666667,
     "source_time": 7.07,
-    "state": "REACQUIRE_BALL",
-    "title": "检测 · 确认近处足球",
-    "detail": "检查近处足球观测，准备最后的站位调整。",
-    "end": 7.066666666666666
-  },
-  {
-    "start": 7.066666666666666,
-    "source_time": 7.135,
-    "state": "FINAL_ALIGN",
-    "title": "规划与执行 · 对准出脚位置",
-    "detail": "检查球相对身体的位置，调整接近指令。",
-    "end": 7.4
-  },
-  {
-    "start": 7.4,
-    "source_time": 7.47,
-    "state": "REACQUIRE_BALL",
-    "title": "检测 · 确认近处足球",
-    "detail": "检查近处足球观测，准备最后的站位调整。",
-    "end": 7.466666666666667
-  },
-  {
-    "start": 7.466666666666667,
-    "source_time": 7.535,
-    "state": "FINAL_ALIGN",
-    "title": "规划与执行 · 对准出脚位置",
-    "detail": "检查球相对身体的位置，调整接近指令。",
-    "end": 7.8
-  },
-  {
-    "start": 7.8,
-    "source_time": 7.87,
     "state": "NEUTRAL_FINE_RETURN",
     "title": "执行 · 调整头部姿态",
     "detail": "保持机身控制，调整视线，为接近动作做好准备。",
-    "end": 9.0
+    "end": 6.466666666666667
   },
   {
-    "start": 9.0,
-    "source_time": 9.07,
+    "start": 6.466666666666667,
+    "source_time": 8.27,
     "state": "NEUTRAL_FINE_TURN",
     "title": "执行 · 调整朝向",
     "detail": "依据球门观测调整身体朝向，准备后续接近。",
-    "end": 9.2
+    "end": 6.6
   },
   {
-    "start": 9.2,
-    "source_time": 9.27,
+    "start": 6.6,
+    "source_time": 8.4,
     "state": "NEUTRAL_FINE_SETTLE",
     "title": "执行 · 停稳再观察",
     "detail": "停止接近，减小身体晃动，等待更新足球位置。",
-    "end": 10.2
+    "end": 7.733333333333333
   },
   {
-    "start": 10.2,
-    "source_time": 10.27,
+    "start": 7.733333333333333,
+    "source_time": 9.535,
     "state": "NEUTRAL_FINE_REACQUIRE",
     "title": "检测 · 更新足球位置",
     "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
-    "end": 10.866666666666667
+    "end": 8.666666666666666
   },
   {
-    "start": 10.866666666666667,
-    "source_time": 10.935,
+    "start": 8.666666666666666,
+    "source_time": 10.47,
     "state": "REACQUIRE_BALL",
     "title": "检测 · 确认近处足球",
     "detail": "检查近处足球观测，准备最后的站位调整。",
-    "end": 10.933333333333334
+    "end": 8.733333333333333
   },
   {
-    "start": 10.933333333333334,
-    "source_time": 11.0,
+    "start": 8.733333333333333,
+    "source_time": 10.535,
     "state": "FINAL_ALIGN",
     "title": "规划与执行 · 对准出脚位置",
     "detail": "检查球相对身体的位置，调整接近指令。",
-    "end": 11.066666666666666
+    "end": 9.066666666666666
   },
   {
-    "start": 11.066666666666666,
-    "source_time": 11.135,
-    "state": "REACQUIRE_BALL",
-    "title": "检测 · 确认近处足球",
-    "detail": "检查近处足球观测，准备最后的站位调整。",
-    "end": 11.133333333333333
-  },
-  {
-    "start": 11.133333333333333,
-    "source_time": 11.200000000000001,
-    "state": "FINAL_ALIGN",
-    "title": "规划与执行 · 对准出脚位置",
-    "detail": "检查球相对身体的位置，调整接近指令。",
-    "end": 11.466666666666667
-  },
-  {
-    "start": 11.466666666666667,
-    "source_time": 11.535,
+    "start": 9.066666666666666,
+    "source_time": 10.870000000000001,
     "state": "NEUTRAL_FINE_RETURN",
     "title": "执行 · 调整头部姿态",
     "detail": "保持机身控制，调整视线，为接近动作做好准备。",
-    "end": 12.6
+    "end": 10.266666666666667
   },
   {
-    "start": 12.6,
-    "source_time": 12.67,
+    "start": 10.266666666666667,
+    "source_time": 12.07,
+    "state": "NEUTRAL_FINE_TURN",
+    "title": "执行 · 调整朝向",
+    "detail": "依据球门观测调整身体朝向，准备后续接近。",
+    "end": 10.6
+  },
+  {
+    "start": 10.6,
+    "source_time": 12.4,
+    "state": "NEUTRAL_FINE_SETTLE",
+    "title": "执行 · 停稳再观察",
+    "detail": "停止接近，减小身体晃动，等待更新足球位置。",
+    "end": 12.066666666666666
+  },
+  {
+    "start": 12.066666666666666,
+    "source_time": 13.870000000000001,
+    "state": "NEUTRAL_FINE_REACQUIRE",
+    "title": "检测 · 更新足球位置",
+    "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
+    "end": 12.933333333333334
+  },
+  {
+    "start": 12.933333333333334,
+    "source_time": 14.735,
+    "state": "REACQUIRE_BALL",
+    "title": "检测 · 确认近处足球",
+    "detail": "检查近处足球观测，准备最后的站位调整。",
+    "end": 13.0
+  },
+  {
+    "start": 13.0,
+    "source_time": 14.8,
+    "state": "FINAL_ALIGN",
+    "title": "规划与执行 · 对准出脚位置",
+    "detail": "检查球相对身体的位置，调整接近指令。",
+    "end": 13.333333333333334
+  },
+  {
+    "start": 13.333333333333334,
+    "source_time": 15.135,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 14.533333333333333
+  },
+  {
+    "start": 14.533333333333333,
+    "source_time": 16.335,
+    "state": "NEUTRAL_FINE_TURN",
+    "title": "执行 · 调整朝向",
+    "detail": "依据球门观测调整身体朝向，准备后续接近。",
+    "end": 14.8
+  },
+  {
+    "start": 14.8,
+    "source_time": 16.6,
+    "state": "NEUTRAL_FINE_SETTLE",
+    "title": "执行 · 停稳再观察",
+    "detail": "停止接近，减小身体晃动，等待更新足球位置。",
+    "end": 15.866666666666667
+  },
+  {
+    "start": 15.866666666666667,
+    "source_time": 17.67,
+    "state": "NEUTRAL_FINE_REACQUIRE",
+    "title": "检测 · 更新足球位置",
+    "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
+    "end": 16.733333333333334
+  },
+  {
+    "start": 16.733333333333334,
+    "source_time": 18.535,
+    "state": "REACQUIRE_BALL",
+    "title": "检测 · 确认近处足球",
+    "detail": "检查近处足球观测，准备最后的站位调整。",
+    "end": 16.8
+  },
+  {
+    "start": 16.8,
+    "source_time": 18.6,
+    "state": "FINAL_ALIGN",
+    "title": "规划与执行 · 对准出脚位置",
+    "detail": "检查球相对身体的位置，调整接近指令。",
+    "end": 17.2
+  },
+  {
+    "start": 17.2,
+    "source_time": 19.0,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 18.4
+  },
+  {
+    "start": 18.4,
+    "source_time": 20.2,
+    "state": "NEUTRAL_FINE_TURN",
+    "title": "执行 · 调整朝向",
+    "detail": "依据球门观测调整身体朝向，准备后续接近。",
+    "end": 18.6
+  },
+  {
+    "start": 18.6,
+    "source_time": 20.400000000000002,
+    "state": "NEUTRAL_FINE_SETTLE",
+    "title": "执行 · 停稳再观察",
+    "detail": "停止接近，减小身体晃动，等待更新足球位置。",
+    "end": 19.666666666666668
+  },
+  {
+    "start": 19.666666666666668,
+    "source_time": 21.47,
+    "state": "NEUTRAL_FINE_REACQUIRE",
+    "title": "检测 · 更新足球位置",
+    "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
+    "end": 20.466666666666665
+  },
+  {
+    "start": 20.466666666666665,
+    "source_time": 22.27,
+    "state": "REACQUIRE_BALL",
+    "title": "检测 · 确认近处足球",
+    "detail": "检查近处足球观测，准备最后的站位调整。",
+    "end": 20.533333333333335
+  },
+  {
+    "start": 20.533333333333335,
+    "source_time": 22.335,
+    "state": "FINAL_ALIGN",
+    "title": "规划与执行 · 对准出脚位置",
+    "detail": "检查球相对身体的位置，调整接近指令。",
+    "end": 20.866666666666667
+  },
+  {
+    "start": 20.866666666666667,
+    "source_time": 22.67,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 22.0
+  },
+  {
+    "start": 22.0,
+    "source_time": 23.8,
+    "state": "NEUTRAL_FINE_TURN",
+    "title": "执行 · 调整朝向",
+    "detail": "依据球门观测调整身体朝向，准备后续接近。",
+    "end": 22.266666666666666
+  },
+  {
+    "start": 22.266666666666666,
+    "source_time": 24.07,
+    "state": "NEUTRAL_FINE_SETTLE",
+    "title": "执行 · 停稳再观察",
+    "detail": "停止接近，减小身体晃动，等待更新足球位置。",
+    "end": 23.4
+  },
+  {
+    "start": 23.4,
+    "source_time": 25.2,
+    "state": "NEUTRAL_FINE_REACQUIRE",
+    "title": "检测 · 更新足球位置",
+    "detail": "重新观察足球，结合姿态与距离信息更新相对位置。",
+    "end": 24.2
+  },
+  {
+    "start": 24.2,
+    "source_time": 26.0,
+    "state": "REACQUIRE_BALL",
+    "title": "检测 · 确认近处足球",
+    "detail": "检查近处足球观测，准备最后的站位调整。",
+    "end": 24.266666666666666
+  },
+  {
+    "start": 24.266666666666666,
+    "source_time": 26.07,
+    "state": "FINAL_ALIGN",
+    "title": "规划与执行 · 对准出脚位置",
+    "detail": "检查球相对身体的位置，调整接近指令。",
+    "end": 24.6
+  },
+  {
+    "start": 24.6,
+    "source_time": 26.400000000000002,
+    "state": "NEUTRAL_FINE_RETURN",
+    "title": "执行 · 调整头部姿态",
+    "detail": "保持机身控制，调整视线，为接近动作做好准备。",
+    "end": 25.733333333333334
+  },
+  {
+    "start": 25.733333333333334,
+    "source_time": 27.535,
     "state": "NEUTRAL_FINE_TRACK",
     "title": "执行 · 沿目标方向接近",
     "detail": "根据目标位置和运动估计给出速度指令，行走策略协调关节。",
-    "end": 14.466666666666667
+    "end": 27.533333333333335
   },
   {
-    "start": 14.466666666666667,
-    "source_time": 14.535,
+    "start": 27.533333333333335,
+    "source_time": 29.335,
     "state": "HEAD_RETURN",
     "title": "技能交接 · 准备出脚",
     "detail": "停止行走并使头部回到适合踢球的姿态，检查交接条件。",
-    "end": 15.8
+    "end": 28.6
   },
   {
-    "start": 15.8,
-    "source_time": 15.870000000000001,
+    "start": 28.6,
+    "source_time": 30.400000000000002,
     "state": "KICK",
     "title": "执行 · 踢球",
     "detail": "调用踢球教师策略与残差修正，随后平滑返回站立。",
-    "end": 16.066666666666666
+    "end": 28.866666666666667
   },
   {
-    "start": 16.066666666666666,
-    "source_time": 16.135,
+    "start": 28.866666666666667,
+    "source_time": 30.67,
     "state": "RECOVER",
     "title": "执行与检查 · 恢复站立",
     "detail": "保持站立并观察足球运动；评测器检查进球、接触与跌倒。",
-    "end": 19.8
+    "end": 32.6
   }
 ]

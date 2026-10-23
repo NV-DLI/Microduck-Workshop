@@ -79,6 +79,7 @@ def make_goal():
     yl, yr = -0.197, 0.197
     z = 0.247
     back = 0.194
+    top = 0.060  # Shallow roof and sloping back, following the product side profile.
     edges = [
         ((0, yl, 0.003), (0, yl, z)),
         ((0, yr, 0.003), (0, yr, z)),
@@ -86,11 +87,11 @@ def make_goal():
         ((0, yl, 0.003), (back, yl, 0.003)),
         ((0, yr, 0.003), (back, yr, 0.003)),
         ((back, yl, 0.003), (back, yr, 0.003)),
-        ((back, yl, 0.003), (back, yl, z)),
-        ((back, yr, 0.003), (back, yr, z)),
-        ((back, yl, z), (back, yr, z)),
-        ((0, yl, z), (back, yl, z)),
-        ((0, yr, z), (back, yr, z)),
+        ((back, yl, 0.003), (top, yl, z)),
+        ((back, yr, 0.003), (top, yr, z)),
+        ((top, yl, z), (top, yr, z)),
+        ((0, yl, z), (top, yl, z)),
+        ((0, yr, z), (top, yr, z)),
     ]
     for i, (a, b) in enumerate(edges):
         rod(s, "Frame_" + str(i), a, b, 0.003, white)
@@ -101,17 +102,34 @@ def make_goal():
         rod(s, "Net_" + str(i), a, b, 0.0004, steel)
         i += 1
 
-    for y in np.arange(yl + 0.006, yr, 0.012):
-        wire((back, y, 0.003), (back, y, z))
-        wire((0, y, z), (back, y, z))
-    for zz in np.arange(0.009, z, 0.012):
-        wire((back, yl, zz), (back, yr, zz))
-        for y in [yl, yr]:
-            wire((0, y, zz), (back, y, zz))
-    for x in np.arange(0.006, back, 0.012):
-        wire((x, yl, z), (x, yr, z))
-        for y in [yl, yr]:
-            wire((x, y, 0.003), (x, y, z))
+    def diamond_panel(p00, p10, p11, p01, nu, nv):
+        corners = list(map(np.asarray, [p00, p10, p11, p01]))
+
+        def at(u, v):
+            a, b, c, d = corners
+            return (1 - u) * (1 - v) * a + u * (1 - v) * b + u * v * c + (1 - u) * v * d
+
+        for sign in [-1, 1]:
+            for k in range(-nv, nu + nv + 1):
+                candidates = []
+                for u in [0.0, 1.0]:
+                    v = (k - nu * u) / (sign * nv)
+                    if 0 <= v <= 1:
+                        candidates.append((u, v))
+                for v in [0.0, 1.0]:
+                    u = (k - sign * nv * v) / nu
+                    if 0 <= u <= 1:
+                        candidates.append((u, v))
+                unique = list(dict.fromkeys(candidates))
+                if len(unique) == 2:
+                    wire(at(*unique[0]), at(*unique[1]))
+
+    diamond_panel(
+        (back, yl, 0.003), (back, yr, 0.003), (top, yr, z), (top, yl, z), 33, 21
+    )
+    diamond_panel((0, yl, z), (0, yr, z), (top, yr, z), (top, yl, z), 33, 5)
+    for y in [yl, yr]:
+        diamond_panel((0, y, 0.003), (back, y, 0.003), (top, y, z), (0, y, z), 16, 21)
     s.GetRootLayer().Save()
     return i
 
@@ -163,10 +181,24 @@ def make_mat(style):
     noise = rng.normal(0, 1.3, (H, W, 1))
     weave = (np.indices((H, W)).sum(axis=0) % 3 == 0)[..., None] * 1.5
     a = np.clip(a + noise - weave, 0, 255).astype("uint8")
+    if style in "CD":
+        a = floor_texture(style, W, H)
     Image.fromarray(a).save(OUT / f"pitch_{style}.png")
     s = stage(f"pitch_{style}.usda")
-    m = material(s, "PrintedShortPile", (0.2, 0.4, 0.1), 0.94, 0, f"pitch_{style}.png")
-    rubber = material(s, "RubberBinding", (0.10, 0.13, 0.09), 0.94)
+    roughness = {"A": 0.94, "B": 0.94, "C": 0.28, "D": 0.40}[style]
+    m = material(
+        s, "GroundSurface", (0.2, 0.4, 0.1), roughness, 0, f"pitch_{style}.png"
+    )
+    rubber = material(
+        s,
+        "Edge",
+        (
+            (0.10, 0.13, 0.09)
+            if style in "AB"
+            else ((0.68, 0.67, 0.64) if style == "C" else (0.18, 0.085, 0.035))
+        ),
+        roughness,
+    )
     # Rounded top polygon with exact metric UVs.
     pts = []
     for cx, cy, start in [
@@ -188,7 +220,7 @@ def make_mat(style):
     )
     uv.Set([((p[0] + 0.8) / 1.6, (p[1] + 0.5)) for p in pts])
     bind(g, m)
-    for i, a in enumerate(pts):
+    for i, a in enumerate(pts if style in "AB" else []):
         b = pts[(i + 1) % len(pts)]
         rod(
             s,
@@ -206,6 +238,45 @@ def make_mat(style):
     xf.AddScaleOp().Set(Gf.Vec3f(1.57, 0.97, 0.004))
     bind(body, rubber)
     s.GetRootLayer().Save()
+
+
+def floor_texture(style, width, height):
+    """Original deterministic marble and walnut patterns, in metric proportions."""
+    rng = np.random.default_rng(814)
+    yy, xx = np.mgrid[0:height, 0:width].astype(np.float32)
+    x, y = xx / width * 1.6, yy / height
+    if style == "C":
+        wave = (
+            x * 4.2
+            + y * 1.7
+            + 0.18 * np.sin(y * 12 + x * 3)
+            + 0.08 * np.sin(x * 31 - y * 21)
+        )
+        vein = np.exp(-((np.sin(wave * 6.0) / 0.055) ** 2))
+        hair = np.exp(-((np.sin((wave + 0.04 * np.sin(y * 41)) * 19) / 0.035) ** 2))
+        cloudy = 4 * np.sin(x * 11 + y * 14) * np.sin(x * 5 - y * 3)
+        value = cloudy - 31 * vein - 8 * hair + rng.normal(0, 0.65, (height, width))
+        a = np.array([224, 224, 218])[None, None, :] + value[:, :, None]
+        seams = (np.mod(x, 0.4) < 0.0015) | (np.mod(y, 0.5) < 0.0015)
+        a[seams] = [190, 190, 186]
+    else:
+        row = np.floor(y / 0.125).astype(int)
+        col = np.floor((x + 0.25 * (row % 2)) / 0.6).astype(int)
+        local = np.mod(y, 0.125) / 0.125
+        grain = np.sin(local * 100 + 6 * np.sin(x * 8) + 2 * np.sin(x * 29 + row))
+        fine = np.sin(local * 310 + 9 * np.sin(x * 5 + row))
+        variation = 7 * np.sin(row * 8.3 + col * 3.7)
+        grain_value = (
+            4 * grain + 1.6 * fine + variation + rng.normal(0, 0.7, (height, width))
+        )
+        a = np.array([121, 76, 43])[None, None, :] + grain_value[:, :, None] * [
+            1,
+            0.78,
+            0.52,
+        ]
+        seams = (np.mod(y, 0.125) < 0.001) | (np.mod(x + 0.25 * (row % 2), 0.6) < 0.001)
+        a[seams] = [68, 42, 24]
+    return np.clip(a, 0, 255).astype("uint8")
 
 
 if __name__ == "__main__":

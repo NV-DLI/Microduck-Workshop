@@ -1,0 +1,118 @@
+{
+  "scene": "indoor-trapezoid-official-ball-v2",
+  "locomotion": "rollers",
+  "ball_diameter_m": 0.1,
+  "predeclared_seeds": [
+    56001,
+    56002,
+    56003,
+    56004
+  ],
+  "complete_successes": 1,
+  "trials": [
+    {
+      "style": "A",
+      "seed": 56001,
+      "passed": false,
+      "ball_contact": true,
+      "goal_time_s": 8.48634095702582,
+      "contact_time_s": 7.14,
+      "fell": false,
+      "final_continuous_settling_s": 0.0,
+      "simulation_seconds": 16.82,
+      "failed_checks": [
+        "stopped_before_goal"
+      ],
+      "outcome": "Ball scored; final continuous settling below 2 cm/s did not reach 1 s within the post-shot budget.",
+      "source_record_sha256": {
+        "report.json": "695ce6a871ec48ca645b20b1182de0554724517e7badf8168fc7faced2dcef76",
+        "physical-evaluation.jsonl": "b76506f985bd744c1b3a43834d69ef947a9191c2cc3e72333b6f869251e6c364",
+        "action-trace.jsonl": "fa545dbbc3211ec6e37f17c564b5fe9c52128e4552efc58d0e299fa6f216ced3",
+        "imu.jsonl": "9aec5afe6096e57149044d696fef36017411b5b609cb4dc149ec7cb9b76322b5",
+        "visual-control.jsonl": "c0a02fb7e29e89f81680d343b64627c9e2eba6a721e1a5f625803b0091e2aa96",
+        "independent-result.json": "c1d0f8989c8f79c2cf9a2dac211d63e9963287520ec4ef2c3968ffcc2352d48d"
+      }
+    },
+    {
+      "style": "B",
+      "seed": 56002,
+      "passed": true,
+      "ball_contact": true,
+      "goal_time_s": 8.008705200143336,
+      "contact_time_s": 6.655,
+      "fell": false,
+      "final_continuous_settling_s": 1.0,
+      "simulation_seconds": 15.16,
+      "failed_checks": [],
+      "outcome": "Contact, whole-ball crossing and stopping before goal passed.",
+      "source_record_sha256": {
+        "report.json": "b466a645f6858f524c2872844d810a7d27bec2b02271294da1db26f5acec7120",
+        "physical-evaluation.jsonl": "d58d171ef3146c154cfeb98d743ccc982b2cab2536ea9d8b3f6ef9bb7d588b94",
+        "action-trace.jsonl": "87c666f6ca39c1a7d917906be9664241f4485b1b076358878765bbc0a2f730ea",
+        "imu.jsonl": "3e20350de53ed8c95899a8306d789ce929ebf2677f5441a305b2b95ca1eb2a3b",
+        "visual-control.jsonl": "d3c3c50332e67949b72dad31f60d5dd786c8c76b134ccd3985fd68ad0cc376fd",
+        "independent-result.json": "b257a4d9b028ffe5e9b50907e71a04be6a6eddf7cbf5c6b30745e0fd2e7a833c"
+      }
+    },
+    {
+      "style": "C",
+      "seed": 56003,
+      "passed": false,
+      "ball_contact": false,
+      "goal_time_s": null,
+      "contact_time_s": null,
+      "fell": false,
+      "final_continuous_settling_s": 0.0,
+      "simulation_seconds": 30.0,
+      "failed_checks": [
+        "visual_handoff",
+        "tof_at_handoff",
+        "stopped_before_goal"
+      ],
+      "outcome": "No valid pair of observed goal-post bases within 30 s; no shot requested.",
+      "source_record_sha256": {
+        "report.json": "3fc407a301358c3b8b61555e1e6277eeaf3d7680d1b17db992deb78c650daee4",
+        "physical-evaluation.jsonl": "c1995657c91311cb5e160da9f1ba6583d1f4f0ea373c1f70943518d92cf0dae3",
+        "action-trace.jsonl": "1ed7ea1bb5c9bef55ef10a78bdd2e41e87661a1cb4591f7f12252d6cee410db1",
+        "imu.jsonl": "65cdcd36586af2b8d7c448e207a938dd735b68855d6188b0ae29737036fad473",
+        "visual-control.jsonl": "f41a8904bb03238381bce9ac814a250cbc80b98d53f83c22dfcca534dd3cf961",
+        "independent-result.json": "e0f49c3e427a127cc7b9122df501c8df552028c04e2f8b353f36554f984af63c"
+      }
+    },
+    {
+      "style": "D",
+      "seed": 56004,
+      "passed": false,
+      "ball_contact": false,
+      "goal_time_s": null,
+      "contact_time_s": null,
+      "fell": false,
+      "final_continuous_settling_s": 0.0,
+      "simulation_seconds": 30.0,
+      "failed_checks": [
+        "visual_handoff",
+        "tof_at_handoff",
+        "stopped_before_goal"
+      ],
+      "outcome": "No valid pair of observed goal-post bases within 30 s; no shot requested.",
+      "source_record_sha256": {
+        "report.json": "74097638932b7e1d276b189280f20c34c5aef37d80905abef5c98a2788e7b8e1",
+        "physical-evaluation.jsonl": "5082c4274e6f2ce3f489dd25a2669ea628db46afe86f48fb038eb62fec612fdb",
+        "action-trace.jsonl": "f3ddc647eb85f0b09780c31f8ed44bdcdadefad0338918d62a36d1802100b1c2",
+        "imu.jsonl": "3561b19a2eed8173e59c1b2471b6bc8909d0769ae45be09691bee7339d60ba9e",
+        "visual-control.jsonl": "4eccdf175ed1bf1ab66f2d84ce5425e681ebf8a2bdc24d7bd9826c5bf073a074",
+        "independent-result.json": "e628d6b81f62c5fb8ed07a200a5e78aa07eea16a142edfc3a929f56c29691666"
+      }
+    }
+  ],
+  "scope": "Four predeclared new seeds, one per floor, fixed start (-0.30,0.045); 30 s ceiling and an 8 s recovery deadline after the propulsion/contact window (0.5 s after the push ends). Style and seed change together; not a causal surface comparison, arbitrary-start navigation, or hardware qualification. Development runs excluded.",
+  "controller": "Official fixed roller actor, RGB/ToF visual feedback, ideal trunk-COM IMU integration; PI holding and proportional post-stroke braking; no walking, leg kick or Nav2.",
+  "configuration_sha256": {
+    "lab/manual.py": "4d1cca6f90996fb6d5dfcd28dd0c9ad7e11226fa23d9dab4ee729905033e6fc6",
+    "lab/roller_imu.py": "8aec997e92a4135d2b315798333686d1f788e694b31e3681a8f9ce468561963c",
+    "lab/roller_vision.py": "e45bc2a7d46c0f7ba694c2750db7fdf697477e7b7317549d8c9b85666618d7bb",
+    "lab/roller_config.py": "f4faabaa01fa578458e91724cd57aa6daff7a015c7564f7335bc1a101abf00b6",
+    "lab/assets/rollers/rest_pose.json": "d53d726c8e60cf251353d819044050815f3b793f9249f6744bace65879b4ddc1",
+    "lab/assets/rollers/microduck_rollers_analytic.usdc": "6e406a412a0261a301ade0771ac3f952dfe3be6675c27a19c9e6baef957cfcba"
+  }
+}

@@ -27,7 +27,10 @@ def finish(job, config, code):
     score = manifest["scorer"]
     if a.scene_contract:
         scene = json.loads((output / "scene-contract.json").read_text())
-        if scene.get("source_changed") or scene["profile"] != "indoor-steel-goal-v1":
+        if scene.get("source_changed") or scene["profile"] not in (
+            "indoor-steel-goal-v1",
+            "indoor-trapezoid-official-ball-v2",
+        ):
             raise ValueError("Changed or unknown scene contract")
         if scene["goal_plane_x_m"] != 0.68 or scene["goal_opening_width_m"] != 0.388:
             raise ValueError("Audit geometry does not match the recorded scene")

@@ -32,18 +32,36 @@ original mat drawings. Product reference:
 Dimensions are based on supplied product screenshots, not physical measurements.
 No retailer photo is redistributed. No community mesh was reused.
 
-- Mat: 1.6 × 1.0 m, centre at (0.1, 0). Four printed styles A–D.
-- Goal: outer width 0.40, depth 0.20, height 0.25; front plane x=0.68.
+- Mat: 1.6 × 1.0 m, centre at (0.1, 0). Styles A/B are football graphics; C is marble and D walnut. All four visual surfaces currently share uncalibrated contact properties.
+- Goal: outer width 0.40, depth 0.20, height 0.25; front plane x=0.68. Side panels are trapezoidal: rear top x=0.060 and rear bottom x=0.194 relative to the goal plane. These depths are inferred from the photo, not measured. Diamond wires replace the old rectangular grid.
 - Assumed frame diameter 0.006; front post centres y=±0.197.
 - Clear opening width 0.388, height 0.244.
 - Assumed wire diameter 0.0008 and spacing 0.012. Frame and wires have static
   collision geometry. The goal represents a secured installation.
 - Mat print is 0.00005 above the rigid Newton contact plane. Its 0.004 visual
   backing extends below that plane. Raised edges and compression are not modeled.
-- Ball remains diameter 0.07, mass 0.045 kg. A different real ball requires both
-  physical and visual-scale calibration.
+- Ball follows the official browser simulator: diameter 0.10, mass 0.03 kg, black/white procedural panels. The analytic collider and visual sphere have the same radius. New geometry is also used in perception, data labels and scoring.
 
 Mat thickness, friction, compression, frame/wire diameters and goal mass have not
 been physically measured. Rendering quality does not establish a calibrated
 physical twin. The new scene has its own perception, map and evaluation contract;
 historical task success rates must not be transferred to it.
+
+## Passive-wheel variant
+
+`rollers/microduck_rollers.usdc` derives from the official roller/backlash XML using mujoco-usd-converter 0.6.1. Four tyre bodies have free passive hinges. Fourteen BAM servos retain their original order and fourteen gearbox-play hinges; the actor still receives 61 observations and outputs 14 actions. The USD conversion splits coincident servo/play hinges with fourteen 1 mg dummy bodies, following the upstream walking conversion. No powered wheel actuator or artificial chassis drive is added. White/orange materials and world-space body transforms are presentation adaptations.
+
+The official browser explicitly disables kicking in roller mode. Roller football in this course is a separately evaluated skill combination; an available policy file does not establish that the combined task succeeds.
+
+The shared roller deployment uses `rollers/microduck_rollers_analytic.usdc`:
+original visual meshes, body mass/inertia, joints and motor settings are retained,
+while each tyre contact shape is an analytic cylinder of diameter 30 mm and width
+7.6 mm. This approximates the rounded shoulders (maximum support difference about
+1.71 mm); it is not identical official collision geometry or a measured real tyre
+model. The original converted mesh asset remains alongside it. Use
+`artwork/refine_wheel_contacts.py` to reproduce this adaptation.
+
+`rollers/rest_pose.json` supplies a fixed legal initial roller posture. A reset
+event writes physical joint positions and zero velocities; it does not change
+the official actor's home pose, input normalization or action offsets. There is
+no external startup support, wheel motor or switching to a walking/kick actor.

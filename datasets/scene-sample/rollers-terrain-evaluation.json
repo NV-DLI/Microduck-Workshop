@@ -1,0 +1,299 @@
+{
+  "scope": "Same ramp and full-episode criteria as walking; separate roller command semantics and reset posture. Seed55011 reused during contact correction; not an additional independent generalization set or the same seed as historical walking trials.",
+  "criterion": "Within20s reach x>=1.45m with abs(y)<.3m and remain upright throughout; no automatic reset.",
+  "wheel_contacts": "30mm diameter x7.6mm analytic cylinders; official visual meshes and rigid-body inertia retained",
+  "initial_root_height_m": 0.122,
+  "reset_pose_joint_positions_sha256": "5fa7ccde57a1f5b682b40c6df6db4ca70243801143f036e9ceff314d3d3b1129",
+  "trials": [
+    {
+      "slope_deg": 0,
+      "seed": 55011,
+      "num_envs": 5,
+      "seconds": 20,
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "final_position": [
+        [
+          12.04407787322998,
+          0.4524196684360504,
+          0.11630435287952423
+        ],
+        [
+          12.055500984191895,
+          0.44607609510421753,
+          0.11411290615797043
+        ],
+        [
+          12.00284481048584,
+          0.5432829856872559,
+          0.11514564603567123
+        ],
+        [
+          12.086966514587402,
+          0.5303627848625183,
+          0.11380918323993683
+        ],
+        [
+          12.014280319213867,
+          0.28113114833831787,
+          0.11341100931167603
+        ]
+      ],
+      "actor_sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "robot_asset_sha256": "6e406a412a0261a301ade0771ac3f952dfe3be6675c27a19c9e6baef957cfcba",
+      "report_sha256": "9b42cfe89f4b8b0b001b2f1cb093fa0fb5d0909698a35089fb4d1b174435fc76",
+      "trajectory_sha256": "4a49b1a7ed55cb5c721c7f681c24e0e9c0a8637e2a0cfc399c00545fbba5e545"
+    },
+    {
+      "slope_deg": 5,
+      "seed": 55011,
+      "num_envs": 5,
+      "seconds": 20,
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "final_position": [
+        [
+          2.4470434188842773,
+          -10.33059024810791,
+          0.20179708302021027
+        ],
+        [
+          2.7934913635253906,
+          -10.20660400390625,
+          0.19940054416656494
+        ],
+        [
+          2.7051422595977783,
+          -10.285628318786621,
+          0.1978098601102829
+        ],
+        [
+          2.4258875846862793,
+          -10.240181922912598,
+          0.19882653653621674
+        ],
+        [
+          2.3868789672851562,
+          -10.397786140441895,
+          0.2016015648841858
+        ]
+      ],
+      "actor_sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "robot_asset_sha256": "6e406a412a0261a301ade0771ac3f952dfe3be6675c27a19c9e6baef957cfcba",
+      "report_sha256": "913971e0dd981ba1b093396e8075c3d9672f6a693e93ce672a0d2007078acfff",
+      "trajectory_sha256": "247313ba06cb0fa2038994332208d012316cd4a5538e76e36a23da0bd9a3aee5"
+    },
+    {
+      "slope_deg": -5,
+      "seed": 55011,
+      "num_envs": 5,
+      "seconds": 20,
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "final_position": [
+        [
+          4.127248764038086,
+          0.263937771320343,
+          -0.02342209964990616
+        ],
+        [
+          4.037476539611816,
+          0.43360376358032227,
+          -0.020665861666202545
+        ],
+        [
+          3.978302240371704,
+          0.3730952739715576,
+          -0.03073798306286335
+        ],
+        [
+          3.975050449371338,
+          0.1400454342365265,
+          -0.03106243535876274
+        ],
+        [
+          3.9357237815856934,
+          0.19546660780906677,
+          -0.027119265869259834
+        ]
+      ],
+      "actor_sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "robot_asset_sha256": "6e406a412a0261a301ade0771ac3f952dfe3be6675c27a19c9e6baef957cfcba",
+      "report_sha256": "9f3a9e6621804007d097f4f4507290b87f00d8969410250e5b1b582a745f40c8",
+      "trajectory_sha256": "3254145c795c6f5b86ff213504698f6e6aeef0cdae024de27ebdb7c4cd5a8b73"
+    },
+    {
+      "slope_deg": 10,
+      "seed": 55011,
+      "num_envs": 5,
+      "seconds": 20,
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        false,
+        true,
+        false,
+        false,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "final_position": [
+        [
+          -0.528867244720459,
+          -5.67343807220459,
+          0.10892064869403839
+        ],
+        [
+          0.18322914838790894,
+          0.1233261227607727,
+          0.05730026215314865
+        ],
+        [
+          -1.185166597366333,
+          -3.3744959831237793,
+          0.11171209067106247
+        ],
+        [
+          -5.501276969909668,
+          -2.967411518096924,
+          0.09593082219362259
+        ],
+        [
+          0.22762656211853027,
+          0.03746560588479042,
+          0.046270404011011124
+        ]
+      ],
+      "actor_sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "robot_asset_sha256": "6e406a412a0261a301ade0771ac3f952dfe3be6675c27a19c9e6baef957cfcba",
+      "report_sha256": "6863e1a66bfe827680c2caff2f2359f2e5b3d398791f1b76f49c97e9c2470762",
+      "trajectory_sha256": "26666324444ae8f50639dccf24233b4194e8a46417dabe3857e2c38017dee29f"
+    },
+    {
+      "slope_deg": -10,
+      "seed": 55011,
+      "num_envs": 5,
+      "seconds": 20,
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "final_position": [
+        [
+          1.4456195831298828,
+          -0.5746240615844727,
+          -0.11792679131031036
+        ],
+        [
+          1.3767671585083008,
+          -0.431908518075943,
+          -0.11498137563467026
+        ],
+        [
+          1.44819176197052,
+          -0.461810827255249,
+          -0.11722832173109055
+        ],
+        [
+          1.2544398307800293,
+          -0.35559511184692383,
+          -0.10420279949903488
+        ],
+        [
+          1.2400236129760742,
+          -0.6241466403007507,
+          -0.10770700871944427
+        ]
+      ],
+      "actor_sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+      "robot_asset_sha256": "6e406a412a0261a301ade0771ac3f952dfe3be6675c27a19c9e6baef957cfcba",
+      "report_sha256": "80c92aab373638e9ed2e85d80a1c15a74462e0648b6d822031a201cc434a8893",
+      "trajectory_sha256": "a2e2374d5e9a2499cfb2cdad6e99e44c92054979e52c56f3bc17f02e8b7ac5ae"
+    }
+  ]
+}

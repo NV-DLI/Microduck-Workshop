@@ -39,6 +39,7 @@ def main():
     p.add_argument("--record", action="store_true")
     p.add_argument("--seed", type=int, default=42001)
     p.add_argument("--headless", action="store_true")
+    p.add_argument("--locomotion", choices=["walking", "rollers"], default="walking")
     a = p.parse_args()
     if (
         not -20 <= a.slope <= 20
@@ -62,7 +63,9 @@ def main():
         slope_deg=a.slope,
         seed=a.seed,
         num_envs=a.num_envs,
-        command_m_s=0.25,
+        command_m_s=0.25 if a.locomotion == "walking" else None,
+        locomotion=a.locomotion,
+        roller_push_request=0.6 if a.locomotion == "rollers" else None,
         automatic_resets=False,
         support_surface_bounds_relative_m=[-50.0, 50.0, -50.0, 50.0],
         robot_contact_geometry="official allcollisions backlash",
@@ -132,6 +135,13 @@ def main():
                     cfg.events.terrain_camera = EventTermCfg(
                         func=camera_prestartup, mode="prestartup"
                     )
+                if a.locomotion == "rollers":
+                    from roller_config import configure_rollers
+
+                    report["roller_configuration"] = configure_rollers(cfg)
+                report["robot_asset_sha256"] = hashlib.sha256(
+                    Path(cfg.scene.robot.spawn.usd_path).read_bytes()
+                ).hexdigest()
                 cfg.sim.physics.solver_cfg.nconmax = 200
                 cfg.sim.physics.solver_cfg.njmax = 1024
                 cfg.commands.base_velocity.debug_vis = False
@@ -181,6 +191,11 @@ def main():
                     return getattr(x, "torch", x)
 
                 origin = T(env.scene.env_origins).clone()
+                if a.locomotion == "rollers":
+                    report["initial_body_names"] = list(robot.body_names)
+                    report["initial_body_position_relative_m"] = (
+                        (T(robot.data.body_pos_w)[0] - origin[0]).cpu().tolist()
+                    )
                 fallen = torch.zeros(a.num_envs, dtype=torch.bool, device="cuda:0")
                 reached = fallen.clone()
                 rows = []
@@ -210,7 +225,9 @@ def main():
                         cmd.is_standing_env[:] = False
                         cmd.vel_command_b[:] = 0
                         if step >= 100:
-                            cmd.vel_command_b[:, 0] = 0.25
+                            cmd.vel_command_b[:, 0] = (
+                                0.6 if a.locomotion == "rollers" else 0.25
+                            )
                         env.command_manager.get_term("head_pose").command[:] = 0
                         env.command_manager.get_term("body_pose").command[:] = 0
                         action = policy(
@@ -271,11 +288,20 @@ def main():
                     passed=(reached & ~fallen).cpu().tolist(),
                     fell=fallen.cpu().tolist(),
                     reached_landing=reached.cpu().tolist(),
-                    velocity_rmse=(error / max(samples, 1)).sqrt().cpu().tolist(),
-                    upright_velocity_rmse=(upright_error / upright_samples.clamp(min=1))
-                    .sqrt()
-                    .cpu()
-                    .tolist(),
+                    velocity_reference_m_s=0.25 if a.locomotion == "walking" else None,
+                    velocity_rmse=(
+                        (error / max(samples, 1)).sqrt().cpu().tolist()
+                        if a.locomotion == "walking"
+                        else None
+                    ),
+                    upright_velocity_rmse=(
+                        (upright_error / upright_samples.clamp(min=1))
+                        .sqrt()
+                        .cpu()
+                        .tolist()
+                        if a.locomotion == "walking"
+                        else None
+                    ),
                     upright_velocity_samples=upright_samples.cpu().tolist(),
                     final_position=pos.cpu().tolist(),
                     criterion="Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset",
