@@ -1,0 +1,27 @@
+{
+  "scope": "Same 128 held-out indoor images; not a task success-rate or randomization ablation",
+  "dataset_sha256": "357f47d73617994cd4bd3bc46d7d0023947df675761a17d14488c893fec71976",
+  "original": {
+    "sha256": "6eba38e35bc7f58b9bf73f75c762d38491c0206adc50bcb6de163ce5e7fd12e9",
+    "metrics": {
+      "metrics/precision(B)": 0.4390609277706108,
+      "metrics/recall(B)": 0.24107142857142858,
+      "metrics/mAP50(B)": 0.27342442466112693,
+      "metrics/mAP50-95(B)": 0.1990744527134774,
+      "fitness": 0.1990744527134774
+    }
+  },
+  "adapted": {
+    "sha256": "ae4bdf4976afa2891c34c290d17ce193b98839a893cf487445f5ac799faf908b",
+    "metrics": {
+      "metrics/precision(B)": 0.9964336935454738,
+      "metrics/recall(B)": 0.9482758620689655,
+      "metrics/mAP50(B)": 0.9450000000000001,
+      "metrics/mAP50-95(B)": 0.92048741837534,
+      "fitness": 0.92048741837534
+    }
+  },
+  "training_images": 512,
+  "validation_images": 128,
+  "test_images": 128
+}

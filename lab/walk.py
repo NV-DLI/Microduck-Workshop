@@ -65,8 +65,12 @@ try:
 
             cfg.sim.visualizer_cfgs = [KitVisualizerCfg()]
         cfg.scene.robot.spawn.usd_path = str(
-            a.runtime / "visuals/assets/microduck_white_orange.usda"
+            Path(__file__).parent / "assets/microduck_contact.usda"
         )
+
+        from scene_style import configure_lighting
+
+        configure_lighting(cfg)
 
         # Hold the requested command instead of sampling new commands during observation.
         cfg.commands.base_velocity.resampling_time_range = (1e8, 1e8)
@@ -142,7 +146,6 @@ try:
 
                 def T(x):
                     return getattr(x, "torch", x)
-
 
                 # Stop on a fall rather than silently resetting a failed attempt.
                 fallen = bool(

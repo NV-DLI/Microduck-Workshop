@@ -25,17 +25,19 @@ Reference platform: Ubuntu 24.04 on DGX Spark (aarch64), a working NVIDIA graphi
 python3 scripts/workshop.py setup
 python3 scripts/workshop.py doctor
 python3 scripts/workshop.py manual --seconds 600 --output outputs/manual-football-01
-python3 scripts/workshop.py football --seed 983102 --seconds 180 --output outputs/football-01
+python3 scripts/workshop.py football --scene indoor --style A --record-hd --seed 983102 --seconds 180 --output outputs/football-01
 python3 scripts/workshop.py report --run outputs/football-01
 ```
 
 Run graphical commands from the GPU machine's desktop terminal. The website is a textbook; simulation opens in a native window. New runs require new output directories. Use `--help` on any subcommand for parameters.
 
-The seven fixed model files total about 23 MB and are included directly in Git. Their identities are checked against `models/manifest.json`. Student training is optional practice in `outputs/`; it never replaces downstream course defaults. An explicit `walk --model ...` command can evaluate a student's own ONNX export.
+The original seven fixed model files total about 23 MB and are included directly in Git. Their identities are checked against `models/manifest.json`. The added indoor detector (PT + ONNX, about 14.5 MB) has its own `models/indoor-detector/deployment.json` and is also checked. Student training is optional practice in `outputs/`; it never replaces downstream course defaults. An explicit `walk --model ...` command can evaluate a student's own ONNX export.
 
-The separate `terrain-walk.onnx` actor adapts walking to flat and sloped ground; see `datasets/terrain/evaluation.json` for matched results and limits. It does not replace the original walking actor in football.
+The separate `terrain-walk.onnx` actor adapts walking to flat and sloped ground; see `datasets/terrain/contact-evaluation.json` for the current full-contact comparison and limits (`evaluation.json` preserves the historical configuration). It does not replace the original walking actor in football.
 
-The retained full-task combination scored **9/10** in its recorded independent empty-field trials. This is a result for a specific environment and trial distribution, not a guarantee for every seed or device. The default seed is a teaching example. Obstacle courses and physical hardware have not been qualified by that result.
+The original simple-field configuration scored **9/10** in its recorded independent empty-field trials. That score does not apply to the new indoor scene. The current A-pattern demonstration completed contact, whole-ball crossing and stable recovery in 17.485 task seconds. This is a result for a specific environment and trial distribution, not a guarantee for every seed or device. Four predeclared new-seed trials, one per mat pattern at the standard start, completed **1/4** full tasks; all four stayed upright. The failures expose observation and planning-handoff limits. Pattern and seed changed together, so this is not a causal comparison of mat patterns or a broad reliability estimate; see [trial results](datasets/indoor-sample/task-evaluation.json). The default seed is a teaching example, with robot start (−0.55, 0.04) m and ball (0.02, 0) m. `--scene legacy` retains the original scene. Four mat patterns are selected with `--style A|B|C|D`; changes require new evaluation. Obstacle courses and physical hardware have not been qualified by that result.
+
+The current interactive labs share official full-body collision geometry, white/orange materials and RTX daylight. A 1 × 1.6 m mat and secured 40 × 20 × 25 cm steel-mesh goal follow the supplied product dimensions. Friction, compliance and frame/wire sizes remain unmeasured assumptions; see [scene provenance](lab/assets/README.md). Physics-only practice training uses the same full-contact robot; historical checkpoints and training records remain unchanged.
 
 ## Repository
 

@@ -8,8 +8,8 @@
     "license": "CC BY-NC-SA 4.0",
     "xml_sha256": "ec9d2f731596cfc847a7fc3898ef8b5e67a548928abc23216537f1da8af2729c",
     "pose": "STAND",
-    "variant_note_zh": "模型中的电子组件包括 Raspberry Pi Zero 2 W、Robot HAT 和 NP-F970；不同硬件版本可能使用不同的电子组件。",
-    "variant_note_en": "The model includes Raspberry Pi Zero 2 W, Robot HAT and NP-F970 components; electronics may differ between hardware versions.",
+    "variant_note_zh": "模型保留 CAD 中的 Pi Zero 2 W、Robot HAT 和 NP-F970 外形；当前 Beta 软件面向 RK3566，这些电子组件网格不代表最新实物配置。",
+    "variant_note_en": "The CAD retains Pi Zero 2 W, Robot HAT and NP-F970 envelopes. Current Beta software targets RK3566; these meshes do not establish the latest electronics configuration.",
     "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
     "license_declaration": "https://github.com/pollen-robotics/microduck_rl/blob/develop/LICENSE-MODELS.md"
   },
@@ -910,8 +910,8 @@
     {
       "label_zh": "主控板 · Raspberry Pi Zero 2 W",
       "label_en": "Controller board · Raspberry Pi Zero 2 W",
-      "description_zh": "位于头部内部的 Raspberry Pi Zero 2 W 单板计算机，作为机器人主控板运行控制与通信程序。仿真实验则由外部工作站运行。",
-      "description_en": "Raspberry Pi Zero 2 W compute-board envelope in the model, not the workstation running this course.",
+      "description_zh": "旧版 CAD 保留的 Pi Zero 2 W 板外形，用于说明安装位置；当前 Beta 软件面向 RK3566，不能以这块网格确认最新主控板实物。仿真实验由外部工作站运行。",
+      "description_en": "Retained Pi Zero 2 W CAD board envelope for mounting context. Current Beta software targets RK3566; this mesh is not the latest board. Simulation runs on an external workstation.",
       "explode": [
         0.17,
         0.155,

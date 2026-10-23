@@ -1,0 +1,86 @@
+{
+  "scope": "Four predeclared new seeds, one per mat, fixed standard starting positions. Small exploratory test; style and seed vary together, so failures cannot be attributed to mat pattern alone.",
+  "protocol": {
+    "scope": "Four new seeds, one per mat, fixed standard start; exploratory robustness check, not a broad success-rate estimate",
+    "seeds": [
+      50001,
+      50002,
+      50003,
+      50004
+    ],
+    "styles": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "root_xy": [
+      -0.55,
+      0.04
+    ],
+    "ball_xy": [
+      0.02,
+      0
+    ],
+    "seconds": 180,
+    "render_subframes": 4,
+    "record_hd": true
+  },
+  "trials": [
+    {
+      "style": "A",
+      "seed": 50001,
+      "task_passed": true,
+      "checks_passed": true,
+      "task_seconds": 13.565000000000001,
+      "real_foot_ball_contact": true,
+      "whole_ball_crossed": true,
+      "fell": false,
+      "recovered": true,
+      "stop_reason": "development_kick_window_complete",
+      "manifest_sha256": "fb618dfa48ea826aa8f329a419bec917ce288ce2a891a5eadc0006de45afed53"
+    },
+    {
+      "style": "B",
+      "seed": 50002,
+      "task_passed": false,
+      "checks_passed": true,
+      "task_seconds": 11.26,
+      "real_foot_ball_contact": false,
+      "whole_ball_crossed": false,
+      "fell": false,
+      "recovered": false,
+      "stop_reason": "recovery_failed:retreat_current_body_guard_rejected",
+      "manifest_sha256": "a7af9f200cdc3f143ae829573377240236fa7a7b9ac3e0810107478246edd158"
+    },
+    {
+      "style": "C",
+      "seed": 50003,
+      "task_passed": false,
+      "checks_passed": true,
+      "task_seconds": 180.0,
+      "real_foot_ball_contact": false,
+      "whole_ball_crossed": false,
+      "fell": false,
+      "recovered": false,
+      "stop_reason": "task_duration_limit",
+      "manifest_sha256": "0e6e4191af7a66b7b2b2d4fd34680a8198d47f1815fa1e0740ce6698d47b5bd6"
+    },
+    {
+      "style": "D",
+      "seed": 50004,
+      "task_passed": false,
+      "checks_passed": true,
+      "task_seconds": 4.2250000000000005,
+      "real_foot_ball_contact": false,
+      "whole_ball_crossed": false,
+      "fell": false,
+      "recovered": false,
+      "stop_reason": "public_neutral_fine_step_failed",
+      "manifest_sha256": "a46871e97a0c44f853f916bfce7f226ae88226655cea1c3c766c875eecee8fa6"
+    }
+  ],
+  "passed": 1,
+  "total": 4,
+  "original_9_of_10_included": false
+}

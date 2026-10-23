@@ -71,6 +71,9 @@ def main():
         "rsl_rl_cfg_entry_point",
         overrides=["presets=backlash"],
     )
+    cfg.scene.robot.spawn.usd_path = str(
+        Path(__file__).parent / "assets/microduck_contact.usda"
+    )
     cfg.seed = agent.seed = a.seed
     cfg.scene.num_envs = a.num_envs
     cfg.sim.device = agent.device = "cuda:0"

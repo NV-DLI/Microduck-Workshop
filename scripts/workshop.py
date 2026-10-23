@@ -44,6 +44,12 @@ def verify():
         if not f.is_file() or sha(f) != item["sha256"]:
             raise ValueError("Model identity mismatch: " + item["file"])
         print("OK", item["file"], item["bytes"], "bytes")
+    extra = json.loads((ROOT / "models/indoor-detector/deployment.json").read_text())
+    for key in ("weights", "onnx"):
+        f = ROOT / "models/indoor-detector" / extra[key]
+        if not f.is_file() or sha(f) != extra[key + "_sha256"]:
+            raise ValueError("Indoor model identity mismatch: " + f.name)
+        print("OK", "indoor-detector/" + f.name, f.stat().st_size, "bytes")
     return d
 
 
@@ -85,6 +91,7 @@ def main():
     walk.add_argument("--headless", action="store_true")
     manual = sub.add_parser("manual")
     manual.add_argument("--seconds", type=float, default=600)
+    manual.add_argument("--style", choices=list("ABCD"), default="A")
     manual.add_argument("--output", type=Path, required=True)
     terrain = sub.add_parser("terrain")
     terrain.add_argument("--model", type=Path, required=True)
@@ -130,6 +137,11 @@ def main():
     plan.add_argument("--output", type=Path, required=True)
     fb = sub.add_parser("football")
     fb.add_argument("--seed", type=int, default=983102)
+    fb.add_argument("--scene", choices=["legacy", "indoor"], default="indoor")
+    fb.add_argument("--style", choices=list("ABCD"), default="A")
+    fb.add_argument("--record-hd", action=argparse.BooleanOptionalAction, default=True)
+    fb.add_argument("--root-y", type=float)
+    fb.add_argument("--ball-xy", type=float, nargs=2)
     fb.add_argument("--seconds", type=float, default=180)
     fb.add_argument("--output", type=Path, required=True)
     fb.add_argument("--headless", action="store_true")
@@ -307,6 +319,8 @@ def main():
             [
                 py,
                 ROOT / "lab/manual.py",
+                "--style",
+                a.style,
                 "--runtime",
                 m,
                 "--models",
@@ -374,7 +388,9 @@ def main():
         return run(
             [
                 py,
-                m / "gait/student_train.py",
+                ROOT / "lab/train_walk.py",
+                "--runtime",
+                m,
                 "--num-envs",
                 a.num_envs,
                 "--iterations",
@@ -445,12 +461,53 @@ def main():
             "--recovery-approval",
             m / "evaluation/football/recovery-approval.json",
         ]
-        if a.headless:
-            cmd += ["--headless"]
+        if a.scene == "indoor":
+            manifest = ROOT / "models/indoor-detector/deployment.json"
+            deployment = json.loads(manifest.read_text())
+            for key in ("weights", "onnx"):
+                artifact = manifest.parent / deployment[key]
+                if (
+                    hashlib.sha256(artifact.read_bytes()).hexdigest()
+                    != deployment[key + "_sha256"]
+                ):
+                    raise ValueError("Indoor detector artifact changed")
+                deployment[key] = str(artifact)
+            local_deployment = ROOT / ".local/indoor-detector-deployment.json"
+            local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
+            cmd[1] = ROOT / "lab/football_scene.py"
+            cmd += [
+                "--runtime",
+                m,
+                "--style",
+                a.style,
+                "--render-subframes",
+                "4",
+                "--root-y",
+                a.root_y if a.root_y is not None else 0.04,
+                "--ball-xy",
+                *(a.ball_xy if a.ball_xy is not None else [0.02, 0.0]),
+            ]
+            cmd[cmd.index("--root-x") + 1] = "-0.55"
+            cmd[cmd.index("--detector-deployment") + 1] = local_deployment
+            if a.record_hd:
+                cmd += ["--record-hd"]
+        if not a.headless:
+            cmd += ["--visualizer", "kit"]
         result = run(cmd, c)
         if result:
             return result
-        return run([py, ROOT / "lab/evaluate_task.py", "--runtime", m, "--run", out], c)
+        return run(
+            [
+                py,
+                ROOT / "lab/evaluate_task.py",
+                "--runtime",
+                m,
+                "--run",
+                out,
+                *(["--scene-contract"] if a.scene == "indoor" else []),
+            ],
+            c,
+        )
     return 0
 
 

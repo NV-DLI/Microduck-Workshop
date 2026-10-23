@@ -104,6 +104,11 @@ for item in json.loads((R / "models/manifest.json").read_text())["files"]:
     f = R / "models" / item["file"]
     if hashlib.sha256(f.read_bytes()).hexdigest() != item["sha256"]:
         errors.append("Model mismatch " + f.name)
+indoor = json.loads((R / "models/indoor-detector/deployment.json").read_text())
+for key in ("weights", "onnx"):
+    f = R / "models/indoor-detector" / indoor[key]
+    if hashlib.sha256(f.read_bytes()).hexdigest() != indoor[key + "_sha256"]:
+        errors.append("Indoor model mismatch " + f.name)
 for folder in ["scripts", "lab"]:
     for f in (R / folder).rglob("*.py"):
         try:
@@ -135,6 +140,7 @@ print(
             local_links=count,
             chapters=8,
             models=len(json.loads((R / "models/manifest.json").read_text())["files"]),
+            additional_indoor_models=2,
             components=70,
             passed=True,
         )

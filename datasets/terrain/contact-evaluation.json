@@ -1,0 +1,1280 @@
+{
+  "protocol": {
+    "seed": 49001,
+    "degrees": [
+      0,
+      5,
+      -5,
+      10,
+      -10,
+      15,
+      -15
+    ],
+    "models": [
+      "walk.onnx",
+      "terrain-walk.onnx"
+    ],
+    "num_envs": 5,
+    "seconds": 20,
+    "criterion": "reach x>=1.45 within |y|<.3 and no fall during whole episode",
+    "robot": "official allcollisions backlash, same mass and joint parameters",
+    "uses_training_or_capture_seed": false,
+    "historical_results_replaced": false,
+    "support_surface_bounds_relative_m": [
+      -50,
+      50,
+      -50,
+      50
+    ],
+    "same_seed_for_geometry_regression": true
+  },
+  "reports": [
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": 0.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.126272162015084,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "velocity_rmse": [
+        0.14049258828163147,
+        0.1393883377313614,
+        0.1395554542541504,
+        0.14027118682861328,
+        0.1388653963804245
+      ],
+      "upright_velocity_rmse": [
+        0.14049258828163147,
+        0.1393883377313614,
+        0.1395554542541504,
+        0.14027118682861328,
+        0.1388653963804245
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          1.9967741966247559,
+          -0.0934651643037796,
+          0.11466307193040848
+        ],
+        [
+          2.017141819000244,
+          0.16113854944705963,
+          0.11794617027044296
+        ],
+        [
+          2.0174570083618164,
+          -0.08176559954881668,
+          0.11604058742523193
+        ],
+        [
+          1.9948780536651611,
+          -0.10805899649858475,
+          0.11496137827634811
+        ],
+        [
+          2.033698081970215,
+          0.012936847284436226,
+          0.11382775753736496
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": 0.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.253021726035513,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "velocity_rmse": [
+        0.09337755292654037,
+        0.09398075193166733,
+        0.09345851838588715,
+        0.0931142047047615,
+        0.09358508139848709
+      ],
+      "upright_velocity_rmse": [
+        0.09337755292654037,
+        0.09398075193166733,
+        0.09345851093530655,
+        0.0931142047047615,
+        0.09358508139848709
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          2.8840174674987793,
+          0.04051004350185394,
+          0.11786311864852905
+        ],
+        [
+          2.8716626167297363,
+          -0.12435966730117798,
+          0.11634393036365509
+        ],
+        [
+          2.8825550079345703,
+          -0.01741567626595497,
+          0.11650832742452621
+        ],
+        [
+          2.8891963958740234,
+          0.0646616742014885,
+          0.1185874193906784
+        ],
+        [
+          2.879377603530884,
+          -0.09934943169355392,
+          0.11665192991495132
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": 5.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.2602935140021145,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.17802715301513672,
+        0.17623108625411987,
+        0.17447759211063385,
+        0.1773325502872467,
+        0.1742129623889923
+      ],
+      "upright_velocity_rmse": [
+        0.17802715301513672,
+        0.17623108625411987,
+        0.17447759211063385,
+        0.1773325502872467,
+        0.17421294748783112
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          0.8162221908569336,
+          0.9347581267356873,
+          0.16256864368915558
+        ],
+        [
+          0.6442815661430359,
+          1.2087153196334839,
+          0.1446055769920349
+        ],
+        [
+          0.8259973526000977,
+          1.0373719930648804,
+          0.15901531279087067
+        ],
+        [
+          0.8171008825302124,
+          0.9011674523353577,
+          0.15752074122428894
+        ],
+        [
+          0.5404547452926636,
+          1.2177622318267822,
+          0.1384231597185135
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": 5.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.173590459977277,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "velocity_rmse": [
+        0.10477717220783234,
+        0.1037503033876419,
+        0.10490304231643677,
+        0.10560224205255508,
+        0.10448182374238968
+      ],
+      "upright_velocity_rmse": [
+        0.10477717220783234,
+        0.10375029593706131,
+        0.10490304231643677,
+        0.10560224205255508,
+        0.10448182374238968
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          2.69069766998291,
+          0.02634631283581257,
+          0.2036060392856598
+        ],
+        [
+          2.7008981704711914,
+          0.052873872220516205,
+          0.20616184175014496
+        ],
+        [
+          2.6901984214782715,
+          0.045522790402173996,
+          0.20452499389648438
+        ],
+        [
+          2.6727993488311768,
+          0.12407471239566803,
+          0.2044684886932373
+        ],
+        [
+          2.685288906097412,
+          0.03889553248882294,
+          0.20441697537899017
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": -5.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.119752328027971,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.22981764376163483,
+        0.2254689633846283,
+        0.2315768003463745,
+        0.178873211145401,
+        0.23343881964683533
+      ],
+      "upright_velocity_rmse": [
+        0.14150889217853546,
+        0.13739013671875,
+        0.14196108281612396,
+        0.14338283240795135,
+        0.14409223198890686
+      ],
+      "upright_velocity_samples": [
+        218.0,
+        242.0,
+        222.0,
+        218.0,
+        219.0
+      ],
+      "final_position": [
+        [
+          0.6385436058044434,
+          0.1327948123216629,
+          0.013964845798909664
+        ],
+        [
+          0.7229635119438171,
+          0.1221105232834816,
+          0.004908512346446514
+        ],
+        [
+          0.661166787147522,
+          0.06942445039749146,
+          0.012502018362283707
+        ],
+        [
+          1.941084861755371,
+          0.7306058406829834,
+          0.03140438720583916
+        ],
+        [
+          0.5678760409355164,
+          0.16053128242492676,
+          0.018303951248526573
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": -5.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.154000013950281,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "velocity_rmse": [
+        0.08909561485052109,
+        0.08788256347179413,
+        0.08860787749290466,
+        0.08816460520029068,
+        0.08885343372821808
+      ],
+      "upright_velocity_rmse": [
+        0.08909561485052109,
+        0.08788255602121353,
+        0.08860787749290466,
+        0.08816460520029068,
+        0.08885343372821808
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          2.9264416694641113,
+          0.6581549048423767,
+          0.03326926752924919
+        ],
+        [
+          3.012765645980835,
+          0.28212663531303406,
+          0.029392754659056664
+        ],
+        [
+          2.960761547088623,
+          0.49502694606781006,
+          0.03284698724746704
+        ],
+        [
+          2.988248348236084,
+          0.4051814675331116,
+          0.03169889375567436
+        ],
+        [
+          2.9464261531829834,
+          0.51272052526474,
+          0.03027043305337429
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": 10.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.16812647797633,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.23599587380886078,
+        0.23585094511508942,
+        0.23582667112350464,
+        0.2358497679233551,
+        0.2357092797756195
+      ],
+      "upright_velocity_rmse": [
+        0.23599587380886078,
+        0.23585094511508942,
+        0.23582667112350464,
+        0.2358497679233551,
+        0.2357092797756195
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          0.35707563161849976,
+          0.30872270464897156,
+          0.11745543032884598
+        ],
+        [
+          0.36448776721954346,
+          0.26207298040390015,
+          0.11611409485340118
+        ],
+        [
+          0.362069308757782,
+          0.27636995911598206,
+          0.11701025813817978
+        ],
+        [
+          0.35994797945022583,
+          0.2266404926776886,
+          0.11885832995176315
+        ],
+        [
+          0.3643057346343994,
+          0.2786480486392975,
+          0.1160571351647377
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": 10.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.142137033981271,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "velocity_rmse": [
+        0.12144163995981216,
+        0.12165281176567078,
+        0.12358212471008301,
+        0.1211400255560875,
+        0.12148057669401169
+      ],
+      "upright_velocity_rmse": [
+        0.12144163995981216,
+        0.12165281176567078,
+        0.12358212471008301,
+        0.1211400255560875,
+        0.12148057669401169
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          2.4415836334228516,
+          -0.1733797937631607,
+          0.2926020324230194
+        ],
+        [
+          2.438356876373291,
+          -0.20936842262744904,
+          0.29293084144592285
+        ],
+        [
+          2.3925561904907227,
+          -0.05315309017896652,
+          0.2938535213470459
+        ],
+        [
+          2.456270694732666,
+          0.04279790818691254,
+          0.2948891818523407
+        ],
+        [
+          2.4268646240234375,
+          -0.39845341444015503,
+          0.2946217358112335
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": -10.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 4.900729656976182,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.236285001039505,
+        0.2272222340106964,
+        0.22983194887638092,
+        0.23103934526443481,
+        0.2252608984708786
+      ],
+      "upright_velocity_rmse": [
+        0.15661649405956268,
+        0.1561577320098877,
+        0.1489579677581787,
+        0.15524190664291382,
+        0.15076354146003723
+      ],
+      "upright_velocity_samples": [
+        217.0,
+        219.0,
+        218.0,
+        215.0,
+        219.0
+      ],
+      "final_position": [
+        [
+          0.7621294260025024,
+          0.17530234158039093,
+          -0.036055129021406174
+        ],
+        [
+          0.7228913307189941,
+          -0.012208404950797558,
+          -0.022845877334475517
+        ],
+        [
+          0.8065298199653625,
+          -0.015950389206409454,
+          -0.006356939673423767
+        ],
+        [
+          0.7175203561782837,
+          0.09770110994577408,
+          -0.0271100215613842
+        ],
+        [
+          0.8029136657714844,
+          -0.049650970846414566,
+          -0.034528523683547974
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": -10.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.266813524009194,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "velocity_rmse": [
+        0.09077008813619614,
+        0.08888358622789383,
+        0.08976338058710098,
+        0.08912812918424606,
+        0.09089340269565582
+      ],
+      "upright_velocity_rmse": [
+        0.09077008813619614,
+        0.08888358622789383,
+        0.08976338058710098,
+        0.08912812918424606,
+        0.09089339524507523
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          2.894927501678467,
+          1.1627764701843262,
+          -0.05785507336258888
+        ],
+        [
+          2.9206018447875977,
+          1.035287618637085,
+          -0.05560453236103058
+        ],
+        [
+          2.8945560455322266,
+          1.1840451955795288,
+          -0.05571871995925903
+        ],
+        [
+          2.868180751800537,
+          1.0731920003890991,
+          -0.057473454624414444
+        ],
+        [
+          2.875671863555908,
+          1.0262991189956665,
+          -0.05630351975560188
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": 15.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.160509373003151,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.2347753494977951,
+        0.23506352305412292,
+        0.2349032163619995,
+        0.2350861132144928,
+        0.23492424190044403
+      ],
+      "upright_velocity_rmse": [
+        0.2347753345966339,
+        0.23506352305412292,
+        0.2349032163619995,
+        0.2350861132144928,
+        0.23492424190044403
+      ],
+      "upright_velocity_samples": [
+        900.0,
+        900.0,
+        900.0,
+        900.0,
+        900.0
+      ],
+      "final_position": [
+        [
+          0.3489075303077698,
+          0.2864919602870941,
+          0.11971195787191391
+        ],
+        [
+          0.3460519313812256,
+          0.23314085602760315,
+          0.12085458636283875
+        ],
+        [
+          0.34852004051208496,
+          0.2625519335269928,
+          0.1210889145731926
+        ],
+        [
+          0.34737884998321533,
+          0.21896237134933472,
+          0.11604215949773788
+        ],
+        [
+          0.34551799297332764,
+          0.22208480536937714,
+          0.11450918763875961
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": 15.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.236866360006388,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.27113789319992065,
+        0.27372753620147705,
+        0.22582004964351654,
+        0.24495145678520203,
+        0.2403685301542282
+      ],
+      "upright_velocity_rmse": [
+        0.19048823416233063,
+        0.22576624155044556,
+        0.18995483219623566,
+        0.21237118542194366,
+        0.23369552195072174
+      ],
+      "upright_velocity_samples": [
+        286.0,
+        660.0,
+        501.0,
+        212.0,
+        877.0
+      ],
+      "final_position": [
+        [
+          -0.35273563861846924,
+          0.9295240640640259,
+          0.05863082408905029
+        ],
+        [
+          -0.4178035259246826,
+          1.2729588747024536,
+          0.04975147172808647
+        ],
+        [
+          0.7012713551521301,
+          0.12196695804595947,
+          0.1653580516576767
+        ],
+        [
+          0.3006018400192261,
+          -0.0463038831949234,
+          0.0717753991484642
+        ],
+        [
+          0.7215408086776733,
+          0.5923285484313965,
+          0.1431238055229187
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+      "slope_deg": -15.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 4.846136885986198,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.23214682936668396,
+        0.22861453890800476,
+        0.23346655070781708,
+        0.2512394189834595,
+        0.24177207052707672
+      ],
+      "upright_velocity_rmse": [
+        0.17310109734535217,
+        0.14990010857582092,
+        0.1786339282989502,
+        0.2127193957567215,
+        0.1986597776412964
+      ],
+      "upright_velocity_samples": [
+        216.0,
+        206.0,
+        230.0,
+        222.0,
+        222.0
+      ],
+      "final_position": [
+        [
+          1.0306520462036133,
+          0.06141585856676102,
+          -0.14352504909038544
+        ],
+        [
+          0.6225248575210571,
+          0.007756970822811127,
+          0.004647803492844105
+        ],
+        [
+          0.9371321797370911,
+          -0.026610951870679855,
+          -0.1134575828909874
+        ],
+        [
+          0.9955563545227051,
+          0.35811254382133484,
+          -0.12693150341510773
+        ],
+        [
+          1.154008388519287,
+          0.011665861122310162,
+          -0.17164510488510132
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    },
+    {
+      "status": "completed",
+      "model_sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "slope_deg": -15.0,
+      "seed": 49001,
+      "num_envs": 5,
+      "command_m_s": 0.25,
+      "automatic_resets": false,
+      "support_surface_bounds_relative_m": [
+        -50.0,
+        50.0,
+        -50.0,
+        50.0
+      ],
+      "robot_contact_geometry": "official allcollisions backlash",
+      "wall_seconds": 5.256633752025664,
+      "simulated_seconds": 20.0,
+      "physics_backend": "newton",
+      "passed": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "fell": [
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "reached_landing": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "velocity_rmse": [
+        0.22986896336078644,
+        0.2421915978193283,
+        0.358198344707489,
+        0.2817328870296478,
+        0.25043582916259766
+      ],
+      "upright_velocity_rmse": [
+        0.1092454344034195,
+        0.13243365287780762,
+        0.21563398838043213,
+        0.2188883274793625,
+        0.22026410698890686
+      ],
+      "upright_velocity_samples": [
+        167.0,
+        171.0,
+        181.0,
+        187.0,
+        180.0
+      ],
+      "final_position": [
+        [
+          0.706843376159668,
+          0.05022192373871803,
+          -0.046606846153736115
+        ],
+        [
+          0.8232779502868652,
+          -0.07330736517906189,
+          -0.08313722163438797
+        ],
+        [
+          5.40048885345459,
+          -1.500917911529541,
+          -0.20497973263263702
+        ],
+        [
+          1.5033180713653564,
+          0.15041065216064453,
+          -0.22383859753608704
+        ],
+        [
+          1.3185094594955444,
+          0.16513291001319885,
+          -0.21367822587490082
+        ]
+      ],
+      "criterion": "Reach x>=1.45m within |y|<0.3m and remain upright for entire episode; no reset"
+    }
+  ],
+  "historical_evaluation": "evaluation.json"
+}

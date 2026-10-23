@@ -8,6 +8,7 @@ p = argparse.ArgumentParser()
 p.add_argument("--runtime", type=Path, required=True)
 p.add_argument("--run", type=Path, required=True)
 p.add_argument("--evaluation-output", type=Path)
+p.add_argument("--scene-contract", action="store_true")
 a = p.parse_args()
 A = a.runtime / "evaluation"
 
@@ -24,6 +25,12 @@ def finish(job, config, code):
         )
     manifest = json.loads((output / "manifest.json").read_text())
     score = manifest["scorer"]
+    if a.scene_contract:
+        scene = json.loads((output / "scene-contract.json").read_text())
+        if scene.get("source_changed") or scene["profile"] != "indoor-steel-goal-v1":
+            raise ValueError("Changed or unknown scene contract")
+        if scene["goal_plane_x_m"] != 0.68 or scene["goal_opening_width_m"] != 0.388:
+            raise ValueError("Audit geometry does not match the recorded scene")
     audits = [
         ["audit_media_terminal_cadence.py", "independent-media-audit.json"],
         ["audit_football.py", "independent-root-audit.json"],
@@ -131,7 +138,17 @@ def finish(job, config, code):
                 subprocess.run(
                     [
                         sys.executable,
-                        str(A / script),
+                        *(
+                            [
+                                str(Path(__file__).parent / "scene_audit.py"),
+                                "--scene-runtime",
+                                str(a.runtime),
+                                "--script",
+                                script,
+                            ]
+                            if a.scene_contract
+                            else [str(A / script)]
+                        ),
                         str(output),
                         "--output",
                         str(evaluation / name),

@@ -1,0 +1,595 @@
+#usda 1.0
+(
+    defaultPrim = "microduck"
+    metersPerUnit = 1
+    subLayers = [
+        @microduck_allcollisions_backlash.upstream.usd@
+    ]
+    upAxis = "Z"
+)
+
+over "Flattened_Prototype_1"
+{
+    over "VisualMaterials"
+    {
+        over "bottom_head_shell_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_2"
+{
+    over "VisualMaterials"
+    {
+        over "yaw_roll_motion_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_6"
+{
+    over "VisualMaterials"
+    {
+        over "sole_left_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.608, 0.021)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_7"
+{
+    over "VisualMaterials"
+    {
+        over "elec_rpi_robot_hat_pcb_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_8"
+{
+    over "VisualMaterials"
+    {
+        over "left_shell_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_9"
+{
+    over "VisualMaterials"
+    {
+        over "jaw_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_12"
+{
+    over "VisualMaterials"
+    {
+        over "jaw_soft_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.413, 0.007)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_14"
+{
+    over "VisualMaterials"
+    {
+        over "upper_leg_right_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_15"
+{
+    over "VisualMaterials"
+    {
+        over "jaw_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_16"
+{
+    over "VisualMaterials"
+    {
+        over "leg_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_19"
+{
+    over "VisualMaterials"
+    {
+        over "soft_mouth_top_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.413, 0.007)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_21"
+{
+    over "VisualMaterials"
+    {
+        over "seeed_bearing__configuration_default_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_22"
+{
+    over "VisualMaterials"
+    {
+        over "leg_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_23"
+{
+    over "VisualMaterials"
+    {
+        over "lens_material"
+        {
+            color3f inputs:diffuseColor = (0.01, 0.012, 0.02)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_24"
+{
+    over "VisualMaterials"
+    {
+        over "foot_left_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_25"
+{
+    over "VisualMaterials"
+    {
+        over "banana_pcb_locker_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_26"
+{
+    over "VisualMaterials"
+    {
+        over "power_support_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_27"
+{
+    over "VisualMaterials"
+    {
+        over "hip_l_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_28"
+{
+    over "VisualMaterials"
+    {
+        over "yaw2roll_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_30"
+{
+    over "VisualMaterials"
+    {
+        over "sole_left_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.608, 0.021)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_31"
+{
+    over "VisualMaterials"
+    {
+        over "neck_pitch_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_33"
+{
+    over "VisualMaterials"
+    {
+        over "power_support_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_34"
+{
+    over "VisualMaterials"
+    {
+        over "top_head_shell_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_35"
+{
+    over "VisualMaterials"
+    {
+        over "motor_support_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_36"
+{
+    over "VisualMaterials"
+    {
+        over "top_head_shell_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_37"
+{
+    over "VisualMaterials"
+    {
+        over "neck_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_38"
+{
+    over "VisualMaterials"
+    {
+        over "bottom_head_shell_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_39"
+{
+    over "VisualMaterials"
+    {
+        over "sole_right_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.608, 0.021)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_41"
+{
+    over "VisualMaterials"
+    {
+        over "seeed_bearing__configuration__22x16x4_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_42"
+{
+    over "VisualMaterials"
+    {
+        over "trunk_base_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_43"
+{
+    over "VisualMaterials"
+    {
+        over "face_part_material"
+        {
+            color3f inputs:diffuseColor = (0.328, 0.312, 0.283)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_44"
+{
+    over "VisualMaterials"
+    {
+        over "bearing_roll_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_45"
+{
+    over "VisualMaterials"
+    {
+        over "m12_lens_holder_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_47"
+{
+    over "VisualMaterials"
+    {
+        over "upper_leg_rigidity_plate_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_48"
+{
+    over "VisualMaterials"
+    {
+        over "foot_right_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_49"
+{
+    over "VisualMaterials"
+    {
+        over "hip_l_material"
+        {
+            color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_50"
+{
+    over "VisualMaterials"
+    {
+        over "xl330_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_51"
+{
+    over "VisualMaterials"
+    {
+        over "upper_leg_left_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_53"
+{
+    over "VisualMaterials"
+    {
+        over "ankle_left_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_54"
+{
+    over "VisualMaterials"
+    {
+        over "noenoeil_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.413, 0.007)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_57"
+{
+    over "VisualMaterials"
+    {
+        over "ankle_right_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.144, 0.008)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_58"
+{
+    over "VisualMaterials"
+    {
+        over "np_f970_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_59"
+{
+    over "VisualMaterials"
+    {
+        over "speaker_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_60"
+{
+    over "VisualMaterials"
+    {
+        over "right_shell_material"
+        {
+            color3f inputs:diffuseColor = (0.888, 0.86, 0.798)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_61"
+{
+    over "VisualMaterials"
+    {
+        over "np_f970_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_62"
+{
+    over "VisualMaterials"
+    {
+        over "pcb__raspberry_pi_zero_2_w_material"
+        {
+            color3f inputs:diffuseColor = (0.012, 0.012, 0.014)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "Flattened_Prototype_63"
+{
+    over "VisualMaterials"
+    {
+        over "sole_right_material"
+        {
+            color3f inputs:diffuseColor = (1, 0.608, 0.021)
+            float inputs:roughness = 0.5
+        }
+    }
+}
+
+over "microduck"
+{
+    over "Geometry"
+    {
+        over "trunk_base"
+        {
+            over "power_support_1"
+            {
+                over "VisualMaterials"
+                {
+                    over "power_support_material"
+                    {
+                        color3f inputs:diffuseColor = (0.256, 0.256, 0.279)
+                        float inputs:roughness = 0.5
+                    }
+                }
+            }
+        }
+    }
+}
+

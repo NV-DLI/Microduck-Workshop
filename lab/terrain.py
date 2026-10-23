@@ -13,11 +13,12 @@ import numpy as np
 def ramp_mesh(difficulty, cfg):
     import trimesh
 
-    # In tile coordinates: spawn at x=2, ramp starts 0.35 m ahead.
+    # Spawn at (2,2); keep the ramp profile and extend the approach/landing
+    # to a 100 m support surface so a failed policy cannot fall off a tiny tile.
     slope = math.tan(math.radians(cfg.slope_deg))
-    xs = [0.0, 2.35, 3.35, 6.0]
+    xs = [-48.0, 2.35, 3.35, 52.0]
     zs = [0.0, 0.0, slope, slope]
-    vertices = [(x, y, z) for x, z in zip(xs, zs) for y in [0.0, 4.0]]
+    vertices = [(x, y, z) for x, z in zip(xs, zs) for y in [-48.0, 52.0]]
     faces = []
     for i in range(3):
         j = 2 * i
@@ -63,6 +64,8 @@ def main():
         num_envs=a.num_envs,
         command_m_s=0.25,
         automatic_resets=False,
+        support_surface_bounds_relative_m=[-50.0, 50.0, -50.0, 50.0],
+        robot_contact_geometry="official allcollisions backlash",
     )
     (a.output / "report.json").write_text(json.dumps(report, indent=2))
     env = None
@@ -105,7 +108,7 @@ def main():
                 cfg.curriculum = None
                 cfg.episode_length_s = a.seconds + 10
                 cfg.scene.robot.spawn.usd_path = str(
-                    a.runtime / "visuals/assets/microduck_white_orange.usda"
+                    Path(__file__).parent / "assets/microduck_contact.usda"
                 )
                 cfg.scene.terrain.terrain_type = "generator"
                 cfg.scene.terrain.class_type = MicroDuckTerrainImporter

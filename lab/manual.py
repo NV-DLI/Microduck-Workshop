@@ -15,14 +15,16 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--seconds", type=float, default=600)
     p.add_argument("--headless-check", action="store_true")
+    p.add_argument("--style", choices=list("ABCD"), default="A")
     a = p.parse_args()
     a.output.mkdir(parents=True, exist_ok=False)
     sys.path.insert(0, str(a.runtime / "gait"))
+    sys.path.insert(0, str(a.runtime / "football"))
+    from scoring import goal_crossing
     import torch
     import gymnasium as gym
     from isaaclab.app import launch_simulation
     from batch_policy import BatchPolicy
-
 
     # Start Kit before importing scene and rendering components.
     with launch_simulation(
@@ -53,9 +55,9 @@ def main():
         cfg.curriculum = None
         cfg.episode_length_s = a.seconds + 10
         cfg.scene.robot.spawn.usd_path = str(
-            a.runtime / "visuals/assets/microduck_white_orange.usda"
+            Path(__file__).parent / "assets/microduck_contact.usda"
         )
-        cfg.scene.robot.init_state.pos = (-0.66, 0.0, 0.125)
+        cfg.scene.robot.init_state.pos = (-0.55, 0.0, 0.125)
 
         # Physics and visuals share the same ball size and initial position.
         cfg.scene.ball = RigidObjectCfg(
@@ -72,40 +74,11 @@ def main():
             init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.035)),
         )
 
-        # Build the three goal-frame bars in the same coordinate system as the ball.
-        for name, size, pos in [
-            ("goal_left", (0.025, 0.025, 0.1925), (0.93, 0.1325, 0.09625)),
-            ("goal_right", (0.025, 0.025, 0.1925), (0.93, -0.1325, 0.09625)),
-            ("goal_bar", (0.025, 0.29, 0.025), (0.93, 0.0, 0.1925)),
-        ]:
-            setattr(
-                cfg.scene,
-                name,
-                AssetBaseCfg(
-                    prim_path="{ENV_REGEX_NS}/" + name,
-                    spawn=sim_utils.CuboidCfg(
-                        size=size,
-                        collision_props=sim_utils.CollisionPropertiesCfg(),
-                        visual_material=sim_utils.PreviewSurfaceCfg(
-                            diffuse_color=(0.9, 0.92, 0.88), roughness=0.7
-                        ),
-                    ),
-                    init_state=AssetBaseCfg.InitialStateCfg(pos=pos),
-                ),
-            )
-        cfg.scene.pitch = AssetBaseCfg(
-            prim_path="{ENV_REGEX_NS}/PitchVisual",
-            spawn=sim_utils.CuboidCfg(
-                size=(2.0, 1.0, 0.003),
-                visual_material=sim_utils.PreviewSurfaceCfg(
-                    diffuse_color=(0.12, 0.32, 0.16), roughness=0.85
-                ),
-            ),
-            init_state=AssetBaseCfg.InitialStateCfg(pos=(0.0, 0.0, -0.0013)),
-        )
-        cfg.scene.sky_light.spawn.intensity = 1800.0
-        cfg.sim.physics.solver_cfg.nconmax = 200
-        cfg.sim.physics.solver_cfg.njmax = 1024
+        from scene_style import configure_football
+
+        scene_profile = configure_football(cfg, style=a.style)
+        cfg.sim.physics.solver_cfg.nconmax = 300
+        cfg.sim.physics.solver_cfg.njmax = 1500
         cfg.commands.base_velocity.resampling_time_range = (1e8, 1e8)
         cfg.commands.base_velocity.debug_vis = False
         cfg.commands.head_pose.ranges = tuple((0.0, 0.0) for _ in range(4))
@@ -130,7 +103,7 @@ def main():
         cfg.observations.policy.imu.params.update(max_angle_deg=0, min_lag=0, max_lag=0)
         env = gym.make("IsaacContrib-Velocity-Flat-MicroDuck", cfg=cfg).unwrapped
         env.reset()
-        env.sim.set_camera_view((1.35, -1.45, 0.9), (0.05, 0, 0.1))
+        env.sim.set_camera_view((1.40, -1.95, 1.20), (0.10, 0, 0.10))
         manager = env.sim.backend_manager
         assert manager.backend_name == "newton" and cfg.sim.use_newton_actuators
         manager.set_decimation(1)
@@ -260,8 +233,17 @@ def main():
                     env._sim_step_counter += 1
                     env.action_manager.apply_action()
                     env.scene.write_data_to_sim()
+                    before_ball = T(env.scene["ball"].data.root_pos_w)[0].cpu().tolist()
                     env.sim.step(render=tick == 3)
                     env.scene.update(0.005)
+                    after_ball = T(env.scene["ball"].data.root_pos_w)[0].cpu().tolist()
+                    scored = scored or goal_crossing(
+                        before_ball,
+                        after_ball,
+                        goal_x=scene_profile["goal_plane_x_m"],
+                        width=scene_profile["goal_opening_width_m"],
+                        height=scene_profile["goal_opening_height_m"],
+                    )
                 env.episode_length_buf += 1
                 env.common_step_counter += 1
                 fallen = fallen or bool(
@@ -269,9 +251,6 @@ def main():
                     | (T(robot.data.root_pos_w)[0, 2] < 0.065)
                 )
                 ball = T(env.scene["ball"].data.root_pos_w)[0]
-                scored = scored or bool(
-                    ball[0] > 0.9775 and abs(ball[1]) < 0.085 and ball[2] < 0.145
-                )
                 if step % 5 == 0:
                     rows.append(
                         dict(
@@ -305,6 +284,7 @@ def main():
             resets=resets,
             fell=fallen,
             goal_observed=scored,
+            scene_profile=scene_profile,
             events=events,
             scope="keyboard skill exploration; goal position observation is not autonomous-task certification",
         )

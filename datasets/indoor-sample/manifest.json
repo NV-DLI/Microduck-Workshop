@@ -1,0 +1,45 @@
+{
+  "scope": "Eight illustration images from the held-out scene split; not a new evaluation",
+  "images": [
+    {
+      "file": "A-test-51041-v0.png",
+      "split": "test",
+      "sha256": "8889ceb5d23348ecdceec6d64b4dee9ed18d1c92eecd18d43bc64000d6528f42"
+    },
+    {
+      "file": "A-test-51041-v1.png",
+      "split": "test",
+      "sha256": "c5c0c4b0c6027ee51ab3ffc72bce20b0231dd6f499c5902f6d6245a8d18f0165"
+    },
+    {
+      "file": "B-test-51041-v0.png",
+      "split": "test",
+      "sha256": "a58b13c0f2f906e110b3951ae5872d32edc1747982c1018db68384facfc54ee2"
+    },
+    {
+      "file": "B-test-51041-v1.png",
+      "split": "test",
+      "sha256": "9931bc98383309743da479239cfd4f4900656adf3afa7a0f3b4418db02aaa97a"
+    },
+    {
+      "file": "C-test-51041-v0.png",
+      "split": "test",
+      "sha256": "e789c5f51bf3b172ddabb90b45f8711c69e891930924f5e9681634df24bf591c"
+    },
+    {
+      "file": "C-test-51041-v1.png",
+      "split": "test",
+      "sha256": "adf5c91d580f999f2052edc368fa7b49d550fc89090e8c494dd2fa856174ff40"
+    },
+    {
+      "file": "D-test-51041-v0.png",
+      "split": "test",
+      "sha256": "95848072ac2103471c5c5adff899912a4592c145397ff35060b88e775749194e"
+    },
+    {
+      "file": "D-test-51041-v1.png",
+      "split": "test",
+      "sha256": "8bc9ffa9cb9c9bf45fda855e8b21b9fd6c30c0848aebf261fca521efa9bd4fe0"
+    }
+  ]
+}

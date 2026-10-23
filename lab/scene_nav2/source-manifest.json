@@ -1,0 +1,15 @@
+{
+  "kind": "measured-indoor-scene-nav2-v1",
+  "files": {
+    "image-lock.json": "e4ebdaf3f420d6dc0574cd2444074e93cc412d2f1d09e32db7a699dfa3569e25",
+    "map_contract.py": "8d63aeffcdc6a036731d3d4b625bf308ea1da9a844fa8002b79c01d66bb36bfb",
+    "image_preflight.py": "49bb85c2bff01ddfd2d0e1d166aa48fca133a1e3c000a5c38178c582716f51ed",
+    "owner.py": "58113510e04238141dfffadfee88273e38e4ffc9763b9619844343a631f0944c",
+    "nav2.yaml": "49af253b88b4c70606a1ba463c604127e5008165257bd2c93830d1d465415a66",
+    "client.py": "800a1c44b4f07760d599e83d0e4efdbcec64d0b51ad6706d6e6b3205f2b0f03f",
+    "obstacle_contract.py": "e83793696c026e3575f8a9bbb5262b84f063d7c354936b65dd060f7710597da4",
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "contract.py": "9bc87e8562423e42e4bdb45c81d611bd444e673637bbdeea58ad37d1545c3a9b",
+    "service.py": "e304c090c52b7c4a30e30ad73472a79e74e64720c2a79fabced6d7e389c13cd2"
+  }
+}

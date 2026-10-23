@@ -1,0 +1,50 @@
+{
+  "schema": "microduck.beta-detector-training.v1",
+  "runtime_id": "newton-bam-20261019",
+  "hardware_profile_id": "beta-gc2093-l8cx-v1",
+  "initialization": "fine-tuned preserved models/detector.pt; locomotion and kick weights unchanged",
+  "initial_model_sha256": "6eba38e35bc7f58b9bf73f75c762d38491c0206adc50bcb6de163ce5e7fd12e9",
+  "initial_state_sha256": "ded781a19c1ce390a54aebb3a077ca6420e0a056243334f648268ab68662ccc7",
+  "dataset_manifest_sha256": "357f47d73617994cd4bd3bc46d7d0023947df675761a17d14488c893fec71976",
+  "seed": 48001,
+  "smoke": false,
+  "ultralytics": "8.4.182",
+  "torch": "2.11.0+cu130",
+  "device": "0",
+  "epochs_requested": 60,
+  "scene_split": "scene seed, shared across all materials/views",
+  "robot_task_success_claimed": false,
+  "deployment_scope": {
+    "rknn_architecture_support": "YOLO26 detection and RK3566 are listed in official Ultralytics documentation",
+    "source": "https://docs.ultralytics.com/integrations/rockchip-rknn",
+    "checked_date": "2026-10-19",
+    "rknn_export_host_requirement": "x86 Linux; not this ARM64 Spark",
+    "this_model_rknn_exported": false,
+    "this_model_rk3566_tested": false,
+    "rk3566_latency_ms": null,
+    "rk3566_camera_to_action_latency_ms": null,
+    "rk3566_thermal_endurance_tested": false,
+    "scope": "Architecture support does not establish accuracy, speed or sustained operation of this course model on the robot"
+  },
+  "status": "completed",
+  "epochs_completed": 60,
+  "training_wall_seconds": 256.09619447402656,
+  "total_wall_seconds": 259.97398698399775,
+  "optimizer_updates": 502,
+  "best_checkpoint_sha256": "ae4bdf4976afa2891c34c290d17ce193b98839a893cf487445f5ac799faf908b",
+  "onnx_sha256": "5a8bfb63984199ccaa3cee8f0377fcab5320d2ccbcd33b2040ebac775c3dc11f",
+  "heldout_test_metrics": {
+    "metrics/precision(B)": 0.9964336935454738,
+    "metrics/recall(B)": 0.9482758620689655,
+    "metrics/mAP50(B)": 0.9450000000000001,
+    "metrics/mAP50-95(B)": 0.92048741837534,
+    "fitness": 0.92048741837534
+  },
+  "class_names": {
+    "0": "ball",
+    "1": "goal"
+  },
+  "validation_selection": "Ultralytics best.pt chosen on val only; test evaluated after training",
+  "camera_input": "RGB960x540, original-pixel boxes returned after internal letterbox640",
+  "qualification_claimed": false
+}

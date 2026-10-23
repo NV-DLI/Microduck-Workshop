@@ -7,19 +7,9 @@ def configure_scene(cfg):
     import isaaclab.sim as sim_utils
     from isaaclab.assets import AssetBaseCfg
 
-    cfg.scene.terrain.visual_material = sim_utils.PreviewSurfaceCfg(
-        diffuse_color=(0.34, 0.42, 0.48), roughness=0.68, metallic=0.08
-    )
-    cfg.scene.sky_light.spawn.intensity = 350.0
-    cfg.scene.key_light = AssetBaseCfg(
-        prim_path="/World/TerrainKey",
-        spawn=sim_utils.DistantLightCfg(
-            intensity=700.0, angle=5.0, color=(1.0, 0.93, 0.82)
-        ),
-        init_state=AssetBaseCfg.InitialStateCfg(
-            rot=(0.0, math.sin(math.pi / 8), 0.0, math.cos(math.pi / 8))
-        ),
-    )
+    from scene_style import configure_lighting
+
+    configure_lighting(cfg)
     # Paint-like visual strips follow the physical ramp without adding contacts.
     angle = cfg.scene.terrain.terrain_generator.sub_terrains["ramp"].slope_deg
     tangent = math.tan(math.radians(angle))
@@ -102,7 +92,15 @@ def camera_prestartup(env, env_ids):
     )
 
 
-def start_recording(env, output):
+def start_recording(
+    env,
+    output,
+    *,
+    eye_offset=(2.0, -3.7, 1.5),
+    target_offset=(1.45, 0.35, 0.10),
+    filename="terrain.mp4",
+    fps=25,
+):
     import torch
     import subprocess
 
@@ -116,8 +114,8 @@ def start_recording(env, output):
     import usdrt
     import isaaclab.sim as sim_utils
 
-    eye = (origin + torch.tensor([1.35, -2.0, 0.85], device=env.device)).cpu().numpy()
-    target = (origin + torch.tensor([0.75, 0.0, 0.08], device=env.device)).cpu().numpy()
+    eye = (origin + torch.tensor(eye_offset, device=env.device)).cpu().numpy()
+    target = (origin + torch.tensor(target_offset, device=env.device)).cpu().numpy()
     forward = target - eye
     forward /= np.linalg.norm(forward)
     right = np.cross(forward, [0.0, 0.0, 1.0])
@@ -185,7 +183,7 @@ def start_recording(env, output):
             "-video_size",
             "1920x1080",
             "-framerate",
-            "25",
+            str(fps),
             "-i",
             "pipe:0",
             "-an",
@@ -201,7 +199,7 @@ def start_recording(env, output):
             "yuv420p",
             "-movflags",
             "+faststart",
-            str(output / "terrain.mp4"),
+            str(output / filename),
         ],
         stdin=subprocess.PIPE,
     )
@@ -209,7 +207,8 @@ def start_recording(env, output):
 
 
 def capture(env, camera, process):
-    env.sim.render()
+    for _ in range(4):
+        env.sim.render()
     camera.update(0.0, force_recompute=True)
     rgb = camera.data.output["rgb"]
     rgb = getattr(rgb, "torch", rgb)
