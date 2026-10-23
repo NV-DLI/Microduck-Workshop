@@ -2670,10 +2670,9 @@
                 "局限"
               ],
               "en": [
-                "Stage",
-                "Input",
-                "Method or model",
-                "Output"
+                "Source",
+                "Information",
+                "Limitation"
               ]
             },
             "rows": {
@@ -2696,46 +2695,19 @@
               ],
               "en": [
                 [
-                  "Detection",
-                  "Isaac Sim RGB images",
-                  "Object detector",
-                  "Ball/goal boxes, classes and confidence"
+                  "RGB",
+                  "Target location in the image",
+                  "Does not directly provide metric distance"
                 ],
                 [
-                  "Target localization",
-                  "Pixels, intrinsics, head joints and posture",
-                  "Geometry and object-size constraints",
-                  "Timestamped relative target positions"
+                  "ToF",
+                  "Ranges across 64 forward sectors",
+                  "Invalid sectors cannot be treated as free space"
                 ],
                 [
-                  "Range and posture",
-                  "VL53L8CX 8×8 ToF and IMU",
-                  "Validity checks and orientation estimation",
-                  "Range sectors, posture and valid flags"
-                ],
-                [
-                  "Kick stance",
-                  "Ball, goal direction and kick offset",
-                  "Geometry; no new neural network",
-                  "Target position and heading"
-                ],
-                [
-                  "Route and approach",
-                  "Map, current pose and target stance",
-                  "Nav2 Navfn and approach controller",
-                  "Path and body velocity commands"
-                ],
-                [
-                  "Motion skills",
-                  "Body state and velocity/kick command",
-                  "Walking ONNX, kick teacher and residual",
-                  "14 joint targets"
-                ],
-                [
-                  "Coordination",
-                  "Stage outputs and timestamps",
-                  "State machine and readiness checks",
-                  "Walk, re-observe, kick or stop"
+                  "Body IMU",
+                  "Body orientation and angular velocity",
+                  "Does not locate the ball or goal"
                 ]
               ]
             }
@@ -2810,42 +2782,405 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "如果直接朝球心前进，机器人可能提前撞到球，也可能从不利于出脚的一侧接近。更合理的目标应位于球的后方：先根据球指向球门的方向确定射门轴，再沿反方向退开一段距离，同时为出脚脚掌预留横向偏移。",
-            "en": "Walking straight toward the ball center can cause premature contact or approach from the wrong side. A useful target lies behind the ball. The ball-to-goal direction defines the shooting axis; move backward along it and account for the kicking foot’s lateral offset."
-          },
-          {
-            "type": "html",
-            "zh": "<div class=\"note\"><strong>二维几何练习</strong><p>先用已知坐标计算准备站位，再与下方手算结果对照。这一步只验证几何关系，不运行物理仿真。</p></div>",
-            "en": "<div class=\"note\"><strong>A planar geometry exercise</strong><p>Direction <code>d = (goal − ball) / ‖goal − ball‖</code><br>Target <code>target = ball − distance × d + lateral × normal(d)</code></p></div>"
+            "zh": "射门的目标是让脚把球送向球门，而不是让机身占据球心。直接把球心交给导航器，可能导致提前撞球，或从无法出脚的一侧接近。因此，先从最终动作反推准备站位：机器人面向球门，在球后留出距离，再为踢球脚留出横向偏移。",
+            "en": "The task is to strike the ball toward the goal. Sending the body to the ball center risks premature contact or an unusable approach. Work backward from the kick: face the goal, leave space behind the ball and offset the body to align the kicking foot."
           },
           {
             "type": "p",
-            "zh": "预期结果：程序输出站位坐标、朝向和平面示意图。改变球的横向位置后，观察目标点如何随之移动。此处使用已知二维点练习几何关系；在真正的自主运行中，输入将来自传感器估计。",
-            "en": "Expected result: a target position, heading, and a planar diagram. Change the ball’s lateral coordinate and observe how the target moves. This exercise uses known 2D points to teach geometry; autonomous execution uses sensor estimates."
+            "zh": "<strong>“站在球后方”是人为设计的任务先验。</strong>设计者根据射门方向、机器人尺寸与技能可用范围写出规则；当前系统没有让行走网络自行理解足球规则。检测模型学习目标外观，行走与踢球策略学习运动；站位计算使用明确的几何关系，Nav2 再为给定目标寻找路径。",
+            "en": "<strong>Standing behind the ball is a human-designed task prior.</strong> The designer encodes the shooting direction, robot geometry and skill operating range. The walking network does not infer football rules. Detection learns appearance and motion policies learn actions; geometry computes the stance and Nav2 plans toward that supplied target."
+          },
+          {
+            "type": "p",
+            "zh": "要区分“相对偏置”和“地图坐标”。某一阶段可以采用固定的准备距离与横向偏移，但球的位置或射门方向一变，目标坐标就会重新计算。当前室内任务使用视觉估计球的位置，并把已知球门位置和场地边界作为显式地图先验；它不是在未知球场中自动发现全部地图。",
+            "en": "Distinguish relative offsets from map coordinates. A stage may use fixed stand-off and lateral offsets, while its target coordinates change with the ball position or shooting direction. The indoor task uses a visually estimated ball position plus explicit map priors for the known goal and field bounds; it does not discover an entire unknown pitch."
+          }
+        ]
+      },
+      {
+        "id": "navigation-model",
+        "title": {
+          "zh": "从球与球门算出位置和朝向",
+          "en": "Compute the target position and heading"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先把足球位置 B 和球门中心 G 放在同一平面坐标系中，单位均为米。用球指向球门的单位向量 u 表示射门方向，用 n 表示朝该方向看时的左侧。下面的角度从地图 +x 轴逆时针计量。",
+            "en": "Express ball B and goal center G in the same planar frame, in meters. Unit vector u points from ball to goal; n points left when facing that direction. Heading is measured counterclockwise from the map +x axis."
+          },
+          {
+            "type": "equation",
+            "label_zh": "射门方向与左法向",
+            "label_en": "Shooting direction and left normal",
+            "tex": "\\mathbf u=\\frac{\\mathbf G-\\mathbf B}{\\|\\mathbf G-\\mathbf B\\|},\\qquad \\mathbf n=\\begin{bmatrix}-u_y\\\\u_x\\end{bmatrix}"
+          },
+          {
+            "type": "equation",
+            "label_zh": "准备位置与目标朝向",
+            "label_en": "Target stance and heading",
+            "tex": "\\mathbf P^*=\\mathbf B-d\\mathbf u+\\ell\\mathbf n,\\qquad \\theta^*=\\operatorname{atan2}(u_y,u_x)"
+          },
+          {
+            "type": "p",
+            "zh": "d 是沿射门方向后退的距离，ℓ 是机器人向左偏移的距离。为何这样相加？到位并面向球门后，球相对机身的位置应约为 (d, −ℓ)，因此 B = P* + d u − ℓ n，移项就得到上式。ℓ > 0 表示机器人左偏、球在身体右侧，有利于右脚对球；它不是球也向左偏。B 与 G 重合时方向没有定义，应拒绝该输入。",
+            "en": "Here d is the stand-off and ℓ is the body’s leftward offset. At the target heading, the ball should lie at about (d, −ℓ) in the body frame. Thus B = P* + d u − ℓ n; rearranging gives the target formula. Positive ℓ places the body left of the shooting axis and the ball to its right, aligning a right-foot kick. Reject coincident B and G because the direction is undefined."
+          },
+          {
+            "type": "diagram",
+            "kind": "navigation-stance",
+            "label": "Stance geometry",
+            "zh": "先保持 d 和 ℓ 不变，移动足球或球门，观察 P* 与 θ*；再改变两个偏置。滑块只计算平面几何，不运行 Nav2 或物理仿真，也不表示所有数值都在技能可用范围内。",
+            "en": "Hold d and ℓ fixed and move the ball or goal; observe P* and θ*. Then vary the offsets. These sliders compute planar geometry, not Nav2 or physics, and do not certify the skill at every value."
+          },
+          {
+            "type": "p",
+            "zh": "例如 B = (0.02, 0)、G = (0.68, 0)，取 d = 0.22、ℓ = 0.035，则 u = (1, 0)，得到 P* = (−0.20, 0.035) m、θ* = 0°。机器人停在球后 22 cm，并向左偏 3.5 cm。若球横移，方向与目标都要按新观测重算；不是把这个地图坐标永久保存为射门点。",
+            "en": "For B = (0.02, 0), G = (0.68, 0), d = 0.22 and ℓ = 0.035, u = (1, 0), P* = (−0.20, 0.035) m and θ* = 0°. The body is 22 cm behind the ball and 3.5 cm left of its axis. Moving the ball changes both the direction and target; these map coordinates are not a permanent kick location."
+          },
+          {
+            "type": "code",
+            "label": "Python · geometry excerpt",
+            "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [\n    a.ball[i] - a.distance * direction[i] + a.lateral * normal[i]\n    for i in range(2)\n]",
+            "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py"
+          },
+          {
+            "type": "p",
+            "zh": "这是第 7 章 <code>plan</code> 几何练习的核心计算。完整入口还检查有限数值、正准备距离与非重合点；它输出坐标和示意图，尚未请求导航路径。接下来才需要回答：机器人能否通过已知空间到达这个目标？",
+            "en": "This is the core of Chapter 7’s <code>plan</code> geometry exercise. The full entry also checks finite values, positive stand-off and distinct points. It outputs coordinates and a diagram, without requesting a navigation path. The next question is whether known space admits a route to this target."
           }
         ]
       },
       {
         "id": "planner",
         "title": {
-          "zh": "路径规划与行走控制如何分工",
-          "en": "How path planning and walking divide the work"
+          "zh": "Nav2 如何把目标变成路径",
+          "en": "How Nav2 turns a target into a path"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "路径规划器会在空间表示中寻找从起点到终点的路线。例如，占据栅格把地面划分成小格，并分别记录障碍、可通行区域和未知区域。机器人具有实际体积，不能把自身视为数学意义上的点，从任意狭窄缝隙中穿过。因此，为机器人外形保留安全余量，是把几何路径转化为可执行运动的必要步骤。",
-            "en": "A planner searches for a route through a representation of space. An occupancy grid divides the floor into cells for obstacles, free space, and unknown space. A robot has a footprint: it cannot pass through every gap that admits a mathematical point. Reserving clearance is necessary when turning a geometric route into executable motion."
+            "zh": "Nav2 是开源的 ROS 2 导航框架。本实验使用其中的 Navfn 规划器：输入机器人起点、目标位姿和代价地图，返回一串路径点。导航准备点由上面的任务规则提供；Nav2 本身不知道什么是右脚射门。<a href=\"https://github.com/ros-navigation/navigation2\">查看 Nav2 开源项目</a>。",
+            "en": "Nav2 is an open-source ROS 2 navigation framework. This task uses its Navfn planner: a start pose, target pose and costmap produce a sequence of path points. The task rules above supply the target; Nav2 does not understand right-foot kicking. See the <a href=\"https://github.com/ros-navigation/navigation2\">Nav2 source project</a>."
           },
           {
             "type": "p",
-            "zh": "在完整任务中，Isaac Sim 提供带时间戳的 RGB/ToF 观测，桥接程序把一次不可变的传感器快照、地图和目标交给隔离运行的 ROS 2 Nav2/Navfn CPU 服务，再取回路径。这里没有使用 Isaac Sim 内置 ROS 2 Action Graph，也没有让 Nav2 直接发布 <code>/cmd_vel</code>；真正维持双足平衡的仍是固定行走策略。上层路径与目标、下层步态执行分开后，可以分别检查规划输入、路径结果和实际跟踪误差。",
-            "en": "Nav2 provides CPU navigation services in the full task, while the walking policy maintains bipedal balance. The upper layer requests a target or velocity; the lower layer drives servos. Actuator delay and gait error can move the robot away from its plan, so the system must observe and reconsider instead of assuming exact command execution."
+            "zh": "占据栅格把空间分成已知空地、障碍和未知区域；代价地图进一步表达通行代价。靠近障碍的格子代价更高，可以让路径保留余量。机器人有体积，还要检查路径周围的外形包络，不能只检查一根没有宽度的线。",
+            "en": "An occupancy grid distinguishes known free space, obstacles and unknown cells. A costmap adds traversal costs, with higher costs near obstacles to encourage clearance. The robot has a footprint, so checks must consider an envelope around the path, not a zero-width line."
+          },
+          {
+            "type": "diagram",
+            "kind": "navigation-costmap",
+            "label": "Costmap example",
+            "zh": "此图用假设障碍解释代价地图，不是课程空场试验的测量地图，也不是 Navfn 搜索过程的回放。未知区域不等于空地；路径看似绕开障碍，也仍需检查机器人外形与实际执行偏差。",
+            "en": "This hypothetical obstacle illustrates costmaps. It is not a measured map from the empty-field experiment or a Navfn search replay. Unknown cells are not free space, and a route still requires footprint and execution checks."
           },
           {
             "type": "p",
-            "zh": "本章的手算实验只研究出脚目标，既不调用 Nav2，也不设置障碍物。完整任务采用一台机器人、一个球和一个球门的空场环境。若自行加入障碍，必须重新检查传感器覆盖范围、未知区域处理、路径余量和碰撞结果；课程记录的空场表现不能外推为避障表现。",
-            "en": "The hand-calculation exercise studies stance geometry only: it does not call Nav2 or place obstacles. The full task uses one robot, ball, and goal in an empty field. Adding obstacles requires new checks for sensor coverage, unknown space, clearance, and collisions. Empty-field results do not establish obstacle-avoidance performance."
+            "zh": "当前配置明确启用 A* 搜索。理解其直觉时，可以用“已经付出的路径代价 + 到终点的估计剩余代价”比较候选格子。下面是 A* 的概念公式，帮助解释为何搜索会朝目标推进；它不是 Navfn 内部势场更新与路径提取的逐行实现。",
+            "en": "The configuration explicitly enables A*. Its intuition is to compare candidates using the cost already incurred plus an estimate of the remaining cost. The conceptual formula below explains goal-directed search; it is not a line-by-line description of Navfn’s potential updates and path extraction."
+          },
+          {
+            "type": "equation",
+            "label_zh": "A* 的概念评分",
+            "label_en": "Conceptual A* score",
+            "tex": "f(n)=g(n)+h(n)"
+          },
+          {
+            "type": "p",
+            "zh": "这里 g(n) 是到候选格子 n 的累计代价，h(n) 是从该格子到目标的估计代价；公式中的 g、n 与上一节的球门 G、法向向量 n 属于不同语境。实际使用哪个搜索算法由配置决定，不是行走网络学习出的选择。",
+            "en": "Here g(n) is the accumulated cost to candidate cell n, and h(n) estimates its remaining cost. These scalar search symbols are separate from goal G and the normal vector in the geometry section. The search method is selected by configuration, not learned by the walking network."
+          },
+          {
+            "type": "code",
+            "label": "YAML · Navfn configuration excerpt",
+            "code": "planner_plugins: [GridBased]\nGridBased:\n  plugin: nav2_navfn_planner::NavfnPlanner\n  use_astar: true\n  tolerance: 0.025\n  allow_unknown: false\n  use_final_approach_orientation: false",
+            "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/nav2.yaml"
+          },
+          {
+            "type": "p",
+            "zh": "该配置不允许穿越未知区域；<code>tolerance: 0.025</code> 是路径终点到请求目标的容差（米），不是足球对脚位置的容差。导航栅格为 4 × 3 m，分辨率为 2.5 cm；它与 1 × 1.6 m 的实体垫子不是同一尺寸。0.10 m 圆形外形是导航检查近似，不能替代双足运动和全身接触的物理验证。<a href=\"https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/\">Navfn 参数说明</a>。",
+            "en": "Unknown-space planning is disabled. <code>tolerance: 0.025</code> is the path-end tolerance in meters, not a foot-to-ball tolerance. The 4 × 3 m navigation grid at 2.5 cm resolution is distinct from the physical 1 × 1.6 m mat. The 0.10 m circular footprint is a navigation approximation, not a substitute for bipedal motion and contact validation. See the <a href=\"https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/\">Navfn parameter reference</a>."
+          },
+          {
+            "type": "p",
+            "zh": "完整任务将带时间戳的观测、已知场地边界、机器人位姿和目标组成不可变快照，由桥接程序提交给独立 CPU 容器内的 ROS 2 Jazzy Nav2 服务。服务发布对应地图与坐标变换，再调用 <code>ComputePathToPose</code>；返回结果必须与请求序号、坐标系及地图快照一致。当前地图结合 ToF 观测与已知空场先验，尚不能证明未知场景建图或任意障碍避让能力。",
+            "en": "The full task submits an immutable snapshot of timestamped observations, known field bounds, robot pose and target to a ROS 2 Jazzy Nav2 service in a separate CPU container. The bridge publishes the matching map and transforms, then calls <code>ComputePathToPose</code>. Returned results must match the request, coordinate frame and map snapshot. ToF observations and known empty-field priors do not establish unknown-scene mapping or general obstacle avoidance."
+          }
+        ]
+      },
+      {
+        "id": "navigation-execution",
+        "title": {
+          "zh": "有了路径，机器人如何真正走过去？",
+          "en": "How does the robot execute the approach?"
+        },
+        "blocks": [
+          {
+            "type": "flow",
+            "label": "当前实验的规划与执行",
+            "nodes": [
+              [
+                "Nav2 与通行检查",
+                "地图与目标 → 路径和许可"
+              ],
+              [
+                "自有任务控制器",
+                "结合视觉、姿态与阶段生成命令"
+              ],
+              [
+                "固定行走策略",
+                "机身命令 → 14 维关节动作"
+              ]
+            ],
+            "english_diagram": {
+              "label": "Planning and execution in this task",
+              "nodes": [
+                [
+                  "Nav2 and checks",
+                  "Map and target → path / permission"
+                ],
+                [
+                  "Task controller",
+                  "Vision, posture and stage → command"
+                ],
+                [
+                  "Walking policy",
+                  "Body command → 14 joint actions"
+                ]
+              ]
+            },
+            "zh": "位置随运动改变，新的观测会再次影响目标、命令和停止条件。",
+            "en": "Motion changes relative position; new observations update targets, commands and stopping conditions."
+          },
+          {
+            "type": "p",
+            "zh": "在常见 Nav2 系统中，控制服务器可以跟踪路径并发布速度；<strong>本实验没有启用这条完整执行链</strong>。当前桥接器取得 Navfn 路径与通行检查结果，自有控制器再结合视觉球方位、准备点误差和身体姿态，生成有限的转向、前进、对齐或停止阶段。因此不能把视频解释为“Nav2 自带控制器严格逐点跟踪路径”。",
+            "en": "A conventional Nav2 stack can use a controller server to follow a path and publish velocities. <strong>This task does not enable that full execution chain.</strong> Its bridge obtains Navfn paths and traversal checks; a custom controller combines visual ball bearing, stance error and posture to generate bounded turning, forward, alignment or stop phases. The video does not show a stock Nav2 controller following every waypoint."
+          },
+          {
+            "type": "equation",
+            "label_zh": "从机身命令到关节动作",
+            "label_en": "From body commands to joint actions",
+            "tex": "\\mathbf c_t=(v_x^{\\rm cmd},v_y^{\\rm cmd},\\omega_z^{\\rm cmd}),\\qquad \\mathbf a_t=\\pi_{\\rm walk}(\\mathbf o_t,\\mathbf c_t)"
+          },
+          {
+            "type": "p",
+            "zh": "机身命令表示期望怎样移动；行走策略把命令与本体观测组合起来，输出 14 维关节动作。策略以 50 Hz 更新，Newton 以 200 Hz 推进物理。命令值不等于实际达到的速度：步态、接触和延迟都会造成误差，所以还要看新观测与身体状态。转向的正负号和速度缩放应以执行器接口为准。",
+            "en": "Body commands express desired motion. The walking policy combines them with proprioception to produce 14 joint actions at 50 Hz; Newton advances physics at 200 Hz. Commands are not measured achieved velocities: gait, contact and delay introduce error, requiring feedback. Use the executor’s conventions for turning signs and velocity scaling."
+          },
+          {
+            "type": "enrichment",
+            "title": {
+              "zh": "查看实现：不同阶段为什么使用不同距离",
+              "en": "Implementation: why stages use different distances"
+            },
+            "blocks": [
+              {
+                "type": "table",
+                "headers": {
+                  "zh": [
+                    "阶段",
+                    "相对球的位置参数",
+                    "用途"
+                  ],
+                  "en": [
+                    "Stage",
+                    "Ball-relative parameters",
+                    "Purpose"
+                  ]
+                },
+                "rows": {
+                  "zh": [
+                    [
+                      "Nav2 导航准备点",
+                      "d = 0.22 m，ℓ = 0.035 m",
+                      "基础控制器请求路径的目标"
+                    ],
+                    [
+                      "粗接近通行授权",
+                      "d = 0.36 m，ℓ = 0.028 m",
+                      "检查一段直线路径，不是再次调用 Navfn"
+                    ],
+                    [
+                      "近球观察站位",
+                      "d = 0.26 m，ℓ = 0.035 m",
+                      "观察和对齐的准备阶段"
+                    ],
+                    [
+                      "最终名义站位",
+                      "球在机身坐标约 (0.09, −0.035) m",
+                      "精细对位后再检查是否允许出脚"
+                    ]
+                  ],
+                  "en": [
+                    [
+                      "Nav2 preparation target",
+                      "d = 0.22 m, ℓ = 0.035 m",
+                      "Target of the base controller’s path request"
+                    ],
+                    [
+                      "Coarse-approach permission",
+                      "d = 0.36 m, ℓ = 0.028 m",
+                      "Checks a straight segment; no additional Navfn search"
+                    ],
+                    [
+                      "Near-ball observation stance",
+                      "d = 0.26 m, ℓ = 0.035 m",
+                      "Preparation for observation and alignment"
+                    ],
+                    [
+                      "Nominal final stance",
+                      "Ball at about (0.09, −0.035) m in body coordinates",
+                      "Fine alignment followed by kick-readiness checks"
+                    ]
+                  ]
+                }
+              },
+              {
+                "type": "p",
+                "zh": "这些是不同控制层的参数，不是要求每次运行依次抵达的四个地图点。它们需要与技能工作范围一起验证，不能仅凭常识调整距离就保证更好。出脚还要求球在机身坐标的 x∈[0.075, 0.105] m、y∈[−0.05, −0.02] m 区域内，并同时满足观测有效期、朝向、身体状态及头部返回条件。",
+                "en": "These belong to different control layers; they are not four map waypoints that every run must visit in sequence. Validate changes against the skill’s operating range. Kick readiness also requires the ball within body-frame x∈[0.075, 0.105] m and y∈[−0.05, −0.02] m, plus valid observation age, heading, posture and head return."
+              },
+              {
+                "type": "p",
+                "zh": "对照源码：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/football/controller.py\">导航目标与基础路径处理</a>、<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/coarse_track.py\">粗接近通行检查</a>、<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/command_navigation_native.py\">视觉阶段控制</a>、<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/final_approach.py\">最终接近与出脚范围</a>。",
+                "en": "Compare the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/football/controller.py\">base target and path handling</a>, <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/coarse_track.py\">coarse checks</a>, <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/command_navigation_native.py\">visual stage control</a> and <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/final_approach.py\">final approach and readiness region</a>."
+              }
+            ]
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "检查层次",
+                "应该观察什么",
+                "还不能说明什么"
+              ],
+              "en": [
+                "Check",
+                "Evidence to inspect",
+                "What remains unproven"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "生成路径",
+                  "请求匹配、路径有效、未知区域与外形检查通过",
+                  "机器人已经走到目标"
+                ],
+                [
+                  "实际到达准备站位",
+                  "位置与朝向误差、姿态稳定、观测仍有效",
+                  "可以立刻出脚"
+                ],
+                [
+                  "满足出脚条件",
+                  "近球区域、朝向、有效期与头部交接检查",
+                  "球一定会进门"
+                ],
+                [
+                  "完整任务成功",
+                  "物理接触后球过门、机器人恢复且满足评分规则",
+                  "其他初始条件也会成功"
+                ]
+              ],
+              "en": [
+                [
+                  "Path produced",
+                  "Matching request, valid path, unknown-space and footprint checks",
+                  "The robot has reached the target"
+                ],
+                [
+                  "Preparation stance reached",
+                  "Position/heading error, stable posture, fresh observation",
+                  "Immediate permission to kick"
+                ],
+                [
+                  "Kick readiness",
+                  "Near-ball region, heading, freshness and head handoff",
+                  "A guaranteed goal"
+                ],
+                [
+                  "Complete success",
+                  "Physical ball crossing and recovery under scoring rules",
+                  "Success from other initial conditions"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "Nav2 已返回一条有效路径，但机器人还在转向。此时能声称“已到达射门站位”吗？",
+              "en": "Nav2 returned a valid path, but the robot is still turning. Has it reached the kick stance?"
+            },
+            "answer": {
+              "zh": "不能。路径只是规划结果。需要检查实际位置、朝向、姿态与观测，再单独核验出脚条件；行走命令本身也不是实际到达的证据。",
+              "en": "No. A path is a planning result. Check actual position, heading, posture and observations, then kick readiness separately. A motion command is not evidence of arrival."
+            }
+          }
+        ]
+      },
+      {
+        "id": "isaac-ros-nav2",
+        "title": {
+          "zh": "Isaac ROS 与 Nav2 是什么关系？",
+          "en": "How do Isaac ROS and Nav2 relate?"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "Nav2 是独立的开源导航框架，并非 NVIDIA 的专有导航器。Isaac ROS 是 NVIDIA 提供的加速 ROS 组件集合，可以向 Nav2 提供感知、定位和环境表示。例如，Isaac ROS Visual SLAM 可提供位姿，nvblox 可根据深度与位姿构建环境表示，再通过代价地图接口支持 Nav2 规划。更准确的名称是 <strong>“Isaac ROS 与 Nav2 集成导航”</strong>，不是把两者当作同一个产品。",
+            "en": "Nav2 is an independent open-source navigation framework, not an NVIDIA proprietary navigator. Isaac ROS provides NVIDIA-accelerated ROS components that can supply perception, localization and environmental representations to Nav2. For example, Visual SLAM can provide poses, and nvblox can reconstruct an environment from depth and poses for use through costmap interfaces. Call this <strong>Isaac ROS integration with Nav2</strong>, rather than treating them as one product."
+          },
+          {
+            "type": "flow",
+            "label": "可选的 Isaac ROS + Nav2 集成架构",
+            "nodes": [
+              [
+                "相机与姿态输入",
+                "满足组件的标定和同步要求"
+              ],
+              [
+                "Isaac ROS 组件",
+                "Visual SLAM / nvblox 等"
+              ],
+              [
+                "Nav2",
+                "接收位姿与环境信息进行导航"
+              ]
+            ],
+            "english_diagram": {
+              "label": "Optional Isaac ROS + Nav2 architecture",
+              "nodes": [
+                [
+                  "Camera and pose inputs",
+                  "Meet calibration and timing needs"
+                ],
+                [
+                  "Isaac ROS components",
+                  "Visual SLAM / nvblox, for example"
+                ],
+                [
+                  "Nav2",
+                  "Use pose and environment for navigation"
+                ]
+              ]
+            },
+            "zh": "这是扩展架构，尚未接入本实验。各组件对传感器、算力与同步的要求需要单独核对。",
+            "en": "This is an optional architecture, not the current task implementation. Check sensor, compute and synchronization requirements for each component."
+          },
+          {
+            "type": "p",
+            "zh": "<strong>本实验实际使用 Isaac Sim + ROS 2 Nav2，尚未使用 Isaac ROS 包。</strong>Isaac Sim 提供 RTX 传感器渲染，Isaac Lab 组织学习任务与策略接口，Newton 推进物理；Nav2/Navfn 在 CPU 容器中规划，自有控制器完成阶段与命令交接。使用 Isaac Sim 不会自动意味着使用了 Isaac ROS。导航依赖和启动入口可在 <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/image-lock.json\">软件包锁定文件</a>与 <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/service.py\">服务源码</a>中核对。",
+            "en": "<strong>This task uses Isaac Sim with ROS 2 Nav2; it does not currently use Isaac ROS packages.</strong> Isaac Sim renders RTX sensor data, Isaac Lab organizes learning tasks and policy interfaces, and Newton advances physics. CPU-hosted Nav2/Navfn plans while a custom controller handles stages and commands. Using Isaac Sim does not imply Isaac ROS integration. Inspect the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/image-lock.json\">package lock</a> and <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/service.py\">service source</a>."
+          },
+          {
+            "type": "p",
+            "zh": "若将来要把这条链路扩展到真实设备或更复杂场地，应先确定需要改进的是定位、建图还是控制，再选择组件，并重新检查接口、延迟与任务成功率。<a href=\"https://docs.nav2.org/rolling/tutorials/general_tutorials/isaac_perceptor/\">Nav2 官方视觉导航教程</a>展示了 NVIDIA 组件与 Nav2 的协同；那套平台的传感器和计算配置不能直接视为 Microduck 已具备的配置。",
+            "en": "For physical deployment or more complex fields, first identify whether localization, mapping or control needs improvement, then select components and validate interfaces, delay and task outcomes. The <a href=\"https://docs.nav2.org/rolling/tutorials/general_tutorials/isaac_perceptor/\">official Nav2 vision-navigation tutorial</a> shows integration with NVIDIA components; its sensor and compute setup is not automatically available on Microduck."
           }
         ]
       },
@@ -2979,7 +3314,7 @@
         "en": "ST: VL53L8CX"
       },
       {
-        "url": "https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_navigation.html",
+        "url": "https://docs.isaacsim.omniverse.nvidia.com/6.0.1/ros2_tutorials/tutorial_ros2_navigation.html",
         "zh": "NVIDIA Isaac Sim：ROS 2 导航集成教程",
         "en": "NVIDIA Isaac Sim: ROS 2 navigation integration"
       },
@@ -2987,6 +3322,16 @@
         "url": "https://docs.nav2.org/",
         "zh": "Nav2：导航概念与组件",
         "en": "Nav2: navigation concepts and components"
+      },
+      {
+        "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/",
+        "zh": "Nav2 Jazzy：Navfn 参数",
+        "en": "Nav2 Jazzy: Navfn parameters"
+      },
+      {
+        "url": "https://nvidia-isaac-ros.github.io/",
+        "zh": "NVIDIA Isaac ROS：组件与平台要求",
+        "en": "NVIDIA Isaac ROS: components and platform requirements"
       }
     ]
   },
@@ -3133,6 +3478,17 @@
             "en": "Domain randomization exposes a model to meaningful variation during training. Apply it to the affected component: mat colours, markings, light and mesh affect RGB detection; friction, voltage, delay, mass and contacts affect locomotion and kicking. This system combines detection, geometry, Nav2 and action policies; it does not use a vision-language-action model such as GR00T."
           },
           {
+            "type": "quiz",
+            "question": {
+              "zh": "回顾<a href=\"04-terrain.html#train\">第 4 章的坡地行走训练</a>：让小鸭子适应不同坡度，是否属于 Domain Randomization（域随机化）？这次实现是否也采用了 Curriculum Learning（课程学习）？请分别找出“随机变化”和“难度调整”的依据，再展开答案。",
+              "en": "Recall the <a href=\"04-terrain.html#train\">slope-walking training in Chapter 4</a>. Does adapting Microduck to different slopes count as Domain Randomization? Does this implementation also use Curriculum Learning? Identify evidence for random variation and difficulty adjustment before revealing the answer."
+            },
+            "answer": {
+              "zh": "<strong>本课程这次训练同时使用了地形域随机化与课程学习，但依据不是“训练过不同坡度”这句话。</strong><br><br><strong>随机化发生在哪里？</strong>训练入口设置了 5 行难度、8 列地形：2 列平地、3 列金字塔坡面、3 列反向金字塔坡面。类型按比例分配，并非逐回合随机抽取。生成地形时，每块地形的难度为 <code>d = (r + u) / 5</code>，其中行号 <code>r = 0,…,4</code>，<code>u</code> 在 [0, 1) 内均匀随机采样；坡度参数的绝对值为 <code>0.03 + d × (0.22 − 0.03)</code>。它表示 <code>tan(α)</code>，不是角度，配置范围约对应 1.7°–12.4°。这种生成时对坡面几何的随机变化，可归为地形域随机化；并不是每次重置都从整个范围重新抽取坡度。<br><br><strong>课程学习发生在哪里？</strong>训练设置 <code>curriculum=True</code>、<code>max_init_terrain_level=1</code>，并保留了粗糙地形任务的 <code>terrain_levels_vel</code> 更新项。环境初始等级随机取 0 或 1，随后在重置时按机器人相对环境原点的水平位移升降级：位移超过 2 m 就升级；未达到升级条件，且小于当前平移速度指令模长 × 回合时限 × 0.5 时降级。等级最低为 0，超过最高级后随机分配等级。因此，这是按表现调整难度，不是按固定训练轮数从平地一路切到陡坡。<br><br><strong>怎样区分？</strong>域随机化关注“训练环境有哪些随机变化”，课程学习关注“怎样安排难度”；两者可以结合。第 4 章依次测试 0、±5°、±10°、±15° 的固定直线坡道，是评测安排，本身不是域随机化。上述分类也不能单独证明随机化提高了真机表现。<br><br>核对实现：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py\">训练配置</a>；课程锁定版本 Isaac Lab 的<a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_generator.py#L235-L266\">地形采样</a>、<a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/core/velocity/mdp/curriculums.py#L23-L52\">升降级判据</a>与<a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_importer.py#L360-L400\">等级分配</a>。",
+              "en": "<strong>This course's training uses both terrain domain randomization and curriculum learning, but training on several slopes alone would not establish that.</strong><br><br><strong>Where is the randomization?</strong> The training entry point defines 5 difficulty rows and 8 terrain columns: 2 flat, 3 pyramidal and 3 inverted pyramidal. Types are assigned by proportion, not randomly drawn each episode. When generating the terrain, each tile receives difficulty <code>d = (r + u) / 5</code>, where the row index is <code>r = 0,…,4</code> and <code>u</code> is sampled uniformly from [0, 1). The slope parameter's magnitude is <code>0.03 + d × (0.22 − 0.03)</code>. This is <code>tan(α)</code>, not degrees; the configured range corresponds to about 1.7°–12.4°. Random variation in slope geometry at generation time qualifies as terrain domain randomization. A new slope is not drawn from the entire range at every reset.<br><br><strong>Where is the curriculum?</strong> Training sets <code>curriculum=True</code> and <code>max_init_terrain_level=1</code>, and retains the rough-terrain task's <code>terrain_levels_vel</code> update. Environments start at randomly assigned level 0 or 1. At resets, levels change according to horizontal displacement from the environment origin: above 2 m advances a level; otherwise, displacement below the current translational command magnitude × episode time limit × 0.5 lowers the level. Levels are bounded below by 0; advancing beyond the highest level assigns a random level. Difficulty therefore adapts to performance, rather than following a fixed iteration schedule from flat ground to steep slopes.<br><br><strong>How do they differ?</strong> Domain randomization concerns random variation in training environments; curriculum learning concerns how difficulty is scheduled. They can be combined. Testing fixed straight ramps at 0, ±5°, ±10° and ±15° in Chapter 4 is an evaluation protocol, not domain randomization by itself. This classification also does not establish a real-world performance benefit from randomization alone.<br><br>Check the implementation: <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py\">training configuration</a>; the course-pinned Isaac Lab <a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_generator.py#L235-L266\">terrain sampling</a>, <a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/core/velocity/mdp/curriculums.py#L23-L52\">promotion and demotion criteria</a>, and <a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_importer.py#L360-L400\">level assignment</a>."
+            }
+          },
+          {
             "type": "table",
             "headers": {
               "zh": [
@@ -3274,14 +3630,24 @@
         },
         "blocks": [
           {
+            "type": "p",
+            "zh": "先完成上一章的<a href=\"06-autonomy.html#navigation-model\">站位几何</a>与<a href=\"06-autonomy.html#planner\">Nav2 规划</a>。下面的命令可在 CPU 上运行，只验证第一步，不启动 Nav2 或机器人；在仓库根目录执行，输出目录必须尚不存在。",
+            "en": "Review <a href=\"06-autonomy.html#navigation-model\">stance geometry</a> and <a href=\"06-autonomy.html#planner\">Nav2 planning</a>. Run the command below from the repository root on CPU, with a new output directory. It checks geometry only; it does not start Nav2 or the robot."
+          },
+          {
             "type": "code",
             "code": "python3 scripts/workshop.py plan \\\n  --ball 0.08 0.03 --goal 0.68 0 \\\n  --distance 0.18 --lateral 0.035 \\\n  --output outputs/stance-plan-01",
             "label": "Terminal"
           },
           {
             "type": "p",
-            "zh": "打开输出目录中的 <code>plan.svg</code>，对照上一章的公式检查目标点。这里使用手工给定的坐标，仅验证几何计算；完整任务会从传感器估计目标位置，再调用导航和运动技能。",
-            "en": "Inspect plan.svg and compare with the previous chapter’s equation. This exercise checks geometry with supplied points; the full task obtains targets from sensors."
+            "zh": "打开输出目录中的 <code>plan.svg</code>，对照上一章的公式检查目标点。这里使用手工给定的坐标，仅验证几何计算；完整任务会估计球和机器人位置，结合已知球门的地图先验生成目标，再调用导航和运动技能。",
+            "en": "Inspect <code>plan.svg</code> and compare with the previous chapter’s equations. This exercise checks geometry with supplied points. The full task estimates ball and robot positions, combines them with the known goal’s map prior, and then invokes navigation and motion skills."
+          },
+          {
+            "type": "p",
+            "zh": "本例预期 P* ≈ (−0.0980, 0.0739) m，θ* ≈ −2.86°。<code>distance</code> 是沿射门轴后退的米数，<code>lateral</code> 是朝该方向看时向左偏移的米数。检查 <code>plan.json</code> 和 <code>plan.svg</code>，然后只改变球的位置并换一个输出目录，解释目标为何随之变化。完整场景才会提交真实 Nav2 请求；返回路径后仍需进行行走和出脚条件检查。",
+            "en": "Expected: P* ≈ (−0.0980, 0.0739) m and θ* ≈ −2.86°. <code>distance</code> is the stand-off along the shooting axis; <code>lateral</code> is the leftward offset, both in meters. Inspect <code>plan.json</code> and <code>plan.svg</code>, then change only the ball position and use a new output directory. Explain the target change. The full scene submits real Nav2 requests; a returned path still requires motion and readiness checks."
           }
         ]
       },

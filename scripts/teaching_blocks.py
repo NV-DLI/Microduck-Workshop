@@ -2,6 +2,7 @@
 
 from html import escape as e
 from course_diagrams import flow_svg, platform_svg, network_svg
+from navigation_diagrams import navigation_diagram
 
 
 def render_teaching_block(b, lang):
@@ -19,7 +20,7 @@ def render_teaching_block(b, lang):
     if k == "equation":
         return (
             '<div class="formula"><div class="formula-label">'
-            + e(b.get("label", ""))
+            + e(b.get("label_" + lang, b.get("label", "")))
             + "</div><div>\\["
             + e(b["tex"])
             + "\\]</div></div>"
@@ -120,6 +121,8 @@ def render_teaching_block(b, lang):
         )
     if k == "diagram":
         name = b["kind"]
+        if name in ("navigation-stance", "navigation-costmap"):
+            return navigation_diagram(name, lang, caption)
         controls = ""
         svg = ""
         start = (

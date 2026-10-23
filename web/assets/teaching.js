@@ -58,6 +58,84 @@
     f.addEventListener("change", update);
     update();
   }
+  for (const f of document.querySelectorAll(
+    '[data-diagram="navigation-stance"]',
+  )) {
+    const q = (s) => f.querySelector(s);
+    function update() {
+      const d = Number(q(".nav-distance").value);
+      const l = Number(q(".nav-offset").value);
+      const b = [0, Number(q(".nav-ball-y").value)];
+      const g = [0.68, Number(q(".nav-goal-y").value)];
+      const length = Math.hypot(g[0] - b[0], g[1] - b[1]);
+      const u = [(g[0] - b[0]) / length, (g[1] - b[1]) / length];
+      const back = [b[0] - d * u[0], b[1] - d * u[1]];
+      const p = [back[0] - l * u[1], back[1] + l * u[0]];
+      const screen = (a) => [360 + 340 * a[0], 210 - 340 * a[1]];
+      const path = (selector, points) =>
+        q(selector).setAttribute(
+          "d",
+          points.map((a, i) => (i ? "L" : "M") + screen(a).join(",")).join(" "),
+        );
+      for (const [name, point] of [
+        ["ball", b],
+        ["goal", g],
+        ["stance", p],
+      ]) {
+        const [x, y] = screen(point);
+        q(".nav-" + name).setAttribute("cx", x);
+        q(".nav-" + name).setAttribute("cy", y);
+        q(".nav-" + name + "-label").setAttribute("x", x + 14);
+        q(".nav-" + name + "-label").setAttribute(
+          "y",
+          y + (name === "stance" ? -17 : 24),
+        );
+      }
+      path(".nav-shot", [back, g]);
+      path(".nav-backoff", [back, b]);
+      path(".nav-lateral", [back, p]);
+      path(".nav-heading", [p, [p[0] + 0.12 * u[0], p[1] + 0.12 * u[1]]]);
+      path(".nav-goal-frame", [
+        [g[0] + 0.035, g[1] + 0.12],
+        [g[0], g[1] + 0.12],
+        [g[0], g[1] - 0.12],
+        [g[0] + 0.035, g[1] - 0.12],
+      ]);
+      const mid = screen([(back[0] + b[0]) / 2, (back[1] + b[1]) / 2]);
+      q(".nav-distance-label").setAttribute("x", mid[0]);
+      q(".nav-distance-label").setAttribute("y", mid[1] + 24);
+      for (const [selector, point, dx, dy] of [
+        [
+          ".nav-offset-label",
+          [(back[0] + p[0]) / 2, (back[1] + p[1]) / 2],
+          -22,
+          5,
+        ],
+        [
+          ".nav-direction-label",
+          [(b[0] + g[0]) / 2, (b[1] + g[1]) / 2],
+          0,
+          -12,
+        ],
+        [".nav-heading-label", [p[0] + 0.14 * u[0], p[1] + 0.14 * u[1]], 3, -8],
+      ]) {
+        const [x, y] = screen(point);
+        q(selector).setAttribute("x", x + dx);
+        q(selector).setAttribute("y", y + dy);
+      }
+      const theta = (Math.atan2(u[1], u[0]) * 180) / Math.PI;
+      f.dataset.targetX = p[0];
+      f.dataset.targetY = p[1];
+      f.dataset.heading = theta;
+      q(".concept-output").textContent =
+        `d = ${d.toFixed(2)} m, ℓ = ${l.toFixed(3)} m; B = (0, ${b[1].toFixed(2)}) m, G = (0.68, ${g[1].toFixed(2)}) m; P* = (${p[0].toFixed(3)}, ${p[1].toFixed(3)}) m; θ* = ${theta.toFixed(1)}°. ` +
+        (zh
+          ? "改变球或球门位置，观察目标坐标与朝向如何变化。"
+          : "Move the ball or goal and observe the target position and heading.");
+    }
+    f.addEventListener("input", update);
+    update();
+  }
   for (const f of document.querySelectorAll('[data-diagram="stance"]')) {
     const q = (s) => f.querySelector(s);
     function update() {
