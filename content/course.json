@@ -28,8 +28,8 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "以一台 Microduck、一个足球和一个球门为共同任务，先建立运动、仿真与训练基础，再比较手工流程、学习策略和任务智能体。前五章提供既有实验；第六章观看传统方案，后三章讲解前沿方法与接入条件。新方法尚未在本课程完成射门训练，不把架构示意当成成功实验。",
-            "en": "Use one Microduck, one ball and one goal to connect motion, simulation and learning with engineered pipelines, learned policies and task agents. Chapters 1–5 retain existing labs, Chapter 6 reviews the baseline, and Chapters 7–9 explain frontier methods and readiness. New-method football training has not yet been completed here."
+            "zh": "以一台 Microduck、一个足球和一个球门贯穿机器人学习：先体验运动技能，再学习仿真与强化学习，接着观察完整射门流程，理解 GR00T 怎样从示范学习、ASPIRE 怎样组织技能，最后讨论如何适应更多环境。",
+            "en": "Follow one Microduck, ball and goal through robot learning: experience motion skills, learn simulation and reinforcement learning, observe complete football, explore GR00T imitation and ASPIRE skill composition, then consider new environments."
           },
           {
             "type": "pipeline",
@@ -131,7 +131,7 @@
                 ],
                 [
                   "第 9 章",
-                  "用 Cosmos 与 Isaac 覆盖不同家庭环境"
+                  "从一个球场走向更多环境"
                 ]
               ],
               "en": [
@@ -169,7 +169,7 @@
                 ],
                 [
                   "Chapter 9",
-                  "Cover different homes with Cosmos and Isaac"
+                  "From one field to more environments"
                 ]
               ]
             }
@@ -754,8 +754,19 @@
                   "Keys → ONNX → joint goals"
                 ]
               ],
-              "groups": []
-            }
+              "groups": [],
+              "details": [
+                "USD places the robot, ball and goal in a shared space. Geometry and materials also affect camera images.",
+                "Mass, inertia, friction and colliders determine contact and motion. Identical appearances can have different physics; realism alone does not validate dynamics.",
+                "Keyboard requests specify motion; the ONNX policy converts observations and commands into joint targets. Moving the ball changes the task, not the policy weights."
+              ]
+            },
+            "interactive": true,
+            "details": [
+              "USD 场景将机器人、球与球门放在同一空间。网格负责可见外形，几何与材质也会影响相机看到的图像。",
+              "质量、惯量、摩擦和碰撞体决定接触后的运动。相同外观可以对应不同物理配置，因此外观逼真不能代替物理检查。",
+              "键盘提供期望运动方向与速度，ONNX 策略把观测和指令转换为关节目标。移动足球只改变任务目标，不会改变行走策略的网络权重。"
+            ]
           },
           {
             "type": "p",
@@ -809,8 +820,8 @@
           },
           {
             "type": "p",
-            "zh": "截至 2026 年 10 月 23 日，对照官方仓库，课程所用 CAD 网格、基础质量与关节参数、电机拟合与当日上游一致；本轮补入官方全身碰撞配置。机械展示仍保留 CAD 中的 Pi Zero 2 W 板外形，而当前 Beta 软件面向 RK3566。不能把这块展示网格当作最新电子硬件实物；整套真机对应关系仍需逐项核对。",
-            "en": "Comparison with upstream on 23 October 2026 found no changes to the pinned CAD meshes, base mass/joint parameters or motor fit. This scene adds the official full-body contact configuration. The mechanical viewer retains the Pi Zero 2 W board mesh in the CAD, while current Beta software targets RK3566. The displayed board is not evidence of the latest electronics."
+            "zh": "课程机器人采用官方 CAD 网格、基础质量与关节参数、电机拟合和全身碰撞配置。机械展示中的主控板外形来自 Pi Zero 2 W 版 CAD，Beta 软件平台则面向 RK3566；阅读机械模型时，要区分外形展示与实际电子硬件版本。",
+            "en": "The robot uses official CAD, base mass/joint parameters, motor fits and whole-body collision shapes. The displayed board shape comes from Pi Zero 2 W CAD, while Beta software targets RK3566. Distinguish mechanical appearance from the actual electronics revision."
           }
         ]
       },
@@ -866,13 +877,8 @@
           },
           {
             "type": "p",
-            "zh": "课程的步行与踢球组合保留经过原任务验证的固定官方权重；它们不等于官网网页模拟器当天的最新步行权重。轮滑实验单独使用本次核对的官网轮滑模型。硬件参数是否对应、策略文件是否相同、任务是否通过，是三个需要分别检查的问题。",
-            "en": "The walking and kicking combination retains the fixed official weights used in the existing task validation; those files are not the latest browser walking weights. The roller lab separately uses the verified browser roller model. Hardware correspondence, policy identity and task success require separate checks."
-          },
-          {
-            "type": "p",
-            "zh": "两个官方策略都接收 61 维观测，输出 14 个关节动作。网络包含 512、256、128 个单元的三个隐藏层，使用 ELU 激活；输入归一化参数已包含在 ONNX 中，不要再做一次不匹配的归一化。键盘没有逐个操纵关节，而是改变速度指令。出脚时速度归零，短时调用踢球策略，再平滑切回站立。这里不加载踢球残差模型。",
-            "en": "Both actors map 61 observations to 14 joint actions through hidden layers of 512, 256 and 128 units with ELU activations. Their input normalization is embedded in ONNX. Keyboard commands set velocity, not individual joint angles. A bounded kick blends back to standing; this lab does not load the course residual actor."
+            "zh": "课程的步行与踢球组合保留经过原任务验证的固定官方权重；它们不等于官网网页模拟器当天的最新步行权重。轮滑实验使用官网轮滑模型。硬件参数是否对应、策略文件是否相同、任务是否通过，是三个需要分别检查的问题。",
+            "en": "The walking and kicking combination retains the fixed official weights used in the existing task validation; those files are not the latest browser walking weights. The roller lab uses the official browser roller model. Hardware correspondence, policy identity and task success require separate checks."
           },
           {
             "type": "network",
@@ -1670,8 +1676,19 @@
                   "Arrival, falls, speed error"
                 ]
               ],
-              "groups": []
-            }
+              "groups": [],
+              "details": [
+                "Test the same actor on flat ground, uphill and downhill to locate its limits. Report the directions separately.",
+                "Sample slopes in parallel environments so the policy experiences new contacts and gravity components. Retain flat-ground samples too.",
+                "Use starts and seeds excluded from tuning. Compare arrival, falls and speed error under matched conditions."
+              ]
+            },
+            "interactive": true,
+            "details": [
+              "先用同一策略测试平地、上坡与下坡，找出能力边界。不要把上坡与下坡的成绩混为一个结论。",
+              "在并行环境中采样不同坡度，让策略在训练时经历新的接触和重力分量。保留平地样本，避免只适应坡面。",
+              "用没有参与调参的起点与种子检验到达、跌倒和速度误差。保持相同测试条件，才便于判断训练是否有帮助。"
+            ]
           }
         ]
       },
@@ -2402,8 +2419,8 @@
           },
           {
             "type": "p",
-            "zh": "这组固定官方轮滑策略在平地通过 5/5；+5° 上坡虽然全部保持直立，却明显横向偏离，未满足规定的到达位置。它尚不能直接替代坡地行走策略。种子 55011 在轮胎接触修正时复用，属于固定配置核查，不是新增的独立泛化样本；它与前表步行实验的种子也不同。完整记录见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json\">轮滑坡地结果</a>。",
-            "en": "The fixed official roller actor passed 5/5 on level ground. All +5° trials stayed upright but drifted far sideways and missed the required arrival region. It cannot directly replace the slope walking policy. Seed 55011 was reused while correcting tyre contacts: this is a fixed-configuration check, not an additional independent generalization set, and its seed differs from the walking table. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json\">roller slope results</a>."
+            "zh": "官方轮滑策略在这组平地测试中通过 5/5；+5° 上坡虽然全部保持直立，却明显横向偏离，未到达规定位置。这说明“没有跌倒”和“完成上坡”是不同的结果。此表与步行实验的测试种子不同，不能作为严格配对比较；原始条件见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json\">轮滑坡地结果</a>。",
+            "en": "The official skating policy passes 5/5 flat-ground trials here. At +5°, all stay upright but drift sideways and miss the target. Survival and successful ascent differ. These seeds differ from the walking experiments, so this is not a strictly paired comparison; see the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json\">skating slope conditions</a>."
           }
         ]
       },
@@ -2724,227 +2741,165 @@
       {
         "id": "pipeline",
         "title": {
-          "zh": "传统方法怎样完成射门",
-          "en": "How the engineered method scores"
+          "zh": "一个球场，两种射门方式",
+          "en": "One field, two ways to score"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "前面我们获得了行走、轮滑和踢球等运动技能。要把它们组成完整任务，还需要决定看哪里、往哪里移动、何时触球、失败后怎么办。本章只看流程和效果，不需要安装、运行代码或手算站位。",
-            "en": "The earlier chapters provide walking, skating and kicking skills. A complete task must also decide where to look, where to move, when to contact the ball and how to recover. This chapter is a guided overview: no installation, code execution or position calculations are required."
+            "zh": "先把任务限制在一个简单室内球场：固定一种足球场地垫、背景、10 cm 足球和球门。步行方式靠出脚踢球，轮滑方式靠控制速度碰球。两者都要让整球进入球门，并在结束时保持稳定。本章只需观察和思考，无需运行代码或计算站位。",
+            "en": "Start with one simple indoor field: one football mat, background, 10 cm ball and goal. Walking uses a leg kick; skating uses controlled contact. Both must send the whole ball through the goal and finish stably. This chapter requires only observation and reflection."
           },
           {
             "type": "flow",
-            "label": "人设计判断流程，已有策略执行运动。",
+            "interactive": true,
+            "label": "传统方法：把任务写成可以检查的步骤",
             "nodes": [
               [
-                "观察",
+                "观察目标",
                 "相机、ToF、IMU"
               ],
               [
-                "定位与规划",
-                "找到球、球门与接近路线"
+                "确定接近路线",
+                "球后站位与朝向"
               ],
               [
-                "对齐与执行",
-                "调用行走、踢球或轮滑技能"
+                "执行运动技能",
+                "步行踢球或轮滑碰球"
               ],
               [
                 "检查结果",
-                "进球、跌倒、停车与恢复"
+                "进球、恢复或停车"
               ]
             ],
-            "zh": "人设计判断流程，已有策略执行运动。",
-            "en": "People design the decision flow; existing policies execute motion.",
+            "details": [
+              "检测器在图像里找到球与球门。距离传感器和机器人姿态帮助解释这些图像；检测框本身还不是可直接走到的地面坐标。",
+              "根据球和球门的位置，选择有利于射门的方向与接近路线。球后站位来自人给定的任务先验，具体位置则随目标位置变化。",
+              "底层行走或轮滑策略把运动指令变为关节动作。上层控制器决定何时进入技能、何时停止，以及何时需要重新观察。",
+              "触球后继续观察：球是否完全越过门线，机器人是否跌倒，轮滑是否停稳。某一步通过，并不意味着整项任务已完成。"
+            ],
             "english_diagram": {
-              "label": "People design the decision flow; existing policies execute motion.",
+              "label": "Engineered control: explicit, checkable stages",
               "nodes": [
                 [
-                  "Observe",
+                  "Observe targets",
                   "Camera, ToF and IMU"
                 ],
                 [
-                  "Locate and plan",
-                  "Ball, goal and approach route"
+                  "Choose an approach",
+                  "Position and heading"
                 ],
                 [
-                  "Align and act",
-                  "Walking, kicking or skating"
+                  "Execute a skill",
+                  "Walk and kick, or glide"
                 ],
                 [
-                  "Check the outcome",
-                  "Goal, fall, stopping and recovery"
+                  "Check the result",
+                  "Score, recover or stop"
                 ]
               ],
-              "groups": []
+              "details": [
+                "A detector finds the ball and goal in images. Range and attitude help interpret those images; a bounding box is not yet a reachable ground position.",
+                "Ball and goal geometry determines an approach. Standing behind the ball is a human-specified task prior; its world position changes with the targets.",
+                "Walking or skating policies turn movement requests into joint actions. A controller decides when to enter a skill, stop or observe again.",
+                "Check whole-ball crossing, falls and settling after contact. Completing one stage does not establish complete task success."
+              ]
             },
-            "layout": "adaptive"
+            "layout": "learning",
+            "loop": false,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
           },
           {
             "type": "p",
-            "zh": "传统方法用相机投影和坐标变换把图像中的目标联系到机器人身体，再根据“球后站位、朝向球门”这样的任务先验生成接近目标。相关公式解决的是位置和方向的换算，本章不展开推导。步行分支使用 ROS 2 Nav2/Navfn 规划与自有跟踪控制；轮滑分支使用视觉反馈。Isaac ROS 可以提供可集成的感知能力，但当前射门实验没有运行 Isaac ROS 包。",
-            "en": "Camera projection and frame transforms relate image targets to the robot. A task prior—stand behind the ball and face the goal—defines the approach target. These calculations translate positions and directions; we omit their derivation here. Walking uses ROS 2 Nav2/Navfn planning with a custom tracker; skating uses visual feedback. Isaac ROS offers integration options for perception, but it is not running in this experiment."
+            "zh": "相机投影、坐标变换和“沿射门方向退后一点”的几何关系，负责把看到的目标变成运动目标。这里了解它们的用途即可。步行示例使用 Nav2/Navfn 生成路径并检查通行，再由自有控制器结合视觉分阶段执行；轮滑示例使用视觉反馈，不调用 Nav2。Nav2 是开源 ROS 2 导航框架，也可与 Isaac ROS 的感知组件集成；本章演示采用的是 Nav2 路径。",
+            "en": "Projection, coordinate transforms and a geometric offset behind the ball turn observations into movement goals. Understanding their purpose is enough here. The walking example uses Nav2/Navfn paths and traversability checks, followed by a custom vision-guided stage controller. Skating uses visual feedback without Nav2. Nav2 is an open ROS 2 navigation framework that can integrate with Isaac ROS perception components. The demonstration uses the Nav2 path."
           }
         ]
       },
       {
         "id": "walk-demo",
         "title": {
-          "zh": "观看步行射门",
-          "en": "Watch a walking shot"
+          "zh": "观察步行射门",
+          "en": "Watch the walking shot"
         },
         "blocks": [
           {
             "type": "media",
             "file": "autonomous-explained.gif",
             "alt": {
-              "zh": "真实步行开发示例，保留观察、反复对齐、踢球与恢复的完整过程。第三视角按原物理记录重渲染，右上角为同步的原相机画面；单次成功不代表可靠率。",
-              "en": "A complete walking development example, including observation, repeated alignment, kicking and recovery. The observer view is re-rendered from recorded physics with the original synchronized camera inset. One success is not a reliability estimate."
+              "zh": "步行射门：观察球门、接近足球、调整姿态、出脚并恢复站立。第三视角依据仿真轨迹呈现，右上角为同步相机画面。",
+              "en": "Walking: observe the goal, approach the ball, align, kick and recover. The observer view follows the simulated trajectory; the inset shows the synchronized camera."
             },
-            "zh": "真实步行开发示例，保留观察、反复对齐、踢球与恢复的完整过程。第三视角按原物理记录重渲染，右上角为同步的原相机画面；单次成功不代表可靠率。",
-            "en": "A complete walking development example, including observation, repeated alignment, kicking and recovery. The observer view is re-rendered from recorded physics with the original synchronized camera inset. One success is not a reliability estimate."
+            "zh": "步行射门：观察球门、接近足球、调整姿态、出脚并恢复站立。第三视角依据仿真轨迹呈现，右上角为同步相机画面。",
+            "en": "Walking: observe the goal, approach the ball, align, kick and recover. The observer view follows the simulated trajectory; the inset shows the synchronized camera."
           },
           {
             "type": "p",
-            "zh": "低头再调整的循环是真实控制行为。记录中有多次短转向，转向后要停稳并重新获得近处球的有效观测；朝向误差变化又会触发下一轮。改善连续观测、转向制动和进入/退出阈值的迟滞，有望减少往返切换，但需要配对物理测试确认。本章保留原速完整过程，不用剪辑把尚未解决的问题藏起来。",
-            "en": "The look-down and alignment cycles are real controller behavior. Short turns are followed by settling and fresh near-ball observations; a changed heading error can trigger another cycle. Continuous observation, improved turn braking and separate entry/exit thresholds could reduce switching, but require paired physical tests. The complete real-time sequence remains visible."
+            "zh": "留意低头观察与调整朝向之间的切换。机器人转身后，原先测得的球位置可能不再准确，于是要重新观察；如果转向后仍有摆动，就可能反复进入对齐步骤。这个现象说明，单个技能能用，还需要把观察、制动和技能切换衔接好。",
+            "en": "Notice the switches between looking down and adjusting heading. Turning changes the ball position relative to the robot, requiring fresh observations. Residual motion can trigger another alignment cycle. Useful individual skills still need coordinated observation, braking and transitions."
           }
         ]
       },
       {
         "id": "rollers",
         "title": {
-          "zh": "观看轮滑碰球",
-          "en": "Watch a gliding shot"
+          "zh": "观察轮滑碰球",
+          "en": "Watch the gliding shot"
         },
         "blocks": [
           {
             "type": "media",
             "file": "rollers-autonomous.gif",
             "alt": {
-              "zh": "轮滑开发示例：6.79 秒真实触球、8.13 秒整球越线，随后在门前停稳。初始化到结束保持轮滑模式，没有切换踢腿。第三视角重渲染与原相机同步。",
-              "en": "Gliding development example: contact at 6.79 s, whole-ball crossing at 8.13 s, then settling before the goal. The robot stays on its wheels throughout; no leg-kick transition occurs. The re-rendered observer view is synchronized with the original camera."
+              "zh": "轮滑射门：保持轮滑模式接近并碰球，随后在球门前减速停稳，不切换成踢腿动作。第三视角与相机画面同步。",
+              "en": "Gliding: remain on wheels, approach and contact the ball, then brake before the goal. There is no switch to a leg kick. Observer and camera views are synchronized."
             },
-            "zh": "轮滑开发示例：6.79 秒真实触球、8.13 秒整球越线，随后在门前停稳。初始化到结束保持轮滑模式，没有切换踢腿。第三视角重渲染与原相机同步。",
-            "en": "Gliding development example: contact at 6.79 s, whole-ball crossing at 8.13 s, then settling before the goal. The robot stays on its wheels throughout; no leg-kick transition occurs. The re-rendered observer view is synchronized with the original camera."
+            "zh": "轮滑射门：保持轮滑模式接近并碰球，随后在球门前减速停稳，不切换成踢腿动作。第三视角与相机画面同步。",
+            "en": "Gliding: remain on wheels, approach and contact the ball, then brake before the goal. There is no switch to a leg kick. Observer and camera views are synchronized."
           },
           {
             "type": "p",
-            "zh": "两种动作的决策规则不同。轮滑要控制接近速度和制动，步行要满足踢球策略的进入姿态。换一个任务时，工程师还要重新设计这些衔接条件。",
-            "en": "The decision rules differ: skating requires approach and braking control; walking must enter the kicking policy in a suitable pose. A different task requires new handoff rules."
+            "zh": "轮滑的难点是既让球获得足够速度，又让机器人及时停下。这里通过速度估计反馈制动，初始化到结束都保持轮滑模式。本演示采用理想 IMU 积分估速，实际传感器的偏差与时延还需要标定。比较两段视频：任务目标相同，动作与结束条件却不同。",
+            "en": "Skating must give the ball enough speed while stopping the robot in time. Velocity feedback controls braking, with skating active throughout. This demonstration estimates speed by integrating an ideal IMU; real sensor bias and delay require calibration. Compare the videos: a shared goal requires different actions and final conditions."
           }
         ]
       },
       {
         "id": "results",
         "title": {
-          "zh": "效果：成功演示与独立测试分开看",
-          "en": "Separate demonstrations from evaluation"
+          "zh": "怎样判断机器人真的学会了",
+          "en": "How to judge reliable performance"
         },
         "blocks": [
           {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "新 10 cm 足球场景",
-                "独立完整任务",
-                "实际观察"
-              ],
-              "en": [
-                "New 10 cm-ball scene",
-                "Independent full tasks",
-                "Observed limitation"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "步行射门",
-                  "0/4",
-                  "均未跌倒，失败发生在观测或交接阶段"
-                ],
-                [
-                  "轮滑射门",
-                  "1/4；进球 2/4",
-                  "有进球后停车失败，也有门柱定位未完成"
-                ]
-              ],
-              "en": [
-                [
-                  "Walking shot",
-                  "0/4",
-                  "No falls; observation or handoff failed"
-                ],
-                [
-                  "Gliding shot",
-                  "1/4; goals 2/4",
-                  "Stopping or goal-base localization failed"
-                ]
-              ]
-            }
+            "type": "p",
+            "zh": "一次成功视频说明任务可以完成，可靠性则要用未参与调试的多次尝试衡量。先在同一个场地，小幅改变起点、球的位置和初始朝向；分别统计步行与轮滑的完整成功率、跌倒、重复观察和耗时。进球但停车失败，应与完整成功分开记录。",
+            "en": "A successful video demonstrates possibility. Reliability needs repeated trials excluded from tuning. On the same field, vary the start, ball position and initial heading modestly. Evaluate walking and skating separately using complete success, falls, repeated observations and time. A goal followed by failed stopping is a separate outcome."
           },
           {
             "type": "p",
-            "zh": "每组四次、每种地面一个预定新种子，样式和种子同时改变，因此不能据此证明某种地面造成失败。检测器的测试 mAP50 已达到 0.978，完整任务仍不稳定：认出目标、估计几何、完成动作是不同的问题。旧场景成绩不混入这里。",
-            "en": "Each group has four predeclared trials, one new seed per floor. Floor and seed change together, so these trials do not establish a causal floor effect. Detection mAP50 is 0.978, yet the full task remains inconsistent: recognition, geometric estimation and execution are different problems. Historical scene scores are kept separate."
+            "zh": "观察流程时，可以依次问：有没有看见目标？位置估计是否准确？动作是否到位？结束后是否稳定？即使检测器很准确，后面任何一环仍可能失败。演示中的成功动作不代表每次尝试都会成功。",
+            "en": "Ask in order: was the target seen, was its position estimated accurately, did the action reach its goal, and did the robot finish stably? Accurate detection alone cannot guarantee the later stages. A successful demonstration does not imply success on every trial."
           }
         ]
       },
       {
         "id": "next",
         "title": {
-          "zh": "让机器人学习动作，也学习组织任务",
-          "en": "Learn actions and how to organize them"
+          "zh": "让示范和经验承担更多工作",
+          "en": "Let demonstrations and experience do more"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "手工流程的优点是可解释、容易逐步检查；代价是人需要理解任务，安排步骤、阈值与失败恢复。面对“把球送到另一端”“绕过椅子再射门”等新要求，维护成本会继续增加。我们希望把更多经验放进可学习的策略和可复用的技能，而不是为每个任务重新编排全部细节。",
-            "en": "Engineered pipelines are interpretable and easy to inspect step by step. They also require people to specify stages, thresholds and recovery. Requests such as moving the ball elsewhere or going around a chair create more integration work. Learned policies and reusable skills can carry more of that experience."
-          },
-          {
-            "type": "flow",
-            "label": "接下来的三章分别回答“怎么动、怎么组织任务、怎么覆盖变化”。",
-            "nodes": [
-              [
-                "GR00T",
-                "从图像、语言与示范学习动作"
-              ],
-              [
-                "ASPIRE",
-                "尝试、诊断、改写程序、积累技能"
-              ],
-              [
-                "Cosmos + Isaac",
-                "扩展数据，构建场景并验证泛化"
-              ]
-            ],
-            "zh": "接下来的三章分别回答“怎么动、怎么组织任务、怎么覆盖变化”。",
-            "en": "The next three chapters address action, task organization and variation.",
-            "english_diagram": {
-              "label": "The next three chapters address action, task organization and variation.",
-              "nodes": [
-                [
-                  "GR00T",
-                  "Learn actions from images, language and demonstrations"
-                ],
-                [
-                  "ASPIRE",
-                  "Try, diagnose, revise programs and retain skills"
-                ],
-                [
-                  "Cosmos + Isaac",
-                  "Expand data, compose scenes and evaluate generalization"
-                ]
-              ],
-              "groups": []
-            },
-            "layout": "adaptive"
+            "zh": "手工流程清楚、便于排查，也需要人逐一设计目标、步骤和切换条件。换成“把球送到另一个位置”或更长的任务时，许多判断都要重新安排。能否用任务指令和示范教机器人动作，再让智能体组织这些能力？",
+            "en": "Explicit pipelines are understandable and diagnosable, but people must design goals, stages and transitions. Moving the ball elsewhere or tackling a longer task requires new coordination. Could instructions and demonstrations teach the actions, while an agent organizes those abilities?"
           },
           {
             "type": "p",
-            "zh": "大模型可以减少逐任务手写决策的负担，但仍需要机器人动作接口、基础运动能力和结果检查。下面讲的是接入方法与已核查的接口；尚未把 GR00T 或 ASPIRE 的 Microduck 射门结果写成已完成实验。",
-            "en": "Foundation models can reduce task-specific decision programming. They still need action interfaces, underlying movement skills and outcome checks. The following chapters explain the integration design and inspected interfaces; they do not claim a completed GR00T or ASPIRE Microduck football experiment."
+            "zh": "接下来先用 GR00T 理解“从观察学动作”，再用 ASPIRE 理解“从执行反馈组织和改进技能”。这些是面向 Microduck 的方法设计课程。学习重点是知道需要什么数据、模型控制什么、如何检验结果；多场景扩展放在同一球场里的方法可靠之后。",
+            "en": "Next, GR00T explains learning actions from observations; ASPIRE explains organizing and improving skills from execution feedback. These are method-design lessons for Microduck. Focus on the required data, the model’s control role and how to evaluate results. Expand environments after the methods work reliably on one field."
           }
         ]
       }
@@ -2979,300 +2934,481 @@
       "en": "Teach GR00T from demonstrations"
     },
     "summary": {
-      "zh": "从 SO-101 sim2real 的数据流程出发，理解视觉—语言—动作模型如何适配 Microduck，以及微调前必须准备什么。",
-      "en": "Adapt the SO-101 sim-to-real data workflow to Microduck: what a vision-language-action model learns and what adaptation requires."
+      "zh": "用一条射门指令理解 GR00T 1.7：观察如何变成动作，示范如何变成能力，失败如何变成纠正数据。",
+      "en": "Understand GR00T 1.7 through football: observations become actions, demonstrations become skills, and failures guide corrective data."
     },
     "meta": {
-      "zh": "第 7 章 · 预计学习时长 25 分钟",
-      "en": "Chapter 7 · Estimated learning time: 25 minutes"
+      "zh": "第 7 章 · 预计学习时长 35 分钟",
+      "en": "Chapter 7 · Estimated learning time: 35 minutes"
     },
     "sections": [
       {
         "id": "idea",
         "title": {
-          "zh": "用目标与示范表达任务",
-          "en": "Express the task through goals and demonstrations"
+          "zh": "从“写步骤”到“给目标与示范”",
+          "en": "From writing steps to providing goals and examples"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "给机器人一句“把球送进球门”，再提供成功完成任务的示范，是另一种表达任务的方法。视觉—语言—动作模型（VLA）根据相机图像、任务指令和机器人状态预测接下来的一段动作。许多原来分散在“看球、调整、前进”规则里的经验，可以由数据学习。",
-            "en": "A language goal such as “send the ball into the goal,” paired with successful demonstrations, offers another way to specify the task. A vision-language-action model uses images, instructions and robot state to predict a short action sequence. Data can capture decisions previously distributed across looking, alignment and approach rules."
+            "zh": "给 Microduck 一句“把球送进球门”，再提供相应的观察与动作示范，模型就有了学习这个任务的材料。视觉—语言—动作模型（Vision-Language-Action，VLA）把图像、语言指令与机器人状态联系起来，预测接下来怎样动作。语言说明目标，示范说明这个机器人怎样实现目标。",
+            "en": "Give Microduck the instruction “send the ball into the goal” alongside demonstrations of observations and actions. A vision-language-action model (VLA) connects images, language and robot state to predict what to do next. Language expresses the goal; demonstrations show how this robot can achieve it."
           },
+          {
+            "type": "p",
+            "zh": "GR00T N1.7 是可针对机器人与任务进行后训练的基础模型。通用视觉知识能帮助识别情境，但基础模型不会仅凭一句话就掌握 Microduck 的平衡、轮滑制动和踢球时机。仍要用匹配的动作接口和任务示范把这些能力教给它。",
+            "en": "GR00T N1.7 is a foundation model that can be post-trained for a robot and task. General visual knowledge helps interpret situations, but an instruction alone does not teach Microduck balance, skating brakes or kick timing. Compatible action interfaces and task demonstrations remain necessary."
+          }
+        ]
+      },
+      {
+        "id": "architecture",
+        "title": {
+          "zh": "GR00T 1.7 怎样把观察变成动作",
+          "en": "How GR00T 1.7 turns observations into actions"
+        },
+        "blocks": [
           {
             "type": "flow",
-            "label": "GR00T 反复观察并预测短动作段；环境反馈形成闭环。",
+            "interactive": true,
+            "label": "图像与语言提供情境，机器人状态共同参与动作生成",
             "nodes": [
               [
-                "输入",
-                "图像 + 指令 + 机器人状态"
+                "图像与任务指令",
+                "看见足球，理解射门目标"
               ],
               [
-                "GR00T N1.7",
-                "理解当前情境，预测动作段"
+                "System 2",
+                "Cosmos-Reason2-2B"
               ],
               [
-                "机器人控制",
-                "执行短前缀，保持底层稳定"
+                "System 1",
+                "Flow-matching 动作头"
               ],
               [
-                "新的观察",
-                "重新判断下一步动作"
+                "动作执行",
+                "控制器 + Microduck"
+              ],
+              [
+                "机器人状态",
+                "关节、机身姿态与运动"
+              ],
+              [
+                "再次观察",
+                "动作改变了看到的场景"
               ]
             ],
-            "zh": "GR00T 反复观察并预测短动作段；环境反馈形成闭环。",
-            "en": "GR00T repeatedly observes and predicts short action segments in a feedback loop.",
+            "details": [
+              "相机告诉模型球和球门看起来在哪里；“把球送进球门”指明期望结果。输入图像的视角、尺寸和预处理应与示范数据一致。换一句话并不能弥补训练中没有见过的动作。",
+              "视觉语言骨干提取与任务相关的特征，例如球门方向和足球所在区域。System 2 是对感知与推理作用的概念称呼；这张图不表示它一定输出一份可读的步骤清单。",
+              "动作头结合视觉语言特征与机器人状态，通过 flow matching 生成一段动作。可以把它理解为逐步把初始噪声修正成符合当前任务的动作序列，而不是从固定动作列表中挑一句答案。",
+              "执行端解释模型输出，应用单位换算、限制和动作时序。对 Microduck，可以研究由 VLA 输出速度与视线请求、由已有运动策略维持平衡的分层方式；这需要与之对应的示范标签。",
+              "状态让模型知道“身体现在怎样”。相同的球画面，在身体倾斜、转动或已经减速时可能需要不同动作。状态走向动作头的支路，表示它与视觉语言特征共同决定动作。",
+              "执行一小段动作后，读取新图像与状态，再预测下一段。这个反馈闭环改变输入；普通推理过程中，模型权重保持不变。"
+            ],
             "english_diagram": {
-              "label": "GR00T repeatedly observes and predicts short action segments in a feedback loop.",
+              "label": "Images and language provide context; robot state also conditions actions",
               "nodes": [
                 [
-                  "Inputs",
-                  "Images + instruction + robot state"
+                  "Images + instruction",
+                  "See the ball and the goal"
                 ],
                 [
-                  "GR00T N1.7",
-                  "Interpret context and predict an action chunk"
+                  "System 2",
+                  "Cosmos-Reason2-2B"
                 ],
                 [
-                  "Robot control",
-                  "Execute a short prefix; maintain stability"
+                  "System 1",
+                  "Flow-matching action head"
                 ],
                 [
-                  "Fresh observation",
-                  "Reconsider the next action"
+                  "Execute actions",
+                  "Controller + Microduck"
+                ],
+                [
+                  "Robot state",
+                  "Joints, attitude, motion"
+                ],
+                [
+                  "Observe again",
+                  "The scene changes as we act"
                 ]
               ],
-              "groups": []
+              "details": [
+                "The camera shows the targets; the instruction specifies the desired outcome. Camera views and preprocessing must match demonstrations. New wording cannot replace missing action coverage.",
+                "The vision-language backbone extracts task-relevant features, such as goal direction. System 2 names this perception/reasoning role; it does not imply a readable plan is returned.",
+                "Conditioned on visual-language features and robot state, the flow-matching head transforms initial noise into an action sequence. It generates actions rather than choosing a sentence from a fixed menu.",
+                "The executor handles units, limits and timing. A possible Microduck hierarchy uses VLA velocity/gaze requests above an existing balancing policy. It requires demonstrations labeled with those requests.",
+                "State describes the current body. Similar images can require different actions while leaning, turning or braking. The state branch jointly conditions the action head with visual-language features.",
+                "After a short execution, fresh images and state inform the next prediction. This feedback changes inputs; ordinary inference keeps model weights fixed."
+              ]
             },
-            "layout": "adaptive",
-            "loop": true
+            "layout": "groot",
+            "loop": false,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
           },
           {
             "type": "p",
-            "zh": "“预测动作”与“规划整项任务”相关，但并不相同。GR00T 的动作段不是一条已经避开所有障碍的全局路径；较长任务还需要目标管理、检查与恢复。下一章再讨论如何让智能体组织这些能力。",
-            "en": "Action prediction and whole-task planning are related but distinct. An action chunk is not a globally collision-free path. Longer tasks also need goal management, checks and recovery, which the next chapter addresses."
+            "zh": "这里的 Cosmos-Reason2 是 GR00T 1.7 使用的视觉语言骨干。第九章的 Cosmos 3 讨论世界模型与数据生成，两者名称相关，但在学习流程里承担的工作不同。",
+            "en": "Cosmos-Reason2 is the visual-language backbone used by GR00T 1.7. Chapter 9 discusses Cosmos 3 world models and data generation. These related names refer to different roles in the learning workflow."
           }
         ]
       },
       {
-        "id": "version",
+        "id": "training",
         "title": {
-          "zh": "使用当前公开的 GR00T N1.7",
-          "en": "Use the current public GR00T N1.7"
+          "zh": "预训练、微调与推理，各在做什么",
+          "en": "Pretraining, fine-tuning and inference"
         },
         "blocks": [
-          {
-            "type": "p",
-            "zh": "截至 2026 年 10 月 26 日，官方仓库当前公开版本为 <strong>GR00T N1.7</strong>，基础模型标识为 <code>nvidia/GR00T-N1.7-3B</code>。它使用 Cosmos-Reason2-2B / Qwen3-VL 视觉语言骨干与动作生成头；这不等于已把后文的 Cosmos 3 接进同一个模型。官方提供自定义机器人数据微调与策略服务接口。",
-            "en": "As checked on 26 October 2026, the current public release is <strong>GR00T N1.7</strong>, with base checkpoint <code>nvidia/GR00T-N1.7-3B</code>. It uses a Cosmos-Reason2-2B / Qwen3-VL backbone and an action head; that does not mean Cosmos 3 is already part of this model. Official workflows support custom-robot fine-tuning and policy serving."
-          },
-          {
-            "type": "p",
-            "zh": "Microduck 尚不是我们已经验证的预训练机器人。SO-101 的六维机械臂动作、GR00T 的通用张量容量和 Microduck 的十四个受控关节，不能按“维数差不多”直接互换。需要明确每个动作的物理含义、单位、频率、归一化和控制器接口。",
-            "en": "Microduck is not a pretrained embodiment validated here. SO-101 arm actions, the model’s tensor capacity and Microduck’s fourteen controlled joints are not interchangeable. Every action needs a defined physical meaning, unit, rate, normalization and controller interface."
-          }
-        ]
-      },
-      {
-        "id": "so101",
-        "title": {
-          "zh": "从 SO-101 课程迁移什么",
-          "en": "What transfers from the SO-101 course"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "机械臂 sim2real 课程的关键链路可以复用：遥操作采集同步图像、状态与动作，整理成 LeRobot 数据，微调 GR00T，在仿真和实物上分别评测。课程还改变光照、机器人颜色和垫子等外观，帮助策略适应观察差异。这里迁移的是数据与评测方法，不是直接把试管抓取权重当成足球策略。",
-            "en": "The SO-101 course supplies a reusable workflow: teleoperate, record synchronized images/state/actions, prepare LeRobot data, adapt GR00T, then evaluate simulation and hardware separately. Lighting, robot color and mat variations broaden visual coverage. The transferable part is this data and evaluation method; vial-manipulation weights are not a football policy."
-          },
           {
             "type": "table",
             "headers": {
               "zh": [
-                "SO-101 经验",
-                "Microduck 中的对应问题"
+                "阶段",
+                "输入与变化",
+                "射门任务中的理解"
               ],
               "en": [
-                "SO-101 lesson",
-                "Microduck counterpart"
+                "Stage",
+                "Inputs and changes",
+                "Football interpretation"
               ]
             },
             "rows": {
               "zh": [
                 [
-                  "相机与关节同步记录",
-                  "保留机身运动、头部视线与动作时间"
+                  "预训练",
+                  "大量多来源数据，学习通用表示与动作先验",
+                  "获得一个有基础能力的起点"
                 ],
                 [
-                  "示范抓取、放置与恢复",
-                  "示范接近、碰球/踢球、制动与恢复"
+                  "后训练 / 微调",
+                  "使用匹配机器人和任务的数据，更新选定参数",
+                  "学习 Microduck 的动作表达与射门行为"
                 ],
                 [
-                  "仿真与真机分开评测",
-                  "先验证新场景，再做实机镜头和动力学标定"
-                ],
-                [
-                  "外观随机化",
-                  "覆盖不同家庭光照、背景和地面"
+                  "推理",
+                  "输入当前观察，权重不变，输出动作",
+                  "反复观察、动作、再观察"
                 ]
               ],
               "en": [
                 [
-                  "Synchronize cameras and joints",
-                  "Retain body motion, gaze and action timing"
+                  "Pretraining",
+                  "Broad data develop general representations and action priors",
+                  "A capable starting point"
                 ],
                 [
-                  "Demonstrate grasp, place and recovery",
-                  "Demonstrate approach, contact, braking and recovery"
+                  "Post-training / fine-tuning",
+                  "Robot/task data update selected parameters",
+                  "Learn Microduck actions and football behavior"
                 ],
                 [
-                  "Evaluate sim and real separately",
-                  "Test new scenes before hardware calibration"
-                ],
-                [
-                  "Vary appearance",
-                  "Cover home lighting, backgrounds and floors"
+                  "Inference",
+                  "Current observations enter fixed weights; actions come out",
+                  "Repeated observation and execution"
                 ]
               ]
             }
+          },
+          {
+            "type": "p",
+            "zh": "微调是后训练的一种常见方式。某些参数可以冻结，以减少训练成本；冻结表示“不更新参数”，并不表示该部分停止计算。一次训练 step 是一次优化器更新，也不是机器人迈一步或仿真推进一帧。",
+            "en": "Fine-tuning is a common form of post-training. Freezing selected parameters reduces training cost, but frozen components still perform computation. A training step is an optimizer update, not a robot step or one simulation frame."
           }
         ]
       },
       {
         "id": "actions",
         "title": {
-          "zh": "先定义模型能控制什么",
-          "en": "Define what the model may control"
+          "zh": "预测一段动作，执行多长才合适",
+          "en": "Predict a chunk; choose how much to execute"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "较稳妥的第一条研究路线，是保留已有行走与轮滑策略，让学习模型输出有界的身体运动与视线请求，减少手写“观察—对齐—推进”的阶段切换。步行和轮滑的指令含义不同，应使用独立配置或显式模式条件；轮滑射门仍从开始到结束保持轮滑。踢球技能的触发可以由上层决定，不能把一个连续数值直接当成没有验证的离散技能切换。",
-            "en": "A practical first research route retains the locomotion policies and learns bounded body-motion and gaze requests, reducing hand-written observation/alignment/advance transitions. Walking and skating have different command semantics: use separate configurations or an explicit mode condition. A gliding shot remains in roller mode throughout. A higher-level controller can request a kicking skill; a continuous number is not automatically a validated discrete skill switch."
+            "zh": "动作块（action chunk）让模型一次预测未来 H 个动作，执行端可以只执行前 K 个，再用新观察重新预测，其中 K ≤ H。执行得太长，球已经移动了，机器人还可能沿用旧动作；执行得太短，则更依赖推理速度与通信稳定性。",
+            "en": "An action chunk predicts H future actions. The executor may apply only the first K before predicting again from a new observation, with K ≤ H. Long execution risks stale actions after the ball moves; very short execution puts more demand on inference and communication."
+          },
+          {
+            "type": "equation",
+            "tex": "T_{\\mathrm{execute}} = K / f_{\\mathrm{action}}",
+            "label_zh": "一段命令的名义执行时长",
+            "label_en": "Nominal command duration"
           },
           {
             "type": "p",
-            "zh": "另一条路线是学习关节动作，但它同时承担平衡与接触控制，数据与验证成本更高。N1.7 的官方新机器人示例允许配置非末端执行器动作，因此接口并非只能用于机械臂；然而能定义字段，并不证明十四关节足球策略已学会。当前优先验证分层接口，再决定训练目标。",
-            "en": "Learning joint actions is another route, with greater data and validation demands because balance and contact must also be learned. N1.7’s new-embodiment example supports non-end-effector actions. Definable fields, however, do not establish a learned fourteen-joint football policy. Validate the hierarchical interface before selecting the training target."
+            "zh": "例如，仅作时序说明：若动作以 50 Hz 执行，执行前 5 个动作对应 0.1 秒命令时间，还没有算推理和网络延迟。这不是 GR00T 微调的推荐超参数。实际 H、K 与动作频率必须结合数据采样、模型延迟和机器人闭环表现选择。",
+            "en": "For timing illustration only, five actions at 50 Hz represent 0.1 seconds of command time, excluding inference and network delay. This is not a recommended GR00T training setting. H, K and action rate must fit the data, model latency and closed-loop behavior."
+          },
+          {
+            "type": "p",
+            "zh": "还要决定“动作”是什么。直接预测关节目标，需要学习更多平衡与接触细节；预测速度、视线和技能请求，则能复用底层运动策略。两种方式都可以研究，但数据标签、处理器与执行端必须选同一种含义。现有行走策略的 14 维归一化输出，不能直接当成 14 个弧度角，也不能当成速度指令。",
+            "en": "Define what an action means. Joint targets require learning more balance and contact detail; velocity, gaze and skill requests can reuse low-level policies. Either is a research option, but labels, processors and execution must agree. The walking actor’s 14 normalized outputs are neither 14 angles in radians nor velocity commands."
           }
         ]
       },
       {
         "id": "data",
         "title": {
-          "zh": "什么样的示范才有用",
-          "en": "What makes demonstrations useful"
+          "zh": "先教好一个简单球场",
+          "en": "Teach one simple field first"
         },
         "blocks": [
           {
             "type": "flow",
-            "label": "示范质量、动作对齐和独立评测，比只有更多视频更关键。",
+            "interactive": true,
+            "label": "先有可靠示范，再谈数据规模",
             "nodes": [
               [
-                "采集",
-                "不同起点、指令、地面与恢复过程"
+                "固定任务",
+                "一种场地与一种运动方式"
               ],
               [
-                "对齐",
-                "当前图像/状态 → 随后的实际动作"
+                "记录示范",
+                "观察对应实际执行动作"
               ],
               [
-                "分组",
-                "按回合、房间与布局划分数据"
+                "训练策略",
+                "拟合任务中的动作规律"
               ],
               [
-                "微调与闭环验证",
-                "先短距离，再扩展任务范围"
+                "独立检验",
+                "新起点，完整任务成功"
               ]
             ],
-            "zh": "示范质量、动作对齐和独立评测，比只有更多视频更关键。",
-            "en": "Demonstration quality, action alignment and held-out evaluation matter beyond video quantity.",
+            "details": [
+              "先选一个足球垫和固定背景，球与球门保持同一物理配置。分别学习步行射门和轮滑碰球，先把一种方式做稳，再扩大任务范围。",
+              "每条示范需要任务语言、带时间戳的图像和状态，以及与所选动作层级一致的标签。高层 VLA 记录实际采纳的速度或技能请求，低层关节执行值另存；若训练低层动作，则记录限幅等修正后的执行值。等待、复位和失败片段要单独标记。",
+              "从基础模型出发，用训练集学习观察到动作的映射。相机帧与动作可能频率不同，要明确时间对应关系，不能按行号硬配。",
+              "测试的起点和轨迹不参与训练或调参。看完整进球与稳定结束，也看耗时和重复观察。训练误差低，不等于闭环执行可靠。"
+            ],
             "english_diagram": {
-              "label": "Demonstration quality, action alignment and held-out evaluation matter beyond video quantity.",
+              "label": "Reliable demonstrations before scale",
               "nodes": [
                 [
-                  "Collect",
-                  "Starts, instructions, floors and recovery"
+                  "Fix the task",
+                  "One field and movement mode"
                 ],
                 [
-                  "Align",
-                  "Current images/state → subsequent actions"
+                  "Record examples",
+                  "Observations + executed actions"
                 ],
                 [
-                  "Split",
-                  "Group by episode, room and layout"
+                  "Train the policy",
+                  "Learn the action patterns"
                 ],
                 [
-                  "Adapt and evaluate",
-                  "Start short, then expand task scope"
+                  "Evaluate independently",
+                  "Fresh starts, full success"
                 ]
               ],
-              "groups": []
+              "details": [
+                "Choose one mat and background with fixed ball/goal physics. Develop walking and gliding separately; stabilize one mode before broadening scope.",
+                "Record instruction, timestamped images/state and labels matching the chosen action level. A high-level VLA learns accepted velocity/skill requests, with joint execution logged separately. Low-level action training uses the values after clipping or correction. Mark waits, resets and failures separately.",
+                "Adapt the base model using training examples. Images and actions can have different rates; align timestamps rather than blindly matching row numbers.",
+                "Keep evaluation starts and trajectories out of training and tuning. Measure scoring and stable completion, time and repeated observations. Low training loss is not closed-loop reliability."
+              ]
             },
-            "layout": "adaptive"
+            "layout": "learning",
+            "loop": false,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
           },
           {
             "type": "p",
-            "zh": "现有日志可提供仿真中记录的图像、关节状态、惯性观测和实际执行动作，但单个成功回合远远不够。成功、失败和人工修正应保留明确标签；普通模仿学习不能把失败动作一概当作正确目标。必须区分策略原始输出、经过头部控制覆盖后的实际动作，以及电机真正执行的目标。",
-            "en": "Existing logs contain images, joint state, inertial observations and executed actions, but one successful episode is far from sufficient. Keep success, failure and corrective demonstrations explicitly labeled; ordinary imitation learning must not treat every failed action as a correct target. Distinguish raw policy outputs, actions after gaze overrides and actual motor targets."
-          },
-          {
-            "type": "p",
-            "zh": "头部相机会随机器人运动，图像与动作有不同采样率。应按照时间对齐并记录观测年龄，避免拿未来画面解释过去动作。来自同一回合的相邻帧不能分别放入训练集与测试集；想验证陌生家庭场景，最好把整个房间或布局留作测试。",
-            "en": "The head camera moves, and images/actions have different sampling rates. Align timestamps and observation ages without using future images for past actions. Do not split neighboring frames from one episode across train and test. Hold out complete rooms or layouts to assess unfamiliar homes."
+            "zh": "好的示范不只是“最终进球”。如果每段都从完全相同的位置开始，模型可能不会处理小偏差；如果每段都反复低头犹豫，模型也可能学到这些多余动作。因此先让传统方案在同一场景的合理起点范围内准确、顺畅地完成任务，再把它作为示范来源。",
+            "en": "Good demonstrations require more than eventually scoring. Identical starts leave small deviations uncovered, while repeated hesitation may teach unnecessary movements. First make the traditional method accurate and smooth over a reasonable range of starts on one field, then use it as a demonstration source."
           }
         ]
       },
       {
-        "id": "readiness",
+        "id": "correction",
         "title": {
-          "zh": "接入可行性与下一次实验",
-          "en": "Readiness and the next experiment"
+          "zh": "偏离示范后怎么办：HG-DAgger 与自动专家",
+          "en": "Recovering from drift: HG-DAgger and automated experts"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "官方新机器人配置、数据格式与策略接口已核查。已有轮滑记录中的 163 帧相机图像与关节状态能在同一时刻关联到 652 条动作中的对应条目；其中 97 条动作经过执行端修正，训练标签不能直接使用原始网络输出。本次检查的是 163 个单步对应关系；相机实际记录频率为 12.5 Hz，动作频率为 50 Hz。CPU 检查通过了官方输入形状检查及额外的时序、维度检查，尚未验证多步动作段，也没有加载 N1.7 权重、运行推理或微调。记录还需要补任务语言、动作转换配置与 LeRobot 数据导出，才能进入训练。",
-            "en": "The official custom-embodiment configuration, data format and policy interface have been reviewed. Existing roller logs provide 163 image/state frames aligned with entries in 652 action records; 97 actions differ from the raw network output after executor corrections. This checks 163 one-step pairs at 12.5 Hz camera capture and 50 Hz action recording. Official shape validators and added timing/dimension checks pass; future multi-step action chunks remain unchecked. N1.7 weights were not loaded and no inference or fine-tuning ran. Task language, action-conversion configuration and LeRobot export are still needed for training."
+            "zh": "模型第一次走偏后，看到的画面可能已经不在原示范里。例如轮滑稍微偏向球的一侧，继续模仿“正对球向前滑”的动作反而会越走越偏。这是只学习成功轨迹的常见短板：缺少“从错误状态回到任务”的经验。",
+            "en": "After the first deviation, the policy may encounter observations absent from demonstrations. If skating drifts to one side, imitating a straight approach may worsen the error. Successful trajectories alone often omit recovery from off-course states."
+          },
+          {
+            "type": "flow",
+            "interactive": true,
+            "label": "让策略尝试，在需要时补充正确动作",
+            "nodes": [
+              [
+                "策略执行",
+                "观察偏差与失败征兆"
+              ],
+              [
+                "专家接管",
+                "从当前状态纠正动作"
+              ],
+              [
+                "汇入纠正数据",
+                "标明接管片段与时间"
+              ],
+              [
+                "离线微调与复测",
+                "不用接管检验新策略"
+              ]
+            ],
+            "details": [
+              "让学习策略访问真实会遇到的状态，而不是永远只重放理想轨迹。接管条件可以包括接近偏离、速度过大或目标丢失，但不应等到每次都已无法挽回。",
+              "HG-DAgger 由人判断何时接管并给出纠正动作。若传统控制器能可靠恢复这些偏差，也可由它充当自动专家：这是 DAgger 风格的自动专家纠正，而不是人类接管。",
+              "保留观察、策略建议、专家指令、实际执行动作与控制权标记。专家纠正成功的片段可作为标签；错误的自主动作、暂停与复位不能混成正确示范。动作块采样不能跨越不连续的片段边界。",
+              "收集期间模型通常保持固定，随后离线微调。最终关闭接管，单独测自主成功率；有人或专家帮忙完成的比例，不能当作模型独立能力。"
+            ],
+            "english_diagram": {
+              "label": "Let the learner try, then supply corrective actions",
+              "nodes": [
+                [
+                  "Learner executes",
+                  "Notice drift or failure"
+                ],
+                [
+                  "Expert takes over",
+                  "Correct from the current state"
+                ],
+                [
+                  "Aggregate corrections",
+                  "Mark ownership and timing"
+                ],
+                [
+                  "Fine-tune and retest",
+                  "Evaluate without assistance"
+                ]
+              ],
+              "details": [
+                "Let the learner visit states it actually encounters rather than only replay ideal trajectories. Triggers may include drift, excess speed or a lost target, before recovery becomes impossible.",
+                "HG-DAgger uses human decisions and corrective actions. A reliable traditional recovery controller can instead provide automated expert corrections: a DAgger-style variant, not human-gated intervention.",
+                "Record observations, learner proposals, expert commands, executed actions and ownership. Successful expert segments provide labels; wrong autonomous actions, pauses and resets are not correct demonstrations. Chunks must not cross discontinuous segment boundaries.",
+                "Usually collect with fixed model weights, then fine-tune offline. Evaluate the new policy with intervention disabled. Assisted completion is not independent policy success."
+              ]
+            },
+            "layout": "learning",
+            "loop": true,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
           },
           {
             "type": "p",
-            "zh": "这次检查采用 14 维低层动作记录来验证数据字段；前面建议的高层速度与技能接口仍需单独采集标签、实现执行桥。两条路线不能互相冒充。基础视觉骨干有模型访问要求，后续训练应使用与现有 Newton 仿真分开的环境。详见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/validation/frontier-readiness.json\">接口检查范围与尚缺条件</a>。",
-            "en": "This probe uses 14-dimensional low-level action records. The proposed high-level velocity/skill route still needs its own labels and executor; validating one does not validate the other. The visual backbone has model-access requirements. Keep future training dependencies separate from the existing Newton environment. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/validation/frontier-readiness.json\">readiness scope and remaining requirements</a>."
+            "zh": "对 Microduck，自动接管值得优先研究，因为可以复用已经验证的控制技能。但“标准起点很准”还不够：专家还要能处理球移动、朝向偏差、已有速度和短暂丢失目标。若专家不能从这些状态恢复，就先补它的恢复能力，或者停止并复位；不能把失败纠正继续喂给模型。",
+            "en": "Automated takeover is worth studying for Microduck because it can reuse validated controls. High accuracy from standard starts is insufficient: the expert must handle moved balls, heading errors, existing motion and briefly lost targets. Improve recovery or stop/reset where it cannot recover; do not train on failed corrections."
           },
           {
             "type": "p",
-            "zh": "下一次实验先固定一种运动方式和一个短距离任务，采集覆盖成功与恢复的示范，再按新起点和新房间评测。对照组使用同一机器人、道具、传感器与成功标准，分别记录进球、跌倒、停稳和观察次数。只有这样，才能判断学习策略是否真正减少反复调整。",
-            "en": "For the next experiment, fix one locomotion mode and one short task, collect successful and corrective demonstrations, and evaluate unseen starts and rooms. Keep robot, props, sensors and success criteria identical across baselines; measure scoring, falls, stopping and observation cycles. This establishes whether learning actually reduces repeated corrections."
+            "zh": "双足机器人不能像固定机械臂那样简单暂停关节命令。切换控制权时，应清除旧动作队列，继续保持底层平衡或受控制动，并明确谁控制头部与身体。仿真中若用精确位置辅助专家，必须把它标为专家特权信息，不能悄悄混进未来真机策略的输入。",
+            "en": "A biped cannot simply pause joint commands like a fixed-base arm. Clear stale action queues during takeover, maintain balance or controlled braking, and assign head/body ownership explicitly. If a simulation expert uses exact positions, label that privileged information and exclude it from the future real-robot policy inputs."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "为什么“专家帮助后 20 次都成功”还不能证明模型已经学会？",
+              "en": "Why do 20 assisted successes not prove the policy has learned?"
+            },
+            "answer": {
+              "zh": "因为接管动作可能完成了最关键的纠错。应在关闭接管后重新测试自主成功率，同时另报接管次数与专家恢复率。",
+              "en": "The expert may have supplied the decisive recovery. Retest without intervention and report intervention frequency and expert recovery separately."
+            }
+          }
+        ]
+      },
+      {
+        "id": "deployment",
+        "title": {
+          "zh": "把小鸭子与有算力的电脑连起来",
+          "en": "Connect Microduck to a capable computer"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "Microduck 的机载计算硬件不适合承载 GR00T 这类大 VLA 的推理。拿到真机后，可以让它与带合适 GPU 的电脑组成网络：小鸭子采集图像与状态，电脑运行模型，再把动作请求传回机器人。具体电脑需求应按模型、精度和实测延迟选择。",
+            "en": "Microduck’s onboard computer is not suitable for running a large VLA such as GR00T. A real robot can communicate with a computer equipped with a suitable GPU: the robot streams images and state, the computer runs inference and returns action requests. Choose hardware based on the model, precision and measured latency."
+          },
+          {
+            "type": "flow",
+            "interactive": true,
+            "label": "远端做模型推理，本地持续控制与反馈",
+            "nodes": [
+              [
+                "Microduck 传感器",
+                "图像 + 状态 + 时间戳"
+              ],
+              [
+                "GPU 电脑",
+                "GR00T 推理与动作请求"
+              ],
+              [
+                "Microduck 执行端",
+                "校验时效，保持平衡"
+              ]
+            ],
+            "details": [
+              "发送相机与机器人状态时保留采样时间和序号。不要把不同时间的姿态与图像拼成一次观察。",
+              "电脑根据最新有效观察生成动作段。网络传输、图像处理和模型计算都计入端到端延迟；服务器返回快，不等于机器人看到的是新画面。",
+              "机器人只接受符合约定、仍然有效的请求。底层控制持续运行；遇到超时或断网，应进入受控停止或稳定保持，避免继续执行过期的向前动作。"
+            ],
+            "english_diagram": {
+              "label": "Remote inference with continuous local control and feedback",
+              "nodes": [
+                [
+                  "Robot sensors",
+                  "Images, state and timestamps"
+                ],
+                [
+                  "GPU computer",
+                  "Inference and action requests"
+                ],
+                [
+                  "Robot executor",
+                  "Check freshness; balance"
+                ]
+              ],
+              "details": [
+                "Preserve sample timestamps and sequence numbers. Do not combine unrelated image and state times as one observation.",
+                "Generate actions from the latest valid observation. Network, preprocessing and computation all contribute to end-to-end delay; a fast response can still be based on an old image.",
+                "Accept only valid, timely requests. Keep low-level control running; on timeouts or disconnection, use controlled stopping or stable holding instead of stale forward commands."
+              ]
+            },
+            "layout": "learning",
+            "loop": true,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
+          },
+          {
+            "type": "p",
+            "zh": "这也解释了为什么“大脑更聪明”不能替代控制工程：模型负责判断与动作预测，本地仍要及时维持平衡、管理动作时效并处理通信中断。下一章再把可靠动作能力交给智能体，组成更长的任务。",
+            "en": "A smarter model does not remove control engineering. It predicts actions, while local execution maintains balance, manages freshness and handles interrupted communication. The next chapter lets an agent organize reliable action skills into longer tasks."
           }
         ]
       }
     ],
     "references": [
       {
+        "url": "https://huggingface.co/nvidia/GR00T-N1.7-3B",
+        "zh": "GR00T N1.7 模型与架构",
+        "en": "GR00T N1.7 model and architecture"
+      },
+      {
         "url": "https://github.com/NVIDIA/Isaac-GR00T",
-        "zh": "GR00T N1.7 官方仓库",
-        "en": "Official GR00T N1.7 repository"
+        "zh": "Isaac GR00T：后训练与推理",
+        "en": "Isaac GR00T: post-training and inference"
       },
       {
-        "url": "https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/finetune_new_embodiment.md",
-        "zh": "新机器人微调配置",
-        "en": "Fine-tuning a new embodiment"
+        "url": "https://arxiv.org/abs/1810.02890",
+        "zh": "HG-DAgger：人类接管与纠正数据",
+        "en": "HG-DAgger: human intervention and corrections"
       },
       {
-        "url": "https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/data_preparation.md",
-        "zh": "示范数据格式与对齐",
-        "en": "Demonstration data preparation"
-      },
-      {
-        "url": "https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop",
-        "zh": "SO-101 sim2real 工作流",
-        "en": "SO-101 sim-to-real workflow"
-      },
-      {
-        "url": "https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/hardware_recommendation.md",
-        "zh": "推理与微调硬件要求",
-        "en": "Inference and fine-tuning requirements"
+        "url": "https://arxiv.org/abs/1011.0686",
+        "zh": "DAgger：从策略访问的状态收集专家标签",
+        "en": "DAgger: expert labels on learner-visited states"
       }
     ]
   },
@@ -3288,8 +3424,8 @@
       "en": "Organize tasks and accumulate skills with ASPIRE"
     },
     "summary": {
-      "zh": "让大模型提出方案、调用技能、检查反馈并修正程序；理解它与 GR00T、Agnes Harness 的关系。",
-      "en": "Let a model propose plans, call skills, inspect feedback and revise programs; distinguish ASPIRE, GR00T and Agnes Harness."
+      "zh": "当机器人已经有可靠技能，怎样用执行反馈改进任务程序，并把经验保留下来？",
+      "en": "Once reliable skills exist, how can execution feedback improve task programs and retain reusable experience?"
     },
     "meta": {
       "zh": "第 8 章 · 预计学习时长 25 分钟",
@@ -3299,317 +3435,244 @@
       {
         "id": "brain",
         "title": {
-          "zh": "聪明的大脑需要可执行的身体接口",
-          "en": "A reasoning model needs executable robot interfaces"
+          "zh": "聪明的大脑还需要可靠的动作",
+          "en": "A capable agent needs reliable actions"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "“先绕过椅子，再把球送进球门”同时包含目标理解、子任务安排和运动执行。大模型可以提出并调整任务计划；机器人控制器仍需要连续保持平衡和处理接触。这里的“完整路径”包括高层行动顺序，也可能需要几何避障路线，二者不能只用一段自然语言代替。",
-            "en": "“Go around the chair and send the ball into the goal” combines goal interpretation, subtask organization and motion. A model can propose and revise a plan, while controllers maintain balance and handle contact. A complete plan may require both a high-level sequence and a geometric route; prose alone does not supply either validated execution or collision avoidance."
+            "zh": "上一章的 VLA 解决“根据当前观察怎样动作”。更长的任务还会遇到另一类问题：先找球还是先看门？球偏了怎样重试？完成一次射门后怎样换一个目标？这些判断可以由机器人智能体组织，把语言目标连接到可执行技能。",
+            "en": "The VLA addresses actions from current observations. Longer tasks add decisions: find the ball or inspect the goal first, recover after a miss, or move to another target after scoring. A robot agent can organize such decisions by connecting language goals to executable skills."
           },
           {
             "type": "flow",
-            "label": "把推理、技能执行和反馈连接起来，而不是让语言模型逐周期控制电机。",
+            "interactive": true,
+            "label": "智能体组织任务，控制器持续执行",
             "nodes": [
               [
+                "任务指令",
+                "把足球送进球门"
+              ],
+              [
                 "任务智能体",
-                "理解目标，选择下一步"
+                "选择技能与检查条件"
               ],
               [
-                "技能接口",
-                "观察、移动、触球、停止"
+                "运动能力",
+                "传统控制或学习策略"
               ],
               [
-                "动作策略",
-                "GR00T 或已有运动策略"
-              ],
-              [
-                "结果反馈",
-                "图像、进度、失败与实际完成判据"
+                "执行反馈",
+                "观察、结果与失败原因"
               ]
             ],
-            "zh": "把推理、技能执行和反馈连接起来，而不是让语言模型逐周期控制电机。",
-            "en": "Connect reasoning, skill execution and feedback while retaining continuous motor control.",
+            "details": [
+              "指令描述结果，允许智能体选择实现方法。任务完成仍要有可观察的标准，例如整球越线且机器人稳定结束。",
+              "智能体调用已定义的观察与动作工具，安排顺序并处理失败。工具能做什么，决定了智能体实际能执行什么。",
+              "底层运动控制负责及时响应。可以先调用传统控制，之后再接入经过检验的 GR00T 技能；替换时仍要保持输入输出含义一致。",
+              "返回结构化结果与必要的图像，让智能体区分“没看见球”“动作未到位”和“进球但没停稳”。只有一句成功或失败，通常不足以改进程序。"
+            ],
             "english_diagram": {
-              "label": "Connect reasoning, skill execution and feedback while retaining continuous motor control.",
+              "label": "The agent organizes the task; controllers keep executing",
               "nodes": [
                 [
+                  "Task instruction",
+                  "Send the ball into the goal"
+                ],
+                [
                   "Task agent",
-                  "Interpret the goal; choose the next step"
+                  "Choose skills and checks"
                 ],
                 [
-                  "Skill interface",
-                  "Observe, move, contact and stop"
+                  "Motion capabilities",
+                  "Engineered or learned control"
                 ],
                 [
-                  "Action policy",
-                  "GR00T or existing motor policies"
-                ],
-                [
-                  "Feedback",
-                  "Images, progress, failures and outcome predicates"
+                  "Execution feedback",
+                  "Observations and outcomes"
                 ]
               ],
-              "groups": []
+              "details": [
+                "The instruction states the outcome while leaving methods open. Completion needs observable criteria, such as whole-ball crossing and stable termination.",
+                "The agent sequences defined observation/action tools and handles failures. Its executable abilities are bounded by those tools.",
+                "Low-level motion responds promptly. Begin with traditional controls and later introduce validated GR00T skills with compatible interfaces.",
+                "Return structured outcomes and relevant images to distinguish missed detection, inaccurate motion and failed stopping. A single success flag rarely explains a useful repair."
+              ]
             },
-            "layout": "adaptive",
-            "loop": true
+            "layout": "learning",
+            "loop": true,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations.",
+            "loop_to": 1
           }
         ]
       },
       {
         "id": "loop",
         "title": {
-          "zh": "ASPIRE：把尝试变成可复用经验",
-          "en": "ASPIRE: turn attempts into reusable experience"
+          "zh": "ASPIRE：尝试、诊断、改进并复用",
+          "en": "ASPIRE: try, diagnose, improve and reuse"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "ASPIRE 的核心是代码形式的策略：智能体生成控制程序，执行后读取多模态记录，定位失败、修改程序，再把验证过的经验整理进技能库。这里的学习主要是程序与技能知识的迭代，不必每次都更新神经网络权重。当前官方公开的是 2026 年 10 月的 v1.0 工作流，包含迭代调试与演化搜索。",
-            "en": "ASPIRE uses code-as-policy: an agent generates control programs, inspects multimodal execution traces, diagnoses failures, revises code and retains validated experience in a skill library. This learning primarily updates programs and skill knowledge, rather than necessarily updating neural weights. The public October 2026 v1.0 workflow includes iterative debugging and evolutionary search."
+            "zh": "ASPIRE 是 NVIDIA 开源的机器人技能发现框架。它让智能体编写和改进控制程序，查看执行记录，定位失败，再通过重试检验修改。通过验证的经验被整理成可复用技能，帮助后续任务。这里的主要学习对象是程序和技能经验；这与 GR00T 通过训练更新神经网络参数不同。",
+            "en": "ASPIRE is NVIDIA’s open robot-skill discovery framework. An agent writes and revises control programs, inspects execution traces, diagnoses failure and tests repairs. Validated experience becomes reusable skills for later tasks. This improves programs and skill knowledge, unlike GR00T training that updates neural parameters."
           },
           {
             "type": "flow",
-            "label": "通过真实执行反馈修正方案，验证后才复用。",
+            "interactive": true,
+            "label": "执行结果决定哪些经验值得保留",
             "nodes": [
               [
-                "提出方案",
-                "检索已有技能，生成程序"
+                "提出程序",
+                "调用已有感知与动作工具"
               ],
               [
-                "执行与观察",
-                "记录相机、动作、状态和结果"
+                "在仿真中尝试",
+                "记录观察和实际动作"
               ],
               [
-                "诊断与修正",
-                "找到失败环节，修改下一次尝试"
+                "诊断并修改",
+                "用失败原因指导改进"
               ],
               [
-                "保留经验",
-                "经开发验证后加入技能库"
+                "验证与复用",
+                "保留可重复成功的技能"
               ]
             ],
-            "zh": "通过真实执行反馈修正方案，验证后才复用。",
-            "en": "Revise from execution feedback and reuse skills after validation.",
+            "details": [
+              "例如先观察，再调用短距离接近，最后检查球的位置。程序必须使用执行端真实提供的工具，而不是臆造一个“必定射门成功”的接口。",
+              "保留每次工具调用前后的观察，才能把“要求转向”和“身体实际转了多少”联系起来。仿真允许在明确的范围内反复试验。",
+              "如果球已经进门但机器人继续向前，应该检查制动与完成条件；反复调用视觉检测未必解决问题。修改应有具体假设。",
+              "在没有用于修补程序的新起点上检验，再保存适用条件、调用方法与恢复经验。记住一次成功的参数，不等于获得通用技能。"
+            ],
             "english_diagram": {
-              "label": "Revise from execution feedback and reuse skills after validation.",
+              "label": "Execution results determine which experience to retain",
               "nodes": [
                 [
-                  "Propose",
-                  "Retrieve skills and generate a program"
+                  "Propose a program",
+                  "Use perception/action tools"
                 ],
                 [
-                  "Execute and observe",
-                  "Record images, actions, states and outcomes"
+                  "Try in simulation",
+                  "Record observations/actions"
                 ],
                 [
                   "Diagnose and revise",
-                  "Locate failure and change the next attempt"
+                  "Repair based on evidence"
                 ],
                 [
-                  "Retain",
-                  "Add skills after development validation"
+                  "Validate and reuse",
+                  "Keep repeatable skills"
                 ]
               ],
-              "groups": []
+              "details": [
+                "For example: observe, request a short approach, then check ball position. Programs must use real execution tools, not an imaginary always-successful shot command.",
+                "Record observations around tool calls to connect requested turning to actual movement. Simulation enables repeated, bounded experimentation.",
+                "If the ball scores but the robot keeps moving, investigate braking and termination; more detection calls may not help. Each repair needs a specific hypothesis.",
+                "Evaluate on starts not used for repairs, then retain applicability, usage and recovery guidance. Remembering one successful parameter set is not a general skill."
+              ]
             },
-            "layout": "adaptive",
-            "loop": true
+            "layout": "learning",
+            "loop": true,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
           },
           {
             "type": "p",
-            "zh": "例如，机器人在白色地面上找不到门柱底端，智能体可以检查原图与失败原因，尝试另一观察角度或改进感知接口。它不能只因为程序没有报错就宣告进球，也不能更改门线判定来让实验通过。积累的是经过检验的方法，而不是对失败的文字解释。",
-            "en": "For example, missing goal-post bases on a pale floor can prompt inspection of images and failure records, followed by another viewpoint or a revised perception interface. A program exiting normally is not a goal, and redefining scoring to pass a trial is not an improvement. The reusable output is a tested method."
+            "zh": "对 Microduck，先在同一个简单球场验证观察、短距离移动、受控停车和结果判断，再组成完整射门。智能体推理或等待网络时，底层平衡控制仍要运行。更换场地与更长任务，应建立在这些基础能力可靠之后。",
+            "en": "For Microduck, first validate observation, short movements, controlled stopping and outcome checks on the same simple field, then compose a complete shot. Balancing continues while the agent reasons or waits for network responses. New environments and longer tasks build on those reliable capabilities."
           }
         ]
       },
       {
-        "id": "microduck",
+        "id": "groot",
         "title": {
-          "zh": "怎样接到 Microduck",
-          "en": "Adapting the framework to Microduck"
+          "zh": "GR00T 与 ASPIRE 怎样配合",
+          "en": "Combining GR00T with ASPIRE"
         },
         "blocks": [
           {
             "type": "table",
             "headers": {
               "zh": [
-                "需要的接口",
-                "可以复用的基础",
-                "仍需补齐"
+                "层次",
+                "负责的问题",
+                "射门中的例子"
               ],
               "en": [
-                "Interface",
-                "Reusable foundation",
-                "Remaining integration"
+                "Layer",
+                "Question",
+                "Football example"
               ]
             },
             "rows": {
               "zh": [
                 [
-                  "观测",
-                  "RGB、ToF、IMU 与关节记录",
-                  "统一时间、坐标含义与观测有效期"
+                  "ASPIRE / 任务智能体",
+                  "调用什么能力，如何检查和改进",
+                  "观察球偏向一侧，选择重定位后再试"
                 ],
                 [
-                  "动作",
-                  "步行、轮滑、踢球及停止能力",
-                  "有界调用、超时、取消与模式语义"
+                  "GR00T / 动作策略",
+                  "给定观察，下一段怎样动作",
+                  "根据图像与状态生成接近或碰球动作"
                 ],
                 [
-                  "结果",
-                  "真实接触、越线、跌倒和恢复评分",
-                  "向智能体提供可诊断反馈，保留独立评分"
-                ],
-                [
-                  "技能库",
-                  "已有控制与失败分析经验",
-                  "新的程序经过陌生起点/场景验证再复用"
+                  "本地控制",
+                  "怎样及时而稳定地执行",
+                  "维持平衡、限幅、制动与动作超时处理"
                 ]
               ],
               "en": [
                 [
-                  "Observation",
-                  "RGB, ToF, IMU and joint records",
-                  "Consistent timing, frames and observation age"
+                  "ASPIRE / task agent",
+                  "What to invoke, check and improve",
+                  "Choose to reposition after observing an offset ball"
                 ],
                 [
-                  "Action",
-                  "Walking, skating, kicking and stopping",
-                  "Bounded calls, timeouts, cancellation and mode semantics"
+                  "GR00T / action policy",
+                  "Which actions fit this observation",
+                  "Generate approach or contact actions"
                 ],
                 [
-                  "Outcome",
-                  "Contact, crossing, fall and recovery checks",
-                  "Diagnostic feedback plus independent scoring"
-                ],
-                [
-                  "Skill library",
-                  "Existing control and failure knowledge",
-                  "Validate new programs on unseen starts/scenes"
+                  "Local control",
+                  "How to execute promptly and stably",
+                  "Balance, limits, braking and timeouts"
                 ]
               ]
             }
           },
           {
             "type": "p",
-            "zh": "官方示例主要面向 LIBERO-Pro、Robosuite、BEHAVIOR-1K 与所列真实机械臂系统；当前没有本课程可直接使用的 Microduck 适配器。不能将机械臂末端位置控制替换成小鸭子的关节名字就宣布接通。我们可以复用 ASPIRE 的探索和技能库方法，同时为 Newton 环境实现机身运动与足球任务接口。",
-            "en": "Official examples target LIBERO-Pro, Robosuite, BEHAVIOR-1K and documented real-arm systems. There is no ready Microduck adapter for this course. Renaming arm joints does not turn end-effector control into biped control. Reuse ASPIRE’s exploration and skill-library approach while implementing body-motion and football interfaces for Newton."
-          }
-        ]
-      },
-      {
-        "id": "groot-link",
-        "title": {
-          "zh": "ASPIRE 与 GR00T 可以怎样协作",
-          "en": "How ASPIRE and GR00T can cooperate"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "可以先让 ASPIRE 调用已有运动策略，研究“如何组织任务”；等 Microduck 的 GR00T 适配经过验证，再把部分动作技能换成学习策略。GR00T 负责从当前观察生成动作，ASPIRE 负责目标分解、调用、检查与修正。这是一种分层接入方案，不是官方已经交付的 Microduck 组合。",
-            "en": "Start by letting ASPIRE call existing motor skills to study task organization. Once a Microduck GR00T adaptation is validated, learned skills can replace selected action components. GR00T maps current observations to actions; ASPIRE organizes goals, calls, checks and revisions. This is a proposed integration, not an officially delivered Microduck stack."
-          },
-          {
-            "type": "p",
-            "zh": "对“不同任务都重写一遍”的改善，来自稳定的技能接口和经验复用。机器人仍需拥有完成任务所需的身体能力；例如没有抓取机构，单靠换提示词就不能保证完成捡拾。新任务也可能需要新的示范、技能或工具。",
-            "en": "Stable skill interfaces and retained experience reduce repeated task programming. The robot still needs the physical capability for a task: a new prompt alone cannot guarantee pickup without suitable grasping hardware. New demonstrations, skills or tools may still be necessary."
+            "zh": "这个分层设计允许逐步替换能力，而不必一次让大模型接管所有关节。大模型也不会自动消除坐标、时间和单位问题；这些细节应封装在清晰的工具接口里，让智能体可以组合使用。",
+            "en": "This hierarchy allows gradual replacement of capabilities without giving a large model every joint at once. Coordinates, timing and units still matter; clear tool interfaces encapsulate those details so the agent can compose them."
           }
         ]
       },
       {
         "id": "agnes",
         "title": {
-          "zh": "扩展：Agnes Harness 值得怎样看",
-          "en": "Extension: where Agnes Harness fits"
+          "zh": "扩展阅读：Agnes Harness",
+          "en": "Further reading: Agnes Harness"
         },
         "blocks": [
           {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "比较项",
-                "ASPIRE",
-                "Agnes Harness"
-              ],
-              "en": [
-                "Aspect",
-                "ASPIRE",
-                "Agnes Harness"
-              ]
+            "type": "p",
+            "zh": "Agnes Harness 也围绕模型、工具与执行反馈组织机器人任务，其设备接入与插件设计值得作为扩展阅读。阅读这类框架时，可以比较三个问题：工具如何连接机器人，执行结果如何返回，失败经验怎样复用。比较时，重点观察两种框架怎样把执行反馈转化为可复用的能力。",
+            "en": "Agnes Harness also organizes robot tasks around models, tools and feedback. Its device integration and plugin design are useful further reading. Compare how tools connect to robots, how results return and how failures inform reuse. ASPIRE supplies this chapter’s main skill-discovery methodology."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "让智能体不停尝试，是否就等于机器人能力会持续提高？",
+              "en": "Does unlimited retrying guarantee improving capability?"
             },
-            "rows": {
-              "zh": [
-                [
-                  "重点",
-                  "通过机器人执行反馈改进程序与技能",
-                  "连接模型、工具、任务状态与设备"
-                ],
-                [
-                  "经验复用",
-                  "经过验证的机器人技能库",
-                  "Skills、会话与执行记录"
-                ],
-                [
-                  "当前定位",
-                  "机器人任务探索与研究工作流",
-                  "开发预览阶段的通用智能体框架"
-                ],
-                [
-                  "本课程选择",
-                  "作为任务智能体主线",
-                  "作为设备接入和框架设计的扩展阅读"
-                ]
-              ],
-              "en": [
-                [
-                  "Focus",
-                  "Refine robot programs and skills through execution",
-                  "Connect models, tools, task state and devices"
-                ],
-                [
-                  "Reuse",
-                  "Validated robotic skill libraries",
-                  "Skills, sessions and execution records"
-                ],
-                [
-                  "Current scope",
-                  "Robotic exploration/research workflows",
-                  "Developer-preview general agent harness"
-                ],
-                [
-                  "Course role",
-                  "Main task-agent methodology",
-                  "Optional device-integration comparison"
-                ]
-              ]
+            "answer": {
+              "zh": "不等于。需要可靠的动作工具、可诊断的反馈、有限的尝试预算，以及未参与修补的新测试。只有能重复验证的改进，才适合保留为技能。",
+              "en": "No. It needs reliable tools, diagnostic feedback, bounded attempts and tests excluded from repairs. Keep improvements that reproduce under evaluation."
             }
-          },
-          {
-            "type": "p",
-            "zh": "两者存在共同概念，但并非同一个产品的替代名字。Agnes 的 MHS 设备接入与插件机制值得研究；当前公开主分支没有找到可直接复用的 Microduck 适配器。本课程暂不为它单独增加完整章节，避免重复讲智能体循环。",
-            "en": "They share concepts but are not equivalent products. Agnes’s MHS device integration and plugins merit study, but the inspected public main branch contains no ready Microduck adapter. We keep it as an extension rather than repeat the agent loop in another full chapter."
-          },
-          {
-            "type": "p",
-            "zh": "可以参考这段 <a href=\"https://www.bilibili.com/video/BV19anw6DESQ/\" target=\"_blank\" rel=\"noopener\">Microduck 社区演示</a>，并关注它开放了哪些动作工具、如何判断完成、失败时如何恢复。该视频页面目前无法在资料核查环境读取，未独立核实其实现和自主程度，也未把它计作本课程实验结果。",
-            "en": "The linked <a href=\"https://www.bilibili.com/video/BV19anw6DESQ/\" target=\"_blank\" rel=\"noopener\">Microduck community demo</a> is a useful reference for questions about action tools, completion checks and recovery. Its page was unavailable in this review environment; its implementation and autonomy level have not been independently verified or counted as course results."
-          }
-        ]
-      },
-      {
-        "id": "readiness",
-        "title": {
-          "zh": "可行，但需要桥接与独立验证",
-          "en": "Feasible with an adapter and independent evaluation"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "接入评估的结论是：ASPIRE 的方法和开放接口有接入价值；Microduck 执行桥、任务技能库与自动探索回合尚未完成。下一次先实现最小的“观察—有界移动—停止—检查”闭环，再接入射门。保留开发种子与独立测试种子，限制每轮尝试预算，记录成功率、恢复次数与模型调用开销。",
-            "en": "The method and open interfaces are promising. A Microduck execution bridge, skill library and autonomous exploration trials remain to be implemented. Begin with observe, bounded movement, stop and check, then extend to football. Separate development and held-out seeds, bound trial budgets and record success, recovery and model-call costs."
           }
         ]
       }
@@ -3645,12 +3708,12 @@
       "en": "Course chapters"
     },
     "title": {
-      "zh": "用 Cosmos 与 Isaac 覆盖不同家庭环境",
-      "en": "Cover different homes with Cosmos and Isaac"
+      "zh": "从一个球场走向更多环境",
+      "en": "From one field to more environments"
     },
     "summary": {
-      "zh": "把光照、地面和布局变化转成数据与评测设计，区分世界模型、物理仿真和多任务编排的职责。",
-      "en": "Turn lighting, floor and layout changes into data and evaluation designs; distinguish world models, physics and task orchestration."
+      "zh": "先判断失败来自哪里，再选择纠正示范、物理校准或 Cosmos 3 数据扩展；逐步检验新环境中的泛化。",
+      "en": "Diagnose failures before choosing corrections, physics calibration or Cosmos 3 data expansion; evaluate generalization step by step."
     },
     "meta": {
       "zh": "第 9 章 · 预计学习时长 25 分钟",
@@ -3658,229 +3721,224 @@
     },
     "sections": [
       {
-        "id": "homes",
+        "id": "first",
         "title": {
-          "zh": "换一个家，机器人会遇到什么变化",
-          "en": "What changes in another home"
+          "zh": "先把一个场景做可靠",
+          "en": "Make one scene reliable first"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "这类变化值得训练时考虑。相同的球在暖光、逆光和阴影下可能很不一样；白墙、地砖纹理和桌椅会改变目标背景；狭窄通道改变接近路线，地毯或光滑地面则改变运动与制动。视觉泛化、空间规划和动力学适应需要分别处理，不能只给球场换一张贴图。",
-            "en": "These variations matter. Warm light, backlighting and shadows change the ball’s appearance; walls, tiles and furniture change its background. Narrow passages change routes, while carpet and smooth floors change motion and braking. Visual generalization, spatial planning and dynamics adaptation need separate treatment."
+            "zh": "先固定一种足球场地垫、背景与道具，让传统方案成为可靠基线，再检验 GR00T 的独立执行和 ASPIRE 的技能组织。这个顺序让问题容易解释：如果连原场景都不能稳定完成，增加十种房间通常只会让失败更难定位。",
+            "en": "Fix one mat, background and set of props. Establish a reliable traditional baseline, then evaluate independent GR00T execution and ASPIRE skill organization. This order makes failures interpretable: if the original scene is unreliable, adding ten rooms usually makes diagnosis harder."
           },
+          {
+            "type": "p",
+            "zh": "当同场景的新起点、轻微球位偏差和完整停车都已能稳定处理，再问“换一个家还能不能用”。不同家庭的光线、背景、布局和地面确实会变化，但不必一次把所有因素加入训练。",
+            "en": "After reliable handling of fresh starts, modest ball offsets and complete stopping on one field, ask whether the system transfers to another home. Lighting, background, layout and surfaces do vary, but training need not change every factor at once."
+          }
+        ]
+      },
+      {
+        "id": "diagnose",
+        "title": {
+          "zh": "先分清外观问题与动作问题",
+          "en": "Distinguish appearance from action failures"
+        },
+        "blocks": [
           {
             "type": "table",
             "headers": {
               "zh": [
-                "变化",
-                "主要影响",
-                "合适的验证方式"
+                "看到的失败",
+                "更可能需要的帮助",
+                "不应直接推断"
               ],
               "en": [
-                "Variation",
-                "Primary effect",
-                "Useful evaluation"
+                "Observed failure",
+                "Useful direction",
+                "Avoid assuming"
               ]
             },
             "rows": {
               "zh": [
                 [
-                  "光照、颜色、背景",
-                  "图像识别与视觉动作策略",
-                  "保持几何与动作一致，测试新外观"
+                  "换光照后找不到球",
+                  "视觉数据覆盖与外观随机化",
+                  "把球门材质随机化就能解决一切"
                 ],
                 [
-                  "家具布局、遮挡、起点",
-                  "观察策略与接近路线",
-                  "新布局中的闭环任务与碰撞检查"
+                  "看见球，却从侧面越走越偏",
+                  "偏差状态的纠正示范",
+                  "多生成背景图就能学会恢复"
                 ],
                 [
-                  "摩擦、轮胎、球质量、时延",
-                  "真实接触、推进与制动",
-                  "物理参数范围与实机测量"
+                  "球进门，但机器人停不住",
+                  "制动控制、动力学与时延校准",
+                  "图像更真实就能自动停稳"
                 ],
                 [
-                  "任务指令与目标",
-                  "任务理解与技能选择",
-                  "多种表达和独立任务组合"
+                  "家具挡路，原路线不可用",
+                  "布局变化与可执行的避障技能",
+                  "只换地面贴图就能学会导航"
                 ]
               ],
               "en": [
                 [
-                  "Lighting, color, background",
-                  "Perception and visual policies",
-                  "Test new appearance with consistent geometry/actions"
+                  "Ball is missed under new light",
+                  "Visual coverage and appearance variation",
+                  "Random goal materials fix every failure"
                 ],
                 [
-                  "Layout, occlusion, starts",
-                  "Observation strategy and routes",
-                  "Closed-loop tasks and collisions in new layouts"
+                  "Ball is seen but approach drifts",
+                  "Corrections from off-course states",
+                  "More background images teach recovery"
                 ],
                 [
-                  "Friction, tyres, ball mass, latency",
-                  "Contact, propulsion and braking",
-                  "Physics ranges and hardware measurements"
+                  "Ball scores but robot cannot stop",
+                  "Braking, dynamics and delay calibration",
+                  "Photorealism guarantees stopping"
                 ],
                 [
-                  "Instructions and goals",
-                  "Task understanding and skill selection",
-                  "Language variation and held-out task combinations"
+                  "Furniture blocks the route",
+                  "Layout variation and obstacle-handling skills",
+                  "Changing floor textures teaches navigation"
                 ]
               ]
             }
+          },
+          {
+            "type": "p",
+            "zh": "域随机化（Domain Randomization）是在训练时改变选定条件，让模型减少对单一环境的依赖。外观随机化改变看到的样子，动力学随机化改变真实运动，两者要分别设计。门框材质保持固定；地面扩展可先考虑两种足球场图案、大理石与棕色木地板。",
+            "en": "Domain randomization changes selected training conditions to reduce dependence on one environment. Appearance variation changes images; dynamics variation changes motion. Design them separately. Keep goal-frame material fixed; possible floor expansion includes two football patterns, marble and brown wood."
           }
         ]
       },
       {
         "id": "cosmos",
         "title": {
-          "zh": "Cosmos 3 能提供什么",
-          "en": "What Cosmos 3 provides"
+          "zh": "Cosmos 3：为同一动作补充视觉变化",
+          "en": "Cosmos 3: visual variation for an action sequence"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "Cosmos 3 是当前公开的多模态世界模型家族，统一处理语言、图像、视频、音频与动作。官方提供 Reasoner、Generator 以及专门的策略与仿真变体，可以用于理解场景、生成候选情境或研究动作与未来状态的关系。它不只是“给视频换背景”的工具。",
-            "en": "Cosmos 3 is a public omnimodal world-model family covering language, images, video, audio and actions. Reasoner, Generator and specialized policy/simulation variants support scene understanding, candidate scenario generation and action/future-state modeling. Its scope extends beyond background replacement."
+            "zh": "Cosmos 3 是可用于理解和生成世界相关数据的多模态模型家族。对本任务，一个适合研究的入口是 video transfer：以已有仿真视频为基础，用边缘、深度或分割等条件约束内容，生成不同光照与室内外观的候选视频。",
+            "en": "Cosmos 3 is an omnimodal family for understanding and generating world-related data. One relevant research path is video transfer: use existing simulation video with controls such as edges, depth or segmentation to generate candidate lighting and interior variations."
           },
-          {
-            "type": "p",
-            "zh": "对 Microduck，最直接的切入点是扩充视觉训练数据与分析失败场景。例如保留机器人、球门和球的位置，用更丰富的房间外观生成候选数据，再筛查目标形状、遮挡和时间连续性。对需要深度、分割等空间控制的生成流程，也应按实际接口比较 Cosmos-Transfer2.5 等专用模型，而不只看版本编号。",
-            "en": "For Microduck, initial uses include visual-data expansion and failure analysis. Preserve robot, goal and ball geometry while generating candidate room appearances, then inspect shape, occlusion and temporal consistency. Where depth or segmentation conditioning is required, compare the actual interfaces of specialized models such as Cosmos-Transfer2.5 as well."
-          },
-          {
-            "type": "p",
-            "zh": "生成了一段看似进球的视频，不等于得到真实可执行的机器人动作。只有在动作标签与图像、状态和时间仍一致时，数据才适合模仿学习；球变大、门柱移动或接触时刻改变，都可能让原动作标签失效。Cosmos 的策略与动作建模能力也需要对应机器人数据适配，不能直接把 DROID 等具身变体称为 Microduck 策略。",
-            "en": "A plausible scoring video is not an executable action trajectory. Imitation data require action labels consistent with images, states and timing. A changed ball size, post position or contact time can invalidate the original actions. Cosmos policy/action variants likewise need embodiment adaptation; a DROID specialization is not a Microduck policy."
-          }
-        ]
-      },
-      {
-        "id": "stack",
-        "title": {
-          "zh": "谁负责生成，谁负责物理与训练",
-          "en": "Generation, physics, learning and orchestration"
-        },
-        "blocks": [
           {
             "type": "flow",
-            "label": "把数据生成、物理验证与策略训练连接起来。",
+            "interactive": true,
+            "label": "改变视觉外观，检查动作标签是否仍然成立",
             "nodes": [
               [
-                "Cosmos",
-                "理解世界，生成或筛选候选数据"
+                "可靠原始轨迹",
+                "图像、状态与执行动作"
               ],
               [
-                "Isaac Sim + Newton",
-                "生成仿真传感器数据，推进接触与运动"
+                "Cosmos 3 transfer",
+                "生成受条件约束的外观"
               ],
               [
-                "Isaac Lab / GR00T",
-                "采集数据，训练或微调策略"
+                "检查数据一致性",
+                "目标几何、接触与时间"
               ],
               [
-                "Arena + OSMO",
-                "组织组合评测与计算工作流"
+                "训练与对照评测",
+                "陌生环境中的自主成功"
               ]
             ],
-            "zh": "把数据生成、物理验证与策略训练连接起来。",
-            "en": "Connect data generation, physical validation and policy learning.",
+            "details": [
+              "源数据首先要有正确动作和时间对应关系。原示范没有教会停车，改变它的外观也不会补出停车技能。",
+              "用结构条件帮助保持布局，再改变光照或房间外观。生成是候选数据生产过程，条件约束并不保证每一帧都正确。",
+              "检查球大小、门柱位置、机器人形状、接触时刻与跨帧连续性。如果球被生成到脚的另一侧，原动作标签就可能不再适用，应拒绝这段数据。",
+              "在相同示范量与训练预算下，与不增加生成数据的策略比较。把新房间或新组合留给测试，才能判断扩展是否有帮助。"
+            ],
             "english_diagram": {
-              "label": "Connect data generation, physical validation and policy learning.",
+              "label": "Vary appearance and check whether action labels remain valid",
               "nodes": [
                 [
-                  "Cosmos",
-                  "Understand worlds; generate or assess candidate data"
+                  "Reliable source trace",
+                  "Images, state and actions"
                 ],
                 [
-                  "Isaac Sim + Newton",
-                  "Generate simulated sensor data; advance contact/motion"
+                  "Cosmos 3 transfer",
+                  "Conditioned visual variation"
                 ],
                 [
-                  "Isaac Lab / GR00T",
-                  "Collect data; train or adapt policies"
+                  "Check consistency",
+                  "Geometry, contact and timing"
                 ],
                 [
-                  "Arena + OSMO",
-                  "Compose evaluations and compute workflows"
+                  "Train and compare",
+                  "Unaided success in new scenes"
                 ]
               ],
-              "groups": []
+              "details": [
+                "Source data need correct actions and timing. Restyling a demonstration without braking skill does not add that skill.",
+                "Structural controls help preserve layout while appearance changes. Outputs remain candidates: conditioning does not guarantee every frame is correct.",
+                "Inspect ball scale, posts, robot shape, contact time and temporal continuity. If a ball moves to the other side of a foot, the old action label may be invalid; reject the segment.",
+                "Compare against training without generated data under matched data and compute budgets. Hold out rooms or combinations to evaluate the benefit."
+              ]
             },
-            "layout": "adaptive"
+            "layout": "learning",
+            "loop": false,
+            "zh": "沿箭头阅读，点击模块查看解释。",
+            "en": "Follow the arrows and select modules for explanations."
           },
           {
             "type": "p",
-            "zh": "Cosmos 也有世界仿真与策略变体，但本课程仍用 Newton 记录触球、进球与停车的物理证据。OSMO 负责工作流编排；它不会自动把互不兼容的机器人动作空间变成一个通用训练目标。",
-            "en": "Cosmos also has world-simulation and policy variants. This course retains Newton for physical evidence of contact, scoring and stopping. OSMO orchestrates workflows; it does not automatically reconcile incompatible action spaces into a common learning target."
+            "zh": "生成视频不是一次新的物理实验。更漂亮的进球画面不能证明动作可执行；可靠性仍要回到闭环仿真，以及之后的真机测试。涉及摩擦、质量或制动距离的变化，要用物理参数与实测来处理。",
+            "en": "Generated video is not a new physics experiment. A prettier goal does not establish executable actions; reliability still needs closed-loop simulation and later hardware tests. Friction, mass and braking-distance changes require physics parameters and measurements."
           }
         ]
       },
       {
         "id": "arena",
         "title": {
-          "zh": "机器人 × 场景 × 任务：Isaac Lab-Arena",
-          "en": "Robot × scene × task: Isaac Lab-Arena"
+          "zh": "扩展到机器人、场景与任务组合",
+          "en": "Composing robots, scenes and tasks"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "多机器人、多场景、多任务的组合，更直接对应 Isaac Lab-Arena。它把环境拆成 Scene（场景）、Embodiment（机器人、传感器与动作）和 Task（任务与完成判据），再组装为 Isaac Lab 环境。可以组织多种布局、机器人和任务的评测，也可把环境注册到学习与数据生成流程。截至 2026 年 10 月 26 日核查的 main 对应 Isaac Lab 3.0 / Isaac Sim 6.2，属于仍在演进的早期版本；不能与 release/0.3.1 分支的依赖混用。",
-            "en": "Isaac Lab-Arena directly addresses composition. It separates Scene, Embodiment (robot, sensors and actions), and Task (objective and predicates), then builds Isaac Lab environments. It organizes evaluation across layouts, robots and tasks and registers environments for learning/data workflows. The main branch inspected on October 26, 2026 targets Isaac Lab 3.0 / Isaac Sim 6.2 and remains early-stage software; its dependencies differ from release/0.3.1."
+            "zh": "Isaac Lab-Arena 将环境分成 Scene（场景）、Embodiment（机器人、传感器与动作）和 Task（目标与完成判据），便于组合评测与数据采集。Isaac Lab 组织学习环境，Newton 推进物理，渲染器产生图像；OSMO 可以编排数据生成、训练与评测等计算工作流。",
+            "en": "Isaac Lab-Arena separates Scene, Embodiment (robot, sensors and actions), and Task (goals and completion criteria) for compositional evaluation and data collection. Isaac Lab organizes learning environments, Newton advances physics and a renderer produces images. OSMO can orchestrate data generation, training and evaluation workflows."
           },
           {
             "type": "p",
-            "zh": "Arena 已有 GR00T 等策略客户端，也有 Cosmos 相关适配；支持选择 Newton。Microduck 仍需补自己的具身、足球任务和动作契约。不同机器人的组合必须满足任务能力要求；多环境并行评测，也不自动等于训练了一个能控制所有机器人的统一模型。",
-            "en": "Arena provides policy clients including GR00T and Cosmos-related adapters and supports Newton selection. Microduck still needs its own embodiment, football task and action contract. Combinations must satisfy task capabilities. Concurrent evaluation does not itself train a single policy for every robot."
+            "zh": "组合不是任意拼接：机器人必须具备任务需要的传感器和动作，评测标准也要明确。步行与轮滑属于同一 Microduck 的两种模式，应分别评测；多环境同时运行，也不等于已经训练出能控制所有机器人的统一模型。",
+            "en": "Combinations require compatible sensors, actions and clear evaluation criteria. Walking and skating are two modes of one Microduck, evaluated separately. Running environments concurrently does not itself produce one policy controlling every robot."
           },
           {
             "type": "html",
-            "zh": "<div class=\"scenario-matrix\" data-scenario-matrix><p><strong>试着规划一组评测</strong></p><div class=\"matrix-options\"><label><input type=\"checkbox\" data-factor=\"4\" checked> 四种地面</label><label><input type=\"checkbox\" data-factor=\"3\" checked> 三种光照</label><label><input type=\"checkbox\" data-factor=\"3\" checked> 三种室内布局</label><label><input type=\"checkbox\" data-factor=\"2\" checked> 步行与轮滑分别评测</label></div><label>每种组合的新测试种子数 <input class=\"matrix-seeds\" type=\"number\" min=\"1\" max=\"100\" value=\"5\"></label><p class=\"matrix-output\" aria-live=\"polite\"></p><p class=\"matrix-scope\">这只是组合计数器，不启动仿真或训练。取消一项表示固定为一种条件。</p></div>",
-            "en": "<div class=\"scenario-matrix\" data-scenario-matrix><p><strong>Design an evaluation matrix</strong></p><div class=\"matrix-options\"><label><input type=\"checkbox\" data-factor=\"4\" checked> Four floors</label><label><input type=\"checkbox\" data-factor=\"3\" checked> Three lighting conditions</label><label><input type=\"checkbox\" data-factor=\"3\" checked> Three indoor layouts</label><label><input type=\"checkbox\" data-factor=\"2\" checked> Walking and skating, evaluated separately</label></div><label>Fresh seeds per combination <input class=\"matrix-seeds\" type=\"number\" min=\"1\" max=\"100\" value=\"5\"></label><p class=\"matrix-output\" aria-live=\"polite\"></p><p class=\"matrix-scope\">This only counts combinations; it launches no simulation or training. Unchecking a factor fixes it to one condition.</p></div>"
-          },
-          {
-            "type": "p",
-            "zh": "轮滑与步行是同一机器人上的两种模式，这里分别评测，不能把它们算成两种实体机器人。组合数只是实验设计规模，不代表这些实验已经运行，也不代表所有组合都合理。",
-            "en": "Walking and skating are modes of one robot and are evaluated separately here; they are not two physical embodiments. The count describes an experiment design, not completed runs or universal compatibility."
+            "zh": "<div class=\"scenario-matrix\" data-scenario-matrix><p><strong>试着规划一组评测</strong></p><div class=\"matrix-options\"><label><input type=\"checkbox\" data-factor=\"4\"> 四种地面</label><label><input type=\"checkbox\" data-factor=\"3\"> 三种光照</label><label><input type=\"checkbox\" data-factor=\"3\"> 三种室内布局</label><label><input type=\"checkbox\" data-factor=\"2\"> 步行与轮滑分别评测</label></div><label>每种组合的新测试种子数 <input class=\"matrix-seeds\" type=\"number\" min=\"1\" max=\"100\" value=\"5\"></label><p class=\"matrix-output\" aria-live=\"polite\"></p><p class=\"matrix-scope\">这只是组合计数器，不启动仿真或训练。取消一项表示固定为一种条件。</p></div>",
+            "en": "<div class=\"scenario-matrix\" data-scenario-matrix><p><strong>Design an evaluation matrix</strong></p><div class=\"matrix-options\"><label><input type=\"checkbox\" data-factor=\"4\"> Four floors</label><label><input type=\"checkbox\" data-factor=\"3\"> Three lighting conditions</label><label><input type=\"checkbox\" data-factor=\"3\"> Three indoor layouts</label><label><input type=\"checkbox\" data-factor=\"2\"> Walking and skating, evaluated separately</label></div><label>Fresh seeds per combination <input class=\"matrix-seeds\" type=\"number\" min=\"1\" max=\"100\" value=\"5\"></label><p class=\"matrix-output\" aria-live=\"polite\"></p><p class=\"matrix-scope\">This only counts combinations; it launches no simulation or training. Unchecking a factor fixes it to one condition.</p></div>"
           }
         ]
       },
       {
         "id": "experiment",
         "title": {
-          "zh": "怎样判断随机化真正有帮助",
-          "en": "How to test whether randomization helps"
+          "zh": "逐步扩大，而不是一次全随机",
+          "en": "Expand one factor at a time"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "先保留一个无新增随机化的对照，再分别加入外观变化、布局变化和有实测依据的动力学变化；控制示范数量、训练预算与评测标准。把陌生房间、布局或部分组合留到最终测试，避免模型只记住生成场景。不要在看到失败后重跑到成功再替换记录。",
-            "en": "Keep a baseline with no added randomization, then separately add appearance, layout and measured dynamics variation while controlling demonstration count, training budget and evaluation criteria. Hold out rooms, layouts or combinations. Keep failed trials rather than replace them with successful retries."
+            "zh": "一个合理顺序是：同一球场稳定完成 → 少量光照变化 → 新地面外观 → 新室内布局 → 有测量依据的动力学变化。每一步保留前一步作为对照，用同样的完整成功判据比较。若新变化带来的主要失败是看不清，就补视觉覆盖；若是走偏或停不稳，就回到纠正示范或控制与校准。",
+            "en": "A useful progression is: stable completion on one field → modest lighting variation → new floor appearance → new room layouts → measured dynamics variation. Keep the previous stage as a baseline with the same complete-success criteria. Add visual coverage for perception failures, or revisit corrections and control calibration for drift and braking."
           },
           {
-            "type": "p",
-            "zh": "指标不只看检测分数：还看完整进球与停稳、跌倒、路径碰撞、观察循环次数和完成时间。现有实验提示几何提取与制动也存在瓶颈；视觉随机化可能改善观察，却不会自动修复停车控制。先按失败类型补数据或改接口，再扩大训练。",
-            "en": "Measure full scoring and settling, falls, route collisions, observation cycles and completion time, not just detection scores. Current failures also involve geometry extraction and braking. Visual randomization may improve observations without fixing stopping control. Target the observed failure before scaling training."
-          }
-        ]
-      },
-      {
-        "id": "next",
-        "title": {
-          "zh": "下一步：先做可比较的小实验",
-          "en": "Next: a small, comparable experiment"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "先选择一种运动方式，固定官方 10 cm 足球与球门；使用两种足球地面、大理石和木地板，增加可控光照，再加入少量室内布局。球门材质保持固定。完成仿真传感器与实际执行动作记录的对齐后，再选择 GR00T 微调、ASPIRE 技能探索或 Cosmos 数据扩展中的一条作为首个实验，避免同时改变所有因素。",
-            "en": "Choose one locomotion mode, keep the official 10 cm ball and goal fixed, and use the two football floors, marble and wood with controlled lighting, then a small set of indoor layouts. Keep goal-frame material fixed. After aligning simulated sensor data with executed action records, select one initial experiment: GR00T adaptation, ASPIRE skill exploration or Cosmos data expansion, rather than change everything together."
-          },
-          {
-            "type": "p",
-            "zh": "课程已核查方法、接口与已有记录字段，并给出组合设计；尚未执行新的 GR00T、ASPIRE、Cosmos 或 Arena 训练/控制实验。下一阶段以独立闭环结果决定是否扩大数据和算力投入。",
-            "en": "The course reviews methods, interfaces and existing record fields, and illustrates combination design. No new GR00T, ASPIRE, Cosmos or Arena training/control experiment has run. Independent closed-loop results should guide subsequent data and compute investment."
+            "type": "quiz",
+            "question": {
+              "zh": "同一组动作的视频换了十种背景，就等于获得十倍不同的动作经验吗？",
+              "en": "Do ten restyled backgrounds provide ten times the action experience?"
+            },
+            "answer": {
+              "zh": "不等于。它扩充了视觉条件，但动作和状态覆盖可能仍相同。恢复偏差、改变路线或适应制动，需要对应的新轨迹或纠正数据。",
+              "en": "No. Visual conditions expand, but action/state coverage may remain unchanged. Recovery, new routes and braking need corresponding trajectories or corrections."
+            }
           }
         ]
       }
@@ -3892,24 +3950,19 @@
         "en": "Cosmos 3 documentation"
       },
       {
-        "url": "https://docs.nvidia.com/cosmos/latest/cosmos3/model_reference.html",
-        "zh": "Cosmos 3 模型与专用变体",
-        "en": "Cosmos 3 models and specializations"
+        "url": "https://github.com/NVIDIA/cosmos/blob/main/cookbooks/cosmos3/generator/transfer/README.md",
+        "zh": "Cosmos 3 video transfer 与控制条件",
+        "en": "Cosmos 3 video transfer controls"
       },
       {
-        "url": "https://docs.nvidia.com/cosmos/latest/transfer2.5/index.html",
-        "zh": "Cosmos-Transfer2.5 文档",
-        "en": "Cosmos-Transfer2.5 documentation"
+        "url": "https://github.com/NVIDIA/cosmos",
+        "zh": "Cosmos 示例与数据生成工作流",
+        "en": "Cosmos examples and data workflows"
       },
       {
         "url": "https://github.com/isaac-sim/IsaacLab-Arena",
-        "zh": "Isaac Lab-Arena 官方源码",
-        "en": "Isaac Lab-Arena source"
-      },
-      {
-        "url": "https://isaac-sim.github.io/IsaacLab-Arena/main/pages/concepts/environment/index.html",
-        "zh": "Scene / Embodiment / Task 组合",
-        "en": "Scene / Embodiment / Task composition"
+        "zh": "Isaac Lab-Arena",
+        "en": "Isaac Lab-Arena"
       },
       {
         "url": "https://nvidia.github.io/OSMO/",

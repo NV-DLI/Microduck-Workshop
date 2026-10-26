@@ -1481,3 +1481,41 @@ textarea {
   .architecture-svg.flow-desktop { display: none; }
   .architecture-svg.flow-mobile { display: block; min-width: 0; }
 }
+
+/* Teaching diagrams: restrained cards and a persistent explanation below. */
+:root { --header: 64px; }
+header { box-shadow: 0 2px 9px #1423190a; }
+main h1 { letter-spacing: -.025em; }
+a { color: #075638; }
+.learning-figure { margin: 1.5rem 0 2rem; border: 1px solid #dce3dd; border-radius: 8px; background: #fff; overflow: hidden; }
+.learning-help { margin: 0; padding: 14px 20px 0; font-size: 13px; color: #526056; }
+.learning-figure .diagram-scroll { padding: 0 6px; }
+.learning-figure .learning-svg { display: block; width: 100%; min-width: 680px; font-family: 'Open Sans','Noto Sans SC',sans-serif; }
+.learning-node { cursor: pointer; }
+.learning-node rect { fill: #f3f6f2; stroke: #bac8bb; stroke-width: 1.5; transition: fill .15s, stroke .15s; }
+.learning-node:nth-of-type(even) rect { fill: #edf5e7; }
+.learning-node-title { text-anchor: middle; font-size: 18px; font-weight: 650; fill: #173825; pointer-events: none; }
+.learning-node-subtitle { text-anchor: middle; font-size: 14px; fill: #405549; pointer-events: none; }
+.learning-node.is-active rect, .learning-node:hover rect, .learning-node:focus-visible rect { fill: #e0f1ca; stroke: #4e8200; stroke-width: 3; }
+.learning-node:focus-visible { outline: none; }
+.learning-node:focus-visible rect { stroke-dasharray: 5 3; }
+.learning-edge { stroke: #87968b; stroke-width: 2; fill: none; color: #87968b; }
+.learning-edge.is-active { stroke: #346a18; color: #346a18; stroke-width: 3; }
+.learning-details { border-top: 1px solid #dce3dd; padding: 20px 48px 24px 22px; position: relative; background: #fafcf8; }
+.learning-definition h3 { font-size: 18px; margin: 0 0 8px; color: #203e29; }
+.learning-definition p, .learning-empty { margin: 0; line-height: 1.8; }
+.learning-definition + .learning-definition { margin-top: 20px; }
+.is-enhanced .learning-definition { margin-top: 0; }
+.learning-reset { position: absolute; top: 10px; right: 12px; width: 32px; height: 32px; padding: 0; border: 0; border-radius: 4px; background: transparent; font-size: 25px; color: #415a47; }
+.learning-reset:hover { background: #e5eddc; }
+.learning-figure figcaption { padding: 12px 22px; font-size: 13px; color: #566459; border-top: 1px solid #e5ebe2; }
+.learning-figure [hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media(max-width:760px) {
+  .learning-help .learning-scroll-hint { display: block; margin-top: 4px; }
+  .learning-details { padding: 16px 40px 20px 16px; }
+  .learning-help, .learning-figure figcaption { padding-left: 16px; padding-right: 16px; }
+}
+@media(prefers-reduced-motion:reduce) { .learning-node rect { transition: none; } }
+
+.learning-scroll-hint { display: none; }

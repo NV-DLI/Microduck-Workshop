@@ -3,6 +3,7 @@
 from html import escape as e
 from course_diagrams import flow_svg, platform_svg, network_svg
 from navigation_diagrams import navigation_diagram
+from interactive_flows import learning_flow
 
 
 def render_teaching_block(b, lang):
@@ -105,6 +106,8 @@ def render_teaching_block(b, lang):
             + caption
             + "</figcaption></figure>"
         )
+    if k == "flow" and b.get("interactive"):
+        return learning_flow(b, lang)
     if k == "flow":
         return (
             '<figure class="concept-figure"><p class="diagram-scroll-hint">'

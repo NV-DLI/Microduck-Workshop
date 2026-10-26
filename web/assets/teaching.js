@@ -271,3 +271,82 @@
     updateMatrix();
   }
 })();
+
+// Node explanations remain readable without JavaScript. Selection is scoped to
+// each figure so Escape and Close do not reset another diagram on the page.
+(() => {
+  for (const root of document.querySelectorAll('[data-learning-flow]')) {
+    const nodes = [...root.querySelectorAll('[data-node]')];
+    const definitions = [...root.querySelectorAll('[data-node-detail]')];
+    const reset = root.querySelector('.learning-reset');
+    const empty = root.querySelector('.learning-empty');
+    let selected = null;
+    let preview = null;
+    root.classList.add('is-enhanced');
+    function render() {
+      const active = selected ?? preview;
+      definitions.forEach(d => { d.hidden = d.dataset.nodeDetail !== active; });
+      nodes.forEach(n => {
+        const match = n.dataset.node === active;
+        n.classList.toggle('is-active', match);
+        n.setAttribute('aria-expanded', String(match));
+      });
+      root.querySelectorAll('.learning-edge').forEach(edge => {
+        edge.classList.toggle('is-active', edge.dataset.from === active || edge.dataset.to === active);
+      });
+      empty.hidden = active !== null;
+      reset.hidden = active === null;
+    }
+    function select(node) {
+      selected = node.dataset.node; preview = null; render();
+      const scroll = root.querySelector(".diagram-scroll");
+      const card = node.getBoundingClientRect(), viewport = scroll.getBoundingClientRect();
+      if (card.left < viewport.left) scroll.scrollLeft += card.left - viewport.left - 10;
+      else if (card.right > viewport.right) scroll.scrollLeft += card.right - viewport.right + 10;
+      root.querySelector('.learning-status').textContent = node.getAttribute('aria-label');
+    }
+    nodes.forEach(node => {
+      node.addEventListener('click', () => select(node));
+      node.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); select(node); }
+      });
+      node.addEventListener('pointerenter', event => {
+        if (event.pointerType !== 'touch' && selected === null) { preview = node.dataset.node; render(); }
+      });
+      node.addEventListener('focus', () => { if (selected === null) { preview = node.dataset.node; render(); } });
+    });
+    function clear() {
+      const previous = selected ?? preview;
+      selected = null; preview = null;
+      // Restore a usable focus target before hiding the close button.
+      if (previous !== null && document.activeElement === reset) {
+        nodes[Number(previous)].focus(); preview = null;
+      }
+      render();
+    }
+    reset.addEventListener('click', clear);
+    root.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); clear(); }
+    });
+    // Reserve the largest explanation's height at the current width. This
+    // avoids page jumps when switching nodes, including after resizing.
+    function sizePanel() {
+      const panel = root.querySelector('.learning-details');
+      panel.style.minHeight = '';
+      let max = 0;
+      definitions.forEach(d => {
+        const hidden = d.hidden; d.hidden = false;
+        max = Math.max(max, d.getBoundingClientRect().height);
+        d.hidden = hidden;
+      });
+      panel.style.minHeight = `${Math.ceil(max + 52)}px`;
+    }
+    render(); sizePanel();
+    let width = 0;
+    new ResizeObserver(entries => {
+      const next = entries[0].contentRect.width;
+      if (Math.abs(next - width) > 1) { width = next; sizePanel(); }
+    }).observe(root);
+    document.fonts.ready.then(sizePanel);
+  }
+})();
