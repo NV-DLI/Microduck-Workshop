@@ -29,6 +29,8 @@ def lines(text, limit=23):
 
 
 def flow_svg(b):
+    if b.get("layout") == "adaptive":
+        return adaptive_flow_svg(b) + adaptive_flow_svg(b, compact=True)
     nodes = b["nodes"]
     n = len(nodes)
     uid = "flow-" + hashlib.sha1(b["label"].encode()).hexdigest()[:9]
@@ -166,3 +168,69 @@ def network_svg(lang):
         + "</text></svg>"
     )
     return "".join(out)
+
+
+def adaptive_flow_svg(b, compact=False):
+    """Fit every node and connector, including four-node teaching flows."""
+    nodes = b["nodes"]
+    cols = 1 if compact else (2 if len(nodes) == 4 else 3)
+    canvas_width = 360 if compact else 760
+    width = (canvas_width - 48 - 56 * (cols - 1)) / cols
+    positions = []
+    wrapped = [
+        (lines(t, int(width / 8)), lines(body, int(width / 7))) for t, body in nodes
+    ]
+    card_height = max(32 + len(t) * 22 + len(body) * 21 for t, body in wrapped)
+    rows = (len(nodes) + cols - 1) // cols
+    height = 48 + rows * card_height + (rows - 1) * 60
+    uid = (
+        "flow-"
+        + hashlib.sha1(b["label"].encode()).hexdigest()[:9]
+        + ("-mobile" if compact else "-desktop")
+    )
+    layout_class = "flow-mobile" if compact else "flow-desktop"
+    for i in range(len(nodes)):
+        row, col = divmod(i, cols)
+        if row % 2:
+            col = cols - 1 - col
+        positions.append((24 + col * (width + 56), 24 + row * (card_height + 60)))
+    out = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" class="architecture-svg {layout_class}" viewBox="0 0 {canvas_width} {height}" role="img" aria-labelledby="{uid}-title {uid}-desc"><title id="{uid}-title">{e(b["label"])}</title><desc id="{uid}-desc">'
+        + e(" → ".join(t + ": " + body for t, body in nodes))
+        + "</desc>",
+        f'<defs><marker id="{uid}-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L6 3.5L0 7" fill="none" stroke="#57606a" stroke-width="1.3"/></marker></defs>',
+    ]
+    paths = []
+    for (x, y), (nx, ny) in zip(positions, positions[1:]):
+        if y == ny:
+            start, end = (x + width, nx - 6) if nx > x else (x, nx + width + 6)
+            paths.append(f"M{start} {y + card_height / 2}H{end}")
+        else:
+            paths.append(f"M{x + width / 2} {y + card_height}V{ny - 6}")
+    if b.get("loop") and len(nodes) == 4:
+        x, y = positions[-1]
+        paths.append(f"M{x} {y + card_height / 2}H8V{24 + card_height / 2}H18")
+    for path in paths:
+        out.append(
+            f'<path d="{path}" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#{uid}-arrow)"/>'
+        )
+    colors = [
+        ("#dfeaf5", "#0969da"),
+        ("#e6f3d4", "#4a7a00"),
+        ("#d6f1ee", "#0d8078"),
+        ("#eadfff", "#6f42c1"),
+    ]
+    for i, ((title, body), (x, y)) in enumerate(zip(wrapped, positions)):
+        fill, stroke = colors[i % len(colors)]
+        out.append(
+            f'<rect x="{x}" y="{y}" width="{width}" height="{card_height}" rx="7" fill="{fill}" stroke="{stroke}" stroke-width="1.2"/>'
+        )
+        for j, line in enumerate(title):
+            out.append(
+                f'<text x="{x + width / 2}" y="{y + 28 + j * 22}" text-anchor="middle" fill="#24292f" font-size="16" font-weight="600">{e(line)}</text>'
+            )
+        for j, line in enumerate(body):
+            out.append(
+                f'<text x="{x + width / 2}" y="{y + 42 + len(title) * 22 + j * 21}" text-anchor="middle" fill="#424a53" font-size="14">{e(line)}</text>'
+            )
+    return "".join(out) + "</svg>"

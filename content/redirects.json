@@ -3,5 +3,7 @@
   "02-simulation": "01-play",
   "04-skills": "05-skills",
   "05-perception": "06-autonomy",
-  "06-navigation": "06-autonomy"
+  "06-navigation": "06-autonomy",
+  "07-football": "06-autonomy",
+  "08-next-steps": "09-worlds"
 }

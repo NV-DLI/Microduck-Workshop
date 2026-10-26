@@ -251,4 +251,23 @@
         panel.textContent = "请查看视频画面上方的阶段提示。";
       });
   }
+  for (const matrix of document.querySelectorAll("[data-scenario-matrix]")) {
+    const seeds = matrix.querySelector(".matrix-seeds");
+    const output = matrix.querySelector(".matrix-output");
+    function updateMatrix() {
+      const count = Number(seeds.value);
+      if (!Number.isInteger(count) || count < 1 || count > 100) {
+        output.textContent = zh ? "请输入 1–100 之间的整数种子数。" : "Enter an integer seed count from 1 to 100.";
+        return;
+      }
+      const combinations = [...matrix.querySelectorAll("[data-factor]")].reduce(
+        (total, input) => total * (input.checked ? Number(input.dataset.factor) : 1), 1,
+      );
+      output.textContent = zh
+        ? `${combinations} 种组合 × ${count} 个新种子 = ${combinations * count} 次计划评测`
+        : `${combinations} combinations × ${count} fresh seeds = ${combinations * count} planned trials`;
+    }
+    matrix.addEventListener("input", updateMatrix);
+    updateMatrix();
+  }
 })();

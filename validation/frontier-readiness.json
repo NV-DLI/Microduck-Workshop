@@ -1,0 +1,118 @@
+{
+  "checked_at": "2026-10-26",
+  "scope": "CPU record and API schema validation only",
+  "model_loaded": false,
+  "model_inference_calls": 0,
+  "new_training_runs": 0,
+  "new_physics_trials": 0,
+  "groot_commit": "944fe70c4fd54e3fcb80a7d7258a328f9c061176",
+  "official_checker_sha256": "ad1183a3ce1ebed6cace4a9cb8c5a123e823a0760ebf46f3694639a5ad1521ec",
+  "method": "AST-extracted official check_observation/check_action; SimpleNamespace configuration, not full policy or processor construction",
+  "source_run": "rollers-unified-auto-06 (existing development trace)",
+  "frames_checked": 163,
+  "action_rows": 652,
+  "action_hz": 50,
+  "camera_effective_hz": 12.5,
+  "checked_action_horizon": 1,
+  "matched_image_state_action_rows": 163,
+  "joint_order": [
+    "left_hip_yaw",
+    "left_hip_roll",
+    "left_hip_pitch",
+    "left_knee",
+    "left_ankle",
+    "neck_pitch",
+    "head_pitch",
+    "head_yaw",
+    "head_roll",
+    "right_hip_yaw",
+    "right_hip_roll",
+    "right_hip_pitch",
+    "right_knee",
+    "right_ankle"
+  ],
+  "raw_vs_executed_differing_rows": 97,
+  "negative_data_checks": [
+    {
+      "case": "rgb_float",
+      "rejected": true
+    },
+    {
+      "case": "missing_language",
+      "rejected": true
+    },
+    {
+      "case": "wrong_state_dtype",
+      "rejected": true
+    },
+    {
+      "case": "wrong_action_horizon",
+      "rejected": true
+    },
+    {
+      "case": "wrong_joint_dimension",
+      "rejected": true
+    },
+    {
+      "case": "nan_action",
+      "rejected": true
+    },
+    {
+      "case": "future_sensor",
+      "rejected": true
+    },
+    {
+      "case": "stale_sensor",
+      "rejected": true
+    }
+  ],
+  "proposed_request_negative_checks": [
+    {
+      "case": "too_fast",
+      "rejected": true
+    },
+    {
+      "case": "too_long",
+      "rejected": true
+    },
+    {
+      "case": "nan",
+      "rejected": true
+    },
+    {
+      "case": "kick_in_roller",
+      "rejected": true
+    },
+    {
+      "case": "truth_input",
+      "rejected": true
+    },
+    {
+      "case": "wrong_dimension",
+      "rejected": true
+    },
+    {
+      "case": "invalid_mode",
+      "rejected": true
+    }
+  ],
+  "request_bounds_status": "illustrative schema caps, not physically validated operating limits",
+  "so101_local_reference_commit": "f06e34ea3f3436c890103d9277c9a2e34334333e",
+  "missing_before_training": [
+    "Task language was manually assigned for this probe, not recorded in the original rollout.",
+    "No GR00T LeRobot v2 export, statistics, processor or full model inference tested.",
+    "Only 163 timestamp-matched one-step actions were checked by the official validator; future multi-step chunks were not validated.",
+    "Actor outputs are dimensionless normalized commands; not absolute joint radians. The precise frozen home/scale mapping must accompany any action conversion.",
+    "Proposed high-level body/gaze commands require separate labels and executor; this 14D record probe does not validate that alternative.",
+    "Camera lens, IMU and latency lack hardware calibration.",
+    "One development trajectory supplies schema evidence, not adequate training diversity or held-out results.",
+    "ASPIRE, Arena and Cosmos runtime adapters and dependency compatibility are not executed."
+  ],
+  "passed": true,
+  "source_commits": {
+    "NVIDIA/Isaac-GR00T": "944fe70c4fd54e3fcb80a7d7258a328f9c061176",
+    "NVlabs/ASPIRE": "fa00f0ef2bc1d91d594b9aa502c22133c9f538f7",
+    "AgnesAI-Labs/agnes-harness": "98bc11572ba162bcdf6ce2b29612a44508faf951",
+    "isaac-sim/IsaacLab-Arena": "6b27eb3c16f528c2ab4134e9c2a46f0da9aea3e7"
+  }
+}

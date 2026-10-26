@@ -6,12 +6,12 @@
       "en": "Teach Microduck to score a goal"
     },
     "summary": {
-      "zh": "先用键盘踢球，再学习训练与感知，最后让机器人在仿真中自主完成射门。",
-      "en": "Play with keyboard controls, learn training and perception, then connect the full autonomous task."
+      "zh": "先体验运动与训练，再从传统射门走向 GR00T、ASPIRE 与 Cosmos，理解机器人怎样学习动作、组织任务并适应新环境。",
+      "en": "Explore motion and training, then move from engineered football to GR00T, ASPIRE and Cosmos: learning actions, organizing tasks and adapting to new environments."
     },
     "meta": {
-      "zh": "8 章 · 中文 / English · 仿真实践",
-      "en": "8 chapters · 中文 / English · Simulation labs"
+      "zh": "9 章 · 中文 / English · 仿真实践与前沿方法",
+      "en": "9 chapters · 中文 / English · Simulation and frontier methods"
     },
     "number": "",
     "group": {
@@ -28,22 +28,24 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "最终场景中只有一台 Microduck、一个足球和一个球门。机器人要先找到球、判断球门方向，再走到合适的出脚位置完成踢球，并恢复稳定站姿。我们用 NVIDIA Isaac 生态的完整工作流组织这些环节：Isaac Lab 定义任务、观测、动作与并行环境，Newton 推进接触丰富的物理状态，Isaac Sim 提供可视化、RTX 相机与场景验证。您会看到每项工具解决的具体问题，也会学习如何用记录与评测判断整条链路。",
-            "en": "The final scene contains one Microduck, one football, and one goal. The robot must find the ball, locate the goal, approach a useful kicking position, make contact, and recover its stance. You will learn what each part of this system does and how the parts work together."
+            "zh": "以一台 Microduck、一个足球和一个球门为共同任务，先建立运动、仿真与训练基础，再比较手工流程、学习策略和任务智能体。前五章提供既有实验；第六章观看传统方案，后三章讲解前沿方法与接入条件。新方法尚未在本课程完成射门训练，不把架构示意当成成功实验。",
+            "en": "Use one Microduck, one ball and one goal to connect motion, simulation and learning with engineered pipelines, learned policies and task agents. Chapters 1–5 retain existing labs, Chapter 6 reviews the baseline, and Chapters 7–9 explain frontier methods and readiness. New-method football training has not yet been completed here."
           },
           {
             "type": "pipeline",
             "zh": [
-              "认识机构",
-              "控制与训练",
-              "视觉与导航",
-              "自主射门"
+              "运动与训练基础",
+              "观看传统任务流程",
+              "GR00T 学习动作",
+              "ASPIRE 组织任务",
+              "Cosmos 与 Isaac 扩展环境"
             ],
             "en": [
-              "Understand the mechanism",
-              "Control and train",
-              "See and navigate",
-              "Score autonomously"
+              "Motion and learning foundations",
+              "Review the engineered baseline",
+              "Learn actions with GR00T",
+              "Organize tasks with ASPIRE",
+              "Expand environments with Cosmos and Isaac"
             ]
           }
         ]
@@ -58,18 +60,18 @@
           {
             "type": "list",
             "zh": [
-              "说明关节、执行器、观测、动作和奖励之间的关系。",
-              "启动 Isaac Sim 场景并加载固定策略，说明 Isaac Lab 3、Newton 与渲染模块如何分工。",
-              "利用 Isaac Lab 的并行环境运行一次有预算限制的 GPU 并行训练练习，找到检查点并解释训练曲线。",
-              "把 Isaac Sim 相机、ToF 距离和身体姿态联系起来，解释感知信息如何驱动自主射门的状态切换。",
-              "记录完整任务的成功与失败，区分模型指标和任务指标。"
+              "解释机构、执行器、观测、动作与奖励的关系。",
+              "使用 Isaac Lab、Newton 与 Isaac Sim 体验固定策略及训练。",
+              "区分传统流程、VLA 动作预测与智能体任务组织。",
+              "借鉴 SO-101 数据流程，说明 Microduck 的示范与动作适配要求。",
+              "设计环境变化与独立评测，区分接口可行、模型指标与完整任务成功。"
             ],
             "en": [
-              "Explain how joints, actuators, observations, actions, and rewards relate.",
-              "Launch a Newton / Isaac Lab simulation and inspect a fixed policy in action.",
-              "Run a bounded training exercise, locate checkpoints, and interpret training curves.",
-              "Connect camera detections, ToF ranges, and body attitude to autonomous task states.",
-              "Record both successes and failures, distinguishing model metrics from task metrics."
+              "Explain mechanisms, actuators, observations, actions and rewards.",
+              "Explore fixed policies and learning with Isaac Lab, Newton and Isaac Sim.",
+              "Distinguish engineered pipelines, VLA actions and task agents.",
+              "Adapt the SO-101 data workflow to Microduck demonstration/action requirements.",
+              "Design variation and held-out evaluation; distinguish readiness from task success."
             ]
           }
         ]
@@ -117,15 +119,19 @@
                 ],
                 [
                   "第 6 章",
-                  "设计自主射门的处理流程"
+                  "从手工流程到智能机器人"
                 ],
                 [
                   "第 7 章",
-                  "完成自主射门"
+                  "让 GR00T 从示范中学习射门"
                 ],
                 [
                   "第 8 章",
-                  "回顾与延伸：在更复杂的球场上射门"
+                  "用 ASPIRE 组织任务并积累技能"
+                ],
+                [
+                  "第 9 章",
+                  "用 Cosmos 与 Isaac 覆盖不同家庭环境"
                 ]
               ],
               "en": [
@@ -151,15 +157,19 @@
                 ],
                 [
                   "Chapter 6",
-                  "Design the autonomous football pipeline"
+                  "From engineered pipelines to intelligent robots"
                 ],
                 [
                   "Chapter 7",
-                  "Complete the autonomous task"
+                  "Teach GR00T from demonstrations"
                 ],
                 [
                   "Chapter 8",
-                  "Recap and a harder football challenge"
+                  "Organize tasks and accumulate skills with ASPIRE"
+                ],
+                [
+                  "Chapter 9",
+                  "Cover different homes with Cosmos and Isaac"
                 ]
               ]
             }
@@ -249,8 +259,8 @@
           },
           {
             "type": "p",
-            "zh": "首次学习建议先使用固定模型完成课程主线，再回到第三章、第四章和第七章练习训练流程。即使没有 GPU，也可以按顺序完成阅读；交互模型和媒体示例都无需启动 Isaac。",
-            "en": "For a first pass, complete the fixed-model path, then return to Chapters 3, 4 and 7 for training. Without a GPU, follow the reading path in order. The interactive model and examples do not launch Isaac."
+            "zh": "首次学习可先观看示例，再选择第三章、第四章的训练练习。第六章只观看传统任务流程；第七至九章讲前沿方法与接入条件，不要求安装新框架或训练大模型。没有 GPU 也可以完成全部阅读和网页交互。",
+            "en": "Start with the demonstrations, then optionally practice training in Chapters 3 and 4. Chapter 6 is an overview; Chapters 7–9 explain frontier methods and integration requirements without new framework installation or large-model training. All reading and browser interactions work without a GPU."
           }
         ]
       },
@@ -514,7 +524,7 @@
           },
           {
             "type": "p",
-            "zh": "先完成<a href=\"setup.html\">环境准备</a>，在课程仓库根目录打开终端。下面的命令会打开 Isaac Sim，场景中的机器人、足球和球门与第 7 章自主射门任务采用相同的尺寸与物理配置。将输入法切换到英文，鼠标点击仿真窗口后，用下面的按键操作。若按键没有反应，先检查是否仍处于中文输入状态。",
+            "zh": "先完成<a href=\"setup.html\">环境准备</a>，在课程仓库根目录打开终端。下面的命令会打开 Isaac Sim，场景中的机器人、足球和球门与第 6 章自主射门任务采用相同的尺寸与物理配置。将输入法切换到英文，鼠标点击仿真窗口后，用下面的按键操作。若按键没有反应，先检查是否仍处于中文输入状态。",
             "en": "Complete <a href=\"setup.html\">setup</a> and run the command below from the repository root. Click the Isaac Sim window to focus it. The robot, ball and goal use the same dimensions and physical settings as the autonomous task. Use an English keyboard input mode so an IME does not consume movement keys."
           },
           {
@@ -596,8 +606,8 @@
           },
           {
             "type": "p",
-            "zh": "默认站立并不是另一个始终抢占控制的“站起”技能：行走策略持续运行，收到零移动指令时保持站立；摔倒后的站起、坐下和轮滑是不同技能。键盘实验直接在接触面上运行策略；第 7 章自主任务另外等待身体与观测稳定后才开始检测。",
-            "en": "Default standing is the walking policy responding to zero movement commands. Getting up after a fall, sitting and rolling are separate skills. The keyboard lab starts its policy on the contact surface. Chapter 7 additionally gates autonomous detection on settled body motion and observations."
+            "zh": "默认站立并不是另一个始终抢占控制的“站起”技能：行走策略持续运行，收到零移动指令时保持站立；摔倒后的站起、坐下和轮滑是不同技能。键盘实验直接在接触面上运行策略；第 6 章自主任务另外等待身体与观测稳定后才开始检测。",
+            "en": "Default standing is the walking policy responding to zero movement commands. Getting up after a fall, sitting and rolling are separate skills. The keyboard lab starts its policy on the contact surface. Chapter 6 additionally gates autonomous detection on settled body motion and observations."
           }
         ]
       },
@@ -901,8 +911,8 @@
               "en": "Which decisions did you make for the robot?"
             },
             "answer": {
-              "zh": "您识别了足球和球门、估计了距离、选择了接近路线和出脚位置，并决定何时踢球。第 6、7 章会把这些判断逐个交给感知、规划与任务控制模块。",
-              "en": "You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Chapters 6 and 7 automate those decisions."
+              "zh": "您识别了足球和球门、估计了距离、选择了接近路线和出脚位置，并决定何时踢球。第六章展示手工流程怎样完成这些判断，第七至九章讨论学习策略与任务智能体。",
+              "en": "You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Chapter 6 shows an engineered pipeline; Chapters 7–9 explore learned policies and task agents."
             }
           },
           {
@@ -979,8 +989,8 @@
               "zh": "硬件版本与仿真关节",
               "en": "Hardware revision and simulation joints"
             },
-            "zh": "Microduck 配有 15 个舵机：两条腿各 5 个，头颈部 4 个，喙部 1 个。这里的仿真策略控制其中 14 个关节，喙部保持固定。图中保留了 CAD 的 Raspberry Pi Zero 2 W 板外形，它不代表当前 Beta 的 RK3566 电子配置，第六章会介绍仿真实验采用的传感器配置。",
-            "en": "There are 15 servos: five per leg, four for the head and neck, and one for the beak. The policy drives 14 joints; the beak remains fixed. The CAD retains a Raspberry Pi Zero 2 W board mesh; this is not the current Beta RK3566 electronics configuration. Chapter 6 introduces the simulated sensors."
+            "zh": "Microduck 配有 15 个舵机：两条腿各 5 个，头颈部 4 个，喙部 1 个。这里的仿真策略控制其中 14 个关节，喙部保持固定。图中保留了 CAD 的 Raspberry Pi Zero 2 W 板外形，它不代表当前 Beta 的 RK3566 电子配置，相机、ToF 测距和 IMU 在第六章用于观察任务，在第七章作为可学习策略的数据来源。",
+            "en": "There are 15 servos: five per leg, four for the head and neck, and one for the beak. The policy drives 14 joints; the beak remains fixed. The CAD retains a Raspberry Pi Zero 2 W board mesh; this is not the current Beta RK3566 electronics configuration. Chapters 6–7 connect camera, ToF and IMU data to task observation and learned policies."
           }
         ]
       },
@@ -1392,8 +1402,8 @@
           },
           {
             "type": "p",
-            "zh": "设计奖励时，应先列出期望行为，再分析策略可能利用的捷径。例如，“奖励球移动”可能诱使机器人用身体撞球，“奖励保持不动”则可能使其拒绝行走。可行的检查方法是同时记录目标指标与约束，包括速度误差、回合长度、摔倒情况、关节范围和触球方式。第三章只用于练习训练循环，完整任务的成功标准将在第七章检验。",
-            "en": "When designing rewards, list desired behaviors and then consider shortcuts. Rewarding ball motion may encourage body collisions; rewarding stillness may discourage walking. Track both goals and constraints: velocity error, episode length, falls, joint limits, and contact type. This chapter practices the training loop; Chapter 7 tests the complete task definition."
+            "zh": "设计奖励时，应先列出期望行为，再分析策略可能利用的捷径。例如，“奖励球移动”可能诱使机器人用身体撞球，“奖励保持不动”则可能使其拒绝行走。可行的检查方法是同时记录目标指标与约束，包括速度误差、回合长度、摔倒情况、关节范围和触球方式。第三章只用于练习训练循环，完整任务的成功标准将在第六章检验。",
+            "en": "When designing rewards, list desired behaviors and then consider shortcuts. Rewarding ball motion may encourage body collisions; rewarding stillness may discourage walking. Track both goals and constraints: velocity error, episode length, falls, joint limits, and contact type. This chapter practices the training loop; Chapter 6 tests the complete task definition."
           }
         ]
       },
@@ -2128,7 +2138,7 @@
           },
           {
             "type": "p",
-            "zh": "默认使用已训练好的 <code>models/terrain-walk.onnx</code>，大小约 0.79 MB；想评估自己的模型时，将路径显式改为 <code>outputs/terrain-direction-01/exported/policy.onnx</code>。这个坡地模型只用于本章，第一章与第七章仍使用原行走策略。",
+            "zh": "默认使用已训练好的 <code>models/terrain-walk.onnx</code>，大小约 0.79 MB；想评估自己的模型时，将路径显式改为 <code>outputs/terrain-direction-01/exported/policy.onnx</code>。这个坡地模型只用于本章，第一章与第六章仍使用原行走策略。",
             "en": "Use the fixed0.79 MB terrain actor by default. Explicitly select outputs/terrain-direction-01/exported/policy.onnx to test your own export. Chapters1 and7 retain the original walking actor."
           },
           {
@@ -2560,9 +2570,8 @@
                 "需要检查什么"
               ],
               "en": [
-                "Skill",
-                "Observations and actions",
-                "Rewards and completion"
+                "Phase",
+                "What to check"
               ]
             },
             "rows": {
@@ -2619,8 +2628,8 @@
           },
           {
             "type": "p",
-            "zh": "运行<a href=\"07-football.html#residual\">第 7 章的模型检查命令</a>后，请分别记录输入和输出形状，再解释为什么“文件能够成功加载”只能证明模型格式可读，却不能证明机器人能够完成动作。模型文件本身可能完全合法，但接收到的单位或关节顺序仍可能错误。固定任务入口会把权重与这些运行约定配套使用。",
-            "en": "Use the <a href=\"07-football.html#residual\">model inspection commands in Chapter 7</a>, then record input and output shapes. A readable model file does not guarantee a correct action: units and joint ordering must also match. The fixed task entry point pairs weights with their runtime contract."
+            "zh": "“文件能够成功加载”只能证明模型格式可读，不能证明机器人能够完成动作。单位、关节顺序和缩放仍需与控制器一致；<a href=\"models.html\">模型与数据页</a>列出了固定权重的用途。第六章会展示这些技能组成完整任务后的表现。",
+            "en": "Loading a model only establishes that its format is readable. Units, joint order and scaling must match the controller. The <a href=\"models.html\">models page</a> lists the fixed weights and their roles. Chapter 6 shows the complete task assembled from these skills."
           },
           {
             "type": "p",
@@ -2668,8 +2677,8 @@
         "blocks": [
           {
             "type": "p",
-            "zh": "目前主要由我们告诉机器人“向前走”“现在跳”或“现在踢”。策略已经利用关节角度、速度和 IMU 保持平衡，但它还没有根据外部场景自己决定足球在哪里、该走哪条路、什么时候出脚。Microduck 还有相机和测距传感器：能否把这些信息用起来，让它自己踢进球门？下一章先设计完整的信息链路。",
-            "en": "These policies already use joint and IMU feedback for balance. They do not yet decide where the football is, which route to take or when to kick. The next chapter designs that external-perception and planning chain."
+            "zh": "目前主要由我们告诉机器人“向前走”或“现在踢”。策略已利用关节和 IMU 反馈保持平衡，却还不能自己决定足球在哪里、该走哪条路。下一章先观看传统感知与规划怎样串起完整射门，再讨论怎样把更多判断交给可学习的模型。",
+            "en": "We currently tell the robot when to move or kick. Joint and IMU feedback support balance, but the policy does not decide where the ball is or which route to take. Next we review a complete perception/planning pipeline, then consider how learned models can take on more decisions."
           }
         ]
       }
@@ -2700,1061 +2709,965 @@
       "en": "Course chapters"
     },
     "title": {
-      "zh": "设计自主射门的处理流程",
-      "en": "Design the autonomous football pipeline"
+      "zh": "从手工流程到智能机器人",
+      "en": "From engineered pipelines to intelligent robots"
     },
     "summary": {
-      "zh": "先把传感器、视觉识别、定位、规划、导航与技能执行的输入输出连接起来，再动手实现。",
-      "en": "Design the autonomous football pipeline. Explore the concepts, run the lab, and inspect its results."
+      "zh": "看懂传统自主射门的流程与实际效果，再思考：哪些判断可以交给能学习、推理与复用经验的模型？",
+      "en": "See how the engineered football pipeline works, then identify what learned policies and reasoning agents could take over."
     },
     "meta": {
-      "zh": "第 6 章 · 预计学习时长 40 分钟",
-      "en": "Chapter 6 · Estimated learning time: 40 minutes"
+      "zh": "第 6 章 · 预计学习时长 15 分钟",
+      "en": "Chapter 6 · Estimated learning time: 15 minutes"
     },
     "sections": [
       {
-        "id": "chain",
+        "id": "pipeline",
         "title": {
-          "zh": "把手动射门中的判断交给系统",
-          "en": "Turn manual decisions into a system"
+          "zh": "传统方法怎样完成射门",
+          "en": "How the engineered method scores"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "本章讲解步行射门主线：视觉定位、Nav2 规划、步行接近与踢腿恢复。第 7 章另设轮滑分支，采用视觉反馈直接碰球，不复用步行的脚底里程计和踢腿策略。",
-            "en": "This chapter follows the walking-shot pipeline: visual localization, Nav2 planning, walking approach, kicking and recovery. Chapter 7 adds a separate visual-feedback roller branch that contacts the ball directly without walking sole odometry or a kick actor."
+            "zh": "前面我们获得了行走、轮滑和踢球等运动技能。要把它们组成完整任务，还需要决定看哪里、往哪里移动、何时触球、失败后怎么办。本章只看流程和效果，不需要安装、运行代码或手算站位。",
+            "en": "The earlier chapters provide walking, skating and kicking skills. A complete task must also decide where to look, where to move, when to contact the ball and how to recover. This chapter is a guided overview: no installation, code execution or position calculations are required."
           },
           {
             "type": "flow",
-            "label": "自主射门的处理流程",
+            "label": "人设计判断流程，已有策略执行运动。",
             "nodes": [
               [
-                "传感器",
-                "RGB / ToF / IMU 与关节"
+                "观察",
+                "相机、ToF、IMU"
               ],
               [
-                "目标检测",
-                "图像 → 球与球门候选"
+                "定位与规划",
+                "找到球、球门与接近路线"
               ],
               [
-                "几何定位",
-                "像素与姿态 → 相对位置"
+                "对齐与执行",
+                "调用行走、踢球或轮滑技能"
               ],
               [
-                "出脚站位",
-                "球门方向 → 位置与朝向"
-              ],
-              [
-                "导航与接近",
-                "Nav2 路径 → 机身速度"
-              ],
-              [
-                "运动与复核",
-                "行走 / 踢球 → 新观测"
+                "检查结果",
+                "进球、跌倒、停车与恢复"
               ]
             ],
-            "zh": "每一步都要知道数据来自哪里、属于哪个坐标系、是否足够新，以及失败时如何处理。",
-            "en": "At every stage, identify the data source, coordinate frame, freshness and recovery behavior.",
-            "groups": [
-              "Isaac Sim：产生与解释传感器数据",
-              "规划与执行：把目标变成动作"
-            ],
+            "zh": "人设计判断流程，已有策略执行运动。",
+            "en": "People design the decision flow; existing policies execute motion.",
             "english_diagram": {
-              "label": "Autonomous football data flow",
+              "label": "People design the decision flow; existing policies execute motion.",
               "nodes": [
                 [
-                  "Sensors",
-                  "RGB / ToF / IMU / joints"
+                  "Observe",
+                  "Camera, ToF and IMU"
                 ],
                 [
-                  "Detection",
-                  "Image → ball / goal"
+                  "Locate and plan",
+                  "Ball, goal and approach route"
                 ],
                 [
-                  "Geometry",
-                  "Pixels and pose → location"
+                  "Align and act",
+                  "Walking, kicking or skating"
                 ],
                 [
-                  "Kick stance",
-                  "Goal direction → pose"
-                ],
-                [
-                  "Approach",
-                  "Nav2 path → body velocity"
-                ],
-                [
-                  "Motion and checks",
-                  "Walk / kick → observation"
+                  "Check the outcome",
+                  "Goal, fall, stopping and recovery"
                 ]
               ],
-              "groups": [
-                "Isaac Sim: acquire and interpret sensor data",
-                "Planning and execution: goals become actions"
-              ]
-            }
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "环节",
-                "输入",
-                "方法或模型",
-                "输出"
-              ],
-              "en": [
-                "Stage",
-                "Input",
-                "Method or model",
-                "Output"
-              ]
+              "groups": []
             },
-            "rows": {
-              "zh": [
-                [
-                  "视觉识别",
-                  "Isaac Sim RGB 相机图像",
-                  "目标检测网络",
-                  "球与球门检测框、类别与置信度"
-                ],
-                [
-                  "球与球门定位",
-                  "像素、相机内参、头部关节与姿态",
-                  "几何投影、球体与球门尺寸约束",
-                  "带时间戳的目标相对位置"
-                ],
-                [
-                  "距离与姿态补充",
-                  "VL53L8CX 8×8 ToF、IMU",
-                  "测距有效性检查、姿态估计",
-                  "距离扇区、身体姿态及有效标志"
-                ],
-                [
-                  "出脚站位",
-                  "球位置、球门方向、踢球偏置",
-                  "几何计算，无需新神经网络",
-                  "目标位置与朝向"
-                ],
-                [
-                  "路径与接近",
-                  "地图、当前位置、目标站位",
-                  "Nav2 Navfn 与接近控制器",
-                  "路径、机身速度指令"
-                ],
-                [
-                  "运动技能",
-                  "本体状态、速度或出脚指令",
-                  "行走 ONNX、踢球教师与残差模型",
-                  "14 个关节目标"
-                ],
-                [
-                  "任务协调",
-                  "上述输出与时间戳",
-                  "状态机与动作就绪条件检查",
-                  "继续走、重新观察、出脚或停止"
-                ]
-              ],
-              "en": [
-                [
-                  "Detection",
-                  "Isaac Sim RGB images",
-                  "Object detector",
-                  "Ball/goal boxes, classes and confidence"
-                ],
-                [
-                  "Target localization",
-                  "Pixels, intrinsics, head joints and posture",
-                  "Geometry and object-size constraints",
-                  "Timestamped relative target positions"
-                ],
-                [
-                  "Range and posture",
-                  "VL53L8CX 8×8 ToF and IMU",
-                  "Validity checks and orientation estimation",
-                  "Range sectors, posture and valid flags"
-                ],
-                [
-                  "Kick stance",
-                  "Ball, goal direction and kick offset",
-                  "Geometry; no new neural network",
-                  "Target position and heading"
-                ],
-                [
-                  "Route and approach",
-                  "Map, current pose and target stance",
-                  "Nav2 Navfn and approach controller",
-                  "Path and body velocity commands"
-                ],
-                [
-                  "Motion skills",
-                  "Body state and velocity/kick command",
-                  "Walking ONNX, kick teacher and residual",
-                  "14 joint targets"
-                ],
-                [
-                  "Coordination",
-                  "Stage outputs and timestamps",
-                  "State machine and readiness checks",
-                  "Walk, re-observe, kick or stop"
-                ]
-              ]
-            }
+            "layout": "adaptive"
           },
           {
             "type": "p",
-            "zh": "不是每一环都需要训练一个模型。检测与运动控制使用神经网络；坐标变换、站位计算、路径规划和任务状态切换可以使用明确的几何或规则。NVIDIA Isaac Sim 让这些模块共享同一场景与传感器，Isaac Lab 则负责训练和可重复评测运动能力。",
-            "en": "Not every stage needs a learned model. Detection and motion use networks; geometry, path planning and task transitions can use explicit algorithms. Isaac Sim connects the scene and sensors; Isaac Lab trains and evaluates motion skills."
+            "zh": "传统方法用相机投影和坐标变换把图像中的目标联系到机器人身体，再根据“球后站位、朝向球门”这样的任务先验生成接近目标。相关公式解决的是位置和方向的换算，本章不展开推导。步行分支使用 ROS 2 Nav2/Navfn 规划与自有跟踪控制；轮滑分支使用视觉反馈。Isaac ROS 可以提供可集成的感知能力，但当前射门实验没有运行 Isaac ROS 包。",
+            "en": "Camera projection and frame transforms relate image targets to the robot. A task prior—stand behind the ball and face the goal—defines the approach target. These calculations translate positions and directions; we omit their derivation here. Walking uses ROS 2 Nav2/Navfn planning with a custom tracker; skating uses visual feedback. Isaac ROS offers integration options for perception, but it is not running in this experiment."
           }
         ]
       },
       {
-        "id": "sensors",
+        "id": "walk-demo",
         "title": {
-          "zh": "三个互补的信息来源",
-          "en": "Three complementary sources"
-        },
-        "blocks": [
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "来源",
-                "提供的信息",
-                "局限"
-              ],
-              "en": [
-                "Source",
-                "Information",
-                "Limitation"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "RGB",
-                  "目标在图像中的位置",
-                  "不直接给出绝对距离"
-                ],
-                [
-                  "ToF",
-                  "前方 64 个分区的距离",
-                  "无效分区不能当作空地"
-                ],
-                [
-                  "身体 IMU",
-                  "身体姿态与角速度",
-                  "不是球或球门定位器"
-                ]
-              ],
-              "en": [
-                [
-                  "RGB",
-                  "Target location in the image",
-                  "Does not directly provide metric distance"
-                ],
-                [
-                  "ToF",
-                  "Ranges across 64 forward sectors",
-                  "Invalid sectors cannot be treated as free space"
-                ],
-                [
-                  "Body IMU",
-                  "Body orientation and angular velocity",
-                  "Does not locate the ball or goal"
-                ]
-              ]
-            }
-          },
-          {
-            "type": "p",
-            "zh": "Isaac Sim 在同一 USD 场景中生成与机器人头部姿态同步的 RTX RGB 和深度图，这里再把深度按 VL53L8CX 的 8 × 8 视区采样。RGB 检测器判断哪些区域可能是球，ToF 提供前方分区距离，机身 IMU 帮助在正确坐标系中解释射线。这样可重复改变视角、距离和姿态并保留时间戳；但 ToF 不是环视激光雷达，任何一种传感器也不能独立给出完整世界状态。",
-            "en": "The RGB detector finds image regions resembling a ball. ToF measures ranges across an 8 × 8 forward-facing grid; it is not a 360-degree lidar. A body IMU estimates attitude so image rays and ranges can be interpreted in the right frame. No single sensor supplies the complete world state."
-          },
-          {
-            "type": "p",
-            "zh": "这里的仿真配置采用 GC2093 相机和 VL53L8CX ToF，图像处理分辨率为 960 × 540，频率为 15 Hz。镜头视场、畸变、噪声和安装位姿都是明确的仿真假设，迁移到真实设备时必须重新标定。当前传感器 rig 只提供 RGB、深度、IMU 和时间信息，没有把 Isaac Sim 的物体语义真值交给控制器，也不会自动生成本章练习集的 YOLO 标签。",
-            "en": "The simulation uses GC2093 camera and VL53L8CX ToF profiles. Images are processed at 960 × 540 and 15 Hz. Lens field of view and noise settings are simulation assumptions; physical devices require calibration."
-          }
-        ]
-      },
-      {
-        "id": "projection",
-        "title": {
-          "zh": "从一个像素到一条空间射线",
-          "en": "From a pixel to a spatial ray"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "在光学相机坐标系中，像素 \\( (u,v) \\) 对应的射线方向与 \\( [(u-c_x)/f_x,\\,(v-c_y)/f_y,\\,1]^{\\mathsf T} \\) 成比例。内参中的 \\(f_x,f_y\\) 是以像素为单位的焦距，\\(c_x,c_y\\) 是主点。射线只表示方向；确定距离还需要已知几何或其他传感器提供约束。",
-            "en": "Let a detection center be pixel (u, v), with camera focal lengths (fx, fy) and principal point (cx, cy). In a common camera convention, the viewing ray is proportional to ((u−cx)/fx, (v−cy)/fy, 1). This gives direction but cannot distinguish a small nearby object from a larger distant one. Range or a known geometric constraint is still needed."
-          },
-          {
-            "type": "p",
-            "zh": "相机坐标系通常规定 x 轴向右、y 轴向下、z 轴向前；本课程的机身坐标系则规定 x 轴向前、y 轴向左、z 轴向上。两者之间必须依据相机相对于机身的旋转和平移进行变换，不能直接把同名坐标轴上的数值相加。头部转动也会改变这一变换，因此目标定位必须使用对应时刻的头部关节状态。",
-            "en": "Camera coordinates commonly use x right, y down, z forward. Here the body convention is x forward, y left, z up. Transform using the camera’s rotation and translation relative to the body rather than mixing same-named axes. Head motion changes this transform, so localization requires joint state at the appropriate time."
-          },
-          {
-            "type": "p",
-            "zh": "ToF 的 8 × 8 距离网格并不是 64 个独立的物体标签。单个网格可能同时覆盖地面和球，近距离反射也可能产生无效读数。应先检查测距状态和有效范围，再判断这些数据能否支持图像中的目标。若把“没有有效测量”误解为“前方没有障碍”，后续导航就会建立在错误前提上。",
-            "en": "An 8 × 8 ToF grid does not provide 64 independent object labels. One cell may cover both floor and ball, and close reflections may be invalid. Check measurement status and range before associating a return with an image target. Treating an invalid reading as an obstacle-free direction gives navigation a false premise."
-          }
-        ]
-      },
-      {
-        "id": "freshness",
-        "title": {
-          "zh": "曾经看见，不等于现在仍然知道",
-          "en": "A past observation can become stale"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "机器人移动或低头后，球可能暂时离开画面。虽然可以利用里程计在短时间内更新球的相对位置，但这种记忆会不断累积误差。一旦观测过期、ToF 数据无效或地面约束丢失，就应停止移动并重新观察，不能把缺失数据当作空地。",
-            "en": "After moving or tilting its head, the robot may lose the ball from view. Odometry can update a remembered relative position briefly, but error accumulates. Stale observations, invalid ranges, or lost ground constraints require stopping and reobserving. Missing data is not free space."
-          },
-          {
-            "type": "quiz",
-            "question": {
-              "zh": "检测器画出了准确的球框，就可以直接把球框中心当作世界坐标吗？",
-              "en": "If a ball box is accurate, can its center be used directly as a world coordinate?"
-            },
-            "answer": {
-              "zh": "不能。像素位置只能表示图像中的方向，还需要相机模型、相机姿态以及距离或几何约束，才能估计目标的空间位置。",
-              "en": "No. Pixels give an image direction. Spatial position also requires a camera model, camera pose, and distance or geometric constraints."
-            }
-          }
-        ]
-      },
-      {
-        "id": "target",
-        "title": {
-          "zh": "目的地不是球心",
-          "en": "The ball center is not the destination"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "射门的目标是让脚把球送向球门，而不是让机身占据球心。直接把球心交给导航器，可能导致提前撞球，或从无法出脚的一侧接近。因此，先从最终动作反推准备站位：机器人面向球门，在球后留出距离，再为踢球脚留出横向偏移。",
-            "en": "The task is to strike the ball toward the goal. Sending the body to the ball center risks premature contact or an unusable approach. Work backward from the kick: face the goal, leave space behind the ball and offset the body to align the kicking foot."
-          },
-          {
-            "type": "p",
-            "zh": "<strong>“站在球后方”是人为设计的任务先验。</strong>设计者根据射门方向、机器人尺寸与技能可用范围写出规则；当前系统没有让行走网络自行理解足球规则。检测模型学习目标外观，行走与踢球策略学习运动；站位计算使用明确的几何关系，Nav2 再为给定目标寻找路径。",
-            "en": "<strong>Standing behind the ball is a human-designed task prior.</strong> The designer encodes the shooting direction, robot geometry and skill operating range. The walking network does not infer football rules. Detection learns appearance and motion policies learn actions; geometry computes the stance and Nav2 plans toward that supplied target."
-          },
-          {
-            "type": "p",
-            "zh": "要区分“相对偏置”和“地图坐标”。某一阶段可以采用固定的准备距离与横向偏移，但球的位置或射门方向一变，目标坐标就会重新计算。当前室内任务使用视觉估计球的位置，并把已知球门位置和场地边界作为显式地图先验；它不是在未知球场中自动发现全部地图。",
-            "en": "Distinguish relative offsets from map coordinates. A stage may use fixed stand-off and lateral offsets, while its target coordinates change with the ball position or shooting direction. The indoor task uses a visually estimated ball position plus explicit map priors for the known goal and field bounds; it does not discover an entire unknown pitch."
-          }
-        ]
-      },
-      {
-        "id": "navigation-model",
-        "title": {
-          "zh": "从球与球门算出位置和朝向",
-          "en": "Compute the target position and heading"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "先把足球位置 B 和球门中心 G 放在同一平面坐标系中，单位均为米。用球指向球门的单位向量 u 表示射门方向，用 n 表示朝该方向看时的左侧。下面的角度从地图 +x 轴逆时针计量。",
-            "en": "Express ball B and goal center G in the same planar frame, in meters. Unit vector u points from ball to goal; n points left when facing that direction. Heading is measured counterclockwise from the map +x axis."
-          },
-          {
-            "type": "equation",
-            "label_zh": "射门方向与左法向",
-            "label_en": "Shooting direction and left normal",
-            "tex": "\\mathbf u=\\frac{\\mathbf G-\\mathbf B}{\\|\\mathbf G-\\mathbf B\\|},\\qquad \\mathbf n=\\begin{bmatrix}-u_y\\\\u_x\\end{bmatrix}"
-          },
-          {
-            "type": "equation",
-            "label_zh": "准备位置与目标朝向",
-            "label_en": "Target stance and heading",
-            "tex": "\\mathbf P^*=\\mathbf B-d\\mathbf u+\\ell\\mathbf n,\\qquad \\theta^*=\\operatorname{atan2}(u_y,u_x)"
-          },
-          {
-            "type": "p",
-            "zh": "d 是沿射门方向后退的距离，ℓ 是机器人向左偏移的距离。为何这样相加？到位并面向球门后，球相对机身的位置应约为 (d, −ℓ)，因此 B = P* + d u − ℓ n，移项就得到上式。ℓ > 0 表示机器人左偏、球在身体右侧，有利于右脚对球；它不是球也向左偏。B 与 G 重合时方向没有定义，应拒绝该输入。",
-            "en": "Here d is the stand-off and ℓ is the body’s leftward offset. At the target heading, the ball should lie at about (d, −ℓ) in the body frame. Thus B = P* + d u − ℓ n; rearranging gives the target formula. Positive ℓ places the body left of the shooting axis and the ball to its right, aligning a right-foot kick. Reject coincident B and G because the direction is undefined."
-          },
-          {
-            "type": "diagram",
-            "kind": "navigation-stance",
-            "label": "Stance geometry",
-            "zh": "先保持 d 和 ℓ 不变，移动足球或球门，观察 P* 与 θ*；再改变两个偏置。滑块只计算平面几何，不运行 Nav2 或物理仿真，也不表示所有数值都在技能可用范围内。",
-            "en": "Hold d and ℓ fixed and move the ball or goal; observe P* and θ*. Then vary the offsets. These sliders compute planar geometry, not Nav2 or physics, and do not certify the skill at every value."
-          },
-          {
-            "type": "p",
-            "zh": "例如 B = (0.02, 0)、G = (0.68, 0)，取 d = 0.22、ℓ = 0.035，则 u = (1, 0)，得到 P* = (−0.20, 0.035) m、θ* = 0°。机器人停在球后 22 cm，并向左偏 3.5 cm。若球横移，方向与目标都要按新观测重算；不是把这个地图坐标永久保存为射门点。",
-            "en": "For B = (0.02, 0), G = (0.68, 0), d = 0.22 and ℓ = 0.035, u = (1, 0), P* = (−0.20, 0.035) m and θ* = 0°. The body is 22 cm behind the ball and 3.5 cm left of its axis. Moving the ball changes both the direction and target; these map coordinates are not a permanent kick location."
-          },
-          {
-            "type": "code",
-            "label": "Python · geometry excerpt",
-            "code": "delta = [a.goal[i] - a.ball[i] for i in range(2)]\nlength = math.hypot(*delta)\ndirection = [x / length for x in delta]\nnormal = [-direction[1], direction[0]]\ntarget = [\n    a.ball[i] - a.distance * direction[i] + a.lateral * normal[i]\n    for i in range(2)\n]",
-            "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/scripts/workshop.py"
-          },
-          {
-            "type": "p",
-            "zh": "这是第 7 章 <code>plan</code> 几何练习的核心计算。完整入口还检查有限数值、正准备距离与非重合点；它输出坐标和示意图，尚未请求导航路径。接下来才需要回答：机器人能否通过已知空间到达这个目标？",
-            "en": "This is the core of Chapter 7’s <code>plan</code> geometry exercise. The full entry also checks finite values, positive stand-off and distinct points. It outputs coordinates and a diagram, without requesting a navigation path. The next question is whether known space admits a route to this target."
-          }
-        ]
-      },
-      {
-        "id": "planner",
-        "title": {
-          "zh": "Nav2 如何把目标变成路径",
-          "en": "How Nav2 turns a target into a path"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "Nav2 是开源的 ROS 2 导航框架。本实验使用其中的 Navfn 规划器：输入机器人起点、目标位姿和代价地图，返回一串路径点。导航准备点由上面的任务规则提供；Nav2 本身不知道什么是右脚射门。<a href=\"https://github.com/ros-navigation/navigation2\">查看 Nav2 开源项目</a>。",
-            "en": "Nav2 is an open-source ROS 2 navigation framework. This task uses its Navfn planner: a start pose, target pose and costmap produce a sequence of path points. The task rules above supply the target; Nav2 does not understand right-foot kicking. See the <a href=\"https://github.com/ros-navigation/navigation2\">Nav2 source project</a>."
-          },
-          {
-            "type": "p",
-            "zh": "占据栅格把空间分成已知空地、障碍和未知区域；代价地图进一步表达通行代价。靠近障碍的格子代价更高，可以让路径保留余量。机器人有体积，还要检查路径周围的外形包络，不能只检查一根没有宽度的线。",
-            "en": "An occupancy grid distinguishes known free space, obstacles and unknown cells. A costmap adds traversal costs, with higher costs near obstacles to encourage clearance. The robot has a footprint, so checks must consider an envelope around the path, not a zero-width line."
-          },
-          {
-            "type": "diagram",
-            "kind": "navigation-costmap",
-            "label": "Costmap example",
-            "zh": "此图用假设障碍解释代价地图，不是课程空场试验的测量地图，也不是 Navfn 搜索过程的回放。未知区域不等于空地；路径看似绕开障碍，也仍需检查机器人外形与实际执行偏差。",
-            "en": "This hypothetical obstacle illustrates costmaps. It is not a measured map from the empty-field experiment or a Navfn search replay. Unknown cells are not free space, and a route still requires footprint and execution checks."
-          },
-          {
-            "type": "p",
-            "zh": "当前配置明确启用 A* 搜索。理解其直觉时，可以用“已经付出的路径代价 + 到终点的估计剩余代价”比较候选格子。下面是 A* 的概念公式，帮助解释为何搜索会朝目标推进；它不是 Navfn 内部势场更新与路径提取的逐行实现。",
-            "en": "The configuration explicitly enables A*. Its intuition is to compare candidates using the cost already incurred plus an estimate of the remaining cost. The conceptual formula below explains goal-directed search; it is not a line-by-line description of Navfn’s potential updates and path extraction."
-          },
-          {
-            "type": "equation",
-            "label_zh": "A* 的概念评分",
-            "label_en": "Conceptual A* score",
-            "tex": "f(n)=g(n)+h(n)"
-          },
-          {
-            "type": "p",
-            "zh": "这里 g(n) 是到候选格子 n 的累计代价，h(n) 是从该格子到目标的估计代价；公式中的 g、n 与上一节的球门 G、法向向量 n 属于不同语境。实际使用哪个搜索算法由配置决定，不是行走网络学习出的选择。",
-            "en": "Here g(n) is the accumulated cost to candidate cell n, and h(n) estimates its remaining cost. These scalar search symbols are separate from goal G and the normal vector in the geometry section. The search method is selected by configuration, not learned by the walking network."
-          },
-          {
-            "type": "code",
-            "label": "YAML · Navfn configuration excerpt",
-            "code": "planner_plugins: [GridBased]\nGridBased:\n  plugin: nav2_navfn_planner::NavfnPlanner\n  use_astar: true\n  tolerance: 0.025\n  allow_unknown: false\n  use_final_approach_orientation: false",
-            "source": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/nav2.yaml"
-          },
-          {
-            "type": "p",
-            "zh": "该配置不允许穿越未知区域；<code>tolerance: 0.025</code> 是路径终点到请求目标的容差（米），不是足球对脚位置的容差。导航栅格为 4 × 3 m，分辨率为 2.5 cm；它与 1 × 1.6 m 的实体垫子不是同一尺寸。0.10 m 圆形外形是导航检查近似，不能替代双足运动和全身接触的物理验证。<a href=\"https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/\">Navfn 参数说明</a>。",
-            "en": "Unknown-space planning is disabled. <code>tolerance: 0.025</code> is the path-end tolerance in meters, not a foot-to-ball tolerance. The 4 × 3 m navigation grid at 2.5 cm resolution is distinct from the physical 1 × 1.6 m mat. The 0.10 m circular footprint is a navigation approximation, not a substitute for bipedal motion and contact validation. See the <a href=\"https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/\">Navfn parameter reference</a>."
-          },
-          {
-            "type": "p",
-            "zh": "完整任务将带时间戳的观测、已知场地边界、机器人位姿和目标组成不可变快照，由桥接程序提交给独立 CPU 容器内的 ROS 2 Jazzy Nav2 服务。服务发布对应地图与坐标变换，再调用 <code>ComputePathToPose</code>；返回结果必须与请求序号、坐标系及地图快照一致。当前地图结合 ToF 观测与已知空场先验，尚不能证明未知场景建图或任意障碍避让能力。",
-            "en": "The full task submits an immutable snapshot of timestamped observations, known field bounds, robot pose and target to a ROS 2 Jazzy Nav2 service in a separate CPU container. The bridge publishes the matching map and transforms, then calls <code>ComputePathToPose</code>. Returned results must match the request, coordinate frame and map snapshot. ToF observations and known empty-field priors do not establish unknown-scene mapping or general obstacle avoidance."
-          }
-        ]
-      },
-      {
-        "id": "navigation-execution",
-        "title": {
-          "zh": "有了路径，机器人如何真正走过去？",
-          "en": "How does the robot execute the approach?"
-        },
-        "blocks": [
-          {
-            "type": "flow",
-            "label": "当前实验的规划与执行",
-            "nodes": [
-              [
-                "Nav2 与通行检查",
-                "地图与目标 → 路径和许可"
-              ],
-              [
-                "自有任务控制器",
-                "结合视觉、姿态与阶段生成命令"
-              ],
-              [
-                "固定行走策略",
-                "机身命令 → 14 维关节动作"
-              ]
-            ],
-            "english_diagram": {
-              "label": "Planning and execution in this task",
-              "nodes": [
-                [
-                  "Nav2 and checks",
-                  "Map and target → path / permission"
-                ],
-                [
-                  "Task controller",
-                  "Vision, posture and stage → command"
-                ],
-                [
-                  "Walking policy",
-                  "Body command → 14 joint actions"
-                ]
-              ]
-            },
-            "zh": "位置随运动改变，新的观测会再次影响目标、命令和停止条件。",
-            "en": "Motion changes relative position; new observations update targets, commands and stopping conditions."
-          },
-          {
-            "type": "p",
-            "zh": "在常见 Nav2 系统中，控制服务器可以跟踪路径并发布速度；<strong>本实验没有启用这条完整执行链</strong>。当前桥接器取得 Navfn 路径与通行检查结果，自有控制器再结合视觉球方位、准备点误差和身体姿态，生成有限的转向、前进、对齐或停止阶段。因此不能把视频解释为“Nav2 自带控制器严格逐点跟踪路径”。",
-            "en": "A conventional Nav2 stack can use a controller server to follow a path and publish velocities. <strong>This task does not enable that full execution chain.</strong> Its bridge obtains Navfn paths and traversal checks; a custom controller combines visual ball bearing, stance error and posture to generate bounded turning, forward, alignment or stop phases. The video does not show a stock Nav2 controller following every waypoint."
-          },
-          {
-            "type": "equation",
-            "label_zh": "从机身命令到关节动作",
-            "label_en": "From body commands to joint actions",
-            "tex": "\\mathbf c_t=(v_x^{\\rm cmd},v_y^{\\rm cmd},\\omega_z^{\\rm cmd}),\\qquad \\mathbf a_t=\\pi_{\\rm walk}(\\mathbf o_t,\\mathbf c_t)"
-          },
-          {
-            "type": "p",
-            "zh": "机身命令表示期望怎样移动；行走策略把命令与本体观测组合起来，输出 14 维关节动作。策略以 50 Hz 更新，Newton 以 200 Hz 推进物理。命令值不等于实际达到的速度：步态、接触和延迟都会造成误差，所以还要看新观测与身体状态。转向的正负号和速度缩放应以执行器接口为准。",
-            "en": "Body commands express desired motion. The walking policy combines them with proprioception to produce 14 joint actions at 50 Hz; Newton advances physics at 200 Hz. Commands are not measured achieved velocities: gait, contact and delay introduce error, requiring feedback. Use the executor’s conventions for turning signs and velocity scaling."
-          },
-          {
-            "type": "enrichment",
-            "title": {
-              "zh": "查看实现：不同阶段为什么使用不同距离",
-              "en": "Implementation: why stages use different distances"
-            },
-            "blocks": [
-              {
-                "type": "table",
-                "headers": {
-                  "zh": [
-                    "阶段",
-                    "相对球的位置参数",
-                    "用途"
-                  ],
-                  "en": [
-                    "Stage",
-                    "Ball-relative parameters",
-                    "Purpose"
-                  ]
-                },
-                "rows": {
-                  "zh": [
-                    [
-                      "Nav2 导航准备点",
-                      "d = 0.22 m，ℓ = 0.035 m",
-                      "基础控制器请求路径的目标"
-                    ],
-                    [
-                      "粗接近通行授权",
-                      "d = 0.36 m，ℓ = 0.028 m",
-                      "检查一段直线路径，不是再次调用 Navfn"
-                    ],
-                    [
-                      "近球观察站位",
-                      "d = 0.26 m，ℓ = 0.035 m",
-                      "观察和对齐的准备阶段"
-                    ],
-                    [
-                      "最终名义站位",
-                      "球在机身坐标约 (0.09, −0.035) m",
-                      "精细对位后再检查是否允许出脚"
-                    ]
-                  ],
-                  "en": [
-                    [
-                      "Nav2 preparation target",
-                      "d = 0.22 m, ℓ = 0.035 m",
-                      "Target of the base controller’s path request"
-                    ],
-                    [
-                      "Coarse-approach permission",
-                      "d = 0.36 m, ℓ = 0.028 m",
-                      "Checks a straight segment; no additional Navfn search"
-                    ],
-                    [
-                      "Near-ball observation stance",
-                      "d = 0.26 m, ℓ = 0.035 m",
-                      "Preparation for observation and alignment"
-                    ],
-                    [
-                      "Nominal final stance",
-                      "Ball at about (0.09, −0.035) m in body coordinates",
-                      "Fine alignment followed by kick-readiness checks"
-                    ]
-                  ]
-                }
-              },
-              {
-                "type": "p",
-                "zh": "这些是不同控制层的参数，不是要求每次运行依次抵达的四个地图点。它们需要与技能工作范围一起验证，不能仅凭常识调整距离就保证更好。出脚还要求球在机身坐标的 x∈[0.075, 0.105] m、y∈[−0.05, −0.02] m 区域内，并同时满足观测有效期、朝向、身体状态及头部返回条件。",
-                "en": "These belong to different control layers; they are not four map waypoints that every run must visit in sequence. Validate changes against the skill’s operating range. Kick readiness also requires the ball within body-frame x∈[0.075, 0.105] m and y∈[−0.05, −0.02] m, plus valid observation age, heading, posture and head return."
-              },
-              {
-                "type": "p",
-                "zh": "对照源码：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/football/controller.py\">导航目标与基础路径处理</a>、<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/coarse_track.py\">粗接近通行检查</a>、<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/command_navigation_native.py\">视觉阶段控制</a>、<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/final_approach.py\">最终接近与出脚范围</a>。",
-                "en": "Compare the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/football/controller.py\">base target and path handling</a>, <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/coarse_track.py\">coarse checks</a>, <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/command_navigation_native.py\">visual stage control</a> and <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/evaluation/football/final_approach.py\">final approach and readiness region</a>."
-              }
-            ]
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "检查层次",
-                "应该观察什么",
-                "还不能说明什么"
-              ],
-              "en": [
-                "Check",
-                "Evidence to inspect",
-                "What remains unproven"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "生成路径",
-                  "请求匹配、路径有效、未知区域与外形检查通过",
-                  "机器人已经走到目标"
-                ],
-                [
-                  "实际到达准备站位",
-                  "位置与朝向误差、姿态稳定、观测仍有效",
-                  "可以立刻出脚"
-                ],
-                [
-                  "满足出脚条件",
-                  "近球区域、朝向、有效期与头部交接检查",
-                  "球一定会进门"
-                ],
-                [
-                  "完整任务成功",
-                  "物理接触后球过门、机器人恢复且满足评分规则",
-                  "其他初始条件也会成功"
-                ]
-              ],
-              "en": [
-                [
-                  "Path produced",
-                  "Matching request, valid path, unknown-space and footprint checks",
-                  "The robot has reached the target"
-                ],
-                [
-                  "Preparation stance reached",
-                  "Position/heading error, stable posture, fresh observation",
-                  "Immediate permission to kick"
-                ],
-                [
-                  "Kick readiness",
-                  "Near-ball region, heading, freshness and head handoff",
-                  "A guaranteed goal"
-                ],
-                [
-                  "Complete success",
-                  "Physical ball crossing and recovery under scoring rules",
-                  "Success from other initial conditions"
-                ]
-              ]
-            }
-          },
-          {
-            "type": "quiz",
-            "question": {
-              "zh": "Nav2 已返回一条有效路径，但机器人还在转向。此时能声称“已到达射门站位”吗？",
-              "en": "Nav2 returned a valid path, but the robot is still turning. Has it reached the kick stance?"
-            },
-            "answer": {
-              "zh": "不能。路径只是规划结果。需要检查实际位置、朝向、姿态与观测，再单独核验出脚条件；行走命令本身也不是实际到达的证据。",
-              "en": "No. A path is a planning result. Check actual position, heading, posture and observations, then kick readiness separately. A motion command is not evidence of arrival."
-            }
-          }
-        ]
-      },
-      {
-        "id": "isaac-ros-nav2",
-        "title": {
-          "zh": "Isaac ROS 与 Nav2 是什么关系？",
-          "en": "How do Isaac ROS and Nav2 relate?"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "Nav2 是独立的开源导航框架，并非 NVIDIA 的专有导航器。Isaac ROS 是 NVIDIA 提供的加速 ROS 组件集合，可以向 Nav2 提供感知、定位和环境表示。例如，Isaac ROS Visual SLAM 可提供位姿，nvblox 可根据深度与位姿构建环境表示，再通过代价地图接口支持 Nav2 规划。更准确的名称是 <strong>“Isaac ROS 与 Nav2 集成导航”</strong>，不是把两者当作同一个产品。",
-            "en": "Nav2 is an independent open-source navigation framework, not an NVIDIA proprietary navigator. Isaac ROS provides NVIDIA-accelerated ROS components that can supply perception, localization and environmental representations to Nav2. For example, Visual SLAM can provide poses, and nvblox can reconstruct an environment from depth and poses for use through costmap interfaces. Call this <strong>Isaac ROS integration with Nav2</strong>, rather than treating them as one product."
-          },
-          {
-            "type": "flow",
-            "label": "可选的 Isaac ROS + Nav2 集成架构",
-            "nodes": [
-              [
-                "相机与姿态输入",
-                "满足组件的标定和同步要求"
-              ],
-              [
-                "Isaac ROS 组件",
-                "Visual SLAM / nvblox 等"
-              ],
-              [
-                "Nav2",
-                "接收位姿与环境信息进行导航"
-              ]
-            ],
-            "english_diagram": {
-              "label": "Optional Isaac ROS + Nav2 architecture",
-              "nodes": [
-                [
-                  "Camera and pose inputs",
-                  "Meet calibration and timing needs"
-                ],
-                [
-                  "Isaac ROS components",
-                  "Visual SLAM / nvblox, for example"
-                ],
-                [
-                  "Nav2",
-                  "Use pose and environment for navigation"
-                ]
-              ]
-            },
-            "zh": "这是扩展架构，尚未接入本实验。各组件对传感器、算力与同步的要求需要单独核对。",
-            "en": "This is an optional architecture, not the current task implementation. Check sensor, compute and synchronization requirements for each component."
-          },
-          {
-            "type": "p",
-            "zh": "<strong>本实验实际使用 Isaac Sim + ROS 2 Nav2，尚未使用 Isaac ROS 包。</strong>Isaac Sim 提供 RTX 传感器渲染，Isaac Lab 组织学习任务与策略接口，Newton 推进物理；Nav2/Navfn 在 CPU 容器中规划，自有控制器完成阶段与命令交接。使用 Isaac Sim 不会自动意味着使用了 Isaac ROS。导航依赖和启动入口可在 <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/image-lock.json\">软件包锁定文件</a>与 <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/service.py\">服务源码</a>中核对。",
-            "en": "<strong>This task uses Isaac Sim with ROS 2 Nav2; it does not currently use Isaac ROS packages.</strong> Isaac Sim renders RTX sensor data, Isaac Lab organizes learning tasks and policy interfaces, and Newton advances physics. CPU-hosted Nav2/Navfn plans while a custom controller handles stages and commands. Using Isaac Sim does not imply Isaac ROS integration. Inspect the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/image-lock.json\">package lock</a> and <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/scene_nav2/service.py\">service source</a>."
-          },
-          {
-            "type": "p",
-            "zh": "若将来要把这条链路扩展到真实设备或更复杂场地，应先确定需要改进的是定位、建图还是控制，再选择组件，并重新检查接口、延迟与任务成功率。<a href=\"https://docs.nav2.org/rolling/tutorials/general_tutorials/isaac_perceptor/\">Nav2 官方视觉导航教程</a>展示了 NVIDIA 组件与 Nav2 的协同；那套平台的传感器和计算配置不能直接视为 Microduck 已具备的配置。",
-            "en": "For physical deployment or more complex fields, first identify whether localization, mapping or control needs improvement, then select components and validate interfaces, delay and task outcomes. The <a href=\"https://docs.nav2.org/rolling/tutorials/general_tutorials/isaac_perceptor/\">official Nav2 vision-navigation tutorial</a> shows integration with NVIDIA components; its sensor and compute setup is not automatically available on Microduck."
-          }
-        ]
-      },
-      {
-        "id": "phases",
-        "title": {
-          "zh": "把接近分成几个阶段",
-          "en": "Approach in stages"
-        },
-        "blocks": [
-          {
-            "type": "pipeline",
-            "zh": [
-              "搜索与观察",
-              "远距离接近",
-              "近距离对准",
-              "检查出脚条件",
-              "踢球与恢复"
-            ],
-            "en": [
-              "Search and observe",
-              "Coarse approach",
-              "Fine alignment",
-              "Check kick conditions",
-              "Kick and recover"
-            ]
-          },
-          {
-            "type": "p",
-            "zh": "距离较远时，可以优先缩短与球之间的距离；接近后则应减小移动幅度，同时检查球是否仍然可见、机身朝向是否正确，以及脚掌与球的相对位置是否合适。即使距离已经足够近，只要朝向不正确，就仍不应出脚。",
-            "en": "At a distance, reducing range is the main priority. Nearby, motion must become more precise while preserving visibility, heading, and foot placement. Being close enough is not sufficient if heading is wrong."
-          },
-          {
-            "type": "p",
-            "zh": "导航规划器负责给出路线或方向，行走策略负责实际执行。规划器找到可行路径，并不代表机器人已经沿该路径走完全程；Isaac Sim 的可重复场景便于同时回看相机、俯视轨迹和物理接触，完整系统仍必须处理策略跟踪误差、执行器延迟、接触事件和传感器更新。",
-            "en": "A planner supplies a route or direction; the walking policy executes it. A valid planned path does not prove the robot has traversed it. The system must handle tracking errors, contact, and sensor updates."
-          },
-          {
-            "type": "media",
-            "file": "approach-stance.gif",
-            "alt": {
-              "zh": "接近目标并调整出脚站位的片段",
-              "en": "Approach and stance adjustment excerpt"
-            },
-            "zh": "只观察接近与调整站位：需要控制的是球相对身体的位置和朝向，而不是单纯让画面中的球越来越大。",
-            "en": "Focus on approach and stance adjustment: control relative position and heading, not just apparent ball size."
-          }
-        ]
-      },
-      {
-        "id": "worked-example",
-        "title": {
-          "zh": "手算一次出脚站位",
-          "en": "Work through a stance target"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "先用球门中心减去球的位置，得到从球指向球门的方向，再将该方向归一化。站位位于球的后方：从球的位置沿该方向反向移动 <code>distance</code>，再沿垂直方向偏移 <code>lateral</code>，为出脚腿留出空间。偏移方向是这项几何练习中的约定，不能直接替代真实技能入口的标定值。",
-            "en": "Subtract the ball position from the goal center and normalize the result to obtain the shooting direction. The stance lies behind the ball: move back by <code>distance</code> along that direction, then sideways by <code>lateral</code> to allow space for the kicking leg. This exercise defines its own offset convention; it does not replace calibrated entry values in the physical skill."
-          },
-          {
-            "type": "p",
-            "zh": "先运行<a href=\"07-football.html#plan-practice\">第 7 章的站位计算命令</a>。打开生成的 <code>plan.svg</code>，检查目标点、球和球门之间的相对关系；<code>plan.json</code> 中记录了目标坐标与朝向。把距离从 0.18 改为 0.25，并使用另一个输出目录：先预测目标点会向哪个方向移动，再用结果验证预测。该命令只计算已知点之间的几何关系，既没有运行物理仿真，也不能证明目标实际可达。",
-            "en": "First run the <a href=\"07-football.html#plan-practice\">stance geometry command in Chapter 7</a>. Open <code>plan.svg</code> to inspect the stance, ball, and goal. <code>plan.json</code> gives the target position and heading. Change distance from 0.18 to 0.25 with a new output directory; predict the direction of movement and check it. This command computes geometry from known points. It runs no physics and does not prove reachability."
-          },
-          {
-            "type": "p",
-            "zh": "完整任务还需要应对机身偏航漂移、步态延迟以及近距离目标离开视野等情况。因此，接近过程中必须持续更新观测并检查停止条件。当有效距离信息或地面支持丢失时，应先停止或在约束下后退，再重新观察；未知区域不能直接当作空闲区域。",
-            "en": "The full task also handles yaw drift, delayed gait response, and targets leaving view at close range. Approach therefore updates observations and checks stopping conditions repeatedly. If valid range or floor support is lost, stop or retreat within constraints and observe again. Unknown space cannot be declared free space."
-          }
-        ]
-      },
-      {
-        "id": "observe",
-        "title": {
-          "zh": "什么时候需要再看一眼",
-          "en": "When should the robot look again?"
+          "zh": "观看步行射门",
+          "en": "Watch a walking shot"
         },
         "blocks": [
           {
             "type": "media",
-            "file": "observe-ball.gif",
+            "file": "autonomous-explained.gif",
             "alt": {
-              "zh": "只看观察足球与调整头部的片段：画面中的目标位置随距离和头部姿态改变。",
-              "en": "A focused view of ball observation and head motion."
+              "zh": "真实步行开发示例，保留观察、反复对齐、踢球与恢复的完整过程。第三视角按原物理记录重渲染，右上角为同步的原相机画面；单次成功不代表可靠率。",
+              "en": "A complete walking development example, including observation, repeated alignment, kicking and recovery. The observer view is re-rendered from recorded physics with the original synchronized camera inset. One success is not a reliability estimate."
             },
-            "zh": "只看观察足球与调整头部的片段：画面中的目标位置随距离和头部姿态改变。",
-            "en": "A focused view of ball observation and head motion."
+            "zh": "真实步行开发示例，保留观察、反复对齐、踢球与恢复的完整过程。第三视角按原物理记录重渲染，右上角为同步的原相机画面；单次成功不代表可靠率。",
+            "en": "A complete walking development example, including observation, repeated alignment, kicking and recovery. The observer view is re-rendered from recorded physics with the original synchronized camera inset. One success is not a reliability estimate."
           },
           {
             "type": "p",
-            "zh": "一次观察可以给出起始目标，但机器人走动后，相对位置会变化，姿态与里程估计也会积累误差。相机低头找球、抬头看球门，解决的是视野与精度问题；必要时再观察，比把过期位置当成当前事实更可靠。这里保留出脚前的位置核验。后退仅在观察或站位条件不足时作为恢复选项，正常成功流程可以直接接近并射门。",
-            "en": "A first observation supplies an initial target, but motion changes relative geometry and estimation error accumulates. The current controller verifies position before kicking. Retreat is a recovery option, not a mandatory phase."
+            "zh": "低头再调整的循环是真实控制行为。记录中有多次短转向，转向后要停稳并重新获得近处球的有效观测；朝向误差变化又会触发下一轮。改善连续观测、转向制动和进入/退出阈值的迟滞，有望减少往返切换，但需要配对物理测试确认。本章保留原速完整过程，不用剪辑把尚未解决的问题藏起来。",
+            "en": "The look-down and alignment cycles are real controller behavior. Short turns are followed by settling and fresh near-ball observations; a changed heading error can trigger another cycle. Continuous observation, improved turn braking and separate entry/exit thresholds could reduce switching, but require paired physical tests. The complete real-time sequence remains visible."
+          }
+        ]
+      },
+      {
+        "id": "rollers",
+        "title": {
+          "zh": "观看轮滑碰球",
+          "en": "Watch a gliding shot"
+        },
+        "blocks": [
+          {
+            "type": "media",
+            "file": "rollers-autonomous.gif",
+            "alt": {
+              "zh": "轮滑开发示例：6.79 秒真实触球、8.13 秒整球越线，随后在门前停稳。初始化到结束保持轮滑模式，没有切换踢腿。第三视角重渲染与原相机同步。",
+              "en": "Gliding development example: contact at 6.79 s, whole-ball crossing at 8.13 s, then settling before the goal. The robot stays on its wheels throughout; no leg-kick transition occurs. The re-rendered observer view is synchronized with the original camera."
+            },
+            "zh": "轮滑开发示例：6.79 秒真实触球、8.13 秒整球越线，随后在门前停稳。初始化到结束保持轮滑模式，没有切换踢腿。第三视角重渲染与原相机同步。",
+            "en": "Gliding development example: contact at 6.79 s, whole-ball crossing at 8.13 s, then settling before the goal. The robot stays on its wheels throughout; no leg-kick transition occurs. The re-rendered observer view is synchronized with the original camera."
           },
           {
-            "type": "quiz",
-            "question": {
-              "zh": "若球在相机里消失，为什么不能立即按最后的坐标出脚？",
-              "en": "Why not kick at the last known location when the ball leaves view?"
+            "type": "p",
+            "zh": "两种动作的决策规则不同。轮滑要控制接近速度和制动，步行要满足踢球策略的进入姿态。换一个任务时，工程师还要重新设计这些衔接条件。",
+            "en": "The decision rules differ: skating requires approach and braking control; walking must enter the kicking policy in a suitable pose. A different task requires new handoff rules."
+          }
+        ]
+      },
+      {
+        "id": "results",
+        "title": {
+          "zh": "效果：成功演示与独立测试分开看",
+          "en": "Separate demonstrations from evaluation"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "新 10 cm 足球场景",
+                "独立完整任务",
+                "实际观察"
+              ],
+              "en": [
+                "New 10 cm-ball scene",
+                "Independent full tasks",
+                "Observed limitation"
+              ]
             },
-            "answer": {
-              "zh": "目标可能因机器人运动而改变相对位置，最后一次估计也可能过期。应先检查时间戳、姿态与站位条件，必要时重新观察。",
-              "en": "Motion changes relative position and the estimate may be stale. Check time, pose and stance before kicking; reobserve when necessary."
+            "rows": {
+              "zh": [
+                [
+                  "步行射门",
+                  "0/4",
+                  "均未跌倒，失败发生在观测或交接阶段"
+                ],
+                [
+                  "轮滑射门",
+                  "1/4；进球 2/4",
+                  "有进球后停车失败，也有门柱定位未完成"
+                ]
+              ],
+              "en": [
+                [
+                  "Walking shot",
+                  "0/4",
+                  "No falls; observation or handoff failed"
+                ],
+                [
+                  "Gliding shot",
+                  "1/4; goals 2/4",
+                  "Stopping or goal-base localization failed"
+                ]
+              ]
             }
           },
           {
             "type": "p",
-            "zh": "到这里，我们已经明确每个环节需要什么输入、输出什么结果，以及何时需要重新观察。下一章把这些接口逐一接起来：先跑检测和几何计算，再运行完整的自主射门系统。",
-            "languages": [
-              "zh"
-            ]
+            "zh": "每组四次、每种地面一个预定新种子，样式和种子同时改变，因此不能据此证明某种地面造成失败。检测器的测试 mAP50 已达到 0.978，完整任务仍不稳定：认出目标、估计几何、完成动作是不同的问题。旧场景成绩不混入这里。",
+            "en": "Each group has four predeclared trials, one new seed per floor. Floor and seed change together, so these trials do not establish a causal floor effect. Detection mAP50 is 0.978, yet the full task remains inconsistent: recognition, geometric estimation and execution are different problems. Historical scene scores are kept separate."
+          }
+        ]
+      },
+      {
+        "id": "next",
+        "title": {
+          "zh": "让机器人学习动作，也学习组织任务",
+          "en": "Learn actions and how to organize them"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "手工流程的优点是可解释、容易逐步检查；代价是人需要理解任务，安排步骤、阈值与失败恢复。面对“把球送到另一端”“绕过椅子再射门”等新要求，维护成本会继续增加。我们希望把更多经验放进可学习的策略和可复用的技能，而不是为每个任务重新编排全部细节。",
+            "en": "Engineered pipelines are interpretable and easy to inspect step by step. They also require people to specify stages, thresholds and recovery. Requests such as moving the ball elsewhere or going around a chair create more integration work. Learned policies and reusable skills can carry more of that experience."
+          },
+          {
+            "type": "flow",
+            "label": "接下来的三章分别回答“怎么动、怎么组织任务、怎么覆盖变化”。",
+            "nodes": [
+              [
+                "GR00T",
+                "从图像、语言与示范学习动作"
+              ],
+              [
+                "ASPIRE",
+                "尝试、诊断、改写程序、积累技能"
+              ],
+              [
+                "Cosmos + Isaac",
+                "扩展数据，构建场景并验证泛化"
+              ]
+            ],
+            "zh": "接下来的三章分别回答“怎么动、怎么组织任务、怎么覆盖变化”。",
+            "en": "The next three chapters address action, task organization and variation.",
+            "english_diagram": {
+              "label": "The next three chapters address action, task organization and variation.",
+              "nodes": [
+                [
+                  "GR00T",
+                  "Learn actions from images, language and demonstrations"
+                ],
+                [
+                  "ASPIRE",
+                  "Try, diagnose, revise programs and retain skills"
+                ],
+                [
+                  "Cosmos + Isaac",
+                  "Expand data, compose scenes and evaluate generalization"
+                ]
+              ],
+              "groups": []
+            },
+            "layout": "adaptive"
+          },
+          {
+            "type": "p",
+            "zh": "大模型可以减少逐任务手写决策的负担，但仍需要机器人动作接口、基础运动能力和结果检查。下面讲的是接入方法与已核查的接口；尚未把 GR00T 或 ASPIRE 的 Microduck 射门结果写成已完成实验。",
+            "en": "Foundation models can reduce task-specific decision programming. They still need action interfaces, underlying movement skills and outcome checks. The following chapters explain the integration design and inspected interfaces; they do not claim a completed GR00T or ASPIRE Microduck football experiment."
           }
         ]
       }
     ],
     "references": [
       {
-        "url": "https://developer.nvidia.com/isaac/sim",
-        "zh": "NVIDIA Isaac Sim：传感器仿真与合成数据",
-        "en": "NVIDIA Isaac Sim: sensors and synthetic data"
-      },
-      {
-        "url": "https://docs.ultralytics.com/tasks/detect/",
-        "zh": "Ultralytics：目标检测",
-        "en": "Ultralytics: object detection"
-      },
-      {
-        "url": "https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html",
-        "zh": "ST：VL53L8CX",
-        "en": "ST: VL53L8CX"
-      },
-      {
-        "url": "https://docs.isaacsim.omniverse.nvidia.com/6.0.1/ros2_tutorials/tutorial_ros2_navigation.html",
-        "zh": "NVIDIA Isaac Sim：ROS 2 导航集成教程",
-        "en": "NVIDIA Isaac Sim: ROS 2 navigation integration"
-      },
-      {
         "url": "https://docs.nav2.org/",
-        "zh": "Nav2：导航概念与组件",
-        "en": "Nav2: navigation concepts and components"
+        "zh": "Nav2 官方文档",
+        "en": "Nav2 documentation"
       },
       {
-        "url": "https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/",
-        "zh": "Nav2 Jazzy：Navfn 参数",
-        "en": "Nav2 Jazzy: Navfn parameters"
+        "url": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/task-evaluation.json",
+        "zh": "步行完整测试记录",
+        "en": "Walking trial records"
       },
       {
-        "url": "https://nvidia-isaac-ros.github.io/",
-        "zh": "NVIDIA Isaac ROS：组件与平台要求",
-        "en": "NVIDIA Isaac ROS: components and platform requirements"
+        "url": "https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-task-evaluation.json",
+        "zh": "轮滑完整测试记录",
+        "en": "Gliding trial records"
       }
     ]
   },
   {
-    "id": "07-football",
-    "title": {
-      "zh": "完成自主射门",
-      "en": "Complete the autonomous task"
-    },
-    "summary": {
-      "zh": "依次实现检测、定位、站位规划、接近控制与技能交接，最后在 Isaac Sim 中运行完整自主射门。",
-      "en": "Implement detection, localization, stance planning, approach and skill handoff, then run the complete task in Isaac Sim."
-    },
-    "meta": {
-      "zh": "第 7 章 · 预计学习时长 40 分钟",
-      "en": "Chapter 7 · Estimated learning time: 40 minutes"
-    },
+    "id": "07-groot",
     "number": "7",
     "group": {
       "zh": "课程章节",
       "en": "Course chapters"
     },
+    "title": {
+      "zh": "让 GR00T 从示范中学习射门",
+      "en": "Teach GR00T from demonstrations"
+    },
+    "summary": {
+      "zh": "从 SO-101 sim2real 的数据流程出发，理解视觉—语言—动作模型如何适配 Microduck，以及微调前必须准备什么。",
+      "en": "Adapt the SO-101 sim-to-real data workflow to Microduck: what a vision-language-action model learns and what adaptation requires."
+    },
+    "meta": {
+      "zh": "第 7 章 · 预计学习时长 25 分钟",
+      "en": "Chapter 7 · Estimated learning time: 25 minutes"
+    },
     "sections": [
       {
-        "id": "detect",
+        "id": "idea",
         "title": {
-          "zh": "先运行固定检测器",
-          "en": "Run the fixed detector first"
+          "zh": "用目标与示范表达任务",
+          "en": "Express the task through goals and demonstrations"
         },
         "blocks": [
           {
-            "type": "media",
-            "file": "detections.gif",
-            "poster": "detections.jpg",
-            "alt": {
-              "zh": "这是固定检测器对练习集中八张不同图像的真实输出拼图。每个分格都是彼此独立的静态样本，不是动画或连续相机视频，也不能用于衡量推理速度。",
-              "en": "Actual fixed-detector outputs on eight different sample images. Each panel is an independent still, not a continuous camera video or an inference-speed measurement."
-            },
-            "zh": "这是固定检测器对练习集中八张不同图像的真实输出拼图。每个分格都是一张静态样本图，不是动画或连续相机视频，也不能用于衡量推理速度。",
-            "en": "Actual fixed-detector outputs on eight different sample images. Each panel is a separate still, not a continuous camera video or an inference-speed measurement."
-          },
-          {
             "type": "p",
-            "zh": "八张图并不是一次射门过程中的连续画面，而是检测练习集中的不同静态视图。不同背景、白线、距离和视角用于检查模型是否只记住了某一种场地外观。下面的命令会对这些图片分别检测足球和球门，并把带检测框的结果保存到新目录。",
-            "en": "The eight images are held-out detection views, not consecutive frames from one shot. Different backgrounds, markings, distances and views help check whether the detector relies on one scene appearance. The command below detects the ball and goal in each image and saves annotated results to a new directory."
+            "zh": "给机器人一句“把球送进球门”，再提供成功完成任务的示范，是另一种表达任务的方法。视觉—语言—动作模型（VLA）根据相机图像、任务指令和机器人状态预测接下来的一段动作。许多原来分散在“看球、调整、前进”规则里的经验，可以由数据学习。",
+            "en": "A language goal such as “send the ball into the goal,” paired with successful demonstrations, offers another way to specify the task. A vision-language-action model uses images, instructions and robot state to predict a short action sequence. Data can capture decisions previously distributed across looking, alignment and approach rules."
           },
           {
-            "type": "code",
-            "code": "python3 scripts/workshop.py detect \\\n  --model models/scene-detector/detector.pt \\\n  --source datasets/scene-sample/images/test \\\n  --output outputs/detection-01",
-            "label": "Terminal · Bash"
-          },
-          {
-            "type": "p",
-            "zh": "预期结果：生成标有球和球门检测框的图片。请逐张检查球体较小、靠近画面边缘或受到遮挡时的检测表现。检测置信度只是模型给出的分数，并不能保证目标判断一定正确。",
-            "en": "Expected result: images with ball and goal detections. Inspect small targets, image boundaries, and occlusion. Confidence is a model score, not a guarantee that a detection is correct."
-          },
-          {
-            "type": "pipeline",
-            "zh": [
-              "RGB 图像",
-              "检测框",
-              "图像射线",
-              "距离与地面约束",
-              "身体坐标下的目标"
+            "type": "flow",
+            "label": "GR00T 反复观察并预测短动作段；环境反馈形成闭环。",
+            "nodes": [
+              [
+                "输入",
+                "图像 + 指令 + 机器人状态"
+              ],
+              [
+                "GR00T N1.7",
+                "理解当前情境，预测动作段"
+              ],
+              [
+                "机器人控制",
+                "执行短前缀，保持底层稳定"
+              ],
+              [
+                "新的观察",
+                "重新判断下一步动作"
+              ]
             ],
-            "en": [
-              "RGB image",
-              "Detection box",
-              "Image ray",
-              "Range and ground constraints",
-              "Target in the body frame"
-            ]
+            "zh": "GR00T 反复观察并预测短动作段；环境反馈形成闭环。",
+            "en": "GR00T repeatedly observes and predicts short action segments in a feedback loop.",
+            "english_diagram": {
+              "label": "GR00T repeatedly observes and predicts short action segments in a feedback loop.",
+              "nodes": [
+                [
+                  "Inputs",
+                  "Images + instruction + robot state"
+                ],
+                [
+                  "GR00T N1.7",
+                  "Interpret context and predict an action chunk"
+                ],
+                [
+                  "Robot control",
+                  "Execute a short prefix; maintain stability"
+                ],
+                [
+                  "Fresh observation",
+                  "Reconsider the next action"
+                ]
+              ],
+              "groups": []
+            },
+            "layout": "adaptive",
+            "loop": true
           },
           {
             "type": "p",
-            "zh": "八张图是检测器的保留测试示例，每种地面各两张：两种足球场地、大理石和棕色木地板。它们不是同一次射门的连续帧。改变背景和光照，是为了检查模型是否认出了球与球门，而不是记住某种草地颜色或白线；机器人和道具尺寸保持一致。检测框通过后，仍需检查门柱底部提取、尺寸定位和实际控制。 部分示例刻意保留了被画面边缘裁切的目标：检测器仍可能给出框，但几何定位应拒绝不完整的轮廓，等待重新观察。",
-            "en": "These eight held-out detection examples contain two views of each surface: two football patterns, marble and brown wood. They are not consecutive frames from one shot. Varying backgrounds and light tests recognition beyond grass colour and field lines; robot and prop dimensions stay fixed. Boxes still require post-base extraction, metric localization and control checks. Some targets are cropped by image edges: a detection box can exist while metric geometry must reject the incomplete contour and request another view."
+            "zh": "“预测动作”与“规划整项任务”相关，但并不相同。GR00T 的动作段不是一条已经避开所有障碍的全局路径；较长任务还需要目标管理、检查与恢复。下一章再讨论如何让智能体组织这些能力。",
+            "en": "Action prediction and whole-task planning are related but distinct. An action chunk is not a globally collision-free path. Longer tasks also need goal management, checks and recovery, which the next chapter addresses."
           }
         ]
       },
       {
-        "id": "training",
+        "id": "version",
         "title": {
-          "zh": "练习训练一个检测器",
-          "en": "Practice training a detector"
+          "zh": "使用当前公开的 GR00T N1.7",
+          "en": "Use the current public GR00T N1.7"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "下面的命令用小型练习集训练 5 轮，让您观察损失和检测框的变化。请在课程仓库根目录运行，并为输出选择新目录。",
-            "en": "The command below trains for five epochs on the small practice set so you can inspect loss and detection boxes. Run it from the repository root with a new output directory."
-          },
-          {
-            "type": "code",
-            "code": "python3 scripts/workshop.py train-detector \\\n  --data datasets/scene-sample/dataset.yaml \\\n  --epochs 5 \\\n  --batch 8 \\\n  --seed 303 \\\n  --output outputs/student-detector-01",
-            "label": "Terminal · Bash"
+            "zh": "截至 2026 年 10 月 26 日，官方仓库当前公开版本为 <strong>GR00T N1.7</strong>，基础模型标识为 <code>nvidia/GR00T-N1.7-3B</code>。它使用 Cosmos-Reason2-2B / Qwen3-VL 视觉语言骨干与动作生成头；这不等于已把后文的 Cosmos 3 接进同一个模型。官方提供自定义机器人数据微调与策略服务接口。",
+            "en": "As checked on 26 October 2026, the current public release is <strong>GR00T N1.7</strong>, with base checkpoint <code>nvidia/GR00T-N1.7-3B</code>. It uses a Cosmos-Reason2-2B / Qwen3-VL backbone and an action head; that does not mean Cosmos 3 is already part of this model. Official workflows support custom-robot fine-tuning and policy serving."
           },
           {
             "type": "p",
-            "zh": "小样本和 5 个 epoch 只用于体验数据准备、标注、训练和验证流程，并不是完整的训练方案。请打开输出目录中的损失曲线和验证图片，检查标签是否正确覆盖球与球门。如需正式提升效果，应增加场景多样性，并严格分开训练、验证和测试场景。",
-            "en": "The small dataset and five epochs introduce data, labels, training, and validation; this is not a full training recipe. Inspect loss curves and validation images. To improve quality, diversify scenes and keep training, validation, and test scenes separate."
-          },
-          {
-            "type": "note",
-            "title": {
-              "zh": "后续仍使用课程检测器",
-              "en": "Keep the course detector downstream"
-            },
-            "zh": "本章的检测练习与完整任务默认加载 <code>models/scene-detector/detector.pt</code>。40 张练习图按场景种子分为 24 张训练、8 张验证和 8 张测试；短训练不会替换课程模型。检测 mAP 不是射门成功率。",
-            "en": "The detection lab and full task use <code>models/scene-detector/detector.pt</code>. The 40-image practice subset has 24 training, 8 validation and 8 test images, grouped by scene seed. Practice training does not replace the course model; mAP is not shooting success."
+            "zh": "Microduck 尚不是我们已经验证的预训练机器人。SO-101 的六维机械臂动作、GR00T 的通用张量容量和 Microduck 的十四个受控关节，不能按“维数差不多”直接互换。需要明确每个动作的物理含义、单位、频率、归一化和控制器接口。",
+            "en": "Microduck is not a pretrained embodiment validated here. SO-101 arm actions, the model’s tensor capacity and Microduck’s fourteen controlled joints are not interchangeable. Every action needs a defined physical meaning, unit, rate, normalization and controller interface."
           }
         ]
       },
       {
-        "id": "labels",
+        "id": "so101",
         "title": {
-          "zh": "检查标签与检测结果",
-          "en": "Inspect labels and detections"
+          "zh": "从 SO-101 课程迁移什么",
+          "en": "What transfers from the SO-101 course"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "练习集共包含 40 张图像，按照 24 / 8 / 8 划分为训练集、验证集和测试集。类别编号 0 表示球，1 表示球门。YOLO 标签的每一行采用 <code>class cx cy width height</code> 格式，后四项均按图像宽高归一化。例如，中心横坐标 0.5 表示画面宽度的一半，而不是世界坐标中的 0.5 米。Isaac Sim 支持为受控场景构建合成数据与标注流程，这有助于系统覆盖视角、光照和遮挡；这里的小数据集仍应按其现有标签检查，不能把场景中的物理真值或语义 ID 当作检测器已经见过的答案。",
-            "en": "The sample has 40 images split into 24 training, 8 validation, and 8 test images. Class 0 is the ball and class 1 the goal. Each YOLO label row is <code>class cx cy width height</code>, with the last four values normalized by image dimensions. A horizontal center of 0.5 means halfway across the image, not 0.5 meters in the world."
+            "zh": "机械臂 sim2real 课程的关键链路可以复用：遥操作采集同步图像、状态与动作，整理成 LeRobot 数据，微调 GR00T，在仿真和实物上分别评测。课程还改变光照、机器人颜色和垫子等外观，帮助策略适应观察差异。这里迁移的是数据与评测方法，不是直接把试管抓取权重当成足球策略。",
+            "en": "The SO-101 course supplies a reusable workflow: teleoperate, record synchronized images/state/actions, prepare LeRobot data, adapt GR00T, then evaluate simulation and hardware separately. Lighting, robot color and mat variations broaden visual coverage. The transferable part is this data and evaluation method; vial-manipulation weights are not a football policy."
           },
           {
-            "type": "p",
-            "zh": "请从推理输出中各选一张检测正确的图像和一张困难样本，分别检查漏检、误检与检测框偏移，并观察同一物体在大小和位置上的变化。再高的置信度也无法修复相机标定错误，更不能让二维检测框自动获得深度信息。进入导航阶段前，还必须检查距离、姿态、时间戳和数据有效性。",
-            "en": "Choose one clear prediction and one difficult example. Check missed objects, false detections, and misplaced boxes, then compare object size and position. High confidence cannot repair camera calibration or turn a 2D box into depth. Navigation still requires range, attitude, timestamps, and validity checks."
-          },
-          {
-            "type": "quiz",
-            "question": {
-              "zh": "标签中的球框中心为 (0.6, 0.4)，是否可以直接作为导航目标 (0.6 m, 0.4 m)？",
-              "en": "Can a ball label centered at (0.6, 0.4) be used directly as a navigation target at (0.6 m, 0.4 m)?"
+            "type": "table",
+            "headers": {
+              "zh": [
+                "SO-101 经验",
+                "Microduck 中的对应问题"
+              ],
+              "en": [
+                "SO-101 lesson",
+                "Microduck counterpart"
+              ]
             },
-            "answer": {
-              "zh": "不能。这是归一化图像坐标。需要相机模型和距离或地面约束，才能得到机器人坐标中的位置。",
-              "en": "No. These are normalized image coordinates. A camera model and range or ground constraint are needed to obtain robot-relative position."
+            "rows": {
+              "zh": [
+                [
+                  "相机与关节同步记录",
+                  "保留机身运动、头部视线与动作时间"
+                ],
+                [
+                  "示范抓取、放置与恢复",
+                  "示范接近、碰球/踢球、制动与恢复"
+                ],
+                [
+                  "仿真与真机分开评测",
+                  "先验证新场景，再做实机镜头和动力学标定"
+                ],
+                [
+                  "外观随机化",
+                  "覆盖不同家庭光照、背景和地面"
+                ]
+              ],
+              "en": [
+                [
+                  "Synchronize cameras and joints",
+                  "Retain body motion, gaze and action timing"
+                ],
+                [
+                  "Demonstrate grasp, place and recovery",
+                  "Demonstrate approach, contact, braking and recovery"
+                ],
+                [
+                  "Evaluate sim and real separately",
+                  "Test new scenes before hardware calibration"
+                ],
+                [
+                  "Vary appearance",
+                  "Cover home lighting, backgrounds and floors"
+                ]
+              ]
             }
           }
         ]
       },
       {
-        "id": "task-randomization",
+        "id": "actions",
         "title": {
-          "zh": "地面与光照变化：哪些环节需要域随机化？",
-          "en": "What must adapt when the scene changes?"
+          "zh": "先定义模型能控制什么",
+          "en": "Define what the model may control"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "域随机化让模型在训练时见到一组有意义的变化，减少对单一场景的依赖。它应针对真正受到变化影响的环节：RGB 检测器会受垫子颜色、白线、光照和网格影响；行走与踢球策略主要受摩擦、电压、延迟、质量和接触影响。当前系统由检测、几何、Nav2 与动作策略组成，并未使用 GR00T 这样的视觉—语言—动作模型。",
-            "en": "Domain randomization exposes a model to meaningful variation during training. Apply it to the affected component: mat colours, markings, light and mesh affect RGB detection; friction, voltage, delay, mass and contacts affect locomotion and kicking. This system combines detection, geometry, Nav2 and action policies; it does not use a vision-language-action model such as GR00T."
+            "zh": "较稳妥的第一条研究路线，是保留已有行走与轮滑策略，让学习模型输出有界的身体运动与视线请求，减少手写“观察—对齐—推进”的阶段切换。步行和轮滑的指令含义不同，应使用独立配置或显式模式条件；轮滑射门仍从开始到结束保持轮滑。踢球技能的触发可以由上层决定，不能把一个连续数值直接当成没有验证的离散技能切换。",
+            "en": "A practical first research route retains the locomotion policies and learns bounded body-motion and gaze requests, reducing hand-written observation/alignment/advance transitions. Walking and skating have different command semantics: use separate configurations or an explicit mode condition. A gliding shot remains in roller mode throughout. A higher-level controller can request a kicking skill; a continuous number is not automatically a validated discrete skill switch."
           },
           {
             "type": "p",
-            "zh": "本练习固定球门的形状、尺寸和材质，把视觉变化集中在两种足球场地、大理石、木地板，以及光照、球位和相机姿态。与让 GR00T 适应试管位置和颜色的思路相通，但系统分别使用目标检测器和运动策略，本次场景适配仅微调检测器，并没有使用 GR00T。",
-            "en": "This exercise fixes the goal shape, size and material. Visual variation covers two football surfaces, marble, wood, illumination, ball position and camera pose. The motivation resembles varying tube placement and colour for GR00T, but this system uses separate detector and motion policies; only the detector was fine-tuned for this scene, and GR00T is not used."
+            "zh": "另一条路线是学习关节动作，但它同时承担平衡与接触控制，数据与验证成本更高。N1.7 的官方新机器人示例允许配置非末端执行器动作，因此接口并非只能用于机械臂；然而能定义字段，并不证明十四关节足球策略已学会。当前优先验证分层接口，再决定训练目标。",
+            "en": "Learning joint actions is another route, with greater data and validation demands because balance and contact must also be learned. N1.7’s new-embodiment example supports non-end-effector actions. Definable fields, however, do not establish a learned fourteen-joint football policy. Validate the hierarchical interface before selecting the training target."
+          }
+        ]
+      },
+      {
+        "id": "data",
+        "title": {
+          "zh": "什么样的示范才有用",
+          "en": "What makes demonstrations useful"
+        },
+        "blocks": [
+          {
+            "type": "flow",
+            "label": "示范质量、动作对齐和独立评测，比只有更多视频更关键。",
+            "nodes": [
+              [
+                "采集",
+                "不同起点、指令、地面与恢复过程"
+              ],
+              [
+                "对齐",
+                "当前图像/状态 → 随后的实际动作"
+              ],
+              [
+                "分组",
+                "按回合、房间与布局划分数据"
+              ],
+              [
+                "微调与闭环验证",
+                "先短距离，再扩展任务范围"
+              ]
+            ],
+            "zh": "示范质量、动作对齐和独立评测，比只有更多视频更关键。",
+            "en": "Demonstration quality, action alignment and held-out evaluation matter beyond video quantity.",
+            "english_diagram": {
+              "label": "Demonstration quality, action alignment and held-out evaluation matter beyond video quantity.",
+              "nodes": [
+                [
+                  "Collect",
+                  "Starts, instructions, floors and recovery"
+                ],
+                [
+                  "Align",
+                  "Current images/state → subsequent actions"
+                ],
+                [
+                  "Split",
+                  "Group by episode, room and layout"
+                ],
+                [
+                  "Adapt and evaluate",
+                  "Start short, then expand task scope"
+                ]
+              ],
+              "groups": []
+            },
+            "layout": "adaptive"
           },
           {
-            "type": "quiz",
-            "question": {
-              "zh": "回顾<a href=\"04-terrain.html#train\">第 4 章的坡地行走训练</a>：让小鸭子适应不同坡度，是否属于 Domain Randomization（域随机化）？这次实现是否也采用了 Curriculum Learning（课程学习）？请分别找出“随机变化”和“难度调整”的依据，再展开答案。",
-              "en": "Recall the <a href=\"04-terrain.html#train\">slope-walking training in Chapter 4</a>. Does adapting Microduck to different slopes count as Domain Randomization? Does this implementation also use Curriculum Learning? Identify evidence for random variation and difficulty adjustment before revealing the answer."
+            "type": "p",
+            "zh": "现有日志可提供仿真中记录的图像、关节状态、惯性观测和实际执行动作，但单个成功回合远远不够。成功、失败和人工修正应保留明确标签；普通模仿学习不能把失败动作一概当作正确目标。必须区分策略原始输出、经过头部控制覆盖后的实际动作，以及电机真正执行的目标。",
+            "en": "Existing logs contain images, joint state, inertial observations and executed actions, but one successful episode is far from sufficient. Keep success, failure and corrective demonstrations explicitly labeled; ordinary imitation learning must not treat every failed action as a correct target. Distinguish raw policy outputs, actions after gaze overrides and actual motor targets."
+          },
+          {
+            "type": "p",
+            "zh": "头部相机会随机器人运动，图像与动作有不同采样率。应按照时间对齐并记录观测年龄，避免拿未来画面解释过去动作。来自同一回合的相邻帧不能分别放入训练集与测试集；想验证陌生家庭场景，最好把整个房间或布局留作测试。",
+            "en": "The head camera moves, and images/actions have different sampling rates. Align timestamps and observation ages without using future images for past actions. Do not split neighboring frames from one episode across train and test. Hold out complete rooms or layouts to assess unfamiliar homes."
+          }
+        ]
+      },
+      {
+        "id": "readiness",
+        "title": {
+          "zh": "接入可行性与下一次实验",
+          "en": "Readiness and the next experiment"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "官方新机器人配置、数据格式与策略接口已核查。已有轮滑记录中的 163 帧相机图像与关节状态能在同一时刻关联到 652 条动作中的对应条目；其中 97 条动作经过执行端修正，训练标签不能直接使用原始网络输出。本次检查的是 163 个单步对应关系；相机实际记录频率为 12.5 Hz，动作频率为 50 Hz。CPU 检查通过了官方输入形状检查及额外的时序、维度检查，尚未验证多步动作段，也没有加载 N1.7 权重、运行推理或微调。记录还需要补任务语言、动作转换配置与 LeRobot 数据导出，才能进入训练。",
+            "en": "The official custom-embodiment configuration, data format and policy interface have been reviewed. Existing roller logs provide 163 image/state frames aligned with entries in 652 action records; 97 actions differ from the raw network output after executor corrections. This checks 163 one-step pairs at 12.5 Hz camera capture and 50 Hz action recording. Official shape validators and added timing/dimension checks pass; future multi-step action chunks remain unchecked. N1.7 weights were not loaded and no inference or fine-tuning ran. Task language, action-conversion configuration and LeRobot export are still needed for training."
+          },
+          {
+            "type": "p",
+            "zh": "这次检查采用 14 维低层动作记录来验证数据字段；前面建议的高层速度与技能接口仍需单独采集标签、实现执行桥。两条路线不能互相冒充。基础视觉骨干有模型访问要求，后续训练应使用与现有 Newton 仿真分开的环境。详见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/validation/frontier-readiness.json\">接口检查范围与尚缺条件</a>。",
+            "en": "This probe uses 14-dimensional low-level action records. The proposed high-level velocity/skill route still needs its own labels and executor; validating one does not validate the other. The visual backbone has model-access requirements. Keep future training dependencies separate from the existing Newton environment. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/validation/frontier-readiness.json\">readiness scope and remaining requirements</a>."
+          },
+          {
+            "type": "p",
+            "zh": "下一次实验先固定一种运动方式和一个短距离任务，采集覆盖成功与恢复的示范，再按新起点和新房间评测。对照组使用同一机器人、道具、传感器与成功标准，分别记录进球、跌倒、停稳和观察次数。只有这样，才能判断学习策略是否真正减少反复调整。",
+            "en": "For the next experiment, fix one locomotion mode and one short task, collect successful and corrective demonstrations, and evaluate unseen starts and rooms. Keep robot, props, sensors and success criteria identical across baselines; measure scoring, falls, stopping and observation cycles. This establishes whether learning actually reduces repeated corrections."
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/NVIDIA/Isaac-GR00T",
+        "zh": "GR00T N1.7 官方仓库",
+        "en": "Official GR00T N1.7 repository"
+      },
+      {
+        "url": "https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/finetune_new_embodiment.md",
+        "zh": "新机器人微调配置",
+        "en": "Fine-tuning a new embodiment"
+      },
+      {
+        "url": "https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/data_preparation.md",
+        "zh": "示范数据格式与对齐",
+        "en": "Demonstration data preparation"
+      },
+      {
+        "url": "https://github.com/isaac-sim/Sim-to-Real-SO-101-Workshop",
+        "zh": "SO-101 sim2real 工作流",
+        "en": "SO-101 sim-to-real workflow"
+      },
+      {
+        "url": "https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/hardware_recommendation.md",
+        "zh": "推理与微调硬件要求",
+        "en": "Inference and fine-tuning requirements"
+      }
+    ]
+  },
+  {
+    "id": "08-aspire",
+    "number": "8",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "title": {
+      "zh": "用 ASPIRE 组织任务并积累技能",
+      "en": "Organize tasks and accumulate skills with ASPIRE"
+    },
+    "summary": {
+      "zh": "让大模型提出方案、调用技能、检查反馈并修正程序；理解它与 GR00T、Agnes Harness 的关系。",
+      "en": "Let a model propose plans, call skills, inspect feedback and revise programs; distinguish ASPIRE, GR00T and Agnes Harness."
+    },
+    "meta": {
+      "zh": "第 8 章 · 预计学习时长 25 分钟",
+      "en": "Chapter 8 · Estimated learning time: 25 minutes"
+    },
+    "sections": [
+      {
+        "id": "brain",
+        "title": {
+          "zh": "聪明的大脑需要可执行的身体接口",
+          "en": "A reasoning model needs executable robot interfaces"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "“先绕过椅子，再把球送进球门”同时包含目标理解、子任务安排和运动执行。大模型可以提出并调整任务计划；机器人控制器仍需要连续保持平衡和处理接触。这里的“完整路径”包括高层行动顺序，也可能需要几何避障路线，二者不能只用一段自然语言代替。",
+            "en": "“Go around the chair and send the ball into the goal” combines goal interpretation, subtask organization and motion. A model can propose and revise a plan, while controllers maintain balance and handle contact. A complete plan may require both a high-level sequence and a geometric route; prose alone does not supply either validated execution or collision avoidance."
+          },
+          {
+            "type": "flow",
+            "label": "把推理、技能执行和反馈连接起来，而不是让语言模型逐周期控制电机。",
+            "nodes": [
+              [
+                "任务智能体",
+                "理解目标，选择下一步"
+              ],
+              [
+                "技能接口",
+                "观察、移动、触球、停止"
+              ],
+              [
+                "动作策略",
+                "GR00T 或已有运动策略"
+              ],
+              [
+                "结果反馈",
+                "图像、进度、失败与实际完成判据"
+              ]
+            ],
+            "zh": "把推理、技能执行和反馈连接起来，而不是让语言模型逐周期控制电机。",
+            "en": "Connect reasoning, skill execution and feedback while retaining continuous motor control.",
+            "english_diagram": {
+              "label": "Connect reasoning, skill execution and feedback while retaining continuous motor control.",
+              "nodes": [
+                [
+                  "Task agent",
+                  "Interpret the goal; choose the next step"
+                ],
+                [
+                  "Skill interface",
+                  "Observe, move, contact and stop"
+                ],
+                [
+                  "Action policy",
+                  "GR00T or existing motor policies"
+                ],
+                [
+                  "Feedback",
+                  "Images, progress, failures and outcome predicates"
+                ]
+              ],
+              "groups": []
             },
-            "answer": {
-              "zh": "<strong>本课程这次训练同时使用了地形域随机化与课程学习，但依据不是“训练过不同坡度”这句话。</strong><br><br><strong>随机化发生在哪里？</strong>训练入口设置了 5 行难度、8 列地形：2 列平地、3 列金字塔坡面、3 列反向金字塔坡面。类型按比例分配，并非逐回合随机抽取。生成地形时，每块地形的难度为 <code>d = (r + u) / 5</code>，其中行号 <code>r = 0,…,4</code>，<code>u</code> 在 [0, 1) 内均匀随机采样；坡度参数的绝对值为 <code>0.03 + d × (0.22 − 0.03)</code>。它表示 <code>tan(α)</code>，不是角度，配置范围约对应 1.7°–12.4°。这种生成时对坡面几何的随机变化，可归为地形域随机化；并不是每次重置都从整个范围重新抽取坡度。<br><br><strong>课程学习发生在哪里？</strong>训练设置 <code>curriculum=True</code>、<code>max_init_terrain_level=1</code>，并保留了粗糙地形任务的 <code>terrain_levels_vel</code> 更新项。环境初始等级随机取 0 或 1，随后在重置时按机器人相对环境原点的水平位移升降级：位移超过 2 m 就升级；未达到升级条件，且小于当前平移速度指令模长 × 回合时限 × 0.5 时降级。等级最低为 0，超过最高级后随机分配等级。因此，这是按表现调整难度，不是按固定训练轮数从平地一路切到陡坡。<br><br><strong>怎样区分？</strong>域随机化关注“训练环境有哪些随机变化”，课程学习关注“怎样安排难度”；两者可以结合。第 4 章依次测试 0、±5°、±10°、±15° 的固定直线坡道，是评测安排，本身不是域随机化。上述分类也不能单独证明随机化提高了真机表现。<br><br>核对实现：<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py\">训练配置</a>；课程锁定版本 Isaac Lab 的<a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_generator.py#L235-L266\">地形采样</a>、<a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/core/velocity/mdp/curriculums.py#L23-L52\">升降级判据</a>与<a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_importer.py#L360-L400\">等级分配</a>。",
-              "en": "<strong>This course's training uses both terrain domain randomization and curriculum learning, but training on several slopes alone would not establish that.</strong><br><br><strong>Where is the randomization?</strong> The training entry point defines 5 difficulty rows and 8 terrain columns: 2 flat, 3 pyramidal and 3 inverted pyramidal. Types are assigned by proportion, not randomly drawn each episode. When generating the terrain, each tile receives difficulty <code>d = (r + u) / 5</code>, where the row index is <code>r = 0,…,4</code> and <code>u</code> is sampled uniformly from [0, 1). The slope parameter's magnitude is <code>0.03 + d × (0.22 − 0.03)</code>. This is <code>tan(α)</code>, not degrees; the configured range corresponds to about 1.7°–12.4°. Random variation in slope geometry at generation time qualifies as terrain domain randomization. A new slope is not drawn from the entire range at every reset.<br><br><strong>Where is the curriculum?</strong> Training sets <code>curriculum=True</code> and <code>max_init_terrain_level=1</code>, and retains the rough-terrain task's <code>terrain_levels_vel</code> update. Environments start at randomly assigned level 0 or 1. At resets, levels change according to horizontal displacement from the environment origin: above 2 m advances a level; otherwise, displacement below the current translational command magnitude × episode time limit × 0.5 lowers the level. Levels are bounded below by 0; advancing beyond the highest level assigns a random level. Difficulty therefore adapts to performance, rather than following a fixed iteration schedule from flat ground to steep slopes.<br><br><strong>How do they differ?</strong> Domain randomization concerns random variation in training environments; curriculum learning concerns how difficulty is scheduled. They can be combined. Testing fixed straight ramps at 0, ±5°, ±10° and ±15° in Chapter 4 is an evaluation protocol, not domain randomization by itself. This classification also does not establish a real-world performance benefit from randomization alone.<br><br>Check the implementation: <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py\">training configuration</a>; the course-pinned Isaac Lab <a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_generator.py#L235-L266\">terrain sampling</a>, <a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/core/velocity/mdp/curriculums.py#L23-L52\">promotion and demotion criteria</a>, and <a href=\"https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab/isaaclab/terrains/terrain_importer.py#L360-L400\">level assignment</a>."
+            "layout": "adaptive",
+            "loop": true
+          }
+        ]
+      },
+      {
+        "id": "loop",
+        "title": {
+          "zh": "ASPIRE：把尝试变成可复用经验",
+          "en": "ASPIRE: turn attempts into reusable experience"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "ASPIRE 的核心是代码形式的策略：智能体生成控制程序，执行后读取多模态记录，定位失败、修改程序，再把验证过的经验整理进技能库。这里的学习主要是程序与技能知识的迭代，不必每次都更新神经网络权重。当前官方公开的是 2026 年 10 月的 v1.0 工作流，包含迭代调试与演化搜索。",
+            "en": "ASPIRE uses code-as-policy: an agent generates control programs, inspects multimodal execution traces, diagnoses failures, revises code and retains validated experience in a skill library. This learning primarily updates programs and skill knowledge, rather than necessarily updating neural weights. The public October 2026 v1.0 workflow includes iterative debugging and evolutionary search."
+          },
+          {
+            "type": "flow",
+            "label": "通过真实执行反馈修正方案，验证后才复用。",
+            "nodes": [
+              [
+                "提出方案",
+                "检索已有技能，生成程序"
+              ],
+              [
+                "执行与观察",
+                "记录相机、动作、状态和结果"
+              ],
+              [
+                "诊断与修正",
+                "找到失败环节，修改下一次尝试"
+              ],
+              [
+                "保留经验",
+                "经开发验证后加入技能库"
+              ]
+            ],
+            "zh": "通过真实执行反馈修正方案，验证后才复用。",
+            "en": "Revise from execution feedback and reuse skills after validation.",
+            "english_diagram": {
+              "label": "Revise from execution feedback and reuse skills after validation.",
+              "nodes": [
+                [
+                  "Propose",
+                  "Retrieve skills and generate a program"
+                ],
+                [
+                  "Execute and observe",
+                  "Record images, actions, states and outcomes"
+                ],
+                [
+                  "Diagnose and revise",
+                  "Locate failure and change the next attempt"
+                ],
+                [
+                  "Retain",
+                  "Add skills after development validation"
+                ]
+              ],
+              "groups": []
+            },
+            "layout": "adaptive",
+            "loop": true
+          },
+          {
+            "type": "p",
+            "zh": "例如，机器人在白色地面上找不到门柱底端，智能体可以检查原图与失败原因，尝试另一观察角度或改进感知接口。它不能只因为程序没有报错就宣告进球，也不能更改门线判定来让实验通过。积累的是经过检验的方法，而不是对失败的文字解释。",
+            "en": "For example, missing goal-post bases on a pale floor can prompt inspection of images and failure records, followed by another viewpoint or a revised perception interface. A program exiting normally is not a goal, and redefining scoring to pass a trial is not an improvement. The reusable output is a tested method."
+          }
+        ]
+      },
+      {
+        "id": "microduck",
+        "title": {
+          "zh": "怎样接到 Microduck",
+          "en": "Adapting the framework to Microduck"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "需要的接口",
+                "可以复用的基础",
+                "仍需补齐"
+              ],
+              "en": [
+                "Interface",
+                "Reusable foundation",
+                "Remaining integration"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "观测",
+                  "RGB、ToF、IMU 与关节记录",
+                  "统一时间、坐标含义与观测有效期"
+                ],
+                [
+                  "动作",
+                  "步行、轮滑、踢球及停止能力",
+                  "有界调用、超时、取消与模式语义"
+                ],
+                [
+                  "结果",
+                  "真实接触、越线、跌倒和恢复评分",
+                  "向智能体提供可诊断反馈，保留独立评分"
+                ],
+                [
+                  "技能库",
+                  "已有控制与失败分析经验",
+                  "新的程序经过陌生起点/场景验证再复用"
+                ]
+              ],
+              "en": [
+                [
+                  "Observation",
+                  "RGB, ToF, IMU and joint records",
+                  "Consistent timing, frames and observation age"
+                ],
+                [
+                  "Action",
+                  "Walking, skating, kicking and stopping",
+                  "Bounded calls, timeouts, cancellation and mode semantics"
+                ],
+                [
+                  "Outcome",
+                  "Contact, crossing, fall and recovery checks",
+                  "Diagnostic feedback plus independent scoring"
+                ],
+                [
+                  "Skill library",
+                  "Existing control and failure knowledge",
+                  "Validate new programs on unseen starts/scenes"
+                ]
+              ]
             }
+          },
+          {
+            "type": "p",
+            "zh": "官方示例主要面向 LIBERO-Pro、Robosuite、BEHAVIOR-1K 与所列真实机械臂系统；当前没有本课程可直接使用的 Microduck 适配器。不能将机械臂末端位置控制替换成小鸭子的关节名字就宣布接通。我们可以复用 ASPIRE 的探索和技能库方法，同时为 Newton 环境实现机身运动与足球任务接口。",
+            "en": "Official examples target LIBERO-Pro, Robosuite, BEHAVIOR-1K and documented real-arm systems. There is no ready Microduck adapter for this course. Renaming arm joints does not turn end-effector control into biped control. Reuse ASPIRE’s exploration and skill-library approach while implementing body-motion and football interfaces for Newton."
+          }
+        ]
+      },
+      {
+        "id": "groot-link",
+        "title": {
+          "zh": "ASPIRE 与 GR00T 可以怎样协作",
+          "en": "How ASPIRE and GR00T can cooperate"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "可以先让 ASPIRE 调用已有运动策略，研究“如何组织任务”；等 Microduck 的 GR00T 适配经过验证，再把部分动作技能换成学习策略。GR00T 负责从当前观察生成动作，ASPIRE 负责目标分解、调用、检查与修正。这是一种分层接入方案，不是官方已经交付的 Microduck 组合。",
+            "en": "Start by letting ASPIRE call existing motor skills to study task organization. Once a Microduck GR00T adaptation is validated, learned skills can replace selected action components. GR00T maps current observations to actions; ASPIRE organizes goals, calls, checks and revisions. This is a proposed integration, not an officially delivered Microduck stack."
+          },
+          {
+            "type": "p",
+            "zh": "对“不同任务都重写一遍”的改善，来自稳定的技能接口和经验复用。机器人仍需拥有完成任务所需的身体能力；例如没有抓取机构，单靠换提示词就不能保证完成捡拾。新任务也可能需要新的示范、技能或工具。",
+            "en": "Stable skill interfaces and retained experience reduce repeated task programming. The robot still needs the physical capability for a task: a new prompt alone cannot guarantee pickup without suitable grasping hardware. New demonstrations, skills or tools may still be necessary."
+          }
+        ]
+      },
+      {
+        "id": "agnes",
+        "title": {
+          "zh": "扩展：Agnes Harness 值得怎样看",
+          "en": "Extension: where Agnes Harness fits"
+        },
+        "blocks": [
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "比较项",
+                "ASPIRE",
+                "Agnes Harness"
+              ],
+              "en": [
+                "Aspect",
+                "ASPIRE",
+                "Agnes Harness"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "重点",
+                  "通过机器人执行反馈改进程序与技能",
+                  "连接模型、工具、任务状态与设备"
+                ],
+                [
+                  "经验复用",
+                  "经过验证的机器人技能库",
+                  "Skills、会话与执行记录"
+                ],
+                [
+                  "当前定位",
+                  "机器人任务探索与研究工作流",
+                  "开发预览阶段的通用智能体框架"
+                ],
+                [
+                  "本课程选择",
+                  "作为任务智能体主线",
+                  "作为设备接入和框架设计的扩展阅读"
+                ]
+              ],
+              "en": [
+                [
+                  "Focus",
+                  "Refine robot programs and skills through execution",
+                  "Connect models, tools, task state and devices"
+                ],
+                [
+                  "Reuse",
+                  "Validated robotic skill libraries",
+                  "Skills, sessions and execution records"
+                ],
+                [
+                  "Current scope",
+                  "Robotic exploration/research workflows",
+                  "Developer-preview general agent harness"
+                ],
+                [
+                  "Course role",
+                  "Main task-agent methodology",
+                  "Optional device-integration comparison"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "两者存在共同概念，但并非同一个产品的替代名字。Agnes 的 MHS 设备接入与插件机制值得研究；当前公开主分支没有找到可直接复用的 Microduck 适配器。本课程暂不为它单独增加完整章节，避免重复讲智能体循环。",
+            "en": "They share concepts but are not equivalent products. Agnes’s MHS device integration and plugins merit study, but the inspected public main branch contains no ready Microduck adapter. We keep it as an extension rather than repeat the agent loop in another full chapter."
+          },
+          {
+            "type": "p",
+            "zh": "可以参考这段 <a href=\"https://www.bilibili.com/video/BV19anw6DESQ/\" target=\"_blank\" rel=\"noopener\">Microduck 社区演示</a>，并关注它开放了哪些动作工具、如何判断完成、失败时如何恢复。该视频页面目前无法在资料核查环境读取，未独立核实其实现和自主程度，也未把它计作本课程实验结果。",
+            "en": "The linked <a href=\"https://www.bilibili.com/video/BV19anw6DESQ/\" target=\"_blank\" rel=\"noopener\">Microduck community demo</a> is a useful reference for questions about action tools, completion checks and recovery. Its page was unavailable in this review environment; its implementation and autonomy level have not been independently verified or counted as course results."
+          }
+        ]
+      },
+      {
+        "id": "readiness",
+        "title": {
+          "zh": "可行，但需要桥接与独立验证",
+          "en": "Feasible with an adapter and independent evaluation"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "接入评估的结论是：ASPIRE 的方法和开放接口有接入价值；Microduck 执行桥、任务技能库与自动探索回合尚未完成。下一次先实现最小的“观察—有界移动—停止—检查”闭环，再接入射门。保留开发种子与独立测试种子，限制每轮尝试预算，记录成功率、恢复次数与模型调用开销。",
+            "en": "The method and open interfaces are promising. A Microduck execution bridge, skill library and autonomous exploration trials remain to be implemented. Begin with observe, bounded movement, stop and check, then extend to football. Separate development and held-out seeds, bound trial budgets and record success, recovery and model-call costs."
+          }
+        ]
+      }
+    ],
+    "references": [
+      {
+        "url": "https://github.com/NVlabs/ASPIRE",
+        "zh": "ASPIRE 官方源码与当前工作流",
+        "en": "ASPIRE source and workflows"
+      },
+      {
+        "url": "https://research.nvidia.com/labs/gear/aspire/",
+        "zh": "ASPIRE 方法、实验与限制",
+        "en": "ASPIRE method, experiments and limitations"
+      },
+      {
+        "url": "https://github.com/NVlabs/ASPIRE/blob/main/docs/libero-pro.md",
+        "zh": "仿真执行接口示例",
+        "en": "Simulation execution example"
+      },
+      {
+        "url": "https://github.com/AgnesAI-Labs/agnes-harness",
+        "zh": "Agnes Harness：架构与设备接口",
+        "en": "Agnes Harness architecture and device integration"
+      }
+    ]
+  },
+  {
+    "id": "09-worlds",
+    "number": "9",
+    "group": {
+      "zh": "课程章节",
+      "en": "Course chapters"
+    },
+    "title": {
+      "zh": "用 Cosmos 与 Isaac 覆盖不同家庭环境",
+      "en": "Cover different homes with Cosmos and Isaac"
+    },
+    "summary": {
+      "zh": "把光照、地面和布局变化转成数据与评测设计，区分世界模型、物理仿真和多任务编排的职责。",
+      "en": "Turn lighting, floor and layout changes into data and evaluation designs; distinguish world models, physics and task orchestration."
+    },
+    "meta": {
+      "zh": "第 9 章 · 预计学习时长 25 分钟",
+      "en": "Chapter 9 · Estimated learning time: 25 minutes"
+    },
+    "sections": [
+      {
+        "id": "homes",
+        "title": {
+          "zh": "换一个家，机器人会遇到什么变化",
+          "en": "What changes in another home"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "这类变化值得训练时考虑。相同的球在暖光、逆光和阴影下可能很不一样；白墙、地砖纹理和桌椅会改变目标背景；狭窄通道改变接近路线，地毯或光滑地面则改变运动与制动。视觉泛化、空间规划和动力学适应需要分别处理，不能只给球场换一张贴图。",
+            "en": "These variations matter. Warm light, backlighting and shadows change the ball’s appearance; walls, tiles and furniture change its background. Narrow passages change routes, while carpet and smooth floors change motion and braking. Visual generalization, spatial planning and dynamics adaptation need separate treatment."
           },
           {
             "type": "table",
@@ -3762,884 +3675,248 @@
               "zh": [
                 "变化",
                 "主要影响",
-                "应怎样处理"
+                "合适的验证方式"
               ],
               "en": [
                 "Variation",
-                "Main effect",
-                "Response"
+                "Primary effect",
+                "Useful evaluation"
               ]
             },
             "rows": {
               "zh": [
                 [
-                  "地面 A–D、光照、相机姿态",
-                  "检测框与轮廓",
-                  "生成多样的 RGB 数据，按场景划分训练与测试"
+                  "光照、颜色、背景",
+                  "图像识别与视觉动作策略",
+                  "保持几何与动作一致，测试新外观"
                 ],
                 [
-                  "球门宽度、位置与球直径",
-                  "视觉尺度、地图和进球判定",
-                  "同步几何参数；不能仅换贴图或依靠随机化"
+                  "家具布局、遮挡、起点",
+                  "观察策略与接近路线",
+                  "新布局中的闭环任务与碰撞检查"
                 ],
                 [
-                  "摩擦、电压、延迟、质量",
-                  "行走、触球和恢复",
-                  "先测量合理范围，再评估是否需要策略适配"
+                  "摩擦、轮胎、球质量、时延",
+                  "真实接触、推进与制动",
+                  "物理参数范围与实机测量"
                 ],
                 [
-                  "未知障碍、垫子边缘或变形",
-                  "可通行区域与接触",
-                  "补充感知和物理建模，再测试规划与控制"
+                  "任务指令与目标",
+                  "任务理解与技能选择",
+                  "多种表达和独立任务组合"
                 ]
               ],
               "en": [
                 [
-                  "Surfaces A–D, light, camera pose",
-                  "Boxes and contours",
-                  "Generate varied RGB data; split by scene"
+                  "Lighting, color, background",
+                  "Perception and visual policies",
+                  "Test new appearance with consistent geometry/actions"
                 ],
                 [
-                  "Goal size/location and ball diameter",
-                  "Metric scale, map and scoring",
-                  "Update geometry contracts, not only textures"
+                  "Layout, occlusion, starts",
+                  "Observation strategy and routes",
+                  "Closed-loop tasks and collisions in new layouts"
                 ],
                 [
-                  "Friction, voltage, delay and mass",
-                  "Gait, impact and recovery",
-                  "Measure ranges; test whether policy adaptation is needed"
+                  "Friction, tyres, ball mass, latency",
+                  "Contact, propulsion and braking",
+                  "Physics ranges and hardware measurements"
                 ],
                 [
-                  "Unknown obstacles, edges or deformation",
-                  "Traversability and contact",
-                  "Extend sensing/physics and then test planning/control"
+                  "Instructions and goals",
+                  "Task understanding and skill selection",
+                  "Language variation and held-out task combinations"
                 ]
               ]
             }
-          },
-          {
-            "type": "p",
-            "zh": "官网黑白足球的外观与直径、斜背球门和地面纹理都改变了视觉输入。旧室内检测器在同一组 128 张新测试图像上的 mAP50 为 0.379，其中足球类别仅为 0.020，不能直接沿用。因此只微调检测器，保留原步行、踢球和残差权重。数据包含 48 个场景种子、768 张图像；同一种子下的四种地面和视角始终归入同一个训练、验证或测试集合，避免泄漏。",
-            "en": "The official black-and-white ball, its diameter, the sloped-back goal and new surfaces change the visual input. On the same 128 new test images, the previous indoor detector scores mAP50 0.379, with ball AP50 only 0.020. We therefore fine-tune the detector while preserving walking, kicking and residual weights. The dataset has 48 scene seeds and 768 images; all surfaces and views sharing a seed stay in the same split."
-          },
-          {
-            "type": "p",
-            "zh": "这次用 512 张训练、128 张验证、128 张测试图像继续训练 60 轮。固定检测器在保留测试集上的 mAP50 为 0.978，mAP50–95 为 0.934。它们衡量检测框质量，不是自主射门成功率，也不能证明域随机化带来了多少独立提升；后者还需要保持数据量与训练预算相同的消融对照。完整任务仍须单独检查定位、路径、出脚、过门与恢复。",
-            "en": "The detector was fine-tuned for 60 epochs using 512 training, 128 validation and 128 test images. Held-out mAP50 is 0.978 and mAP50–95 is 0.934. These measure detection quality, not autonomous task success or the isolated benefit of randomization; that requires a matched-data, matched-budget ablation. Localization, paths, kicks, goal crossing and recovery require separate task tests."
-          },
-          {
-            "type": "p",
-            "zh": "是否继续扩大随机化范围，应由失败决定。先用同一模型切换四种地面，再测试未参与训练的光照和球位。如果只在某种白线附近失去球的轮廓，优先检查视觉；如果识别与站位正确，却打滑或恢复失败，再研究物理随机化。不要同时大幅改变所有参数，否则很难判断哪项变化起作用。",
-            "en": "Let failures determine whether to widen randomization. Test one fixed model on all four surfaces, then on unseen lighting and ball positions. Lost ball contours near white lines point to perception; correct recognition and stance followed by slip or failed recovery point to dynamics. Avoid changing every parameter at once, which obscures the cause."
-          },
-          {
-            "type": "p",
-            "zh": "思考：只把球门宽度改大，保留原来的视觉中心距和地图，增加光照随机化能修复定位偏差吗？不能。像素变成米依赖实际尺寸；错误尺寸带来的系统性尺度偏差，需要修改几何约定。",
-            "en": "Check your understanding: can lighting randomization fix localization after widening the goal but keeping the old centre spacing and map? No. Converting pixels to metres depends on the actual dimensions; correct the geometry contract first."
-          },
-          {
-            "type": "p",
-            "zh": "本次微调运行 60 个 epoch，训练墙钟约 4.8 分钟，不包含采图、导出和整场仿真。随机化图案与光照属于视觉训练；球门中心距等已知几何不能只在画面里随机变化而继续沿用旧标定。若要换球门尺寸，应同步定位先验、地图和进球判据，或者另行设计尺寸未知的估计方法。",
-            "en": "This fine-tuning run used 60 epochs and about 4.8 minutes of training wall time, excluding collection, export and complete simulations. Appearance and light variation target perception. Changing known goal dimensions also requires matching localization priors, maps and scoring, or a separate method that estimates unknown dimensions."
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "同一组 128 张新场景测试图",
-                "mAP50",
-                "mAP50–95"
-              ],
-              "en": [
-                "Same 128 held-out indoor images",
-                "mAP50",
-                "mAP50–95"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "旧室内检测器",
-                  "0.379",
-                  "0.314"
-                ],
-                [
-                  "适配后的检测器",
-                  "0.978",
-                  "0.934"
-                ]
-              ],
-              "en": [
-                [
-                  "Previous indoor detector",
-                  "0.379",
-                  "0.314"
-                ],
-                [
-                  "Adapted detector",
-                  "0.978",
-                  "0.934"
-                ]
-              ]
-            }
-          },
-          {
-            "type": "p",
-            "zh": "这组对照表明原检测器不适合直接移到新场景，微调改善了检测表现。它比较的是新旧检测器，不是“有域随机化”和“无域随机化”的训练消融；因此不能把提升全部归因于随机化。检测更准确之后，仍需检查观测新鲜度、路径交接与恢复动作。",
-            "en": "This comparison supports adapting the detector to the new scene. It compares old and adapted models, not training with versus without randomization, so it does not isolate a causal randomization benefit. Better detection still leaves observation freshness, path handoff and recovery to validate."
           }
         ]
       },
       {
-        "id": "plan-practice",
+        "id": "cosmos",
         "title": {
-          "zh": "先验证出脚站位的计算",
-          "en": "Check stance geometry first"
+          "zh": "Cosmos 3 能提供什么",
+          "en": "What Cosmos 3 provides"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "先完成上一章的<a href=\"06-autonomy.html#navigation-model\">站位几何</a>与<a href=\"06-autonomy.html#planner\">Nav2 规划</a>。下面的命令可在 CPU 上运行，只验证第一步，不启动 Nav2 或机器人；在仓库根目录执行，输出目录必须尚不存在。",
-            "en": "Review <a href=\"06-autonomy.html#navigation-model\">stance geometry</a> and <a href=\"06-autonomy.html#planner\">Nav2 planning</a>. Run the command below from the repository root on CPU, with a new output directory. It checks geometry only; it does not start Nav2 or the robot."
-          },
-          {
-            "type": "code",
-            "code": "python3 scripts/workshop.py plan \\\n  --ball 0.08 0.03 --goal 0.68 0 \\\n  --distance 0.18 --lateral 0.035 \\\n  --output outputs/stance-plan-01",
-            "label": "Terminal"
+            "zh": "Cosmos 3 是当前公开的多模态世界模型家族，统一处理语言、图像、视频、音频与动作。官方提供 Reasoner、Generator 以及专门的策略与仿真变体，可以用于理解场景、生成候选情境或研究动作与未来状态的关系。它不只是“给视频换背景”的工具。",
+            "en": "Cosmos 3 is a public omnimodal world-model family covering language, images, video, audio and actions. Reasoner, Generator and specialized policy/simulation variants support scene understanding, candidate scenario generation and action/future-state modeling. Its scope extends beyond background replacement."
           },
           {
             "type": "p",
-            "zh": "打开输出目录中的 <code>plan.svg</code>，对照上一章的公式检查目标点。这里使用手工给定的坐标，仅验证几何计算；完整任务会估计球和机器人位置，结合已知球门的地图先验生成目标，再调用导航和运动技能。",
-            "en": "Inspect <code>plan.svg</code> and compare with the previous chapter’s equations. This exercise checks geometry with supplied points. The full task estimates ball and robot positions, combines them with the known goal’s map prior, and then invokes navigation and motion skills."
+            "zh": "对 Microduck，最直接的切入点是扩充视觉训练数据与分析失败场景。例如保留机器人、球门和球的位置，用更丰富的房间外观生成候选数据，再筛查目标形状、遮挡和时间连续性。对需要深度、分割等空间控制的生成流程，也应按实际接口比较 Cosmos-Transfer2.5 等专用模型，而不只看版本编号。",
+            "en": "For Microduck, initial uses include visual-data expansion and failure analysis. Preserve robot, goal and ball geometry while generating candidate room appearances, then inspect shape, occlusion and temporal consistency. Where depth or segmentation conditioning is required, compare the actual interfaces of specialized models such as Cosmos-Transfer2.5 as well."
           },
           {
             "type": "p",
-            "zh": "本例预期 P* ≈ (−0.0980, 0.0739) m，θ* ≈ −2.86°。<code>distance</code> 是沿射门轴后退的米数，<code>lateral</code> 是朝该方向看时向左偏移的米数。检查 <code>plan.json</code> 和 <code>plan.svg</code>，然后只改变球的位置并换一个输出目录，解释目标为何随之变化。完整场景才会提交真实 Nav2 请求；返回路径后仍需进行行走和出脚条件检查。",
-            "en": "Expected: P* ≈ (−0.0980, 0.0739) m and θ* ≈ −2.86°. <code>distance</code> is the stand-off along the shooting axis; <code>lateral</code> is the leftward offset, both in meters. Inspect <code>plan.json</code> and <code>plan.svg</code>, then change only the ball position and use a new output directory. Explain the target change. The full scene submits real Nav2 requests; a returned path still requires motion and readiness checks."
+            "zh": "生成了一段看似进球的视频，不等于得到真实可执行的机器人动作。只有在动作标签与图像、状态和时间仍一致时，数据才适合模仿学习；球变大、门柱移动或接触时刻改变，都可能让原动作标签失效。Cosmos 的策略与动作建模能力也需要对应机器人数据适配，不能直接把 DROID 等具身变体称为 Microduck 策略。",
+            "en": "A plausible scoring video is not an executable action trajectory. Imitation data require action labels consistent with images, states and timing. A changed ball size, post position or contact time can invalidate the original actions. Cosmos policy/action variants likewise need embodiment adaptation; a DROID specialization is not a Microduck policy."
           }
         ]
       },
       {
-        "id": "residual",
+        "id": "stack",
         "title": {
-          "zh": "步行射门中的教师策略与残差模型",
-          "en": "The teacher and residual in walking shots"
+          "zh": "谁负责生成，谁负责物理与训练",
+          "en": "Generation, physics, learning and orchestration"
         },
         "blocks": [
-          {
-            "type": "p",
-            "zh": "这里的踢球组合由固定的基础动作策略和已经训练好的残差模型构成。残差模型在基础动作之上进行修正，因此两者的输入、动作尺度、执行器和时序必须相互匹配。缺少其中任意一个文件，剩余部分都不能再视为同一项完整技能。",
-            "en": "The course kick combines a fixed base policy with a trained residual model. The residual adjusts the base behavior, so observations, action scale, actuators, and timing must match. Removing one model does not leave an equivalent skill."
-          },
-          {
-            "type": "code",
-            "code": "python3 scripts/workshop.py inspect-model --model models/kick-teacher.onnx\npython3 scripts/workshop.py inspect-model --model models/kick-residual.onnx",
-            "label": "Terminal · Bash"
-          },
-          {
-            "type": "p",
-            "zh": "请在模型清单中找到这两个文件，比较各自的输入与输出形状，并注明哪些输入来自机器人状态、哪些来自任务目标。本章后续的完整任务会调用它们，这里无需重新训练。",
-            "en": "Find both files in the model inventory. Compare their input and output shapes and distinguish robot-state inputs from task inputs. The complete task uses the pair in Chapter 7; retraining is not required here."
-          }
-        ]
-      },
-      {
-        "id": "system",
-        "title": {
-          "zh": "先看清完整的步行射门系统",
-          "en": "Understand the complete walking-shot system"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "完整系统并不是由单个网络直接输出“进球”指令。Isaac Lab 组织任务接口与控制管理器，Newton 推进物理和执行器状态，Isaac Sim 6 提供 GUI、RTX 相机与深度传感器；独立的 ROS 2 Nav2 CPU 服务负责路径规划。固定行走策略控制机身，检测器提供视觉目标，ToF 测距和 IMU 姿态用于约束目标的相对位置，状态机决定何时观察、行走和踢球，最后由踢球组合完成出脚与恢复。",
-            "en": "This is not a single network issuing a “score” command. A walking policy controls the body, a detector supplies visual targets, range and attitude constrain relative position, a state machine decides when to observe, walk, and kick, and the kick models execute contact and recovery."
-          },
-          {
-            "type": "pipeline",
-            "zh": [
-              "RGB + ToF + IMU",
-              "目标估计",
-              "导航与对准",
-              "固定踢球组合",
-              "任务判定"
-            ],
-            "en": [
-              "RGB + ToF + IMU",
-              "Target estimates",
-              "Navigate and align",
-              "Fixed kick models",
-              "Task evaluation"
-            ]
-          },
-          {
-            "type": "media",
-            "file": "autonomous-explained.gif",
-            "alt": {
-              "zh": "一次完整的直接射门示例，保留开始、观察、接近、出脚和站稳，没有后退。按仿真时间播放，单次示例不代表总体成功率。",
-              "en": "One complete direct-shot example, including observation, approach, kick and recovery with no retreat. Playback follows simulation time; one example is not a success-rate estimate."
-            },
-            "zh": "右上角小窗是机器人当时的相机画面，主画面展示同一时刻的场景。观看时留意画面上方的阶段提示：先确认目标并规划，再接近、复核位置、出脚和恢复站立。可以拖动进度条对照每一步的输入与动作。这次直接射门没有后退，但接近过程中仍会重新观察。单次演示不代表整体成功率。",
-            "en": "One complete direct-shot example, including observation, approach, kick and recovery with no retreat. Playback follows simulation time; one example is not a success-rate estimate.",
-            "stages": true,
-            "languages": [
-              "zh"
-            ]
-          },
-          {
-            "type": "media",
-            "languages": [
-              "en"
-            ],
-            "file": "autonomous-direct.gif",
-            "alt": {
-              "en": "Complete direct-shot example",
-              "zh": ""
-            },
-            "en": "One complete direct-shot example. The inset shows the actual robot camera synchronized with the full scene. One demonstration is not a success-rate estimate."
-          }
-        ]
-      },
-      {
-        "id": "run",
-        "title": {
-          "zh": "运行完整场景",
-          "en": "Run the complete teaching scene"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "在课程仓库根目录运行下面的命令，启动完整自主射门实验。请使用新的输出目录，保存本次视频、传感器记录和评分。",
-            "en": "Run the command below from the repository root to start autonomous football. Use a new output directory for video, sensor records and scoring."
-          },
-          {
-            "type": "code",
-            "code": "python3 scripts/workshop.py football \\\n  --scene indoor --style A --record-hd \\\n  --seed 983102 \\\n  --seconds 180 \\\n  --output outputs/football-01",
-            "label": "Terminal · Bash"
-          },
-          {
-            "type": "p",
-            "zh": "预期结果：Isaac Sim 窗口打开后，机器人自主执行找球、接近和对准，并尝试完成射门。程序使用仓库中的固定模型，同时保存视频、轨迹和结果。控制器只接收带时间戳的相机、ToF 与本体观测；Newton 中的精确物体位姿和接触真值只用于独立评分。180 秒指仿真中的任务预算，并不是现实中的等待时长；首次初始化和 RTX 渲染可能耗时更久。",
-            "en": "Expected result: an Isaac simulation window opens and one robot searches, approaches, aligns, and attempts a kick autonomously. The program uses the repository’s fixed models and saves video, traces, and results. The 180-second budget is simulation time, not wall-clock waiting time. Initialization and rendering can take longer."
-          },
-          {
-            "type": "p",
-            "zh": "这个种子是从成功示例中选出的，仅用于观察和相同场景下的对照，不能再计入新的独立成功率样本。运行期间不要手动移动机器人或球；如需中止，请在终端按 Ctrl+C，并保留已经生成的日志。",
-            "en": "This seed is a selected teaching fixture drawn from successful examples. It supports comparison on the same scene and is not a new independent success-rate sample. Do not manually move the robot or ball during execution. To stop, press Ctrl+C in the terminal and retain the logs."
-          },
-          {
-            "type": "p",
-            "zh": "默认室内起点为机器人 (−0.55, 0.04) 米、足球 (0.02, 0) 米，门线位于 x = 0.68 米；机器人与球的坐标用于初始化；球门位置和尺寸作为已知地图先验，运行时机器人与球的位置仍由传感器估计。用 <code>--style B</code>、<code>C</code> 或 <code>D</code> 切换图案，用 <code>--root-y</code> 与 <code>--ball-xy</code> 另设起点。改变场景后应作为新测试记录。",
-            "en": "The indoor fixture starts the robot at (−0.55, 0.04) m and ball at (0.02, 0) m, with the goal plane at x = 0.68 m. Robot and ball coordinates initialize the scene; goal position and dimensions are known map priors. Runtime robot and ball positions still come from sensor estimates. Select patterns with --style B, C or D, and change starts with --root-y or --ball-xy. Record altered conditions as separate tests."
-          }
-        ]
-      },
-      {
-        "id": "result",
-        "title": {
-          "zh": "判断步行射门是否完整成功",
-          "en": "Judge complete walking-shot success"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "完成上一节的运行后，用下面的命令读取该次实验的评分。若您使用了其他输出目录，请相应修改 <code>--run</code>。",
-            "en": "After the preceding run, read its score with the command below. Change <code>--run</code> if you used another output directory."
-          },
-          {
-            "type": "code",
-            "code": "python3 scripts/workshop.py report --run outputs/football-01",
-            "label": "Terminal · Bash"
-          },
-          {
-            "type": "list",
-            "zh": [
-              "确实发生足部与球的接触。",
-              "整个球越过球门线，并位于有效门框内。",
-              "机器人没有摔倒，动作没有超出规定机械范围。",
-              "没有在正式出脚前意外碰球，踢完后恢复站稳。"
-            ],
-            "en": [
-              "A real foot–ball contact occurred.",
-              "The entire ball crossed the goal plane inside the opening.",
-              "The robot did not fall or exceed the specified mechanical bounds.",
-              "There was no premature ball contact, and the robot recovered after kicking."
-            ]
-          },
-          {
-            "type": "note",
-            "title": {
-              "zh": "怎样理解课程参考结果",
-              "en": "Interpreting the reference result"
-            },
-            "zh": "原简化空场、窄球门配置曾完成 9/10 独立任务；这份历史成绩不适用于新的垫子、钢网球门与全身碰撞配置。当前 A 款标准起点演示在 32.565 秒任务时间内完成触球、整球越线和恢复，11 项适用检查通过。它是开发示例，不是独立成功率。四种地面的独立验证应单列，不能与旧 9/10 合并。",
-            "en": "The original simple field and narrower goal completed 9/10 independent tasks. That historical result does not transfer to the marked mat, steel-mesh goal and full-body contacts. The current A-pattern demonstration completed contact, whole-ball crossing and recovery in 32.565 task seconds, passing all 11 applicable checks. It is a development example, not an independent success-rate estimate. New pattern tests must remain separate."
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "地面 / 种子",
-                "完整任务",
-                "任务时间",
-                "跌倒"
-              ],
-              "en": [
-                "Surface / seed",
-                "Complete task",
-                "Task time",
-                "Fall"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "A 条纹足球场 / 55001",
-                  "未通过",
-                  "10.755 s",
-                  "否"
-                ],
-                [
-                  "B 简洁足球场 / 55002",
-                  "未通过",
-                  "29.165 s",
-                  "否"
-                ],
-                [
-                  "C 大理石 / 55003",
-                  "未通过",
-                  "60.000 s",
-                  "否"
-                ],
-                [
-                  "D 木地板 / 55004",
-                  "未通过",
-                  "60.000 s",
-                  "否"
-                ]
-              ],
-              "en": [
-                [
-                  "A / 55001",
-                  "Failed",
-                  "10.755 s",
-                  "No"
-                ],
-                [
-                  "B / 55002",
-                  "Failed",
-                  "29.165 s",
-                  "No"
-                ],
-                [
-                  "C / 55003",
-                  "Failed",
-                  "60.000 s",
-                  "No"
-                ],
-                [
-                  "D / 55004",
-                  "Failed",
-                  "60.000 s",
-                  "No"
-                ]
-              ]
-            }
-          },
-          {
-            "type": "p",
-            "zh": "固定标准起点，事先指定四个新种子，每种地面一次、每次最多 60 秒任务时间，本组完整通过 0/4。各次适用记录检查通过不等于任务通过。样式与种子同时变化，不能据此断言某种地面造成失败，也不能据此估计广泛场景的成功率。这一组使用 10 cm 足球，不能与旧 7 cm 场景的成绩合并。完整逐回合结果见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/task-evaluation.json\">当前场景评测记录</a>。",
-            "en": "Four predeclared seeds at the same start, one per surface with a 60-second task limit, completed 0/4 full tasks. Passing record audits is not task success. Surface and seed change together, so these trials do not isolate a surface effect or estimate broad reliability. They use the 10 cm ball and remain separate from historical 7 cm tests. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/task-evaluation.json\">current scene trial records</a>."
-          },
-          {
-            "type": "p",
-            "zh": "这四次失败都发生在出脚前：A 在交接恢复时未满足当前身体状态条件，球观测随后过期；B 接近过程中无法重新取得完整球观测，在规定的等待时间结束后停止；C 没有形成完整、有效的球观测；D 尚未取得要求的连续球门底端观测，后二者均达到 60 秒任务时限。四次均未跌倒。这说明换场景后不能只更新画面，也不能只看检测分数。应先检查几何定位、视野、观测有效期和规划交接，再决定是否增加训练数据；目前没有足够证据把这些失败归因于行走或踢球策略。",
-            "en": "All four failures preceded the kick: A failed the current-body guard during handoff recovery and its ball observation then expired; B could not reacquire a complete ball observation during fine approach and stopped at the attention deadline; C did not obtain valid complete ball geometry; D did not obtain the required consecutive goal-base observations. C and D reached the 60-second task limit. None fell. Inspect geometry, field of view, observation age and planning handoff before deciding what additional training data are needed; these trials do not establish a failure of the walking or kicking policies."
-          }
-        ]
-      },
-      {
-        "id": "rollers",
-        "title": {
-          "zh": "换成轮滑：观察、碰球、提前停下",
-          "en": "Gliding shot: observe, make contact and stop early"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "轮滑射门沿用相同的 10 cm 足球、球门、相机与检测器，但改变了运动方式：从初始化到结束始终加载官方轮滑策略，轮子是被动的，由腿部动作推进与制动。球靠轮子与球面的真实接触获得动量；这里没有切换走路，也没有执行踢腿动作。 本实验从球后约 30 cm 的固定起点开始，只验证空场内的短距离接近与射门，尚未验证从场地任意位置绕行。",
-            "en": "The gliding task uses the same 10 cm ball, goal, camera and detector. It loads the official roller actor from initialization to the end. Its wheels are passive, with propulsion and braking produced by leg motion. Wheel–ball contact transfers momentum without switching to walking or executing a leg kick. The fixed start is about 30 cm behind the ball: this tests short empty-field approach and shooting, not navigation from arbitrary field positions."
-          },
-          {
-            "type": "media",
-            "file": "rollers-autonomous.gif",
-            "alt": {
-              "zh": "全程保持轮滑模式的自主碰球与制动示例",
-              "en": "Autonomous ball contact and braking, staying in roller mode"
-            },
-            "zh": "轮滑完整示例：从相机观察开始，6.79 秒实际触球、8.13 秒整球越线，随后在门前停稳。初始化、碰球和结束均保持轮滑模式。第三视角按该回合的物理记录重渲染，右上角为同步的原始相机画面；这是开发示例，不计入下方独立测试。",
-            "en": "Complete gliding example: camera observation, physical contact at 6.79 s, whole-ball crossing at 8.13 s and settling before the goal. Initialization, contact and the ending all remain in roller mode. The observer view is re-rendered from this episode’s physical record, synchronized with its original camera frames. This development example is separate from the independent trials below."
-          },
-          {
-            "type": "p",
-            "zh": "控制器先识别球门和足球，用像素、相机几何与 ToF 地面估计确定接近方向；接近时减速、对齐，再把观察用的头部控制逐渐交回轮滑策略。身体稳定后推进一小段，再根据估计速度持续调整制动，保持轮滑姿态停下。等待识别时也要控制滑行；仅松开推进指令并不等于停车。",
-            "en": "The controller detects the goal and ball and estimates approach direction from pixels, camera geometry and a ToF ground plane. It slows, aligns and gradually returns head control to the roller actor. After settling, it propels briefly and adjusts braking using estimated velocity while remaining on its wheels. Waiting for perception also requires coasting control: releasing propulsion is not a stop."
-          },
           {
             "type": "flow",
-            "label": "轮滑射门的控制顺序",
+            "label": "把数据生成、物理验证与策略训练连接起来。",
             "nodes": [
               [
-                "观察",
-                "RGB + ToF：球与球门"
+                "Cosmos",
+                "理解世界，生成或筛选候选数据"
               ],
               [
-                "接近和对齐",
-                "减速，确认触球方向"
+                "Isaac Sim + Newton",
+                "生成仿真传感器数据，推进接触与运动"
               ],
               [
-                "准备碰球",
-                "交回头部，稳定后推进"
+                "Isaac Lab / GR00T",
+                "采集数据，训练或微调策略"
               ],
               [
-                "提前制动",
-                "球继续滚动，小鸭子停下"
+                "Arena + OSMO",
+                "组织组合评测与计算工作流"
               ]
             ],
-            "zh": "检测结果决定接近与触球准备；真实接触和是否进球由物理记录单独判定。控制器不会读取球的仿真真值坐标。",
-            "en": "Detections guide approach and preparation. Physical records independently determine contact and scoring; the controller does not read simulator ball coordinates.",
+            "zh": "把数据生成、物理验证与策略训练连接起来。",
+            "en": "Connect data generation, physical validation and policy learning.",
             "english_diagram": {
-              "label": "Gliding-shot control sequence",
+              "label": "Connect data generation, physical validation and policy learning.",
               "nodes": [
                 [
-                  "Observe",
-                  "RGB + ToF: ball and goal"
+                  "Cosmos",
+                  "Understand worlds; generate or assess candidate data"
                 ],
                 [
-                  "Approach and align",
-                  "Slow down and check direction"
+                  "Isaac Sim + Newton",
+                  "Generate simulated sensor data; advance contact/motion"
                 ],
                 [
-                  "Prepare contact",
-                  "Release gaze control, settle, propel"
+                  "Isaac Lab / GR00T",
+                  "Collect data; train or adapt policies"
                 ],
                 [
-                  "Brake early",
-                  "Ball rolls; robot settles"
+                  "Arena + OSMO",
+                  "Compose evaluations and compute workflows"
                 ]
               ],
               "groups": []
-            }
-          },
-          {
-            "type": "p",
-            "zh": "这条轮滑分支采用视觉反馈控制，尚未接入前面的 Nav2 路径规划，也没有复用步行的脚底里程计。制动速度由理想机身质心 IMU 的比力、陀螺仪和重力方向积分得到，起点假定静止；控制器不读取机器人真实速度或球的真值坐标。这并未模拟真实 IMU 的安装偏置、零偏和振动，不能直接作为实机停车方案。下面的命令采用与评测相同的无窗口运行配置，关闭额外的第三视角实时录制，仍渲染相机与 ToF 并保存传感器、动作和物理记录。完整演示可先看上方视频，每次实验使用新的输出目录；固定种子并不保证每次成功。",
-            "en": "This visual-feedback branch does not integrate Nav2 or walking sole odometry. Braking velocity is integrated from ideal trunk-COM specific force, gyro and gravity-direction measurements, starting at zero velocity. The controller does not read true robot velocity or ball coordinates. IMU mounting offsets, bias and vibration are not modeled, so this is not a hardware stopping solution. The command below uses the evaluation configuration: no window or additional live observer recording, while still rendering RGB/ToF and saving sensors, actions and physics. Watch the full demonstration above and use a new output directory per run. A fixed seed does not guarantee success."
-          },
-          {
-            "type": "code",
-            "label": "Terminal · Bash",
-            "code": "python3 scripts/workshop.py football \\\n  --locomotion rollers --seed 42 --style A \\\n  --headless --no-record-hd \\\n  --seconds 40 \\\n  --output outputs/football-rollers-01"
-          },
-          {
-            "type": "p",
-            "zh": "运行结束后，用下面的命令查看结果。完整成功要求真实触球、整球越过门线、全程未跌倒，并在球门前连续停稳至少 1 秒（平移速度低于 2 cm/s）；仅检测成功或碰到球都不够。结果文件同时保留接触时刻、进球时刻与最后连续稳定的时长。",
-            "en": "Inspect the result with the command below. Complete success requires physical contact, whole-ball crossing, no fall throughout the episode, and at least one continuous second settled before the goal at less than 2 cm/s. Detection or contact alone is insufficient. Results retain contact and crossing times and the final continuous settling duration."
-          },
-          {
-            "type": "code",
-            "label": "Terminal · Bash",
-            "code": "python3 scripts/workshop.py report \\\n  --run outputs/football-rollers-01"
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "地面 / 新种子",
-                "进球",
-                "完整任务",
-                "结果"
-              ],
-              "en": [
-                "Floor / new seed",
-                "Goal",
-                "Full task",
-                "Outcome"
-              ]
             },
-            "rows": {
-              "zh": [
-                [
-                  "A 条纹足球场 / 56001",
-                  "是",
-                  "未通过",
-                  "进球后未在限定时间内连续停稳"
-                ],
-                [
-                  "B 简洁足球场 / 56002",
-                  "是",
-                  "通过",
-                  "触球、进球与停车均通过"
-                ],
-                [
-                  "C 大理石 / 56003",
-                  "否",
-                  "未通过",
-                  "未取得有效的双门柱底端观测"
-                ],
-                [
-                  "D 木地板 / 56004",
-                  "否",
-                  "未通过",
-                  "未取得有效的双门柱底端观测"
-                ]
-              ],
-              "en": [
-                [
-                  "A / 56001",
-                  "Yes",
-                  "Failed",
-                  "Post-shot settling deadline exceeded"
-                ],
-                [
-                  "B / 56002",
-                  "Yes",
-                  "Passed",
-                  "Contact, scoring and stopping passed"
-                ],
-                [
-                  "C / 56003",
-                  "No",
-                  "Failed",
-                  "No valid two-post-base observation"
-                ],
-                [
-                  "D / 56004",
-                  "No",
-                  "Failed",
-                  "No valid two-post-base observation"
-                ]
-              ]
-            }
+            "layout": "adaptive"
           },
           {
             "type": "p",
-            "zh": "固定模型与控制参数后，事先指定四个新种子，每种地面一次，完整通过 1/4、进球 2/4，四次均未跌倒。每次最多 30 秒，推进与接触窗口结束后，最多再等待 8 秒停车。A 进球后仍有滑动；C、D 在球门定位阶段等待至时限，未触发推进。样式与种子同时改变，这组小样本不能证明地面样式的因果影响。结果说明目前需要继续改善门柱几何提取与制动稳定性，不能只靠更高的检测分数，也没有证据表明必须重训轮滑策略。完整数据见<a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-task-evaluation.json\">轮滑自主射门记录</a>。",
-            "en": "With models and control parameters fixed, four predeclared new seeds, one per floor, completed 1/4 full tasks and scored 2/4 goals; none fell. Runs have a 30 s ceiling and an 8 s settling deadline after the propulsion/contact window. A continued moving after scoring; C and D waited for valid goal geometry until the limit without propulsion. Surface and seed change together, so these small samples do not isolate a surface effect. Improve post-base extraction and braking consistency; a higher detection score alone is insufficient, and these trials do not establish that the roller actor needs retraining. See the <a href=\"https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-task-evaluation.json\">gliding-shot records</a>."
-          },
-          {
-            "type": "p",
-            "zh": "思考：轮滑推进指令为什么不能直接解释成目标速度？如果球被侧面擦到，继续增大推进量为什么可能使结果更差？先检查触球方向、头部与身体的衔接和制动时机，再判断是否需要重训策略。",
-            "en": "Consider why the roller push command is not a target speed. If the wheel grazes the side of the ball, why might a larger push make the outcome worse? Inspect contact direction, head-to-body handoff and braking before deciding whether policy retraining is necessary."
+            "zh": "Cosmos 也有世界仿真与策略变体，但本课程仍用 Newton 记录触球、进球与停车的物理证据。OSMO 负责工作流编排；它不会自动把互不兼容的机器人动作空间变成一个通用训练目标。",
+            "en": "Cosmos also has world-simulation and policy variants. This course retains Newton for physical evidence of contact, scoring and stopping. OSMO orchestrates workflows; it does not automatically reconcile incompatible action spaces into a common learning target."
           }
         ]
       },
       {
-        "id": "evaluate",
+        "id": "arena",
         "title": {
-          "zh": "设计自己的评测",
-          "en": "Design a small evaluation"
+          "zh": "机器人 × 场景 × 任务：Isaac Lab-Arena",
+          "en": "Robot × scene × task: Isaac Lab-Arena"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "开始运行前，应先写明测试种子和成功标准。每个回合至少要记录进球、摔倒、触球和恢复情况，不能通过悄悄重跑来替换失败结果。模型或参数一旦改变，就应作为另一组实验单独比较。",
-            "en": "Write down seeds and success criteria before running. Record goals, falls, contact, and recovery for every episode. Do not replace a failure with a retry. A model or parameter change defines a separate experiment."
+            "zh": "多机器人、多场景、多任务的组合，更直接对应 Isaac Lab-Arena。它把环境拆成 Scene（场景）、Embodiment（机器人、传感器与动作）和 Task（任务与完成判据），再组装为 Isaac Lab 环境。可以组织多种布局、机器人和任务的评测，也可把环境注册到学习与数据生成流程。截至 2026 年 10 月 26 日核查的 main 对应 Isaac Lab 3.0 / Isaac Sim 6.2，属于仍在演进的早期版本；不能与 release/0.3.1 分支的依赖混用。",
+            "en": "Isaac Lab-Arena directly addresses composition. It separates Scene, Embodiment (robot, sensors and actions), and Task (objective and predicates), then builds Isaac Lab environments. It organizes evaluation across layouts, robots and tasks and registers environments for learning/data workflows. The main branch inspected on October 26, 2026 targets Isaac Lab 3.0 / Isaac Sim 6.2 and remains early-stage software; its dependencies differ from release/0.3.1."
           },
           {
-            "type": "code",
-            "code": "python3 scripts/workshop.py football \\\n  --seed 990001 \\\n  --seconds 180 \\\n  --output outputs/football-new-seed-01",
-            "label": "Terminal · Bash"
+            "type": "p",
+            "zh": "Arena 已有 GR00T 等策略客户端，也有 Cosmos 相关适配；支持选择 Newton。Microduck 仍需补自己的具身、足球任务和动作契约。不同机器人的组合必须满足任务能力要求；多环境并行评测，也不自动等于训练了一个能控制所有机器人的统一模型。",
+            "en": "Arena provides policy clients including GR00T and Cosmos-related adapters and supports Newton selection. Microduck still needs its own embodiment, football task and action contract. Combinations must satisfy task capabilities. Concurrent evaluation does not itself train a single policy for every robot."
           },
           {
-            "type": "quiz",
-            "question": {
-              "zh": "检测器 mAP 很高、行走模型也能保持站立，为什么整次任务仍可能失败？",
-              "en": "Why can the task fail even when detection mAP is high and the walking policy stays upright?"
-            },
-            "answer": {
-              "zh": "完整任务能否成功，取决于各模块是否正确交接。目标可能暂时不可见，坐标信息可能不适用于当前时刻，观测也可能已经过期，站位和朝向还可能不满足出脚条件。因此，各模块的单项指标不能代替端到端评测。",
-              "en": "Success depends on interfaces between modules. Targets can leave view, coordinates or observation age can become unsuitable, and position or heading may fail the kick conditions. Module metrics do not replace end-to-end evaluation."
-            }
+            "type": "html",
+            "zh": "<div class=\"scenario-matrix\" data-scenario-matrix><p><strong>试着规划一组评测</strong></p><div class=\"matrix-options\"><label><input type=\"checkbox\" data-factor=\"4\" checked> 四种地面</label><label><input type=\"checkbox\" data-factor=\"3\" checked> 三种光照</label><label><input type=\"checkbox\" data-factor=\"3\" checked> 三种室内布局</label><label><input type=\"checkbox\" data-factor=\"2\" checked> 步行与轮滑分别评测</label></div><label>每种组合的新测试种子数 <input class=\"matrix-seeds\" type=\"number\" min=\"1\" max=\"100\" value=\"5\"></label><p class=\"matrix-output\" aria-live=\"polite\"></p><p class=\"matrix-scope\">这只是组合计数器，不启动仿真或训练。取消一项表示固定为一种条件。</p></div>",
+            "en": "<div class=\"scenario-matrix\" data-scenario-matrix><p><strong>Design an evaluation matrix</strong></p><div class=\"matrix-options\"><label><input type=\"checkbox\" data-factor=\"4\" checked> Four floors</label><label><input type=\"checkbox\" data-factor=\"3\" checked> Three lighting conditions</label><label><input type=\"checkbox\" data-factor=\"3\" checked> Three indoor layouts</label><label><input type=\"checkbox\" data-factor=\"2\" checked> Walking and skating, evaluated separately</label></div><label>Fresh seeds per combination <input class=\"matrix-seeds\" type=\"number\" min=\"1\" max=\"100\" value=\"5\"></label><p class=\"matrix-output\" aria-live=\"polite\"></p><p class=\"matrix-scope\">This only counts combinations; it launches no simulation or training. Unchecking a factor fixes it to one condition.</p></div>"
+          },
+          {
+            "type": "p",
+            "zh": "轮滑与步行是同一机器人上的两种模式，这里分别评测，不能把它们算成两种实体机器人。组合数只是实验设计规模，不代表这些实验已经运行，也不代表所有组合都合理。",
+            "en": "Walking and skating are modes of one robot and are evaluated separately here; they are not two physical embodiments. The count describes an experiment design, not completed runs or universal compatibility."
           }
         ]
       },
       {
-        "id": "read-failure",
+        "id": "experiment",
         "title": {
-          "zh": "从失败结果定位问题",
-          "en": "Locate a problem from a failed run"
+          "zh": "怎样判断随机化真正有帮助",
+          "en": "How to test whether randomization helps"
         },
         "blocks": [
           {
             "type": "p",
-            "zh": "首先检查结果文件：步行分支生成 <code>result.json</code>，轮滑分支生成 <code>independent-result.json</code>。如果文件不存在，请查看终端末尾的错误，并排查安装或运行条件；这种情况属于执行失败。如果结果文件存在，则要进一步区分“没有找到球”“无法形成出脚站位”“球被碰到但未进门”“进门后未稳定恢复”等行为失败。程序正常退出，并不代表机器人已经完成任务。",
-            "en": "First check the result file: <code>result.json</code> for walking or <code>independent-result.json</code> for rollers. If not, inspect the terminal error and installation or runtime conditions: that is an execution failure. If results exist, distinguish failure to find the ball, failure to reach a kicking stance, contact without a goal, and failure to recover after scoring. A normal process exit does not mean the robot completed the task."
+            "zh": "先保留一个无新增随机化的对照，再分别加入外观变化、布局变化和有实测依据的动力学变化；控制示范数量、训练预算与评测标准。把陌生房间、布局或部分组合留到最终测试，避免模型只记住生成场景。不要在看到失败后重跑到成功再替换记录。",
+            "en": "Keep a baseline with no added randomization, then separately add appearance, layout and measured dynamics variation while controlling demonstration count, training budget and evaluation criteria. Hold out rooms, layouts or combinations. Keep failed trials rather than replace them with successful retries."
           },
           {
             "type": "p",
-            "zh": "步行结果中的 <code>course_evaluation.passed</code> 综合了完整物理评分和适用检查结果，<code>scorer</code> 则保存接触、越线和摔倒等信息。回看同步视角时，应同时检查第一次触球前的站位和出脚后的姿态；不能只截取球越过门线的几秒来判断整个流程。 轮滑结果以 <code>autonomous_task_passed</code> 为完整成功标志，并分别报告真实轮子触球、整球越线和连续停稳时间。",
-            "en": "For walking, <code>course_evaluation.passed</code> combines physical scoring and applicable checks. <code>scorer</code> retains contact, goal crossing, and fall information. In synchronized views, inspect the stance before first contact and posture after kicking. A short clip of the ball crossing the line is insufficient for a full-task judgment. For rollers, <code>autonomous_task_passed</code> marks complete success; wheel contact, whole-ball crossing and continuous settling are reported separately."
+            "zh": "指标不只看检测分数：还看完整进球与停稳、跌倒、路径碰撞、观察循环次数和完成时间。现有实验提示几何提取与制动也存在瓶颈；视觉随机化可能改善观察，却不会自动修复停车控制。先按失败类型补数据或改接口，再扩大训练。",
+            "en": "Measure full scoring and settling, falls, route collisions, observation cycles and completion time, not just detection scores. Current failures also involve geometry extraction and braking. Visual randomization may improve observations without fixing stopping control. Target the observed failure before scaling training."
+          }
+        ]
+      },
+      {
+        "id": "next",
+        "title": {
+          "zh": "下一步：先做可比较的小实验",
+          "en": "Next: a small, comparable experiment"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先选择一种运动方式，固定官方 10 cm 足球与球门；使用两种足球地面、大理石和木地板，增加可控光照，再加入少量室内布局。球门材质保持固定。完成仿真传感器与实际执行动作记录的对齐后，再选择 GR00T 微调、ASPIRE 技能探索或 Cosmos 数据扩展中的一条作为首个实验，避免同时改变所有因素。",
+            "en": "Choose one locomotion mode, keep the official 10 cm ball and goal fixed, and use the two football floors, marble and wood with controlled lighting, then a small set of indoor layouts. Keep goal-frame material fixed. After aligning simulated sensor data with executed action records, select one initial experiment: GR00T adaptation, ASPIRE skill exploration or Cosmos data expansion, rather than change everything together."
           },
           {
             "type": "p",
-            "zh": "原简化空场的固定组合曾完成 9/10 独立任务。新垫子与钢网球门改变了视觉、几何与接触条件，必须重新评测；默认种子 983102 仅用于展示新场景流程。重复同一种子不增加独立样本。",
-            "en": "The original simple-field combination completed 9/10 independent tasks. The new mat and steel goal change appearance, geometry and contacts, requiring separate evaluation. Default seed 983102 demonstrates the new scene; repetitions are not independent samples."
-          },
-          {
-            "type": "p",
-            "zh": "完整运行后，请结合结果和日志，判断失败来自感知、站位、技能切换还是执行。下一章回顾这条从技能到任务的路径，再思考：地面不再平整、球会自行滚动或出现障碍物时，哪些假设需要重新检验？",
-            "languages": [
-              "zh"
-            ]
+            "zh": "课程已核查方法、接口与已有记录字段，并给出组合设计；尚未执行新的 GR00T、ASPIRE、Cosmos 或 Arena 训练/控制实验。下一阶段以独立闭环结果决定是否扩大数据和算力投入。",
+            "en": "The course reviews methods, interfaces and existing record fields, and illustrates combination design. No new GR00T, ASPIRE, Cosmos or Arena training/control experiment has run. Independent closed-loop results should guide subsequent data and compute investment."
           }
         ]
       }
     ],
     "references": [
       {
-        "url": "https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck",
-        "zh": "Isaac Lab：Microduck 任务源码",
-        "en": "Isaac Lab: Microduck task source"
+        "url": "https://docs.nvidia.com/cosmos/latest/cosmos3/",
+        "zh": "Cosmos 3 官方文档",
+        "en": "Cosmos 3 documentation"
       },
       {
-        "url": "https://github.com/newton-physics/newton",
-        "zh": "Newton 物理引擎",
-        "en": "Newton physics engine"
+        "url": "https://docs.nvidia.com/cosmos/latest/cosmos3/model_reference.html",
+        "zh": "Cosmos 3 模型与专用变体",
+        "en": "Cosmos 3 models and specializations"
+      },
+      {
+        "url": "https://docs.nvidia.com/cosmos/latest/transfer2.5/index.html",
+        "zh": "Cosmos-Transfer2.5 文档",
+        "en": "Cosmos-Transfer2.5 documentation"
+      },
+      {
+        "url": "https://github.com/isaac-sim/IsaacLab-Arena",
+        "zh": "Isaac Lab-Arena 官方源码",
+        "en": "Isaac Lab-Arena source"
+      },
+      {
+        "url": "https://isaac-sim.github.io/IsaacLab-Arena/main/pages/concepts/environment/index.html",
+        "zh": "Scene / Embodiment / Task 组合",
+        "en": "Scene / Embodiment / Task composition"
+      },
+      {
+        "url": "https://nvidia.github.io/OSMO/",
+        "zh": "OSMO 工作流编排",
+        "en": "OSMO workflow orchestration"
       }
     ]
-  },
-  {
-    "id": "08-next-steps",
-    "number": "8",
-    "group": {
-      "zh": "课程章节",
-      "en": "Course chapters"
-    },
-    "title": {
-      "zh": "回顾与延伸：在更复杂的球场上射门",
-      "en": "Recap and a harder football challenge"
-    },
-    "summary": {
-      "zh": "从调用一个技能，到训练新技能，再到把感知、规划与动作连接成自主任务。最后，设计一个更有挑战性的实验。",
-      "en": "Recap and a harder football challenge. Explore the concepts, run the lab, and inspect its results."
-    },
-    "meta": {
-      "zh": "第 8 章 · 预计学习时长 15 分钟",
-      "en": "Chapter 8 · Estimated learning time: 15 minutes"
-    },
-    "sections": [
-      {
-        "id": "recap",
-        "title": {
-          "zh": "回看从技能到任务的全过程",
-          "en": "From skills to a complete task"
-        },
-        "blocks": [
-          {
-            "type": "flow",
-            "label": "八章学习路径",
-            "nodes": [
-              [
-                "体验与理解",
-                "手动操控 → 结构与控制周期"
-              ],
-              [
-                "训练与泛化",
-                "平地行走 → 坡地 → 社区技能"
-              ],
-              [
-                "感知与自主",
-                "传感器 → 规划 → 完整射门"
-              ]
-            ],
-            "zh": "Isaac Sim 提供可观察、可重置的世界；Isaac Lab 将经验采集、策略学习与评测组织成可重复的实验。",
-            "en": "Isaac Sim provides an observable, resettable world. Isaac Lab organizes experience collection, policy learning and evaluation into reproducible experiments.",
-            "english_diagram": {
-              "label": "Learning through eight chapters",
-              "nodes": [
-                [
-                  "Experience",
-                  "Keyboard → robot structure"
-                ],
-                [
-                  "Train and transfer",
-                  "Flat → slopes → skills"
-                ],
-                [
-                  "Act autonomously",
-                  "Sensing → planning → goal"
-                ]
-              ],
-              "groups": []
-            }
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "学到的能力",
-                "您已经做过的事"
-              ],
-              "en": [
-                "Capability",
-                "What you have done"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "使用技能",
-                  "加载官方 ONNX，用键盘给出指令"
-                ],
-                [
-                  "理解机器人",
-                  "观察关节、受力路径、传感器与控制周期"
-                ],
-                [
-                  "训练技能",
-                  "用 PPO 和并行环境采集经验，导出并测试策略"
-                ],
-                [
-                  "检验泛化",
-                  "保持测试条件一致，比较平地与不同坡度"
-                ],
-                [
-                  "完成任务",
-                  "把感知、定位、规划、行走与踢球连接起来"
-                ]
-              ],
-              "en": [
-                [
-                  "Use skills",
-                  "Load official ONNX actors and issue keyboard commands"
-                ],
-                [
-                  "Understand the robot",
-                  "Inspect joints, load paths, sensors and control timing"
-                ],
-                [
-                  "Train skills",
-                  "Collect parallel experience, update PPO and export an actor"
-                ],
-                [
-                  "Test generalization",
-                  "Compare flat ground and slopes under matched conditions"
-                ],
-                [
-                  "Complete a task",
-                  "Connect perception, localization, planning, walking and kicking"
-                ]
-              ]
-            }
-          },
-          {
-            "type": "p",
-            "zh": "一个动作策略解决“怎样动”；完整系统还要解决“要做什么、目标在哪里、信息是否可信、何时切换动作”。成功率来自整个链路，而不是某个模型文件的名字。始终把单次演示、技能评测和端到端任务评测分开理解。",
-            "en": "A motion actor solves how to move. A complete system also decides what to do, where the target is, whether information is reliable and when to switch skills. Keep demonstrations, skill benchmarks and task-level evaluation distinct."
-          }
-        ]
-      },
-      {
-        "id": "challenge",
-        "title": {
-          "zh": "延伸问题：坡地、坑洼与障碍物",
-          "en": "Challenge: slopes, uneven ground and obstacles"
-        },
-        "blocks": [
-          {
-            "type": "p",
-            "zh": "假设足球在一个有坡度、局部不平整并带有障碍的球场中。机器人还能像第 7 章一样完成射门吗？这个任务留作延伸思考，请先设计方案，明确哪些已有能力可复用、哪些假设必须修改。",
-            "en": "Suppose the pitch has slopes, uneven patches and obstacles. Can the robot still score? This is a design challenge only; it is not implemented in the course."
-          },
-          {
-            "type": "table",
-            "headers": {
-              "zh": [
-                "变化",
-                "值得思考的问题"
-              ],
-              "en": [
-                "Change",
-                "Questions to investigate"
-              ]
-            },
-            "rows": {
-              "zh": [
-                [
-                  "坡度改变",
-                  "行走策略能否保持平衡？球会不会在尚未触碰时自行滚动？"
-                ],
-                [
-                  "地面不平",
-                  "平面投影 z = 0 是否仍成立？是否需要局部地面高度或深度？"
-                ],
-                [
-                  "存在障碍",
-                  "如何建立占据地图、为机器人留出空间，并在目标变化后重新规划？"
-                ],
-                [
-                  "出脚表面倾斜",
-                  "平地踢球的起始姿态、球相对位置和恢复条件还有效吗？"
-                ],
-                [
-                  "任务更复杂",
-                  "怎样分别定位感知、导航、动作失败，避免只统计最终进球？"
-                ]
-              ],
-              "en": [
-                [
-                  "Slopes",
-                  "Can the actor balance? Does the ball roll before contact?"
-                ],
-                [
-                  "Uneven ground",
-                  "Is projection onto z = 0 valid? Is local surface height or depth needed?"
-                ],
-                [
-                  "Obstacles",
-                  "How can a map provide clearance and support replanning?"
-                ],
-                [
-                  "Inclined kick surface",
-                  "Are the flat-ground starting pose, ball relation and recovery conditions still valid?"
-                ],
-                [
-                  "More complex task",
-                  "How can perception, navigation and motion failures be separated?"
-                ]
-              ]
-            }
-          },
-          {
-            "type": "p",
-            "zh": "建议把提案写成一页：场景变量与范围、传感器输入、可复用模型、需要新训练的部分、训练与测试的划分、通过条件和计算预算。用 Isaac Sim 构建场景，用 Isaac Lab 组织地形与技能评测；只有确实需要的新能力才启动新训练。",
-            "en": "Draft a one-page proposal: scene variables, sensors, reusable policies, new training needs, data splits, success criteria and compute budget. Use Isaac Sim for scenes and Isaac Lab for terrain and skill evaluation."
-          }
-        ]
-      },
-      {
-        "id": "question",
-        "title": {
-          "zh": "最后一个判断题",
-          "en": "One final question"
-        },
-        "blocks": [
-          {
-            "type": "quiz",
-            "question": {
-              "zh": "为什么不能把“坡地行走通过”与“平地射门通过”相加，直接宣称“坡地自主射门通过”？",
-              "en": "Why do slope walking and flat-pitch shooting not establish slope-pitch autonomous shooting?"
-            },
-            "answer": {
-              "zh": "两个子系统在新的组合场景里会互相影响。球可能滚动，定位假设可能失效，出脚姿态也变了；必须对完整任务重新做独立评测。",
-              "en": "The combined task changes ball motion, localization assumptions and kicking conditions. It needs its own end-to-end evaluation."
-            }
-          }
-        ]
-      }
-    ],
-    "references": []
   },
   {
     "id": "models",
@@ -4789,6 +4066,11 @@
             "type": "p",
             "zh": "这些文件随 Git 仓库一同提供，不需要 Git LFS 或额外的模型账户。<code>models/manifest.json</code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。 新检测器的相对路径与 SHA-256 单独记录在 <code>models/scene-detector/deployment.json</code>，原七份文件保持不变。",
             "en": "These files are included in Git without Git LFS or a separate model account. <code>models/manifest.json</code> records sizes, sources, and SHA-256 identities. Model identity checks guard against accidental same-name replacements. The added detector has a separate models/scene-detector/deployment.json with relative paths and hashes; the original seven files are unchanged."
+          },
+          {
+            "type": "p",
+            "zh": "这里提供的是前五章实验和第六章传统演示所用权重，不包含 GR00T 或 Cosmos 大模型。后续若开始微调，需按对应模型的授权与访问条件单独获取权重，并使用独立环境。",
+            "en": "These weights support Chapters 1–5 and the Chapter 6 baseline. GR00T and Cosmos foundation models are not bundled. Future adaptation requires separate model access under the applicable terms and an isolated environment."
           }
         ]
       },
@@ -5023,15 +4305,15 @@
             "type": "list",
             "zh": [
               "调整第三章的训练预算，并在相同的独立测试种子上比较表现。",
-              "为第七章补充具有不同背景和光照条件的图像，检查检测器的泛化表现。",
-              "用第七章的工具可视化不同球位对应的准备站位和朝向。",
-              "为第七章预先确定一组新种子，并完整记录所有成功与失败结果。"
+              "比较第六章的两种射门方式：哪些失败来自观察，哪些来自动作与衔接？",
+              "根据第七章的示范数据流程，列出 Microduck 与 SO-101 的共同步骤和不同动作接口。",
+              "用第九章的组合计数器规划陌生房间评测，说明哪些条件用于训练、哪些留作测试。"
             ],
             "en": [
-              "Vary the Chapter 3 training budget and compare on the same unseen seeds.",
-              "Add backgrounds and lighting conditions to Chapter 5 and evaluate generalization.",
-              "Visualize Chapter 7 target positions and headings for different ball locations.",
-              "Predefine new seeds for Chapter 7 and retain all successes and failures."
+              "Vary the Chapter 3 training budget and compare on the same held-out seeds.",
+              "Compare the two Chapter 6 modes: which failures concern observation, action or handoff?",
+              "Use Chapter 7 to identify shared data-workflow steps and different action interfaces for Microduck and SO-101.",
+              "Use the Chapter 9 counter to plan held-out room evaluation and separate training from test conditions."
             ]
           }
         ]

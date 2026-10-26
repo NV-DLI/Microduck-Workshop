@@ -76,7 +76,7 @@ for f, p in parsed.items():
         count += 1
 pages = json.loads((R / "content/course.json").read_text())
 chapters = [p for p in pages if p.get("number")]
-assert len(chapters) == 8
+assert [int(p["number"]) for p in chapters] == list(range(1, 10))
 for p in pages:
     for lang in ["zh", "en"]:
         if not (W / lang / (p["id"] + ".html")).exists():
@@ -138,7 +138,7 @@ print(
         dict(
             pages=len(parsed),
             local_links=count,
-            chapters=8,
+            chapters=len(chapters),
             models=len(json.loads((R / "models/manifest.json").read_text())["files"]),
             additional_indoor_models=2,
             components=70,

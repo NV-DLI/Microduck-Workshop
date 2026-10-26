@@ -1467,3 +1467,17 @@ textarea {
   color: #264b63;
   margin-bottom: 3px;
 }
+
+/* Evaluation design counter; no simulation is started. */
+.scenario-matrix { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--line, #bcc9ce); border-radius: 12px; }
+.matrix-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .8rem; margin: 1rem 0; }
+.matrix-options label { display: flex; align-items: center; gap: .5rem; }
+.matrix-seeds { width: 5rem; padding: .4rem; font: inherit; }
+.matrix-output { font-weight: 700; }
+.matrix-scope { font-size: .9em; }
+
+.architecture-svg.flow-mobile { display: none; }
+@media (max-width: 600px) {
+  .architecture-svg.flow-desktop { display: none; }
+  .architecture-svg.flow-mobile { display: block; min-width: 0; }
+}

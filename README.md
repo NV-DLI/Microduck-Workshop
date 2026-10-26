@@ -15,7 +15,7 @@ python3 scripts/serve_site.py --port 8080
 
 Open http://127.0.0.1:8080/zh/index.html or `/en/index.html`. Reading, demonstrations, search, and the interactive mechanical assembly work without installing Isaac Sim. Serve the folder over HTTP; browser module loading may not work through `file://`.
 
-The eight chapters move from keyboard football to mechanical structure, walking training, terrain adaptation, community skills, autonomy theory, autonomous football implementation, and an extension challenge. Each lesson explains concepts, provides terminal commands and parameters, describes expected outputs, and includes self-checks. The expanded Chinese edition adds locally rendered equations, interactive theory diagrams, real training curves, seekable demonstration videos, and clickable part labels. Illustrative code excerpts link directly to the full source; terminal commands include copy controls.
+The nine chapters connect keyboard football, robot structure, walking training, terrain adaptation and community skills with a concise traditional-task overview, then GR00T, ASPIRE and Cosmos/Isaac methodology. Chapters 1–5 retain practical labs; Chapter 6 is a watch-only overview and Chapters 7–9 explain integration requirements and future experiments. Frontier model training and closed-loop control have not run in this course. The Chinese and English pages include interactive diagrams, real recorded examples, source links and clear limits on the reported results.
 
 ## Run the labs
 
