@@ -1,0 +1,56 @@
+# Walking-policy interface shown under the actor-network figure (01-play) and the direct-joint VLA figure (09-worlds).
+# Order and units follow the pinned Microduck flat-terrain task configuration:
+# observation terms in PolicyCfg order, joints in MICRODUCK_JOINT_NAMES order.
+# Rows: [1-based index range, count, content, unit, kind]. Strings accept inline Markdown.
+joints:
+  - [left_hip_yaw, 左髋偏航, Left hip yaw]
+  - [left_hip_roll, 左髋侧倾, Left hip roll]
+  - [left_hip_pitch, 左髋俯仰, Left hip pitch]
+  - [left_knee, 左膝, Left knee]
+  - [left_ankle, 左踝, Left ankle]
+  - [neck_pitch, 颈部俯仰, Neck pitch]
+  - [head_pitch, 头部俯仰, Head pitch]
+  - [head_yaw, 头部偏航, Head yaw]
+  - [head_roll, 头部侧倾, Head roll]
+  - [right_hip_yaw, 右髋偏航, Right hip yaw]
+  - [right_hip_roll, 右髋侧倾, Right hip roll]
+  - [right_hip_pitch, 右髋俯仰, Right hip pitch]
+  - [right_knee, 右膝, Right knee]
+  - [right_ankle, 右踝, Right ankle]
+output_groups: [[1, 5], [6, 9], [10, 14]]
+zh:
+  input_title: 61 维输入按什么顺序排列
+  input_intro: 61 个数按下表顺序拼接，归一化后送入网络。前 48 个描述机器人此刻的状态和上一步动作，后 13 个是希望它做什么。三组关节数据都使用与输出相同的 14 个关节顺序。
+  input_columns: [序号, 个数, 内容, 单位, 类型]
+  input_rows:
+    - ["1–3", 3, 机身角速度，依次绕前后轴、左右轴和上下轴, rad/s, 状态]
+    - ["4–6", 3, 重力方向在机身前后轴、左右轴和上下轴上的投影, 无量纲（单位向量）, 状态]
+    - ["7–20", 14, 各关节相对默认姿态的角度偏差, rad, 状态]
+    - ["21–34", 14, 各关节角速度, rad/s, 状态]
+    - ["35–48", 14, 上一步输出的 14 个原始动作, 与输出相同, 上一步动作]
+    - ["49–51", 3, 期望的前进速度、横向速度和转向角速度, "m/s、m/s、rad/s", 指令]
+    - ["52–55", 4, 颈部俯仰、头部俯仰、头部偏航、头部侧倾的期望角度偏移, rad, 指令]
+    - ["56–61", 6, 机身姿态指令偏移：前后、左右、上下位置，以及横滚、俯仰、偏航角, "m；rad", 指令]
+  input_note: 机身姿态的 6 个指令保留在接口中；本课的行走实验把它们固定为 0。
+  output_title: 14 维输出对应哪些关节
+  output_intro: 策略每 20 ms 输出 14 个数，表示各关节目标角度相对默认姿态的偏移（rad）。动作管理器把它加到默认姿态上，得到绝对目标角，需要时再扣除编码器偏置校准，然后交给舵机的位置控制。每一步都以默认姿态为基准重新计算目标角。
+  output_groups: [左腿, 颈部与头部, 右腿]
+  output_columns: [序号, 关节]
+en:
+  input_title: The order of the 61 inputs
+  input_intro: The 61 numbers are concatenated in the order below and normalized before entering the network. The first 48 describe the robot's current state and its previous action; the last 13 say what it should do. All three joint groups use the same 14-joint order as the output.
+  input_columns: [Index, Count, Content, Unit, Kind]
+  input_rows:
+    - ["1–3", 3, "Body angular velocity about the body x, y and z axes", rad/s, State]
+    - ["4–6", 3, "Gravity direction projected onto the body x, y and z axes", "dimensionless (unit vector)", State]
+    - ["7–20", 14, Joint angles relative to the default pose, rad, State]
+    - ["21–34", 14, Joint velocities, rad/s, State]
+    - ["35–48", 14, The 14 raw actions output at the previous step, same as output, Previous action]
+    - ["49–51", 3, "Desired forward, lateral and turning velocity", "m/s, m/s, rad/s", Command]
+    - ["52–55", 4, "Desired angle offsets for neck pitch, head pitch, head yaw and head roll", rad, Command]
+    - ["56–61", 6, "Body pose command offsets: x, y, z position and roll, pitch, yaw angle", "m; rad", Command]
+  input_note: The six body-pose commands remain part of the interface; the walking experiments in this course keep them at 0.
+  output_title: Which joints the 14 outputs drive
+  output_intro: Every 20 ms the policy outputs 14 numbers, each a target joint angle offset from the default pose (rad). The action manager adds it to the default pose to get an absolute target angle, subtracts the encoder bias calibration where applicable, and passes it to the servo's position control. Each step recomputes the target angle relative to the same default pose.
+  output_groups: [Left leg, Neck and head, Right leg]
+  output_columns: [Index, Joint]

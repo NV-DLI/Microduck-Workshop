@@ -1,0 +1,594 @@
+/* "Inside the little duck": illustrated 3D explorer (robot-explorer directive).
+   Transparent borderless stage; controls use the theme's own tokens and button shapes so the
+   figure sits on both light and dark pages. Labels on the stage keep the illustrated style. */
+.duck-explorer-figure {
+  margin: 1.75rem 0;
+}
+.duck-explorer {
+  --dx-ink: #2a2e3f;
+  --dx-actuator: #ff7a6b;
+  --dx-link: #9a8cf8;
+  --dx-surface: var(--pst-color-background);
+  --dx-text: var(--pst-color-text-base);
+  --dx-muted: var(--pst-color-text-muted);
+  --dx-line: var(--pst-color-border);
+  --dx-accent: var(--pst-color-primary);
+  --dx-accent-bg: var(--pst-color-primary-bg);
+  --dx-radius: 0.25rem;
+  /* joint gizmo: white line with a thin neutral edge, legible on light and dark pages */
+  --dx-gizmo: rgba(255, 255, 255, 0.9);
+  --dx-gizmo-edge: rgba(70, 76, 88, 0.72);
+  container-type: inline-size;
+  color: var(--dx-text);
+}
+html[data-theme="dark"] .duck-explorer {
+  --dx-ink: #e9e2d4;
+  --dx-gizmo: rgba(255, 255, 255, 0.86);
+  --dx-gizmo-edge: rgba(8, 10, 14, 0.7);
+}
+
+/* ---- shared control look: the theme's restrained squared buttons ---- */
+.dx-chapter,
+.dx-reset,
+.dx-back,
+.dx-region,
+.dx-joint,
+.dx-play,
+.dx-zero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--dx-line);
+  border-radius: var(--dx-radius);
+  background: var(--dx-surface);
+  color: var(--dx-text);
+  font: inherit;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+}
+.dx-chapter:hover,
+.dx-back:hover,
+.dx-region:hover,
+.dx-joint:hover,
+.dx-play:hover,
+.dx-zero:hover {
+  border-color: var(--dx-accent);
+}
+.dx-region[aria-pressed="true"],
+.dx-joint[aria-pressed="true"],
+.dx-play[aria-pressed="true"] {
+  border-color: var(--dx-accent);
+  background: var(--dx-accent-bg);
+  font-weight: 600;
+}
+.duck-explorer button:focus-visible,
+.dx-handle:focus-visible {
+  outline: 2px solid var(--dx-accent);
+  outline-offset: 2px;
+}
+
+/* ---- three views: a segmented control ---- */
+.dx-chapters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.dx-chapters[hidden] {
+  display: none;
+}
+.dx-tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--dx-line);
+  border-radius: var(--dx-radius);
+  overflow: hidden;
+}
+.dx-chapter {
+  min-height: 2.125rem;
+  padding: 0.3rem 1rem;
+  border: 0;
+  border-radius: 0;
+}
+.dx-chapter + .dx-chapter {
+  border-left: 1px solid var(--dx-line);
+}
+.dx-chapter:hover {
+  background: var(--dx-accent-bg);
+}
+.dx-chapter[aria-pressed="true"] {
+  background: var(--dx-accent-bg);
+  box-shadow: inset 0 -2px 0 var(--dx-accent);
+  font-weight: 600;
+}
+.dx-chapter:focus-visible {
+  outline-offset: -2px;
+}
+.dx-reset {
+  margin-left: auto;
+  border-color: transparent;
+  background: transparent;
+  color: var(--dx-muted);
+}
+.dx-reset:hover {
+  color: var(--dx-text);
+  text-decoration: underline;
+}
+
+/* ---- layout: full-width stage; in the joint view the controls sit to its right ---- */
+.dx-body {
+  display: grid;
+  gap: 0.25rem 1.25rem;
+}
+@container (min-width: 720px) {
+  .duck-explorer[data-chapter="2"] .dx-body {
+    grid-template-columns: minmax(0, 1fr) 15.5rem;
+    align-items: start;
+  }
+  /* The English legend labels are longer; the panel widens just enough to keep them on one row. */
+  .duck-explorer[data-chapter="2"]:lang(en) .dx-body {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+  }
+}
+
+/* ---- stage ---- */
+.dx-stage {
+  position: relative;
+  height: clamp(24rem, min(38vw, 100vh - 12rem), 44rem);
+  background: transparent;
+  overflow: hidden;
+}
+.dx-stage canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.dx-leaders,
+.dx-gizmo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.dx-gizmo[hidden] {
+  display: none;
+}
+.dx-leader {
+  fill: none;
+  stroke: var(--dx-ink);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  stroke-linecap: round;
+  opacity: 0.75;
+}
+.dx-leader.is-servo {
+  stroke-width: 1.25;
+  stroke-dasharray: none;
+  opacity: 0.8;
+}
+.dx-anchor {
+  fill: var(--dx-surface);
+  stroke: var(--dx-ink);
+  stroke-width: 2;
+}
+.dx-anchor.is-servo {
+  fill: var(--dx-actuator);
+  stroke-width: 1.5;
+}
+.dx-junction {
+  fill: var(--dx-ink);
+}
+.dx-site circle {
+  fill: none;
+  stroke: var(--dx-ink);
+  stroke-width: 1.75;
+}
+.dx-site path {
+  stroke: var(--dx-ink);
+  stroke-width: 1.25;
+}
+
+/* The ribbon arrow is drawn in 3D; this is its invisible drag area (outline plus a margin). */
+.dx-arc-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 12;
+  stroke-linejoin: round;
+  pointer-events: all;
+  cursor: grab;
+  touch-action: none;
+}
+.dx-handle {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  z-index: 3;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--dx-gizmo-edge);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  touch-action: none;
+}
+.dx-handle::before {
+  /* larger hit area than the visible knob */
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+}
+.dx-handle[hidden] {
+  display: none;
+}
+/* Joint view: the name of the motion a servo housing drives, beside the pointer. */
+.dx-motor-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  margin: 0 !important;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--dx-line);
+  border-radius: var(--dx-radius);
+  background: var(--dx-surface);
+  color: var(--dx-text);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.dx-motor-tip[hidden] {
+  display: none;
+}
+.duck-explorer.is-dragging,
+.duck-explorer.is-dragging .dx-handle,
+.duck-explorer.is-dragging .dx-arc-hit {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.dx-callouts {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.dx-callout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.8rem 0.3rem 0.55rem;
+  border: 1.5px solid var(--dx-ink);
+  border-radius: 999px;
+  background: var(--dx-surface);
+  box-shadow: 2px 2px 0 var(--dx-ink);
+  color: var(--dx-text);
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-align: left;
+  white-space: nowrap;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.dx-callout.has-sub {
+  border-radius: 0.75rem;
+  padding-block: 0.25rem;
+}
+.dx-callout:hover {
+  background: color-mix(in srgb, var(--dx-accent) 12%, var(--dx-surface));
+}
+.dx-callout-body {
+  display: grid;
+}
+.dx-callout-sub {
+  color: var(--dx-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.dx-callout-dot {
+  flex: none;
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1.5px solid var(--dx-ink);
+  border-radius: 50%;
+  background: #f7a043;
+}
+.dx-callout.is-count .dx-callout-dot {
+  background: var(--dx-actuator);
+}
+.dx-back {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  z-index: 3;
+}
+.dx-back::before {
+  content: "←";
+}
+.dx-back[hidden] {
+  display: none;
+}
+
+/* ---- loading and errors: nothing visible until the 3D duck is ready; after a failure, a short
+   message and one "try again" button ---- */
+.dx-launch {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+.dx-launch[hidden] {
+  display: none;
+}
+.dx-open {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0.45rem 1.1rem 0.45rem 0.9rem;
+  border: 1px solid var(--dx-accent);
+  border-radius: var(--dx-radius);
+  background: var(--dx-accent);
+  color: #000;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.dx-open:hover {
+  filter: brightness(1.08);
+}
+.dx-status {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  z-index: 4;
+  max-width: 80%;
+  margin: 0;
+  color: var(--dx-text);
+  font-size: 0.875rem;
+}
+.dx-status:empty {
+  display: none;
+}
+/* While loading, the status only speaks to screen readers. */
+.duck-explorer:not([data-state="error"]) .dx-status {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.duck-explorer[data-state="error"] .dx-status {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--pst-color-danger, #e5484d);
+  border-radius: var(--dx-radius);
+  background: var(--dx-surface);
+}
+
+/* ---- text card (whole duck and exploded view) ---- */
+.dx-panel {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+.dx-panel[hidden],
+.dx-card[hidden],
+.dx-drive[hidden],
+.dx-fixed[hidden],
+.dx-part[hidden] {
+  display: none;
+}
+.dx-card {
+  min-height: 4.75rem;
+}
+.dx-card p {
+  margin: 0;
+}
+.dx-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+.dx-fact {
+  margin-top: 0.2rem !important;
+  line-height: 1.6;
+}
+.dx-part {
+  margin-top: 0.3rem !important;
+  color: var(--dx-muted);
+  font-size: 0.875rem;
+}
+
+/* ---- joint controls ---- */
+.duck-explorer[data-chapter="2"] .dx-panel {
+  margin-top: 0;
+}
+.dx-drive {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.85rem 0.6rem;
+  align-content: start;
+}
+/* Parts (top to bottom of the duck) and their motions side by side; the rest spans the panel. */
+.dx-drive > * {
+  grid-column: 1 / -1;
+}
+.dx-drive > .dx-field {
+  grid-column: auto;
+  align-content: start;
+}
+.dx-field,
+.dx-readout {
+  display: grid;
+  gap: 0.35rem;
+}
+.dx-drive p {
+  margin: 0;
+}
+.dx-field-label {
+  color: var(--dx-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.dx-regions,
+.dx-joints {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+.dx-regions,
+.dx-joints {
+  grid-template-columns: minmax(0, 1fr);
+}
+.dx-side-note {
+  margin-top: -0.5rem !important;
+  color: var(--dx-muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+.dx-joint {
+  justify-content: flex-start;
+  text-align: left;
+}
+.dx-fixed {
+  color: var(--dx-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+.dx-fixed strong {
+  color: var(--dx-text);
+  font-weight: 600;
+}
+.dx-q-id {
+  margin-left: 0.25rem;
+  padding: 0;
+  background: none;
+  color: var(--dx-muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.dx-q {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.4rem;
+  font-size: 1.25rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+.dx-q var {
+  font-style: italic;
+  font-weight: 500;
+}
+.dx-limit {
+  padding: 0 0.35rem;
+  border: 1px solid var(--dx-line);
+  border-radius: var(--dx-radius);
+  color: var(--dx-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.dx-q-detail {
+  color: var(--dx-muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.45;
+}
+.dx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.dx-play {
+  min-width: 5.5rem;
+}
+.dx-play::before {
+  content: "▶";
+  font-size: 0.7em;
+}
+.dx-play[aria-pressed="true"]::before {
+  content: "❚❚";
+}
+.dx-legend {
+  display: flex;
+  flex-wrap: nowrap; /* one row above the part and motion choices */
+  white-space: nowrap;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  color: var(--dx-muted);
+  font-size: 0.75rem;
+  list-style: none;
+}
+.dx-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0;
+}
+.dx-chip {
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid var(--dx-ink);
+  border-radius: 2px;
+}
+.dx-legend-actuator .dx-chip {
+  background: var(--dx-actuator);
+}
+.dx-legend-link .dx-chip {
+  background: var(--dx-link);
+}
+.dx-legend-arc path {
+  fill: #fff;
+  stroke: var(--dx-gizmo-edge);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.dx-caption {
+  margin-top: 0.75rem;
+  color: var(--dx-muted);
+  font-size: 0.9rem;
+  text-align: left;
+}
+.dx-caption p {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .duck-explorer button {
+    transition: none;
+  }
+}
+.dx-stage:focus {
+  outline: none;
+}

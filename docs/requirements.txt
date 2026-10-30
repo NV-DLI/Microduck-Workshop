@@ -1,0 +1,14 @@
+# Course site build (Sphinx). Install into a dedicated environment, e.g.
+#   python3 -m venv .local/docs-venv && .local/docs-venv/bin/pip install -r docs/requirements.txt
+Sphinx==8.2.3
+myst-parser==5.1.0
+nvidia-sphinx-theme==0.0.9.post1
+pydata-sphinx-theme==0.23.0
+sphinx-copybutton==0.5.2
+PyYAML==6.0.3
+Pygments==2.21.0
+docutils==0.21.2
+# Chinese word segmentation for the built-in search index.
+jieba==0.42.1
+# Extract standalone lesson pages for Open edX LMS packages.
+beautifulsoup4==4.15.0

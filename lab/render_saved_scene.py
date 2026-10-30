@@ -85,7 +85,17 @@ def main():
             robot_usd=ASSETS / "microduck_contact.usda",
         )
         cfg, _ = build_cfg(setup)
-        configure_football(cfg, style=a.style or scene["mat_style"])
+        rendered_profile = configure_football(
+            cfg,
+            style=a.style or scene["mat_style"],
+            lighting=scene.get("lighting", "daylight"),
+        )
+        if (
+            "lighting_parameters" in scene
+            and json.loads(json.dumps(rendered_profile.get("lighting_parameters")))
+            != scene["lighting_parameters"]
+        ):
+            raise ValueError("Saved lighting parameters differ from this renderer")
         if manifest.get("locomotion") == "rollers":
             from roller_config import configure_rollers
 

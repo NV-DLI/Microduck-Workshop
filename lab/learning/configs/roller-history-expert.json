@@ -1,0 +1,13 @@
+{
+  "mode": "expert",
+  "launch_s": 5.0,
+  "push_s": 2.1,
+  "observe_pitch_rad": 0.75,
+  "low_level_stop": true,
+  "stop_kp": 1.5,
+  "stop_ki": 0.2,
+  "release_brake": true,
+  "release_ball_x": 0.1,
+  "release_ball_vx": 0.4,
+  "state_context": "proprio_0_12_24_previous_request_v1"
+}

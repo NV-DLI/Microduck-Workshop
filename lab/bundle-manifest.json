@@ -317,8 +317,8 @@
     {
       "path": "simulation/core/evaluation/football/executor.py",
       "original_sha256": "ea0637d2d52fb3c7086185c42a51e7d35490edcead6ea2b34cc69e513d6b0abc",
-      "template_sha256": "68851994807786470804fce0e3955ab95de79352c04ab7521ea3ba90bcb420c3",
-      "bytes": 114199
+      "template_sha256": "bb00d2dfd3c321c4f149a091e0f481e410d4e321420416a2c02b67234e3bbbc0",
+      "bytes": 116936
     },
     {
       "path": "simulation/core/evaluation/football/final_approach.py",

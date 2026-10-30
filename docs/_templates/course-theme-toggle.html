@@ -1,0 +1,13 @@
+{#- Two-state light/dark switch. The hidden buttons are the theme's own mode
+    buttons, so the click goes through the theme's setTheme (storage, OS listener). -#}
+<div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="{{ course_ui_strings.dark_mode }}" title="{{ course_ui_strings.dark_mode }}">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div>

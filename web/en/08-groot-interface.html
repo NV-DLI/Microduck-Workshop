@@ -1,0 +1,784 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="What GR00T reads in the walking shot, which eight high-level requests it outputs and who executes them; why only the action head is post-trained instead of predicting joint angles; how the demonstrations are designed; and why a real robot would run inference on a workstation." name="description" />
+
+  <title>4.2 Walking shot: GR00T inputs, outputs and data - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-interface';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.3 Train and validate the GR00T walking shot" href="08-groot-lab.html" />
+    <link rel="prev" title="4.1 Vision-language-action models and GR00T" href="07-groot.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="08-groot-interface">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/08-groot-interface.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/08-groot-interface.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/08-groot-interface.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/08-groot-interface.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.2 Walking shot: GR00T inputs, outputs and data</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="walking-shot-gr00t-inputs-outputs-and-data">
+<h1>4.2 Walking shot: GR00T inputs, outputs and data<a class="headerlink" href="#walking-shot-gr00t-inputs-outputs-and-data" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>What GR00T reads in the walking shot, which eight high-level requests it outputs and who executes them; why only the action head is post-trained instead of predicting joint angles; how the demonstrations are designed; and why a real robot would run inference on a workstation.</p>
+</div><div class="lesson-meta">Section 4.2 · Estimated learning time: 60 minutes</div></div></div><script type="application/json" class="course-symbols">{"H": {"tex": "H", "text": "Number of high-level request steps predicted at once; 16 in this section."}, "K": {"tex": "K", "text": "Number of predicted request steps executed before predicting again; 4 in this section."}, "T_exec": {"tex": "T_{\\mathrm{execute}}", "text": "Simulation time covered by the executed requests: 4 ÷ 12.5 Hz = 0.32 s, excluding inference and communication."}, "f_action": {"tex": "f_{\\mathrm{action}}", "text": "Rate at which high-level requests are recorded and executed; 12.5 Hz in this section."}, "k_round": {"tex": "k", "text": "Round index: for GR00T one round is a new prediction and its execution; for the onboard policy one round is one sensor capture and its decision. $k-1$ is the previous round and $k+1$ the next."}}</script><section id="task">
+<h2>One pitch, one gait, one instruction<a class="headerlink" href="#task" title="Link to this heading">#</a></h2>
+<p>The GR00T in this chapter does one thing: on the course’s green football pitch, walk on its normal feet up to the ball, kick it into the goal with the right foot, then recover to standing. The pitch, goal, ball and lighting are exactly those used by the onboard policy, and the model only controls walking; it never switches to rollers.</p>
+<p>The model always receives the same instruction:</p>
+<p><q>Walk to the football, kick it into the goal with the right foot, and recover to standing.</q></p>
+<p>The instruction does not say where the ball is or where to stand before kicking; the robot has to work that out from camera images and body state. Because every demonstration uses this one instruction, the model learns this one task, and nothing can be inferred about other instructions.</p>
+</section>
+<section id="reuse-skills">
+<h2>Hierarchical control: GR00T decides what, existing skills decide how<a class="headerlink" href="#reuse-skills" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-cac556b447"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Learn how to use skills; skills execute movement"><svg class="learning-svg" viewBox="0 0 900 214" role="group" aria-labelledby="learn-cac556b447-title"><title id="learn-cac556b447-title">Learn how to use skills; skills execute movement</title><defs><marker id="learn-cac556b447-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H244.0" marker-end="url(#learn-cac556b447-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 87.0H468.0" marker-end="url(#learn-cac556b447-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 87.0H692.0" marker-end="url(#learn-cac556b447-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M786.0 154V190H114.0V154" marker-end="url(#learn-cac556b447-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Observe and set a goal" aria-controls="learn-cac556b447-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Observe and</text><text x="114.0" y="94" class="learning-node-title">set a goal</text><text x="114.0" y="118" class="learning-node-subtitle">4 images, 127-D</text><text x="114.0" y="135" class="learning-node-subtitle">state, instruction</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. GR00T" aria-controls="learn-cac556b447-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="126" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">GR00T</text><text x="338.0" y="98" class="learning-node-subtitle">Predict 8-D</text><text x="338.0" y="115" class="learning-node-subtitle">high-level requests</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Skill executor" aria-controls="learn-cac556b447-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="126" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">Skill executor</text><text x="562.0" y="98" class="learning-node-subtitle">Walk / gaze /</text><text x="562.0" y="115" class="learning-node-subtitle">kick and recover</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Robot and feedback" aria-controls="learn-cac556b447-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Robot and</text><text x="786.0" y="94" class="learning-node-title">feedback</text><text x="786.0" y="118" class="learning-node-subtitle">Move joints,</text><text x="786.0" y="135" class="learning-node-subtitle">observe again</text></g></svg></div><div class="learning-details" aria-label="Learn how to use skills; skills execute movement"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-cac556b447-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Observe and set a goal</h3><p>Every 80 ms an observation is assembled from four history images from the same onboard camera, current and past body state, and the fixed instruction. It contains no simulated world coordinates of the ball or goal and no internal task stage of the onboard policy.</p></article><article id="learn-cac556b447-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>GR00T</h3><p>GR00T outputs a 16 × 8 block of requests. Each step has three movement requests (forward, lateral, turn), four gaze requests for the neck and head, and one right-foot kick request.</p></article><article id="learn-cac556b447-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Skill executor</h3><p>The official walking policy turns movement requests into joint actions and keeps balance; head requests pass through limits and rate limiting; once the kick request crosses its threshold, the executor checks that the robot has stopped and is stable, then runs the course’s local kick-and-recovery skill.</p></article><article id="learn-cac556b447-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Robot and feedback</h3><p>Low-level control keeps driving the joints at 50 Hz, and fresh images and body state feed the next prediction.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>With this split, skills from the earlier chapters remain the foundation of the task: the official walking policy is the same kind of reinforcement-learning policy you train in Section 3.2, and kicking and recovery are handled by the course’s local skill, which combines reference kick and standing policies, a course-trained residual correction and recovery logic. GR00T learns “when to walk where, where to look and when to kick”, not how to stay upright.</p>
+</section>
+<section id="inputs">
+<h2>What GR00T reads each time<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Input</p></th>
+<th class="head cell-short"><p>Structure</p></th>
+<th class="head cell-short"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Camera history</p></td>
+<td><p>4 RGB images, 270 × 480 each</p></td>
+<td><p>The current frame from the onboard camera and frames from about 1.92, 3.84 and 5.76 seconds earlier (24, 48 and 72 samples apart at 12.5 Hz).</p></td>
+</tr>
+<tr class="row-odd"><td><p>Task instruction</p></td>
+<td class="cell-short"><p>Text</p></td>
+<td><p>The fixed sentence above.</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Current state</p></td>
+<td class="cell-short"><p>58 values</p></td>
+<td><p>Body angular velocity and gravity direction 6; positions of the 14 joints relative to the default pose 14; joint velocities 14; previous motor action 14; previous 8-D high-level request 8; kick-skill busy flag and progress 2.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Past-state summaries</p></td>
+<td><p>3 × 23 = 69 values</p></td>
+<td><p>One group per past image: angular velocity and gravity 6, positions of the four head and neck joints 4, the previous high-level request at that time 8, age 1 and integral summaries 4.</p></td>
+</tr>
+<tr class="row-even"><td><p>Full numeric state</p></td>
+<td><p>58 + 69 = 127 values</p></td>
+<td><p>Encoded separately from images and text.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A few points are easy to misread:</p>
+<ul class="simple">
+<li><p>The integral summaries accumulate the measured vertical angular velocity and the request values. A request integral is “how far the robot was asked to go”, not a measured displacement or position.</p></li>
+<li><p>The previous motor action and the previous high-level request differ. The first is the joint action actually sent by the low level; the second is what GR00T requested at the preceding 80 ms sample. A request may be delayed by stability conditions or head rate limits, so requesting something is not the same as completing it. Before the first decision the previous request is zero.</p></li>
+<li><p>At the start of an episode, before enough history exists, past images and states are filled with the first observation of the episode.</p></li>
+<li><p>The 127 values contain no simulated coordinates of the ball or goal. The kick-skill busy flag and progress come from the executor itself and can be maintained on a real robot.</p></li>
+</ul>
+</section>
+<section id="outputs">
+<h2>The eight high-level requests: what, which units, who executes<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h2>
+<p>Each predicted step outputs eight values in a fixed order. The executor first clips each value to the range below, then passes it to the corresponding module.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>#</p></th>
+<th class="head cell-short"><p>Request</p></th>
+<th class="head cell-short"><p>Range</p></th>
+<th class="head cell-short"><p>Unit</p></th>
+<th class="head cell-short"><p>Executed by</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>1</p></td>
+<td class="cell-short"><p>Forward</p></td>
+<td class="cell-short"><p>−0.35 to 0.35</p></td>
+<td><p>Native walking-policy command value</p></td>
+<td><p>The official walking policy, which combines it with body feedback to produce 14 joint actions</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>2</p></td>
+<td class="cell-short"><p>Lateral</p></td>
+<td class="cell-short"><p>−0.20 to 0.20</p></td>
+<td><p>Native walking-policy command value</p></td>
+<td class="cell-short"><p>Same</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>3</p></td>
+<td class="cell-short"><p>Turn</p></td>
+<td class="cell-short"><p>−0.80 to 0.80</p></td>
+<td><p>Native walking-policy command value</p></td>
+<td class="cell-short"><p>Same</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>4</p></td>
+<td class="cell-short"><p>Neck pitch</p></td>
+<td class="cell-short"><p>−1.10 to 1.10</p></td>
+<td><p>Radians from neutral</p></td>
+<td><p>The head adapter limits it and its rate of change, then passes it to the low level</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>5</p></td>
+<td class="cell-short"><p>Head pitch</p></td>
+<td class="cell-short"><p>−1.10 to 1.10</p></td>
+<td><p>Radians from neutral</p></td>
+<td class="cell-short"><p>Same</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>6</p></td>
+<td class="cell-short"><p>Head yaw</p></td>
+<td class="cell-short"><p>−1.40 to 1.40</p></td>
+<td><p>Radians from neutral</p></td>
+<td class="cell-short"><p>Same</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>7</p></td>
+<td class="cell-short"><p>Head roll</p></td>
+<td class="cell-short"><p>−0.31 to 0.31</p></td>
+<td><p>Radians from neutral</p></td>
+<td class="cell-short"><p>Same</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>8</p></td>
+<td><p>Right-foot kick</p></td>
+<td class="cell-short"><p>0 to 1</p></td>
+<td><p>Trigger request</p></td>
+<td><p>Above 0.5 the executor first confirms the robot has stopped and the head is neutral, then runs the roughly 4-second local kick-and-recovery skill</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The first three values go straight into the official walking policy’s command input. They are the policy’s own native values, not measured speeds: how fast the robot actually moves also depends on the gait, the floor and the body state, so do not read them as m/s or rad/s. The kick value is not a foot joint angle or a success probability either; it is only a “kick now” signal. Whether the kick skill is running, and how far along it is, is fed back to the model through the busy flag and progress in the state.</p>
+</section>
+<section id="why-high-level">
+<h2>Why not let GR00T output joint angles directly?<a class="headerlink" href="#why-high-level" title="Link to this heading">#</a></h2>
+<p>Microduck’s walking policy updates the actions of its 14 joints from body feedback every 20 ms (50 Hz) to stay balanced while stepping. One new GR00T inference took a median of about 0.33 s of server computation in the course’s simulation logs, more than 16 low-level control ticks. If GR00T output joint angles directly, it would either fall behind the rhythm balance needs, or it would have to learn balance and contact details as well, which needs far more demonstrations and is hard to learn from them.</p>
+<p>With a hierarchy, each part does what it is good at:</p>
+<ul class="simple">
+<li><p>the walking and kick skills, already trained with reinforcement learning and running at 50 Hz, keep handling balance, stepping and contact;</p></li>
+<li><p>GR00T handles what requires understanding the scene: which direction the ball is in, how far it is, whether to look down to check, and when a kick fits;</p></li>
+<li><p>high-level requests have intuitive meanings and few dimensions, so demonstrations are easier to record and easier to check.</p></li>
+</ul>
+<p>The cost is that GR00T is limited by the skills beneath it: a request cannot ask for a motion the walking policy cannot perform.</p>
+<p>Action chunks connect this division of labor in time. Each GR00T prediction covers <span class="math notranslate nohighlight">\(\htmlData{sym=H}{H}\)</span> = 16 request steps, the executor runs only the first <span class="math notranslate nohighlight">\(\htmlData{sym=K}{K}\)</span> = 4, then predicts again from a fresh observation:</p>
+<div class="formula"><div class="formula-label">Simulation time covered by one executed chunk</div><div class="formula-body">\[\htmlData{sym=T_exec}{T_{\mathrm{execute}}} = \htmlData{sym=K}{K} / \htmlData{sym=f_action}{f_{\mathrm{action}}}\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(T_{\mathrm{execute}}\)</dt><dd>Simulation time covered by the executed requests: 4 ÷ 12.5 Hz = 0.32 s, excluding inference and communication.</dd></div><div><dt>\(K\)</dt><dd>Number of predicted request steps executed before predicting again; 4 in this section.</dd></div><div><dt>\(f_{\mathrm{action}}\)</dt><dd>Rate at which high-level requests are recorded and executed; 12.5 Hz in this section.</dd></div></dl></details></div><p>At <span class="math notranslate nohighlight">\(\htmlData{sym=f_action}{f_{\mathrm{action}}}\)</span> = 12.5 Hz, four steps cover 0.32 s of simulation time. Each request is held for 80 ms, during which the low-level walking policy updates 4 times. The 0.32 s is simulation time only and excludes waiting for inference and communication.</p>
+</section>
+<section id="timing">
+<h2>Control cycle: how often each module updates<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
+<p>The figure below comes from the course's completed walking-shot simulation logs. It shows three consecutive rounds (previous, current and next) and compares in what order, and how often, each module updates with the onboard policy and with GR00T. While it plays, follow the colors to see where each round's inputs come from and which round produced each command.</p>
+<figure class="course-chart seq-timing" data-seq-timing data-config='{&quot;replay&quot;: {&quot;groot&quot;: 15000, &quot;onboard&quot;: 9000}}'><div class="chart-header"><h3>Control cycle: from observation to action</h3><span>Walking shot · three consecutive rounds from a recorded simulation</span></div><div class="timing-modes" role="radiogroup" aria-label="Control approach"><button type="button" role="radio" aria-checked="true" data-mode="onboard">Onboard policy</button><button type="button" role="radio" aria-checked="false" data-mode="groot">GR00T</button></div><div class="seq-board" data-board="onboard"><ul class="seq-legend"><li>Vertical line: one sensor capture</li><li>◆ processing event: done while the simulation is paused; measured time below, not to axis scale</li><li>Short bar: one low-level motion-policy update</li><li>Color: owning round; grey: replaced by a newer round; dashed: not yet happened</li></ul><div class="seq-stage"><div class="seq-row seq-head" data-row="head"><div class="seq-label"><strong></strong></div><div class="seq-track"><span class="seq-item seq-round" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.35000" data-x="0.35000" data-round="0"><span class="seq-text">\(\htmlData{sym=k_round}{k}-1\) previous</span></span><span class="seq-item seq-round" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.67500" data-x="0.67500" data-round="1"><span class="seq-text">\(\htmlData{sym=k_round}{k}\) current</span></span><span class="seq-item seq-round" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="1.00000" data-x="1.00000" data-round="2"><span class="seq-text">\(\htmlData{sym=k_round}{k}+1\) next</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="sens"><div class="seq-label"><strong>Sensor capture</strong><small>RGB + ToF · 15 Hz, about every 67 ms</small></div><div class="seq-track"><span class="seq-item is-capture" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0" title="RGB and ToF update in the same simulated capture with the same timestamp"></span><span class="seq-item is-mark-label" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><span class="seq-text">RGB + ToF</span></span><span class="seq-item is-capture" style="left:35.000%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1" title="RGB and ToF update in the same simulated capture with the same timestamp"></span><span class="seq-item is-mark-label" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><span class="seq-text">RGB + ToF</span></span><span class="seq-item is-capture" style="left:67.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2" title="RGB and ToF update in the same simulated capture with the same timestamp"></span><span class="seq-item is-mark-label" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><span class="seq-text">RGB + ToF</span></span><span class="seq-item is-capture is-next" style="left:100.000%" data-t0="1.00000" data-t1="1.00000" data-x="2.00000" title="Sensor capture for the following round"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="dec"><div class="seq-label"><strong>Onboard decision</strong><small>once after each capture ◆</small></div><div class="seq-track"><span class="seq-item is-event" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0" title="The onboard policy processes this capture: detector call 40.2 ms (including image encoding and local communication), geometry, navigation, gaze and safety guards 70.1 ms, total 110.4 ms (host-measured from sensor data ready to command ready, excluding sensor capture; simulation time does not advance meanwhile)"></span><span class="seq-item is-mark-label" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><span class="seq-text">Detect · decide<small>measured 110.4 ms</small></span></span><span class="seq-item is-event" style="left:35.000%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1" title="The onboard policy processes this capture: detector call 36.9 ms (including image encoding and local communication), geometry, navigation, gaze and safety guards 229.2 ms, total 266.2 ms (host-measured from sensor data ready to command ready, excluding sensor capture; simulation time does not advance meanwhile)"></span><span class="seq-item is-mark-label" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><span class="seq-text">Detect · decide<small>measured 266.2 ms</small></span></span><span class="seq-item is-event" style="left:67.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2" title="The onboard policy processes this capture: detector call 58.1 ms (including image encoding and local communication), geometry, navigation, gaze and safety guards 90.2 ms, total 148.4 ms (host-measured from sensor data ready to command ready, excluding sensor capture; simulation time does not advance meanwhile)"></span><span class="seq-item is-mark-label" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><span class="seq-text">Detect · decide<small>measured 148.4 ms</small></span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="cmd"><div class="seq-label"><strong>High-level command</strong><small>kept until the next decision</small></div><div class="seq-track"><span class="seq-item is-command" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.35000" data-x="0.35000" data-round="0" data-say="Previous round: the sensors capture RGB and ToF together → the simulation pauses while the onboard policy runs detection, geometry, navigation and gaze decisions, measured at 110.4 ms → this round&#x27;s high-level command is kept until the next decision, while the low-level motion policy updates 4 times." data-status="frame"><span class="seq-text">Execute round \(\htmlData{sym=k_round}{k}-1\) command</span></span><span class="seq-item is-command" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.67500" data-x="0.67500" data-round="1" data-say="Current round: the sensors capture RGB and ToF together → the simulation pauses while the onboard policy runs detection, geometry, navigation and gaze decisions, measured at 266.2 ms → this round&#x27;s high-level command is kept until the next decision, while the low-level motion policy updates 3 times." data-status="frame"><span class="seq-text">Execute round \(\htmlData{sym=k_round}{k}\) command</span></span><span class="seq-item is-command" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="1.00000" data-x="1.00000" data-round="2" data-say="Next round: the sensors capture RGB and ToF together → the simulation pauses while the onboard policy runs detection, geometry, navigation and gaze decisions, measured at 148.4 ms → this round&#x27;s high-level command is kept until the next decision, while the low-level motion policy updates 3 times." data-status="frame"><span class="seq-text">Execute round \(\htmlData{sym=k_round}{k}+1\) command</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="act"><div class="seq-label"><strong>Low-level motion policy</strong><small>50 Hz · every 20 ms</small></div><div class="seq-track"><span class="seq-item is-tick" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:10.000%" data-t0="0.10000" data-t1="0.11200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:20.000%" data-t0="0.20000" data-t1="0.21200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:30.000%" data-t0="0.30000" data-t1="0.31200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:40.000%" data-t0="0.40000" data-t1="0.41200" data-x="0.67500" data-round="1"></span><span class="seq-item is-tick" style="left:50.000%" data-t0="0.50000" data-t1="0.51200" data-x="0.67500" data-round="1"></span><span class="seq-item is-tick" style="left:60.000%" data-t0="0.60000" data-t1="0.61200" data-x="0.67500" data-round="1"></span><span class="seq-item is-tick" style="left:70.000%" data-t0="0.70000" data-t1="0.71200" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:80.000%" data-t0="0.80000" data-t1="0.81200" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:90.000%" data-t0="0.90000" data-t1="0.91200" data-x="1.00000" data-round="2"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><svg class="seq-links" aria-hidden="true"><g class="seq-link" data-from="sens" data-to="dec" data-x1="0.00000" data-x2="0.00000" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="dec" data-to="cmd" data-x1="0.00000" data-x2="0.00000" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="sens" data-to="dec" data-x1="0.35000" data-x2="0.35000" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="dec" data-to="cmd" data-x1="0.35000" data-x2="0.35000" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="sens" data-to="dec" data-x1="0.67500" data-x2="0.67500" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="dec" data-to="cmd" data-x1="0.67500" data-x2="0.67500" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><path class="seq-link-line"/><path class="seq-link-head"/></g></svg></div><p class="seq-note">The horizontal axis is to scale in simulation time; processing time takes no axis width. The 15 Hz capture is rounded to the 5 ms physics step, so captures are 65 or 70 ms apart (70, 65, 65 ms here); the recorded run shows the low-level motion policy using the three rounds&#x27; commands 4, 3 and 3 times.</p></div><div class="seq-board" data-board="groot" hidden><ul class="seq-legend"><li>Vertical line: one camera capture (bright = latest frame read by a new inference)</li><li>Short bar: one low-level motion-policy update</li><li>Hatching: simulation paused (new inference or cached command)</li><li>Color: owning round; grey: no longer used by the current step; dashed: not yet happened</li></ul><div class="seq-stage"><div class="seq-row seq-head" data-row="head"><div class="seq-label"><strong></strong></div><div class="seq-track"><span class="seq-item seq-round" style="left:0.000%;width:33.333%" data-t0="0.00000" data-t1="0.33333" data-x="0.33333" data-round="0"><span class="seq-text">\(\htmlData{sym=k_round}{k}-1\) previous</span></span><span class="seq-item seq-round" style="left:33.333%;width:33.333%" data-t0="0.33333" data-t1="0.66667" data-x="0.66667" data-round="1"><span class="seq-text">\(\htmlData{sym=k_round}{k}\) current</span></span><span class="seq-item seq-round" style="left:66.667%;width:33.333%" data-t0="0.66667" data-t1="1.00000" data-x="1.00000" data-round="2"><span class="seq-text">\(\htmlData{sym=k_round}{k}+1\) next</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row seq-phases" data-row="phase"><div class="seq-label"><strong>Phase</strong></div><div class="seq-track"><span class="seq-item seq-phase is-infer" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.12000" data-round="0" data-status="infer"><span class="seq-text">Inference<br>326.5 ms</span></span><span class="seq-item seq-phase" style="left:12.000%;width:21.333%" data-t0="0.12000" data-t1="0.33333" data-x="0.33333" data-round="0"><span class="seq-text">4 commands<br>320 ms simulation</span></span><span class="seq-item seq-phase is-infer" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.45333" data-round="1" data-status="infer"><span class="seq-text">Inference<br>323.5 ms</span></span><span class="seq-item seq-phase" style="left:45.333%;width:21.333%" data-t0="0.45333" data-t1="0.66667" data-x="0.66667" data-round="1"><span class="seq-text">4 commands<br>320 ms simulation</span></span><span class="seq-item seq-phase is-infer" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="0.78667" data-round="2" data-status="infer"><span class="seq-text">Inference<br>333.9 ms</span></span><span class="seq-item seq-phase" style="left:78.667%;width:21.333%" data-t0="0.78667" data-t1="1.00000" data-x="1.00000" data-round="2"><span class="seq-text">4 commands<br>320 ms simulation</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="cam"><div class="seq-label"><strong>Camera capture</strong><small>RGB · 15 Hz, about every 67 ms</small></div><div class="seq-track"><span class="seq-item is-pause" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.12000" data-round="0"><span class="seq-text">paused</span></span><span class="seq-item is-pause" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.45333" data-round="1"><span class="seq-text">paused</span></span><span class="seq-item is-pause" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="0.78667" data-round="2"><span class="seq-text">paused</span></span><span class="seq-item is-capture" style="left:13.766%" data-t0="0.13766" data-t1="0.14966" data-x="0.18424" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:18.424%" data-t0="0.18424" data-t1="0.19624" data-x="0.22250" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:22.250%" data-t0="0.22250" data-t1="0.23450" data-x="0.27203" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:27.203%" data-t0="0.27203" data-t1="0.28403" data-x="0.31862" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture is-used" style="left:31.862%" data-t0="0.31862" data-t1="0.33062" data-x="0.45333" data-round="1" title="Latest image read by the Current round new inference"></span><span class="seq-item is-capture" style="left:47.688%" data-t0="0.47687" data-t1="0.48888" data-x="0.52641" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:52.641%" data-t0="0.52641" data-t1="0.53841" data-x="0.57299" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:57.299%" data-t0="0.57299" data-t1="0.58499" data-x="0.61125" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:61.125%" data-t0="0.61125" data-t1="0.62325" data-x="0.66078" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture is-used" style="left:66.078%" data-t0="0.66078" data-t1="0.67278" data-x="0.78667" data-round="2" title="Latest image read by the Next round new inference"></span><span class="seq-item is-capture" style="left:81.904%" data-t0="0.81904" data-t1="0.83104" data-x="0.86562" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:86.562%" data-t0="0.86562" data-t1="0.87762" data-x="0.91516" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:91.516%" data-t0="0.91516" data-t1="0.92716" data-x="0.96174" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture" style="left:96.174%" data-t0="0.96174" data-t1="0.97374" data-x="1.00000" title="Camera capture; a newer frame replaces it before any new inference reads it"></span><span class="seq-item is-capture is-used is-lead" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.12000" data-round="0" title="Latest frame, captured 40 ms before this excerpt, read by the previous round&#x27;s new inference"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="cmd"><div class="seq-label"><strong>High-level motion commands</strong><small>80 ms each · new inference after 4</small></div><div class="seq-track"><span class="seq-item is-predict" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.33333" data-round="0" data-say="Previous round · new inference: the simulation pauses while the server computes 16 new commands in 326.5 ms. Its images are the latest frame (captured 40 ms before the pause) and three history frames from about 1.97, 3.84, 5.77 s earlier; only the first 4 commands of this prediction are used; the other 12 are not executed." data-status="infer"><span class="seq-text">16 new<br>commands</span></span><span class="seq-item is-command" style="left:12.000%;width:4.708%" data-t0="0.12000" data-t1="0.16708" data-x="0.16708" data-round="0" data-say="Previous round · command 1: taken directly from the new inference and executed for 80 ms of simulation; the low-level motion policy updates 4 times, computing a new joint action each time."><span class="seq-text">1</span></span><span class="seq-item is-pause is-wait" style="left:16.708%;width:0.833%" data-t0="0.16708" data-t1="0.17542" data-x="0.17542" data-round="0" data-say="Previous round · fetch cached command 2: simulation pauses for the response; this server call took 34.3 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 34.3 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:17.542%;width:4.708%" data-t0="0.17542" data-t1="0.22250" data-x="0.22250" data-round="0" data-say="Previous round · command 2: fetched from this round’s cache (the server took 34.3 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">2</span></span><span class="seq-item is-pause is-wait" style="left:22.250%;width:0.833%" data-t0="0.22250" data-t1="0.23083" data-x="0.23083" data-round="0" data-say="Previous round · fetch cached command 3: simulation pauses for the response; this server call took 15.7 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 15.7 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:23.083%;width:4.708%" data-t0="0.23083" data-t1="0.27792" data-x="0.27792" data-round="0" data-say="Previous round · command 3: fetched from this round’s cache (the server took 15.7 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">3</span></span><span class="seq-item is-pause is-wait" style="left:27.792%;width:0.833%" data-t0="0.27792" data-t1="0.28625" data-x="0.28625" data-round="0" data-say="Previous round · fetch cached command 4: simulation pauses for the response; this server call took 15.4 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 15.4 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:28.625%;width:4.708%" data-t0="0.28625" data-t1="0.33333" data-x="0.33333" data-round="0" data-say="Previous round · command 4: fetched from this round’s cache (the server took 15.4 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">4</span></span><span class="seq-item is-predict" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.66667" data-round="1" data-say="Current round · new inference: the simulation pauses while the server computes 16 new commands in 323.5 ms. Its images are the latest frame (captured 25 ms before the pause) and three history frames from about 1.96, 3.89, 5.76 s earlier; only the first 4 commands of this prediction are used; the other 12 are not executed." data-status="infer"><span class="seq-text">16 new<br>commands</span></span><span class="seq-item is-command" style="left:45.333%;width:4.708%" data-t0="0.45333" data-t1="0.50042" data-x="0.50042" data-round="1" data-say="Current round · command 1: taken directly from the new inference and executed for 80 ms of simulation; the low-level motion policy updates 4 times, computing a new joint action each time."><span class="seq-text">1</span></span><span class="seq-item is-pause is-wait" style="left:50.042%;width:0.833%" data-t0="0.50042" data-t1="0.50875" data-x="0.50875" data-round="1" data-say="Current round · fetch cached command 2: simulation pauses for the response; this server call took 15.5 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 15.5 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:50.875%;width:4.708%" data-t0="0.50875" data-t1="0.55583" data-x="0.55583" data-round="1" data-say="Current round · command 2: fetched from this round’s cache (the server took 15.5 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">2</span></span><span class="seq-item is-pause is-wait" style="left:55.583%;width:0.833%" data-t0="0.55583" data-t1="0.56417" data-x="0.56417" data-round="1" data-say="Current round · fetch cached command 3: simulation pauses for the response; this server call took 15.2 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 15.2 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:56.417%;width:4.708%" data-t0="0.56417" data-t1="0.61125" data-x="0.61125" data-round="1" data-say="Current round · command 3: fetched from this round’s cache (the server took 15.2 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">3</span></span><span class="seq-item is-pause is-wait" style="left:61.125%;width:0.833%" data-t0="0.61125" data-t1="0.61958" data-x="0.61958" data-round="1" data-say="Current round · fetch cached command 4: simulation pauses for the response; this server call took 15.7 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 15.7 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:61.958%;width:4.708%" data-t0="0.61958" data-t1="0.66667" data-x="0.66667" data-round="1" data-say="Current round · command 4: fetched from this round’s cache (the server took 15.7 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">4</span></span><span class="seq-item is-predict" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="1.00000" data-round="2" data-say="Next round · new inference: the simulation pauses while the server computes 16 new commands in 333.9 ms. Its images are the latest frame (captured 10 ms before the pause) and three history frames from about 1.95, 3.88, 5.81 s earlier; only the first 4 commands of this prediction are used; the other 12 are not executed." data-status="infer"><span class="seq-text">16 new<br>commands</span></span><span class="seq-item is-command" style="left:78.667%;width:4.708%" data-t0="0.78667" data-t1="0.83375" data-x="0.83375" data-round="2" data-say="Next round · command 1: taken directly from the new inference and executed for 80 ms of simulation; the low-level motion policy updates 4 times, computing a new joint action each time."><span class="seq-text">1</span></span><span class="seq-item is-pause is-wait" style="left:83.375%;width:0.833%" data-t0="0.83375" data-t1="0.84208" data-x="0.84208" data-round="2" data-say="Next round · fetch cached command 2: simulation pauses for the response; this server call took 16.1 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 16.1 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:84.208%;width:4.708%" data-t0="0.84208" data-t1="0.88917" data-x="0.88917" data-round="2" data-say="Next round · command 2: fetched from this round’s cache (the server took 16.1 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">2</span></span><span class="seq-item is-pause is-wait" style="left:88.917%;width:0.833%" data-t0="0.88917" data-t1="0.89750" data-x="0.89750" data-round="2" data-say="Next round · fetch cached command 3: simulation pauses for the response; this server call took 14.7 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 14.7 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:89.750%;width:4.708%" data-t0="0.89750" data-t1="0.94458" data-x="0.94458" data-round="2" data-say="Next round · command 3: fetched from this round’s cache (the server took 14.7 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">3</span></span><span class="seq-item is-pause is-wait" style="left:94.458%;width:0.833%" data-t0="0.94458" data-t1="0.95292" data-x="0.95292" data-round="2" data-say="Next round · fetch cached command 4: simulation pauses for the response; this server call took 16.0 ms. It uses this round’s existing prediction without running a new inference." data-status="cache" title="Fetch the next cached command: server 16.0 ms; the simulation does not advance while waiting"></span><span class="seq-item is-command" style="left:95.292%;width:4.708%" data-t0="0.95292" data-t1="1.00000" data-x="1.00000" data-round="2" data-say="Next round · command 4: fetched from this round’s cache (the server took 16.0 ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates."><span class="seq-text">4</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="act"><div class="seq-label"><strong>Low-level motion policy</strong><small>50 Hz · every 20 ms</small></div><div class="seq-track"><span class="seq-item is-pause" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.12000" data-round="0"><span class="seq-text">Actions paused</span></span><span class="seq-item is-pause" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.45333" data-round="1"><span class="seq-text">Actions paused</span></span><span class="seq-item is-pause" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="0.78667" data-round="2"><span class="seq-text">Actions paused</span></span><span class="seq-item is-tick" style="left:12.000%" data-t0="0.12000" data-t1="0.13200" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:13.177%" data-t0="0.13177" data-t1="0.14377" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:14.354%" data-t0="0.14354" data-t1="0.15554" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:15.531%" data-t0="0.15531" data-t1="0.16731" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:17.542%" data-t0="0.17542" data-t1="0.18742" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:18.719%" data-t0="0.18719" data-t1="0.19919" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:19.896%" data-t0="0.19896" data-t1="0.21096" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:21.073%" data-t0="0.21073" data-t1="0.22273" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:23.083%" data-t0="0.23083" data-t1="0.24283" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:24.260%" data-t0="0.24260" data-t1="0.25460" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:25.437%" data-t0="0.25437" data-t1="0.26637" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:26.615%" data-t0="0.26615" data-t1="0.27815" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:28.625%" data-t0="0.28625" data-t1="0.29825" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:29.802%" data-t0="0.29802" data-t1="0.31002" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:30.979%" data-t0="0.30979" data-t1="0.32179" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:32.156%" data-t0="0.32156" data-t1="0.33356" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:45.333%" data-t0="0.45333" data-t1="0.46533" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:46.510%" data-t0="0.46510" data-t1="0.47710" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:47.688%" data-t0="0.47687" data-t1="0.48888" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:48.865%" data-t0="0.48865" data-t1="0.50065" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:50.875%" data-t0="0.50875" data-t1="0.52075" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:52.052%" data-t0="0.52052" data-t1="0.53252" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:53.229%" data-t0="0.53229" data-t1="0.54429" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:54.406%" data-t0="0.54406" data-t1="0.55606" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:56.417%" data-t0="0.56417" data-t1="0.57617" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:57.594%" data-t0="0.57594" data-t1="0.58794" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:58.771%" data-t0="0.58771" data-t1="0.59971" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:59.948%" data-t0="0.59948" data-t1="0.61148" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:61.958%" data-t0="0.61958" data-t1="0.63158" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:63.135%" data-t0="0.63135" data-t1="0.64335" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:64.312%" data-t0="0.64312" data-t1="0.65512" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:65.490%" data-t0="0.65490" data-t1="0.66690" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:78.667%" data-t0="0.78667" data-t1="0.79867" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:79.844%" data-t0="0.79844" data-t1="0.81044" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:81.021%" data-t0="0.81021" data-t1="0.82221" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:82.198%" data-t0="0.82198" data-t1="0.83398" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:84.208%" data-t0="0.84208" data-t1="0.85408" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:85.385%" data-t0="0.85385" data-t1="0.86585" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:86.562%" data-t0="0.86562" data-t1="0.87762" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:87.740%" data-t0="0.87740" data-t1="0.88940" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:89.750%" data-t0="0.89750" data-t1="0.90950" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:90.927%" data-t0="0.90927" data-t1="0.92127" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:92.104%" data-t0="0.92104" data-t1="0.93304" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:93.281%" data-t0="0.93281" data-t1="0.94481" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:95.292%" data-t0="0.95292" data-t1="0.96492" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:96.469%" data-t0="0.96469" data-t1="0.97669" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:97.646%" data-t0="0.97646" data-t1="0.98846" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:98.823%" data-t0="0.98823" data-t1="1.00023" data-x="1.00000" data-round="2"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><svg class="seq-links" aria-hidden="true"><g class="seq-link" data-from="cam" data-to="cmd" data-x1="0.31862" data-x2="0.39333" data-t0="0.31862" data-t1="0.33062" data-x="0.45333" data-round="1"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="cam" data-to="cmd" data-x1="0.66078" data-x2="0.72667" data-t0="0.66078" data-t1="0.67278" data-x="0.78667" data-round="2"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="cam" data-to="cmd" data-x1="0.00000" data-x2="0.06000" data-t0="0.00000" data-t1="0.01200" data-x="0.12000" data-round="0"><path class="seq-link-line"/><path class="seq-link-head"/></g></svg></div><p class="seq-note">The inference column and the narrow cached-command columns only show order; their widths are not to scale. Inside each command, positions follow simulation time. Simulation intervals exclude capture, communication and server waiting.</p></div><p class="timing-status" aria-live="polite"></p><div class="timing-controls"><button type="button" class="course-button timing-replay" data-play="Play sequence" data-pause="Pause">Play sequence</button><label class="timing-scrub-label">Progress<input class="timing-scrub" type="range" min="0" max="1000" value="0"></label></div><details class="timing-details"><summary>Details</summary><ul class="timing-facts"><li data-modes="onboard">In this course&#x27;s simulation RGB and ToF update in the same capture with the same timestamp; this is a simulation setting, not a claim of hardware sensor synchronization. After each capture the onboard policy uses the images, depth and body state for object detection, geometry, navigation and gaze decisions, then applies safety guards, and outputs gaze, velocity and skill requests.</li><li data-modes="onboard">Captures run at 15 Hz, about 67 ms of simulation time apart, yet the three decisions here took 110.4, 266.2 and 148.4 ms on the host. These do not conflict: evaluation is synchronous and simulation time does not advance until a decision finishes, so the times are written under ◆ instead of stretching the axis. Timing starts when the sensor data is ready and ends when the command is ready; it excludes sensor capture and low-level motion-policy inference. During the measurement DGX Spark was also computing a GR00T feature cache, so these numbers do not represent a robot&#x27;s onboard computer or dedicated hardware.</li><li data-modes="onboard">The high-level command is kept until the next decision. While simulation advances, the low-level motion policy updates at 50 Hz; local state estimation, safety guards and head limits also run on this rhythm and may modify the command before it becomes joint actions.</li><li data-modes="groot">Each new inference outputs 16 eight-dimensional high-level motion commands (velocity, gaze and skill requests); only the first 4 are executed. Each command is held for 80 ms of simulation while the low-level motion policy computes a new joint action every 20 ms, so one command spans 4 joint-action computations. The other 12 are not executed; after the first 4, fresh observations trigger a new prediction.</li><li data-modes="groot">In synchronous evaluation every call, once per 80 ms, waits for the server before the simulation continues: 1 call in 4 is a new inference, the other 3 only take the next command from the cache. The three new inferences here took 326.5, 323.5 and 333.9 ms of server computation. Across the evaluation batch, 899 new inferences had a median of 332 ms (P95 351 ms) and 2,680 cached calls a median of 15 ms. These are server computation times only, excluding network transfer and image capture, and must not be added to simulation time as one cycle.</li><li data-modes="groot">The camera captures at 15 Hz while the simulation advances and not while it is paused. A new inference reads only the latest frame plus three history frames from about 1.9, 3.8 and 5.8 s earlier; the frames in between are not fed to that inference directly.</li></ul></details><figcaption>Data from the course&#x27;s completed simulation logs: GR00T, 12 consecutive calls in one walking-shot evaluation (simulation 8.24–9.20 s, start-up warm-up skipped); onboard policy, three consecutive decisions after entering the approach-the-ball stage in one timing run (simulation 2.200–2.400 s). The excerpts show update order, not task success rates or end-to-end real-time performance. <a href="_static/data/control-timing-evidence.json">View timing data</a></figcaption></figure><p>Synchronous evaluation stops the simulation whenever it waits for the server, so a live view shows pauses; a video exported at a fixed simulation frame rate hides those waits, so smooth video does not show that the robot can move continuously in real time. A real robot cannot pause physical time: the low-level motion policy needs its own continuously running control loop, and high-level inference has to run asynchronously with a command buffer that also handles expired commands and stale observations. This course's simulation evaluation is synchronous.</p>
+</section>
+<section id="action-head">
+<h2>Why post-train only the action head?<a class="headerlink" href="#action-head" title="Link to this heading">#</a></h2>
+<p>Do not assume that the GR00T N1.7 base weights understand this course’s 127-D state and 8-D high-level requests: the course defines this interface itself, and post-training teaches the interface and the shooting task. The vision-language backbone is already good at recognizing objects and directions in images, but the action head still has to learn what this robot’s state looks like and what it should output. So the course freezes the vision-language backbone and trains only the action head:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Part</p></th>
+<th class="head cell-short"><p>Trained?</p></th>
+<th class="head cell-short"><p>Why</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Vision encoder and language model (Cosmos-Reason2-2B)</p></td>
+<td class="cell-short"><p>Frozen</p></td>
+<td><p>Keeps pretrained visual and language knowledge; with only dozens of demonstration episodes, unfreezing risks overfitting and needs far more memory</p></td>
+</tr>
+<tr class="row-odd"><td><p>State encoder, action encoder and action decoder</p></td>
+<td class="cell-short"><p>Trained</p></td>
+<td><p>Connect the 127-D state and 8-D requests, the interface unique to Microduck</p></td>
+</tr>
+<tr class="row-even"><td><p>Action-sequence generator (the flow-matching transformer)</p></td>
+<td class="cell-short"><p>Trained</p></td>
+<td><p>Learns to generate sensible request sequences from noise for this task</p></td>
+</tr>
+<tr class="row-odd"><td><p>Layers in the action head that process visual-language features</p></td>
+<td class="cell-short"><p>Trained</p></td>
+<td><p>Let visual features enter action generation in a way suited to this task</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>That is more than replacing the last output layer, and it differs from LoRA, which trains only small added matrices. GR00T’s internal action representation is wider than eight values; the extra dimensions are masked so the training loss covers only the real eight.</p>
+<p>Freezing the backbone has a practical benefit too: the features computed from the same image and instruction never change, so they can be computed once and cached before training, after which each update runs only the action head. Section 4.3 uses the supplied cache by default: the log first shows the cache checks, then the optimizer updates; full feature-generation progress appears only when you choose to recompute the features. The cache is valid only while the backbone stays frozen and image preprocessing is fixed; it cannot be reused after changing image augmentation or unfreezing the backbone.</p>
+</section>
+<section id="data-design">
+<h2>How the demonstrations are designed<a class="headerlink" href="#data-design" title="Link to this heading">#</a></h2>
+<p>The demonstrations come from the onboard policy, which decides using only the onboard camera, IMU, joint encoders and ToF ranging, without simulated ground truth for the ball or goal. In simulation it completes the shot from different starts while we record the inputs GR00T will later see and the 8-D requests the onboard policy actually issued.</p>
+<figure class="learning-figure" data-learning-flow="learn-bc1c78cb95"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Reliable demonstrations before scale"><svg class="learning-svg" viewBox="0 0 900 174" role="group" aria-labelledby="learn-bc1c78cb95-title"><title id="learn-bc1c78cb95-title">Reliable demonstrations before scale</title><defs><marker id="learn-bc1c78cb95-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H244.0" marker-end="url(#learn-bc1c78cb95-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 87.0H468.0" marker-end="url(#learn-bc1c78cb95-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 87.0H692.0" marker-end="url(#learn-bc1c78cb95-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Fix the task" aria-controls="learn-bc1c78cb95-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Fix the task</text><text x="114.0" y="98" class="learning-node-subtitle">One pitch, walking,</text><text x="114.0" y="115" class="learning-node-subtitle">one instruction</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Record demonstrations" aria-controls="learn-bc1c78cb95-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="126" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Record</text><text x="338.0" y="94" class="learning-node-title">demonstrations</text><text x="338.0" y="118" class="learning-node-subtitle">Observations paired</text><text x="338.0" y="135" class="learning-node-subtitle">with issued requests</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Filter and split" aria-controls="learn-bc1c78cb95-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="126" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">Filter and split</text><text x="562.0" y="98" class="learning-node-subtitle">Keep full successes,</text><text x="562.0" y="115" class="learning-node-subtitle">group by episode</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Train and test" aria-controls="learn-bc1c78cb95-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Train and test</text><text x="786.0" y="98" class="learning-node-subtitle">Fit requests, then</text><text x="786.0" y="115" class="learning-node-subtitle">test in closed loop</text></g></svg></div><div class="learning-details" aria-label="Reliable demonstrations before scale"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-bc1c78cb95-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Fix the task</h3><p>The pitch, goal, ball and lighting stay fixed; only the robot and ball starts change. Teach one situation well before widening the scope.</p></article><article id="learn-bc1c78cb95-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Record demonstrations</h3><p>The onboard policy decides at its own pace; the recording is resampled at 12.5 Hz into GR00T inputs and outputs, pairing each sample with the images and state available at that moment and the requests issued afterwards. Future frames and the exact positions used for scoring are excluded from inputs.</p></article><article id="learn-bc1c78cb95-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Filter and split</h3><p>Only episodes that score a goal, never fall and end standing quietly become labels; failed episodes are kept separately for analysis. Training and validation sets are split by whole episode and start seed, so neighboring frames of one episode never land on both sides.</p></article><article id="learn-bc1c78cb95-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Train and test</h3><p>Falling training loss only shows the demonstrations are fitted. When the model controls the robot, check full-task success from starts that were not used in training.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>A few design principles:</p>
+<ul class="simple">
+<li><p><strong>Inputs must be things the robot can really obtain.</strong> Putting the ball’s simulated coordinates or the onboard policy’s internal stage number into the inputs would make training easy, but a real robot could not supply them.</p></li>
+<li><p><strong>A reliable teacher, clean demonstrations.</strong> If the onboard policy hesitates and readjusts, the model learns that too; only fully successful episodes enter training.</p></li>
+<li><p><strong>Coverage matters more than count.</strong> Dozens of nearly identical smooth runs teach less than demonstrations that cover approaching, adjusting heading, looking down to check, preparing to kick and recovering.</p></li>
+<li><p><strong>Watch for imbalance.</strong> Most of an episode is walking, and the frames just before a kick are few. Training can adjust sampling probabilities by stage: this course’s training set is divided into 7 stage groups based on the onboard policy’s recorded behavior, so standing still, fine adjustment at the ball and the moments just before a kick are drawn more often, and frames during the kick skill less often. Stage labels are used only for offline sampling and never enter the model’s inputs.</p></li>
+</ul>
+<p>The course has already prepared training and validation sets by these principles; Section 4.3 uses them directly, so you do not need to collect data.</p>
+</section>
+<section id="improve-data">
+<h2>When the model drifts: the idea of corrective data<a class="headerlink" href="#improve-data" title="Link to this heading">#</a></h2>
+<p>A model trained only on successful runs has a common weakness: once it drifts, the images may no longer resemble any demonstration, and it does not know how to get back to the task. The remedy is to let the learning model drive first and then add correct actions in the states it actually reaches:</p>
+<ul class="simple">
+<li><p><strong>Human-gated takeover (HG-DAgger):</strong> an observer takes over when the model is about to go wrong and provides corrective actions, and those segments are added to the training data.</p></li>
+<li><p><strong>Automated expert correction (DAgger-style):</strong> a controller takes over automatically and supplies the actions. This requires the expert to be just as reliable in the drifted states the learner creates: an onboard policy that shoots well from standard starts may not recover from a skewed posture, so it must first be checked on those states.</p></li>
+</ul>
+<p>Both require recording who is in control and when a takeover starts, using only verified correct actions as labels, and finally turning takeover off to measure the model’s own success rate.</p>
+</section>
+<section id="deployment">
+<h2>On a real robot: infer on a workstation, connect over the network<a class="headerlink" href="#deployment" title="Link to this heading">#</a></h2>
+<p>Microduck’s onboard computing hardware is not suited to running a model of about three billion parameters such as GR00T. For real deployment, Microduck can share a network with a workstation that has a suitable GPU: the robot sends images and state to the workstation, the workstation runs GR00T, and the requests return to the robot, while small networks such as the walking policy keep running locally on the robot. Choose the workstation by model, precision and measured latency.</p>
+<figure class="learning-figure" data-learning-flow="learn-78bfa81691"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Remote model inference; local continuous control and feedback"><svg class="learning-svg" viewBox="0 0 900 214" role="group" aria-labelledby="learn-78bfa81691-title"><title id="learn-78bfa81691-title">Remote model inference; local continuous control and feedback</title><defs><marker id="learn-78bfa81691-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H356.0" marker-end="url(#learn-78bfa81691-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 87.0H692.0" marker-end="url(#learn-78bfa81691-arrow)"/><path class="learning-edge" data-from="2" data-to="0" d="M786.0 154V190H114.0V154" marker-end="url(#learn-78bfa81691-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Microduck sensors" aria-controls="learn-78bfa81691-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Microduck sensors</text><text x="114.0" y="98" class="learning-node-subtitle">Images + state</text><text x="114.0" y="115" class="learning-node-subtitle">+ timestamps</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. GPU workstation" aria-controls="learn-78bfa81691-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="126" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">GPU workstation</text><text x="450.0" y="98" class="learning-node-subtitle">GR00T inference,</text><text x="450.0" y="115" class="learning-node-subtitle">return requests</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Microduck executor" aria-controls="learn-78bfa81691-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Microduck</text><text x="786.0" y="94" class="learning-node-title">executor</text><text x="786.0" y="118" class="learning-node-subtitle">Check freshness,</text><text x="786.0" y="135" class="learning-node-subtitle">keep balance</text></g></svg></div><div class="learning-details" aria-label="Remote model inference; local continuous control and feedback"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-78bfa81691-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Microduck sensors</h3><p>Send camera and robot state with sample times and sequence numbers, and pair each state causally with the latest image that is not older than the allowed age; keep each intentional history frame with its own timestamp, and never mix in stale or mislabelled data.</p></article><article id="learn-78bfa81691-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>GPU workstation</h3><p>The workstation generates a request chunk from the latest valid observation. Network transfer, image encoding and model computation all count toward end-to-end latency; even when the server replies quickly, the image it used may already be stale.</p></article><article id="learn-78bfa81691-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Microduck executor</h3><p>The robot accepts only requests that match the agreed format and are still valid. The walking policy keeps running locally; on a timeout or lost connection it should stop under control or stand steady instead of continuing an expired forward request.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>In this course’s simulation the GR00T server and the simulator run on the same DGX Spark, and the simulator waits for every inference before continuing, so the network delays and expired commands of a real robot do not occur. Completing the task in simulation does not show that the same model would run in real time over a real network; that needs asynchronous inference, a command buffer, timeout protection and measurement on the real robot.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>GR00T outputs a forward request of 0.3. Can you say the robot is moving forward at 0.3 m/s?</p>
+<details><summary>Show explanation</summary><p>No. The forward request is a native command value written into the walking policy; the actual speed depends on the gait, the floor and the body state and must be read from the measured motion.</p>
+</details></div><div class="quiz"><h3>Check your understanding</h3><p>Why does the input contain the request actually issued last time instead of the request to be predicted now?</p>
+<details><summary>Show explanation</summary><p>The previous request already happened at decision time and is available on a real robot; the current request is the answer being predicted, and putting it in the input would leak the label.</p>
+</details></div></section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/nvidia/GR00T-N1.7-3B" rel="noreferer noopener" target="_blank">GR00T N1.7 model card ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">Isaac GR00T: post-training and inference ↗</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1810.02890" rel="noreferer noopener" target="_blank">HG-DAgger: human takeover and corrective data ↗</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1011.0686" rel="noreferer noopener" target="_blank">DAgger: expert labels on policy-visited states ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="07-groot.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.1 Vision-language-action models and GR00T</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="08-groot-lab.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.3 Train and validate the GR00T walking shot</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task">One pitch, one gait, one instruction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reuse-skills">Hierarchical control: GR00T decides what, existing skills decide how</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">What GR00T reads each time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">The eight high-level requests: what, which units, who executes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-high-level">Why not let GR00T output joint angles directly?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">Control cycle: how often each module updates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#action-head">Why post-train only the action head?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-design">How the demonstrations are designed</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improve-data">When the model drifts: the idea of corrective data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment">On a real robot: infer on a workstation, connect over the network</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

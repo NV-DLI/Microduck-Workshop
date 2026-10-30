@@ -1,0 +1,2474 @@
+/* Course figures on nvidia-sphinx-theme.
+   The page shell (header, sidebars, links, typography, themes) is the theme's own.
+   This file only styles course widgets: lesson intro, quiz, pipeline, media with
+   stage captions, 3D anatomy, KaTeX formulas and the c-fx-30-derived flows,
+   charts, model cards, code stories and control timing. Widget colors are
+   derived from the theme's --pst-* roles so both themes stay consistent. */
+
+html[data-theme] {
+  --ink: var(--pst-color-text-base);
+  --muted: var(--pst-color-text-muted);
+  --line: var(--pst-color-border);
+  --page: var(--pst-color-background);
+  --soft: var(--pst-color-surface);
+  --surface: var(--pst-color-background);
+  --node: color-mix(in srgb, var(--pst-color-text-base) 7%, var(--pst-color-surface));
+  --overlay: var(--pst-color-on-background);
+  --hover: color-mix(in srgb, var(--pst-color-text-base) 10%, transparent);
+  --green: var(--nv-color-green, #76b900);
+  --on-green: #000;
+  --success: var(--pst-color-primary);
+  --chart-green: var(--pst-color-primary);
+  --link: var(--pst-color-link);
+  --link-hover: var(--pst-color-link-hover);
+  --label-strong: var(--ink);
+  --code-bg: var(--pst-color-surface);
+  --code-fg: var(--pst-color-text-base);
+  --code-line: var(--pst-color-border);
+  --code-comment: var(--pst-color-text-muted);
+  --code-active-bg: color-mix(in srgb, var(--green) 14%, transparent);
+  --backdrop: rgba(0, 0, 0, 0.45);
+  --header: var(--pst-header-height);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --svg-unit: 0.08rem;
+  /* Names used inside the course SVG markup. */
+  --nve-sys-text-color: var(--ink);
+  --nve-sys-text-muted-color: var(--muted);
+  --nve-sys-support-muted-color: var(--line);
+  --nve-sys-support-success-color: var(--success);
+  --nve-sys-support-warning-color: #e0a800;
+  --nve-sys-layer-container-background: var(--surface);
+  --nve-sys-layer-container-accent-background: var(--node);
+  --nve-sys-text-black-color: #000;
+}
+html[data-theme="light"] {
+  --network-text-green: #4b7800;
+  --chart-blue: #1f66c9;
+  --diagram-orange: #d26a12;
+  --diagram-brown: #86552a;
+  --diagram-tan: #e6cb9f;
+  --diagram-obstacle: #4d4d4d;
+}
+html[data-theme="dark"] {
+  --chart-blue: #44b8d6;
+  --diagram-orange: #f0963c;
+  --diagram-brown: #cf9a68;
+  --diagram-tan: #6f5a3b;
+  --diagram-obstacle: #9a9a9a;
+}
+html[data-theme] {
+  --diagram-blue: var(--chart-blue);
+}
+/* Screen-reader-only announcements used by the figure scripts. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Page shell: the theme's left navigation and right "on this page" contents,
+   with the page width uncapped and every horizontal padding half of the
+   theme's default (panel widths unchanged). Exception: on desktop the left
+   navigation is as wide as its longest caption or link (indentation included),
+   with 30px before it and 20px between that text and the separator; it grows
+   or shrinks with the titles. Narrow screens keep the theme's drawer. */
+.bd-page-width {
+  max-width: none;
+}
+/* The header alone follows the NVIDIA docs layout: theme logo and course
+   title in an 88rem row centered on wide screens. */
+.bd-header .bd-header__inner {
+  max-width: 88rem;
+  padding: 0 1rem;
+}
+/* The footer follows the same NVIDIA docs row; the larger bottom padding
+   matches the reference's spacing below the copyright line. */
+.bd-footer .bd-footer__inner {
+  max-width: 88rem;
+  margin-inline: auto;
+  padding-bottom: 1.5rem;
+}
+.bd-main .bd-content .bd-article-container {
+  max-width: none;
+  padding-inline: 20px;
+}
+.bd-sidebar-primary {
+  padding-inline-start: 0.75rem;
+  padding-inline-end: 0.25rem;
+}
+.bd-sidebar-secondary {
+  padding-inline: 0.5rem;
+}
+@media (min-width: 960px) {
+  /* Replaces the theme's 20% / 25% column and 17rem minimum. */
+  .bd-sidebar-primary {
+    flex: 0 0 auto;
+    width: max-content;
+    min-width: 0;
+    padding-inline-start: 30px;
+    padding-inline-end: 20px;
+  }
+  /* Text runs on one line; the nav's negative margin and the links' trailing
+     padding and margin would otherwise move the text end off the 20px gap.
+     Left padding (indentation) and the active and focus marks stay. */
+  .bd-sidebar-primary nav.bd-links {
+    margin-right: 0;
+  }
+  .bd-sidebar-primary nav.bd-links p.caption,
+  .bd-sidebar-primary nav.bd-links li > a {
+    white-space: nowrap;
+  }
+  .bd-sidebar-primary nav.bd-links li > a {
+    margin-right: 0;
+    padding-right: 0;
+  }
+}
+@media (min-width: 1200px) {
+  .bd-main .bd-content .bd-article-container .bd-article {
+    padding-left: 1rem;
+  }
+}
+/* Code never scrolls: long lines soft-wrap, keeping indentation and the exact
+   text that copy buttons read; blocks grow to their full height. */
+.bd-article pre,
+.bd-article div.highlight pre,
+.bd-article pre code,
+.bd-article pre span {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+.bd-article pre,
+.bd-article div.highlight,
+.bd-article div[class*="highlight-"],
+.bd-article div.literal-block-wrapper {
+  max-height: none;
+  overflow: visible;
+}
+/* Leave room for the copy button on terminal blocks. */
+.bd-article div.terminal div.highlight pre {
+  padding-right: 3rem;
+}
+/* Terminal · Bash captions get clear left space; other captions unchanged. */
+.bd-article .literal-block-wrapper:has(> .terminal) > .code-block-caption {
+  padding-left: 20px;
+}
+/* Captions and long notes read left-aligned; short labels inside figures may center. */
+.bd-article figcaption,
+.bd-article figure .caption,
+.bd-article .diagram-caption {
+  margin-left: 0;
+  text-align: left;
+}
+.bd-article figcaption p {
+  display: block;
+}
+/* Container queries let figures adapt to the article column. */
+.bd-article-container {
+  container: lesson / inline-size;
+}
+
+.lesson-heading {
+  padding: 0 0 1.75rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+.lead p {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--muted);
+}
+.lesson-meta {
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.hero-image {
+  margin: 1.25rem 0 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: #000;
+}
+.hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+@container lesson (min-width: 1000px) {
+  .lesson-heading.is-home {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 2.5rem;
+    align-items: center;
+  }
+  .is-home .hero-image {
+    margin: 0;
+  }
+}
+.bd-article :is(.media, .concept-figure, .learning-figure, .course-chart) figcaption,
+.diagram-caption {
+  margin-top: 0.7rem;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+.bd-article figure figcaption p {
+  margin: 0;
+}
+.quiz {
+  margin: 1.75rem 0;
+  padding: 0.25rem 1.25rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.bd-article .quiz h3 {
+  font-size: 0.9375rem;
+  color: var(--label-strong);
+}
+.quiz details {
+  font-size: 0.9375rem;
+  border-radius: var(--radius-sm);
+}
+.quiz details > p {
+  margin: 0.9rem 0 0;
+  padding: 0 1rem;
+}
+summary {
+  cursor: pointer;
+}
+.quiz details > summary,
+.enrichment > summary {
+  display: list-item;
+  padding: 0.75rem 1rem;
+  background: var(--soft);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.quiz details > summary:hover,
+.enrichment > summary:hover {
+  background: var(--hover);
+}
+.enrichment {
+  margin: 1.5rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.enrichment-body {
+  padding: 0.4rem 1.25rem 1rem;
+}
+.enrichment-body > p {
+  font-size: 0.9375rem;
+}
+.bd-article ol.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  max-width: none;
+  list-style: none;
+  margin: 1.75rem 0;
+  padding: 0;
+  counter-reset: pipeline;
+}
+.bd-article ol.pipeline > li {
+  flex: 1;
+  min-width: 7rem;
+  margin: 0;
+  padding: 0.85rem;
+  background: var(--soft);
+  border-bottom: 2px solid var(--line);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font-size: 0.8125rem;
+  counter-increment: pipeline;
+}
+.bd-article ol.pipeline > li::before {
+  content: counter(pipeline);
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--course-code-font);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--label-strong);
+}
+/* ---------- Media ---------- */
+.media {
+  margin: 1.6rem 0;
+}
+.media video {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - var(--header) - 8rem);
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  background: #000;
+}
+.media > img,
+.media > .still-link > img {
+  max-height: calc(100vh - var(--header) - 6rem);
+  object-fit: contain;
+}
+.media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+.media .still-link {
+  display: block;
+  cursor: zoom-in;
+}
+.video-stage-caption {
+  padding: 0.75rem 1rem;
+  background: var(--soft);
+  border-left: 3px solid var(--green);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  font-size: 0.875rem;
+  line-height: 1.65;
+}
+.video-stage-caption strong,
+.video-stage-caption span {
+  display: block;
+}
+.video-stage-caption strong {
+  margin-bottom: 0.2rem;
+  color: var(--ink);
+}
+.image-dialog {
+  width: 1600px;
+  max-width: 96vw;
+  max-height: 95vh;
+  padding: 2.5rem 0.75rem 0.75rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--overlay);
+  color: var(--ink);
+}
+.image-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+}
+.image-dialog img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.image-dialog button {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.35rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--ink);
+  font-size: 1.375rem;
+}
+
+/* ---------- Figures and diagrams ---------- */
+.formula {
+  margin: 1.5rem 0;
+  padding: 0.6rem 1.1rem;
+  overflow-x: auto;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  border-radius: var(--radius-sm);
+}
+.formula .katex-display {
+  margin: 0.6rem 0;
+  text-align: left;
+}
+/* Walking-actor network: NV-green neurons; each column or band of connections
+   highlights with its labels on hover, focus or tap. */
+.network-svg .network-hit {
+  fill: transparent;
+  pointer-events: all;
+}
+.network-svg .network-part {
+  cursor: pointer;
+  outline: none;
+}
+.network-svg .network-neuron {
+  fill: var(--node);
+  stroke: var(--green);
+}
+.network-svg .network-edges path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-opacity: 0.17;
+  transition: stroke-opacity 0.15s;
+}
+.network-svg .network-name,
+.network-svg .network-foot,
+.network-svg .network-ellipsis {
+  fill: var(--muted);
+}
+.network-svg .network-width {
+  fill: var(--ink);
+}
+.network-figure.has-active .network-edges path {
+  stroke-opacity: 0.07;
+}
+.network-figure.has-active .network-layer:not(.is-active) .network-neuron {
+  opacity: 0.45;
+}
+.network-svg .network-band.is-active .network-edges path {
+  stroke: var(--green);
+  stroke-opacity: 0.55;
+}
+.network-svg .network-layer.is-active .network-neuron {
+  fill: color-mix(in srgb, var(--green) 35%, var(--node));
+  stroke-width: 2.5;
+}
+.network-svg .network-layer.is-active text {
+  fill: var(--network-text-green, var(--green));
+  font-weight: 700;
+}
+.network-svg .network-part:focus-visible .network-hit {
+  stroke: var(--green);
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+}
+/* The direct-joint VLA figure (Section 4.4) reuses these node and band styles. */
+.network-readout {
+  min-height: 3em;
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  color: var(--ink);
+}
+.network-figure.has-active .network-readout {
+  color: var(--network-text-green, var(--green));
+}
+/* Interface tables for the input and output columns: normal text color, no
+   fixed height or internal scrolling. */
+.network-figure [hidden] {
+  display: none !important;
+}
+.network-detail {
+  margin: 0.5rem 0 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--green);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+.network-detail p {
+  margin: 0 0 0.6rem;
+}
+.network-detail .network-detail-title {
+  font-weight: 600;
+}
+.network-detail .network-note {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+}
+.network-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+.network-table caption {
+  padding: 0 0 0.3rem;
+  caption-side: top;
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink);
+}
+.network-table th,
+.network-table td {
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+.network-table th {
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.network-table td:first-child,
+.network-table th:first-child {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.network-table code {
+  font-size: 0.95em;
+}
+.network-joint-name {
+  display: block;
+  color: var(--muted);
+}
+.network-output-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem 1.25rem;
+  align-items: start;
+}
+/* Update timing: recorded rounds k−1, k, k+1. Items are future (dashed),
+   active (strong round color), live (still in effect, tinted) or expired (grey). */
+.seq-timing [hidden] {
+  display: none !important;
+}
+html[data-theme] .seq-timing {
+  --r0: #3767a6;
+  --r1: #4b7800;
+  --r2: #a35f00;
+}
+html[data-theme="dark"] .seq-timing {
+  --r0: #86aee2;
+  --r1: #8fcf2e;
+  --r2: #e3a64e;
+}
+.seq-timing [data-round="0"] { --rc: var(--r0); }
+.seq-timing [data-round="1"] { --rc: var(--r1); }
+.seq-timing [data-round="2"] { --rc: var(--r2); }
+.timing-modes {
+  display: inline-flex;
+  margin: 1rem 0 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.timing-modes button {
+  padding: 0.4rem 1rem;
+  border: 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+.timing-modes button + button {
+  border-left: 1px solid var(--line);
+}
+.timing-modes button[aria-checked="true"] {
+  background: var(--green);
+  color: var(--on-green);
+  font-weight: 600;
+}
+.seq-stage {
+  position: relative;
+}
+.seq-links {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.seq-row {
+  display: grid;
+  grid-template-columns: minmax(7rem, 10rem) minmax(0, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0.55rem 0;
+}
+.seq-label strong {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.seq-label small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+.seq-track {
+  position: relative;
+  height: 1.75rem;
+  margin: 0 0.5rem;
+}
+.seq-head .seq-track { height: 1.6rem; }
+.seq-phases .seq-track { height: 2.6rem; }
+.seq-board[data-board="groot"] [data-row="cmd"] .seq-track { height: 2.4rem; }
+.seq-board[data-board="groot"] [data-row="act"] .seq-track { height: 2.2rem; }
+.seq-item {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  text-align: center;
+  --rc: var(--muted);
+}
+/* Boxes: phases, predictions, commands and pauses. */
+.seq-item[data-state="future"] {
+  border: 1px dashed color-mix(in srgb, var(--rc) 55%, transparent);
+  background: transparent;
+}
+.seq-item[data-state="active"] {
+  border: 2px solid var(--rc);
+  background: color-mix(in srgb, var(--rc) 26%, var(--surface));
+  color: var(--ink);
+  font-weight: 600;
+}
+.seq-item[data-state="live"] {
+  border-color: color-mix(in srgb, var(--rc) 65%, transparent);
+  background: color-mix(in srgb, var(--rc) 13%, var(--surface));
+  color: var(--ink);
+}
+.seq-item[data-state="expired"] {
+  border-color: var(--line);
+  background: var(--node);
+  color: var(--muted);
+}
+.seq-phase {
+  padding: 0 0.25rem;
+}
+.seq-item.is-pause[data-state] {
+  background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--muted) 22%, transparent) 0 2px, transparent 2px 7px);
+}
+.seq-item.is-pause[data-state="active"] {
+  background-image: repeating-linear-gradient(135deg, color-mix(in srgb, var(--rc) 55%, transparent) 0 2px, transparent 2px 7px);
+}
+.seq-item.is-wait[data-state] {
+  border: 0;
+  border-radius: 1px;
+  background-color: transparent;
+}
+.seq-round[data-state] {
+  border: 0;
+  border-bottom: 3px solid color-mix(in srgb, var(--rc) 45%, transparent);
+  border-radius: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.seq-round[data-state="active"] {
+  border-bottom-color: var(--rc);
+  color: var(--ink);
+}
+.seq-round[data-state="expired"] {
+  border-bottom-color: var(--line);
+}
+/* Instant events: captures, motor updates, decisions. */
+.seq-item.is-capture[data-state] {
+  top: -0.2rem;
+  bottom: -0.2rem;
+  z-index: 2;
+  width: 3px;
+  border: 0;
+  border-radius: 1px;
+  transform: translateX(-1.5px);
+  overflow: visible;
+  background: var(--ink);
+}
+.seq-item.is-capture[data-round][data-state="active"],
+.seq-item.is-capture[data-round][data-state="live"],
+.seq-item.is-capture.is-used[data-state]:not([data-state="expired"]) {
+  background: var(--rc);
+}
+.seq-item.is-capture.is-used::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -2.5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: inherit;
+}
+.seq-item.is-capture[data-state="future"] {
+  background: none;
+  border-left: 2px dotted color-mix(in srgb, var(--rc, var(--muted)) 70%, var(--muted));
+}
+.seq-item.is-capture.is-used[data-state="future"]::before {
+  border: 1.5px solid var(--rc);
+  box-sizing: border-box;
+  left: -4.5px;
+}
+.seq-item.is-capture[data-state="expired"] {
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+.seq-item.is-capture[data-state="active"] {
+  width: 4px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--rc, var(--ink)) 30%, transparent);
+}
+/* The tick's left edge sits on its recorded time; the glyph is drawn just to
+   the right so it never covers the pause or capture ending at that time. */
+.seq-item.is-tick[data-state] {
+  top: 18%;
+  bottom: 18%;
+  width: 3px;
+  border: 0;
+  border-radius: 1px;
+  transform: translateX(1px);
+  background: var(--rc);
+}
+.seq-item.is-tick[data-state="future"] {
+  background: color-mix(in srgb, var(--rc) 28%, transparent);
+}
+.seq-item.is-tick[data-state="expired"] {
+  background: color-mix(in srgb, var(--muted) 40%, transparent);
+}
+.seq-item.is-tick[data-state="active"] {
+  top: 6%;
+  bottom: 6%;
+}
+.seq-item.is-event[data-state] {
+  top: 50%;
+  bottom: auto;
+  z-index: 2;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 2px solid var(--rc);
+  border-radius: 1px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--rc);
+}
+.seq-item.is-event[data-state="future"] {
+  border-style: dashed;
+  background: var(--surface);
+}
+.seq-item.is-event[data-state="expired"] {
+  border-color: var(--line);
+  background: var(--node);
+}
+.seq-item.is-mark-label[data-state] {
+  justify-content: flex-start;
+  padding-left: 0.85rem;
+  text-align: left;
+  border: 0;
+  background: none;
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.seq-item.is-mark-label small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+.seq-board[data-board="onboard"] [data-row="dec"] .seq-track { height: 2.2rem; }
+.seq-item.is-mark-label[data-state="active"],
+.seq-item.is-mark-label[data-state="live"] {
+  color: var(--ink);
+}
+.seq-link-line {
+  fill: none;
+  stroke: var(--rc);
+  stroke-width: 1.5;
+}
+.seq-link-head {
+  fill: var(--rc);
+}
+.seq-link[data-state="future"] {
+  opacity: 0.45;
+}
+.seq-link[data-state="future"] .seq-link-line {
+  stroke-dasharray: 3 3;
+}
+.seq-link[data-state="expired"] .seq-link-line {
+  stroke: var(--line);
+}
+.seq-link[data-state="expired"] .seq-link-head {
+  fill: var(--line);
+}
+.seq-link[data-state="active"] .seq-link-line {
+  stroke-width: 2.5;
+}
+.seq-cursor {
+  position: absolute;
+  top: -0.25rem;
+  bottom: -0.25rem;
+  left: 0;
+  z-index: 3;
+  width: 2px;
+  background: color-mix(in srgb, var(--ink) 60%, transparent);
+  transform: translateX(-1px);
+  pointer-events: none;
+}
+.seq-head .seq-cursor {
+  display: none;
+}
+.seq-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.25rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.seq-legend li {
+  margin: 0;
+}
+.seq-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.seq-timing .timing-status {
+  min-height: 4.5em;
+  margin: 0.75rem 0 0;
+}
+.seq-timing .timing-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+.seq-timing .timing-scrub-label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  flex: 1;
+  min-width: 12rem;
+  font-size: 0.875rem;
+}
+.seq-timing .timing-scrub {
+  width: 100%;
+  accent-color: var(--green);
+}
+/* Diagram legends: swatches share the shapes' color variables. */
+.diagram-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.diagram-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+}
+.legend-swatch {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 0.75rem;
+}
+.legend-swatch.is-dot {
+  width: 0.75rem;
+  border-radius: 50%;
+  background: var(--swatch);
+}
+.legend-swatch.is-area {
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  background: var(--swatch);
+}
+.legend-swatch.is-line,
+.legend-swatch.is-dash,
+.legend-swatch.is-arrow {
+  height: 0;
+  border-top: 3px solid var(--swatch);
+}
+.legend-swatch.is-dash {
+  border-top-style: dashed;
+}
+.legend-swatch.is-arrow {
+  position: relative;
+}
+.legend-swatch.is-arrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: -6px;
+  width: 7px;
+  height: 7px;
+  border-top: 2px solid var(--swatch);
+  border-right: 2px solid var(--swatch);
+  transform: rotate(45deg);
+}
+.legend-swatch.is-ring {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 2px dashed var(--swatch);
+  border-radius: 50%;
+}
+/* PPO figure: the clipping range is the pale-green band named in its caption. */
+[data-diagram="ppo"] .clip-band {
+  fill: color-mix(in srgb, var(--green) 16%, transparent);
+}
+/* Explained symbols: no underline or special cursor; a subtle tint shows the
+   symbol under the pointer or keyboard selection. KaTeX layout boxes (vlists,
+   struts, radical and fraction SVGs) are transparent to the pointer so every
+   symbol's own glyphs receive hover and taps, including inside roots,
+   fractions and scripts. */
+.bd-article .katex.has-symbols {
+  cursor: default;
+}
+.bd-article .katex.has-symbols .katex-html * {
+  pointer-events: none;
+}
+.bd-article .katex.has-symbols .katex-html [data-sym] :is(.mord, .mop, .mbin, .mrel, .mopen, .mclose, .mpunct, .minner, .delimsizing, .delimcenter) {
+  pointer-events: auto;
+}
+/* Layout boxes stay transparent even inside a symbol, so a nested symbol's
+   glyphs (e.g. τ in the subscript of 𝔼) are never covered by its parent. */
+.bd-article .katex.has-symbols .katex-html [data-sym] :is(.vlist-t, .vlist-r, .vlist, .vlist-s, .pstrut, .msupsub, .svg-align, .strut, .mfrac, .frac-line, .nulldelimiter, svg) {
+  pointer-events: none;
+}
+.bd-article [data-sym] {
+  border-radius: 3px;
+}
+.bd-article [data-sym]:hover,
+.bd-article [data-sym].is-symbol-active {
+  background: var(--code-active-bg);
+}
+.bd-article .katex.has-symbols:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.symbol-tip {
+  position: fixed;
+  z-index: 1100;
+  max-width: min(22rem, calc(100vw - 16px));
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--overlay);
+  color: var(--ink);
+  box-shadow: 0 8px 24px var(--backdrop);
+  font-size: 0.875rem;
+  line-height: 1.55;
+  user-select: text;
+}
+.symbol-tip[hidden] {
+  display: none;
+}
+.symbol-tip-tex {
+  margin-bottom: 0.25rem;
+  font-size: 1.05rem;
+}
+.symbol-tip-text {
+  margin: 0;
+}
+.formula-symbols {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+}
+.formula-symbols > summary {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.formula-symbols dl {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.35rem 1rem;
+  margin: 0.5rem 0 0.25rem;
+}
+.formula-symbols dl > div {
+  display: contents;
+}
+.formula-symbols dt {
+  font-weight: 400;
+}
+.formula-symbols dd {
+  margin: 0;
+  color: var(--ink);
+}
+.formula-label {
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--label-strong);
+}
+.katex {
+  font-size: 1.06em;
+}
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+.concept-figure {
+  margin: 1.75rem 0;
+  padding: 1.25rem;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.concept-figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-inline: auto;
+  font-family: var(--course-font);
+  color: var(--muted);
+}
+.concept-figure svg,
+.learning-figure .learning-svg {
+  max-width: calc(var(--vb-w, 760) * var(--svg-unit));
+}
+.concept-figure svg text {
+  fill: var(--ink);
+}
+.diagram-scroll {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  padding: 2px;
+}
+.diagram-scroll-hint {
+  display: none;
+}
+/* Desktop articles are 600–1100 px wide; figures scale down to these widths before the
+   container scrolls, so they stay whole at 1366 px with the wider English navigation. */
+.concept-figure .architecture-svg {
+  min-width: 540px;
+}
+.network-svg {
+  min-width: 540px;
+}
+.navigation-svg {
+  min-width: 680px;
+  font-size: 16px;
+}
+.concept-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0 0.5rem;
+  font-size: 0.875rem;
+}
+.concept-controls label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+.concept-controls input {
+  max-width: 10rem;
+  accent-color: var(--green);
+}
+.concept-controls select {
+  padding: 0.3rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+.navigation-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.navigation-controls label {
+  flex-direction: column;
+  align-items: stretch;
+}
+.navigation-controls input {
+  width: 100%;
+  max-width: none;
+}
+.navigation-legend,
+.concept-output {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.concept-output {
+  min-height: 2em;
+}
+/* Keep concept diagrams, controls and captions in reading order at every width. */
+
+/* Clickable teaching flow with persistent explanation (more than six nodes). */
+.learning-figure {
+  margin: 1.5rem 0 2rem;
+  overflow: hidden;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.bd-article figure.learning-figure {
+  padding: 0;
+}
+.learning-help {
+  margin: 0;
+  padding: 0.9rem 1.25rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.learning-help.learning-scroll-hint {
+  display: none;
+}
+.learning-figure .diagram-scroll {
+  padding: 0 0.4rem;
+}
+.learning-figure .learning-svg {
+  display: block;
+  width: 100%;
+  min-width: 560px;
+  margin-inline: auto;
+  font-family: var(--course-font);
+}
+.learning-node {
+  cursor: pointer;
+}
+.learning-node rect {
+  fill: var(--surface);
+  stroke: var(--line);
+  stroke-width: 1.5;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.learning-node-index {
+  text-anchor: middle;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  fill: var(--muted);
+  pointer-events: none;
+}
+.learning-node.is-active .learning-node-index {
+  fill: var(--ink);
+  font-weight: 700;
+}
+.learning-node-title {
+  text-anchor: middle;
+  font-size: 17px;
+  font-weight: 600;
+  fill: var(--ink);
+  pointer-events: none;
+}
+.learning-node-subtitle {
+  text-anchor: middle;
+  font-size: 14px;
+  fill: var(--muted);
+  pointer-events: none;
+}
+.learning-node.is-active rect,
+.learning-node:hover rect,
+.learning-node:focus-visible rect {
+  fill: var(--code-active-bg);
+  stroke: var(--green);
+  stroke-width: 3;
+}
+.learning-node:focus-visible {
+  outline: none;
+}
+.learning-edge {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  color: var(--muted);
+}
+.learning-edge.is-active {
+  stroke: var(--green);
+  color: var(--green);
+  stroke-width: 3;
+}
+.learning-details {
+  position: relative;
+  padding: 1.25rem 3rem 1.5rem 1.4rem;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+}
+.bd-article .learning-definition h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+}
+.learning-definition h3 span {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--on-green);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+.learning-definition p {
+  max-width: 60em;
+}
+.learning-empty {
+  color: var(--muted);
+}
+.learning-definition p,
+.learning-empty {
+  margin: 0;
+}
+.learning-definition + .learning-definition {
+  margin-top: 1.25rem;
+}
+.is-enhanced .learning-definition {
+  margin-top: 0;
+}
+.learning-reset {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  font-size: 1.5rem;
+}
+.learning-figure figcaption {
+  margin: 0;
+  padding: 0.75rem 1.4rem;
+  border-top: 1px solid var(--line);
+}
+.learning-figure [hidden] {
+  display: none !important;
+}
+
+/* ---------- 3D anatomy viewer ---------- */
+/* Borderless and transparent: only the robot, labels and controls sit on the page. */
+.anatomy {
+  margin: 1.5rem 0;
+}
+.anatomy-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+.anatomy-modes:empty {
+  display: none;
+}
+.anatomy-mode {
+  min-height: 2rem;
+  padding: 0.25rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+.anatomy-mode:hover {
+  border-color: var(--green);
+}
+.anatomy-mode[aria-pressed="true"] {
+  border-color: var(--green);
+  background: var(--green);
+  color: var(--on-green);
+  font-weight: 600;
+}
+.anatomy-mode:focus-visible,
+.part-label:focus-visible,
+.assembly-steps button:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.viewer-stage {
+  position: relative;
+  height: 38rem;
+  background: transparent;
+}
+.anatomy[data-loaded="true"] .viewer-stage {
+  height: 38rem;
+}
+.anatomy:not([data-loaded="true"]) .component-info {
+  display: none;
+}
+.viewer-stage canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+.robot-fallback {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* Poster with one clear entry point, then download progress. */
+.viewer-launch,
+.viewer-progress {
+  position: absolute;
+  inset: auto 0 1.25rem 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+}
+.viewer-launch[hidden],
+.viewer-progress[hidden] {
+  display: none;
+}
+.load-robot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.25rem 0.55rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.82);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.load-robot-icon {
+  flex-shrink: 0;
+  color: var(--green);
+}
+.load-robot:hover {
+  border-color: var(--green);
+  background: rgba(20, 20, 20, 0.92);
+}
+.load-robot:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 3px;
+}
+.load-robot-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.viewer-progress-track {
+  position: relative;
+  width: min(18rem, 70%);
+  height: 0.375rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--line);
+}
+.viewer-progress-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: inherit;
+  background: var(--green);
+  transition: width 0.2s;
+}
+.viewer-progress.is-indeterminate .viewer-progress-bar {
+  width: 35%;
+  animation: viewer-progress 1.2s ease-in-out infinite;
+}
+@keyframes viewer-progress {
+  from {
+    left: -35%;
+  }
+  to {
+    left: 100%;
+  }
+}
+.viewer-progress-text {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.anatomy[data-state="error"] .viewer-status {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #e5484d;
+  border-radius: 4px;
+  max-width: calc(100% - 1.7rem);
+  color: var(--ink);
+}
+@media (prefers-reduced-motion: reduce) {
+  .viewer-progress.is-indeterminate .viewer-progress-bar {
+    animation: none;
+    width: 100%;
+    opacity: 0.5;
+  }
+}
+.viewer-status {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  z-index: 2;
+  max-width: 80%;
+  color: var(--muted);
+  font-size: 0.75rem;
+  pointer-events: none;
+}
+.viewer-status:empty {
+  display: none;
+}
+/* Callouts: thin leader lines and plain text, no boxes. */
+.part-labels {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.part-labels[hidden] {
+  display: none;
+}
+.part-labels svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.part-labels path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 0.75;
+  opacity: 0.75;
+}
+.part-labels circle {
+  fill: var(--muted);
+}
+.part-label {
+  position: absolute;
+  padding: 0.1rem 0.15rem;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  line-height: 1.3;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.part-label:hover,
+.part-label:focus-visible {
+  color: var(--green);
+}
+.part-label[hidden] {
+  display: none;
+}
+.anatomy:not([data-loaded="true"]) .viewer-toolbar {
+  display: none;
+}
+.viewer-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 0.5rem 0;
+  font-size: 0.8125rem;
+}
+.viewer-toolbar label {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 0.75rem;
+  min-width: 150px;
+  margin: 0;
+}
+.viewer-toolbar label[hidden],
+.assembly-controls[hidden],
+.assembly-panel[hidden],
+.component-info[hidden] {
+  display: none;
+}
+.viewer-toolbar input {
+  flex: 1;
+  min-width: 60px;
+  accent-color: var(--green);
+}
+.assembly-controls {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 260px;
+}
+.assembly-controls button {
+  min-height: 2rem;
+  min-width: 4.25rem;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.8125rem;
+}
+.assembly-controls button:hover {
+  border-color: var(--green);
+}
+.assembly-time {
+  min-width: 6.5em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.assembly-panel {
+  padding: 0.25rem 0 0.5rem;
+}
+.assembly-steps {
+  margin: 0;
+  padding-left: 1.6rem;
+  font-size: 0.875rem;
+}
+.assembly-steps li {
+  margin: 0.15rem 0;
+  color: var(--muted);
+}
+.assembly-steps li.is-done {
+  color: var(--ink);
+}
+.assembly-steps li[aria-current="step"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+.assembly-steps li[aria-current="step"]::marker {
+  color: var(--green);
+}
+.assembly-steps button {
+  padding: 0.1rem 0.2rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.assembly-steps button:hover {
+  color: var(--green);
+}
+.assembly-note {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+.view-reset,
+.view-focus,
+.course-button {
+  min-height: 2rem;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--soft);
+  color: var(--ink);
+  font-size: 0.8125rem;
+}
+.view-reset:hover,
+.course-button:hover {
+  border-color: var(--green);
+}
+.component-info {
+  min-height: 5.5rem;
+  padding: 0.25rem 0 0.5rem;
+  font-size: 0.875rem;
+}
+.component-info p {
+  margin: 0.3rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+/* ---------- Evaluation counter and demonstration table ---------- */
+.scenario-matrix {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.matrix-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+.matrix-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.matrix-seeds {
+  width: 5rem;
+  padding: 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+}
+.matrix-output {
+  font-weight: 700;
+}
+.matrix-scope {
+  font-size: 0.9em;
+}
+.demonstration .demonstration-time {
+  margin: 0.7rem 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.demonstration table {
+  width: 100%;
+  min-width: 0;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+}
+.demonstration th,
+.demonstration td {
+  padding: 0.55rem 0.4rem !important;
+  overflow-wrap: anywhere;
+}
+.demonstration td:first-child {
+  white-space: normal;
+}
+.demonstration summary {
+  padding: 0.7rem 0;
+}
+.bd-article pre.demonstration-sample {
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--code-line);
+  background: var(--code-bg);
+  color: var(--code-fg);
+  font-size: 0.85rem;
+}
+
+/* ---------- Charts (c-fx-30 style) ---------- */
+.course-chart,
+.course-model-card {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.chart-header,
+.chart-legend,
+.model-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.bd-article .chart-header h3 {
+  margin: 0;
+}
+.chart-header > span {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.chart-legend {
+  justify-content: flex-start;
+  margin: 0.75rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.chart-swatch {
+  display: inline-block;
+  width: 1.4rem;
+  margin-right: 0.45rem;
+  border-top: 3px solid var(--chart-green);
+  vertical-align: middle;
+}
+.chart-swatch.secondary {
+  border-color: var(--chart-blue);
+  border-top-style: dashed;
+}
+/* Bar-series legend: filled swatches in the bar colors. */
+.chart-swatch.chart-swatch-bar {
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 0;
+  border-radius: 2px;
+  background: var(--chart-green);
+}
+.chart-swatch.chart-swatch-bar.secondary {
+  background: var(--chart-blue);
+}
+.chart-grid-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.chart-panel {
+  min-width: 0;
+}
+.bd-article .chart-panel h4 {
+  margin: 0.9rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.chart-panel svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: calc(var(--vb-w, 370) * 0.09rem);
+  overflow: visible;
+}
+.chart-panel text {
+  fill: var(--muted);
+  font-size: 12px;
+}
+.chart-grid {
+  stroke: var(--line);
+  stroke-dasharray: 3 5;
+}
+.chart-line {
+  fill: none;
+  stroke: var(--chart-green);
+  stroke-width: 2.5;
+}
+.chart-dot {
+  fill: var(--surface);
+  stroke: var(--chart-green);
+  stroke-width: 2;
+  cursor: crosshair;
+}
+.chart-dot:hover,
+.chart-dot:focus {
+  fill: var(--chart-green);
+  outline: none;
+  stroke-width: 5;
+}
+.chart-readout {
+  min-height: 2em;
+  margin: 0.75rem 0 0;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.chart-data {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+.chart-data summary {
+  padding: 0.5rem 0;
+}
+.course-chart figcaption {
+  margin-top: 0.75rem;
+}
+.benchmark-row {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.benchmark-bars {
+  display: grid;
+  gap: 0.5rem;
+}
+.benchmark-track {
+  position: relative;
+  height: 1.5rem;
+  /* Visible empty track in both themes (0/5 rows must not look blank). */
+  background: var(--node);
+  border-radius: 4px;
+}
+.benchmark-bar {
+  height: 100%;
+  background: var(--chart-green);
+  border-radius: inherit;
+}
+.benchmark-bar.secondary {
+  background: var(--chart-blue);
+}
+.benchmark-series {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.75rem;
+  gap: 0.6rem;
+  align-items: center;
+}
+.benchmark-value {
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Model cards */
+.model-card-family {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--label-strong);
+}
+.bd-article .model-card-title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+.model-card-hub {
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.model-card-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+  padding: 1rem 0;
+  border-block: 1px solid var(--line);
+}
+.model-card-facts dt {
+  margin-bottom: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+.model-card-facts dd {
+  margin: 0;
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+.model-card-note {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Media rows and scene cards */
+.media-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+  margin: 1.5rem 0;
+}
+.media-row .media {
+  margin: 0;
+  min-width: 0;
+}
+.comparison-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+.scene-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 1rem;
+}
+.scene-card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.bd-article .scene-card h4 {
+  margin: 0;
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.scene-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+/* Code walkthroughs: each numbered explanation and the code chunk it explains are
+   adjacent cells of one grid row, so a pair shares its top and bottom and the row
+   takes the taller of the two (shorter text keeps white space below). On desktop
+   the explanations form a left panel and the code a right panel whose row
+   dividers line up; a narrow viewport reads step, code, step, code. */
+.code-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: 1.5rem;
+  row-gap: 0;
+  margin: 2rem 0;
+  align-items: stretch;
+}
+.story-corner {
+  display: none;
+}
+.code-story > .code-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+  min-height: 2.5rem;
+  padding: 0.35rem 0.6rem 0.35rem 1rem;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  background: var(--code-bg);
+  color: var(--code-comment);
+  font-size: 0.8125rem;
+}
+.story-step,
+.story-code-chunk {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+/* Both cells of a pair keep the shared row height; their content sits in its
+   vertical middle (the explanation here, the numbered code below). */
+.story-step {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.85rem 1rem;
+  background: var(--surface);
+}
+.story-text {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+/* The numbered title runs into its explanation. */
+.bd-article .story-step h4 {
+  display: inline;
+  margin: 0 0.4em 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.story-step h4 span,
+.story-code-number {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+.story-step h4 span {
+  margin-right: 0.5rem;
+  vertical-align: 0.05em;
+}
+.bd-article .story-step p {
+  display: inline;
+  margin: 0;
+  font-size: inherit;
+}
+/* Active pair: tint, inset green bar and filled badges on both sides. */
+.story-step.is-active,
+.story-code-chunk.is-active {
+  background: var(--code-active-bg);
+  box-shadow: inset 3px 0 0 var(--green);
+}
+.story-step.is-active h4 span,
+.story-code-chunk.is-active .story-code-number {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--on-green);
+}
+/* Every chunk stays fully legible. The badge and the code form one grid row
+   that is centered as a whole, so the badge stays beside the first code line. */
+.story-code-chunk {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  column-gap: 0.8rem;
+  align-content: center;
+  align-items: start;
+  padding: 0.75rem 0.75rem 0.75rem 0.55rem;
+  background: var(--code-bg);
+  color: var(--code-fg);
+}
+.story-code-chunk:last-child {
+  border-bottom: 1px solid var(--line);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.story-code-chunk.is-active {
+  background: linear-gradient(var(--code-active-bg), var(--code-active-bg)), var(--code-bg);
+}
+.bd-article .story-code-chunk .highlight {
+  min-width: 0;
+  margin: 0;
+  background: transparent !important;
+}
+.story-code-number {
+  /* Symmetric margins keep the badge's layout height equal to the first code
+     line, so even a single-line snippet stays centered. The rendered code
+     line-height is 1.25 (13px → 16.25px), set by the later general code rule. */
+  margin-block: calc((0.8125rem * 1.25 - 1.4rem) / 2);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-color: var(--code-line);
+  color: var(--code-comment);
+}
+.bd-article .story-code-chunk pre {
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent !important;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+.story-code-chunk pre code {
+  padding: 0;
+  background: transparent;
+  color: var(--code-fg);
+}
+.learning-edge.is-active {
+  stroke-dasharray: 7 5;
+  animation: flow-dash 1.4s linear infinite;
+}
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .learning-edge.is-active {
+    animation: none;
+  }
+}
+/* Control timing */
+.timing-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+.timing-controls label {
+  display: grid;
+  flex: 1;
+  gap: 0.4rem;
+  min-width: 10rem;
+  margin: 0;
+  font-size: 0.875rem;
+}
+.timing-controls select {
+  min-height: 2.4rem;
+  padding: 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink);
+}
+.timing-controls input {
+  width: 100%;
+  accent-color: var(--green);
+}
+.timing-controls output,
+.timing-clocks output {
+  font-variant-numeric: tabular-nums;
+}
+.timing-clocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 0.75rem;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+}
+.timing-clocks output {
+  margin-left: 0.5rem;
+  font-weight: 600;
+}
+.timing-lane {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1.25rem 0;
+}
+.timing-lane strong {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+.timing-lane small {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.timing-track {
+  position: relative;
+  height: 1.5rem;
+  border-block: 1px solid var(--line);
+  background: repeating-linear-gradient(90deg, transparent 0, transparent calc(6.25% - 1px), var(--line) calc(6.25% - 1px), var(--line) 6.25%);
+}
+[data-lane="physics"] .timing-track {
+  background-size: 25% 100%;
+}
+.timing-cursor {
+  position: absolute;
+  left: 0;
+  top: 0.3rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--green);
+  transform: translateX(-50%);
+}
+.control-timing.is-waiting .timing-cursor {
+  background: var(--nve-sys-support-warning-color);
+}
+.timing-status {
+  min-height: 3.6em;
+  font-size: 0.9375rem;
+}
+.timing-scrub-label {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  font-size: 0.875rem;
+}
+.timing-scrub {
+  width: 100%;
+  accent-color: var(--green);
+}
+/* Lesson tables: the theme sizes columns from their content. Short cells (marked at build
+   time) stay on one line, so label and number columns keep their natural width and the long
+   text columns take the rest and wrap. */
+.bd-article table.table {
+  width: auto;
+  max-width: 100%;
+}
+.bd-article table.table :is(td, th).cell-short {
+  white-space: nowrap;
+}
+.bd-article table.table td {
+  font-variant-numeric: tabular-nums;
+}
+/* Long paths and identifiers may break inside a cell instead of widening the table. */
+.bd-article table.table td code,
+.bd-article table.table td code span.pre {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+/* Opt-in ({.table-labels} before a table): the first column holds short row labels that stay on
+   one line; the other columns keep their natural width and wrapping. */
+.bd-article table.table.table-labels :is(td, th):first-child {
+  white-space: nowrap;
+}
+/* Opt-in ({.table-center} before a table): every cell centered in both directions. */
+.bd-article table.table.table-center :is(td, th) {
+  text-align: center;
+  vertical-align: middle;
+}
+/* Explanations under the progress control, collapsed by default ("详解 / Details"). */
+.timing-details {
+  margin: 0.75rem 0 0;
+}
+.timing-details > summary {
+  width: fit-content;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+.timing-details > summary:hover {
+  color: var(--ink);
+}
+.timing-details > summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+.timing-facts {
+  margin: 0.25rem 0 0;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+}
+.timing-facts li {
+  margin: 0.75rem 0;
+}
+
+/* ---------- Responsive: by article width ---------- */
+/* Desktop: code stories stay two columns (explanation left, code right).
+   Keyed to the viewport, not the article container, so the sidebar and
+   right ToC never squeeze a 1366/1440 desktop back into one column. */
+@media (min-width: 960px) {
+  .code-story {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  }
+  .story-corner {
+    display: block;
+  }
+  /* Two panels side by side: rounded left panel, code panel under its toolbar. */
+  .story-corner + .code-toolbar + .story-step {
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+  }
+  .story-step:last-of-type {
+    border-bottom: 1px solid var(--line);
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+  .story-corner + .code-toolbar + .story-step:last-of-type {
+    border-radius: var(--radius-md);
+  }
+}
+@container lesson (max-width: 640px) {
+  .course-chart,
+  .course-model-card {
+    padding: 1rem;
+  }
+  .chart-grid-pair {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .media-row {
+    gap: 0.75rem;
+  }
+  .concept-figure {
+    padding: 0.85rem 0.6rem;
+  }
+  .diagram-scroll-hint {
+    display: block;
+    margin: 0 0 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .learning-help.learning-scroll-hint {
+    display: block;
+  }
+  .learning-details {
+    padding: 1rem 2.5rem 1.25rem 1rem;
+  }
+  .learning-help,
+  .learning-figure figcaption {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .viewer-stage,
+  .anatomy[data-loaded="true"] .viewer-stage {
+    height: 30rem;
+  }
+  .part-label {
+    padding: 0.1rem;
+    font-size: 0.6875rem;
+  }
+  .viewer-toolbar {
+    padding: 0.5rem 0;
+  }
+  .formula {
+    padding: 0.5rem 0.75rem;
+  }
+  .enrichment-body {
+    padding: 0.15rem 0.75rem 0.75rem;
+  }
+  .bd-article ol.pipeline > li {
+    min-width: 5.5rem;
+  }
+  [data-diagram="ppo"] svg text {
+    font-size: 21px;
+  }
+}
+@container lesson (max-width: 560px) {
+  .timing-lane {
+    grid-template-columns: 7.5rem 1fr;
+  }
+  .navigation-controls {
+    grid-template-columns: 1fr;
+  }
+  .architecture-svg.flow-desktop {
+    display: none;
+  }
+  .architecture-svg.flow-mobile {
+    display: block;
+    min-width: 0;
+  }
+}
+@container lesson (max-width: 440px) {
+  .media-row {
+    grid-template-columns: 1fr;
+  }
+}
+/* Home hero animation: transparent loop across the article width, at most 1200 px wide; the
+   intrinsic aspect ratio comes from the image's own width/height attributes. */
+.hero-image.hero-animation {
+  position: relative;
+  max-width: 1200px;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+}
+.hero-image.hero-animation img {
+  object-fit: contain;
+}
+/* The home hero is the last thing in the heading; no rule beneath it. */
+.lesson-heading.is-home.has-hero-animation {
+  border-bottom: 0;
+}
+@container lesson (min-width: 1000px) {
+  .lesson-heading.is-home.has-hero-animation {
+    display: block;
+  }
+  .is-home.has-hero-animation .hero-image {
+    margin: 1.25rem 0 0;
+  }
+}
+.hero-animation-toggle {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid var(--pst-color-border);
+  border-radius: 50%;
+  background: var(--pst-color-background);
+  color: var(--pst-color-text-muted);
+  opacity: 0.85;
+  cursor: pointer;
+}
+.hero-animation-toggle:hover,
+.hero-animation-toggle:focus-visible {
+  opacity: 1;
+  color: var(--pst-color-text-base);
+}
+.hero-animation-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.6rem;
+  height: 0.7rem;
+  border-left: 0.2rem solid currentColor;
+  border-right: 0.2rem solid currentColor;
+  box-sizing: border-box;
+}
+.hero-animation[data-state="paused"] .hero-animation-toggle::before {
+  width: 0;
+  height: 0;
+  margin: auto auto auto calc(50% - 0.2rem);
+  border-top: 0.4rem solid transparent;
+  border-bottom: 0.4rem solid transparent;
+  border-left: 0.65rem solid currentColor;
+  border-right: 0;
+}
+
+/* Section headings reached through the page contents (or a link, the initial
+   hash, back/forward) briefly tint their title text NVIDIA green instead of
+   keeping the theme's permanent full-line target background. Footnotes and
+   search matches keep theirs. course-widgets.js wraps the title text in
+   .md-target-text once and toggles .md-target-flash on it. */
+html[data-theme] .bd-main .bd-content .bd-article-container .bd-article :target > :is(h1, h2, h3, h4, h5, h6) {
+  background-color: transparent;
+}
+@keyframes md-target-flash {
+  0%, 15% {
+    background-color: color-mix(in srgb, var(--green) 18%, transparent);
+    animation-timing-function: ease-in-out;
+  }
+  100% { background-color: transparent; }
+}
+.bd-article .md-target-text.md-target-flash {
+  border-radius: 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  animation: md-target-flash 1.2s forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bd-article .md-target-text.md-target-flash {
+    animation: none;
+    background-color: color-mix(in srgb, var(--green) 18%, transparent);
+  }
+}
+
+/* Recorded run: a command we executed, read rather than run. No copy control;
+   the actual output and its interpretation start collapsed. */
+.recorded-run {
+  margin: 1.25rem 0 1.5rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid #c58b00;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.recorded-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.9rem;
+  padding: 0.45rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.8125rem;
+}
+.recorded-badge {
+  font-weight: 600;
+  color: #9a6b00;
+}
+html[data-theme="dark"] .recorded-badge {
+  color: #e0a53a;
+}
+.recorded-where,
+.recorded-meta {
+  color: var(--pst-color-text-muted);
+}
+.recorded-command {
+  margin: 0;
+  background: var(--code-bg) !important;
+  color: var(--code-fg);
+}
+.recorded-command pre,
+.recorded-output {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: visible;
+}
+.recorded-result > summary {
+  cursor: pointer;
+  padding: 0.55rem 0.9rem;
+  border-top: 1px solid var(--line);
+  font-weight: 600;
+}
+.recorded-body {
+  padding: 0 0.9rem 0.9rem;
+}
+.recorded-body > p {
+  margin: 0.75rem 0 0;
+}
+.recorded-output-label {
+  font-size: 0.8125rem;
+  color: var(--pst-color-text-muted);
+}
+.recorded-output {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: var(--radius-sm, 6px);
+  font-size: 0.8125rem;
+}
+.recorded-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm, 6px);
+}
+.recorded-run > figcaption {
+  padding: 0.55rem 0.9rem 0.7rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}

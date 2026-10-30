@@ -1,0 +1,48 @@
+{
+ "schema": "microduck.course-data.v2",
+ "package": "walking-ppo",
+ "description": "Course-trained PPO walking run (1024 envs x 2500 iterations, seed 970311): final checkpoint, exported policy, env/agent configuration, training ledger and TensorBoard event file.",
+ "files": [
+  {
+   "path": "agent.yaml",
+   "bytes": 1295,
+   "sha256": "6253cd30d1f844719a9748f861a770506f5529be6061b4567527fb6c64a76d87"
+  },
+  {
+   "path": "env.yaml",
+   "bytes": 74660,
+   "sha256": "144618744e00b7dc6eef662bfeaa16ea45c2dc01ef17ad17fba95326fd07221e"
+  },
+  {
+   "path": "events.out.tfevents.1792407484.spark-c239.1072225.0",
+   "bytes": 5220988,
+   "sha256": "1ec7362ec80a60fa35e77c2f102458abac19c59326e419c600dca0a9330ce01d"
+  },
+  {
+   "path": "exported/policy.onnx",
+   "bytes": 16568,
+   "sha256": "0141820d5b6b465cadb832ac6f7b91fff837256cf4009151165cecf469d94e93"
+  },
+  {
+   "path": "exported/policy.onnx.data",
+   "bytes": 791040,
+   "sha256": "7b8264df0f4b6c332d6dfeee80867b5f3848f9ada7f8d266f1babab963e1a687"
+  },
+  {
+   "path": "exported/policy.pt",
+   "bytes": 808148,
+   "sha256": "e4991007477e8445a50f24ec19996da5a83b8e858bfb535fa0c75106999acef9"
+  },
+  {
+   "path": "model_2499.pt",
+   "bytes": 4843381,
+   "sha256": "6c04519124f4d26cc0ef150538f649f34b3f986d0dcd9d34ddca22cd034dee4d"
+  },
+  {
+   "path": "training-ledger.json",
+   "bytes": 1849,
+   "sha256": "0ba66516df3b1ab2f0ed6d553deb3c5015a878c8c58abf95f88d26c86bb36377"
+  }
+ ],
+ "total_bytes": 11757929
+}

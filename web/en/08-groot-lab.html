@@ -1,0 +1,773 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="In the course container, post-train the GR00T action head on the prepared walking-shot demonstrations and understand the training budget, sampling and time; then validate the provided checkpoint on the full shot in Isaac Lab and Newton." name="description" />
+
+  <title>4.3 Train and validate the GR00T walking shot - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-lab';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.4 From the pitch to more environments" href="09-worlds.html" />
+    <link rel="prev" title="4.2 Walking shot: GR00T inputs, outputs and data" href="08-groot-interface.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="08-groot-lab">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/08-groot-lab.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/08-groot-lab.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/08-groot-lab.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/08-groot-lab.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.3 Train and validate the GR00T walking shot</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="train-and-validate-the-gr00t-walking-shot">
+<h1>4.3 Train and validate the GR00T walking shot<a class="headerlink" href="#train-and-validate-the-gr00t-walking-shot" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>In the course container, post-train the GR00T action head on the prepared walking-shot demonstrations and understand the training budget, sampling and time; then validate the provided checkpoint on the full shot in Isaac Lab and Newton.</p>
+</div><div class="lesson-meta">Section 4.3 · Estimated learning time: 45 minutes (excluding about 1 hour for a full training run and the validation run)</div></div></div><script type="application/json" class="course-symbols">{"S_steps": {"tex": "S", "text": "Number of optimizer updates (training steps); 2000 in this section."}, "B_batch": {"tex": "B", "text": "Number of training samples drawn per update (batch size); 16 in this section."}, "N_train": {"tex": "N", "text": "Total number of samples (frames) in the training set; 13,431 in this section."}, "E_pass": {"tex": "E", "text": "Equivalent passes over the data: how many times the total number of draws would cover the training set."}}</script><section id="before">
+<h2>Before you start<a class="headerlink" href="#before" title="Link to this heading">#</a></h2>
+<p>This section has two hands-on steps: first try the training, then validate a model that has already been trained. Both commands run inside the course container.</p>
+<ul class="simple">
+<li><p>If you have not started the container yet, build and start it as described in <a class="reference internal" href="setup.html"><span class="std std-doc">Section 1.3</span></a>, then open a terminal inside it.</p></li>
+<li><p>If the container is already running, return to the terminal you used to enter it; or open a new terminal on the host and run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> to get back into the same container.</p></li>
+<li><p>The training data, feature cache and course checkpoint come from the GR00T course data package (<code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code> in the container); get it from your instructor before this section and place it as described in Section 1.3. The package is mounted read-only when the container starts. Your training and validation results go to new folders under <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> and never modify the provided data or models.</p></li>
+<li><p>The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face. Request access on the <a class="reference external" href="https://huggingface.co/nvidia/Cosmos-Reason2-2B" rel="noreferer noopener" target="_blank">nvidia/Cosmos-Reason2-2B</a> page first, then log in once inside the container with <code class="docutils literal notranslate"><span class="pre">/workspace/groot-env/bin/hf</span> <span class="pre">auth</span> <span class="pre">login</span></code>; the download cache is kept in <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> on the host.</p></li>
+</ul>
+<p>GR00T training and simulation with a window both use a lot of GPU memory; run only one at a time.</p>
+<figure class="learning-figure" data-learning-flow="learn-e4ca760c80"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="The two hands-on steps of this section"><svg class="learning-svg" viewBox="0 0 900 191" role="group" aria-labelledby="learn-e4ca760c80-title"><title id="learn-e4ca760c80-title">The two hands-on steps of this section</title><defs><marker id="learn-e4ca760c80-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 95.5H356.0" marker-end="url(#learn-e4ca760c80-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 95.5H692.0" marker-end="url(#learn-e4ca760c80-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Course data package" aria-controls="learn-e4ca760c80-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="143" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Course data</text><text x="114.0" y="94" class="learning-node-title">package</text><text x="114.0" y="118" class="learning-node-subtitle">Demonstrations,</text><text x="114.0" y="135" class="learning-node-subtitle">start point and</text><text x="114.0" y="152" class="learning-node-subtitle">feature cache</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Action-head training" aria-controls="learn-e4ca760c80-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="143" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Action-head</text><text x="450.0" y="94" class="learning-node-title">training</text><text x="450.0" y="118" class="learning-node-subtitle">2000 optimizer updates</text><text x="450.0" y="135" class="learning-node-subtitle">(stop any time)</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Closed-loop validation" aria-controls="learn-e4ca760c80-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="143" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Closed-loop</text><text x="786.0" y="94" class="learning-node-title">validation</text><text x="786.0" y="118" class="learning-node-subtitle">GR00T server + Isaac</text><text x="786.0" y="135" class="learning-node-subtitle">Lab simulation</text></g></svg></div><div class="learning-details" aria-label="The two hands-on steps of this section"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-e4ca760c80-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Course data package</h3><p>The training and validation sets, the start-point checkpoint and the frozen-backbone feature cache come from the GR00T course data package, mounted read-only; training never changes them.</p></article><article id="learn-e4ca760c80-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Action-head training</h3><p>After checking the cache, the training command updates only the action head and writes to the new folder you name. You can stop it with Ctrl+C after a few minutes.</p></article><article id="learn-e4ca760c80-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Closed-loop validation</h3><p>The validation command starts the GR00T inference server, then runs the walking shot in Isaac Lab with Newton; it uses the course checkpoint by default, and you switch to your own only after a full training.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Training and validation are separate commands, so you can validate the course checkpoint without finishing a training run.</figcaption></figure></section>
+<section id="data">
+<h2>The prepared data<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<p>The data follows the principles from Section 4.2: the onboard policy completed walking shots from different starts on the green pitch, only fully successful episodes were kept, and the training and validation sets were split by whole episode and start with no overlap.</p>
+<div class="pst-scrollable-table-container"><table class="table-center table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Dataset</p></th>
+<th class="head cell-short"><p>Episodes</p></th>
+<th class="head"><p>Samples (frames)</p></th>
+<th class="head cell-short"><p>Rate</p></th>
+<th class="head cell-short"><p>Size</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Training</p></td>
+<td class="cell-short"><p>58</p></td>
+<td class="cell-short"><p>13,431</p></td>
+<td class="cell-short"><p>12.5 Hz</p></td>
+<td class="cell-short"><p>about 3.9 GB</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Validation</p></td>
+<td class="cell-short"><p>14</p></td>
+<td class="cell-short"><p>3,098</p></td>
+<td class="cell-short"><p>12.5 Hz</p></td>
+<td class="cell-short"><p>about 0.9 GB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Each sample contains four 270 × 480 RGB images, the 127-D state, the fixed task instruction, and the 8-D request labels for the next 16 steps from that moment. An episode averages about 230 frames, roughly 18 seconds of simulation.</p>
+</section>
+<section id="recipe">
+<h2>The training recipe<a class="headerlink" href="#recipe" title="Link to this heading">#</a></h2>
+<p>Training starts from the course’s initialization checkpoint: it has already been post-trained for the walking-shot task, and its input and output normalization statistics are computed from this training set only. This run continues training the action head from there with a newly created optimizer state; it does not start from the official base weights.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Setting</p></th>
+<th class="head cell-short"><p>Value</p></th>
+<th class="head cell-short"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Trained part</p></td>
+<td class="cell-short"><p>Action head</p></td>
+<td><p>The vision-language backbone is frozen; the state and action encoders, action decoder, action-sequence generator and visual-language feature layers are trained, for the reasons in <a href="08-groot-interface.html#action-head">Section 4.2</a></p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Training steps</p></td>
+<td class="cell-short"><p>2000</p></td>
+<td><p>2000 optimizer updates</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Batch size</p></td>
+<td class="cell-short"><p>16</p></td>
+<td><p>16 samples drawn per update</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Learning rate</p></td>
+<td class="cell-short"><p>5 × 10⁻⁵</p></td>
+<td><p>Rises linearly from a very small value over the first 100 steps, then decays gradually to 0</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Optimizer</p></td>
+<td><p>AdamW, fresh state</p></td>
+<td><p>The initialization checkpoint’s optimizer state is not reused</p></td>
+</tr>
+<tr class="row-odd"><td><p>Image augmentation and dropout</p></td>
+<td class="cell-short"><p>Off</p></td>
+<td><p>First checks whether the model can fit this fixed scene; cross-scene generalization is not addressed</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="budget">
+<h2>Roughly how much data do 2000 steps see?<a class="headerlink" href="#budget" title="Link to this heading">#</a></h2>
+<p>Each update draws <span class="math notranslate nohighlight">\(\htmlData{sym=B_batch}{B}\)</span> samples, so <span class="math notranslate nohighlight">\(\htmlData{sym=S_steps}{S}\)</span> updates draw <span class="math notranslate nohighlight">\(\htmlData{sym=S_steps}{S}\htmlData{sym=B_batch}{B}\)</span> in total. Comparing that with the training-set size <span class="math notranslate nohighlight">\(\htmlData{sym=N_train}{N}\)</span> gives a simple estimate:</p>
+<div class="formula"><div class="formula-label">Equivalent passes over the data</div><div class="formula-body">\[\htmlData{sym=E_pass}{E} = \frac{\htmlData{sym=S_steps}{S}\,\htmlData{sym=B_batch}{B}}{\htmlData{sym=N_train}{N}} = \frac{2000 \times 16}{13{,}431} \approx 2.38\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(E\)</dt><dd>Equivalent passes over the data: how many times the total number of draws would cover the training set.</dd></div><div><dt>\(S\)</dt><dd>Number of optimizer updates (training steps); 2000 in this section.</dd></div><div><dt>\(B\)</dt><dd>Number of training samples drawn per update (batch size); 16 in this section.</dd></div><div><dt>\(N\)</dt><dd>Total number of samples (frames) in the training set; 13,431 in this section.</dd></div></dl></details></div><p>So the total number of draws is about 2.38 times the training set. That does not mean every sample is seen exactly 2.38 times: training uses the stage-weighted sampling described in <a href="08-groot-interface.html#data-design">Section 4.2</a>, so rare moments such as standing still, fine adjustment at the ball and the run-up to a kick are drawn more often and the many walking frames less often; sampling is also random, so a few samples may never be drawn.</p>
+</section>
+<section id="time">
+<h2>How long does it take?<a class="headerlink" href="#time" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table-labels table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Stage</p></th>
+<th class="head"><p>Time on DGX Spark</p></th>
+<th class="head cell-short"><p>What happens</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Checks</p></td>
+<td class="cell-short"><p>A few minutes</p></td>
+<td><p>Checks the data package files and spot-checks the feature cache on 4 samples</p></td>
+</tr>
+<tr class="row-odd"><td><p>Optimizer updates</p></td>
+<td><p>About 56 minutes</p></td>
+<td><p>2000 updates, about 1.6 s each</p></td>
+</tr>
+<tr class="row-even"><td><p>Saving the checkpoint</p></td>
+<td class="cell-short"><p>Extra</p></td>
+<td><p>The model weights are about 12.6 GB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>On DGX Spark a full training takes about 56 minutes of updates plus the checks at the start and saving the checkpoint at the end. On a 32 GB RTX 5090, a rough estimate from the update interval measured in a short run is 100–170 minutes for 2000 updates; the course has not run a full training on that GPU. You do not have to wait for it to finish: the validation below uses the course checkpoint by default.</p>
+<p><strong>Hardware.</strong> The training command reads the GPU memory and chooses the way of computing automatically; the recipe stays the same:</p>
+<ul class="simple">
+<li><p><strong>About 56 GB of GPU memory or more (for example DGX Spark):</strong> trains with the full batch; the update phase peaks at about 47 GB.</p></li>
+<li><p><strong>About 30–56 GB (for example a 32 GB RTX 5090):</strong> switches to the low-memory way of computing. The order of computation differs, so results are not bit-identical to the course checkpoint.</p></li>
+<li><p><strong>Less than about 30 GB:</strong> the command stops and explains why.</p></li>
+<li><p><strong>Memory and disk:</strong> the training process peaks at about 8 GB of memory; reserve about 40 GB for the output folder, plus about 32 GB if you recompute the feature cache on your own GPU.</p></li>
+</ul>
+<details class="enrichment"><summary>Resources and the feature cache</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Feature cache.</strong> The features computed by the frozen backbone come with the data package (about 32 GB). At the start of training the command checks the SHA-256 of the cache, the starting checkpoint and the training set, then recomputes the features of 4 samples on the GPU and compares them with the cache; only if everything matches does it skip feature computation, otherwise it stops and writes a field-by-field difference record next to the output folder.</p></li>
+<li><p><strong>Other GPU architectures.</strong> This cache was computed on DGX Spark; on another GPU architecture, floating-point differences can make the comparison fail. A cache prepared for the RTX 5090 (compute capability 12.0) is available from your instructor: put its <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> folder next to <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code>, and the command picks the matching one by compute capability.</p></li>
+<li><p><strong>Recomputing features.</strong> Add <code class="docutils literal notranslate"><span class="pre">--recompute-features</span></code> to recompute the cache on your own GPU: about 88 minutes on DGX Spark and about 54 minutes on an RTX 5090.</p></li>
+<li><p><strong>Way of computing.</strong> <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">full</span></code> or <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">low-memory</span></code> chooses it explicitly. The low-memory way splits each batch of 16 samples into 16 computations and accumulates gradients before one parameter update, updates the optimizer state parameter by parameter, and reads the feature cache from disk as needed.</p></li>
+<li><p><strong>WSL 2.</strong> Files are written into a virtual disk file on the Windows drive, which grows with writes and does not shrink by itself, so make sure that Windows drive has enough free space; saving and reloading checkpoints also uses a few GB of swap.</p></li>
+</ul>
+</div></details></section>
+<section id="lab-train">
+<h2>Try post-training<a class="headerlink" href="#lab-train" title="Link to this heading">#</a></h2>
+<p>Run the command below in the container terminal. It uses the recipe above and the prepared training set, and writes results to a new folder.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/groot_walking.py<span class="w"> </span>train<span class="w"> </span>--output<span class="w"> </span>outputs/groot-walking-train
+</pre></div>
+</div>
+</div>
+<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Data package.</strong> The host's <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking/</span></code> (or the folder <code class="docutils literal notranslate"><span class="pre">$MICRODUCK_COURSE_DATA</span></code> points to), <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/course-data/groot-walking/</span></code> in the container (read-only).</p></li>
+<li><p><strong>Files <code class="docutils literal notranslate"><span class="pre">train</span></code> reads.</strong> Always the package's <code class="docutils literal notranslate"><span class="pre">initialization/</span></code> (the starting checkpoint), <code class="docutils literal notranslate"><span class="pre">datasets/train-history127/</span></code> and <code class="docutils literal notranslate"><span class="pre">datasets/validation-history127/</span></code>, <code class="docutils literal notranslate"><span class="pre">sampling.json</span></code> and the feature cache in <code class="docutils literal notranslate"><span class="pre">backbone-cache/</span></code>; you do not write these paths. If the package also provides a feature cache for your GPU architecture, the command picks it automatically.</p></li>
+<li><p><strong>Base model.</strong> The GR00T base model <code class="docutils literal notranslate"><span class="pre">nvidia/GR00T-N1.7-3B</span></code> (pinned revision) recorded in the checkpoint configuration and the <code class="docutils literal notranslate"><span class="pre">nvidia/Cosmos-Reason2-2B</span></code> processor are read from the Hugging Face cache: <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> on the host, <code class="docutils literal notranslate"><span class="pre">/root/.cache/huggingface</span></code> in the container.</p></li>
+<li><p><strong>Optional arguments.</strong> <code class="docutils literal notranslate"><span class="pre">--recompute-features</span></code> recomputes the feature cache on your GPU; <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">full</span></code> or <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">low-memory</span></code> chooses the way of computing.</p></li>
+<li><p><strong>Output.</strong> Training results go to the new folder given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p></li>
+</ul>
+</div></details><p>The log first reports the cache check, then reports loss and learning rate per step; those are optimizer updates. In the course record the loss was about 0.095 at step 1 and about 0.016 at step 2000; single-step losses fluctuate, so look at the trend. Falling training loss only shows the demonstrations are fitted, not that the model can score.</p>
+<p>After watching the first few dozen steps, press <strong>Ctrl+C</strong> to stop. Ctrl+C ends only this training command; the container and the terminal stay open, so you can go straight to the next step. Stopping early does not produce a usable checkpoint; the validation below uses the course checkpoint by default and is unaffected. If you later have time for a full run, start again with a new output folder and validate after all 2000 steps have finished and been saved.</p>
+</section>
+<section id="lab-validate">
+<h2>Validate the provided checkpoint<a class="headerlink" href="#lab-validate" title="Link to this heading">#</a></h2>
+<p>The command below loads, by default, the trained 8-D walking-shot checkpoint from the course data package: the model produced by a full 2000-step run of the recipe above, not the run you just interrupted. It starts the GR00T inference server, opens an Isaac Sim window, and runs the full shot in Newton physics from five fixed starts in turn.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/groot_walking.py<span class="w"> </span>validate<span class="w"> </span>--output<span class="w"> </span>outputs/groot-walking-validate
+</pre></div>
+</div>
+</div>
+<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Checkpoint.</strong> Without <code class="docutils literal notranslate"><span class="pre">--checkpoint</span></code>, the GR00T server loads the package's <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking/checkpoint/</span></code> (<code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/course-data/groot-walking/checkpoint/</span></code> in the container), with the base model again from the Hugging Face cache; with <code class="docutils literal notranslate"><span class="pre">--checkpoint</span></code> it loads only the checkpoint you name.</p></li>
+<li><p><strong>Validation scene.</strong> Started by <code class="docutils literal notranslate"><span class="pre">lab/groot_walking/student/walking_student_scene.py</span></code>, which receives the GR00T server address through its <code class="docutils literal notranslate"><span class="pre">--walking-policy-server</span></code> argument.</p></li>
+<li><p><strong>Low-level walking policy.</strong> Loaded through the scene's <code class="docutils literal notranslate"><span class="pre">--model</span></code> argument from <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/models/reference/velstand.onnx</span></code>, copied from the repository's <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code> when the container starts (byte-identical).</p></li>
+<li><p><strong>Robot model.</strong> The <code class="docutils literal notranslate"><span class="pre">--robot-usd</span></code> default <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/visuals/assets/microduck_white_orange.usda</span></code>, from the repository's <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/visuals/assets/</span></code>.</p></li>
+<li><p><strong>Output.</strong> <code class="docutils literal notranslate"><span class="pre">groot_walking.py</span> <span class="pre">validate</span></code> fills in all of these scene arguments; each episode's results go to the new folder given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-groot-validate.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-groot-validate.png" alt="The complete Isaac Sim window during GR00T walking-shot validation: Microduck at one end of the green pitch, the ball in the centre circle and the goal at the other end, RTX real-time rendering in the toolbar."></a><figcaption><p>The window when the course ran the command above in the container, captured shortly after GR00T took over in the first episode. It shows what the validation scene looks like and does not mean this episode scored; each episode's result is in the records in the output folder.</p>
+</figcaption></figure><p>The simulation pauses while waiting for each GR00T request, so brief pauses in the window are expected (see <a href="08-groot-interface.html#timing">Section 4.2</a> for the full timing); these pauses do not establish real-robot timing. Together with the head camera's 15 frames per second, each rendered with RTX and saved, validation on DGX Spark runs at about 0.24 times real speed.</p>
+<p>After the run, first read the <code class="docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">walking</span> <span class="pre">shots</span></code> summary and the one-line result per episode printed in the terminal. Per-episode records are in <code class="docutils literal notranslate"><span class="pre">attempts.json</span></code> in the output folder (for example <code class="docutils literal notranslate"><span class="pre">outputs/groot-walking-validate/attempts.json</span></code>): in each record’s <code class="docutils literal notranslate"><span class="pre">score</span></code>, <code class="docutils literal notranslate"><span class="pre">passed</span></code> means full success, <code class="docutils literal notranslate"><span class="pre">contact</span></code> records ball contact, <code class="docutils literal notranslate"><span class="pre">goal</span></code> a goal, <code class="docutils literal notranslate"><span class="pre">fall</span></code> a fall, and <code class="docutils literal notranslate"><span class="pre">terminal</span></code> the reason the episode ended. Distinguish the outcomes:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Outcome</p></th>
+<th class="head cell-short"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Full success</p></td>
+<td><p>The whole ball enters the goal, no fall, standing quietly at the end</p></td>
+</tr>
+<tr class="row-odd"><td><p>Contact, no goal</p></td>
+<td><p>The ball was kicked but did not enter the goal</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>No contact</p></td>
+<td><p>The ball was not touched within the 60-second simulation limit</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Fall</p></td>
+<td><p>A fall at any time is never a success</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Validation results of the course checkpoint.</strong> The checkpoint's record from these five starts: 0 goals, 2 contacts without a goal, 3 episodes without touching the ball within 60 s, and no falls. Episodes 4 and 5 ended normally when the kick observation window closed (task times of about 16 s and 27 s). This record rendered each head-camera frame 4 times; the default command renders once, with slightly different image details, so results may differ. To run under the same condition, put <code class="docutils literal notranslate"><span class="pre">MICRODUCK_GROOT_RENDER_SUBFRAMES=4</span></code> before the command.</p>
+<p>The pipeline runs and the robot walks up to the ball and kicks, but none of these five trials completed the shot. Five episodes are too few, and these starts were used during training and tuning, so they cannot establish generalization. Analyse the failures first, then evaluate from more starts excluded from training and tuning, keeping every failure.</p>
+<p>If you have fully trained your own model, add <code class="docutils literal notranslate"><span class="pre">--checkpoint</span> <span class="pre">outputs/groot-walking-train/checkpoints/002000/pretrained_model</span></code> to the command above, with a new <code class="docutils literal notranslate"><span class="pre">--output</span></code> folder, to compare the two models from the same starts.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>Microduck keeps pausing during validation. Does that mean GR00T is too slow to be useful?</p>
+<details><summary>Show explanation</summary><p>It only shows that evaluation is synchronous: the simulation pauses while waiting for inference. It illustrates that inference takes time, but real-robot behavior has to be measured with asynchronous inference, a request buffer and the actual perception and network delays; neither the pauses nor the smoothness in simulation tell you directly how the real robot will behave.</p>
+</details></div></section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/nvidia/GR00T-N1.7-3B" rel="noreferer noopener" target="_blank">GR00T N1.7 model card ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">Isaac GR00T: post-training and inference ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/huggingface/lerobot" rel="noreferer noopener" target="_blank">LeRobot: GR00T policy implementation ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08-groot-interface.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.2 Walking shot: GR00T inputs, outputs and data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="09-worlds.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.4 From the pitch to more environments</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before">Before you start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">The prepared data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe">The training recipe</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#budget">Roughly how much data do 2000 steps see?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time">How long does it take?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-train">Try post-training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-validate">Validate the provided checkpoint</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

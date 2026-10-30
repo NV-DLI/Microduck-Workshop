@@ -1,0 +1,774 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="在课程容器中用已准备好的步行射门示范后训练 GR00T 的动作头，理解训练量、抽样与耗时；再用课程提供的检查点在 Isaac Lab 与 Newton 中验证完整射门。" name="description" />
+
+  <title>4.3 训练与验证 GR00T 步行射门 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-lab';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="4.4 从球场走向更多环境" href="09-worlds.html" />
+    <link rel="prev" title="4.2 步行射门：GR00T 的输入、输出与数据" href="08-groot-interface.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="08-groot-lab">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/08-groot-lab.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/08-groot-lab.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/08-groot-lab.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/08-groot-lab.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.3 训练与验证 GR00T 步行射门</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="gr00t">
+<h1>4.3 训练与验证 GR00T 步行射门<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>在课程容器中用已准备好的步行射门示范后训练 GR00T 的动作头，理解训练量、抽样与耗时；再用课程提供的检查点在 Isaac Lab 与 Newton 中验证完整射门。</p>
+</div><div class="lesson-meta">第 4.3 节 · 预计学习时长 45 分钟（不含完整训练约 1 小时与验证运行的等待）</div></div></div><script type="application/json" class="course-symbols">{"S_steps": {"tex": "S", "text": "优化器更新次数（训练步数）；本节为 2000。"}, "B_batch": {"tex": "B", "text": "每次更新抽取的训练样本数（批量大小）；本节为 16。"}, "N_train": {"tex": "N", "text": "训练集中的样本（帧）总数；本节为 13,431。"}, "E_pass": {"tex": "E", "text": "等效数据遍历次数：总抽样数相当于把训练集完整看了几遍。"}}</script><section id="before">
+<h2>开始之前<a class="headerlink" href="#before" title="Link to this heading">#</a></h2>
+<p>本节有两个动手操作：先体验训练，再验证一个已经训练好的模型。两条命令都在课程容器内运行。</p>
+<ul class="simple">
+<li><p>如果你还没有启动容器，先按 <a class="reference internal" href="setup.html"><span class="std std-doc">1.3 节</span></a> 构建并启动它，再打开容器内的终端。</p></li>
+<li><p>如果容器已经在运行，回到之前进入容器的那个终端即可；也可以在宿主机新开一个终端，用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> 回到同一个容器。</p></li>
+<li><p>训练数据、特征缓存与课程检查点来自 GR00T 课程资料包（容器内路径 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code>），开始本节前请向授课教师领取，并按 1.3 节放好。容器启动时资料包以只读方式挂载；你的训练和验证结果写入 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下的新目录，不会改动课程提供的数据和模型。</p></li>
+<li><p>GR00T 的基础模型和 Cosmos-Reason2-2B 处理器从 Hugging Face 下载。先在 <a class="reference external" href="https://huggingface.co/nvidia/Cosmos-Reason2-2B" rel="noreferer noopener" target="_blank">nvidia/Cosmos-Reason2-2B</a> 页面按提示申请访问，再在容器内运行一次 <code class="docutils literal notranslate"><span class="pre">/workspace/groot-env/bin/hf</span> <span class="pre">auth</span> <span class="pre">login</span></code> 登录；下载缓存保存在宿主机的 <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code>。</p></li>
+</ul>
+<p>GR00T 训练和带窗口的仿真都会占用大量 GPU 显存，请一次只运行一个。</p>
+<figure class="learning-figure" data-learning-flow="learn-9317df55d8"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="本节的两个动手操作"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-9317df55d8-title"><title id="learn-9317df55d8-title">本节的两个动手操作</title><defs><marker id="learn-9317df55d8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-9317df55d8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-9317df55d8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 课程资料包" aria-controls="learn-9317df55d8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">课程资料包</text><text x="114.0" y="98" class="learning-node-subtitle">示范数据、训练</text><text x="114.0" y="115" class="learning-node-subtitle">起点与特征缓存</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 动作头训练" aria-controls="learn-9317df55d8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">动作头训练</text><text x="450.0" y="98" class="learning-node-subtitle">2000 次优化器更</text><text x="450.0" y="115" class="learning-node-subtitle">新（可中途停止）</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 闭环验证" aria-controls="learn-9317df55d8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">闭环验证</text><text x="786.0" y="98" class="learning-node-subtitle">GR00T 服务 +</text><text x="786.0" y="115" class="learning-node-subtitle">Isaac Lab 仿真</text></g></svg></div><div class="learning-details" aria-label="本节的两个动手操作"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-9317df55d8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>课程资料包</h3><p>训练集与验证集、训练起点检查点和冻结骨干的特征缓存都来自 GR00T 课程资料包，以只读方式挂载，训练不会改动它们。</p></article><article id="learn-9317df55d8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>动作头训练</h3><p>训练命令核对缓存后，只更新动作头；输出写入你指定的新目录。体验几分钟后可以 Ctrl+C 停止。</p></article><article id="learn-9317df55d8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>闭环验证</h3><p>验证命令启动 GR00T 推理服务，再在 Isaac Lab 与 Newton 中运行步行射门；默认使用课程提供的检查点，完整训练完成后才换成你自己的。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>训练与验证是两个独立的命令：不完成训练，也可以直接验证课程提供的检查点。</figcaption></figure></section>
+<section id="data">
+<h2>已经准备好的数据<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
+<p>数据按 4.2 节的原则准备：机载策略（Onboard）在绿色球场上从不同起点完成步行射门，只保留完整成功的回合，并按完整回合与起点划分训练集和验证集，两者没有重叠。</p>
+<div class="pst-scrollable-table-container"><table class="table-center table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>数据集</p></th>
+<th class="head cell-short"><p>回合</p></th>
+<th class="head cell-short"><p>样本（帧）</p></th>
+<th class="head cell-short"><p>采样频率</p></th>
+<th class="head cell-short"><p>大小</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>训练集</p></td>
+<td class="cell-short"><p>58</p></td>
+<td class="cell-short"><p>13,431</p></td>
+<td class="cell-short"><p>12.5 Hz</p></td>
+<td class="cell-short"><p>约 3.9 GB</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>验证集</p></td>
+<td class="cell-short"><p>14</p></td>
+<td class="cell-short"><p>3,098</p></td>
+<td class="cell-short"><p>12.5 Hz</p></td>
+<td class="cell-short"><p>约 0.9 GB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>每个样本包含 4 张 270 × 480 的 RGB 图像、127 维状态、那句固定的任务指令，以及从这一刻起未来 16 步的 8 维请求标签。一个回合平均约 230 帧，相当于约 18 秒的仿真。</p>
+</section>
+<section id="recipe">
+<h2>训练配方<a class="headerlink" href="#recipe" title="Link to this heading">#</a></h2>
+<p>训练从课程提供的初始化检查点出发：它已经针对步行射门任务做过后训练，输入输出的归一化统计只用本次的训练集计算。这次训练在它的基础上继续训练动作头，优化器状态重新建立；它不是从官方基础权重从零开始。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>设置</p></th>
+<th class="head cell-short"><p>取值</p></th>
+<th class="head cell-short"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>训练范围</p></td>
+<td class="cell-short"><p>动作头</p></td>
+<td><p>视觉语言骨干冻结；状态与动作编码器、动作解码器、动作序列生成网络和视觉语言特征处理层参与训练，原因见 <a href="08-groot-interface.html#action-head">4.2 节</a></p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>训练步数</p></td>
+<td class="cell-short"><p>2000</p></td>
+<td><p>2000 次优化器更新</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>批量大小</p></td>
+<td class="cell-short"><p>16</p></td>
+<td><p>每次更新抽取 16 个样本</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>学习率</p></td>
+<td class="cell-short"><p>5 × 10⁻⁵</p></td>
+<td><p>前 100 步从很小的值线性升高，之后逐渐降到 0</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>优化器</p></td>
+<td><p>AdamW，新建状态</p></td>
+<td><p>不沿用初始化检查点的优化器状态</p></td>
+</tr>
+<tr class="row-odd"><td><p>图像增强与 dropout</p></td>
+<td class="cell-short"><p>关闭</p></td>
+<td><p>先检验模型能否拟合这个固定场景，不涉及跨场景泛化</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="budget">
+<h2>2000 步大约看了多少数据<a class="headerlink" href="#budget" title="Link to this heading">#</a></h2>
+<p>一次更新抽取 <span class="math notranslate nohighlight">\(\htmlData{sym=B_batch}{B}\)</span> 个样本，<span class="math notranslate nohighlight">\(\htmlData{sym=S_steps}{S}\)</span> 次更新一共抽取 <span class="math notranslate nohighlight">\(\htmlData{sym=S_steps}{S}\htmlData{sym=B_batch}{B}\)</span> 个。拿它和训练集大小 <span class="math notranslate nohighlight">\(\htmlData{sym=N_train}{N}\)</span> 相比，就得到一个简单的估算：</p>
+<div class="formula"><div class="formula-label">等效数据遍历次数</div><div class="formula-body">\[\htmlData{sym=E_pass}{E} = \frac{\htmlData{sym=S_steps}{S}\,\htmlData{sym=B_batch}{B}}{\htmlData{sym=N_train}{N}} = \frac{2000 \times 16}{13{,}431} \approx 2.38\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(E\)</dt><dd>等效数据遍历次数：总抽样数相当于把训练集完整看了几遍。</dd></div><div><dt>\(S\)</dt><dd>优化器更新次数（训练步数）；本节为 2000。</dd></div><div><dt>\(B\)</dt><dd>每次更新抽取的训练样本数（批量大小）；本节为 16。</dd></div><div><dt>\(N\)</dt><dd>训练集中的样本（帧）总数；本节为 13,431。</dd></div></dl></details></div><p>也就是说，总抽样量大约相当于把训练集看了 2.38 遍。但这不等于每个样本都恰好被看了 2.38 遍：训练按 <a href="08-groot-interface.html#data-design">4.2 节</a>介绍的阶段加权抽样，原地站立、球前细调和即将出脚这些少见的时刻被抽到的次数更多，大量走路的帧更少；抽样又是随机的，个别样本可能一次也没有被抽到。</p>
+</section>
+<section id="time">
+<h2>要等多久<a class="headerlink" href="#time" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table-labels table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>阶段</p></th>
+<th class="head"><p>DGX Spark 上的耗时</p></th>
+<th class="head cell-short"><p>在做什么</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>核对</p></td>
+<td class="cell-short"><p>几分钟</p></td>
+<td><p>核对资料包文件，并抽查 4 个样本的特征缓存</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>优化器更新</p></td>
+<td class="cell-short"><p>约 56 分钟</p></td>
+<td><p>2000 次更新，平均约 1.6 秒一次</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>保存检查点</p></td>
+<td class="cell-short"><p>另计</p></td>
+<td><p>模型权重约 12.6 GB</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在 DGX Spark 上，完整训练约为 56 分钟的更新，再加上开始时的核对和最后保存检查点的时间。在 32 GB 的 RTX 5090 上，按短时测得的更新间隔粗略估算，2000 次更新约需 100–170 分钟；课程没有在这种 GPU 上跑完完整训练。你不必等它结束：下面的验证默认使用课程提供的检查点。</p>
+<p><strong>硬件要求。</strong> 训练命令会读取 GPU 显存，自动选择计算做法，配方不变：</p>
+<ul class="simple">
+<li><p><strong>显存约 56 GB 以上（例如 DGX Spark）：</strong> 按完整批量训练，更新阶段显存峰值约 47 GB。</p></li>
+<li><p><strong>显存约 30–56 GB（例如 32 GB 的 RTX 5090）：</strong> 自动改用低显存做法。计算顺序不同，结果不会与课程检查点逐位相同。</p></li>
+<li><p><strong>显存不足约 30 GB：</strong> 命令会停止并说明原因。</p></li>
+<li><p><strong>内存与磁盘：</strong> 训练进程的内存峰值约 8 GB；输出目录预留约 40 GB，在自己的 GPU 上重算特征缓存还要约 32 GB。</p></li>
+</ul>
+<details class="enrichment"><summary>资源与特征缓存</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>特征缓存。</strong> 冻结骨干算出的特征已经随资料包提供（约 32 GB）。训练开始时，命令核对缓存、训练起点和训练集的 SHA-256，再在 GPU 上重算 4 个样本的特征与缓存比对；全部一致才跳过特征计算，否则停止，并在输出目录旁写出逐项差异记录。</p></li>
+<li><p><strong>其他 GPU 架构。</strong> 这份缓存在 DGX Spark 上算出；换一种 GPU 架构时，浮点计算的差异可能让比对不通过。为 RTX 5090（计算能力 12.0）准备的缓存可以向授课教师领取：把 <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> 文件夹放在 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 旁边，命令会按 GPU 的计算能力自动选用。</p></li>
+<li><p><strong>重算特征。</strong> 加 <code class="docutils literal notranslate"><span class="pre">--recompute-features</span></code> 在自己的 GPU 上重算缓存：DGX Spark 约 88 分钟，RTX 5090 约 54 分钟。</p></li>
+<li><p><strong>计算做法。</strong> <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">full</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">low-memory</span></code> 可以指定做法。低显存做法把每批 16 个样本拆成 16 次计算、累加梯度后再更新一次参数，逐个参数更新优化器状态，并按需从磁盘读取特征缓存。</p></li>
+<li><p><strong>WSL 2。</strong> 文件写在 Windows 磁盘上的一个虚拟磁盘文件里，它随写入增长、不会自动缩小，要确认这个 Windows 盘有足够的剩余空间；保存和重新加载检查点时还会用到几 GB 交换空间。</p></li>
+</ul>
+</div></details></section>
+<section id="lab-train">
+<h2>体验后训练<a class="headerlink" href="#lab-train" title="Link to this heading">#</a></h2>
+<p>在容器终端里运行下面的命令。它使用上面的配方和已经准备好的训练集，把结果写入一个新目录。</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/groot_walking.py<span class="w"> </span>train<span class="w"> </span>--output<span class="w"> </span>outputs/groot-walking-train
+</pre></div>
+</div>
+</div>
+<details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>资料包。</strong> 宿主机的 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking/</span></code>（或 <code class="docutils literal notranslate"><span class="pre">$MICRODUCK_COURSE_DATA</span></code> 指向的目录），容器内是 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/course-data/groot-walking/</span></code>（只读）。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">train</span></code> 读取的文件。</strong> 固定读取资料包里的 <code class="docutils literal notranslate"><span class="pre">initialization/</span></code>（训练起点检查点）、<code class="docutils literal notranslate"><span class="pre">datasets/train-history127/</span></code> 与 <code class="docutils literal notranslate"><span class="pre">datasets/validation-history127/</span></code>、<code class="docutils literal notranslate"><span class="pre">sampling.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">backbone-cache/</span></code> 里的特征缓存，不需要你写这些路径；资料包另外提供了与你的 GPU 架构对应的特征缓存时，命令会自动选用它。</p></li>
+<li><p><strong>基础模型。</strong> 检查点配置记录的 GR00T 基础模型 <code class="docutils literal notranslate"><span class="pre">nvidia/GR00T-N1.7-3B</span></code>（固定版本）和处理器 <code class="docutils literal notranslate"><span class="pre">nvidia/Cosmos-Reason2-2B</span></code> 从 Hugging Face 缓存读取：宿主机 <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code>，容器内 <code class="docutils literal notranslate"><span class="pre">/root/.cache/huggingface</span></code>。</p></li>
+<li><p><strong>可选参数。</strong> <code class="docutils literal notranslate"><span class="pre">--recompute-features</span></code> 在你的 GPU 上重算特征缓存；<code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">full</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">low-memory</span></code> 指定计算做法。</p></li>
+<li><p><strong>输出。</strong> 训练结果写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的新目录。</p></li>
+</ul>
+</div></details><p>日志先显示缓存核对的结果，随后开始按 step 报告损失和学习率，这就是优化器更新。课程记录中，第 1 步的损失约 0.095，到第 2000 步降到约 0.016；单步损失有起伏，看趋势即可。训练损失下降只说明模型拟合了示范，不说明它能完成射门。</p>
+<p>看过最初几十步之后，就可以按 <strong>Ctrl+C</strong> 停止。Ctrl+C 只结束这条训练命令，容器和终端仍然保留，可以直接继续下一个操作。中途停止不会得到可用的检查点；下面的验证默认使用课程提供的检查点，不受影响。如果你之后有时间完整训练，用一个新的输出目录重新运行，等它完成 2000 步并保存后再验证。</p>
+</section>
+<section id="lab-validate">
+<h2>验证课程提供的检查点<a class="headerlink" href="#lab-validate" title="Link to this heading">#</a></h2>
+<p>下面的命令默认加载课程资料包中已经训练好的 8 维步行射门检查点：它是按上面配方完整训练 2000 步得到的模型，不是你刚才中断的那次训练。它会启动 GR00T 推理服务，打开 Isaac Sim 窗口，在 Newton 物理中从固定的 5 个起点依次运行完整射门。</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/groot_walking.py<span class="w"> </span>validate<span class="w"> </span>--output<span class="w"> </span>outputs/groot-walking-validate
+</pre></div>
+</div>
+</div>
+<details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>检查点。</strong> 不写 <code class="docutils literal notranslate"><span class="pre">--checkpoint</span></code> 时，GR00T 推理服务加载资料包里的 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking/checkpoint/</span></code>（容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/course-data/groot-walking/checkpoint/</span></code>），基础模型同样来自 Hugging Face 缓存；写了 <code class="docutils literal notranslate"><span class="pre">--checkpoint</span></code> 就只加载你指定的那个检查点。</p></li>
+<li><p><strong>验证场景。</strong> 由 <code class="docutils literal notranslate"><span class="pre">lab/groot_walking/student/walking_student_scene.py</span></code> 启动，GR00T 推理服务的地址通过它的 <code class="docutils literal notranslate"><span class="pre">--walking-policy-server</span></code> 参数传入。</p></li>
+<li><p><strong>底层行走策略。</strong> 由场景的 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 参数加载 <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/models/reference/velstand.onnx</span></code>，它在容器启动时由仓库的 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code> 复制而来，两者字节相同。</p></li>
+<li><p><strong>机器人模型。</strong> <code class="docutils literal notranslate"><span class="pre">--robot-usd</span></code> 的默认值 <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/visuals/assets/microduck_white_orange.usda</span></code>，来自仓库 <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/visuals/assets/</span></code>。</p></li>
+<li><p><strong>输出。</strong> 这些场景参数都由 <code class="docutils literal notranslate"><span class="pre">groot_walking.py</span> <span class="pre">validate</span></code> 自动填写；每个回合的结果写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的新目录。</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-groot-validate.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-groot-validate.png" alt="GR00T 步行射门验证时的 Isaac Sim 完整界面：绿色球场一端是 Microduck，中圈有足球，另一端是球门，顶部显示 RTX 实时渲染。"></a><figcaption><p>课程在容器中运行上面这条命令时的窗口，截于第 1 个回合开始、GR00T 接管后不久。它只展示验证场景的样子，不代表这一回合射门成功；每个回合的结果以输出目录里的记录为准。</p>
+</figcaption></figure><p>每次推理时仿真都会暂停，等 GR00T 返回请求，所以窗口里出现短暂停顿是预期现象（完整时序见 <a href="08-groot-interface.html#timing">4.2 节</a>）；这些停顿不能用来判断真机上的实时表现。加上头部相机每秒 15 帧都要用 RTX 渲染并保存，在 DGX Spark 上验证的速度约为真实速度的 0.24 倍。</p>
+<p>运行结束后，先看终端打印的 <code class="docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">walking</span> <span class="pre">shots</span></code> 汇总和每个回合的一行结果。逐回合记录保存在输出目录的 <code class="docutils literal notranslate"><span class="pre">attempts.json</span></code> 中（例如 <code class="docutils literal notranslate"><span class="pre">outputs/groot-walking-validate/attempts.json</span></code>）：每条记录的 <code class="docutils literal notranslate"><span class="pre">score</span></code> 里，<code class="docutils literal notranslate"><span class="pre">passed</span></code> 表示完整成功，<code class="docutils literal notranslate"><span class="pre">contact</span></code> 表示触球，<code class="docutils literal notranslate"><span class="pre">goal</span></code> 表示进球，<code class="docutils literal notranslate"><span class="pre">fall</span></code> 表示跌倒，<code class="docutils literal notranslate"><span class="pre">terminal</span></code> 记录回合结束的原因。阅读时分清几种结局：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>结局</p></th>
+<th class="head cell-short"><p>含义</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>完整成功</p></td>
+<td><p>整球进门、没有摔倒、结束前连续站稳</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>触球未进</p></td>
+<td><p>踢到了球，但球没有进门</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>未触球</p></td>
+<td><p>在时间上限（60 秒仿真）内没有碰到球</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>摔倒</p></td>
+<td><p>任何时刻摔倒都不算成功</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>课程检查点的验证结果。</strong> 同一个检查点在这 5 个起点上的记录是：0 次进球，2 次触球未进，3 次在 60 秒内没有碰到球，没有摔倒。第 4、5 个回合在踢球观察时段结束时正常结束（任务时间约 16 秒和 27 秒）。这组记录的头部相机每帧渲染 4 遍；默认命令只渲染 1 遍，图像细节略有不同，结果可能不同。想按同样条件运行，在命令前加 <code class="docutils literal notranslate"><span class="pre">MICRODUCK_GROOT_RENDER_SUBFRAMES=4</span></code>。</p>
+<p>流程能跑通，也能走到球前出脚，但这 5 次都没有完成射门。5 个回合太少，而且这些起点在训练和调试中用过，不能据此判断泛化。下一步应先分析失败，再用更多未参与训练和调参的起点评测，并保留所有失败。</p>
+<p>如果你完整训练了自己的模型，在上面的命令后加上 <code class="docutils literal notranslate"><span class="pre">--checkpoint</span> <span class="pre">outputs/groot-walking-train/checkpoints/002000/pretrained_model</span></code>，并换一个新的 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 目录，就能用同样的起点比较两个模型。</p>
+<div class="quiz"><h3>检查理解</h3><p>验证中 Microduck 每隔一会儿就停顿一下，这说明 GR00T 太慢、不能用吗？</p>
+<details><summary>查看解析</summary><p>这只说明评估是同步的：仿真在等待推理时暂停。它展示了推理需要时间，但真机上的表现要在异步推理、请求缓冲和实际感知与网络延迟下实测判断；仿真里的停顿或流畅程度，都不能直接说明真机会怎样。</p>
+</details></div></section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/nvidia/GR00T-N1.7-3B" rel="noreferer noopener" target="_blank">GR00T N1.7 模型卡 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">Isaac GR00T：后训练与推理 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/huggingface/lerobot" rel="noreferer noopener" target="_blank">LeRobot：GR00T 策略实现 ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08-groot-interface.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">4.2 步行射门：GR00T 的输入、输出与数据</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="09-worlds.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">4.4 从球场走向更多环境</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before">开始之前</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">已经准备好的数据</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recipe">训练配方</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#budget">2000 步大约看了多少数据</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#time">要等多久</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-train">体验后训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lab-validate">验证课程提供的检查点</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

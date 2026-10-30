@@ -1,0 +1,8 @@
+{
+  "mode": "policy",
+  "low_level_stop": true,
+  "stop_kp": 1.5,
+  "stop_ki": 0.2,
+  "server": "http://127.0.0.1:8765",
+  "state_context": "proprio_0_12_24_previous_request_v1"
+}

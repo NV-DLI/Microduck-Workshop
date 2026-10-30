@@ -1,10 +1,645 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters."><meta name="theme-color" content="#76b900"><title>Models and data · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="models"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/models.html" >简体中文</a><a lang="en" href="../en/models.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a aria-current="page" href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Reference and help</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Models and data</h1><p class="lead">Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters.</p><div class="lesson-meta">Quick reference · No retraining required</div></div></div><section id="inventory"><h2>Course model inventory</h2><div class="table-scroll"><table><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody><tr><td><code>walk.onnx</code></td><td>Fixed walking policy</td></tr><tr><td><code>terrain-walk.onnx</code></td><td>Chapter4 fixed terrain walking actor, about0.79 MB</td></tr><tr><td><code>kick-teacher.onnx</code></td><td>Base kicking action</td></tr><tr><td><code>kick-residual.onnx</code></td><td>Residual kick adjustment</td></tr><tr><td><code>kick-checkpoint.pt</code></td><td>Retained kick training checkpoint</td></tr><tr><td><code>detector.pt</code></td><td>Fixed visual detector</td></tr><tr><td><code>detector.onnx</code></td><td>ONNX detector export</td></tr><tr><td><code>indoor-detector/detector.pt</code> / <code>indoor-detector/detector.onnx</code></td><td>Retained previous indoor detector for the old 7 cm ball scene</td></tr><tr><td><code>scene-detector/detector.pt</code> / <code>scene-detector/detector.onnx</code></td><td>Official 10 cm ball and four-surface detector; current default</td></tr><tr><td><code>official-browser/rollers.onnx</code></td><td>Official four-passive-wheel actor, 14 servo actions</td></tr><tr><td><code>official-browser/walking.onnx</code> / <code>sitstand.onnx</code></td><td>Browser-version checks and standing tests; the complete walking task retains its fixed actor</td></tr></tbody></table></div><p>Run the command below from the repository root to verify fixed-model sizes and hashes.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py verify-models</code></pre></div><p>These files are included in Git without Git LFS or a separate model account. <code>models/manifest.json</code> records sizes, sources, and SHA-256 identities. Model identity checks guard against accidental same-name replacements. The added detector has a separate models/scene-detector/deployment.json with relative paths and hashes; the original seven files are unchanged.</p><p>These weights support Chapters 1–5 and the Chapter 6 baseline. GR00T and Cosmos foundation models are not bundled. Future adaptation requires separate model access under the applicable terms and an isolated environment.</p></section><section id="practice-data"><h2>Practice data and your outputs</h2><p><code>datasets/scene-sample/</code> is a small image-and-label practice set for detector inference and short training. It is not enough to establish real-world generalization. Student checkpoints and logs belong in <code>outputs/</code>; do not copy them over the course files in <code>models/</code>.</p></section><section id="licenses"><h2>Sources and usage terms</h2><p>Robot geometry, community policies, and dependencies retain their source terms. The course-code license does not override third-party asset licenses. Before redistributing changes, read the repository’s <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">attribution and license notices</a>.</p></section>
-<nav class="pager" aria-label="Pagination"><a href="09-worlds.html"><small>← Previous</small>From one field to more environments</a><a href="troubleshooting.html"><small>Next →</small>Troubleshooting</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#inventory">Course model inventory</a><a href="#practice-data">Practice data and your outputs</a><a href="#licenses">Sources and usage terms</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters." name="description" />
+
+  <title>5.1 Models and data - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5.2 Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="4.4 From the pitch to more environments" href="09-worlds.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="models">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/models.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/models.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/models.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/models.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 Models and data</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="models-and-data">
+<h1>5.1 Models and data<a class="headerlink" href="#models-and-data" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters.</p>
+</div><div class="lesson-meta">Quick reference · No retraining required</div></div></div><section id="inventory">
+<h2>Course model inventory<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>File (host <code class="docutils literal notranslate"><span class="pre">models/</span></code>, container <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/</span></code>)</p></th>
+<th class="head cell-short"><p>Purpose</p></th>
+<th class="head"><p>Course commands that read it</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
+<td><p>Fixed walking policy</p></td>
+<td><p>Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>; the low-level walking policy in the Section 4.3 validation scene uses a copy of the same model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
+<td><p>Section 3.3 fixed terrain walking actor, about 0.79 MB</p></td>
+<td><p>Section 3.3 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
+<td><p>Base kicking action</p></td>
+<td><p>Section 2.1 keyboard football (Space, read automatically)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
+<td><p>Residual kick adjustment</p></td>
+<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
+<td><p>Retained kick training checkpoint</p></td>
+<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">detector.pt</span></code></p></td>
+<td><p>Fixed visual detector</p></td>
+<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detector.onnx</span></code></p></td>
+<td><p>ONNX detector export</p></td>
+<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.onnx</span></code></p></td>
+<td><p>Another indoor detector, for a scene with a 7 cm ball; not used on the course pitch</p></td>
+<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
+<td><p>Official 10 cm ball and four-surface detector; current default</p></td>
+<td><p>The onboard policy's visual detector; not read directly by this course's hands-on commands</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code></p></td>
+<td><p>Official four-passive-wheel actor, 14 servo actions</p></td>
+<td><p>Section 2.1 roller mode after M (read automatically); <code class="docutils literal notranslate"><span class="pre">--model</span></code> of Section 3.3 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code> and <code class="docutils literal notranslate"><span class="pre">train-terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
+<td><p>Browser-version checks and standing tests; the complete walking task uses <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
+<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Run the command below inside the container to verify fixed-model sizes and hashes.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>verify-models
+</pre></div>
+</div>
+</div>
+<p>These files ship with the Git repository, so cloning it is enough; no Git LFS or separate model account is needed. <code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> records sizes, sources, and SHA-256 identities, and each lab checks model identity before running to guard against same-name replacements. The relative paths and SHA-256 of the current default detector are recorded in <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>.</p>
+<p><strong>In the repository.</strong> The weights for Parts 2–3 and the onboard policy; the pretrained PPO walking result of Section 3.2 and the slope-training logs are in <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> and <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code> (<code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code> in the container, read-only). <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment</span></code> is the record of a roller slope training run that did not learn to climb; it is kept as a counterexample for reward design, not as a usable slope model.</p>
+<p><strong>Separate data package.</strong> The GR00T walking-shot data, feature cache and trained checkpoint of Section 4.3 come from the separate GR00T course data package (<code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code> in the container; check it with <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/groot_walking.py</span> <span class="pre">verify</span></code>). The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face under their access and license terms.</p>
+</section>
+<section id="practice-data">
+<h2>Practice data and your outputs<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">datasets/scene-sample/</span></code> is a small set of sample images and labels that the course labs do not use directly; it is too small to test real-world generalization. Keep your own checkpoints and logs in <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> and leave the course files in <code class="docutils literal notranslate"><span class="pre">models/</span></code> unchanged.</p>
+</section>
+<section id="licenses">
+<h2>Sources and usage terms<a class="headerlink" href="#licenses" title="Link to this heading">#</a></h2>
+<p>Robot geometry, community policies, and dependencies each follow their own source and license terms; for third-party assets those terms apply, and the course-code license does not replace them. Before redistributing changes, read the repository’s <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md" rel="noreferer noopener" target="_blank">attribution and license notices</a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09-worlds.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.4 From the pitch to more environments</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="troubleshooting.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5.2 Troubleshooting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventory">Course model inventory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practice-data">Practice data and your outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses">Sources and usage terms</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

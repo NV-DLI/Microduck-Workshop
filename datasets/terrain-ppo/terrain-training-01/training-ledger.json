@@ -1,0 +1,17 @@
+{
+  "status": "completed",
+  "initialization": "official ONNX actor; fresh critic and optimizer",
+  "parent_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "seed": 43001,
+  "num_envs": 256,
+  "iterations": 1000,
+  "training_slopes": "pyramids, tan(angle)=0.03..0.22; 25% flat",
+  "evaluation_seeds_excluded": [
+    42001,
+    44001
+  ],
+  "original_weights_modified": false,
+  "initial_actor_max_abs_error": 1.6391277313232422e-07,
+  "latest_checkpoint": "/home/yuki/Documents/course/microduck/outputs/course-eight-chapters-20261022-v4/terrain-training-01/model_999.pt",
+  "training_wall_seconds": 488.05511641700286
+}

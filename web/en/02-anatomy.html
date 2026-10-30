@@ -1,10 +1,782 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Separate shells, joints, actuators, and sensors, then see how they form a controllable robot."><meta name="theme-color" content="#76b900"><title>Mechanism and control timing · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="02-anatomy"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/02-anatomy.html" >简体中文</a><a lang="en" href="../en/02-anatomy.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a aria-current="page" href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Course chapters</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Mechanism and control timing</h1><p class="lead">Separate shells, joints, actuators, and sensors, then see how they form a controllable robot.</p><div class="lesson-meta">Chapter 2 · Estimated learning time: 20 minutes</div></div></div><section id="assembly"><h2>From assembly to components</h2><p>Microduck is a small biped. Its legs support and move the body, the neck directs its view, and the trunk houses computing, power, and connections. Visual meshes describe appearance. Joints and collision geometry describe permitted motion and contact. These play different roles in simulation.</p><div class="anatomy" data-robot-viewer><div class="viewer-stage"><img class="robot-fallback" src="../assets/robot/studio-hd.webp" alt="Microduck"><div class="viewer-status" role="status"></div><button type="button" class="load-robot">Open interactive model</button></div><div class="viewer-toolbar"><label>Assembled <input type="range" min="0" max="100" value="0" class="explode" aria-label="Explosion amount"> Exploded</label><button type="button" class="view-reset">Reset view</button></div><div class="component-info" aria-live="polite"><strong>Click a part or its label to inspect it</strong><p>Left-drag to orbit, middle-drag to pan, scroll or pinch to zoom. Use the slider to separate the parts.</p></div></div><p>Move the separation slider to inspect the leg and head servos. Click their labels to identify the driven joints, then inspect the camera, controller board and battery. Reset to trace the leg joints.</p><aside class="note"><strong>Hardware revision and simulation joints</strong><p>There are 15 servos: five per leg, four for the head and neck, and one for the beak. The policy drives 14 joints; the beak remains fixed. The CAD retains a Raspberry Pi Zero 2 W board mesh; this is not the current Beta RK3566 electronics configuration. Chapters 6–7 connect camera, ToF and IMU data to task observation and learned policies.</p></aside></section><section id="joint-map"><h2>Parts, joints, and degrees of freedom</h2><p>A pen held at its tip can rotate in several directions, while a hinge normally rotates around one fixed axis. Robot joints impose similar constraints. A degree of freedom is an independent variable needed to describe permitted motion; a component count describes physical pieces. The 70 components in this viewer do not imply 70 policy actions.</p><div class="table-scroll"><table><thead><tr><th>Region</th><th>Active joints</th><th>Main role</th></tr></thead><tbody><tr><td>Each leg</td><td>Hip yaw, roll, pitch; knee; ankle: 5 joints</td><td>Support the body and place the foot</td></tr><tr><td>Neck and head</td><td>Neck pitch; head pitch, yaw, roll: 4 joints</td><td>Orient the camera and head</td></tr><tr><td>Beak</td><td>Physical servo; not controlled by this policy</td><td>Shown in 3D model, excluded from the 14-action interface</td></tr></tbody></table></div><p>Select a hip servo and inspect its output shaft and nearby bearing. The servo controls an active angle, the bearing supports rotation, and brackets connect adjacent joints. Material, shape, and assembly clearance affect motion. The viewer preserves 3D model detail but does not simulate screw preload, plastic elasticity, or cable forces; it is an anatomy aid rather than manufacturing documentation.</p></section><section id="control"><h2>How software moves the mechanism</h2><ol class="pipeline"><li><span>1</span>Policy action</li><li><span>2</span>Joint targets</li><li><span>3</span>Actuator torque</li><li><span>4</span>Physics update</li><li><span>5</span>New observation</li></ol><p>A policy does not teleport the robot to a desired position. It outputs actions that become joint targets. Actuators produce torque based on the difference between target and measured state. The resulting motion depends on contact, gravity, inertia, and friction.</p><p>The policy runs at 50 Hz and physics at 200 Hz: each action spans four physics steps. Backlash introduces passive joints representing transmission play. Passive joints are not additional policy outputs.</p></section><section id="frames"><h2>Describe motion with frames</h2><div class="table-scroll"><table><thead><tr><th>Frame</th><th>What is expressed here</th></tr></thead><tbody><tr><td>World</td><td>Pitch, goal, and overall robot position</td></tr><tr><td>Body</td><td>Forward, lateral, and turn commands; ball relative to the robot</td></tr><tr><td>Camera</td><td>Image rays and detected target directions</td></tr><tr><td>Joint-local</td><td>A joint’s axis and angle</td></tr></tbody></table></div><div class="quiz"><h3>Check your understanding</h3><p>If the head joints stay fixed, is the camera image necessarily stable?</p><details><summary>Show explanation</summary><p>No. Body pitch and roll move the neck and camera. Image stability depends on camera orientation relative to the world, not only on joint angles.</p></details></div></section><section id="read-assembly"><h2>Exercise: trace one load path</h2><p>Start with the assembled model. Trace a path from the left foot through the ankle, shin, knee, thigh, and hip. Ground support reaches the body through this chain. Explode the assembly and select the servos and brackets around a joint. Identify the fixed housing and the part driven by its output. Explosion offsets are display positions, not physically reachable joint poses.</p><p>A servo combines a motor, reduction gears, position feedback, and control electronics. Reaching a target takes time and is limited by torque, speed, friction, and backlash. A policy issuing an angle does not mean the joint instantly reaches it. Chapter 2 observes this difference; Chapter 3 explains how a policy learns around it.</p><div class="quiz"><h3>Check your understanding</h3><p>Does moving the foot farther out in the exploded view change the simulated leg length?</p><details><summary>Show explanation</summary><p>No. The web view explains components. Robot description files define simulated dimensions and joint connections.</p></details></div></section><section id="policy-interface"><h2>What the policy receives and produces</h2><p>Chapter 1 runs inference with a trained policy. It maps the current observation to 14 joint actions without updating neural-network parameters. Changing the velocity command tests the same model under a different request; it is not training. Choosing a different model file changes the policy.</p><div class="table-scroll"><table><thead><tr><th>Observation, in interface order</th><th>Width</th><th>What it tells the policy</th></tr></thead><tbody><tr><td>Angular velocity and projected gravity</td><td>6</td><td>Body rotation and tilt</td></tr><tr><td>Relative joint positions</td><td>14</td><td>Pose relative to the nominal posture</td></tr><tr><td>Joint velocities</td><td>14</td><td>Motion at each joint</td></tr><tr><td>Previous action</td><td>14</td><td>Previous control output and temporal context</td></tr><tr><td>Velocity, head, and body commands</td><td>3 + 4 + 6</td><td>Requested behavior</td></tr></tbody></table></div><figure class="concept-figure network-figure"><div class="diagram-scroll"><svg class="network-svg" viewBox="0 0 760 350" role="img" aria-label="61 → 512 → 256 → 128 → 14; ELU" font-family="Open Sans, Noto Sans SC, sans-serif"><path d="M79 95L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><text x="70" y="26" text-anchor="middle" fill="#405367" font-size="15">Observation</text><text x="70" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">61</text><circle cx="70" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="70" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="70" y="296" text-anchor="middle" fill="#405367" font-size="14">Normalize</text><text x="225" y="26" text-anchor="middle" fill="#405367" font-size="15">Hidden 1</text><text x="225" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">512</text><circle cx="225" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="225" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="225" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="380" y="26" text-anchor="middle" fill="#405367" font-size="15">Hidden 2</text><text x="380" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">256</text><circle cx="380" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="380" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="380" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="535" y="26" text-anchor="middle" fill="#405367" font-size="15">Hidden 3</text><text x="535" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">128</text><circle cx="535" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="535" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="535" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="690" y="26" text-anchor="middle" fill="#405367" font-size="15">Action</text><text x="690" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">14</text><circle cx="690" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="690" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="690" y="296" text-anchor="middle" fill="#405367" font-size="14">Joint actions</text><text x="380" y="335" text-anchor="middle" fill="#526779" font-size="13">Fully connected · inference every 20 ms · no camera images</text></svg></div><figcaption>Circles show a subset of units; numbers give actual dimensions. The official walking and kick actors share this structure but have different weights. The training critic is not shown.</figcaption></figure><p>These values total 61. Reordering joints breaks their meaning even if the input still has 61 entries: the policy might read a knee as a hip. Course entry points preserve ordering, nominal posture, and control timing. Begin by changing commands, duration, and output directories; modify observation construction only after understanding the interface.</p></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://github.com/pollen-robotics/microduck" target="_blank" rel="noopener">Pollen Robotics: Microduck hardware ↗</a></li><li><a href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" target="_blank" rel="noopener">Isaac Lab: Microduck task source ↗</a></li><li><a href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Newton physics engine ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="01-play.html"><small>← Previous</small>Meet Microduck: play football first</a><a href="03-learning.html"><small>Next →</small>Learning to walk</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#assembly">From assembly to components</a><a href="#joint-map">Parts, joints, and degrees of freedom</a><a href="#control">How software moves the mechanism</a><a href="#frames">Describe motion with frames</a><a href="#read-assembly">Exercise: trace one load path</a><a href="#policy-interface">What the policy receives and produces</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Separate shells, joints, actuators, and sensors, then see how they form a controllable robot." name="description" />
+
+  <title>2.2 Mechanism and control timing - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/robot-explorer.css?v=3b9f77ac" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script defer="defer" src="_static/robot-explorer-loader.js?v=520db9d8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02-anatomy';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3.1 Reinforcement learning and PPO" href="03-learning.html" />
+    <link rel="prev" title="2.1 Meet Microduck: play football first" href="01-play.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="02-anatomy">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/02-anatomy.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/02-anatomy.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/02-anatomy.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/02-anatomy.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">2.2 Mechanism and control timing</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="mechanism-and-control-timing">
+<h1>2.2 Mechanism and control timing<a class="headerlink" href="#mechanism-and-control-timing" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Separate shells, joints, actuators, and sensors, then see how they form a controllable robot.</p>
+</div><div class="lesson-meta">Section 2.2 · Estimated learning time: 20 minutes</div></div></div><script type="application/json" class="course-symbols">{"T_hom": {"tex": "T", "text": "Homogeneous transformation matrix (4×4) that holds a rotation and a translation together, so transforms can be multiplied along a mechanical chain."}, "R": {"tex": "R", "text": "3×3 rotation matrix: the orientation of the child frame relative to the parent frame."}, "t_vec": {"tex": "\\mathbf t", "text": "Translation vector: the position of the child frame's origin in the parent frame."}, "zero_row": {"tex": "\\mathbf 0^{\\mathsf T}", "text": "1×3 row of zeros; with the 1 in the corner it makes the matrix a 4×4 that can be chained by multiplication."}, "T_BF": {"tex": "{}^{B}T_F", "text": "Transform from the foot frame to the trunk frame: it expresses a point on the foot in body coordinates."}, "q": {"tex": "q", "text": "Vector of all joint angles along this mechanical chain."}, "q_joint": {"tex": "q", "text": "Angle of the joint selected in the 3D duck, as the joint coordinate of the simulation model; stored in radians and shown in degrees."}, "T_joint": {"tex": "{}^{i-1}T_i", "text": "Transform between two adjacent links, set by the assembly position and the angle of this joint."}, "q_i": {"tex": "q_i", "text": "Angle of one joint on the chain (rad); the subscript is that joint's place in the chain."}, "frame_B": {"tex": "B", "text": "Trunk (body) frame."}, "frame_F": {"tex": "F", "text": "Foot frame."}, "a_t": {"tex": "\\mathbf a_t", "text": "The 14-dimensional action (normalized values) output by the policy in the current control period."}, "pi_theta": {"tex": "\\pi_\\theta", "text": "The walking policy network; the subscript stands for its trained parameters, fixed during inference."}, "o_t": {"tex": "\\mathbf o_t", "text": "The 61-dimensional observation given to the policy in the current control period."}, "q_target": {"tex": "\\mathbf q_t^{*}", "text": "Joint target angles sent to the actuators in the current control period (rad)."}, "q_default": {"tex": "\\mathbf q_{\\mathrm{default}}", "text": "Joint angles of the default standing pose."}, "s": {"tex": "s", "text": "Action scale; 1 for this policy."}, "rmse": {"tex": "\\mathrm{RMSE}_v", "text": "Root-mean-square error of horizontal velocity tracking (m/s); smaller means the actual velocity follows the command more closely."}, "N": {"tex": "N", "text": "Number of sampled instants in the statistic."}, "t_idx": {"tex": "t", "text": "Index of a sampled instant."}, "sqnorm": {"tex": "\\|\\cdot\\|_2^2", "text": "Squared length of the velocity error vector."}, "v_xy": {"tex": "\\mathbf v_{xy,t}", "text": "Actual horizontal body velocity at that instant (m/s)."}, "v_cmd": {"tex": "\\mathbf v_{xy,t}^{\\mathrm{cmd}}", "text": "Commanded horizontal velocity at the same instant (m/s)."}}</script><section id="assembly">
+<h2>From assembly to components<a class="headerlink" href="#assembly" title="Link to this heading">#</a></h2>
+<p>Microduck is a small biped: its legs support and move the body, the neck directs its view, and the trunk houses computing, power and connections. In Isaac Sim, the robot model holds joints, collision geometry and mass properties alongside the visual meshes; they define which motions and contacts can happen. Learning this structure first lets you connect joint names and action vectors to motion in simulation.</p>
+<div class="duck-explorer-figure docutils container" id="duck-explorer">
+<div class="duck-explorer" data-duck-explorer data-chapter="0" data-state="pending" data-dx-module="../assets/robot-explorer.js?v=e5f5d14c8c0d194c" data-dx-version="e5f5d14c8c0d194c" data-dx-model-version="16310dfd0643e869"><div class="dx-chapters" hidden><div class="dx-tabs" role="group" aria-label="Choose a view"><button type="button" class="dx-chapter" aria-pressed="true">The whole duck</button><button type="button" class="dx-chapter" aria-pressed="false">Exploded view</button><button type="button" class="dx-chapter" aria-pressed="false">How motors drive joints</button></div><button type="button" class="dx-reset">Start over</button></div><div class="dx-body"><div class="dx-stage"><svg class="dx-leaders" aria-hidden="true"></svg><svg class="dx-gizmo" aria-hidden="true" hidden></svg><div class="dx-callouts"></div><div class="dx-handle" role="slider" tabindex="0" aria-orientation="horizontal" hidden></div><button type="button" class="dx-back" hidden>Back</button><div class="dx-launch" hidden><button type="button" class="dx-open"><svg class="dx-open-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.8 4.2 7.2v9.6L12 21.2l7.8-4.4V7.2L12 2.8Z"/><path d="M4.2 7.2 12 11.6l7.8-4.4M12 11.6v9.6"/></svg><span class="dx-open-label">Try again</span></button></div><p class="dx-status" role="status" aria-live="polite" data-loading="Loading the 3D duck…" data-error="The 3D duck did not load. Check the connection and try again; the notes below remain available."></p><noscript><p class="dx-status">The 3D duck needs JavaScript; the notes below remain available.</p></noscript></div><div class="dx-panel" hidden><div class="dx-card" aria-live="polite"><p class="dx-title"></p><p class="dx-fact"></p><p class="dx-part" hidden></p></div><div class="dx-drive" role="group" aria-label="Joint controls" hidden><ul class="dx-legend"><li class="dx-legend-actuator"><span class="dx-chip" aria-hidden="true"></span>Rotating servo</li><li class="dx-legend-link"><span class="dx-chip" aria-hidden="true"></span>Following parts</li><li class="dx-legend-joint"><svg class="dx-legend-arc" viewBox="0 0 24 14" width="24" height="14" aria-hidden="true" focusable="false"><path d="M4.47 11.54L3.54 6.90L4.75 7.71L5.30 6.98L5.92 6.31L6.61 5.70L7.36 5.18L8.16 4.74L9.01 4.38L9.88 4.11L10.78 3.94L11.69 3.86L12.61 3.87L13.52 3.98L14.41 4.19L15.28 4.49L16.11 4.87L16.89 5.35L17.62 5.90L18.29 6.52L18.90 7.21L19.25 7.71L20.46 6.90L19.53 11.54L16.15 9.80L17.35 8.99L16.94 8.45L16.48 7.96L15.97 7.52L15.42 7.13L14.83 6.80L14.21 6.54L13.56 6.34L12.90 6.21L12.23 6.15L11.55 6.17L10.88 6.25L10.22 6.40L9.58 6.62L8.97 6.90L8.39 7.25L7.85 7.66L7.36 8.12L6.92 8.63L6.65 8.99L7.85 9.80Z"/></svg>Drive direction</li></ul><div class="dx-field"><p class="dx-field-label">Choose a part</p><div class="dx-regions" role="group" aria-label="Choose a part"></div></div><div class="dx-field"><p class="dx-field-label">Choose a motion</p><div class="dx-joints" role="group" aria-label="Choose a motion"></div><p class="dx-fixed" hidden></p></div><div class="dx-readout"><p class="dx-field-label">Joint angle <code class="dx-q-id"></code></p><p class="dx-q"></p><p class="dx-q-detail"></p></div><div class="dx-actions"><button type="button" class="dx-play" aria-pressed="false"></button><button type="button" class="dx-zero"></button></div></div></div></div></div><div class="dx-caption docutils container">
+<p>Colours are simplified to show what each part does; they are not the real paint. Part shapes, proportions, joint positions and axes come from the original CAD and the simulation model. The exploded spacing is only there to reveal the structure and is not an assembly sequence.</p>
+</div>
+</div>
+<p>Once the 3D duck has loaded, go through the three views at the top:</p>
+<ul class="simple">
+<li><p><strong>The whole duck</strong>: find the six parts: head, neck, body, hip, knee and foot. Click a name to see which servos move it, click a part to look closer, and drag to turn the duck.</p></li>
+<li><p><strong>Exploded view</strong>: parts that belong together move apart as a group. The numbered labels match the parts in How motors drive joints and tell how many servos drive each one; a leader starts at each servo housing and they merge before the name. Leg labels count per side. The eye is the camera. The ToF range sensor sits on the same face board, right beside the eye. The CAD has only the board's window for it, not a part for the sensor itself, so a crossed circle marks its position.</p></li>
+<li><p><strong>How motors drive joints</strong>: choose a part, then a motion, or click a servo in the model. The thin white line is the servo's output shaft, and the white paper-ribbon arrow beyond its end shows the drive direction: drag the ribbon, or click the dot in its middle and fine-tune with the arrow keys. Coral is the rotating servo, violet the bracket that turns with it, and parts that stay still are drawn only as light outlines. The leg controls show the left leg; the right leg mirrors it.</p></li>
+</ul>
+<p>All three views use the same parts: head 3 servos (head pitch, yaw and roll), neck 1, beak 1 (fixed in the simulation model), and per side hip 3, knee 1 and foot 1, 15 in total. Servos of one part are not always mounted together: each hip's yaw, roll and pitch servos sit in the body, the hip bracket and the thigh, so in the exploded view three leaders merge from three places into one Hip label.</p>
+<p>The panel's <span class="math notranslate nohighlight">\(\htmlData{sym=q_joint}{q}\)</span> is the joint's angle in the simulation model. Code stores it in radians; the panel shows degrees (<span class="math notranslate nohighlight">\(1\ \mathrm{rad}\approx 57.3^\circ\)</span>), and the sign follows the right-hand rule about the joint axis. When standing, <span class="math notranslate nohighlight">\(\htmlData{sym=q_joint}{q}\)</span> is usually not 0 (the left hip pitch is about <span class="math notranslate nohighlight">\(-26.2^\circ\)</span>), so the panel also shows the change from the stand pose. A walking policy's actions are offsets added to these stand angles. Real servos also carry their own calibration offsets, so these readings are model joint angles, not raw servo encoder values.</p>
+<div class="note admonition">
+<p class="admonition-title">Hardware revision and simulation joints</p>
+<p>Of the 15 servos, the simulated policy drives 14 joints; the beak is fixed in the simulation model, so it cannot turn in the 3D duck. The controller board keeps the Raspberry Pi Zero 2 W shape from the CAD, while the current Beta electronics are based on RK3566. The camera, ToF sensor and IMU observe the task and become data sources for learned policies in Section 4.1.</p>
+</div>
+<div class="quiz"><h3>Check your understanding</h3><p>In How motors drive joints, compare the left leg's Hip roll and Hip pitch. When the joint turns, does the housing of the servo that drives it move?</p>
+<details><summary>Show explanation</summary><p>For hip roll, no: that servo is fixed to the hip-yaw bracket above it, and its output shaft turns the bracket below together with the whole leg. For hip pitch, yes: that servo sits in the thigh and its output shaft is fixed to the hip bracket above, so the servo housing turns with the thigh, shank and foot around the shaft. Both mountings drive the joint; they differ only in which side of the joint moves. Neck pitch, head yaw and head roll use the second mounting too.</p>
+</details></div></section>
+<section id="kinematic-chain">
+<h2>From mechanism to joint control<a class="headerlink" href="#kinematic-chain" title="Link to this heading">#</a></h2>
+<p>This part answers a basic question: how do the 14 numbers a policy outputs become visible robot motion? First find the trunk, both legs and the head in the model, then follow the connection “trunk → hip → knee → ankle → foot”. Later, when you meet joint order, coordinate transforms or foot contact problems, you can locate them in the physical structure.</p>
+<figure class="learning-figure" data-learning-flow="learn-148dc71716"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="From joint targets to foot position"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-148dc71716-title"><title id="learn-148dc71716-title">From joint targets to foot position</title><defs><marker id="learn-148dc71716-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-148dc71716-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-148dc71716-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Joint target q*" aria-controls="learn-148dc71716-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Joint target q*</text><text x="114.0" y="98" class="learning-node-subtitle">where the policy wants</text><text x="114.0" y="115" class="learning-node-subtitle">each joint to go</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Servos and joints" aria-controls="learn-148dc71716-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Servos and joints</text><text x="450.0" y="98" class="learning-node-subtitle">the actual angle q</text><text x="450.0" y="115" class="learning-node-subtitle">changes under load</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Links and foot" aria-controls="learn-148dc71716-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Links and foot</text><text x="786.0" y="98" class="learning-node-subtitle">the links determine</text><text x="786.0" y="115" class="learning-node-subtitle">where the foot is</text></g></svg></div><div class="learning-details" aria-label="From joint targets to foot position"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-148dc71716-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Joint target q*</h3><p>The policy gives target joint angles, which express an intention; a joint needs time to track them.</p></article><article id="learn-148dc71716-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Servos and joints</h3><p>Actuators are limited by torque, speed and response, and contact also changes the actual angle, so look at both the joint targets and the actual state.</p></article><article id="learn-148dc71716-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Links and foot</h3><p>The foot position follows from the links and joint angles together. Changing one joint moves the end of the chain and can change the support.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Target and actual angles are not always equal. Inertia, contact and actuator response all shape the final motion.</figcaption></figure><p>Joint angles set the relative pose of the links; combining these poses along a mechanical chain gives the position of the foot or camera relative to the body. With this relation in mind you can tell “the head turned” from “the body turned”.</p>
+<details class="enrichment"><summary>Further reading: computing positions along a mechanical chain</summary><div class="enrichment-body"><p>A part's position only makes sense relative to some frame. A homogeneous transform holds a rotation <span class="math notranslate nohighlight">\(\htmlData{sym=R}{R}\)</span> and a translation <span class="math notranslate nohighlight">\(\htmlData{sym=t_vec}{\mathbf t}\)</span> together; multiplying them along a mechanical chain converts a point in the foot frame into the trunk frame. This is forward kinematics: computing where the end of the chain is from known joint angles.</p>
+<div class="formula"><div class="formula-label">Homogeneous transform and mechanical chain</div><div class="formula-body">\[\htmlData{sym=T_hom}{T}=\begin{bmatrix}\htmlData{sym=R}{R}&amp;\htmlData{sym=t_vec}{\mathbf t}\\\htmlData{sym=zero_row}{\mathbf 0^{\mathsf T}}&amp;1\end{bmatrix},\qquad \htmlData{sym=T_BF}{{}^{B}T_F}(\htmlData{sym=q}{q})= \htmlData{sym=T_joint}{{}^{B}T_1}(\htmlData{sym=q_i}{q_1})\,\htmlData{sym=T_joint}{{}^{1}T_2}(\htmlData{sym=q_i}{q_2})\cdots\htmlData{sym=T_joint}{{}^{k}T_F}(\htmlData{sym=q_i}{q_k})\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(T\)</dt><dd>Homogeneous transformation matrix (4×4) that holds a rotation and a translation together, so transforms can be multiplied along a mechanical chain.</dd></div><div><dt>\(R\)</dt><dd>3×3 rotation matrix: the orientation of the child frame relative to the parent frame.</dd></div><div><dt>\(\mathbf t\)</dt><dd>Translation vector: the position of the child frame&#x27;s origin in the parent frame.</dd></div><div><dt>\(\mathbf 0^{\mathsf T}\)</dt><dd>1×3 row of zeros; with the 1 in the corner it makes the matrix a 4×4 that can be chained by multiplication.</dd></div><div><dt>\({}^{B}T_F\)</dt><dd>Transform from the foot frame to the trunk frame: it expresses a point on the foot in body coordinates.</dd></div><div><dt>\(q\)</dt><dd>Vector of all joint angles along this mechanical chain.</dd></div><div><dt>\({}^{i-1}T_i\)</dt><dd>Transform between two adjacent links, set by the assembly position and the angle of this joint.</dd></div><div><dt>\(q_i\)</dt><dd>Angle of one joint on the chain (rad); the subscript is that joint&#x27;s place in the chain.</dd></div></dl></details></div><p>The superscript <span class="math notranslate nohighlight">\(\htmlData{sym=frame_B}{B}\)</span> denotes the trunk frame and the subscript <span class="math notranslate nohighlight">\(\htmlData{sym=frame_F}{F}\)</span> the foot frame; each transform comes from a part's assembly position and its joint angle. A camera mounted on the head likewise needs the neck and head chain to compute where it points, so a head turn is not mistaken for a turn of the whole body.</p>
+</div></details><p>In the exploded model, find the knee servo, the battery and the foot, and say what each does for actuation, power and support.</p>
+</section>
+<section id="joint-map">
+<h2>Parts, joints, and degrees of freedom<a class="headerlink" href="#joint-map" title="Link to this heading">#</a></h2>
+<p>A pen held at its tip can rotate in several directions, while a hinge normally rotates around one fixed axis. Robot joints impose similar constraints. Degrees of freedom count the independent variables needed to describe permitted motion; a component count describes physical pieces. The viewer shows 70 components, yet the policy outputs actions for only the 14 active joints.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Region</p></th>
+<th class="head cell-short"><p>Active joints</p></th>
+<th class="head cell-short"><p>Main role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Each leg</p></td>
+<td><p>Hip yaw, roll, pitch; knee; ankle: 5 joints</p></td>
+<td><p>Support the body and place the foot</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Neck and head</p></td>
+<td><p>Neck pitch; head pitch, yaw, roll: 4 joints</p></td>
+<td><p>Orient the camera and head</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Beak</p></td>
+<td><p>Physical servo; not controlled by this policy</p></td>
+<td><p>Shown in 3D model, excluded from the 14-action interface</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In the 3D duck's How motors drive joints view, choose Hip and turn the left leg's hip yaw, hip roll and hip pitch in turn, inspecting the three servo outputs and their nearby bearings. The servo drives the joint, the bearing supports the rotating part, and brackets connect adjacent joints. For each joint, notice which parts turn and which remain only as outlines.</p>
+</section>
+<section id="control">
+<h2>How software moves the mechanism<a class="headerlink" href="#control" title="Link to this heading">#</a></h2>
+<ol class="arabic simple pipeline">
+<li><p>Policy action</p></li>
+<li><p>Joint targets</p></li>
+<li><p>Actuator torque</p></li>
+<li><p>Physics update</p></li>
+<li><p>New observation</p></li>
+</ol>
+<p>The policy outputs actions, and the action interface turns them into joint targets. Actuators produce torque from the difference between target and measured state; the resulting motion also depends on contact, gravity, inertia and friction.</p>
+<p>The policy runs at 50 Hz and physics at 200 Hz, so each action spans four physics steps. The backlash model represents transmission play with passive joints; the physics engine computes them, and they are not policy outputs.</p>
+</section>
+<section id="frames">
+<h2>Describe motion with frames<a class="headerlink" href="#frames" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Frame</p></th>
+<th class="head"><p>What is expressed here</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>World</p></td>
+<td><p>Pitch, goal, and overall robot position</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Body</p></td>
+<td><p>Forward, lateral, and turn commands; ball relative to the robot</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Camera</p></td>
+<td><p>Image rays and detected target directions</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Joint-local</p></td>
+<td><p>A joint’s axis and angle</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="quiz"><h3>Check your understanding</h3><p>If the head joints stay fixed, is the camera image necessarily stable?</p>
+<details><summary>Show explanation</summary><p>No. Body pitch and roll move the neck and camera. Image stability depends on camera orientation relative to the world, not only on joint angles.</p>
+</details></div></section>
+<section id="read-assembly">
+<h2>Exercise: trace one load path<a class="headerlink" href="#read-assembly" title="Link to this heading">#</a></h2>
+<p>Start with the assembled model and trace upward from the ankle through the shin, knee, thigh and hip. When the foot is on the ground, support reaches the body along this path. Then separate the model and click the servos near a joint to see how adjacent links connect.</p>
+<p>Besides a motor, a servo contains reduction gears, position feedback and control electronics. After receiving a target angle it needs time to track it, limited by available torque, speed, friction and backlash. This section observes that gap between target and actual angle; Section 3.2 shows how training with randomized actuator properties helps a policy cope with it.</p>
+</section>
+<section id="policy-interface">
+<h2>What the policy receives and produces<a class="headerlink" href="#policy-interface" title="Link to this heading">#</a></h2>
+<p>Section 2.1 runs inference with a trained policy: it maps the current observation to 14 joint actions while its neural-network parameters stay fixed. Changing the velocity command tests how the same model responds; changing the policy itself requires training or loading different weights.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Observation, in interface order</p></th>
+<th class="head cell-short"><p>Width</p></th>
+<th class="head"><p>What it tells the policy</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Angular velocity and projected gravity</p></td>
+<td class="cell-short"><p>6</p></td>
+<td><p>Body rotation and tilt</p></td>
+</tr>
+<tr class="row-odd"><td><p>Relative joint positions</p></td>
+<td class="cell-short"><p>14</p></td>
+<td><p>Pose relative to the nominal posture</p></td>
+</tr>
+<tr class="row-even"><td><p>Joint velocities</p></td>
+<td class="cell-short"><p>14</p></td>
+<td><p>Motion at each joint</p></td>
+</tr>
+<tr class="row-odd"><td><p>Previous action</p></td>
+<td class="cell-short"><p>14</p></td>
+<td><p>Previous control output and temporal context</p></td>
+</tr>
+<tr class="row-even"><td><p>Velocity, head, and body commands</p></td>
+<td class="cell-short"><p>3 + 4 + 6</p></td>
+<td><p>Requested behavior</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Remember <a href="01-play.html#policies">the policy network in Section 2.1</a>? These observations are concatenated in a fixed order and normalized to form its 61 inputs. Even with the same input shape, reordering joints breaks their meaning: the policy might read a knee as a hip. The course entry points therefore keep joint order, nominal posture and control timing fixed. Experiment with commands, duration and output folders first; change the observations only once you understand the interface.</p>
+<p>With the policy inputs and outputs defined, we can now follow how the policy exchanges data with the physics engine.</p>
+</section>
+<section id="control-loop">
+<h2>Close the command, action and feedback loop<a class="headerlink" href="#control-loop" title="Link to this heading">#</a></h2>
+<p>Isaac Lab organizes observations and actions, Newton computes motion and contact, and Isaac Sim displays the scene. Follow the control loop to check three things: are the inputs right, are actions updated on time, and does the actual motion follow the command?</p>
+<figure class="concept-figure"><p class="diagram-scroll-hint">Scroll horizontally to view the full diagram</p><div class="diagram-scroll"><svg xmlns="http://www.w3.org/2000/svg" class="architecture-svg" viewBox="0 0 760 384" role="img" aria-labelledby="platform-title platform-desc"><title id="platform-title">What Isaac Lab, Newton and Isaac Sim each do</title><desc id="platform-desc">Isaac Lab defines the robot learning task and Newton advances the physical state on the GPU. When images or an interactive window are needed, Isaac Sim provides rendering and sensors. Newton physics does not need Kit.</desc><defs><marker id="platform-arrow" markerWidth="5.25" markerHeight="5.25" refX="4.5" refY="2.625" orient="auto-start-reverse"><path d="M0 0L4.5 2.625L0 5.25" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.3"/></marker></defs>
+<rect x="16" y="16" width="728" height="352" rx="10" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-layer-container-accent-background)" stroke-dasharray="4 4"/>
+<text x="36" y="42" fill="var(--nve-sys-text-muted-color)" font-size="13">Task interface, physics backend and rendering</text>
+<path marker-start="url(#platform-arrow)" d="M310 150V176Q310 184 302 184H180Q172 184 172 192V226" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.5" marker-end="url(#platform-arrow)"/>
+<path d="M588 232V192Q588 184 580 184H458Q450 184 450 176V156" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.5" marker-end="url(#platform-arrow)"/>
+<text x="176" y="174" fill="var(--nve-sys-text-muted-color)" font-size="13">actions ⇄ physical state</text><text x="470" y="174" fill="var(--nve-sys-text-muted-color)" font-size="13">images and window when needed</text>
+<rect x="240" y="62" width="280" height="88" rx="7" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-color)"/><text x="380" y="95" text-anchor="middle" fill="var(--nve-sys-text-color)" font-size="20" font-weight="600">Isaac Lab</text><text x="380" y="124" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="14">Task · observations · rewards · parallel envs</text>
+<rect x="40" y="232" width="264" height="94" rx="7" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-support-success-color)"/><text x="172" y="264" text-anchor="middle" fill="var(--nve-sys-text-color)" font-size="19" font-weight="600">Newton</text><text x="172" y="292" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="14">Warp / CUDA · dynamics and contact</text><text x="172" y="348" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="13">Physics can run without Kit</text>
+<rect x="456" y="232" width="264" height="94" rx="7" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="588" y="264" text-anchor="middle" fill="var(--nve-sys-text-color)" font-size="19" font-weight="600">Isaac Sim</text><text x="588" y="292" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="14">OpenUSD · RTX · cameras and interaction</text><text x="588" y="348" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="13">The course's visual labs use this path</text></svg></div><figcaption class="diagram-caption"><p>Isaac Lab organizes the learning task and Newton advances the physics; Isaac Sim rendering and sensors are added when camera images or an interactive window are needed. Separating these roles helps you choose how to run training and validation.</p>
+</figcaption></figure><figure class="learning-figure" data-learning-flow="learn-1fc79fc3a8"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Walking loop"><svg class="learning-svg" viewBox="0 0 900 211" role="group" aria-labelledby="learn-1fc79fc3a8-title"><title id="learn-1fc79fc3a8-title">Walking loop</title><defs><marker id="learn-1fc79fc3a8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 85.5H356.0" marker-end="url(#learn-1fc79fc3a8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 85.5H692.0" marker-end="url(#learn-1fc79fc3a8-arrow)"/><path class="learning-edge" data-from="2" data-to="0" d="M786.0 151V187H114.0V151" marker-end="url(#learn-1fc79fc3a8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Observation oₜ" aria-controls="learn-1fc79fc3a8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="123" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Observation oₜ</text><text x="114.0" y="98" class="learning-node-subtitle">Pose, joint state,</text><text x="114.0" y="115" class="learning-node-subtitle">previous action</text><text x="114.0" y="132" class="learning-node-subtitle">and command</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Policy π" aria-controls="learn-1fc79fc3a8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="123" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Policy π</text><text x="450.0" y="98" class="learning-node-subtitle">61 inputs → 14 actions</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Newton simulation" aria-controls="learn-1fc79fc3a8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="123" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Newton simulation</text><text x="786.0" y="98" class="learning-node-subtitle">Applies actions,</text><text x="786.0" y="115" class="learning-node-subtitle">yields the next</text><text x="786.0" y="132" class="learning-node-subtitle">observation</text></g></svg></div><div class="learning-details" aria-label="Walking loop"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-1fc79fc3a8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Observation oₜ</h3><p>The observation packs robot pose, joint state, the previous action and the current velocity command into a fixed order. Order and normalization must match training.</p></article><article id="learn-1fc79fc3a8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Policy π</h3><p>The policy maps the 61-dimensional observation to a 14-dimensional action. The output passes through the action conversion and actuator model before it reaches the joints.</p></article><article id="learn-1fc79fc3a8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Newton simulation</h3><p>Newton advances dynamics and contact and produces a new pose and joint state. The policy reads a fresh observation on the next tick, so actions always sit inside a feedback loop.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>The velocity command says where and how fast to go; the policy turns it into coordinated joint motion.</figcaption></figure><div class="formula"><div class="formula-label">Position-control interface</div><div class="formula-body">\[\htmlData{sym=a_t}{\mathbf a_t}=\htmlData{sym=pi_theta}{\pi_\theta}(\htmlData{sym=o_t}{\mathbf o_t}),\qquad \htmlData{sym=q_target}{\mathbf q_t^{*}}=\htmlData{sym=q_default}{\mathbf q_{\mathrm{default}}}+\htmlData{sym=s}{s}\htmlData{sym=a_t}{\mathbf a_t},\quad \htmlData{sym=s}{s}=1\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(\mathbf a_t\)</dt><dd>The 14-dimensional action (normalized values) output by the policy in the current control period.</dd></div><div><dt>\(\pi_\theta\)</dt><dd>The walking policy network; the subscript stands for its trained parameters, fixed during inference.</dd></div><div><dt>\(\mathbf o_t\)</dt><dd>The 61-dimensional observation given to the policy in the current control period.</dd></div><div><dt>\(\mathbf q_t^{*}\)</dt><dd>Joint target angles sent to the actuators in the current control period (rad).</dd></div><div><dt>\(\mathbf q_{\mathrm{default}}\)</dt><dd>Joint angles of the default standing pose.</dd></div><div><dt>\(s\)</dt><dd>Action scale; 1 for this policy.</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=q_target}{\mathbf q_t^{*}}\)</span> is the joint target, <span class="math notranslate nohighlight">\(\htmlData{sym=q_default}{\mathbf q_{\mathrm{default}}}\)</span> the default standing pose, and the action scale <span class="math notranslate nohighlight">\(\htmlData{sym=s}{s}\)</span> is 1. An action is therefore an offset from the standing pose; the actuators and physics engine compute the actual motion from it. Even with matching input and output sizes, a different joint order, offset or observation normalization makes the actions wrong.</p>
+<figure class="concept-figure" data-diagram="timing"><svg viewBox="0 0 640 320" role="img" aria-label="50 Hz policy updates and 200 Hz physics updates" font-family="Open Sans, Noto Sans SC, sans-serif" font-size="15"><defs><marker id="arrow-timing" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="var(--nve-sys-text-muted-color)"/></marker></defs><text x="36" y="43">Policy: one action every 20 ms (50 Hz)</text><rect x="60" y="70" width="514" height="52" rx="5" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="317" y="96" text-anchor="middle" dominant-baseline="central">aₜ: joint targets</text><path d="M317 123V169" stroke="var(--nve-sys-text-muted-color)" marker-end="url(#arrow-timing)"/><text x="36" y="156">Physics: one step every 5 ms (200 Hz)</text><rect x="60" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="122" y="206" text-anchor="middle" dominant-baseline="central">Step 1</text><text x="60" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">0 ms</text><rect x="190" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="252" y="206" text-anchor="middle" dominant-baseline="central">Step 2</text><text x="190" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">5 ms</text><rect x="320" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="382" y="206" text-anchor="middle" dominant-baseline="central">Step 3</text><text x="320" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">10 ms</text><rect x="450" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="512" y="206" text-anchor="middle" dominant-baseline="central">Step 4</text><text x="450" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">15 ms</text><text x="574" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">20 ms</text><text x="317" y="296" text-anchor="middle" font-size="14" fill="var(--nve-sys-text-muted-color)">The action stays fixed; positions, velocities and contact forces keep changing</text></svg><figcaption class="diagram-caption">One policy period contains four physics updates. The display frame rate is a separate quantity: a slower picture does not mean the simulation time step changed.</figcaption></figure><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · core excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Build the observation, then run the policy</h4> <p>Update the observation history and feed the policy observation to the locomotion policy.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">observation_manager</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">update_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"policy"</span><span class="p">]</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Process the policy action</h4> <p>The action manager receives this policy output and prepares it for simulation.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Advance four physics steps</h4> <p>One policy action spans 4 × 5 ms; each step writes the action and updates the scene, giving 50 Hz control over 200 Hz physics.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">apply_action</span><span class="p">()</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">headless</span> <span class="ow">and</span> <span class="n">tick</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mf">0.005</span><span class="p">)</span></code></pre></div></div></div><p>This excerpt is the loop in the figure: the Isaac Lab observation manager builds the policy input, the action manager processes the action and drives the actuators, and Newton then runs four 5 ms physics steps. The full program also advances counters and checks for falls.</p>
+<p>Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked (Section 3.2 explains this start-up); the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. The stillness at the start is not an unresponsive policy.</p>
+<figure class="recorded-run"><div class="recorded-head"><span class="recorded-badge">Recorded run · no need to run</span><span class="recorded-where">Course container · Isaac Sim window</span><span class="recorded-meta">DGX Spark · official walking model <code>models/walk.onnx</code></span></div><div class="recorded-command highlight"><pre><code>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>walk<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span>--velocity<span class="w"> </span><span class="m">0</span>.25<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seconds<span class="w"> </span><span class="m">12</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">202</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/final-live-livew</code></pre></div><details class="recorded-result"><summary>Show the actual output and how to read it</summary><div class="recorded-body"><img class="recorded-image" src="../assets/media/isaac-ui-walk-container.png" alt="The complete Isaac Sim window during this run: a Microduck stepping on flat ground in the viewport, RTX real-time rendering and Newton MJWarp physics in the toolbar, the stage tree and Isaac Lab panel on the right." loading="lazy"><p class="recorded-output-label">report.json printed at the end of the terminal output (the startup section recording the settling is omitted)</p><pre class="recorded-output"><code>{
+  &quot;status&quot;: &quot;completed&quot;,
+  &quot;seed&quot;: 202,
+  &quot;model_sha256&quot;: &quot;2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492&quot;,
+  &quot;command&quot;: [
+    0.25,
+    0.0,
+    0.0
+  ],
+  &quot;physics_hz&quot;: 200,
+  &quot;policy_hz&quot;: 50,
+  &quot;scope&quot;: &quot;nominal walking observation; not full-task evaluation&quot;,
+  &quot;viewport&quot;: {
+    &quot;status&quot;: &quot;ok&quot;,
+    &quot;requested&quot;: [
+      960,
+      540
+    ],
+    &quot;render_texture&quot;: [
+      960,
+      540
+    ],
+    &quot;resolution_scale&quot;: 1.0,
+    &quot;render_every_control_steps&quot;: 2
+  },
+  &quot;real_time_factor&quot;: 0.9490529826355415,
+  &quot;fell&quot;: false,
+  &quot;simulated_seconds&quot;: 12.0,
+  &quot;automatic_resets&quot;: false
+}</code></pre><p>Start with three fields: <code>status</code> is completed, <code>fell</code> is false and <code>simulated_seconds</code> is 12.0, so the run lasted the full time without falling; <code>automatic_resets</code> false means no automatic reset hid a failure. <code>model_sha256</code> matches <code>models/manifest.json</code>, confirming that the fixed official model was used. <code>viewport</code> records the window&#x27;s display settings (drawn at 960×540, redrawn every 2nd control step), and a <code>real_time_factor</code> of about 0.95 means the 12 simulated seconds took only slightly longer in real time; both describe the window only and do not affect the simulation result.</p><p>Then look at <code>trajectory.json</code> in the same folder, one position every 0.1 s. In the roughly 10 seconds after the forward command starts, the body moves from (0.00, 0.00) m to (1.07, 0.15) m: about 1.08 m in a straight line, roughly 0.11 m/s on average, less than half of the 0.25 m/s command, and the direction of travel drifts to the left, about 8° over the whole displacement and about 15° in the last 2 seconds. A velocity command is a request to the policy; the actual speed and direction come from the policy, the actuators and contact together. “It did not fall” is not enough: compare the actual motion with the command.</p></div></details><figcaption>Recorded run. The command, the actual window and the terminal output all come from the same run.</figcaption></figure><details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><p><code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code> reads <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/walk.onnx</span></code> in the container, the official walking model in the host repository's <code class="docutils literal notranslate"><span class="pre">models/</span></code> (read-only); the robot model is <code class="docutils literal notranslate"><span class="pre">lab/assets/microduck_contact.usda</span></code>; <code class="docutils literal notranslate"><span class="pre">report.json</span></code> and <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> go to <code class="docutils literal notranslate"><span class="pre">outputs/final-live-livew</span></code>, given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p>
+</div></details><div class="formula"><div class="formula-label">One statistic for velocity tracking</div><div class="formula-body">\[\htmlData{sym=rmse}{\mathrm{RMSE}_v}=\sqrt{\frac{1}{\htmlData{sym=N}{N}}\sum_{\htmlData{sym=t_idx}{t}=1}^{\htmlData{sym=N}{N}}\htmlData{sym=sqnorm}{\|\htmlData{sym=v_xy}{\mathbf v_{xy,t}}-\htmlData{sym=v_cmd}{\mathbf v_{xy,t}^{\mathrm{cmd}}}\|_2^2}}\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(\mathrm{RMSE}_v\)</dt><dd>Root-mean-square error of horizontal velocity tracking (m/s); smaller means the actual velocity follows the command more closely.</dd></div><div><dt>\(N\)</dt><dd>Number of sampled instants in the statistic.</dd></div><div><dt>\(t\)</dt><dd>Index of a sampled instant.</dd></div><div><dt>\(\|\cdot\|_2^2\)</dt><dd>Squared length of the velocity error vector.</dd></div><div><dt>\(\mathbf v_{xy,t}\)</dt><dd>Actual horizontal body velocity at that instant (m/s).</dd></div><div><dt>\(\mathbf v_{xy,t}^{\mathrm{cmd}}\)</dt><dd>Commanded horizontal velocity at the same instant (m/s).</dd></div></dl></details></div><p>The root-mean-square error summarizes velocity tracking over a period; this section sets no universal pass threshold: first confirm there is no fall, then compare directions and speeds. Foot contact, actuator delay and backlash make joints lag behind their targets, which is why the policy reads a new observation every tick.</p>
+<p>You now know how the policy reads its state and outputs actions, and how the servos and the physics simulation carry them out. Section 3.1 moves from loading a ready-made model to training one: Isaac Lab lets a policy learn to walk through repeated trials.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://github.com/pollen-robotics/microduck" rel="noreferer noopener" target="_blank">Pollen Robotics: Microduck hardware ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab: Microduck task source ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton physics engine ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-play.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2.1 Meet Microduck: play football first</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-learning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3.1 Reinforcement learning and PPO</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assembly">From assembly to components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kinematic-chain">From mechanism to joint control</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-map">Parts, joints, and degrees of freedom</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control">How software moves the mechanism</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frames">Describe motion with frames</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-assembly">Exercise: trace one load path</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-interface">What the policy receives and produces</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-loop">Close the command, action and feedback loop</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

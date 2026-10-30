@@ -1,0 +1,19 @@
+{
+  "status": "completed",
+  "initialization": "checkpoint continuation",
+  "parent_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "seed": 43002,
+  "num_envs": 256,
+  "iterations": 1500,
+  "training_slopes": "pyramids, tan(angle)=0.03..0.22; 25% flat",
+  "evaluation_seeds_excluded": [
+    42001,
+    44001
+  ],
+  "original_weights_modified": false,
+  "initial_actor_max_abs_error": 1.4901161193847656e-07,
+  "parent_checkpoint_sha256": "b90df1bf6d2a1d02ea66a9aeff117d282bf3fdc5efa3ce14e31ddc93b1cc2d57",
+  "refine_heading": true,
+  "latest_checkpoint": "/home/yuki/Documents/course/microduck/outputs/course-eight-chapters-20261022-v4/terrain-heading-02/model_2498.pt",
+  "training_wall_seconds": 585.0435538939782
+}

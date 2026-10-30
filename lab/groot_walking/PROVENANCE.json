@@ -1,0 +1,349 @@
+{
+  "schema": "microduck.groot-walking-port.v1",
+  "purpose": "Course copy of the exact sources that trained (trainer/) and physically evaluated (rollout/) the 8D high-level walking-shot GR00T checkpoint. Only hard-coded checkout paths were replaced by paths relative to this repository; control, data and model logic are unchanged.",
+  "training_entry": "trainer/learning/train_walking_history.py",
+  "evaluation_entry": "rollout/walking_history_head_rollout.py rollout",
+  "checkpoint_sha256_identity": "cbf617a85579c358b697674214d687a8003e7cf988f8afaa438a28e5c094be4a",
+  "files": [
+    {
+      "file": "rollout/kick_head_yaw_candidate.py",
+      "origin": "walking-decision-cadence-proposal/kick_head_yaw_candidate.py",
+      "origin_sha256": "5c63c5a2d2354b39b0a47a97026935d932fe7c1def154d15ca7fc0b8b853dae9",
+      "sha256": "5c63c5a2d2354b39b0a47a97026935d932fe7c1def154d15ca7fc0b8b853dae9",
+      "frozen_in_data50_plan": "5c63c5a2d2354b39b0a47a97026935d932fe7c1def154d15ca7fc0b8b853dae9",
+      "changed_lines": [],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/pending_kick_candidate.py",
+      "origin": "walking-decision-cadence-proposal/pending_kick_candidate.py",
+      "origin_sha256": "370f1843611c3f76b92c9b04dcfd571f9e196af0b76ea0a39ec1b4a5a7b7b4a1",
+      "sha256": "370f1843611c3f76b92c9b04dcfd571f9e196af0b76ea0a39ec1b4a5a7b7b4a1",
+      "frozen_in_data50_plan": "370f1843611c3f76b92c9b04dcfd571f9e196af0b76ea0a39ec1b4a5a7b7b4a1",
+      "changed_lines": [],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_history_head_executor.py",
+      "origin": "walking-decision-cadence-proposal/walking_history_head_executor.py",
+      "origin_sha256": "ebe114d1f0da51889103f47fbfcd0726839378ab69a3a02443a9da942588d170",
+      "sha256": "ebe114d1f0da51889103f47fbfcd0726839378ab69a3a02443a9da942588d170",
+      "frozen_in_data50_plan": "ebe114d1f0da51889103f47fbfcd0726839378ab69a3a02443a9da942588d170",
+      "changed_lines": [],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_history_head_rollout.py",
+      "origin": "walking-decision-cadence-proposal/walking_history_head_rollout.py",
+      "origin_sha256": "b37f1f8e2d578161377567b5cee19c1b50055ef8ddf0410bcb3ff5f00320bbcc",
+      "sha256": "7b6570abc5a1599b50d53f489fc923ada722b184f788580719fe1c6dbc7ae18a",
+      "frozen_in_data50_plan": "b37f1f8e2d578161377567b5cee19c1b50055ef8ddf0410bcb3ff5f00320bbcc",
+      "changed_lines": [
+        "-sys.path.insert(0, '/home/yuki/Documents/course/Microduck-Workshop/scripts')",
+        "-from workshop import ROOT, config, environment, fresh",
+        "+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / 'scripts'))",
+        "+from workshop import LOCAL, ROOT, config, environment, fresh",
+        "-    detector = ROOT / '.local/scene-detector-deployment.json'",
+        "+    detector = LOCAL / 'scene-detector-deployment.json'"
+      ],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_history_head_scene.py",
+      "origin": "walking-decision-cadence-proposal/walking_history_head_scene.py",
+      "origin_sha256": "8ab0b7dddf5edff7e1ce96dd34e2e921647cc8252ae09b8d5de8018b4d3a0c9f",
+      "sha256": "65739f33264680c7c4050552c39243cece6677facbc6b237f6bf96fe389933b0",
+      "frozen_in_data50_plan": "8ab0b7dddf5edff7e1ce96dd34e2e921647cc8252ae09b8d5de8018b4d3a0c9f",
+      "changed_lines": [
+        "-R=Path('/home/yuki/Documents/course/Microduck-Workshop')",
+        "+R=Path(__file__).resolve().parents[3]"
+      ],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_history_packet.py",
+      "origin": "walking-decision-cadence-proposal/walking_history_packet.py",
+      "origin_sha256": "fd768d6a733f0009d003a4fcd7b2c1ab4265e63d3734560a8d8c4487dd717c53",
+      "sha256": "fd768d6a733f0009d003a4fcd7b2c1ab4265e63d3734560a8d8c4487dd717c53",
+      "frozen_in_data50_plan": "fd768d6a733f0009d003a4fcd7b2c1ab4265e63d3734560a8d8c4487dd717c53",
+      "changed_lines": [],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_history_runtime.py",
+      "origin": "walking-decision-cadence-proposal/walking_history_runtime.py",
+      "origin_sha256": "a591b56368621658ab720c9ebe09762db9604b064cfed08ae5330dc5ac161633",
+      "sha256": "a591b56368621658ab720c9ebe09762db9604b064cfed08ae5330dc5ac161633",
+      "frozen_in_data50_plan": "a591b56368621658ab720c9ebe09762db9604b064cfed08ae5330dc5ac161633",
+      "changed_lines": [],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_history_server.py",
+      "origin": "walking-decision-cadence-proposal/walking_history_server.py",
+      "origin_sha256": "dea2a8ede5448ca0a289af66b0b416f6e0c470f7a6723688e69f7bfe36fc5cd0",
+      "sha256": "cf2e7a052b93b958f7a06db6f6e3e5c359ffdbf2c5830d0b5853807e52384f24",
+      "frozen_in_data50_plan": "dea2a8ede5448ca0a289af66b0b416f6e0c470f7a6723688e69f7bfe36fc5cd0",
+      "changed_lines": [
+        "-sys.path[:0]=[str(Path(__file__).resolve().parent), \"/home/yuki/Documents/course/Microduck-Workshop/lab\"]",
+        "+sys.path[:0]=[str(Path(__file__).resolve().parent), str(Path(__file__).resolve().parents[2])]"
+      ],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "rollout/walking_visual_history.py",
+      "origin": "walking-decision-cadence-proposal/walking_visual_history.py",
+      "origin_sha256": "303aefe23410e4399c1f6d22c136488567f4b0287824283bcdbc3862f95c732c",
+      "sha256": "303aefe23410e4399c1f6d22c136488567f4b0287824283bcdbc3862f95c732c",
+      "frozen_in_data50_plan": "303aefe23410e4399c1f6d22c136488567f4b0287824283bcdbc3862f95c732c",
+      "changed_lines": [],
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/__init__.py",
+      "origin": "walking-history-retry-staging/lab/learning/__init__.py",
+      "origin_sha256": "e6c4942d512e103b6a8656086d139966b9e4174ad0e61bf293a0264c438005b0",
+      "sha256": "e6c4942d512e103b6a8656086d139966b9e4174ad0e61bf293a0264c438005b0",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "e6c4942d512e103b6a8656086d139966b9e4174ad0e61bf293a0264c438005b0",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/cosmos_data.py",
+      "origin": "walking-history-retry-staging/lab/learning/cosmos_data.py",
+      "origin_sha256": "3284e2afb0ba7bfcd0b27f8fcb966bb213c3b4c62f8cb6bd74b14cbadbaaa814",
+      "sha256": "3284e2afb0ba7bfcd0b27f8fcb966bb213c3b4c62f8cb6bd74b14cbadbaaa814",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "3284e2afb0ba7bfcd0b27f8fcb966bb213c3b4c62f8cb6bd74b14cbadbaaa814",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/data.py",
+      "origin": "walking-history-retry-staging/lab/learning/data.py",
+      "origin_sha256": "28f49249bfc7f3b31a3bfcff6fbd43925085238224696bf6a050b0f02ee5c2c4",
+      "sha256": "28f49249bfc7f3b31a3bfcff6fbd43925085238224696bf6a050b0f02ee5c2c4",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "28f49249bfc7f3b31a3bfcff6fbd43925085238224696bf6a050b0f02ee5c2c4",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/evaluate.py",
+      "origin": "walking-history-retry-staging/lab/learning/evaluate.py",
+      "origin_sha256": "13c6e7835b29f479d7c90e09bf1c62b9b6a5f5173961d7641e84dfd5dd395ea4",
+      "sha256": "13c6e7835b29f479d7c90e09bf1c62b9b6a5f5173961d7641e84dfd5dd395ea4",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "13c6e7835b29f479d7c90e09bf1c62b9b6a5f5173961d7641e84dfd5dd395ea4",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/history.py",
+      "origin": "walking-history-retry-staging/lab/learning/history.py",
+      "origin_sha256": "68f7e78c8ab129ec116f20ed5be4e16b84b22678bb367e21c6abd7794a067d47",
+      "sha256": "68f7e78c8ab129ec116f20ed5be4e16b84b22678bb367e21c6abd7794a067d47",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "68f7e78c8ab129ec116f20ed5be4e16b84b22678bb367e21c6abd7794a067d47",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/horizon.py",
+      "origin": "walking-history-retry-staging/lab/learning/horizon.py",
+      "origin_sha256": "eacce1761dd54e7e56d75c85a7c36fd5f4003df4ee57868a403a990f217a04b0",
+      "sha256": "eacce1761dd54e7e56d75c85a7c36fd5f4003df4ee57868a403a990f217a04b0",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "eacce1761dd54e7e56d75c85a7c36fd5f4003df4ee57868a403a990f217a04b0",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/initialize.py",
+      "origin": "walking-history-retry-staging/lab/learning/initialize.py",
+      "origin_sha256": "4263cd802667673a1369595244ac4c3c90afcf6cf2493ffd247546f52a222783",
+      "sha256": "4263cd802667673a1369595244ac4c3c90afcf6cf2493ffd247546f52a222783",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "4263cd802667673a1369595244ac4c3c90afcf6cf2493ffd247546f52a222783",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/qualify_expert.py",
+      "origin": "walking-history-retry-staging/lab/learning/qualify_expert.py",
+      "origin_sha256": "3a41508875c89323c10c64397ac5ddb1abf4f229d2f1c84a97bb428f352c085e",
+      "sha256": "3a41508875c89323c10c64397ac5ddb1abf4f229d2f1c84a97bb428f352c085e",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "3a41508875c89323c10c64397ac5ddb1abf4f229d2f1c84a97bb428f352c085e",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/qualify_recovery.py",
+      "origin": "walking-history-retry-staging/lab/learning/qualify_recovery.py",
+      "origin_sha256": "1228285d8a21358b716177834eb6b461bb1d3adf9e9b8844905490239a85fd7f",
+      "sha256": "1228285d8a21358b716177834eb6b461bb1d3adf9e9b8844905490239a85fd7f",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "1228285d8a21358b716177834eb6b461bb1d3adf9e9b8844905490239a85fd7f",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/recovery.py",
+      "origin": "walking-history-retry-staging/lab/learning/recovery.py",
+      "origin_sha256": "270c0ab65f73ded89bb621349813815e95e243c183c474813a2798f4d4ba2d20",
+      "sha256": "270c0ab65f73ded89bb621349813815e95e243c183c474813a2798f4d4ba2d20",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "270c0ab65f73ded89bb621349813815e95e243c183c474813a2798f4d4ba2d20",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/request_mapping.py",
+      "origin": "walking-history-retry-staging/lab/learning/request_mapping.py",
+      "origin_sha256": "6833d56cd197c1491bb11fea70eb33aff4657422c5831d7ef872ab9d13c3913c",
+      "sha256": "6833d56cd197c1491bb11fea70eb33aff4657422c5831d7ef872ab9d13c3913c",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "6833d56cd197c1491bb11fea70eb33aff4657422c5831d7ef872ab9d13c3913c",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/review.py",
+      "origin": "walking-history-retry-staging/lab/learning/review.py",
+      "origin_sha256": "b5253f3084e4b4a19d1a2f8aa847361287217ea581c55f5afb0276c167855310",
+      "sha256": "b5253f3084e4b4a19d1a2f8aa847361287217ea581c55f5afb0276c167855310",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "b5253f3084e4b4a19d1a2f8aa847361287217ea581c55f5afb0276c167855310",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/runtime.py",
+      "origin": "walking-history-retry-staging/lab/learning/runtime.py",
+      "origin_sha256": "7813f795ef0004387a6fa0af292562b0d15d3e2c1648aaec19c9a8a7ffba941e",
+      "sha256": "7813f795ef0004387a6fa0af292562b0d15d3e2c1648aaec19c9a8a7ffba941e",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "7813f795ef0004387a6fa0af292562b0d15d3e2c1648aaec19c9a8a7ffba941e",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/server.py",
+      "origin": "walking-history-retry-staging/lab/learning/server.py",
+      "origin_sha256": "9e28046ae234afa67e993b3d0fcca6f34d7079848d563127b8e3f36906667f71",
+      "sha256": "9e28046ae234afa67e993b3d0fcca6f34d7079848d563127b8e3f36906667f71",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "9e28046ae234afa67e993b3d0fcca6f34d7079848d563127b8e3f36906667f71",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/train_cached.py",
+      "origin": "walking-history-retry-staging/lab/learning/train_cached.py",
+      "origin_sha256": "09a01ca50c52169396d9670fe840173f3e97a33857f62e30464721752728bd1d",
+      "sha256": "09a01ca50c52169396d9670fe840173f3e97a33857f62e30464721752728bd1d",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "09a01ca50c52169396d9670fe840173f3e97a33857f62e30464721752728bd1d",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/train_walking_history.py",
+      "origin": "walking-history-retry-staging/lab/learning/train_walking_history.py",
+      "origin_sha256": "764eabaa34c540ad148be89a61f21b2cc9039d43eb893cd8ab1b411c0109cf70",
+      "sha256": "764eabaa34c540ad148be89a61f21b2cc9039d43eb893cd8ab1b411c0109cf70",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "764eabaa34c540ad148be89a61f21b2cc9039d43eb893cd8ab1b411c0109cf70",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/training_recipe.py",
+      "origin": "walking-history-retry-staging/lab/learning/training_recipe.py",
+      "origin_sha256": "3402de3e7688fff5d99efb9e5d18bf68c12b8cc54cf13fb47a885a67d7623ae2",
+      "sha256": "3402de3e7688fff5d99efb9e5d18bf68c12b8cc54cf13fb47a885a67d7623ae2",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "3402de3e7688fff5d99efb9e5d18bf68c12b8cc54cf13fb47a885a67d7623ae2",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/verified_training_artifacts.py",
+      "origin": "walking-history-retry-staging/lab/learning/verified_training_artifacts.py",
+      "origin_sha256": "e79840280adae23c912beab69d259e72044849800973d2f65b6cc83e223ee4e4",
+      "sha256": "e79840280adae23c912beab69d259e72044849800973d2f65b6cc83e223ee4e4",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "e79840280adae23c912beab69d259e72044849800973d2f65b6cc83e223ee4e4",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking.py",
+      "origin_sha256": "ea07c5b27faba2bf6adb5acc6ccbdde092688921ed2b28239b5d3724273d273d",
+      "sha256": "ea07c5b27faba2bf6adb5acc6ccbdde092688921ed2b28239b5d3724273d273d",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "ea07c5b27faba2bf6adb5acc6ccbdde092688921ed2b28239b5d3724273d273d",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking_data.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking_data.py",
+      "origin_sha256": "4d2b3cf19cc0d9a19c9eeb7af13cb2938a1906a8a3f696b6a0d41bdb9b7d00e8",
+      "sha256": "4d2b3cf19cc0d9a19c9eeb7af13cb2938a1906a8a3f696b6a0d41bdb9b7d00e8",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "4d2b3cf19cc0d9a19c9eeb7af13cb2938a1906a8a3f696b6a0d41bdb9b7d00e8",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking_history_data.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking_history_data.py",
+      "origin_sha256": "eb532820c59f675741f6f3e4402c1071fb9cb83b2b27bdcf8acb9cbeb6f71c9f",
+      "sha256": "eb532820c59f675741f6f3e4402c1071fb9cb83b2b27bdcf8acb9cbeb6f71c9f",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "eb532820c59f675741f6f3e4402c1071fb9cb83b2b27bdcf8acb9cbeb6f71c9f",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking_history_initialize.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking_history_initialize.py",
+      "origin_sha256": "a92c44473a4380895552fe23ca8dc3004717aa878b9a7552dd09085b7f7b04c5",
+      "sha256": "a92c44473a4380895552fe23ca8dc3004717aa878b9a7552dd09085b7f7b04c5",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "a92c44473a4380895552fe23ca8dc3004717aa878b9a7552dd09085b7f7b04c5",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking_phase_sampling.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking_phase_sampling.py",
+      "origin_sha256": "0e5a832d9c92940141e028783867b9e7661e1a1e4a60d85186f19f060d1e80b5",
+      "sha256": "0e5a832d9c92940141e028783867b9e7661e1a1e4a60d85186f19f060d1e80b5",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "0e5a832d9c92940141e028783867b9e7661e1a1e4a60d85186f19f060d1e80b5",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking_runtime.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking_runtime.py",
+      "origin_sha256": "db217b5153384d0bf8b3a7deae6a079b9afddef778c00f8c4862c54e32c4ca99",
+      "sha256": "db217b5153384d0bf8b3a7deae6a079b9afddef778c00f8c4862c54e32c4ca99",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "db217b5153384d0bf8b3a7deae6a079b9afddef778c00f8c4862c54e32c4ca99",
+      "origin_matches_data50_plan": true
+    },
+    {
+      "file": "trainer/learning/walking_visual_history.py",
+      "origin": "walking-history-retry-staging/lab/learning/walking_visual_history.py",
+      "origin_sha256": "d0596f26c94a222fe9642aa791b2593bc2288a8ef6f08f40b8ae5ede2b06e84f",
+      "sha256": "d0596f26c94a222fe9642aa791b2593bc2288a8ef6f08f40b8ae5ede2b06e84f",
+      "changed_lines": [],
+      "frozen_in_data50_plan": "d0596f26c94a222fe9642aa791b2593bc2288a8ef6f08f40b8ae5ede2b06e84f",
+      "origin_matches_data50_plan": true
+    }
+  ],
+  "note": "origin_sha256 equals the digest frozen in the data50 training/evaluation plan wherever that plan lists the file.",
+  "course_additions": {
+    "note": "Added for the course; not sources of the course checkpoint. train_walking_history.py above stays the training of record.",
+    "files": [
+      {
+        "file": "trainer/learning/train_walking_history_lowmem.py",
+        "sha256": "6478f819ce6cea358cfbfb8aaba5dbfaab0260b18b83c684da8968f1cc273c09",
+        "role": "low-memory variant of the same recipe: same 16 sampled rows per update split into micro-batches with mask-weighted gradient accumulation, single-tensor AdamW, streamed checkpoints; produces a new model, not a bitwise repeat"
+      },
+      {
+        "file": "trainer/learning/lowmem_artifacts.py",
+        "sha256": "ed18847918177165c68c9a88a61b65bf9a1c3ee5c70658c971c7809534430bd7",
+        "role": "streamed safetensors writers, training-state save/compare and micro-batch weights for the low-memory variant"
+      },
+      {
+        "file": "trainer/learning/local_cache_manifest.py",
+        "sha256": "ebd233e18d30c862126102eb33073c9695ad3748fae364dfad7cfce245856453",
+        "role": "records a feature cache recomputed on this machine so later runs reuse it under the unchanged cache checks"
+      }
+    ]
+  }
+}

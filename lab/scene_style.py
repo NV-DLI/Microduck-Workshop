@@ -5,6 +5,27 @@ import math
 
 ASSETS = Path(__file__).parent / "assets"
 
+LIGHTING_PROFILES = {
+    "daylight": {
+        "sky_intensity": 350.0,
+        "sky_color": (0.84, 0.90, 1.0),
+        "key_intensity": 700.0,
+        "key_color": (1.0, 0.94, 0.85),
+    },
+    "warm": {
+        "sky_intensity": 300.0,
+        "sky_color": (1.0, 0.86, 0.70),
+        "key_intensity": 650.0,
+        "key_color": (1.0, 0.80, 0.60),
+    },
+    "cool-dim": {
+        "sky_intensity": 220.0,
+        "sky_color": (0.72, 0.84, 1.0),
+        "key_intensity": 450.0,
+        "key_color": (0.86, 0.92, 1.0),
+    },
+}
+
 
 def apply_surface_style(env, env_ids):
     """Replace the stock checker texture on the visible room floor."""
@@ -27,7 +48,7 @@ def apply_surface_style(env, env_ids):
             )
 
 
-def configure_lighting(cfg):
+def configure_lighting(cfg, profile="daylight"):
     import isaaclab.sim as sim_utils
     from isaaclab.assets import AssetBaseCfg
     from isaaclab.managers import EventTermCfg
@@ -36,12 +57,15 @@ def configure_lighting(cfg):
         func=apply_surface_style, mode="prestartup"
     )
 
-    cfg.scene.sky_light.spawn.intensity = 350.0
-    cfg.scene.sky_light.spawn.color = (0.84, 0.90, 1.0)
+    lighting = LIGHTING_PROFILES[profile]
+    cfg.scene.sky_light.spawn.intensity = lighting["sky_intensity"]
+    cfg.scene.sky_light.spawn.color = lighting["sky_color"]
     cfg.scene.key_light = AssetBaseCfg(
         prim_path="/World/CourseKey",
         spawn=sim_utils.DistantLightCfg(
-            intensity=700.0, angle=8.0, color=(1.0, 0.94, 0.85)
+            intensity=lighting["key_intensity"],
+            angle=8.0,
+            color=lighting["key_color"],
         ),
         init_state=AssetBaseCfg.InitialStateCfg(
             rot=(0.0, math.sin(math.pi / 8), 0.0, math.cos(math.pi / 8))
@@ -53,7 +77,7 @@ def configure_lighting(cfg):
     )
 
 
-def configure_football(cfg, *, style="A", goal_x=0.68):
+def configure_football(cfg, *, style="A", goal_x=0.68, lighting="daylight"):
     """A rigid, flat mat and secured steel goal; no fabric/foam deformation model.
 
     The existing Newton plane is the mat's contact surface at z=0. The mat's
@@ -65,7 +89,7 @@ def configure_football(cfg, *, style="A", goal_x=0.68):
 
     if style not in ("A", "B", "C", "D"):
         raise ValueError("Mat style must be A, B, C, or D")
-    configure_lighting(cfg)
+    configure_lighting(cfg, lighting)
     # Official browser sphere: diameter 10 cm, mass 30 g.
     cfg.scene.ball.spawn = sim_utils.UsdFileCfg(
         usd_path=str(ASSETS / "official_ball.usda"),
@@ -86,7 +110,7 @@ def configure_football(cfg, *, style="A", goal_x=0.68):
         spawn=sim_utils.UsdFileCfg(usd_path=str(ASSETS / "steel_goal.usda")),
         init_state=AssetBaseCfg.InitialStateCfg(pos=(goal_x, 0.0, 0.0)),
     )
-    return {
+    profile = {
         "profile": "indoor-trapezoid-official-ball-v2",
         "mat_style": style,
         "surface_name": {
@@ -125,3 +149,8 @@ def configure_football(cfg, *, style="A", goal_x=0.68):
         ],
         "rendering": "Isaac RTX, shared daylight, official CAD",
     }
+    if lighting != "daylight":
+        profile["lighting"] = lighting
+        profile["lighting_parameters"] = LIGHTING_PROFILES[lighting].copy()
+        profile["rendering"] = f"Isaac RTX, shared {lighting} lighting, official CAD"
+    return profile

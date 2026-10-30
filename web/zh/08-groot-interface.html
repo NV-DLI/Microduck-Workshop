@@ -1,0 +1,785 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="步行射门中 GR00T 读什么、输出哪 8 个高层请求、由谁执行；为什么只后训练动作头、不直接输出关节角；示范数据怎样设计；以及真机上为什么要在工作站上推理。" name="description" />
+
+  <title>4.2 步行射门：GR00T 的输入、输出与数据 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-interface';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="4.3 训练与验证 GR00T 步行射门" href="08-groot-lab.html" />
+    <link rel="prev" title="4.1 视觉-语言-动作模型与 GR00T" href="07-groot.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="08-groot-interface">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/08-groot-interface.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/08-groot-interface.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/08-groot-interface.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/08-groot-interface.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.2 步行射门：GR00T 的输入、输出与数据</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="gr00t">
+<h1>4.2 步行射门：GR00T 的输入、输出与数据<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>步行射门中 GR00T 读什么、输出哪 8 个高层请求、由谁执行；为什么只后训练动作头、不直接输出关节角；示范数据怎样设计；以及真机上为什么要在工作站上推理。</p>
+</div><div class="lesson-meta">第 4.2 节 · 预计学习时长 60 分钟</div></div></div><script type="application/json" class="course-symbols">{"H": {"tex": "H", "text": "一次预测的高层请求步数；本节为 16。"}, "K": {"tex": "K", "text": "每次预测后实际执行的请求步数；本节为 4。"}, "T_exec": {"tex": "T_{\\mathrm{execute}}", "text": "执行一段请求覆盖的仿真时长；本节为 4 ÷ 12.5 Hz = 0.32 秒，不含推理和通信耗时。"}, "f_action": {"tex": "f_{\\mathrm{action}}", "text": "高层请求的记录与执行频率；本节为 12.5 Hz。"}, "k_round": {"tex": "k", "text": "轮次编号：GR00T 中一轮是一次新预测及其执行，机载策略中一轮是一次传感器采集及其决策；$k-1$ 为上一轮，$k+1$ 为下一轮。"}}</script><section id="task">
+<h2>一个球场、一种走法、一条指令<a class="headerlink" href="#task" title="Link to this heading">#</a></h2>
+<p>本章的 GR00T 只做一件事：在课程统一使用的绿色足球场上，用普通脚掌走到球前，用右脚把球踢进球门，然后恢复站立。场地、球门、足球和光照与机载策略（Onboard）使用的完全相同，模型只控制步行，不切换轮滑。</p>
+<p>模型收到的任务指令始终是同一句英文：</p>
+<p><q>Walk to the football, kick it into the goal with the right foot, and recover to standing.</q></p>
+<p>意思是“走向足球，用右脚把球踢进球门，然后恢复站立”。指令里没有写球的位置，也没有写站在哪里出脚；机器人要从相机画面和身体状态中判断该怎样做。因为所有示范都使用这一条指令，模型学到的是这一个任务，不能据此推断它能听懂别的指令。</p>
+</section>
+<section id="reuse-skills">
+<h2>分层控制：GR00T 决定做什么，已有技能负责怎样做<a class="headerlink" href="#reuse-skills" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-24f8c5b9d0"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="模型学习如何使用技能，技能负责落实运动"><svg class="learning-svg" viewBox="0 0 900 194" role="group" aria-labelledby="learn-24f8c5b9d0-title"><title id="learn-24f8c5b9d0-title">模型学习如何使用技能，技能负责落实运动</title><defs><marker id="learn-24f8c5b9d0-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-24f8c5b9d0-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-24f8c5b9d0-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-24f8c5b9d0-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M786.0 134V170H114.0V134" marker-end="url(#learn-24f8c5b9d0-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 观察与目标" aria-controls="learn-24f8c5b9d0-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">观察与目标</text><text x="114.0" y="98" class="learning-node-subtitle">4 帧图像、127 维</text><text x="114.0" y="115" class="learning-node-subtitle">状态、任务指令</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. GR00T" aria-controls="learn-24f8c5b9d0-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">GR00T</text><text x="338.0" y="98" class="learning-node-subtitle">预测 8 维高层请求</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 技能执行层" aria-controls="learn-24f8c5b9d0-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">技能执行层</text><text x="562.0" y="98" class="learning-node-subtitle">行走 / 视线</text><text x="562.0" y="115" class="learning-node-subtitle">/ 踢球与恢复</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 机器人与反馈" aria-controls="learn-24f8c5b9d0-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">机器人与反馈</text><text x="786.0" y="98" class="learning-node-subtitle">关节运动，重新观察</text></g></svg></div><div class="learning-details" aria-label="模型学习如何使用技能，技能负责落实运动"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-24f8c5b9d0-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>观察与目标</h3><p>每 80 ms 整理一次观察：同一台机载相机的 4 张历史画面、当前与过去的身体状态，以及固定的任务指令。不包含球或球门的仿真世界坐标，也不包含机载策略内部的任务阶段。</p></article><article id="learn-24f8c5b9d0-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>GR00T</h3><p>GR00T 输出一段 16 × 8 的请求：每一步包含前进、横移、转向 3 个移动请求，颈部与头部 4 个视线请求，以及 1 个右脚踢球请求。</p></article><article id="learn-24f8c5b9d0-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>技能执行层</h3><p>官方行走策略把移动请求转换成关节动作并维持平衡；头部请求经过限幅和变化速率限制；踢球请求超过阈值后，由执行层检查停稳和姿态，再运行课程的局部踢球与恢复技能。</p></article><article id="learn-24f8c5b9d0-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>机器人与反馈</h3><p>底层以 50 Hz 持续控制关节，新的图像与身体状态用于下一次预测。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>这样分层，前面章节学到的技能仍是完成任务的基础：官方行走策略与 3.2 节训练的是同一类强化学习策略；踢球与恢复由课程的局部技能负责，它组合了参考踢球与站立策略、课程训练的残差修正以及恢复逻辑。GR00T 学的是“什么时候往哪走、往哪看、什么时候出脚”，而不是重新学习怎样站稳。</p>
+</section>
+<section id="inputs">
+<h2>GR00T 每次读入什么<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>输入</p></th>
+<th class="head cell-short"><p>结构</p></th>
+<th class="head cell-short"><p>说明</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>相机历史</p></td>
+<td><p>4 张 RGB 图像，每张 270 × 480</p></td>
+<td><p>同一台机载相机的当前帧，以及约 1.92、3.84、5.76 秒前的帧（以 12.5 Hz 计，相隔 24、48、72 个采样）。</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>任务指令</p></td>
+<td class="cell-short"><p>文本</p></td>
+<td><p>上面那句固定的英文指令。</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>当前状态</p></td>
+<td class="cell-short"><p>58 维</p></td>
+<td><p>机身角速度与重力方向 6；14 个关节相对默认姿态的位置 14；关节速度 14；上一次发给电机的动作 14；上一次的 8 维高层请求 8；踢球技能的忙碌标志与进度 2。</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>历史状态摘要</p></td>
+<td class="cell-short"><p>3 × 23 = 69 维</p></td>
+<td><p>与三张过去图像对应，每组包含机身角速度与重力方向 6、头颈 4 个关节的位置 4、当时的上一高层请求 8、距今时间 1、积分摘要 4。</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>完整数值状态</p></td>
+<td><p>58 + 69 = 127 维</p></td>
+<td><p>与图像和文本分开编码。</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>有几处容易误解：</p>
+<ul class="simple">
+<li><p>积分摘要由测得的竖直角速度和请求值累加而成。请求的积分只是“这段时间要求走了多少”，不是测得的位移或位置。</p></li>
+<li><p>上一次电机动作与上一次高层请求是两回事：前者是底层实际发出的关节动作，后者是 GR00T 在上一个 80 ms 采样时刻提出的请求。请求可能被稳定条件或头部变化速率限制推迟，提出请求不等于动作已经完成。第一次决策之前，上一请求为零。</p></li>
+<li><p>回合刚开始、还没有足够历史时，用回合内第一次观测补齐过去的图像和状态。</p></li>
+<li><p>127 维里没有球或球门的仿真坐标。踢球技能的忙碌标志和进度来自执行器本身，真机上也能维护。</p></li>
+</ul>
+</section>
+<section id="outputs">
+<h2>8 维高层请求：是什么、什么单位、谁来执行<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h2>
+<p>每个预测步输出 8 个数，顺序固定。执行端先把每个数限制在下表的范围内，再交给对应的模块。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>序号</p></th>
+<th class="head cell-short"><p>请求</p></th>
+<th class="head cell-short"><p>范围</p></th>
+<th class="head cell-short"><p>单位</p></th>
+<th class="head cell-short"><p>谁来执行</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>1</p></td>
+<td class="cell-short"><p>前进</p></td>
+<td class="cell-short"><p>−0.35 ～ 0.35</p></td>
+<td><p>行走策略原生指令值</p></td>
+<td><p>官方行走策略，结合身体反馈生成 14 个关节动作</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>2</p></td>
+<td class="cell-short"><p>横移</p></td>
+<td class="cell-short"><p>−0.20 ～ 0.20</p></td>
+<td><p>行走策略原生指令值</p></td>
+<td class="cell-short"><p>同上</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>3</p></td>
+<td class="cell-short"><p>转向</p></td>
+<td class="cell-short"><p>−0.80 ～ 0.80</p></td>
+<td><p>行走策略原生指令值</p></td>
+<td class="cell-short"><p>同上</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>4</p></td>
+<td class="cell-short"><p>颈部俯仰</p></td>
+<td class="cell-short"><p>−1.10 ～ 1.10</p></td>
+<td><p>弧度，相对中性位</p></td>
+<td><p>头部适配器限幅并限制变化速率后交给底层</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>5</p></td>
+<td class="cell-short"><p>头部俯仰</p></td>
+<td class="cell-short"><p>−1.10 ～ 1.10</p></td>
+<td><p>弧度，相对中性位</p></td>
+<td class="cell-short"><p>同上</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>6</p></td>
+<td class="cell-short"><p>头部偏航</p></td>
+<td class="cell-short"><p>−1.40 ～ 1.40</p></td>
+<td><p>弧度，相对中性位</p></td>
+<td class="cell-short"><p>同上</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>7</p></td>
+<td class="cell-short"><p>头部侧倾</p></td>
+<td class="cell-short"><p>−0.31 ～ 0.31</p></td>
+<td><p>弧度，相对中性位</p></td>
+<td class="cell-short"><p>同上</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>8</p></td>
+<td class="cell-short"><p>右脚踢球</p></td>
+<td class="cell-short"><p>0 ～ 1</p></td>
+<td class="cell-short"><p>触发请求</p></td>
+<td><p>超过 0.5 时，执行层先确认停稳、头部回正，再运行约 4 秒的局部踢球与恢复技能</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>前三个数直接写入官方行走策略的指令输入，是策略自己的原生数值，不是测得的速度：机器人实际走多快，还取决于步态、地面和身体状态，所以不要把它们读成 m/s 或 rad/s。踢球值也不是脚的关节角或成功概率，只是“现在请求出脚”的信号；踢球技能是否正在进行、进行到哪一步，会通过状态里的忙碌标志和进度反馈给模型。</p>
+</section>
+<section id="why-high-level">
+<h2>为什么不让 GR00T 直接输出关节角<a class="headerlink" href="#why-high-level" title="Link to this heading">#</a></h2>
+<p>Microduck 的行走策略每 20 ms（50 Hz）就要根据身体反馈更新一次 14 个关节的动作，才能在迈步时保持平衡。GR00T 完成一次新推理，在本课的仿真记录中服务端计算的中位数就约 0.33 秒，相当于底层控制器的 16 拍以上。如果让 GR00T 直接输出关节角，它要么跟不上平衡所需的节拍，要么必须把平衡和接触细节也一并学会；这需要多得多的示范，而且很难从示范中学到。</p>
+<p>分层后，各自做擅长的事：</p>
+<ul class="simple">
+<li><p>已经用强化学习训练好、以 50 Hz 运行的行走与踢球技能，继续负责平衡、迈步和接触；</p></li>
+<li><p>GR00T 处理需要“看懂场景”的部分：球在哪个方向、离得多远、该不该低头确认、什么时候适合出脚；</p></li>
+<li><p>高层请求的含义直观、维度小，示范更容易记录，也更容易检查对错。</p></li>
+</ul>
+<p>代价是 GR00T 的能力受限于下面技能的能力：行走策略做不到的动作，高层请求也要求不来。</p>
+<p>动作块让这种分工在时间上衔接起来。GR00T 每次预测 <span class="math notranslate nohighlight">\(\htmlData{sym=H}{H}\)</span> = 16 步请求，执行端只执行前 <span class="math notranslate nohighlight">\(\htmlData{sym=K}{K}\)</span> = 4 步，然后用新的观察重新预测：</p>
+<div class="formula"><div class="formula-label">一段请求覆盖的仿真时长</div><div class="formula-body">\[\htmlData{sym=T_exec}{T_{\mathrm{execute}}} = \htmlData{sym=K}{K} / \htmlData{sym=f_action}{f_{\mathrm{action}}}\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(T_{\mathrm{execute}}\)</dt><dd>执行一段请求覆盖的仿真时长；本节为 4 ÷ 12.5 Hz = 0.32 秒，不含推理和通信耗时。</dd></div><div><dt>\(K\)</dt><dd>每次预测后实际执行的请求步数；本节为 4。</dd></div><div><dt>\(f_{\mathrm{action}}\)</dt><dd>高层请求的记录与执行频率；本节为 12.5 Hz。</dd></div></dl></details></div><p>以 <span class="math notranslate nohighlight">\(\htmlData{sym=f_action}{f_{\mathrm{action}}}\)</span> = 12.5 Hz 计，4 步对应 0.32 秒仿真时间，期间每条请求保持 80 ms，底层行走策略在每条请求下更新 4 次。这 0.32 秒只是仿真时间，不包含推理和通信的等待。</p>
+</section>
+<section id="timing">
+<h2>控制周期：各模块多久更新一次<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
+<p>下面的图取自本课已完成的步行射门仿真记录，连续展示上一轮、当前轮和下一轮，比较机载策略与 GR00T 中各个模块按什么顺序、多久更新一次。播放时可以跟着颜色看每一轮的输入从哪里来、命令由哪一轮产生。</p>
+<figure class="course-chart seq-timing" data-seq-timing data-config='{&quot;replay&quot;: {&quot;groot&quot;: 15000, &quot;onboard&quot;: 9000}}'><div class="chart-header"><h3>控制周期：从观察到动作</h3><span>步行射门 · 真实仿真记录中的连续三轮</span></div><div class="timing-modes" role="radiogroup" aria-label="控制方式"><button type="button" role="radio" aria-checked="true" data-mode="onboard">机载策略</button><button type="button" role="radio" aria-checked="false" data-mode="groot">GR00T</button></div><div class="seq-board" data-board="onboard"><ul class="seq-legend"><li>竖线：一次传感器采集</li><li>◆ 处理事件：在仿真暂停时完成，下方为实测耗时，不按横轴比例</li><li>短竖条：底层动作策略更新一次</li><li>颜色：所属轮次；灰色：已被新一轮取代；虚框：尚未发生</li></ul><div class="seq-stage"><div class="seq-row seq-head" data-row="head"><div class="seq-label"><strong></strong></div><div class="seq-track"><span class="seq-item seq-round" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.35000" data-x="0.35000" data-round="0"><span class="seq-text">\(\htmlData{sym=k_round}{k}-1\) 上一轮</span></span><span class="seq-item seq-round" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.67500" data-x="0.67500" data-round="1"><span class="seq-text">\(\htmlData{sym=k_round}{k}\) 当前轮</span></span><span class="seq-item seq-round" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="1.00000" data-x="1.00000" data-round="2"><span class="seq-text">\(\htmlData{sym=k_round}{k}+1\) 下一轮</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="sens"><div class="seq-label"><strong>传感器采集</strong><small>RGB + ToF · 15 Hz，约每 67 ms</small></div><div class="seq-track"><span class="seq-item is-capture" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0" title="RGB 与 ToF 在同一次仿真采集中更新，时间戳相同"></span><span class="seq-item is-mark-label" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><span class="seq-text">RGB + ToF</span></span><span class="seq-item is-capture" style="left:35.000%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1" title="RGB 与 ToF 在同一次仿真采集中更新，时间戳相同"></span><span class="seq-item is-mark-label" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><span class="seq-text">RGB + ToF</span></span><span class="seq-item is-capture" style="left:67.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2" title="RGB 与 ToF 在同一次仿真采集中更新，时间戳相同"></span><span class="seq-item is-mark-label" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><span class="seq-text">RGB + ToF</span></span><span class="seq-item is-capture is-next" style="left:100.000%" data-t0="1.00000" data-t1="1.00000" data-x="2.00000" title="再下一轮的传感器采集"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="dec"><div class="seq-label"><strong>机载决策</strong><small>每次采集后一次 ◆</small></div><div class="seq-track"><span class="seq-item is-event" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0" title="机载策略处理这次采集：检测调用 40.2 ms（含图像编码与本地通信），几何、导航、视线与安全保护 70.1 ms，合计 110.4 ms（主机实测，从传感器数据就绪到命令就绪，不含传感器采集；处理期间仿真时间不推进）"></span><span class="seq-item is-mark-label" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><span class="seq-text">检测 · 几何 · 决策<small>实测 110.4 ms</small></span></span><span class="seq-item is-event" style="left:35.000%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1" title="机载策略处理这次采集：检测调用 36.9 ms（含图像编码与本地通信），几何、导航、视线与安全保护 229.2 ms，合计 266.2 ms（主机实测，从传感器数据就绪到命令就绪，不含传感器采集；处理期间仿真时间不推进）"></span><span class="seq-item is-mark-label" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><span class="seq-text">检测 · 几何 · 决策<small>实测 266.2 ms</small></span></span><span class="seq-item is-event" style="left:67.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2" title="机载策略处理这次采集：检测调用 58.1 ms（含图像编码与本地通信），几何、导航、视线与安全保护 90.2 ms，合计 148.4 ms（主机实测，从传感器数据就绪到命令就绪，不含传感器采集；处理期间仿真时间不推进）"></span><span class="seq-item is-mark-label" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><span class="seq-text">检测 · 几何 · 决策<small>实测 148.4 ms</small></span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="cmd"><div class="seq-label"><strong>高层命令</strong><small>沿用到下一次决策</small></div><div class="seq-track"><span class="seq-item is-command" style="left:0.000%;width:35.000%" data-t0="0.00000" data-t1="0.35000" data-x="0.35000" data-round="0" data-say="上一轮：传感器同时采集 RGB 与 ToF → 仿真暂停，机载策略做检测、几何、导航与视线决策，实测 110.4 ms → 本轮高层命令沿用到下一次决策；这期间底层动作策略更新 4 次。" data-status="frame"><span class="seq-text">执行第 \(\htmlData{sym=k_round}{k}-1\) 轮命令</span></span><span class="seq-item is-command" style="left:35.000%;width:32.500%" data-t0="0.35000" data-t1="0.67500" data-x="0.67500" data-round="1" data-say="当前轮：传感器同时采集 RGB 与 ToF → 仿真暂停，机载策略做检测、几何、导航与视线决策，实测 266.2 ms → 本轮高层命令沿用到下一次决策；这期间底层动作策略更新 3 次。" data-status="frame"><span class="seq-text">执行第 \(\htmlData{sym=k_round}{k}\) 轮命令</span></span><span class="seq-item is-command" style="left:67.500%;width:32.500%" data-t0="0.67500" data-t1="1.00000" data-x="1.00000" data-round="2" data-say="下一轮：传感器同时采集 RGB 与 ToF → 仿真暂停，机载策略做检测、几何、导航与视线决策，实测 148.4 ms → 本轮高层命令沿用到下一次决策；这期间底层动作策略更新 3 次。" data-status="frame"><span class="seq-text">执行第 \(\htmlData{sym=k_round}{k}+1\) 轮命令</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="act"><div class="seq-label"><strong>底层动作策略</strong><small>50 Hz · 每 20 ms</small></div><div class="seq-track"><span class="seq-item is-tick" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:10.000%" data-t0="0.10000" data-t1="0.11200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:20.000%" data-t0="0.20000" data-t1="0.21200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:30.000%" data-t0="0.30000" data-t1="0.31200" data-x="0.35000" data-round="0"></span><span class="seq-item is-tick" style="left:40.000%" data-t0="0.40000" data-t1="0.41200" data-x="0.67500" data-round="1"></span><span class="seq-item is-tick" style="left:50.000%" data-t0="0.50000" data-t1="0.51200" data-x="0.67500" data-round="1"></span><span class="seq-item is-tick" style="left:60.000%" data-t0="0.60000" data-t1="0.61200" data-x="0.67500" data-round="1"></span><span class="seq-item is-tick" style="left:70.000%" data-t0="0.70000" data-t1="0.71200" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:80.000%" data-t0="0.80000" data-t1="0.81200" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:90.000%" data-t0="0.90000" data-t1="0.91200" data-x="1.00000" data-round="2"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><svg class="seq-links" aria-hidden="true"><g class="seq-link" data-from="sens" data-to="dec" data-x1="0.00000" data-x2="0.00000" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="dec" data-to="cmd" data-x1="0.00000" data-x2="0.00000" data-t0="0.00000" data-t1="0.01200" data-x="0.35000" data-round="0"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="sens" data-to="dec" data-x1="0.35000" data-x2="0.35000" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="dec" data-to="cmd" data-x1="0.35000" data-x2="0.35000" data-t0="0.35000" data-t1="0.36200" data-x="0.67500" data-round="1"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="sens" data-to="dec" data-x1="0.67500" data-x2="0.67500" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="dec" data-to="cmd" data-x1="0.67500" data-x2="0.67500" data-t0="0.67500" data-t1="0.68700" data-x="1.00000" data-round="2"><path class="seq-link-line"/><path class="seq-link-head"/></g></svg></div><p class="seq-note">横轴按仿真时间等比例绘制，处理耗时不占横轴。15 Hz 采集在 5 ms 物理步长上取整，所以相邻采集相隔 65 或 70 ms（本段为 70、65、65 ms）；按运行记录，三轮命令分别被底层动作策略使用 4、3、3 次。</p></div><div class="seq-board" data-board="groot" hidden><ul class="seq-legend"><li>竖线：一次相机采集（亮色＝被新推理读取的最新帧）</li><li>短竖条：底层动作策略更新一次</li><li>斜线：仿真暂停（新推理或取缓存命令）</li><li>颜色：所属轮次；灰色：当前步骤已不再使用；虚框：尚未发生</li></ul><div class="seq-stage"><div class="seq-row seq-head" data-row="head"><div class="seq-label"><strong></strong></div><div class="seq-track"><span class="seq-item seq-round" style="left:0.000%;width:33.333%" data-t0="0.00000" data-t1="0.33333" data-x="0.33333" data-round="0"><span class="seq-text">\(\htmlData{sym=k_round}{k}-1\) 上一轮</span></span><span class="seq-item seq-round" style="left:33.333%;width:33.333%" data-t0="0.33333" data-t1="0.66667" data-x="0.66667" data-round="1"><span class="seq-text">\(\htmlData{sym=k_round}{k}\) 当前轮</span></span><span class="seq-item seq-round" style="left:66.667%;width:33.333%" data-t0="0.66667" data-t1="1.00000" data-x="1.00000" data-round="2"><span class="seq-text">\(\htmlData{sym=k_round}{k}+1\) 下一轮</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row seq-phases" data-row="phase"><div class="seq-label"><strong>阶段</strong></div><div class="seq-track"><span class="seq-item seq-phase is-infer" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.12000" data-round="0" data-status="infer"><span class="seq-text">新推理<br>326.5 ms</span></span><span class="seq-item seq-phase" style="left:12.000%;width:21.333%" data-t0="0.12000" data-t1="0.33333" data-x="0.33333" data-round="0"><span class="seq-text">执行 4 条命令<br>320 ms 仿真</span></span><span class="seq-item seq-phase is-infer" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.45333" data-round="1" data-status="infer"><span class="seq-text">新推理<br>323.5 ms</span></span><span class="seq-item seq-phase" style="left:45.333%;width:21.333%" data-t0="0.45333" data-t1="0.66667" data-x="0.66667" data-round="1"><span class="seq-text">执行 4 条命令<br>320 ms 仿真</span></span><span class="seq-item seq-phase is-infer" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="0.78667" data-round="2" data-status="infer"><span class="seq-text">新推理<br>333.9 ms</span></span><span class="seq-item seq-phase" style="left:78.667%;width:21.333%" data-t0="0.78667" data-t1="1.00000" data-x="1.00000" data-round="2"><span class="seq-text">执行 4 条命令<br>320 ms 仿真</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="cam"><div class="seq-label"><strong>相机采集</strong><small>RGB · 15 Hz，约每 67 ms</small></div><div class="seq-track"><span class="seq-item is-pause" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.12000" data-round="0"><span class="seq-text">暂停</span></span><span class="seq-item is-pause" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.45333" data-round="1"><span class="seq-text">暂停</span></span><span class="seq-item is-pause" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="0.78667" data-round="2"><span class="seq-text">暂停</span></span><span class="seq-item is-capture" style="left:13.766%" data-t0="0.13766" data-t1="0.14966" data-x="0.18424" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:18.424%" data-t0="0.18424" data-t1="0.19624" data-x="0.22250" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:22.250%" data-t0="0.22250" data-t1="0.23450" data-x="0.27203" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:27.203%" data-t0="0.27203" data-t1="0.28403" data-x="0.31862" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture is-used" style="left:31.862%" data-t0="0.31862" data-t1="0.33062" data-x="0.45333" data-round="1" title="这一帧是当前轮新推理读取的最新图像"></span><span class="seq-item is-capture" style="left:47.688%" data-t0="0.47687" data-t1="0.48888" data-x="0.52641" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:52.641%" data-t0="0.52641" data-t1="0.53841" data-x="0.57299" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:57.299%" data-t0="0.57299" data-t1="0.58499" data-x="0.61125" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:61.125%" data-t0="0.61125" data-t1="0.62325" data-x="0.66078" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture is-used" style="left:66.078%" data-t0="0.66078" data-t1="0.67278" data-x="0.78667" data-round="2" title="这一帧是下一轮新推理读取的最新图像"></span><span class="seq-item is-capture" style="left:81.904%" data-t0="0.81904" data-t1="0.83104" data-x="0.86562" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:86.562%" data-t0="0.86562" data-t1="0.87762" data-x="0.91516" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:91.516%" data-t0="0.91516" data-t1="0.92716" data-x="0.96174" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture" style="left:96.174%" data-t0="0.96174" data-t1="0.97374" data-x="1.00000" title="相机采集一帧；它很快被更新的帧取代，没有作为最新帧送入新推理"></span><span class="seq-item is-capture is-used is-lead" style="left:0.000%" data-t0="0.00000" data-t1="0.01200" data-x="0.12000" data-round="0" title="本段开始前 40 ms 采集的最新帧，被上一轮新推理读取"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="cmd"><div class="seq-label"><strong>高层运动命令</strong><small>每条 80 ms · 4 条后新推理</small></div><div class="seq-track"><span class="seq-item is-predict" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.33333" data-round="0" data-say="上一轮 · 新推理：仿真暂停，服务端用 326.5 ms 计算出 16 条新命令。图像输入是最新一帧（暂停前 40 ms 采集）和约 1.97、3.84、5.77 s 前的 3 张历史帧；本轮只采用预测中的前 4 条命令，其余 12 条不执行。" data-status="infer"><span class="seq-text">16 条<br>新命令</span></span><span class="seq-item is-command" style="left:12.000%;width:4.708%" data-t0="0.12000" data-t1="0.16708" data-x="0.16708" data-round="0" data-say="上一轮 · 第 1 条命令：直接取自刚完成的新推理，执行 80 ms 仿真；底层动作策略在这期间更新 4 次，每次算出新的关节动作。"><span class="seq-text">1</span></span><span class="seq-item is-pause is-wait" style="left:16.708%;width:0.833%" data-t0="0.16708" data-t1="0.17542" data-x="0.17542" data-round="0" data-say="上一轮 · 取第 2 条缓存命令：仿真暂停等待返回，本次服务端耗时 34.3 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 34.3 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:17.542%;width:4.708%" data-t0="0.17542" data-t1="0.22250" data-x="0.22250" data-round="0" data-say="上一轮 · 第 2 条命令：已从本轮缓存取得（刚才服务端耗时 34.3 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">2</span></span><span class="seq-item is-pause is-wait" style="left:22.250%;width:0.833%" data-t0="0.22250" data-t1="0.23083" data-x="0.23083" data-round="0" data-say="上一轮 · 取第 3 条缓存命令：仿真暂停等待返回，本次服务端耗时 15.7 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 15.7 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:23.083%;width:4.708%" data-t0="0.23083" data-t1="0.27792" data-x="0.27792" data-round="0" data-say="上一轮 · 第 3 条命令：已从本轮缓存取得（刚才服务端耗时 15.7 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">3</span></span><span class="seq-item is-pause is-wait" style="left:27.792%;width:0.833%" data-t0="0.27792" data-t1="0.28625" data-x="0.28625" data-round="0" data-say="上一轮 · 取第 4 条缓存命令：仿真暂停等待返回，本次服务端耗时 15.4 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 15.4 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:28.625%;width:4.708%" data-t0="0.28625" data-t1="0.33333" data-x="0.33333" data-round="0" data-say="上一轮 · 第 4 条命令：已从本轮缓存取得（刚才服务端耗时 15.4 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">4</span></span><span class="seq-item is-predict" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.66667" data-round="1" data-say="当前轮 · 新推理：仿真暂停，服务端用 323.5 ms 计算出 16 条新命令。图像输入是最新一帧（暂停前 25 ms 采集）和约 1.96、3.89、5.76 s 前的 3 张历史帧；本轮只采用预测中的前 4 条命令，其余 12 条不执行。" data-status="infer"><span class="seq-text">16 条<br>新命令</span></span><span class="seq-item is-command" style="left:45.333%;width:4.708%" data-t0="0.45333" data-t1="0.50042" data-x="0.50042" data-round="1" data-say="当前轮 · 第 1 条命令：直接取自刚完成的新推理，执行 80 ms 仿真；底层动作策略在这期间更新 4 次，每次算出新的关节动作。"><span class="seq-text">1</span></span><span class="seq-item is-pause is-wait" style="left:50.042%;width:0.833%" data-t0="0.50042" data-t1="0.50875" data-x="0.50875" data-round="1" data-say="当前轮 · 取第 2 条缓存命令：仿真暂停等待返回，本次服务端耗时 15.5 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 15.5 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:50.875%;width:4.708%" data-t0="0.50875" data-t1="0.55583" data-x="0.55583" data-round="1" data-say="当前轮 · 第 2 条命令：已从本轮缓存取得（刚才服务端耗时 15.5 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">2</span></span><span class="seq-item is-pause is-wait" style="left:55.583%;width:0.833%" data-t0="0.55583" data-t1="0.56417" data-x="0.56417" data-round="1" data-say="当前轮 · 取第 3 条缓存命令：仿真暂停等待返回，本次服务端耗时 15.2 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 15.2 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:56.417%;width:4.708%" data-t0="0.56417" data-t1="0.61125" data-x="0.61125" data-round="1" data-say="当前轮 · 第 3 条命令：已从本轮缓存取得（刚才服务端耗时 15.2 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">3</span></span><span class="seq-item is-pause is-wait" style="left:61.125%;width:0.833%" data-t0="0.61125" data-t1="0.61958" data-x="0.61958" data-round="1" data-say="当前轮 · 取第 4 条缓存命令：仿真暂停等待返回，本次服务端耗时 15.7 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 15.7 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:61.958%;width:4.708%" data-t0="0.61958" data-t1="0.66667" data-x="0.66667" data-round="1" data-say="当前轮 · 第 4 条命令：已从本轮缓存取得（刚才服务端耗时 15.7 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">4</span></span><span class="seq-item is-predict" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="1.00000" data-round="2" data-say="下一轮 · 新推理：仿真暂停，服务端用 333.9 ms 计算出 16 条新命令。图像输入是最新一帧（暂停前 10 ms 采集）和约 1.95、3.88、5.81 s 前的 3 张历史帧；本轮只采用预测中的前 4 条命令，其余 12 条不执行。" data-status="infer"><span class="seq-text">16 条<br>新命令</span></span><span class="seq-item is-command" style="left:78.667%;width:4.708%" data-t0="0.78667" data-t1="0.83375" data-x="0.83375" data-round="2" data-say="下一轮 · 第 1 条命令：直接取自刚完成的新推理，执行 80 ms 仿真；底层动作策略在这期间更新 4 次，每次算出新的关节动作。"><span class="seq-text">1</span></span><span class="seq-item is-pause is-wait" style="left:83.375%;width:0.833%" data-t0="0.83375" data-t1="0.84208" data-x="0.84208" data-round="2" data-say="下一轮 · 取第 2 条缓存命令：仿真暂停等待返回，本次服务端耗时 16.1 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 16.1 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:84.208%;width:4.708%" data-t0="0.84208" data-t1="0.88917" data-x="0.88917" data-round="2" data-say="下一轮 · 第 2 条命令：已从本轮缓存取得（刚才服务端耗时 16.1 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">2</span></span><span class="seq-item is-pause is-wait" style="left:88.917%;width:0.833%" data-t0="0.88917" data-t1="0.89750" data-x="0.89750" data-round="2" data-say="下一轮 · 取第 3 条缓存命令：仿真暂停等待返回，本次服务端耗时 14.7 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 14.7 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:89.750%;width:4.708%" data-t0="0.89750" data-t1="0.94458" data-x="0.94458" data-round="2" data-say="下一轮 · 第 3 条命令：已从本轮缓存取得（刚才服务端耗时 14.7 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">3</span></span><span class="seq-item is-pause is-wait" style="left:94.458%;width:0.833%" data-t0="0.94458" data-t1="0.95292" data-x="0.95292" data-round="2" data-say="下一轮 · 取第 4 条缓存命令：仿真暂停等待返回，本次服务端耗时 16.0 ms；使用本轮已有预测，不重新推理。" data-status="cache" title="取下一条缓存命令：服务端 16.0 ms，等待期间仿真不推进"></span><span class="seq-item is-command" style="left:95.292%;width:4.708%" data-t0="0.95292" data-t1="1.00000" data-x="1.00000" data-round="2" data-say="下一轮 · 第 4 条命令：已从本轮缓存取得（刚才服务端耗时 16.0 ms，没有重新推理），现在执行 80 ms 仿真，底层动作策略更新 4 次。"><span class="seq-text">4</span></span><span class="seq-cursor" aria-hidden="true"></span></div></div><div class="seq-row " data-row="act"><div class="seq-label"><strong>底层动作策略</strong><small>50 Hz · 每 20 ms</small></div><div class="seq-track"><span class="seq-item is-pause" style="left:0.000%;width:12.000%" data-t0="0.00000" data-t1="0.12000" data-x="0.12000" data-round="0"><span class="seq-text">暂停动作</span></span><span class="seq-item is-pause" style="left:33.333%;width:12.000%" data-t0="0.33333" data-t1="0.45333" data-x="0.45333" data-round="1"><span class="seq-text">暂停动作</span></span><span class="seq-item is-pause" style="left:66.667%;width:12.000%" data-t0="0.66667" data-t1="0.78667" data-x="0.78667" data-round="2"><span class="seq-text">暂停动作</span></span><span class="seq-item is-tick" style="left:12.000%" data-t0="0.12000" data-t1="0.13200" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:13.177%" data-t0="0.13177" data-t1="0.14377" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:14.354%" data-t0="0.14354" data-t1="0.15554" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:15.531%" data-t0="0.15531" data-t1="0.16731" data-x="0.16708" data-round="0"></span><span class="seq-item is-tick" style="left:17.542%" data-t0="0.17542" data-t1="0.18742" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:18.719%" data-t0="0.18719" data-t1="0.19919" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:19.896%" data-t0="0.19896" data-t1="0.21096" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:21.073%" data-t0="0.21073" data-t1="0.22273" data-x="0.22250" data-round="0"></span><span class="seq-item is-tick" style="left:23.083%" data-t0="0.23083" data-t1="0.24283" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:24.260%" data-t0="0.24260" data-t1="0.25460" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:25.437%" data-t0="0.25437" data-t1="0.26637" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:26.615%" data-t0="0.26615" data-t1="0.27815" data-x="0.27792" data-round="0"></span><span class="seq-item is-tick" style="left:28.625%" data-t0="0.28625" data-t1="0.29825" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:29.802%" data-t0="0.29802" data-t1="0.31002" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:30.979%" data-t0="0.30979" data-t1="0.32179" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:32.156%" data-t0="0.32156" data-t1="0.33356" data-x="0.33333" data-round="0"></span><span class="seq-item is-tick" style="left:45.333%" data-t0="0.45333" data-t1="0.46533" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:46.510%" data-t0="0.46510" data-t1="0.47710" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:47.688%" data-t0="0.47687" data-t1="0.48888" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:48.865%" data-t0="0.48865" data-t1="0.50065" data-x="0.50042" data-round="1"></span><span class="seq-item is-tick" style="left:50.875%" data-t0="0.50875" data-t1="0.52075" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:52.052%" data-t0="0.52052" data-t1="0.53252" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:53.229%" data-t0="0.53229" data-t1="0.54429" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:54.406%" data-t0="0.54406" data-t1="0.55606" data-x="0.55583" data-round="1"></span><span class="seq-item is-tick" style="left:56.417%" data-t0="0.56417" data-t1="0.57617" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:57.594%" data-t0="0.57594" data-t1="0.58794" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:58.771%" data-t0="0.58771" data-t1="0.59971" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:59.948%" data-t0="0.59948" data-t1="0.61148" data-x="0.61125" data-round="1"></span><span class="seq-item is-tick" style="left:61.958%" data-t0="0.61958" data-t1="0.63158" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:63.135%" data-t0="0.63135" data-t1="0.64335" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:64.312%" data-t0="0.64312" data-t1="0.65512" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:65.490%" data-t0="0.65490" data-t1="0.66690" data-x="0.66667" data-round="1"></span><span class="seq-item is-tick" style="left:78.667%" data-t0="0.78667" data-t1="0.79867" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:79.844%" data-t0="0.79844" data-t1="0.81044" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:81.021%" data-t0="0.81021" data-t1="0.82221" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:82.198%" data-t0="0.82198" data-t1="0.83398" data-x="0.83375" data-round="2"></span><span class="seq-item is-tick" style="left:84.208%" data-t0="0.84208" data-t1="0.85408" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:85.385%" data-t0="0.85385" data-t1="0.86585" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:86.562%" data-t0="0.86562" data-t1="0.87762" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:87.740%" data-t0="0.87740" data-t1="0.88940" data-x="0.88917" data-round="2"></span><span class="seq-item is-tick" style="left:89.750%" data-t0="0.89750" data-t1="0.90950" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:90.927%" data-t0="0.90927" data-t1="0.92127" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:92.104%" data-t0="0.92104" data-t1="0.93304" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:93.281%" data-t0="0.93281" data-t1="0.94481" data-x="0.94458" data-round="2"></span><span class="seq-item is-tick" style="left:95.292%" data-t0="0.95292" data-t1="0.96492" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:96.469%" data-t0="0.96469" data-t1="0.97669" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:97.646%" data-t0="0.97646" data-t1="0.98846" data-x="1.00000" data-round="2"></span><span class="seq-item is-tick" style="left:98.823%" data-t0="0.98823" data-t1="1.00023" data-x="1.00000" data-round="2"></span><span class="seq-cursor" aria-hidden="true"></span></div></div><svg class="seq-links" aria-hidden="true"><g class="seq-link" data-from="cam" data-to="cmd" data-x1="0.31862" data-x2="0.39333" data-t0="0.31862" data-t1="0.33062" data-x="0.45333" data-round="1"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="cam" data-to="cmd" data-x1="0.66078" data-x2="0.72667" data-t0="0.66078" data-t1="0.67278" data-x="0.78667" data-round="2"><path class="seq-link-line"/><path class="seq-link-head"/></g><g class="seq-link" data-from="cam" data-to="cmd" data-x1="0.00000" data-x2="0.06000" data-t0="0.00000" data-t1="0.01200" data-x="0.12000" data-round="0"><path class="seq-link-line"/><path class="seq-link-head"/></g></svg></div><p class="seq-note">推理列与取缓存命令的窄列只表示先后，宽度不按比例；每条命令内部按仿真时间等比例。仿真时间间隔不包含采集、通信与服务端等待。</p></div><p class="timing-status" aria-live="polite"></p><div class="timing-controls"><button type="button" class="course-button timing-replay" data-play="播放连续过程" data-pause="暂停">播放连续过程</button><label class="timing-scrub-label">进度<input class="timing-scrub" type="range" min="0" max="1000" value="0"></label></div><details class="timing-details"><summary>详解</summary><ul class="timing-facts"><li data-modes="onboard">本课仿真中 RGB 与 ToF 在同一次采集中更新、时间戳相同；这是仿真设定，不代表真机传感器硬件同步。每次采集后，机载策略（Onboard）根据图像、深度和身体状态做目标检测、几何计算、导航与视线决策，再经过安全保护，输出视线、速度和技能请求。</li><li data-modes="onboard">采集按 15 Hz 进行，相邻两次约隔 67 ms 仿真时间；而本段三次决策在主机上实际分别用了 110.4、266.2 和 148.4 ms。两者并不矛盾：评估是同步的，决策完成前仿真时间不推进，所以耗时标在 ◆ 下方，不拉长横轴。计时从传感器数据就绪开始，到命令就绪为止，不含传感器采集和底层动作策略推理；测量时 DGX Spark 同时在为 GR00T 计算特征缓存，因此这些数字不代表机器人主板或独占硬件上的速度。</li><li data-modes="onboard">高层命令沿用到下一次决策。仿真推进时，底层动作策略以 50 Hz 更新；本地状态估计、安全保护和头部限位也在这个节拍上运行，可能先修改命令，再转换为关节动作。</li><li data-modes="groot">每次新推理输出 16 条 8 维高层运动命令（速度、视线和技能请求），只执行前 4 条。每条命令在仿真中保持 80 ms，底层动作策略据此每 20 ms 算一次新的关节动作，所以一条命令对应 4 次关节动作计算；其余 12 条不执行，完成前 4 条后再用新观察重新预测。</li><li data-modes="groot">同步评估中，每 80 ms 一次的调用都要等服务端返回才继续仿真：4 次里 1 次是新推理，另外 3 次只从缓存取出下一条命令。本段 3 次新推理的服务端计算为 326.5、323.5、333.9 ms。整批评估中 899 次新推理的中位数为 332 ms（P95 351 ms），2680 次缓存取用的中位数为 15 ms。这些都只是服务端计算时间，不含网络传输和画面采集，也不能和仿真时间相加成一个周期。</li><li data-modes="groot">相机在仿真推进时按 15 Hz 采集，暂停时不采集。新推理只读取当时最新的一帧，再加上约 1.9、3.8 和 5.8 s 前的 3 张历史帧；其间的其他帧不会直接送入这次推理。</li></ul></details><figcaption>数据取自本课已完成的仿真记录：GR00T 为一次步行射门评估中连续的 12 次调用（仿真 8.24–9.20 s，跳过启动预热）；机载策略为一次计时运行中进入接近球阶段后的连续三次决策（仿真 2.200–2.400 s）。片段展示更新顺序，不用于说明任务成功率或端到端实时性能。<a href="_static/data/control-timing-evidence.json">查看计时数据</a></figcaption></figure><p>同步评估让仿真在每次等待服务端时停住，所以实时观看会出现停顿；按固定仿真帧率导出的视频看不到这些等待，因此视频流畅并不说明机器人能实时连续运动。真实机器人不能暂停物理时间：底层动作策略需要一个独立、持续运行的控制循环，高层推理则要异步进行并配合命令缓冲，还要处理过期的命令和陈旧的观测。本课的仿真评估采用同步方式。</p>
+</section>
+<section id="action-head">
+<h2>为什么只后训练动作头<a class="headerlink" href="#action-head" title="Link to this heading">#</a></h2>
+<p>不能假定 GR00T N1.7 的基础权重已经理解本课的 127 维状态和 8 维高层请求，这是本课自己定义的接口，后训练就是要学会这个接口和射门任务。它的视觉语言骨干已经很擅长从图像里认出物体和方向，但动作头还要学会这台机器人的状态长什么样、该输出什么。所以本课冻结视觉语言骨干，只训练动作头：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>部分</p></th>
+<th class="head cell-short"><p>是否训练</p></th>
+<th class="head cell-short"><p>原因</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>视觉编码器与语言模型（Cosmos-Reason2-2B）</p></td>
+<td class="cell-short"><p>冻结</p></td>
+<td><p>保留预训练得到的视觉与语言知识；示范只有几十个回合，解冻容易过拟合，显存也大得多</p></td>
+</tr>
+<tr class="row-odd"><td><p>状态编码器、动作编码器与动作解码器</p></td>
+<td class="cell-short"><p>训练</p></td>
+<td><p>把 127 维状态和 8 维请求接入模型，这是 Microduck 独有的接口</p></td>
+</tr>
+<tr class="row-even"><td><p>动作序列生成网络（flow-matching 的 Transformer）</p></td>
+<td class="cell-short"><p>训练</p></td>
+<td><p>学习在这个任务中怎样从噪声生成合理的请求序列</p></td>
+</tr>
+<tr class="row-odd"><td><p>动作头内处理视觉语言特征的层</p></td>
+<td class="cell-short"><p>训练</p></td>
+<td><p>让视觉特征以适合本任务的方式进入动作生成</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这比只替换最后一层输出要多，也不同于 LoRA 那样只训练附加的小矩阵。GR00T 内部的动作表示比 8 维宽，多余的维度用掩码屏蔽，训练损失只计算真实的 8 维。</p>
+<p>冻结骨干还有一个实际好处：同一张图像和同一句指令经过骨干得到的特征不会变，可以在训练开始前一次算好并缓存，之后每次更新只运行动作头。4.3 节默认使用课程提供的缓存：日志先显示缓存核对，再开始优化器更新；只有选择重新计算特征时，才会显示完整的特征生成进度。缓存只在骨干冻结、图像预处理固定时成立；改变图像增强或解冻骨干后，就不能沿用它。</p>
+</section>
+<section id="data-design">
+<h2>示范数据怎样设计<a class="headerlink" href="#data-design" title="Link to this heading">#</a></h2>
+<p>示范来自机载策略：它只用机载相机、IMU、关节编码器和 ToF 测距做决策，不读取球或球门的仿真真值。在仿真中让它从不同起点完成射门，同时记录 GR00T 将来会看到的输入，以及机载策略实际发出的 8 维请求。</p>
+<figure class="learning-figure" data-learning-flow="learn-1f69c1b133"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="先有可靠示范，再谈数据规模"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-1f69c1b133-title"><title id="learn-1f69c1b133-title">先有可靠示范，再谈数据规模</title><defs><marker id="learn-1f69c1b133-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-1f69c1b133-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-1f69c1b133-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-1f69c1b133-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 固定任务" aria-controls="learn-1f69c1b133-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">固定任务</text><text x="114.0" y="98" class="learning-node-subtitle">一个球场、步</text><text x="114.0" y="115" class="learning-node-subtitle">行、一条指令</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 记录示范" aria-controls="learn-1f69c1b133-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">记录示范</text><text x="338.0" y="98" class="learning-node-subtitle">观察对应实际发出的请求</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 筛选与划分" aria-controls="learn-1f69c1b133-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">筛选与划分</text><text x="562.0" y="98" class="learning-node-subtitle">只留完整成功</text><text x="562.0" y="115" class="learning-node-subtitle">，按回合分组</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 训练与检验" aria-controls="learn-1f69c1b133-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">训练与检验</text><text x="786.0" y="98" class="learning-node-subtitle">拟合请求，再做闭环测试</text></g></svg></div><div class="learning-details" aria-label="先有可靠示范，再谈数据规模"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-1f69c1b133-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>固定任务</h3><p>球场、球门、足球与光照固定不变，只改变机器人与球的起点。先把一种情况教好，再扩大范围。</p></article><article id="learn-1f69c1b133-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>记录示范</h3><p>机载策略按自己的节奏决策，记录再按 12.5 Hz 重新采样成 GR00T 的输入输出：每个采样时刻配对当时可以获得的图像、状态与随后发出的请求。未来的画面和仿真评分用的精确位置不进入输入。</p></article><article id="learn-1f69c1b133-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>筛选与划分</h3><p>只有进球、没有摔倒、结束前连续站稳的回合才作为标签；失败回合单独保留用于分析。训练集与验证集按完整回合和起点种子划分，同一回合的相邻帧不会分到两边。</p></article><article id="learn-1f69c1b133-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>训练与检验</h3><p>训练损失下降只说明拟合了示范。模型自己控制机器人时，要在未参与训练的起点上看完整任务是否成功。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>几条设计原则：</p>
+<ul class="simple">
+<li><p><strong>输入必须是机器人真的能拿到的。</strong> 如果把球的仿真坐标或机载策略的内部阶段编号放进输入，模型训练时会很顺利，到真机上却拿不到这些信息。</p></li>
+<li><p><strong>老师要可靠，示范要干净。</strong> 机载策略反复犹豫、来回调整的动作也会被模型学去；只有完整成功的回合进入训练。</p></li>
+<li><p><strong>覆盖比数量重要。</strong> 几十条几乎相同的顺利轨迹，不如覆盖接近、调整朝向、低头确认、准备出脚、恢复站立等各种状态的示范。</p></li>
+<li><p><strong>注意数据不平衡。</strong> 一个回合里大部分时间在走路，真正准备出脚的帧很少。训练时可以按阶段调整抽样概率：本课的训练集按机载策略记录的行为分成 7 个阶段组，原地站立、球前细调和即将出脚的片段被抽到的机会更多，踢球技能进行中的片段更少。阶段标签只用于离线抽样，不进入模型输入。</p></li>
+</ul>
+<p>本课已经按这些原则准备好了训练集和验证集，4.3 节直接使用，不需要你重新采集。</p>
+</section>
+<section id="improve-data">
+<h2>模型走偏之后：纠正数据的思路<a class="headerlink" href="#improve-data" title="Link to this heading">#</a></h2>
+<p>只学成功轨迹的模型有一个常见短板：一旦走偏，看到的画面可能已经不在示范里，它也就不知道怎样回到任务。补救的办法是让学习中的模型先亲自去走，再在它实际到达的状态上补充正确动作：</p>
+<ul class="simple">
+<li><p><strong>由人决定接管（HG-DAgger）</strong>：观察者在模型快要出错时接管，给出纠正动作，这些片段加入训练数据。</p></li>
+<li><p><strong>自动专家纠正（DAgger 风格）</strong>：用一个控制器自动接管并给出动作。前提是这个专家在学习策略造成的偏差状态下同样可靠：从标准起点踢得好的机载策略，从偏转的姿态未必也能恢复，需要先在这些状态上检验它。</p></li>
+</ul>
+<p>两种方式都要记录谁在控制、接管从何时开始，只把验证过的正确动作当作标签；最后关闭接管，单独测模型自己的成功率。</p>
+</section>
+<section id="deployment">
+<h2>真机上：在工作站推理，通过网络连接机器人<a class="headerlink" href="#deployment" title="Link to this heading">#</a></h2>
+<p>Microduck 的机载计算硬件不适合运行 GR00T 这样约 30 亿参数的模型。真机部署时，可以让 Microduck 与一台带合适 GPU 的工作站组成网络：机器人采集图像与状态发给工作站，工作站运行 GR00T，再把请求传回机器人；行走策略这样的小网络留在机器人本地持续运行。工作站的具体配置要按模型、精度和实测延迟选择。</p>
+<figure class="learning-figure" data-learning-flow="learn-a72e80dd97"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="远端做模型推理，本地持续控制与反馈"><svg class="learning-svg" viewBox="0 0 900 177" role="group" aria-labelledby="learn-a72e80dd97-title"><title id="learn-a72e80dd97-title">远端做模型推理，本地持续控制与反馈</title><defs><marker id="learn-a72e80dd97-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H356.0" marker-end="url(#learn-a72e80dd97-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 68.5H692.0" marker-end="url(#learn-a72e80dd97-arrow)"/><path class="learning-edge" data-from="2" data-to="0" d="M786.0 117V153H114.0V117" marker-end="url(#learn-a72e80dd97-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Microduck 传感器" aria-controls="learn-a72e80dd97-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Microduck 传感器</text><text x="114.0" y="98" class="learning-node-subtitle">图像 + 状态 + 时间戳</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. GPU 工作站" aria-controls="learn-a72e80dd97-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="89" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">GPU 工作站</text><text x="450.0" y="98" class="learning-node-subtitle">GR00T 推理，返回请求</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Microduck 执行端" aria-controls="learn-a72e80dd97-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Microduck 执行端</text><text x="786.0" y="98" class="learning-node-subtitle">校验时效，保持平衡</text></g></svg></div><div class="learning-details" aria-label="远端做模型推理，本地持续控制与反馈"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-a72e80dd97-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Microduck 传感器</h3><p>发送相机与机器人状态时保留采样时间和序号，把每个状态与当时最新、且没有超过允许时长的图像按因果顺序配对；有意使用的历史帧要保留各自的时间戳，不能和过期或标错时间的数据混在一起。</p></article><article id="learn-a72e80dd97-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>GPU 工作站</h3><p>工作站根据最新的有效观察生成请求段。网络传输、图像编码和模型计算都计入端到端延迟；即使服务器返回很快，所依据的画面也可能已经过时。</p></article><article id="learn-a72e80dd97-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Microduck 执行端</h3><p>机器人只接受符合约定、仍然有效的请求。行走策略在本地持续运行；遇到超时或断网，应进入受控停止或稳定站立，不能继续执行过期的前进请求。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>在本课的仿真中，GR00T 服务和仿真运行在同一台 DGX Spark 上，并且每次都等推理返回再继续仿真，所以不会出现真机上的网络延迟和过期命令问题。仿真里能完成任务，不说明同样的模型在真机网络条件下也能实时运行；那需要异步推理、命令缓冲和超时保护，并在真机上实测。</p>
+<div class="quiz"><h3>检查理解</h3><p>GR00T 输出的前进请求是 0.3，能说机器人正以 0.3 m/s 前进吗？</p>
+<details><summary>查看解析</summary><p>不能。前进请求是写入行走策略的原生指令值，实际速度取决于步态、地面和身体状态，需要从测得的运动中读取。</p>
+</details></div><div class="quiz"><h3>检查理解</h3><p>为什么输入里要放上一次实际提出的请求，而不是这一次要预测的请求？</p>
+<details><summary>查看解析</summary><p>上一次的请求在决策时已经发生，真机上也能获得；这一次的请求正是要预测的答案，放进输入会泄漏标签。</p>
+</details></div></section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/nvidia/GR00T-N1.7-3B" rel="noreferer noopener" target="_blank">GR00T N1.7 模型卡 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">Isaac GR00T：后训练与推理 ↗</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1810.02890" rel="noreferer noopener" target="_blank">HG-DAgger：人类接管与纠正数据 ↗</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1011.0686" rel="noreferer noopener" target="_blank">DAgger：从策略访问的状态收集专家标签 ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="07-groot.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">4.1 视觉-语言-动作模型与 GR00T</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="08-groot-lab.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">4.3 训练与验证 GR00T 步行射门</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#task">一个球场、一种走法、一条指令</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reuse-skills">分层控制：GR00T 决定做什么，已有技能负责怎样做</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inputs">GR00T 每次读入什么</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">8 维高层请求：是什么、什么单位、谁来执行</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-high-level">为什么不让 GR00T 直接输出关节角</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">控制周期：各模块多久更新一次</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#action-head">为什么只后训练动作头</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-design">示范数据怎样设计</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#improve-data">模型走偏之后：纠正数据的思路</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment">真机上：在工作站推理，通过网络连接机器人</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

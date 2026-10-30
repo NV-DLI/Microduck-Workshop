@@ -1,10 +1,594 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Explore motion and training, then move from engineered football to GR00T, ASPIRE and Cosmos: learning actions, organizing tasks and adapting to new environments."><meta name="theme-color" content="#76b900"><title>Teach Microduck to score a goal · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="index"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/index.html" >简体中文</a><a lang="en" href="../en/index.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a aria-current="page" href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Getting started</div><div class="lesson-heading is-home"><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Teach Microduck to score a goal</h1><p class="lead">Explore motion and training, then move from engineered football to GR00T, ASPIRE and Cosmos: learning actions, organizing tasks and adapting to new environments.</p><div class="lesson-meta">9 chapters · 中文 / English · Simulation and frontier methods</div></div><figure class="hero-image"><img fetchpriority="high" src="../assets/robot/studio-hd.webp" alt="Microduck robot"></figure></div><section id="outcome"><h2>What you will build</h2><p>Follow one Microduck, ball and goal through robot learning: experience motion skills, learn simulation and reinforcement learning, observe complete football, explore GR00T imitation and ASPIRE skill composition, then consider new environments.</p><ol class="pipeline"><li><span>1</span>Motion and learning foundations</li><li><span>2</span>Review the engineered baseline</li><li><span>3</span>Learn actions with GR00T</li><li><span>4</span>Organize tasks with ASPIRE</li><li><span>5</span>Expand environments with Cosmos and Isaac</li></ol></section><section id="learn"><h2>By the end, you can</h2><ul><li>Explain mechanisms, actuators, observations, actions and rewards.</li><li>Explore fixed policies and learning with Isaac Lab, Newton and Isaac Sim.</li><li>Distinguish engineered pipelines, VLA actions and task agents.</li><li>Adapt the SO-101 data workflow to Microduck demonstration/action requirements.</li><li>Design variation and held-out evaluation; distinguish readiness from task success.</li></ul></section><section id="route"><h2>Course route</h2><div class="table-scroll"><table><thead><tr><th>Chapter</th><th>Task</th></tr></thead><tbody><tr><td>Chapter 1</td><td>Meet Microduck: play football first</td></tr><tr><td>Chapter 2</td><td>Mechanism and control timing</td></tr><tr><td>Chapter 3</td><td>Learning to walk</td></tr><tr><td>Chapter 4</td><td>Adapt walking to slopes</td></tr><tr><td>Chapter 5</td><td>Explore community movement skills</td></tr><tr><td>Chapter 6</td><td>From engineered pipelines to intelligent robots</td></tr><tr><td>Chapter 7</td><td>Teach GR00T from demonstrations</td></tr><tr><td>Chapter 8</td><td>Organize tasks and accumulate skills with ASPIRE</td></tr><tr><td>Chapter 9</td><td>From one field to more environments</td></tr></tbody></table></div></section>
-<nav class="pager" aria-label="Pagination"><a href="how-to-learn.html"><small>Next →</small>How to take this course</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#outcome">What you will build</a><a href="#learn">By the end, you can</a><a href="#route">Course route</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Experience Microduck's motion, train skills with reinforcement learning, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments." name="description" />
+
+  <title>1.1 Teach Microduck to score a goal - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="1.2 How to take this course" href="how-to-learn.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="index">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/index.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/index.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/index.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/index.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="teach-microduck-to-score-a-goal">
+<h1>1.1 Teach Microduck to score a goal<a class="headerlink" href="#teach-microduck-to-score-a-goal" title="Link to this heading">#</a></h1>
+<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>Experience Microduck's motion, train skills with reinforcement learning, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments.</p>
+</div><div class="lesson-meta">5 parts · 16 sections · Simulation and frontier methods</div></div><figure class="hero-image hero-animation" data-hero-animation data-still="../assets/media/football-success-hero-still.webp" data-animation="../assets/media/football-success-hero.webp"><img class="dark-light" fetchpriority="high" src="../assets/media/football-success-hero.webp" alt="In Isaac Sim, Microduck walks up to the ball on the green pitch and kicks it into the goal." width="1200" height="584" style="aspect-ratio: 1200 / 584"><button type="button" class="hero-animation-toggle" hidden data-pause="Pause animation" data-play="Play animation" aria-label="Pause animation" title="Pause animation" aria-pressed="false"></button></figure></div><div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<section id="outcome">
+<h2>What you will build<a class="headerlink" href="#outcome" title="Link to this heading">#</a></h2>
+<p>The whole course follows one Microduck, one green football pitch, one ball and one goal: meet the robot and try its motion skills, train walking and slope adaptation with reinforcement learning and domain randomization, then adapt GR00T with demonstrations, evaluate its walking shot in simulation and consider how to adapt to more environments. Every lab runs in the same course container.</p>
+<ol class="arabic simple pipeline">
+<li><p>Overview and container setup</p></li>
+<li><p>Meet Microduck</p></li>
+<li><p>Train skills with reinforcement learning</p></li>
+<li><p>Train GR00T to complete tasks</p></li>
+<li><p>Reference and help</p></li>
+</ol>
+</section>
+<section id="learn">
+<h2>By the end, you can<a class="headerlink" href="#learn" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Explain mechanisms, actuators, observations, actions and rewards.</p></li>
+<li><p>Run fixed policies, PPO training and domain-randomization experiments with Isaac Lab, Newton and Isaac Sim in the course container.</p></li>
+<li><p>Distinguish what an onboard policy and VLA action prediction are each responsible for.</p></li>
+<li><p>Explain GR00T's 8-D high-level request interface, demonstration data design and action-head training, and validate a trained checkpoint.</p></li>
+<li><p>Design environment variation and held-out evaluation; tell apart a working pipeline, better model metrics and complete task success.</p></li>
+</ul>
+</section>
+<section id="route">
+<h2>Course route<a class="headerlink" href="#route" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Part</p></th>
+<th class="head cell-short"><p>Sections</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>1 Overview</p></td>
+<td><p>1.1 Teach Microduck to score a goal · 1.2 How to take this course · 1.3 Set up the environment and get the code</p></td>
+</tr>
+<tr class="row-odd"><td><p>2 Meet Microduck</p></td>
+<td><p>2.1 Meet Microduck: play football first · 2.2 Mechanism and control timing</p></td>
+</tr>
+<tr class="row-even"><td><p>3 Teach Microduck skills with reinforcement learning</p></td>
+<td><p>3.1 Reinforcement learning and PPO · 3.2 Domain randomization: train and test a walking policy · 3.3 Reward design: walking steadily up and down slopes · 3.4 Community skills: from goal to reward</p></td>
+</tr>
+<tr class="row-odd"><td><p>4 Train GR00T to complete tasks autonomously</p></td>
+<td><p>4.1 Vision-language-action models and GR00T · 4.2 Walking shot: GR00T inputs, outputs and data · 4.3 Train and validate the GR00T walking shot · 4.4 From the pitch to more environments</p></td>
+</tr>
+<tr class="row-even"><td><p>5 Reference and help</p></td>
+<td><p>5.1 Models and data · 5.2 Troubleshooting · 5.3 Further learning and references</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="how-to-learn.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">1.2 How to take this course</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outcome">What you will build</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn">By the end, you can</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#route">Course route</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

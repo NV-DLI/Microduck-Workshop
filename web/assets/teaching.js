@@ -1,15 +1,6 @@
 (() => {
   const zh = document.body.dataset.lang === "zh";
-  if (window.renderMathInElement)
-    renderMathInElement(document.querySelector("main"), {
-      delimiters: [
-        { left: "\\[", right: "\\]", display: true },
-        { left: "\\(", right: "\\)", display: false },
-      ],
-      throwOnError: true,
-      strict: "error",
-      trust: false,
-    });
+  // Math is rendered by docs/_static/course-math.js (with symbol explanations).
   document.addEventListener("click", (e) => {
     for (const menu of document.querySelectorAll(".language-menu[open]"))
       if (!menu.contains(e.target)) menu.open = false;
@@ -51,8 +42,10 @@
       q(".ppo-high").setAttribute("x", x(1 + eps) + 5);
       q(".ppo-ymax").textContent = high.toFixed(1);
       q(".ppo-ymin").textContent = low.toFixed(1);
-      q(".concept-output").textContent =
-        `ρ = ${ratio.toFixed(2)}，ε = ${eps.toFixed(2)}；未裁剪目标 ${(ratio * a).toFixed(2)} → PPO 代理目标 ${objective(ratio).toFixed(2)}。${Math.abs(objective(ratio) - ratio * a) > 1e-8 ? "已进入平台区，继续沿这个方向改变概率，不再提高该样本的目标。" : "当前位置仍随概率比变化。"}`;
+      const clipped = Math.abs(objective(ratio) - ratio * a) > 1e-8;
+      q(".concept-output").textContent = zh
+        ? `概率比 ${ratio.toFixed(2)}，裁剪范围 ${eps.toFixed(2)}；未裁剪目标 ${(ratio * a).toFixed(2)} → PPO 代理目标 ${objective(ratio).toFixed(2)}。${clipped ? "已进入平台区，继续沿这个方向改变概率，不再提高该样本的目标。" : "当前位置仍随概率比变化。"}`
+        : `Ratio ${ratio.toFixed(2)}, clip range ${eps.toFixed(2)}; unclipped objective ${(ratio * a).toFixed(2)} → PPO surrogate ${objective(ratio).toFixed(2)}. ${clipped ? "This is the plateau: changing the probability further in this direction no longer raises this sample's objective." : "The objective still changes with the ratio here."}`;
     }
     f.addEventListener("input", update);
     f.addEventListener("change", update);
@@ -168,13 +161,15 @@
       q(".terrain-surface").setAttribute("d", `M60 165H165L465 ${y}H585`);
       q(".terrain-fill").setAttribute("d", `M60 165H165L465 ${y}H585V265H60Z`);
       q(".terrain-height").setAttribute("d", `M475 165V${y}`);
-      q(".terrain-height-label").setAttribute("y", (165 + y) / 2 - 7);
+      // Center the height label beside its marker, clear of the slope and platform lines.
+      q(".terrain-height-label").setAttribute("y", (165 + y) / 2 + 4);
+      q(".terrain-height-label").setAttribute("x", 488);
       q(".terrain-height-label").textContent =
         `${(height * 100).toFixed(1)} cm`;
       q(".terrain-landing").setAttribute("y", y - 16);
       q(".concept-output").textContent = zh
-        ? `α = ${angle}°，坡道两端高差 ${height.toFixed(3)} m。示意图只改变几何，不预测策略是否能通过。`
-        : `α = ${angle}°, height change ${height.toFixed(3)} m. This geometry diagram does not predict policy success.`;
+        ? `坡角 ${angle}°，坡道两端高差 ${height.toFixed(3)} m。示意图只改变几何，不预测策略是否能通过。`
+        : `Slope angle ${angle}°, height change ${height.toFixed(3)} m. This geometry diagram does not predict policy success.`;
     }
     f.addEventListener("input", update);
     update();
@@ -207,17 +202,12 @@
     });
 
   for (const video of document.querySelectorAll("video")) {
-    if (
-      !video
-        .querySelector("source")
-        ?.src.includes("autonomous-explained-hd.mp4")
-    )
-      continue;
+    if (!video.dataset.stages) continue;
     const panel = document.createElement("div");
     panel.className = "video-stage-caption";
     panel.setAttribute("aria-live", "polite");
     video.after(panel);
-    fetch("../assets/media/autonomous-stages.json")
+    fetch(video.dataset.stages)
       .then((r) => {
         if (!r.ok) throw new Error("Stage descriptions unavailable");
         return r.json();
@@ -233,8 +223,8 @@
           shown = stage;
           const title = document.createElement("strong");
           const detail = document.createElement("span");
-          title.textContent = stage.title;
-          detail.textContent = stage.detail;
+          title.textContent = stage.title[zh ? "zh" : "en"];
+          detail.textContent = stage.detail[zh ? "zh" : "en"];
           panel.replaceChildren(title, detail);
           panel.dataset.stage = stage.state;
         }
@@ -248,7 +238,7 @@
         updateStage();
       })
       .catch(() => {
-        panel.textContent = "请查看视频画面上方的阶段提示。";
+        panel.textContent = zh ? "阶段说明暂不可用，请参考下方视频说明。" : "Stage descriptions are unavailable; see the caption below.";
       });
   }
   for (const matrix of document.querySelectorAll("[data-scenario-matrix]")) {
@@ -257,15 +247,15 @@
     function updateMatrix() {
       const count = Number(seeds.value);
       if (!Number.isInteger(count) || count < 1 || count > 100) {
-        output.textContent = zh ? "请输入 1–100 之间的整数种子数。" : "Enter an integer seed count from 1 to 100.";
+        output.textContent = zh ? "请输入 1–100 之间的整数测试起点数。" : "Enter a whole number of test starts from 1 to 100.";
         return;
       }
       const combinations = [...matrix.querySelectorAll("[data-factor]")].reduce(
         (total, input) => total * (input.checked ? Number(input.dataset.factor) : 1), 1,
       );
       output.textContent = zh
-        ? `${combinations} 种组合 × ${count} 个新种子 = ${combinations * count} 次计划评测`
-        : `${combinations} combinations × ${count} fresh seeds = ${combinations * count} planned trials`;
+        ? `${combinations} 种组合 × ${count} 个新测试起点 = ${combinations * count} 次计划评测`
+        : `${combinations} combinations × ${count} new test starts = ${combinations * count} planned trials`;
     }
     matrix.addEventListener("input", updateMatrix);
     updateMatrix();

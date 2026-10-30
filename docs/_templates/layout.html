@@ -1,0 +1,33 @@
+{% extends "!layout.html" %}
+{#- Course assets shared with web/assets: KaTeX and the 3D viewer's import map in the
+    head; lesson language on <body> for the figure scripts; figure scripts at the end. -#}
+{#- The course opens in dark mode. A remembered "auto" predates that default and was never
+    a visitor's choice, so it becomes dark before the theme's own early script reads storage;
+    an explicit light or dark choice is kept. -#}
+{%- block css %}
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+{{ super() }}
+{%- endblock css %}
+{%- block extrahead %}
+{{ super() }}
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+{%- endblock extrahead %}
+{#- Browser tab: "<page> - <course>" with an ASCII hyphen instead of Sphinx's em dash. -#}
+{%- block htmltitle %}
+  <title>{{ title|striptags|e }}{% if title|striptags != docstitle %} - {{ docstitle|e }}{% endif %}</title>
+{%- endblock htmltitle %}
+{%- block body_tag %}
+<body data-default-mode="{{ default_mode }}" data-lang="{{ course_lang }}" data-page="{{ pagename }}">
+{%- endblock %}
+{%- block scripts_end %}
+{{ super() }}
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="{{ pathto('_static/course-math.js', 1) }}"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+{%- endblock scripts_end %}

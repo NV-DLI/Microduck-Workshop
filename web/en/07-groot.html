@@ -1,10 +1,704 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Understand GR00T 1.7 through football: observations become actions, demonstrations become skills, and failures guide corrective data."><meta name="theme-color" content="#76b900"><title>Teach GR00T from demonstrations · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="07-groot"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/07-groot.html" >简体中文</a><a lang="en" href="../en/07-groot.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a aria-current="page" href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Course chapters</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Teach GR00T from demonstrations</h1><p class="lead">Understand GR00T 1.7 through football: observations become actions, demonstrations become skills, and failures guide corrective data.</p><div class="lesson-meta">Chapter 7 · Estimated learning time: 35 minutes</div></div></div><section id="idea"><h2>From writing steps to providing goals and examples</h2><p>Give Microduck the instruction “send the ball into the goal” alongside demonstrations of observations and actions. A vision-language-action model (VLA) connects images, language and robot state to predict what to do next. Language expresses the goal; demonstrations show how this robot can achieve it.</p><p>GR00T N1.7 is a foundation model that can be post-trained for a robot and task. General visual knowledge helps interpret situations, but an instruction alone does not teach Microduck balance, skating brakes or kick timing. Compatible action interfaces and task demonstrations remain necessary.</p></section><section id="architecture"><h2>How GR00T 1.7 turns observations into actions</h2><figure class="learning-figure" data-learning-flow="learn-99d33fef50"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Images and language provide context; robot state also conditions actions"><svg class="learning-svg" viewBox="0 0 828 480" role="group" aria-labelledby="learn-99d33fef50-title"><title id="learn-99d33fef50-title">Images and language provide context; robot state also conditions actions</title><defs><marker id="learn-99d33fef50-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 123H294" marker-end="url(#learn-99d33fef50-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 123H570" marker-end="url(#learn-99d33fef50-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M690 194V274" marker-end="url(#learn-99d33fef50-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M576 351H534" marker-end="url(#learn-99d33fef50-arrow)"/><path class="learning-edge" data-from="4" data-to="2" d="M414 280V236H630V200" marker-end="url(#learn-99d33fef50-arrow)"/><path class="learning-edge" data-from="3" data-to="5" d="M690 422V456H138V428" marker-end="url(#learn-99d33fef50-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M138 280V200" marker-end="url(#learn-99d33fef50-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="Images + instruction" aria-controls="learn-99d33fef50-detail-0" aria-expanded="false"><rect x="24" y="52" width="228" height="142" rx="8"/><text x="138" y="87" class="learning-node-title">Images + instruction</text><text x="138" y="136" class="learning-node-subtitle">See the ball and the goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="System 2" aria-controls="learn-99d33fef50-detail-1" aria-expanded="false"><rect x="300" y="52" width="228" height="142" rx="8"/><text x="414" y="87" class="learning-node-title">System 2</text><text x="414" y="136" class="learning-node-subtitle">Cosmos-Reason2-2B</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="System 1" aria-controls="learn-99d33fef50-detail-2" aria-expanded="false"><rect x="576" y="52" width="228" height="142" rx="8"/><text x="690" y="87" class="learning-node-title">System 1</text><text x="690" y="136" class="learning-node-subtitle">Flow-matching action head</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="Execute actions" aria-controls="learn-99d33fef50-detail-3" aria-expanded="false"><rect x="576" y="280" width="228" height="142" rx="8"/><text x="690" y="315" class="learning-node-title">Execute actions</text><text x="690" y="364" class="learning-node-subtitle">Controller + Microduck</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="Robot state" aria-controls="learn-99d33fef50-detail-4" aria-expanded="false"><rect x="300" y="280" width="228" height="142" rx="8"/><text x="414" y="315" class="learning-node-title">Robot state</text><text x="414" y="364" class="learning-node-subtitle">Joints, attitude, motion</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="Observe again" aria-controls="learn-99d33fef50-detail-5" aria-expanded="false"><rect x="24" y="280" width="228" height="142" rx="8"/><text x="138" y="315" class="learning-node-title">Observe again</text><text x="138" y="364" class="learning-node-subtitle">The scene changes as we act</text></g></svg></div><div class="learning-details"><p class="learning-empty">Images and language provide context; robot state also conditions actions</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-99d33fef50-detail-0" data-node-detail="0" class="learning-definition"><h3>Images + instruction</h3><p>The camera shows the targets; the instruction specifies the desired outcome. Camera views and preprocessing must match demonstrations. New wording cannot replace missing action coverage.</p></article><article id="learn-99d33fef50-detail-1" data-node-detail="1" class="learning-definition"><h3>System 2</h3><p>The vision-language backbone extracts task-relevant features, such as goal direction. System 2 names this perception/reasoning role; it does not imply a readable plan is returned.</p></article><article id="learn-99d33fef50-detail-2" data-node-detail="2" class="learning-definition"><h3>System 1</h3><p>Conditioned on visual-language features and robot state, the flow-matching head transforms initial noise into an action sequence. It generates actions rather than choosing a sentence from a fixed menu.</p></article><article id="learn-99d33fef50-detail-3" data-node-detail="3" class="learning-definition"><h3>Execute actions</h3><p>The executor handles units, limits and timing. A possible Microduck hierarchy uses VLA velocity/gaze requests above an existing balancing policy. It requires demonstrations labeled with those requests.</p></article><article id="learn-99d33fef50-detail-4" data-node-detail="4" class="learning-definition"><h3>Robot state</h3><p>State describes the current body. Similar images can require different actions while leaning, turning or braking. The state branch jointly conditions the action head with visual-language features.</p></article><article id="learn-99d33fef50-detail-5" data-node-detail="5" class="learning-definition"><h3>Observe again</h3><p>After a short execution, fresh images and state inform the next prediction. This feedback changes inputs; ordinary inference keeps model weights fixed.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Follow the arrows and select modules for explanations.</figcaption></figure><p>Cosmos-Reason2 is the visual-language backbone used by GR00T 1.7. Chapter 9 discusses Cosmos 3 world models and data generation. These related names refer to different roles in the learning workflow.</p></section><section id="training"><h2>Pretraining, fine-tuning and inference</h2><div class="table-scroll"><table><thead><tr><th>Stage</th><th>Inputs and changes</th><th>Football interpretation</th></tr></thead><tbody><tr><td>Pretraining</td><td>Broad data develop general representations and action priors</td><td>A capable starting point</td></tr><tr><td>Post-training / fine-tuning</td><td>Robot/task data update selected parameters</td><td>Learn Microduck actions and football behavior</td></tr><tr><td>Inference</td><td>Current observations enter fixed weights; actions come out</td><td>Repeated observation and execution</td></tr></tbody></table></div><p>Fine-tuning is a common form of post-training. Freezing selected parameters reduces training cost, but frozen components still perform computation. A training step is an optimizer update, not a robot step or one simulation frame.</p></section><section id="actions"><h2>Predict a chunk; choose how much to execute</h2><p>An action chunk predicts H future actions. The executor may apply only the first K before predicting again from a new observation, with K ≤ H. Long execution risks stale actions after the ball moves; very short execution puts more demand on inference and communication.</p><div class="formula"><div class="formula-label">Nominal command duration</div><div>\[T_{\mathrm{execute}} = K / f_{\mathrm{action}}\]</div></div><p>For timing illustration only, five actions at 50 Hz represent 0.1 seconds of command time, excluding inference and network delay. This is not a recommended GR00T training setting. H, K and action rate must fit the data, model latency and closed-loop behavior.</p><p>Define what an action means. Joint targets require learning more balance and contact detail; velocity, gaze and skill requests can reuse low-level policies. Either is a research option, but labels, processors and execution must agree. The walking actor’s 14 normalized outputs are neither 14 angles in radians nor velocity commands.</p></section><section id="data"><h2>Teach one simple field first</h2><figure class="learning-figure" data-learning-flow="learn-9d51b2aa65"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Reliable demonstrations before scale"><svg class="learning-svg" viewBox="0 0 828 480" role="group" aria-labelledby="learn-9d51b2aa65-title"><title id="learn-9d51b2aa65-title">Reliable demonstrations before scale</title><defs><marker id="learn-9d51b2aa65-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-9d51b2aa65-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-9d51b2aa65-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M690 190V264" marker-end="url(#learn-9d51b2aa65-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="Fix the task" aria-controls="learn-9d51b2aa65-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">Fix the task</text><text x="138" y="132" class="learning-node-subtitle">One field and movement mode</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="Record examples" aria-controls="learn-9d51b2aa65-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">Record examples</text><text x="414" y="132" class="learning-node-subtitle">Observations + executed</text><text x="414" y="151" class="learning-node-subtitle">actions</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Train the policy" aria-controls="learn-9d51b2aa65-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Train the policy</text><text x="690" y="132" class="learning-node-subtitle">Learn the action patterns</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="Evaluate independently" aria-controls="learn-9d51b2aa65-detail-3" aria-expanded="false"><rect x="576" y="270" width="228" height="142" rx="8"/><text x="690" y="305" class="learning-node-title">Evaluate independently</text><text x="690" y="354" class="learning-node-subtitle">Fresh starts, full success</text></g></svg></div><div class="learning-details"><p class="learning-empty">Reliable demonstrations before scale</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-9d51b2aa65-detail-0" data-node-detail="0" class="learning-definition"><h3>Fix the task</h3><p>Choose one mat and background with fixed ball/goal physics. Develop walking and gliding separately; stabilize one mode before broadening scope.</p></article><article id="learn-9d51b2aa65-detail-1" data-node-detail="1" class="learning-definition"><h3>Record examples</h3><p>Record instruction, timestamped images/state and labels matching the chosen action level. A high-level VLA learns accepted velocity/skill requests, with joint execution logged separately. Low-level action training uses the values after clipping or correction. Mark waits, resets and failures separately.</p></article><article id="learn-9d51b2aa65-detail-2" data-node-detail="2" class="learning-definition"><h3>Train the policy</h3><p>Adapt the base model using training examples. Images and actions can have different rates; align timestamps rather than blindly matching row numbers.</p></article><article id="learn-9d51b2aa65-detail-3" data-node-detail="3" class="learning-definition"><h3>Evaluate independently</h3><p>Keep evaluation starts and trajectories out of training and tuning. Measure scoring and stable completion, time and repeated observations. Low training loss is not closed-loop reliability.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Follow the arrows and select modules for explanations.</figcaption></figure><p>Good demonstrations require more than eventually scoring. Identical starts leave small deviations uncovered, while repeated hesitation may teach unnecessary movements. First make the traditional method accurate and smooth over a reasonable range of starts on one field, then use it as a demonstration source.</p></section><section id="correction"><h2>Recovering from drift: HG-DAgger and automated experts</h2><p>After the first deviation, the policy may encounter observations absent from demonstrations. If skating drifts to one side, imitating a straight approach may worsen the error. Successful trajectories alone often omit recovery from off-course states.</p><figure class="learning-figure" data-learning-flow="learn-20544fdb3d"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Let the learner try, then supply corrective actions"><svg class="learning-svg" viewBox="0 0 828 480" role="group" aria-labelledby="learn-20544fdb3d-title"><title id="learn-20544fdb3d-title">Let the learner try, then supply corrective actions</title><defs><marker id="learn-20544fdb3d-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-20544fdb3d-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-20544fdb3d-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M690 190V264" marker-end="url(#learn-20544fdb3d-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M690 412V458H12V119H18" marker-end="url(#learn-20544fdb3d-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="Learner executes" aria-controls="learn-20544fdb3d-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">Learner executes</text><text x="138" y="132" class="learning-node-subtitle">Notice drift or failure</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="Expert takes over" aria-controls="learn-20544fdb3d-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">Expert takes over</text><text x="414" y="132" class="learning-node-subtitle">Correct from the current</text><text x="414" y="151" class="learning-node-subtitle">state</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Aggregate corrections" aria-controls="learn-20544fdb3d-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Aggregate corrections</text><text x="690" y="132" class="learning-node-subtitle">Mark ownership and timing</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="Fine-tune and retest" aria-controls="learn-20544fdb3d-detail-3" aria-expanded="false"><rect x="576" y="270" width="228" height="142" rx="8"/><text x="690" y="305" class="learning-node-title">Fine-tune and retest</text><text x="690" y="354" class="learning-node-subtitle">Evaluate without assistance</text></g></svg></div><div class="learning-details"><p class="learning-empty">Let the learner try, then supply corrective actions</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-20544fdb3d-detail-0" data-node-detail="0" class="learning-definition"><h3>Learner executes</h3><p>Let the learner visit states it actually encounters rather than only replay ideal trajectories. Triggers may include drift, excess speed or a lost target, before recovery becomes impossible.</p></article><article id="learn-20544fdb3d-detail-1" data-node-detail="1" class="learning-definition"><h3>Expert takes over</h3><p>HG-DAgger uses human decisions and corrective actions. A reliable traditional recovery controller can instead provide automated expert corrections: a DAgger-style variant, not human-gated intervention.</p></article><article id="learn-20544fdb3d-detail-2" data-node-detail="2" class="learning-definition"><h3>Aggregate corrections</h3><p>Record observations, learner proposals, expert commands, executed actions and ownership. Successful expert segments provide labels; wrong autonomous actions, pauses and resets are not correct demonstrations. Chunks must not cross discontinuous segment boundaries.</p></article><article id="learn-20544fdb3d-detail-3" data-node-detail="3" class="learning-definition"><h3>Fine-tune and retest</h3><p>Usually collect with fixed model weights, then fine-tune offline. Evaluate the new policy with intervention disabled. Assisted completion is not independent policy success.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Follow the arrows and select modules for explanations.</figcaption></figure><p>Automated takeover is worth studying for Microduck because it can reuse validated controls. High accuracy from standard starts is insufficient: the expert must handle moved balls, heading errors, existing motion and briefly lost targets. Improve recovery or stop/reset where it cannot recover; do not train on failed corrections.</p><p>A biped cannot simply pause joint commands like a fixed-base arm. Clear stale action queues during takeover, maintain balance or controlled braking, and assign head/body ownership explicitly. If a simulation expert uses exact positions, label that privileged information and exclude it from the future real-robot policy inputs.</p><div class="quiz"><h3>Check your understanding</h3><p>Why do 20 assisted successes not prove the policy has learned?</p><details><summary>Show explanation</summary><p>The expert may have supplied the decisive recovery. Retest without intervention and report intervention frequency and expert recovery separately.</p></details></div></section><section id="deployment"><h2>Connect Microduck to a capable computer</h2><p>Microduck’s onboard computer is not suitable for running a large VLA such as GR00T. A real robot can communicate with a computer equipped with a suitable GPU: the robot streams images and state, the computer runs inference and returns action requests. Choose hardware based on the model, precision and measured latency.</p><figure class="learning-figure" data-learning-flow="learn-1b1e671b65"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Remote inference with continuous local control and feedback"><svg class="learning-svg" viewBox="0 0 828 276" role="group" aria-labelledby="learn-1b1e671b65-title"><title id="learn-1b1e671b65-title">Remote inference with continuous local control and feedback</title><defs><marker id="learn-1b1e671b65-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-1b1e671b65-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-1b1e671b65-arrow)"/><path class="learning-edge" data-from="2" data-to="0" d="M690 190V254H12V119H18" marker-end="url(#learn-1b1e671b65-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="Robot sensors" aria-controls="learn-1b1e671b65-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">Robot sensors</text><text x="138" y="132" class="learning-node-subtitle">Images, state and timestamps</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="GPU computer" aria-controls="learn-1b1e671b65-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">GPU computer</text><text x="414" y="132" class="learning-node-subtitle">Inference and action requests</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Robot executor" aria-controls="learn-1b1e671b65-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Robot executor</text><text x="690" y="132" class="learning-node-subtitle">Check freshness; balance</text></g></svg></div><div class="learning-details"><p class="learning-empty">Remote inference with continuous local control and feedback</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-1b1e671b65-detail-0" data-node-detail="0" class="learning-definition"><h3>Robot sensors</h3><p>Preserve sample timestamps and sequence numbers. Do not combine unrelated image and state times as one observation.</p></article><article id="learn-1b1e671b65-detail-1" data-node-detail="1" class="learning-definition"><h3>GPU computer</h3><p>Generate actions from the latest valid observation. Network, preprocessing and computation all contribute to end-to-end delay; a fast response can still be based on an old image.</p></article><article id="learn-1b1e671b65-detail-2" data-node-detail="2" class="learning-definition"><h3>Robot executor</h3><p>Accept only valid, timely requests. Keep low-level control running; on timeouts or disconnection, use controlled stopping or stable holding instead of stale forward commands.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Follow the arrows and select modules for explanations.</figcaption></figure><p>A smarter model does not remove control engineering. It predicts actions, while local execution maintains balance, manages freshness and handles interrupted communication. The next chapter lets an agent organize reliable action skills into longer tasks.</p></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://huggingface.co/nvidia/GR00T-N1.7-3B" target="_blank" rel="noopener">GR00T N1.7 model and architecture ↗</a></li><li><a href="https://github.com/NVIDIA/Isaac-GR00T" target="_blank" rel="noopener">Isaac GR00T: post-training and inference ↗</a></li><li><a href="https://arxiv.org/abs/1810.02890" target="_blank" rel="noopener">HG-DAgger: human intervention and corrections ↗</a></li><li><a href="https://arxiv.org/abs/1011.0686" target="_blank" rel="noopener">DAgger: expert labels on learner-visited states ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="06-autonomy.html"><small>← Previous</small>From engineered pipelines to intelligent robots</a><a href="08-aspire.html"><small>Next →</small>Organize tasks and accumulate skills with ASPIRE</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#idea">From writing steps to providing goals and examples</a><a href="#architecture">How GR00T 1.7 turns observations into actions</a><a href="#training">Pretraining, fine-tuning and inference</a><a href="#actions">Predict a chunk; choose how much to execute</a><a href="#data">Teach one simple field first</a><a href="#correction">Recovering from drift: HG-DAgger and automated experts</a><a href="#deployment">Connect Microduck to a capable computer</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it." name="description" />
+
+  <title>4.1 Vision-language-action models and GR00T - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '07-groot';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.2 Walking shot: GR00T inputs, outputs and data" href="08-groot-interface.html" />
+    <link rel="prev" title="3.4 Community skills: from goal to reward" href="05-skills.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="07-groot">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/07-groot.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/07-groot.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/07-groot.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/07-groot.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.1 Vision-language-action models and GR00T</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="vision-language-action-models-and-gr00t">
+<h1>4.1 Vision-language-action models and GR00T<a class="headerlink" href="#vision-language-action-models-and-gr00t" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.</p>
+</div><div class="lesson-meta">Section 4.1 · Estimated learning time: 40 minutes</div></div></div><section id="idea">
+<h2>From writing steps to providing goals and examples<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
+<p>In the earlier chapters we tried walking, skating and kicking with pretrained policies and trained walking and slope policies. For the robot to decide by itself when to use these skills and complete a whole task on the pitch, such as “walk up to the ball and kick it into the goal”, a common approach is a modular pipeline: detect the ball, estimate where it and the goal are, plan a stance, then call the kick skill at the right moment. In this course, a controller built from detection, geometric estimation and task state that can be deployed on the robot is called the onboard policy. Every step is explainable, although as scenes and tasks multiply, the cost of maintaining explicit rules and modules can grow.</p>
+<p>A vision-language-action model (VLA) takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.</p>
+<p>The two approaches are not exclusive. The onboard policy still needs reliable perception and control; a VLA also depends on sensors, calibration and low-level execution and control (this course also has it call pretrained walking and kicking skills, which is a design choice of this course rather than a requirement of every VLA), and its reliable performance still depends on what the demonstrations cover: pretraining can help transfer, but actions and recovery from imbalance that the demonstrations never covered cannot be assumed to be learned.</p>
+</section>
+<section id="vla">
+<h2>What a VLA reads and what it outputs<a class="headerlink" href="#vla" title="Link to this heading">#</a></h2>
+<p>At each decision a VLA reads three kinds of information:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Input</p></th>
+<th class="head cell-short"><p>Example</p></th>
+<th class="head cell-short"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Images</p></td>
+<td><p>One or more camera views, possibly including past frames</p></td>
+<td><p>See the ball, the goal and the surroundings</p></td>
+</tr>
+<tr class="row-odd"><td><p>Language instruction</p></td>
+<td><p>“Walk to the football, kick it into the goal with the right foot, and recover to standing.”</p></td>
+<td><p>State the task goal</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Robot state</p></td>
+<td><p>Joint angles, body attitude, angular velocity, the previous action</p></td>
+<td><p>Describe what the body is doing right now</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/vla-architecture-official.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/vla-architecture-official.png" alt="A VLA illustrated with GR00T: a tabletop image and a language instruction become sensor tokens and text tokens, pass through a vision-language model (System 2) and a diffusion transformer model (System 1), and come out as action tokens that drive a humanoid robot."></a><figcaption><p>A VLA illustrated with GR00T: images and language guide action generation; the next figure shows where robot state enters. The exact structure differs between VLAs. Image source: <a class="reference external" href="https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html" rel="noreferer noopener" target="_blank">NVIDIA SO-101 Sim-to-Real course ↗</a>.</p>
+</figcaption></figure><p>The output is a short sequence of future actions. You decide what an action means: joint target angles, an end-effector pose, or velocity, gaze and skill requests handed to existing skills. That choice determines which demonstration labels you need and who is responsible for fast details such as balance and contact. Section 4.2 explains why the Microduck walking shot uses high-level requests.</p>
+</section>
+<section id="architecture">
+<h2>How GR00T N1.7 turns observations into actions<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
+<p>GR00T N1.7 is a general-purpose robot foundation model from NVIDIA with about three billion parameters. Its vision-language backbone, Cosmos-Reason2-2B, extracts features from the images and the instruction; a flow-matching action head combines them with the robot state to generate a continuous action sequence. The paper calls these roles “System 2” (slower, interpretive) and “System 1” (faster, action-oriented). These are conceptual names: the model does not output a human-readable plan, and they do not mean real-time asynchronous control is already implemented. In this course’s simulation every inference is synchronous (see <a href="08-groot-interface.html#timing">Section 4.2</a>).</p>
+<figure class="media"><a class="still-link" href="../assets/media/groot-n1.7-architecture-official.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/groot-n1.7-architecture-official.png" alt="The GR00T N1.7 architecture: the image observation and the language instruction are encoded into image and text tokens for the vision-language model (System 2); the robot state is encoded separately and enters the diffusion transformer (System 1) with the vision-language features, which denoises action tokens into motor actions."></a><figcaption><p>The GR00T N1.7 architecture: robot state is encoded separately and joins the vision-language features in the diffusion transformer (System 1, the flow-matching action head). Image source: <a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">NVIDIA Isaac GR00T (Apache 2.0) ↗</a>; the same figure appears in the <a class="reference external" href="https://developer.nvidia.com/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t/" rel="noreferer noopener" target="_blank">NVIDIA technical blog ↗</a>.</p>
+</figcaption></figure><p>The interactive figure below maps the same structure onto the Microduck walking shot:</p>
+<figure class="learning-figure" data-learning-flow="learn-dac53336fd"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Images and language provide context; robot state also conditions actions"><svg class="learning-svg" viewBox="0 0 900 420" role="group" aria-labelledby="learn-dac53336fd-title"><title id="learn-dac53336fd-title">Images and language provide context; robot state also conditions actions</title><defs><marker id="learn-dac53336fd-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H244.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 87.0H468.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 87.0H692.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 154V293.0H656.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="4" data-to="2" d="M562.0 226V154" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="3" data-to="5" d="M826.0 154V396H114.0V360" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M114.0 226V154" marker-end="url(#learn-dac53336fd-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Images + instruction" aria-controls="learn-dac53336fd-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Images +</text><text x="114.0" y="94" class="learning-node-title">instruction</text><text x="114.0" y="118" class="learning-node-subtitle">See the ball</text><text x="114.0" y="135" class="learning-node-subtitle">and the goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. System 2" aria-controls="learn-dac53336fd-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="126" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">System 2</text><text x="338.0" y="98" class="learning-node-subtitle">Cosmos-Reason2-2B</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. System 1" aria-controls="learn-dac53336fd-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="126" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">System 1</text><text x="562.0" y="98" class="learning-node-subtitle">Flow-matching</text><text x="562.0" y="115" class="learning-node-subtitle">action head</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Execute actions" aria-controls="learn-dac53336fd-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Execute actions</text><text x="786.0" y="98" class="learning-node-subtitle">Controller + Microduck</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. Robot state" aria-controls="learn-dac53336fd-detail-4" aria-expanded="false"><rect x="472.0" y="230" width="180" height="126" rx="6"/><text x="562.0" y="254" class="learning-node-index">05</text><text x="562.0" y="280" class="learning-node-title">Robot state</text><text x="562.0" y="304" class="learning-node-subtitle">Joints,</text><text x="562.0" y="321" class="learning-node-subtitle">attitude, motion</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. Observe again" aria-controls="learn-dac53336fd-detail-5" aria-expanded="false"><rect x="24.0" y="230" width="180" height="126" rx="6"/><text x="114.0" y="254" class="learning-node-index">06</text><text x="114.0" y="280" class="learning-node-title">Observe again</text><text x="114.0" y="304" class="learning-node-subtitle">The scene changes</text><text x="114.0" y="321" class="learning-node-subtitle">as we act</text></g></svg></div><div class="learning-details" aria-label="Images and language provide context; robot state also conditions actions"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-dac53336fd-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Images + instruction</h3><p>Images describe what the robot sees; the instruction specifies the desired outcome. The text is encoded together with the images, so no hand-calculated target coordinates are needed.</p></article><article id="learn-dac53336fd-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>System 2</h3><p>The vision-language backbone extracts task-relevant features, such as goal direction and the ball’s region. System 2 names this perception/reasoning role; its output is features for the action head.</p></article><article id="learn-dac53336fd-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>System 1</h3><p>Conditioned on visual-language features and robot state, the flow-matching head starts from initial noise and refines it step by step into a continuous action sequence for the current task.</p></article><article id="learn-dac53336fd-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Execute actions</h3><p>The executor handles units, limits and timing. For Microduck, GR00T outputs movement, gaze and kick requests while the existing motion policies keep balance and drive the joints.</p></article><article id="learn-dac53336fd-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>Robot state</h3><p>State describes the current body. Similar images can require different actions while leaning, turning or kicking. The state branch jointly conditions the action head with visual-language features.</p></article><article id="learn-dac53336fd-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>Observe again</h3><p>After a short execution, fresh images and state inform the next prediction. This feedback changes inputs; ordinary inference keeps model weights fixed.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>Cosmos-Reason2 here is the vision-language backbone inside GR00T N1.7; it only supplies features for action prediction. Cosmos 3, introduced in Section 4.4, is a different kind of model used to understand and generate world-related video and data.</p>
+</section>
+<section id="action-chunks">
+<h2>Predict a chunk of actions at once<a class="headerlink" href="#action-chunks" title="Link to this heading">#</a></h2>
+<p>GR00T does not predict only the next step; it predicts an action chunk covering several future steps. The executor usually runs only the first few, then predicts again from a fresh observation. This has two benefits: neighboring actions come from the same prediction and join smoothly, and the model does not have to run at every step, which reduces the number of inferences.</p>
+<p>How much to execute is a trade-off. Execute too much and the ball and body have changed while the robot still follows old actions; execute too little and you depend more on inference speed and communication. Section 4.2 shows this with Microduck’s real numbers: how many steps are predicted, how many are executed, and how many times the low-level controller runs between two inferences.</p>
+</section>
+<section id="training">
+<h2>Pretraining, post-training and inference<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Stage</p></th>
+<th class="head cell-short"><p>What happens</p></th>
+<th class="head"><p>What it means for Microduck</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Pretraining</p></td>
+<td><p>General visual, language and action representations are learned from broad, multi-source data</p></td>
+<td><p>A starting point that has already “seen a lot of the world”</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Post-training</p></td>
+<td><p>Demonstrations matching the robot and task update selected parameters</p></td>
+<td><p>Learn Microduck’s action interface and shooting behavior</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Inference</p></td>
+<td><p>Current observations enter fixed weights; actions come out</p></td>
+<td><p>Repeated observation, action, observation</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Model weights (parameters) are the learned numbers inside a network: training changes them, inference only reads them. Hyperparameters such as batch size and learning rate are chosen before training and control how the weights are updated. Fine-tuning is a common form of post-training: continuing training on a smaller, more targeted dataset.</p>
+<p>Post-training can freeze some parameters. Frozen modules still compute, but they receive no optimizer updates; this reduces memory and computation and lowers the risk of overfitting a small dataset. One training step in the log is one optimizer update, unrelated to a robot step or a simulation frame.</p>
+</section>
+<section id="data-pyramid">
+<h2>Where the data comes from<a class="headerlink" href="#data-pyramid" title="Link to this heading">#</a></h2>
+<p>Data for robot foundation models is often drawn as a pyramid. The wide base is web images, text and human video, which supply general visual and language knowledge. The middle is simulated and synthetic data, which can be generated at scale with exact labels. The top is real-robot data: closest to deployment but the most expensive to collect. The layers describe the roles of different data, not fixed proportions or a single training order.</p>
+<p>All post-training data in this course comes from simulation: the onboard policy completes the shot in Isaac Lab and Newton while we record the images it saw, its body state and the requests it issued. Section 4.2 explains how this data is designed, and Section 4.3 uses it to train and validate a model.</p>
+</section>
+<section id="generalization">
+<h2>Where generalization potential comes from<a class="headerlink" href="#generalization" title="Link to this heading">#</a></h2>
+<p>Generalization means completing the task in situations the model did not see in training. For a VLA it has several levels, and each needs different evidence:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Level</p></th>
+<th class="head cell-short"><p>Example</p></th>
+<th class="head cell-short"><p>How to test it</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>New starts</p></td>
+<td><p>Same pitch, robot/ball positions not in the training set</p></td>
+<td><p>Full-task tests from starts that were not used for training or tuning</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>New appearance</p></td>
+<td><p>Different lighting, floor pattern or background</p></td>
+<td><p>Full-task tests under appearance conditions not seen in training</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>New phrasing</p></td>
+<td><p>The same instruction worded differently</p></td>
+<td><p>Test with phrasings absent from training and confirm the behavior is unchanged</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>New task</p></td>
+<td><p>“Walk up to the ball but do not touch it”</p></td>
+<td><p>Requires demonstrations and a separate evaluation for that task; cannot be inferred from shooting results</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>General visual and language knowledge from pretraining makes it possible for a model to still recognize “this is a ball, that is the goal” when the appearance or wording changes. That is the promise of large models. But potential is not established capability: reliable performance at the action level depends mainly on what the demonstrations cover. If the demonstrations cover one pitch, one instruction and one kind of start, only that situation can be confirmed; other situations may transfer, but you only know by testing them separately.</p>
+<p>So to judge whether a VLA really generalizes, keep the test conditions outside training and look at full-task success, not at training loss or a few smooth videos. The GR00T in this course is trained on one green pitch with one shooting instruction, and the validation in Section 4.3 uses only a few episodes; it demonstrates the method, not proven generalization. Section 4.4 discusses how to expand step by step to more environments.</p>
+</section>
+<section id="compare">
+<h2>Is GR00T always better than the onboard policy?<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
+<p>Not necessarily. The same task can be implemented with the onboard policy, a small visual policy or GR00T; a comparison must use the same test starts, the same success criterion and the same low-level skills. Success rate is only one measure; inference latency, training cost (including feature caching and memory), the number of demonstrations needed and whether one model can accept several instructions also matter. If a small model is faster and more accurate on a fixed task, that is a valuable finding in itself; GR00T’s extra capabilities are more likely to pay off when many tasks or scenes are needed.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>The training loss is already low. Why can we still not say GR00T has learned to shoot?</p>
+<details><summary>Show explanation</summary><p>Training loss only shows that the model fits the demonstrated actions. When the model controls the robot, its inputs change with its own actions and can reach states that never appeared in the demonstrations. Whether it completes the task must be tested in closed loop from starts that were not used in training, judged by a full goal, no fall and recovering to standing.</p>
+</details></div><div class="quiz"><h3>Check your understanding</h3><p>If the model still succeeds after the same instruction is reworded, does that show it can “walk up to the ball but not touch it”?</p>
+<details><summary>Show explanation</summary><p>No. Rewording tests language understanding of the same task; a new task needs different actions and therefore matching demonstrations and its own test.</p>
+</details></div></section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/nvidia/GR00T-N1.7-3B" rel="noreferer noopener" target="_blank">GR00T N1.7 model card ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">Isaac GR00T: post-training and inference ↗</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/2503.14734" rel="noreferer noopener" target="_blank">GR00T N1: an open foundation model for generalist humanoid robots (dual-system architecture) ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/nvidia/Cosmos-Reason2-2B" rel="noreferer noopener" target="_blank">Cosmos-Reason2-2B ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-skills.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3.4 Community skills: from goal to reward</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="08-groot-interface.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.2 Walking shot: GR00T inputs, outputs and data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#idea">From writing steps to providing goals and examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vla">What a VLA reads and what it outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#architecture">How GR00T N1.7 turns observations into actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#action-chunks">Predict a chunk of actions at once</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Pretraining, post-training and inference</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pyramid">Where the data comes from</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalization">Where generalization potential comes from</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">Is GR00T always better than the onboard policy?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

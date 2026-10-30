@@ -1,23 +1,702 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Keep the course, lab code, and fixed models in one workspace, then check the runtime."><meta name="theme-color" content="#76b900"><title>Prepare your environment · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="setup"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/setup.html" >简体中文</a><a lang="en" href="../en/setup.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a aria-current="page" href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Getting started</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Prepare your environment</h1><p class="lead">Keep the course, lab code, and fixed models in one workspace, then check the runtime.</p><div class="lesson-meta">Hands-on lab · Ubuntu 24.04 / DGX Spark</div></div></div><section id="requirements"><h2>Runtime requirements</h2><p>The reference environment is Ubuntu 24.04 on DGX Spark (aarch64), Python 3.12, Isaac Sim 6, and pinned Isaac Lab / Newton revisions. Simulation uses Newton’s native actuator path. Other GPUs or versions may run, but the course results do not automatically apply to them.</p><p>You need an NVIDIA driver, a GPU-enabled graphical desktop, Git, Docker, and network access to NVIDIA package sources. None of these are required for reading the website. Review the Isaac Sim license before installing the simulator.</p></section><section id="get-code"><h2>Download the course and models</h2><p>Open a terminal in the directory where you want to keep the course, then run the commands below to clone and enter the repository.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">mkdir -p &quot;$HOME/microduck&quot;
-cd &quot;$HOME/microduck&quot;
-git clone https://github.com/NV-DLI/Microduck-Workshop.git
-cd Microduck-Workshop
-python3 scripts/workshop.py verify-models</code></pre></div><p>The models are included in the repository, so no Hugging Face login is required. The verification command checks every model’s SHA-256. Continue only when all files match. Course weights and student outputs are stored separately.</p><div class="code-block source-excerpt"><div class="code-toolbar"><span>Workspace</span></div><pre><code class="language-python">Microduck-Workshop/
-├── web/          # HTML course
-├── lab/          # simulation and learning code
-├── models/       # fixed course models
-├── scripts/      # lab entry points
-└── outputs/      # your runs (created when needed)</code></pre></div></section><section id="install"><h2>Prepare the simulator</h2><p>First prepare system tools. The commands below install Git, Python virtual-environment support, and video encoding. Set up Docker using its <a href="https://docs.docker.com/engine/install/ubuntu/">Ubuntu instructions</a>; <code>docker info</code> should show server information without a permission error.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">sudo apt-get update
-sudo apt-get install -y git python3-venv ffmpeg
-docker info
-export UV_HTTP_TIMEOUT=600</code></pre></div><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py setup
-python3 scripts/workshop.py doctor</code></pre></div><p><code>setup</code> prepares the pinned runtime. If you already have a matching Isaac Lab checkout, bind it using <code>--isaaclab /path/to/IsaacLab</code>. <code>doctor</code> checks Python, models, GPU, the desktop display setting, and navigation dependencies. Resolve failed checks before continuing.</p><aside class="note"><strong>Launch from your desktop terminal</strong><p>Run GUI commands in a terminal on the GPU machine’s desktop. The website provides lessons and commands; Isaac opens in its own window. On the first launch, allow shaders and assets to finish loading.</p></aside></section><section id="check"><h2>Before you continue</h2><p>Run the command below in a terminal at the repository root. If it specifies an output directory, use a new one to retain earlier results.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py inspect-model --model models/walk.onnx</code></pre></div><p>Expected result: input and output names, tensor shapes, and model identity. If the GPU is unavailable, use the troubleshooting page before proceeding. Keep the pinned physics backend and model combination.</p></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Newton physics engine ↗</a></li><li><a href="https://docs.isaacsim.omniverse.nvidia.com/latest/installation/requirements.html" target="_blank" rel="noopener">Isaac Sim system requirements ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="how-to-learn.html"><small>← Previous</small>How to take this course</a><a href="01-play.html"><small>Next →</small>Meet Microduck: play football first</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#requirements">Runtime requirements</a><a href="#get-code">Download the course and models</a><a href="#install">Prepare the simulator</a><a href="#check">Before you continue</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work." name="description" />
+
+  <title>1.3 Set up the environment and get the code - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2.1 Meet Microduck: play football first" href="01-play.html" />
+    <link rel="prev" title="1.2 How to take this course" href="how-to-learn.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="setup">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/setup.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/setup.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/setup.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/setup.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">1.3 Set up the environment and get the code</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="set-up-the-environment-and-get-the-code">
+<h1>1.3 Set up the environment and get the code<a class="headerlink" href="#set-up-the-environment-and-get-the-code" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.</p>
+</div><div class="lesson-meta">Hands-on · Ubuntu 24.04 / DGX Spark · Docker</div></div></div><section id="requirements">
+<h2>What you need<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
+<p>Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the pinned Isaac Lab and Newton, and the GR00T learning environment. The host only builds and starts the container, shows the simulation windows, and stores data and results.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Device</p></th>
+<th class="head cell-short"><p>System</p></th>
+<th class="head"><p>What you can use</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>DGX Spark (aarch64)</p></td>
+<td><p>Ubuntu 24.04 desktop</p></td>
+<td><p>The complete course, including Isaac Sim windows, cameras and recordings</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>RTX 5090</p></td>
+<td><p>Ubuntu in Windows 11 + WSL 2</p></td>
+<td><p>Commands without a window, such as PPO and GR00T training; the current driver does not support Isaac Sim windows, cameras or recordings</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, and a desktop session that can show windows. The image pins these versions:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Component</p></th>
+<th class="head"><p>Course configuration</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Container base</p></td>
+<td><p>CUDA 13, Ubuntu 24.04, Python 3.12</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Simulation</p></td>
+<td><p>Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Learning</p></td>
+<td><p>RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 4)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="get-code">
+<h2>Get the course code<a class="headerlink" href="#get-code" title="Link to this heading">#</a></h2>
+<p>Run these commands in a desktop terminal on the <strong>host</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DLI/Microduck-Workshop.git
+<span class="nb">cd</span><span class="w"> </span>Microduck-Workshop
+</pre></div>
+</div>
+</div>
+<p>The fixed course models (<code class="docutils literal notranslate"><span class="pre">models/</span></code> under 60 MB) and the pretrained results and training logs used in Part 3 (<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> about 50 MB) come with the repository; your own runs go to <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>, kept separate from them.</p>
+<p><strong>GR00T course data package (Section 4.3 only).</strong> The GR00T walking shot in Section 4.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 4.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> folder under <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> in the repository root; if you keep it elsewhere, set <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> to the absolute path of the folder that contains <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> before starting the container. The container starts without the package.</p>
+<p><strong>Optional: precomputed feature cache for the RTX 5090.</strong> To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> folder next to <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code>, and training does not need to recompute the features (see Section 4.3). DGX Spark does not need it.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
+├── docker/        # image, start-up configuration and in-container helpers
+├── lab/           # simulation and learning code (mounted live into the container)
+├── scripts/       # lab entry points (same)
+├── models/        # fixed course models (read-only in the container)
+├── datasets/      # sample data and pretrained PPO results (read-only)
+├── course-data/   # GR00T course data package (read-only, Section 4.3)
+└── outputs/       # your runs (writable in the container)
+</pre></div>
+</div>
+</div>
+</section>
+<section id="build">
+<h2>Build the course container<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
+<p>Run this from the repository root. The first build downloads Isaac Sim, the Isaac Lab dependencies and the GR00T learning environment; how long it takes depends on your network, and the image is large, so leave enough disk space.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build
+</pre></div>
+</div>
+</div>
+<p>The image installs exactly the versions in <code class="docutils literal notranslate"><span class="pre">lab/environment/uv.lock</span></code> and checks the SHA-256 of the Isaac Lab source archive. Later changes to <code class="docutils literal notranslate"><span class="pre">lab/</span></code> or <code class="docutils literal notranslate"><span class="pre">scripts/</span></code> do not need a rebuild: both folders are mounted into the container when it starts.</p>
+</section>
+<section id="start">
+<h2>Start the container and open a shell<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
+<p>Prepare the output and cache folders on the host once, allow the container to open windows on your desktop, start the container in the background, and open a shell in it.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/prepare_host.sh
+xhost<span class="w"> </span>+local:
+docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>up<span class="w"> </span>-d
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>microduck-workshop<span class="w"> </span>bash
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">prepare_host.sh</span></code> checks that <code class="docutils literal notranslate"><span class="pre">DISPLAY</span></code> and <code class="docutils literal notranslate"><span class="pre">XAUTHORITY</span></code> point to your desktop session; if it reports them empty, run it from a terminal opened on the desktop. <code class="docutils literal notranslate"><span class="pre">up</span> <span class="pre">-d</span></code> keeps a container named <code class="docutils literal notranslate"><span class="pre">microduck-workshop</span></code> running in the background; <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span></code> opens a shell inside it. The prompt changes to <code class="docutils literal notranslate"><span class="pre">(microduck)</span></code> and the working directory is <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop</span></code>.</p>
+<p><strong>Every later lab command runs in this container shell</strong>, and the pages label those blocks “inside the container”. Ctrl+C stops only the command that is running; the container keeps running and you can type the next command.</p>
+<div class="note admonition">
+<p class="admonition-title">Return to the same container</p>
+<p>If you closed the terminal, or need a second shell (for example to watch logs while training in Section 4.3), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> again from the repository root; data, outputs and caches live on the host. When you have finished all labs, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> stops and removes the container.</p>
+</div>
+<p>A relative path in a command (for example <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> and <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code>, so the second start is much faster.</p>
+<div class="note admonition">
+<p class="admonition-title">Starting in WSL 2</p>
+<p>In Ubuntu on Windows 11 WSL 2, <code class="docutils literal notranslate"><span class="pre">prepare_host.sh</span></code> tells you to start with the command below, which adds the WSLg display settings: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">-f</span> <span class="pre">docker/compose.wslg.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code>. Use this environment only for commands without a window; do the labs that need an Isaac Sim window or a camera on DGX Spark.</p>
+</div>
+</section>
+<section id="check">
+<h2>Check that you can start<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>
+<p>Run these commands <strong>inside the container</strong>.</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>doctor
+python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-model<span class="w"> </span>--model<span class="w"> </span>models/walk.onnx
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">doctor</span></code> checks the SHA-256 of every model file, CUDA, the display variable and package versions; continue when every item passes. <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> shows the walking model's input and output names, shapes and SHA-256. If CUDA is reported unavailable, run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> on the host to confirm the driver works, then see <a class="reference internal" href="troubleshooting.html"><span class="std std-doc">Troubleshooting</span></a>.</p>
+<div class="note admonition">
+<p class="admonition-title">Opening Isaac Sim for the first time</p>
+<p>The first window compiles shaders and loads assets, which can take a few minutes; the caches stay on the host, so later starts are much faster. The window appears on the host desktop; click it before using the keyboard.</p>
+</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton physics engine ↗</a></p></li>
+<li><p><a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/installation/requirements.html" rel="noreferer noopener" target="_blank">Isaac Sim system requirements ↗</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">NVIDIA Container Toolkit installation ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="how-to-learn.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1.2 How to take this course</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="01-play.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.1 Meet Microduck: play football first</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">What you need</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-code">Get the course code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build">Build the course container</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start">Start the container and open a shell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check">Check that you can start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -259,8 +259,8 @@
           },
           {
             "type": "p",
-            "zh": "首次学习可先观看示例，再选择第三章、第四章的训练练习。第六章只观看传统任务流程；第七至九章讲前沿方法与接入条件，不要求安装新框架或训练大模型。没有 GPU 也可以完成全部阅读和网页交互。",
-            "en": "Start with the demonstrations, then optionally practice training in Chapters 3 and 4. Chapter 6 is an overview; Chapters 7–9 explain frontier methods and integration requirements without new framework installation or large-model training. All reading and browser interactions work without a GPU."
+            "zh": "首次学习可先观看示例，再选择第三章、第四章的训练练习。第六章只观看传统任务流程；第七章从示范数据开始，完成 GR00T 微调与仿真闭环验证。第八章学习任务智能体，第九章讨论环境变化与数据扩展。大模型练习需要独立的软件环境和带算力的电脑，下载与训练时间另计；没有 GPU 也可以完成全部阅读和网页交互。",
+            "en": "Start with the demonstrations, then optionally practice training in Chapters 3 and 4. Chapter 6 is a watch-only overview. Chapter 7 takes you from demonstrations to GR00T fine-tuning and closed-loop simulation. Chapter 8 explores task agents; Chapter 9 covers environment variation and data expansion. Large-model labs need separate software environments and a capable computer, with additional download and training time. All reading and browser interactions work without a GPU."
           }
         ]
       },
@@ -2842,6 +2842,81 @@
         ]
       },
       {
+        "id": "sensor-roles",
+        "title": {
+          "zh": "相机与 8×8 ToF：分别解决什么问题",
+          "en": "What the camera and 8×8 ToF contribute"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "传统方案使用相机识别足球与球门，并结合 IMU、关节编码器和 8×8 ToF 距离观测完成几何估计。这里的 ToF 是 64 个区域的近距测量，不是环绕机器人的 360° 激光扫描，也不是直接读取仿真中的足球坐标。",
+            "en": "The engineered controller identifies the ball and goal in camera images, then combines IMU, encoders and 8×8 ToF range observations for geometry. These are 64 nearby ranging zones, not a 360-degree laser scan or simulator ball coordinates."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "观测",
+                "用途",
+                "缺失时需要补上的能力"
+              ],
+              "en": [
+                "Observation",
+                "Use",
+                "What must replace it"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "RGB 图像",
+                  "识别球与球门、观察方向",
+                  "目标识别与视觉定位"
+                ],
+                [
+                  "IMU 与编码器",
+                  "测量朝向变化、运动和相机相对机身的姿态",
+                  "姿态估计与运动反馈"
+                ],
+                [
+                  "8×8 ToF",
+                  "估计局部地面，并检查近处的障碍或过近区域",
+                  "另一种地面估计与近距碰撞判断"
+                ]
+              ],
+              "en": [
+                [
+                  "RGB images",
+                  "Recognize ball/goal and their directions",
+                  "Object recognition and visual localization"
+                ],
+                [
+                  "IMU and encoders",
+                  "Measure orientation changes, motion and camera pose relative to the body",
+                  "Attitude estimation and motion feedback"
+                ],
+                [
+                  "8×8 ToF",
+                  "Estimate local ground and check nearby obstacles or excessively close returns",
+                  "Alternative ground estimation and near-field collision checks"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "“把 ToF 数据拔掉”和“设计一个不依赖 ToF 的控制器”不是同一个实验。现有流程会在地面观测不可信时停止授权运动；直接撤掉数据主要检验这种依赖。若改用已知平面、机器人运动学或单目深度，需要重新验证距离误差与碰撞判断，不能把所有区域设为空就当作安全。",
+            "en": "Removing ToF data and designing a controller without ToF are different experiments. The existing pipeline withdraws motion permission when ground observations are unreliable. Removing the data tests this dependency. A replacement based on a known plane, kinematics or monocular depth needs new distance and collision validation; unknown space must not simply become free space."
+          },
+          {
+            "type": "p",
+            "zh": "第 7 章的步行学习策略使用图像历史、本体状态和任务指令，不把 ToF、目标检测框或物体真值作为输入。因此，传统方案是一个多传感器系统参照；比较两个学习模型时，则让它们接收相同的观测。",
+            "en": "The Chapter 7 walking learner receives image history, proprioception and a task instruction, without ToF, detection boxes or object ground truth. The engineered method is a multisensor system reference; the two learned policies should receive matched observations."
+          }
+        ]
+      },
+      {
         "id": "rollers",
         "title": {
           "zh": "观察轮滑碰球",
@@ -2852,16 +2927,16 @@
             "type": "media",
             "file": "rollers-autonomous.gif",
             "alt": {
-              "zh": "轮滑射门：保持轮滑模式接近并碰球，随后在球门前减速停稳，不切换成踢腿动作。第三视角与相机画面同步。",
-              "en": "Gliding: remain on wheels, approach and contact the ball, then brake before the goal. There is no switch to a leg kick. Observer and camera views are synchronized."
+              "zh": "轮滑碰球实例：足球进入球门，但起步前后滑动、碰球后制动过晚，头部接近并在画面中与门框重叠。观察进球之外的运动与停车质量。全程保持轮滑模式，第三视角与相机画面同步。",
+              "en": "Gliding example: the ball enters the goal, but startup reverses direction and braking begins too late; the head approaches and visually overlaps the goal frame. Assess motion and stopping quality as well as scoring. Skating remains active throughout, with synchronized observer and camera views."
             },
-            "zh": "轮滑射门：保持轮滑模式接近并碰球，随后在球门前减速停稳，不切换成踢腿动作。第三视角与相机画面同步。",
-            "en": "Gliding: remain on wheels, approach and contact the ball, then brake before the goal. There is no switch to a leg kick. Observer and camera views are synchronized."
+            "zh": "轮滑碰球实例：足球进入球门，但起步前后滑动、碰球后制动过晚，头部接近并在画面中与门框重叠。观察进球之外的运动与停车质量。全程保持轮滑模式，第三视角与相机画面同步。",
+            "en": "Gliding example: the ball enters the goal, but startup reverses direction and braking begins too late; the head approaches and visually overlaps the goal frame. Assess motion and stopping quality as well as scoring. Skating remains active throughout, with synchronized observer and camera views."
           },
           {
             "type": "p",
-            "zh": "轮滑的难点是既让球获得足够速度，又让机器人及时停下。这里通过速度估计反馈制动，初始化到结束都保持轮滑模式。本演示采用理想 IMU 积分估速，实际传感器的偏差与时延还需要标定。比较两段视频：任务目标相同，动作与结束条件却不同。",
-            "en": "Skating must give the ball enough speed while stopping the robot in time. Velocity feedback controls braking, with skating active throughout. This demonstration estimates speed by integrating an ideal IMU; real sensor bias and delay require calibration. Compare the videos: a shared goal requires different actions and final conditions."
+            "zh": "轮滑的难点是既让球获得足够速度，又让机器人及时停下。零前进指令并不等于刹车；观察时的速度调节也可能引起前后滑动。碰球后继续长时间推进，会压缩留给制动的距离。评估完整任务时，除了整球进门，还要检查是否连续停稳、是否明显回滑，以及头部和机身是否与球门保持间距，不能只检查躯干中心。本演示采用理想 IMU 积分估速，真实传感器的偏差与时延还需要标定。",
+            "en": "Skating must give the ball enough speed while stopping the robot in time. A zero forward request is not a brake, and velocity regulation during observation can cause forward and backward motion. Continuing propulsion after contact consumes stopping distance. Evaluate a whole-ball goal together with sustained stopping, backward travel and clearance between the entire robot—including its head—and the goal, rather than checking only the torso center. This demonstration integrates an ideal IMU to estimate speed; real sensor bias and delay still require calibration."
           }
         ]
       },
@@ -2900,6 +2975,11 @@
             "type": "p",
             "zh": "接下来先用 GR00T 理解“从观察学动作”，再用 ASPIRE 理解“从执行反馈组织和改进技能”。这些是面向 Microduck 的方法设计课程。学习重点是知道需要什么数据、模型控制什么、如何检验结果；多场景扩展放在同一球场里的方法可靠之后。",
             "en": "Next, GR00T explains learning actions from observations; ASPIRE explains organizing and improving skills from execution feedback. These are method-design lessons for Microduck. Focus on the required data, the model’s control role and how to evaluate results. Expand environments after the methods work reliably on one field."
+          },
+          {
+            "type": "p",
+            "zh": "传统方案与 GR00T 是课程中递进学习的两种方法，两者都保留。传统方案帮助我们理解任务分解、建立对照并生成示范；GR00T 则学习根据观察和目标发出动作请求。比较它们时，沿用相同的任务与成功标准，观察哪些决策由人设计、哪些决策从示范中学到。",
+            "en": "The traditional pipeline and GR00T are successive methods in the course, and both remain useful. The traditional pipeline explains task decomposition, provides a baseline and produces demonstrations; GR00T learns requests from observations and goals. Compare both using the same task and success criteria, identifying which decisions are designed and which are learned."
           }
         ]
       }
@@ -2938,8 +3018,8 @@
       "en": "Understand GR00T 1.7 through football: observations become actions, demonstrations become skills, and failures guide corrective data."
     },
     "meta": {
-      "zh": "第 7 章 · 预计学习时长 35 分钟",
-      "en": "Chapter 7 · Estimated learning time: 35 minutes"
+      "zh": "第 7 章 · 预计学习时长 75 分钟",
+      "en": "Chapter 7 · Estimated learning time: 75 minutes"
     },
     "sections": [
       {
@@ -2958,6 +3038,11 @@
             "type": "p",
             "zh": "GR00T N1.7 是可针对机器人与任务进行后训练的基础模型。通用视觉知识能帮助识别情境，但基础模型不会仅凭一句话就掌握 Microduck 的平衡、轮滑制动和踢球时机。仍要用匹配的动作接口和任务示范把这些能力教给它。",
             "en": "GR00T N1.7 is a foundation model that can be post-trained for a robot and task. General visual knowledge helps interpret situations, but an instruction alone does not teach Microduck balance, skating brakes or kick timing. Compatible action interfaces and task demonstrations remain necessary."
+          },
+          {
+            "type": "p",
+            "zh": "本章承接第六章，学习用示范训练任务决策，同时继续复用已有运动技能。传统方案仍用于讲解、对照与示范采集。加入 VLA 并不意味着必须重新学习所有电机控制，也不意味着它天然比传统方案更可靠。",
+            "en": "This chapter builds on Chapter 6 by learning task decisions from demonstrations while retaining existing motion skills. The traditional pipeline remains an explanation, baseline and demonstration source. Adding a VLA neither requires relearning every motor controller nor automatically improves reliability."
           }
         ]
       },
@@ -2999,10 +3084,10 @@
               ]
             ],
             "details": [
-              "相机告诉模型球和球门看起来在哪里；“把球送进球门”指明期望结果。输入图像的视角、尺寸和预处理应与示范数据一致。换一句话并不能弥补训练中没有见过的动作。",
+              "图像说明机器人当前看到了什么，任务指令说明希望它完成什么。例如步行示范使用“走向足球，用右脚把球踢进球门，然后恢复站立”的任务文本；它与图像一同编码，不是需要手算后输入的一串目标坐标。示范围绕一个任务采集，不能据此推断模型能执行任意新指令。",
               "视觉语言骨干提取与任务相关的特征，例如球门方向和足球所在区域。System 2 是对感知与推理作用的概念称呼；这张图不表示它一定输出一份可读的步骤清单。",
               "动作头结合视觉语言特征与机器人状态，通过 flow matching 生成一段动作。可以把它理解为逐步把初始噪声修正成符合当前任务的动作序列，而不是从固定动作列表中挑一句答案。",
-              "执行端解释模型输出，应用单位换算、限制和动作时序。对 Microduck，可以研究由 VLA 输出速度与视线请求、由已有运动策略维持平衡的分层方式；这需要与之对应的示范标签。",
+              "执行端解释模型输出，应用单位换算、限制和动作时序。对 Microduck，可以研究由 VLA 输出运动与视线请求、由已有运动策略维持平衡的分层方式；这需要与之对应的示范标签。",
               "状态让模型知道“身体现在怎样”。相同的球画面，在身体倾斜、转动或已经减速时可能需要不同动作。状态走向动作头的支路，表示它与视觉语言特征共同决定动作。",
               "执行一小段动作后，读取新图像与状态，再预测下一段。这个反馈闭环改变输入；普通推理过程中，模型权重保持不变。"
             ],
@@ -3035,10 +3120,10 @@
                 ]
               ],
               "details": [
-                "The camera shows the targets; the instruction specifies the desired outcome. Camera views and preprocessing must match demonstrations. New wording cannot replace missing action coverage.",
+                "Images describe what the robot sees; text specifies the desired outcome. Walking demonstrations use “Walk to the football, kick it into the goal with the right foot, and recover to standing.” This text is encoded with images, not supplied as hand-calculated coordinates. Demonstrations of one task do not establish arbitrary instruction following.",
                 "The vision-language backbone extracts task-relevant features, such as goal direction. System 2 names this perception/reasoning role; it does not imply a readable plan is returned.",
                 "Conditioned on visual-language features and robot state, the flow-matching head transforms initial noise into an action sequence. It generates actions rather than choosing a sentence from a fixed menu.",
-                "The executor handles units, limits and timing. A possible Microduck hierarchy uses VLA velocity/gaze requests above an existing balancing policy. It requires demonstrations labeled with those requests.",
+                "The executor handles units, limits and timing. A possible Microduck hierarchy uses VLA movement/gaze requests above an existing balancing policy. It requires demonstrations labeled with those requests.",
                 "State describes the current body. Similar images can require different actions while leaning, turning or braking. The state branch jointly conditions the action head with visual-language features.",
                 "After a short execution, fresh images and state inform the next prediction. This feedback changes inputs; ordinary inference keeps model weights fixed."
               ]
@@ -3140,13 +3225,360 @@
           },
           {
             "type": "p",
-            "zh": "例如，仅作时序说明：若动作以 50 Hz 执行，执行前 5 个动作对应 0.1 秒命令时间，还没有算推理和网络延迟。这不是 GR00T 微调的推荐超参数。实际 H、K 与动作频率必须结合数据采样、模型延迟和机器人闭环表现选择。",
-            "en": "For timing illustration only, five actions at 50 Hz represent 0.1 seconds of command time, excluding inference and network delay. This is not a recommended GR00T training setting. H, K and action rate must fit the data, model latency and closed-loop behavior."
+            "zh": "本章练习以 12.5 Hz 记录高层请求，训练与推理都预测 16 个请求，只执行前 4 个后重新预测，对应 0.32 秒仿真时间。预测长度与实际执行长度是两个独立设置；训练和推理的预测长度要保持一致。底层轮滑策略仍以 50 Hz 更新关节控制。这两个频率不能混淆；推理和通信耗时也不包含在这 0.32 秒中。",
+            "en": "The exercise records high-level requests at 12.5 Hz. Training and inference both predict 16 requests, while execution uses four before replanning: 0.32 seconds of simulation time. Prediction length and execution length are distinct settings; keep prediction length consistent between training and inference. The low-level roller policy updates joint control at 50 Hz. These rates differ, and the 0.32 seconds exclude inference and communication latency."
           },
           {
             "type": "p",
             "zh": "还要决定“动作”是什么。直接预测关节目标，需要学习更多平衡与接触细节；预测速度、视线和技能请求，则能复用底层运动策略。两种方式都可以研究，但数据标签、处理器与执行端必须选同一种含义。现有行走策略的 14 维归一化输出，不能直接当成 14 个弧度角，也不能当成速度指令。",
             "en": "Define what an action means. Joint targets require learning more balance and contact detail; velocity, gaze and skill requests can reuse low-level policies. Either is a research option, but labels, processors and execution must agree. The walking actor’s 14 normalized outputs are neither 14 angles in radians nor velocity commands."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "本章学习的请求",
+                "含义"
+              ],
+              "en": [
+                "Learned request",
+                "Meaning"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "前进与转向",
+                  "官方轮滑策略的原生请求，不直接等于 m/s 或 rad/s；零前进请求在本实验中调用本地制动。"
+                ],
+                [
+                  "视线俯仰",
+                  "用弧度表示目标俯仰，由头部适配器解释。"
+                ],
+                [
+                  "视线权重",
+                  "0 保留运动策略的头部控制，1 使用目标视线；中间值平滑混合。"
+                ]
+              ],
+              "en": [
+                [
+                  "Forward and turn",
+                  "Native roller requests, not calibrated m/s or rad/s; a zero forward request invokes local braking in this exercise."
+                ],
+                [
+                  "Gaze pitch",
+                  "A target pitch in radians interpreted by the head adapter."
+                ],
+                [
+                  "Gaze weight",
+                  "Zero keeps motion-policy head control; one uses the target gaze, with intermediate blending."
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "请区分两层接口中的“零”：本练习里，GR00T 输出零前进请求表示请求停车，执行层根据 IMU 估计的速度调节推进与制动；直接向官方轮滑策略输入零，则表示滑行，平衡控制仍在运行。模型学会何时停止推进之后，还要观察实际速度与姿态，确认底层控制确实让机器人停稳。",
+            "en": "Distinguish zero at the two interfaces. In this exercise, a zero forward request from GR00T asks the executor to stop; the executor adjusts propulsion and braking using IMU-estimated velocity. Zero sent directly to the official roller policy means coasting, with balance control still active. Learning when to stop propulsion must be followed by checking actual speed and posture to confirm that the low-level controller brings the robot to rest."
+          }
+        ]
+      },
+      {
+        "id": "reuse-skills",
+        "title": {
+          "zh": "让 GR00T 复用已经学会的运动技能",
+          "en": "Let GR00T reuse existing movement skills"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "使用 VLA 不意味着从头学习每个关节怎样运动。我们把控制分成两层：GR00T 根据图像、指令和身体状态预测动作请求；已有运动策略把这些请求转换成关节动作，继续承担平衡与接触控制。这样，前面章节中的运动技能仍然是完成复杂任务的基础。",
+            "en": "Using a VLA does not require relearning every joint movement. GR00T predicts action requests from images, instructions and body state; existing motion policies convert them into joint actions and maintain balance and contact control. Earlier movement skills remain the foundation for the larger task."
+          },
+          {
+            "type": "flow",
+            "interactive": true,
+            "layout": "learning",
+            "loop": true,
+            "label": "模型学习如何使用技能，技能负责落实运动",
+            "nodes": [
+              [
+                "观察与目标",
+                "图像、状态、任务指令"
+              ],
+              [
+                "GR00T",
+                "预测动作请求与参数"
+              ],
+              [
+                "技能执行层",
+                "行走 / 轮滑 / 踢腿"
+              ],
+              [
+                "机器人与反馈",
+                "关节运动，重新观察"
+              ]
+            ],
+            "details": [
+              "记录示范时，把当前观察与随后执行的高层请求配对。不要把未来图像或仿真评分使用的精确物体位置当作学习策略的输入。",
+              "动作的含义由数据和执行接口共同定义。本章轮滑练习学习前进请求、转向请求、视线俯仰和视线控制权重；这些不是直接发送给电机的关节角。",
+              "本章只执行轮滑分支，始终使用官方轮滑策略，通过碰球与制动完成射门。图中的行走和踢腿是扩展设计：要使用它们，需要另外准备匹配的示范、动作触发与切换条件，不能直接用本章轮滑检查点代替。",
+              "底层持续执行运动控制，新的图像与身体状态用于下一次预测。仿真可以等待推理结果；真机必须另行满足动作时效、通信和本地稳定控制要求。"
+            ],
+            "english_diagram": {
+              "label": "Learn how to use skills; skills execute movement",
+              "nodes": [
+                [
+                  "Observe and set a goal",
+                  "Images, state, instruction"
+                ],
+                [
+                  "GR00T",
+                  "Predict requests and parameters"
+                ],
+                [
+                  "Skill executor",
+                  "Walk / glide / kick"
+                ],
+                [
+                  "Robot and feedback",
+                  "Move joints, observe again"
+                ]
+              ],
+              "details": [
+                "Pair observations with subsequent high-level requests. Exclude future images and privileged scoring poses from learner inputs.",
+                "The dataset and executor define action semantics. The gliding exercise predicts forward/yaw requests, gaze pitch and gaze weight, not motor joint angles.",
+                "This exercise executes only the roller branch, using the official roller policy throughout bumping and braking. Walking and kicking illustrate an extension that requires corresponding demonstrations, action triggers and transitions; the roller checkpoint cannot substitute for that training.",
+                "Low-level control executes movement and returns fresh observations. Simulation may wait for inference; hardware requires deadlines, communication handling and continuous local stability control."
+              ]
+            },
+            "zh": "点击模块查看每一层负责的工作。",
+            "en": "Select a module to inspect its responsibility."
+          },
+          {
+            "type": "p",
+            "zh": "可复用的踢球模型也有不同来源：固定教学模型 kick-teacher.onnx 来自 Pollen Robotics 发布的 ball_kick_right.onnx；课程另外保留了自行训练的踢球残差模型。选择哪一个，就需要围绕它实际接受的输入、启动条件和恢复过程准备示范，不能混用两者的动作含义。",
+            "en": "Reusable kick models have different origins: the fixed kick-teacher.onnx is Pollen Robotics’ published ball_kick_right.onnx; a separately trained course kick residual is also retained. Demonstrations must match the selected model’s inputs, entry conditions and recovery behavior."
+          },
+          {
+            "type": "p",
+            "zh": "动作接口可以是连续的速度请求，也可以加入技能触发信号。若需要触发一次踢腿，执行层还必须检查当前姿态与速度，避免连续触发，等待技能结束后再恢复行走控制。这些执行约束与模型学会“什么时候适合出脚”相互配合；它们不会因为换成大模型而自动消失。",
+            "en": "An action interface may combine continuous movement requests with skill triggers. A kick executor must check posture and speed, prevent repeated triggers, and return control after the skill ends. These execution constraints complement the learned timing decision."
+          },
+          {
+            "type": "p",
+            "zh": "用传统控制器生成示范是自然的起点：让它在仿真中完成任务，记录图像、状态与高层请求，再用这些数据微调 GR00T。即使老师通过几何计算确定站位，学生模型也可以学习从观察到请求的映射。老师的失败不会自动变成正确标签；成功示范也不能代替独立测试，更不能保证模型已经掌握陌生任务。",
+            "en": "A traditional controller is a useful demonstration source: run the task in simulation, record observations and high-level requests, and fine-tune GR00T. Even if the teacher computes geometric target poses, the learner can learn an observation-to-request mapping. Failed teacher actions are not automatically valid labels, and successful demonstrations do not replace held-out evaluation or establish new-task ability."
+          },
+          {
+            "type": "p",
+            "zh": "步行示范由相机、IMU、编码器与 ToF 驱动的传统控制器生成，不读取球或球门的世界真值。下面的轮滑动手练习使用另一位仿真专家，它可读取精确球位置与速度来生成动作标签；这些特权信息不作为学习策略的输入。比较两种模式时要区分老师的观测能力。能够从标准起点生成示范，也不等于能够接管并修复学习策略造成的各种偏差。",
+            "en": "Walking demonstrations come from an engineered controller driven by RGB, IMU, encoders and ToF, without world-coordinate ball or goal truth. The roller exercises below use a different simulation expert that can access exact ball position and velocity to generate labels; those privileged values are excluded from learner inputs. Distinguish the experts’ observations across modes. Demonstrating from a standard start does not establish recovery from learner-induced errors."
+          },
+          {
+            "type": "p",
+            "zh": "这里的“串起任务”可以表现为持续观察并生成合适的动作请求，不要求模型先写出一份文字步骤表。第八章再讨论如何由 ASPIRE 在更长任务中组织技能、检查结果并决定是否重试。",
+            "en": "Connecting task stages can mean repeatedly observing and producing suitable action requests; a written plan is not required. Chapter 8 considers ASPIRE for longer-horizon skill organization, outcome checks and retries."
+          }
+        ]
+      },
+      {
+        "id": "walking-interface",
+        "title": {
+          "zh": "步行射门：GR00T 接收什么、输出什么",
+          "en": "Walking shots: what goes into and comes out of GR00T"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "步行射门采用分层控制：GR00T 读取相机、任务指令和机器人状态，预测身体运动、头部运动与踢球请求；执行层复用官方行走策略和课程的局部踢球／恢复技能。头部姿态请求表示相对中性位的弧度偏移，实际关节动作仍由底层策略生成。局部踢球技能组合参考踢球、站立策略、课程训练的残差修正与恢复逻辑，并非单独直接运行一个官方踢腿模型。",
+            "en": "Walking shots use hierarchical control: GR00T reads images, an instruction and robot state, then predicts body-motion, head-motion and kick requests. The executor reuses the official walking policy and the course’s local kick/recovery skill. Head-pose requests are radian offsets from a neutral pose; the low-level policy still generates joint actions. The local kick combines reference kick/standing policies, a course-trained residual and recovery logic, rather than running a standalone official kick model."
+          },
+          {
+            "type": "p",
+            "zh": "“任务指令”就是描述期望结果的自然语言，例如“请将足球射进球门”。步行示范使用的英文原文是 <q>Walk to the football, kick it into the goal with the right foot, and recover to standing.</q>，意思是“走向足球，用右脚把球踢进球门，然后恢复站立”。它以文本形式随观察送入模型，不需要人手算球前站位再写进指令；机器人仍须从相机和状态中判断该怎样动作。",
+            "en": "A task instruction is natural language describing the desired outcome, such as “Please kick the football into the goal.” The walking demonstrations use the exact text <q>Walk to the football, kick it into the goal with the right foot, and recover to standing.</q> It is passed to the model as text alongside observations. It does not require a hand-calculated stance in the instruction; the robot must infer actions from images and state."
+          },
+          {
+            "type": "p",
+            "zh": "输入一条语言指令与学会理解任意指令是两回事。这组示范围绕同一射门目标采集，不能据此推断换成“把球带到桌子旁”就能完成。如果要教多个任务，需要提供相应的指令、观察与动作示范，并在未参与训练的情境中分别验证。",
+            "en": "Accepting language does not establish understanding of arbitrary instructions. These demonstrations concern one scoring task; they do not establish that “Take the ball beside the table” will work. Teaching multiple tasks requires matching instructions, observations and actions, followed by held-out evaluation for each task."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "输入",
+                "结构",
+                "作用"
+              ],
+              "en": [
+                "Input",
+                "Structure",
+                "Purpose"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "相机历史",
+                  "4 张 RGB 图像",
+                  "同一个机载视角的当前帧及约 1.92、3.84、5.76 秒前的帧；不是四台相机。"
+                ],
+                [
+                  "任务指令",
+                  "文本",
+                  "“走向足球，用右脚把球踢进球门，然后恢复站立。”指令随观察一起输入；一种任务的示范不等于任意指令泛化。"
+                ],
+                [
+                  "当前状态",
+                  "58 维",
+                  "机身角速度和重力方向 6；关节位置 14；关节速度 14；上一电机动作 14；上一高层决策请求 8；局部踢球技能忙碌标志和进度 2。"
+                ],
+                [
+                  "历史状态摘要",
+                  "3 × 23 = 69 维",
+                  "对应三张过去图像，每组包含机身角速度和重力方向 6、头部关节位置 4、上一高层请求 8、历史间隔 1、积分摘要 4。"
+                ],
+                [
+                  "完整数值状态",
+                  "58 + 69 = 127 维",
+                  "与图像和文本分开编码。积分摘要来自角速度和运动请求，不能当成精确位置或实测位移。"
+                ]
+              ],
+              "en": [
+                [
+                  "Camera history",
+                  "4 RGB images",
+                  "Current frame and frames about 1.92, 3.84 and 5.76 seconds earlier from one onboard camera, not four cameras."
+                ],
+                [
+                  "Task instruction",
+                  "Text",
+                  "Walk to the football, kick it into the goal with the right foot, and recover to standing. Demonstrating one instruction does not establish arbitrary instruction generalization."
+                ],
+                [
+                  "Current state",
+                  "58 dimensions",
+                  "Angular velocity and gravity direction 6; joint positions 14; joint velocities 14; previous motor actions 14; previous high-level decision request 8; local kick busy flag and progress 2."
+                ],
+                [
+                  "Past-state summaries",
+                  "3 × 23 = 69 dimensions",
+                  "For each past image: angular velocity and gravity 6, head-joint positions 4, previous high-level request 8, age 1 and integral summaries 4."
+                ],
+                [
+                  "Numerical state",
+                  "58 + 69 = 127 dimensions",
+                  "Encoded separately from images and text. Gyro/request integrals do not provide exact position or measured displacement."
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "上一电机动作与上一高层请求要分开理解：前者记录底层实际发出的动作，后者记录上一采样时刻 GR00T 提出的 8 维请求。请求可能随后被稳定条件或头部变化速率限制暂缓，不能把“提出请求”当成“已经完成动作”。",
+            "en": "Previous motor actions and previous high-level requests are distinct: the former record low-level actions actually issued; the latter record GR00T’s eight requested values at the previous sample. Stability conditions or head rate limits can delay a request, so a request does not establish completed motion."
+          },
+          {
+            "type": "p",
+            "zh": "每个预测步输出 8 个数，按下面的顺序解释。前进、横移和转向使用执行接口的请求单位，不能直接当成实测速度；踢球值是触发请求，不是脚部关节角，也不应直接解释为成功概率。",
+            "en": "Each predicted step has eight values in the order below. Forward, lateral and yaw values use the executor’s request units, not measured velocities. The kick value is a trigger request, not a foot-joint angle or a calibrated success probability."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "输出分组",
+                "维度",
+                "谁负责执行"
+              ],
+              "en": [
+                "Output group",
+                "Dimensions",
+                "Executor"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "前进、横移、转向请求",
+                  "3",
+                  "官方行走策略结合身体反馈，连续生成关节动作。"
+                ],
+                [
+                  "颈部俯仰、头部俯仰／偏航／侧倾请求",
+                  "4",
+                  "相对中性位的弧度姿态请求经过限幅和变化速率限制，交给底层策略生成关节动作。"
+                ],
+                [
+                  "右脚踢球请求",
+                  "1",
+                  "达到触发阈值后，执行层先处理停车、头部回正和稳定条件，再运行局部踢球与恢复技能。"
+                ]
+              ],
+              "en": [
+                [
+                  "Forward, lateral and yaw requests",
+                  "3",
+                  "The official walking policy combines requests with body feedback to produce joint actions."
+                ],
+                [
+                  "Neck pitch and head pitch/yaw/roll requests",
+                  "4",
+                  "Radian pose offsets from neutral pass through limits and rate limiting; the low-level policy generates joint actions."
+                ],
+                [
+                  "Right-foot kick request",
+                  "1",
+                  "After the trigger threshold, the executor manages stopping, head neutralization and stability before the local kick/recovery skill."
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "动作块的形状是 16 × 8：16 是未来时间步数，8 才是每一步的请求维度。先执行其中 4 步，再用新观察重新预测，对应 0.32 秒仿真时间；底层控制仍以 50 Hz 运行。预测未来 16 步不代表增加了 16 个电机，也不代表动作头直接输出底层行走网络的全部关节动作。",
+            "en": "The action block is 16 × 8: 16 future time steps, with eight requests at each step. Execute the first four steps, then predict again from fresh observations: 0.32 seconds of simulation time. Low-level control remains at 50 Hz. Predicting 16 steps neither adds motors nor directly predicts all joint actions of the walking network."
+          },
+          {
+            "type": "p",
+            "zh": "127 维状态中没有球或球门的仿真世界坐标，也没有传统控制器的任务阶段编号。局部技能的忙碌标志与进度来自执行器自身，可以在机器人端维护。模型需要从图像和运动历史学习何时接近、如何观察、何时请求踢球；触发条件与底层平衡控制仍由执行层负责。",
+            "en": "The 127-dimensional state excludes simulated world coordinates of the ball and goal and excludes the traditional controller’s task-stage labels. Local skill activity and progress come from the executor and can be maintained onboard. The model learns approach, observation and kick requests from images and history; entry conditions and low-level balance remain executor responsibilities."
+          },
+          {
+            "type": "p",
+            "zh": "下面的轮滑动手练习采用另一套接口：115 维状态历史和每步 4 维请求，始终保持轮滑模式，通过碰球与制动完成任务。它与这里的步行接口不能混用；更换运动方式时，数据、处理器、检查点和执行器必须成套匹配。",
+            "en": "The gliding hands-on exercise below uses a separate interface: 115-dimensional state history and four requests per step, remaining in gliding mode through contact and braking. Do not mix it with the walking interface; data, processors, checkpoints and executors must match."
+          }
+        ]
+      },
+      {
+        "id": "walking-finetuning-scope",
+        "title": {
+          "zh": "步行模型到底训练了哪些参数",
+          "en": "Which walking-model parameters are trained?"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "把任务指令写成明确的动作目标，例如“走到足球旁，用右脚把球踢进球门，然后恢复站立”。对应英文输入是 <code>Walk to the football, kick it into the goal with the right foot, and recover to standing.</code> 单一任务的示范可以一直使用这条指令；但仅靠这一任务的成功，无法证明模型理解了不同语言目标。",
+            "en": "Use an explicit action goal: <code>Walk to the football, kick it into the goal with the right foot, and recover to standing.</code> Demonstrations of one task may share this instruction. Success on that task alone does not establish understanding of different language goals."
+          },
+          {
+            "type": "p",
+            "zh": "步行实验采用冻结视觉与语言骨干、训练动作头的方法。训练的部分包括状态与动作编码器、动作解码器、动作序列生成网络，以及动作头中的视觉语言特征处理层。这里不是 LoRA 微调，也不只是把最后一层改为 8 个数。冻结骨干可以预先缓存图像与指令特征，但动作头仍需要真实的梯度更新。",
+            "en": "The walking experiment freezes the vision-language backbone and trains the action head: state/action encoders, action decoder, action-sequence generator and feature processing within the head. This is not LoRA and is more than replacing a final layer with eight numbers. Frozen backbone features can be cached, while the action head still receives gradient updates."
+          },
+          {
+            "type": "p",
+            "zh": "训练目标是一段 16×8 的专家动作请求；GR00T 内部较宽的动作表示通过有效维度掩码适配这 8 维接口。闭环执行时只取序列前 4 步，再读取新观测预测下一段；在 12.5 Hz 决策采样下，这对应 0.32 秒仿真时间。下层行走策略继续以 50 Hz 驱动电机。仿真等待模型返回结果，并不意味着电脑和真机之间已经满足实时延迟要求。",
+            "en": "Training targets are 16×8 expert action requests. An active-dimension mask adapts GR00T’s wider internal action representation to this interface. Closed-loop execution takes the first four steps, then predicts again from fresh observations: 0.32 seconds of simulation time at 12.5 Hz. The lower walking policy still drives motors at 50 Hz. A simulator waiting for inference does not establish real-time performance over a robot–computer network."
+          },
+          {
+            "type": "p",
+            "zh": "后面的轮滑练习使用自己的状态与动作接口、训练范围和命令。不要把轮滑检查点送入步行控制器，也不要把一种模式的验证结果当成另一种模式的成功率。",
+            "en": "The roller exercises below have their own state/action interface, training scope and commands. Do not load a roller checkpoint into the walking controller or transfer one mode’s success rate to another."
           }
         ]
       },
@@ -3157,6 +3589,11 @@
           "en": "Teach one simple field first"
         },
         "blocks": [
+          {
+            "type": "p",
+            "zh": "先从已经对齐足球与球门的近球起点学习直线碰球和停车。这个练习的示范没有转向动作，因此不能用它证明模型会寻球、绕行或纠正任意朝向。扩展这些能力时，需要加入对应观察与动作的示范，再分别测试。",
+            "en": "Start with straight bumping and stopping from a near-ball position aligned with the goal. These demonstrations contain no turning, so they do not establish search, obstacle avoidance or arbitrary heading recovery. Add corresponding observations and actions before testing those capabilities."
+          },
           {
             "type": "flow",
             "interactive": true,
@@ -3221,6 +3658,323 @@
             "type": "p",
             "zh": "好的示范不只是“最终进球”。如果每段都从完全相同的位置开始，模型可能不会处理小偏差；如果每段都反复低头犹豫，模型也可能学到这些多余动作。因此先让传统方案在同一场景的合理起点范围内准确、顺畅地完成任务，再把它作为示范来源。",
             "en": "Good demonstrations require more than eventually scoring. Identical starts leave small deviations uncovered, while repeated hesitation may teach unnecessary movements. First make the traditional method accurate and smooth over a reasonable range of starts on one field, then use it as a demonstration source."
+          },
+          {
+            "type": "demonstration",
+            "file": "learning-history-demonstration",
+            "zh": "拖动进度条，查看相机画面、115 维状态历史与随后执行的 4 维动作标签。这是仿真老师完成的一次示范，按仿真时间播放。低头时观察球，抬头后向球门方向推进并制动；前进与转向是官方轮滑技能的原生请求，不等于实测速度。展开样本可以看到当前身体状态、两段过去状态和上一动作；下节解释这些信息为什么有用。帧号和时间只用于检查对齐，不作为模型输入。",
+            "en": "Seek through a recorded teacher demonstration to inspect RGB, the 115-dimensional state history and following four-dimensional action label. Playback follows simulation time. The teacher looks down at the ball, raises its gaze, propels toward the goal and brakes. Forward and yaw are native roller requests, not measured velocities. Expand the sample for current state, two past states and the previous action; the next section explains this context. Frame numbers and time are alignment metadata, not model inputs."
+          },
+          {
+            "type": "p",
+            "zh": "老师能完成任务，还不等于这些示范一定容易学。检查机器人做决定时实际能看到什么：例如推进时球是否仍在相机画面里，开始动作是否取决于能测到的头部姿态和身体稳定程度。如果两次图像与身体状态几乎相同，老师却仅因隐藏的计时或内部阶段发出不同动作，只看当前观察的模型就很难判断该选哪一个。改进观察方式、使用可观察的切换条件，或在模型接口中明确加入可部署的历史信息，比直接增加重复示范更有针对性。",
+            "en": "A teacher completing a task does not automatically make its demonstrations easy to learn. Inspect what the learner can observe when deciding: whether the moving ball remains in view, and whether launch depends on measurable head pose and body stability. If nearly identical observations receive different labels only because of a hidden timer or internal phase, a current-observation policy cannot reliably distinguish them. Improve sensing, use observable transition conditions, or explicitly provide deployable history rather than only repeating more demonstrations."
+          }
+        ]
+      },
+      {
+        "id": "data-coverage",
+        "title": {
+          "zh": "增加示范：数量、覆盖与恢复要一起看",
+          "en": "More demonstrations: quantity, coverage and recovery"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先保持一个球场、一种地面和相同光照，改变机器人与足球的起点。训练集需要覆盖接近球、调整朝向、低头观察、准备出脚和站稳；几十条几乎相同的顺利轨迹，不能替代这些状态的覆盖。按完整回合分开训练、验证与测试，相邻视频帧不能被随机拆进不同集合。",
+            "en": "Keep one field, floor and lighting setup first, while varying robot and ball starts. Cover approach, heading adjustment, looking down, kick preparation and stable recovery. Many nearly identical successful trajectories cannot replace state coverage. Split complete episodes, never adjacent frames, between training, validation and testing."
+          },
+          {
+            "type": "p",
+            "zh": "先看失败属于哪一类：找不到球、接近后反复后退、朝向尚未对准就出脚，还是触球后没有恢复站立。为常见失败设计能回到任务的示范。专家也必须能处理这些状态：从普通起点踢得好，不代表从球旁偏转的姿态也会恢复。保留所有尝试与失败原因，只把验证过的正确动作当作监督信号。",
+            "en": "Classify failures first: losing the ball, repeatedly retreating after approach, kicking before alignment, or failing to recover after contact. Collect demonstrations that return these states to the task. The expert must handle them too: success from an ordinary start does not guarantee recovery beside the ball at an angle. Keep every attempt and failure reason; supervise only with verified correct behavior."
+          },
+          {
+            "type": "p",
+            "zh": "从不同起点重新运行专家属于扩大示范覆盖。只有先让学习策略进入实际状态、再连续交接给合格专家并记录纠正，才属于自动专家 DAgger；由人决定何时接管的才是 HG-DAgger。两种数据都需要与“只继续训练原始示范”的对照组比较，才能判断收益来自纠正数据还是额外训练。",
+            "en": "Restarting an expert from varied initial states expands demonstration coverage. Automatic-expert DAgger instead lets the learner reach a state and hands control continuously to a qualified expert for recorded correction. HG-DAgger uses human-gated intervention. Compare correction training against continuing on the original demonstrations to distinguish the value of corrections from extra training."
+          }
+        ]
+      },
+      {
+        "id": "compare-policies",
+        "title": {
+          "zh": "GR00T 值得吗？用六项实验回答",
+          "en": "Is GR00T worthwhile? Six comparisons"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "传统流程、小型视觉策略和 GR00T 是三种不同的任务实现方式。小型基线可以用预训练 ResNet18 提取四帧图像特征，用 GRU 汇总时间信息，再结合 127 维本体状态输出同样的 16×8 动作序列。单任务指令固定时，可以省略语言分支。它与 GR00T 复用相同的底层技能和动作执行节奏。",
+            "en": "An engineered pipeline, a small visual policy and GR00T are three ways to implement a task. A small baseline can encode four images with pretrained ResNet18, aggregate them with a GRU, combine 127 proprioceptive values and predict the same 16×8 action sequence. A fixed single-task instruction permits omitting language. Both learners reuse the same motor skills and execution cadence."
+          },
+          {
+            "type": "table",
+            "headers": {
+              "zh": [
+                "比较项目",
+                "实验怎么安排",
+                "怎样解释结果"
+              ],
+              "en": [
+                "Comparison",
+                "Experiment",
+                "Interpretation"
+              ]
+            },
+            "rows": {
+              "zh": [
+                [
+                  "独立射门成功率",
+                  "冻结模型后，在同一批未用于训练和调参的回合中运行",
+                  "进球且恢复站立才算完整成功；保留失败分母与置信区间"
+                ],
+                [
+                  "未见起点",
+                  "机器人与球的新位置组合；范围内和超出范围分别测",
+                  "更换随机种子不等于更换起点"
+                ],
+                [
+                  "数据效率",
+                  "使用嵌套的 5、10、20、33 条示范，多次训练",
+                  "每档从相同的预训练起点开始，不能继承大数据档的任务训练"
+                ],
+                [
+                  "推理延迟",
+                  "测完整新预测的中位数与 P95，另测端到端延迟",
+                  "取缓存动作的速度不等于模型推理速度"
+                ],
+                [
+                  "训练成本",
+                  "记录特征缓存、训练时间、显存和失败尝试的成本",
+                  "预训练经验不是免费的从零学习；注明未计入的预训练成本"
+                ],
+                [
+                  "多任务扩展",
+                  "同一画面下，分别要求“踢进球门”和“走近球但不要碰球”",
+                  "轻量基线也应获得任务 ID 或文本输入，不能剥夺它区分目标的信息"
+                ]
+              ],
+              "en": [
+                [
+                  "Independent success",
+                  "Freeze checkpoints, then run the same held-out episodes",
+                  "Count goals with stable recovery; retain failures and confidence intervals"
+                ],
+                [
+                  "Unseen starts",
+                  "New robot/ball position combinations, with in-range and out-of-range suites separate",
+                  "A new random seed alone is not a new start"
+                ],
+                [
+                  "Data efficiency",
+                  "Nested sets of 5, 10, 20 and 33 demonstrations, with repeated training seeds",
+                  "Start each budget from the same pretrained initialization, never a larger-budget task checkpoint"
+                ],
+                [
+                  "Inference latency",
+                  "Median and P95 of fresh predictions, plus separate end-to-end timing",
+                  "Queued-action retrieval is not inference"
+                ],
+                [
+                  "Training cost",
+                  "Feature extraction, training, memory and failed-attempt compute",
+                  "Disclose pretrained experience and excluded pretraining cost"
+                ],
+                [
+                  "Multiple tasks",
+                  "Same scene, different goals: score versus approach without contact",
+                  "Give the small baseline a task ID or text input too"
+                ]
+              ]
+            }
+          },
+          {
+            "type": "p",
+            "zh": "先生成一份评测计划，检查两种学习方法是否使用相同输入、动作接口和测试起点。下面的命令只写入实验计划，不会训练模型，也不会生成成功率。将计划中的测试种子留给最终评测；不要用于采集示范或挑选参数。",
+            "en": "Generate an evaluation plan first and check that both learners share inputs, action interfaces and test starts. The command below writes a plan; it does not train a model or produce a success rate. Reserve its test seeds for final evaluation, not demonstration collection or parameter selection."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 lab/learning/benchmark.py plan --seed 120000 --episodes 20 --output outputs/policy-comparison-plan.json"
+          },
+          {
+            "type": "p",
+            "zh": "先建立单任务比较，再加入第二个目标。两条已知指令的正确选择、未见的同义表达、以及新的目标组合，是三个不同层次的泛化。若轻量策略在固定任务中更准确、更快，这也是有价值的结果；应根据实验判断何时需要 GR00T 的额外能力。",
+            "en": "Establish the single-task comparison before adding a second goal. Choosing between known instructions, understanding unseen paraphrases and handling new goal combinations are distinct levels of generalization. If the small policy is more accurate and faster on the fixed task, that is useful evidence; experiments should determine when GR00T’s additional capabilities are worthwhile."
+          }
+        ]
+      },
+      {
+        "id": "state-memory",
+        "title": {
+          "zh": "让模型知道刚才做过什么",
+          "en": "Give the policy recent motion context"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "一张图像很难区分“还没有开始前进”和“刚刚停止”。本练习把短时身体状态加入输入，让模型观察运动的变化，而不是依靠一个隐藏的阶段编号。相机仍提供当前画面，历史部分不保存过去的图像。",
+            "en": "A single image can make waiting before propulsion resemble stopping afterward. Recent body states provide motion context without a hidden phase identifier. The camera still supplies the current image; this history does not include earlier images."
+          },
+          {
+            "type": "equation",
+            "tex": "o_t=[s_t,\\ s_{t-12},\\ s_{t-24},\\ a_{t-1}]",
+            "label_zh": "短时状态输入",
+            "label_en": "Short-term state input"
+          },
+          {
+            "type": "p",
+            "zh": "每个身体状态 s 有 37 个数，分别是关节角、关节速度、身体角速度、重力方向和理想 IMU 积分速度。在 12.5 Hz 的采样频率下，过去 12 帧和 24 帧约对应 0.96 秒和 1.92 秒前；再加入上一帧实际执行的 4 维请求，总共是 115 维。刚复位时用第一帧实测状态补齐历史，上一动作设为零。",
+            "en": "Each body state has 37 values: joint positions and velocities, body angular velocity, gravity direction and ideal IMU-integrated velocity. At 12.5 Hz, lags of 12 and 24 frames span 0.96 and 1.92 seconds. Adding the previous four-dimensional executed request gives 115 dimensions. A physical reset pads history with the first measured state and starts with a zero previous action."
+          },
+          {
+            "type": "p",
+            "zh": "采集、训练和运行时必须使用同样的状态定义。不要把本节的 115 维数据交给只接受 37 维输入的检查点；需要重新建立处理器并训练匹配的模型。时间戳用于对齐记录，不输入模型。真机上的 IMU 积分还会受偏置和噪声影响，不能把理想仿真的速度估计当成真机测量精度。",
+            "en": "Collection, training and execution must share this state definition. A 37-dimensional checkpoint cannot use these 115-dimensional observations; fit matching processors and train a compatible policy. Timestamps align records but are excluded from the model. Hardware IMU integration has bias and noise, so ideal simulated estimates do not establish hardware accuracy."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "为什么历史里要放上一帧实际执行的动作，而不是当前要预测的标签？",
+              "en": "Why include the previous executed action rather than the current target label?"
+            },
+            "answer": {
+              "zh": "上一动作在决策时已经发生，可以在真机上获得；当前标签还没有执行，把它作为输入会泄漏答案。",
+              "en": "The previous action has already happened and is available on hardware. Supplying the current target would leak the answer."
+            }
+          }
+        ]
+      },
+      {
+        "id": "lab-environment",
+        "title": {
+          "zh": "动手：准备 GR00T 学习环境",
+          "en": "Hands-on: prepare the GR00T environment"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先完成课程环境准备。本章使用一个足球垫、固定球门和轮滑模式；先学习这一种任务，再讨论跨场景迁移。下面的命令另建学习环境，仿真仍使用课程配置的 Isaac Lab 与 Newton。 学习时长不含权重下载、数据采集与训练等待，实际耗时取决于你的电脑。",
+            "en": "Complete the course setup first. Use one mat, a fixed goal and roller mode before studying transfer. The commands create a separate learning environment while simulation retains the configured Isaac Lab and Newton. Learning time excludes model downloads, data collection and training waits, which depend on your computer."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 scripts/learning.py setup --variant groot --output .venv-groot\n.venv-groot/bin/hf auth login"
+          },
+          {
+            "type": "p",
+            "zh": "首次运行前，在 Hugging Face 的 nvidia/Cosmos-Reason2-2B 页面按账户提示开通访问；它提供 GR00T 1.7 所需的处理器资源。登录在本机终端完成。训练会下载 GR00T 权重，并保存模型与优化器检查点，请准备充足磁盘空间。",
+            "en": "Enable access to nvidia/Cosmos-Reason2-2B on Hugging Face for the GR00T 1.7 processor resources. Sign in locally in the terminal. Training downloads the GR00T weights and stores model and optimizer checkpoints, so allow sufficient disk space."
+          }
+        ]
+      },
+      {
+        "id": "lab-demonstrations",
+        "title": {
+          "zh": "动手：把仿真示范变成训练数据",
+          "en": "Hands-on: turn simulation demonstrations into data"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "在仓库根目录运行下面的命令，分别采集训练与验证回合。先用两个相邻的横向起点记录示范，让模型接触轻微的接近差异。示范老师使用官方轮滑技能，并可读取仿真中的精确位置、球速和阶段时间；学习策略只接收图像、任务指令、身体状态历史与上一动作。训练和验证使用不同随机种子。",
+            "en": "Collect separate training and validation episodes from the repository root, using two nearby lateral starts. The teacher uses the official roller skill and privileged simulated poses, ball velocity and phase time. The learner receives only RGB, task instructions, body-state history and the previous action. Use distinct train/validation seeds."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-expert.json \\\n  --output outputs/demonstrations-train --episodes 6 --seed 60000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.045 \\\n  --position-jitter 0.002 --split train --headless\n\npython3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-expert.json \\\n  --output outputs/demonstrations-validation --episodes 3 --seed 61000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.045 \\\n  --position-jitter 0.002 --split validation --headless\n\npython3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-expert.json \\\n  --output outputs/demonstrations-aligned-train --episodes 10 --seed 88000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.055 \\\n  --position-jitter 0.002 --split train --headless\n\npython3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-expert.json \\\n  --output outputs/demonstrations-aligned-validation --episodes 3 --seed 89000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.055 \\\n  --position-jitter 0.002 --split validation --headless"
+          },
+          {
+            "type": "p",
+            "zh": "先检查所有尝试，再导出合格示范。进球、未摔倒、未冲入球门区域和结束前连续停稳都要满足；只把球推过门线不够。accepted.json 列出合格回合，失败和仿真启动异常保留在各自记录中。若没有合格示范，先检查采集结果，不要跳过评分直接训练。下面的合并只在各自的数据划分内部进行；验证示范不会进入训练集。对新增站位，先确认训练采集的十次中至少八次完整成功且无摔倒，三次验证采集中至少两次完整成功且无摔倒，再继续导出。没有达到时先检查失败回合，不要仅凭少数成功片段判断老师可靠。",
+            "en": "Inspect every attempt before exporting eligible demonstrations. Scoring, no fall, stopping before the goal and a continuous final stable interval are all required. accepted.json lists eligible episodes; failures and startup errors remain recorded. If none qualify, inspect collection rather than bypassing the score. Aggregation remains within each split; validation examples never enter training. For the added start, require at least eight complete successes with no falls in ten training attempts, and at least two complete successes with no falls in three validation attempts, before export. Otherwise inspect failures first; a few selected successes do not establish a reliable teacher."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "for collection in demonstrations-train demonstrations-validation demonstrations-aligned-train demonstrations-aligned-validation; do\n  python3 lab/learning/data.py report \"outputs/$collection\"\ndone\n\nfor split in train validation; do\n  .venv-groot/bin/python lab/learning/data.py export \\\n    --manifest \"outputs/demonstrations-$split/accepted.json\" \\\n    --output \"outputs/groot-data-original-$split\" --source automatic_expert\n  .venv-groot/bin/python lab/learning/data.py export \\\n    --manifest \"outputs/demonstrations-aligned-$split/accepted.json\" \\\n    --output \"outputs/groot-data-aligned-$split\" --source automatic_expert\n  .venv-groot/bin/python lab/learning/data.py merge \\\n    --inputs \"outputs/groot-data-original-$split\" \"outputs/groot-data-aligned-$split\" \\\n    --output \"outputs/groot-data-$split\" --split \"$split\"\ndone"
+          },
+          {
+            "type": "p",
+            "zh": "导出结果采用 LeRobot 数据格式，并保留来源与训练/验证划分。不要把同一回合换个目录名放入验证集，也不要把一段原始视频及其外观变体分到两侧。思考：为什么帧数很多，但只有很少起始条件的数据，仍可能让模型过拟合？",
+            "en": "The export uses LeRobot format and retains source lineage and split information. Renaming an episode does not make it held-out; an original clip and its appearance variants must remain on the same side. Why can many frames from very few starting conditions still produce overfitting?"
+          }
+        ]
+      },
+      {
+        "id": "lab-finetuning",
+        "title": {
+          "zh": "动手：微调动作模型",
+          "en": "Hands-on: fine-tune the action model"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先用训练集建立输入输出处理器，再从官方 GR00T 1.7 权重开始适配。本实验冻结视觉语言骨干与动作 Transformer，训练连接 Microduck 状态和高层动作请求的投影层，以及动作序列的位置编码。下面的命令采用固定场景示范；训练完成后仍需独立测试。 --head-dropout disabled 关闭动作头的随机丢弃，用于先检验模型能否拟合这一固定场景；这是本实验的选择，不代表官方默认配置，也不能据此推断跨场景泛化能力。",
+            "en": "Fit input/output processors on the training split, then adapt the official GR00T 1.7 weights. Freeze the vision-language backbone and action Transformer while training the Microduck state/action projections and action-position embeddings. Use the fixed-scene demonstrations, then evaluate independently. --head-dropout disabled removes action-head dropout to test fixed-scene fitting. This is an experiment-specific choice, not an official default or evidence of transfer."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": ".venv-groot/bin/python lab/learning/initialize.py \\\n  --dataset outputs/groot-data-train \\\n  --output outputs/groot-initialization\n\n.venv-groot/bin/python lab/learning/train_cached.py \\\n  --checkpoint outputs/groot-initialization \\\n  --initialization official-base --training-scope projectors \\\n  --head-dropout disabled --learning-rate 0.001 \\\n  --dataset outputs/groot-data-train \\\n  --validation-dataset outputs/groot-data-validation \\\n  --output outputs/groot-baseline \\\n  --steps 3000 --batch-size 16 --seed 47 --balanced-action-groups"
+          },
+          {
+            "type": "p",
+            "zh": "程序会先计算并缓存冻结的视觉语言骨干特征，再开始更新动作模型。日志中的 cache 和 frames 表示特征准备进度，step 才表示优化器更新次数；看到缓存进度持续增长时，可以继续等待。首次更新后还会检查模型保存与重新加载，因此此处也可能有一段等待。缓存只适用于骨干不更新、图像预处理固定的情况，不能直接沿用于改变图像增强或解冻骨干的训练。",
+            "en": "The program first computes and caches features from the frozen vision-language backbone, then updates the action model. The cache and frames log entries track feature preparation; step counts optimizer updates. Keep waiting while cache progress advances. A save-and-reload check after the first update may also take time. Feature caching requires a frozen backbone and fixed image preprocessing; it cannot be reused unchanged after adding image augmentation or unfreezing the backbone."
+          },
+          {
+            "type": "p",
+            "zh": "训练结束后，pretrained_model 目录包含模型、输入输出处理器和动作接口信息。模型保存与优化器保存也需要时间；日志到达最后一步时，不要立即关闭进程。下面的命令比较验证轨迹上的动作预测误差。",
+            "en": "After training, pretrained_model contains weights, processors and the action contract. Saving model and optimizer state also takes time; do not close the process when the last update appears. The following command measures action prediction error on held-out trajectories."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": ".venv-groot/bin/python lab/learning/evaluate.py \\\n  --checkpoint outputs/groot-baseline/checkpoints/003000/pretrained_model \\\n  --dataset outputs/groot-data-validation \\\n  --output outputs/groot-validation.json --all-anchors --seed 42"
+          },
+          {
+            "type": "p",
+            "zh": "分别阅读前进、转向、视线俯仰和视线权重的误差，不要把不同单位简单平均成一个“准确率”。这里的验证仍是对记录观察做预测：模型一旦自己执行，输入就会随它的动作改变，因此还需要下面的闭环测试。 --all-anchors 检查每一个有效观察起点，避免抽样漏掉开始推进和停车附近的动作变化；相邻动作块会重叠，它们不是独立试验。",
+            "en": "Read each action error separately rather than averaging different units into one accuracy. This evaluation predicts from recorded observations. During execution the policy changes its own future inputs, which requires a closed-loop test. --all-anchors checks every valid observation anchor so subsampling does not skip propulsion and braking transitions. Adjacent chunks overlap and are not independent trials."
+          }
+        ]
+      },
+      {
+        "id": "lab-rollout",
+        "title": {
+          "zh": "动手：让 GR00T 独立控制轮滑射门",
+          "en": "Hands-on: let GR00T control the task"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "打开两个终端，都位于课程仓库根目录。第一个终端运行下面的命令，加载你刚训练的模型；保持它运行，直到服务提示准备就绪。",
+            "en": "Open two terminals at the repository root. Start the trained model in the first terminal and keep it running until it reports readiness."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": ".venv-groot/bin/python lab/learning/server.py \\\n  --checkpoint outputs/groot-baseline/checkpoints/003000/pretrained_model \\\n  --log outputs/groot-inference.jsonl"
+          },
+          {
+            "type": "p",
+            "zh": "在第二个终端执行下面的命令。这次控制请求来自 GR00T，不再由示范老师发出。官方轮滑技能与本地制动仍负责底层执行；新种子用于完整任务测试。",
+            "en": "Run the next command in the second terminal. GR00T now supplies the requests; the demonstration teacher is inactive. The official roller skill and local braking still execute low-level control. New seeds are used for full-task evaluation."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-policy.json \\\n  --output outputs/groot-test --episodes 10 --seed 82000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.055 \\\n  --position-jitter 0.002 --split test --headless\n\npython3 lab/learning/data.py report outputs/groot-test"
+          },
+          {
+            "type": "p",
+            "zh": "先检查计划中的回合是否全部完成，再读完整任务成功数。启动异常需要单独处理，不能悄悄从结果里消失。这个小测试只反映同一场景、近似对齐起点的表现，不能证明能在任意房间找到球。仿真会等待每次推理返回；实际推理耗时记录在日志中，这种同步运行不代表真机已满足实时控制要求。保留所有十次结果；若需要根据失败调参，再选新的起点做后续独立测试，不要反复挑选同一组中的成功片段。",
+            "en": "Check that all planned episodes completed, then read full-task successes. Startup failures need separate handling. This small test covers one scene and approximately aligned starts, not finding a ball in arbitrary rooms. Simulation waits for inference; measured latency is logged, and this synchronous test does not establish hardware real-time operation. Retain all ten outcomes. After tuning on failures, use fresh starts for a later independent test instead of selecting successes from the same trials."
           }
         ]
       },
@@ -3235,6 +3989,11 @@
             "type": "p",
             "zh": "模型第一次走偏后，看到的画面可能已经不在原示范里。例如轮滑稍微偏向球的一侧，继续模仿“正对球向前滑”的动作反而会越走越偏。这是只学习成功轨迹的常见短板：缺少“从错误状态回到任务”的经验。",
             "en": "After the first deviation, the policy may encounter observations absent from demonstrations. If skating drifts to one side, imitating a straight approach may worsen the error. Successful trajectories alone often omit recovery from off-course states."
+          },
+          {
+            "type": "p",
+            "zh": "本节通过流程图理解 HG-DAgger，不需要手动操纵机器人。仿真中的自动专家纠正采用同样的“收集偏差—补充正确动作—微调—独立复测”思路，但纠正动作由控制器提供，不能称为人类接管。",
+            "en": "Use the diagram to understand HG-DAgger; no manual robot control is required. Automated expert correction in simulation follows the same collect–correct–fine-tune–retest loop, but its corrective actions come from a controller, not a human."
           },
           {
             "type": "flow",
@@ -3315,6 +4074,134 @@
             "answer": {
               "zh": "因为接管动作可能完成了最关键的纠错。应在关闭接管后重新测试自主成功率，同时另报接管次数与专家恢复率。",
               "en": "The expert may have supplied the decisive recovery. Retest without intervention and report intervention frequency and expert recovery separately."
+            }
+          }
+        ]
+      },
+      {
+        "id": "lab-correction-collect",
+        "title": {
+          "zh": "动手：从模型运行中采集自动制动纠正",
+          "en": "Hands-on: collect automatic braking corrections"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "本练习复用刚训练的 GR00T 基线，不需要键盘接管。自动专家只处理一种情况：球已经朝球门滚出，但模型仍请求前进。它借助仿真精确位置与球速判断时机，然后发出零前进请求，让原有制动控制器停车。它不会重新找球、纠正任意朝向或扶起摔倒的机器人。这是自动专家纠正，不是人类 HG-DAgger。",
+            "en": "Reuse the trained GR00T baseline without keyboard intervention. The automatic expert handles one case: the ball has rolled toward the goal while the policy still requests propulsion. Privileged simulated poses and ball velocity trigger zero propulsion through the existing brake controller. It cannot search again, correct arbitrary headings or recover falls. This is automated expert correction, not human HG-DAgger."
+          },
+          {
+            "type": "p",
+            "zh": "若上一节同一个基线检查点的推理服务仍在运行，继续使用并跳过下面的启动命令；否则，在终端 A 启动服务并等待模型准备就绪。在终端 B 登记采集起点与所用模型，再采集全部 16 个回合。reference-episode 指向这个基线实际完成测试的回合，只用于识别模型与控制接口，不会加入训练集。",
+            "en": "If the same baseline server from the previous exercise is still running, reuse it and skip the launch command below. Otherwise start it in terminal A and wait until ready. In terminal B, register the starts and model before collecting all 16 episodes. reference-episode identifies the model and control interface from its actual test recording; that test episode does not enter training."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": ".venv-groot/bin/python lab/learning/server.py \\\n  --checkpoint outputs/groot-baseline/checkpoints/003000/pretrained_model \\\n  --log outputs/automatic-correction-inference.jsonl"
+          },
+          {
+            "type": "p",
+            "zh": "下面四条命令在第二个终端运行。登记与采集必须使用相同的起点、时长、随机种子和控制配置。",
+            "en": "Run the four commands below in the second terminal. Registration and collection must use identical starts, duration, seeds and controller configuration."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 lab/learning/qualify_expert.py plan \\\n  --controller lab/learning/configs/roller-history-automatic-brake.json \\\n  --reference-episode outputs/groot-test/episode-82000 \\\n  --seed 96000 --episodes 16 --seconds 24 \\\n  --root-x -0.30 --root-y 0.055 --position-jitter 0.002 \\\n  --output outputs/automatic-correction-plan.json\n\npython3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-automatic-brake.json \\\n  --output outputs/automatic-corrections --episodes 16 --seed 96000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.055 --position-jitter 0.002 \\\n  --split correction --expert-protocol outputs/automatic-correction-plan.json --headless\n\npython3 lab/learning/data.py report outputs/automatic-corrections\npython3 lab/learning/qualify_expert.py qualify \\\n  --collection outputs/automatic-corrections \\\n  --plan outputs/automatic-correction-plan.json \\\n  --output outputs/automatic-correction-qualification.json"
+          },
+          {
+            "type": "p",
+            "zh": "先看所有回合的结果，再看实际触发接管的数量。只有至少 3 次触发，且触发回合中至少 70% 最终完成进球与停稳，检查才通过。未触发、摔倒和未进球的回合都保留；触发后的完成比例不是模型独立成功率，也不能证明专家修好了某一次无接管时的失败。若 passed 为 false，先分析不足，不继续导出或微调。",
+            "en": "Inspect every outcome and then the number of actual interventions. The check requires at least three triggered episodes and at least 70% complete scoring-and-stopping among them. Retain non-triggered runs, falls and misses. Conditional assisted completion is not autonomous policy success or proof of counterfactual rescue. If passed is false, analyze the limitation before exporting or training."
+          },
+          {
+            "type": "p",
+            "zh": "没有足够的接管不一定是坏事：模型可能已经及时停车，也可能在触球前就失败，超出了这个专家的能力。先区分这两种情况，再决定是否需要补充其他类型的纠正。",
+            "en": "Too few interventions are not necessarily bad: the policy may already brake correctly, or may fail before contact, outside this expert’s scope. Distinguish these cases before designing another correction type."
+          }
+        ]
+      },
+      {
+        "id": "lab-correction-train",
+        "title": {
+          "zh": "动手：把合格纠正加入示范",
+          "en": "Hands-on: add qualified corrections to demonstrations"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "检查通过后，下面的命令只选完整成功回合中的实际专家片段，每次最多保留接管后的 64 帧，减少长时间静止片段的重复。原始完整记录仍保留。历史状态延续接管前的实际运动，不在控制权切换时清零；模型建议和专家实际执行动作分别记录。",
+            "en": "After the check passes, retain only actual expert segments from fully successful episodes, capped at the first 64 frames after each intervention to limit redundant stationary tails. Keep complete source recordings. State history continues through takeover instead of resetting, and learner proposals remain distinct from executed expert actions."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 lab/learning/review.py \\\n  --qualified-recoveries outputs/automatic-correction-qualification.json \\\n  --max-frames 64 --output outputs/automatic-correction-manifest.json\n\n.venv-groot/bin/python lab/learning/data.py export \\\n  --manifest outputs/automatic-correction-manifest.json \\\n  --output outputs/groot-correction-data --source automatic_expert --corrections-only\n\n.venv-groot/bin/python lab/learning/data.py merge \\\n  --inputs outputs/groot-data-train outputs/groot-correction-data \\\n  --output outputs/groot-data-with-corrections"
+          },
+          {
+            "type": "p",
+            "zh": "停止推理服务，再运行下面的两组训练。两组从同一个基线检查点出发，都更新 1000 步并使用相同参数；对照组只继续学习原示范，纠正组加入刚采集的专家片段。这个对照能减少额外训练量的混淆，但仍需独立物理测试来判断效果。优化器重新建立，输入输出的归一化统计沿用父模型。",
+            "en": "Stop inference before training both branches. Start from the same baseline and match 1,000 updates and all training parameters. The control keeps original demonstrations; the correction branch adds the collected expert segments. This reduces the extra-training confound, while independent physical tests still determine the outcome. Optimizers are fresh; preprocessing statistics are inherited."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "for variant in control corrected; do\n  dataset=outputs/groot-data-train\n  if [ \"$variant\" = corrected ]; then\n    dataset=outputs/groot-data-with-corrections\n  fi\n  .venv-groot/bin/python lab/learning/train_cached.py \\\n    --checkpoint outputs/groot-baseline/checkpoints/003000/pretrained_model \\\n    --dataset \"$dataset\" --validation-dataset outputs/groot-data-validation \\\n    --output \"outputs/groot-correction-$variant\" \\\n    --steps 1000 --batch-size 16 --seed 49 --learning-rate 0.0002 \\\n    --training-scope projectors --head-dropout checkpoint --balanced-action-groups\ndone"
+          }
+        ]
+      },
+      {
+        "id": "lab-correction-test",
+        "title": {
+          "zh": "动手：关闭专家，比较独立完成情况",
+          "en": "Hands-on: compare performance without the expert"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先在相同的验证示范上比较预测误差。两个模型都不能把验证回合用于训练；更低的误差仍不等于完整任务成功。",
+            "en": "Compare prediction error on the same held-out demonstrations first. Neither branch may train on validation episodes; lower prediction error still does not establish complete-task success."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "for variant in control corrected; do\n  .venv-groot/bin/python lab/learning/evaluate.py \\\n    --checkpoint \"outputs/groot-correction-$variant/checkpoints/001000/pretrained_model\" \\\n    --dataset outputs/groot-data-validation \\\n    --output \"outputs/groot-correction-$variant-offline.json\" --all-anchors --seed 42\ndone"
+          },
+          {
+            "type": "p",
+            "zh": "接着在终端 A 加载对照模型。等待服务准备就绪后，在终端 B 执行测试。完成后停止服务，把两个终端的 variant 都改为 corrected，再做相同测试；每次使用各自的新输出目录。",
+            "en": "Load the control model in terminal A. Wait for readiness, then test in terminal B. Stop the server afterward, change variant to corrected in both terminals and repeat the matched test with its separate output directory."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "variant=control\n.venv-groot/bin/python lab/learning/server.py \\\n  --checkpoint \"outputs/groot-correction-$variant/checkpoints/001000/pretrained_model\" \\\n  --log \"outputs/groot-correction-$variant-inference.jsonl\""
+          },
+          {
+            "type": "p",
+            "zh": "第二个终端使用普通的 roller-history-policy.json，确保专家不再接管。五个新起点对两组保持一致，所有失败都计入结果。",
+            "en": "Terminal B uses ordinary roller-history-policy.json with intervention disabled. Match the five fresh starts across branches and include every failure."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "variant=control\npython3 scripts/learning.py collect \\\n  --controller lab/learning/configs/roller-history-policy.json \\\n  --output \"outputs/groot-correction-$variant-test\" --episodes 5 --seed 98000 \\\n  --seconds 24 --root-x -0.30 --root-y 0.055 --position-jitter 0.002 \\\n  --split test --headless\npython3 lab/learning/data.py report \"outputs/groot-correction-$variant-test\""
+          },
+          {
+            "type": "p",
+            "zh": "比较完整进球并停稳的次数、摔倒次数和失败发生的位置。若纠正组没有改善，先检查错误是否真的发生在这个专家负责的制动阶段，以及新数据是否覆盖了模型常见的偏差。少量测试只能帮助发现问题，不能用来宣称所有错误都已解决。",
+            "en": "Compare complete scoring-and-stopping, falls and where failures occur. If corrections do not help, check whether failures actually concern this expert’s braking scope and whether new data cover common learner deviations. A small test can reveal issues; it cannot establish universal recovery."
+          },
+          {
+            "type": "quiz",
+            "question": {
+              "zh": "如果纠正组更早停下，但球仍未进门，能说自动纠正有效吗？",
+              "en": "If the corrected policy stops earlier but the ball still misses, did correction succeed?"
+            },
+            "answer": {
+              "zh": "不能仅凭提前停车下结论。最终任务还要求整球进门；需要区分制动改善与完整射门成功，并检查是否过早停止推进。",
+              "en": "Earlier braking alone is insufficient. The full task requires a whole-ball goal; distinguish braking behavior from complete success and check for prematurely ending propulsion."
             }
           }
         ]
@@ -3716,8 +4603,8 @@
       "en": "Diagnose failures before choosing corrections, physics calibration or Cosmos 3 data expansion; evaluate generalization step by step."
     },
     "meta": {
-      "zh": "第 9 章 · 预计学习时长 25 分钟",
-      "en": "Chapter 9 · Estimated learning time: 25 minutes"
+      "zh": "第 9 章 · 预计学习时长 60 分钟",
+      "en": "Chapter 9 · Estimated learning time: 60 minutes"
     },
     "sections": [
       {
@@ -3736,6 +4623,25 @@
             "type": "p",
             "zh": "当同场景的新起点、轻微球位偏差和完整停车都已能稳定处理，再问“换一个家还能不能用”。不同家庭的光线、背景、布局和地面确实会变化，但不必一次把所有因素加入训练。",
             "en": "After reliable handling of fresh starts, modest ball offsets and complete stopping on one field, ask whether the system transfers to another home. Lighting, background, layout and surfaces do vary, but training need not change every factor at once."
+          }
+        ]
+      },
+      {
+        "id": "initial-state-variation",
+        "title": {
+          "zh": "先随机起点，再扩展房间",
+          "en": "Vary initial states before expanding rooms"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "域随机化不只是换地板颜色。机器人起始位置与朝向、足球位置也会改变观察和动作需求。先在同一球场内改变机器人与球的位置，验证能否从未见过的组合完成任务；再扩大朝向和距离范围，最后引入室内背景、光照与地面外观。",
+            "en": "Domain randomization is more than recoloring a floor. Robot position and heading, and ball position, change both observations and required actions. First vary robot/ball positions on one field and test unseen combinations. Then widen heading and distance ranges before adding room backgrounds, lighting and floor appearance."
+          },
+          {
+            "type": "p",
+            "zh": "位置或动力学发生变化后，要重新运行物理仿真并记录相应动作，不能直接沿用原轨迹标签。Cosmos 改变视觉外观时也要逐帧检查球、球门、相机视角与动作时序是否仍对齐。提高同一场景的闭环成功率之后，再判断多场景数据能否带来额外收益。",
+            "en": "Changed positions or dynamics require new physical rollouts and matching action labels. For Cosmos appearance changes, inspect every frame to ensure ball, goal, camera and action timing remain aligned. Improve closed-loop reliability in one scene before testing the additional benefit of multiple scenes."
           }
         ]
       },
@@ -3890,6 +4796,153 @@
             "type": "p",
             "zh": "生成视频不是一次新的物理实验。更漂亮的进球画面不能证明动作可执行；可靠性仍要回到闭环仿真，以及之后的真机测试。涉及摩擦、质量或制动距离的变化，要用物理参数与实测来处理。",
             "en": "Generated video is not a new physics experiment. A prettier goal does not establish executable actions; reliability still needs closed-loop simulation and later hardware tests. Friction, mass and braking-distance changes require physics parameters and measurements."
+          }
+        ]
+      },
+      {
+        "id": "lab-cosmos-source",
+        "title": {
+          "zh": "动手：为同一段动作改变光照",
+          "en": "Hands-on: change lighting for the same actions"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "先完成第七章的示范采集、GR00T 训练和独立物理测试。只有模型在同一球场的新起点下已能稳定进球并停稳，才进入光照增强；若仍常常走偏、射程不足或停不稳，先处理动作与示范问题。本练习的目标是在保留场地、物体、相机运动与动作时序的前提下改变光照。Cosmos 生成候选画面，之后微调的仍是 GR00T。本练习采用一个保守的起点：十次新起点测试至少八次完整成功且没有摔倒；这个小测试不是家庭环境泛化的证明。 本章学习时长不含下载、视频生成、训练与物理测试的等待时间；这些耗时取决于设备。",
+            "en": "First complete Chapter 7 demonstration collection, GR00T training and independent physical evaluation. Proceed to lighting augmentation only after reliable scoring and stopping at fresh starts on the same field. Address action or demonstration failures first if it still drifts, shoots short or cannot stop. The goal is to change lighting while retaining the scene, objects, camera motion and action timing. Cosmos generates candidate images; GR00T is fine-tuned afterward. As a starting check, require at least eight complete successes and no falls in ten fresh trials. This small fixed-scene test does not establish generalization to homes. Estimated learning time excludes downloads, video generation, training and physical-test waiting time, which depends on the computer."
+          },
+          {
+            "type": "p",
+            "zh": "先停止仿真和模型推理服务，再执行下面的命令创建生成环境。首次使用时登录 Hugging Face，并按模型页面提示开通 nvidia/Cosmos3-Nano 与 nvidia/Cosmos-1.0-Guardrail 的访问。",
+            "en": "Stop simulation and the policy server before creating the generation environment. Sign in to Hugging Face and follow access requirements for nvidia/Cosmos3-Nano and nvidia/Cosmos-1.0-Guardrail."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 scripts/learning.py setup --variant cosmos --output .venv-cosmos\n.venv-cosmos/bin/hf auth login"
+          },
+          {
+            "type": "p",
+            "zh": "从新增站位的训练示范 accepted.json 中选择一个完整成功回合，把下面路径替换为该回合目录。截取第 20 帧起连续 81 帧，在 12.5 Hz 下约为 6.5 秒，覆盖低头观察、推进到制动的过程；这段素材本身不需要包含最终进球。不要从验证集或测试集取素材。",
+            "en": "Choose a complete success from the added-start training accepted.json and replace the episode path below. Extract 81 consecutive frames from frame 20: about 6.5 seconds at 12.5 Hz, spanning observation, propulsion and braking. This material does not need to include the final goal. Never source augmentation from validation or test episodes."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": ".venv-cosmos/bin/python lab/learning/cosmos_data.py prepare \\\n  --training-dataset outputs/groot-data-train \\\n  --episode outputs/demonstrations-aligned-train/episode-88000 \\\n  --output outputs/cosmos-lighting --start 20 --frames 81"
+          },
+          {
+            "type": "p",
+            "zh": "第 20 至 100 帧对应原始时间 1.60–8.00 秒：81 帧按 12.5 Hz 播放约 6.48 秒，首末观察相隔 6.40 秒。这是同一回合的连续片段，不是 81 次独立射门。先检查你选择的示范在这段时间内实际完成了哪些动作；片段结束并不代表整球已经进门。",
+            "en": "Frames 20–100 correspond to source time 1.60–8.00 seconds: 81 frames play for about 6.48 seconds at 12.5 Hz, while first and last observations are 6.40 seconds apart. This is one contiguous episode segment, not 81 independent shots. Inspect which actions your selected demonstration contains; the clip ending does not establish a whole-ball goal."
+          },
+          {
+            "type": "p",
+            "zh": "下面的命令用边缘视频约束原有结构，并描述温和的室内光照变化。控制条件能帮助保持几何，但不能保证每一帧都正确。",
+            "en": "The following command constrains structure with the edge video and requests a gentle lighting change. Conditioning helps preserve geometry but does not guarantee every frame is valid."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": ".venv-cosmos/bin/python lab/learning/cosmos_data.py generate \\\n  --clip outputs/cosmos-lighting --seed 2026 --steps 50 \\\n  --prompt \"A small black-and-white football and a miniature sloped-back goal on the same green football mat, viewed by the same moving robot camera. Soft cool indoor daylight at slightly lower brightness. Preserve every object position, scale, shape, camera viewpoint and motion from the control video. Keep the same plain indoor background.\""
+          }
+        ]
+      },
+      {
+        "id": "lab-cosmos-review",
+        "title": {
+          "zh": "动手：检查哪些生成画面可以沿用动作标签",
+          "en": "Hands-on: decide whether labels remain valid"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "打开生成目录中的 review.html，逐帧比较原图与生成图。先看球和球门是否移动、变形或增减，再检查遮挡与运动是否连续。review.png 只抽取了少量画面，不能替代完整检查。生成视频不是一次新的物理射门试验。",
+            "en": "Open review.html in the generated directory and compare every source/generated pair. Check object positions, shape, count, occlusion and temporal continuity. review.png is only a sampled overview. Generated video is not a new physical rollout."
+          },
+          {
+            "type": "p",
+            "zh": "完整检查后再选择 accept 或 reject，并填写你实际观察到的依据。球、球门、相机视角或帧间时序有不一致时，选择 reject；被拒绝片段原地保留，不继续执行后面的导出与训练命令。若再生成候选，使用新目录，不覆盖这次记录。人工检查是数据筛选，不能保证后续训练或物理测试一定成功。",
+            "en": "After inspecting every frame, choose accept or reject and record what you actually observed. Reject mismatched ball/goal geometry, camera viewpoint or temporal alignment. Retain rejected clips and do not run the export/training steps below for them. Use a new directory for another candidate. Manual review filters data; it does not guarantee downstream training or physical success."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 lab/learning/cosmos_data.py review \\\n  --clip outputs/cosmos-lighting --decision accept \\\n  --reviewer learner --inspected-all-frames \\\n  --reason \"Checked every frame: object geometry and action timing remain aligned.\""
+          },
+          {
+            "type": "p",
+            "zh": "下面的命令为通过检查的片段创建清单，复用原始身体状态与动作标签，并与原示范合并。原片和生成变体始终属于训练集，不能把变体当作独立验证。",
+            "en": "Create a manifest for the accepted clip, reuse its original states and actions, and aggregate it with demonstrations. Originals and generated variants remain in training; variants are not held-out validation."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "python3 lab/learning/cosmos_data.py manifest \\\n  --clip outputs/cosmos-lighting --output outputs/cosmos-manifest.json\n\n.venv-groot/bin/python lab/learning/data.py export \\\n  --manifest outputs/cosmos-manifest.json \\\n  --output outputs/groot-lighting-data --source automatic_expert\n\n.venv-groot/bin/python lab/learning/data.py merge \\\n  --inputs outputs/groot-data-train outputs/groot-lighting-data \\\n  --output outputs/groot-data-with-lighting"
+          },
+          {
+            "type": "p",
+            "zh": "思考：为什么改变灯光后可能沿用原动作，而把地毯换成更滑的地面就不能直接沿用原来的速度与停车标签？后一种变化需要重新运行物理仿真。",
+            "en": "Why might lighting variants reuse actions while a more slippery floor cannot reuse the original speeds and stopping labels? The latter needs a new physics rollout."
+          }
+        ]
+      },
+      {
+        "id": "lab-cosmos-train",
+        "title": {
+          "zh": "动手：比较有无生成数据的训练",
+          "en": "Hands-on: compare training with and without generated data"
+        },
+        "blocks": [
+          {
+            "type": "p",
+            "zh": "数据通过检查后，从第七章同一个已训练检查点分别开始两次微调：对照组只用原示范，增强组加入审阅后的生成片段。两组都更新1000步，批量大小16、学习率0.0002、随机种子49、可训练参数范围及采样方式相同，并沿用父检查点的预处理统计。这里重新建立优化器，不是恢复原优化器状态。这个对照减少“只是多训练了一段时间”的混淆，结果仍需独立检验。",
+            "en": "After accepting the data, start both fine-tuning runs from the same Chapter 7 checkpoint: original demonstrations only versus originals plus the reviewed clip. Match 1,000 updates, batch size 16, learning rate 0.0002, seed 49, trainable scope and sampling method, and reuse the parent checkpoint preprocessing statistics. Each run creates a fresh optimizer rather than resuming its state. This reduces the extra-training confound; results still need independent evaluation."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "for variant in control lighting; do\n  dataset=outputs/groot-data-train\n  if [ \"$variant\" = lighting ]; then\n    dataset=outputs/groot-data-with-lighting\n  fi\n  .venv-groot/bin/python lab/learning/train_cached.py \\\n    --checkpoint outputs/groot-baseline/checkpoints/003000/pretrained_model \\\n    --initialization checkpoint \\\n    --dataset \"$dataset\" --validation-dataset outputs/groot-data-validation \\\n    --output \"outputs/groot-$variant\" \\\n    --steps 1000 --batch-size 16 --seed 49 --learning-rate .0002 \\\n    --training-scope projectors --head-dropout checkpoint \\\n    --balanced-action-groups\ndone"
+          },
+          {
+            "type": "p",
+            "zh": "这组命令接续第七章的 115 维状态历史、4 维高层请求和 roller-history-policy.json。生成片段复用同一回合的状态与动作，合并前会检查控制接口。训练集、验证集、父检查点和策略配置必须使用同样的历史定义，不能混入 37 维检查点。两组都使用相同的动作类别均衡采样；片段帧数不等于实际抽样占比。损失下降不代表完整任务成功。",
+            "en": "Continue Chapter 7 with the same 115-dimensional state history, four-dimensional requests and roller-history-policy.json. Generated frames reuse the original episode states and actions, and aggregation checks the control interface. Training, validation, parent checkpoint and controller must share the history definition; do not mix in a 37-dimensional checkpoint. Both groups use the same action-balanced sampling, so frame fraction is not sampling probability. Lower loss does not establish task success."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "for variant in control lighting; do\n  .venv-groot/bin/python lab/learning/evaluate.py \\\n    --checkpoint \"outputs/groot-$variant/checkpoints/001000/pretrained_model\" \\\n    --dataset outputs/groot-data-validation \\\n    --output \"outputs/groot-$variant-offline.json\" --all-anchors --seed 42\ndone"
+          },
+          {
+            "type": "p",
+            "zh": "接下来分别测试两组模型。先检查原来的 daylight 光照是否退步，再测试 cool-dim。后者由 Isaac Sim 独立配置冷暗照明，与生成提示词的方向相近，但不是对生成画面的数值匹配。仿真器重新渲染传感器画面并推进物理，不把生成视频回放给策略；测试的起点和轨迹没有用于训练。",
+            "en": "Test both models under daylight for regressions, then under cool-dim. Isaac Sim independently configures cooler, dimmer lighting, similar in intent to the generation prompt but not a numerical match to generated pixels. It renders fresh sensor observations and advances physics instead of replaying generated video. These test starts and trajectories were excluded from training."
+          },
+          {
+            "type": "p",
+            "zh": "在终端A设置variant=control并启动下面的服务。等待模型加载完成后，在终端B运行测试。两种光照均测试完后，在终端A按Ctrl+C停止服务，再把两个终端中的variant都改为lighting，重复完整流程。每次只运行一个推理服务和对应仿真；每组使用自己的日志和输出目录。",
+            "en": "In Terminal A, set variant=control and start the server below. Once loading finishes, run the tests in Terminal B. After testing both lighting profiles, stop the server with Ctrl+C, change variant to lighting in both terminals and repeat. Run only one policy server and its simulation at a time; keep separate logs and output directories."
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "variant=control\n.venv-groot/bin/python lab/learning/server.py \\\n  --checkpoint \"outputs/groot-$variant/checkpoints/001000/pretrained_model\" \\\n  --log \"outputs/groot-$variant-inference.jsonl\""
+          },
+          {
+            "type": "code",
+            "label": "Terminal · Bash",
+            "code": "variant=control\nfor lighting in daylight cool-dim; do\n  python3 scripts/learning.py collect \\\n    --controller lab/learning/configs/roller-history-policy.json \\\n    --output \"outputs/$variant-$lighting\" \\\n    --episodes 5 --seed 94000 --seconds 24 \\\n    --root-x -.30 --root-y .055 --position-jitter .002 \\\n    --style A --lighting \"$lighting\" --split test --headless\n  python3 lab/learning/data.py report \"outputs/$variant-$lighting\"\ndone"
+          },
+          {
+            "type": "p",
+            "zh": "两组保持相同的五个新起点和场景参数，全部尝试都保留。分别记录每组、每种光照下的完整成功数、进球数、摔倒数和完成测试数；遇到启动异常，先解决并保留记录，不能只统计顺利启动的成功片段。仍使用整球进门、不摔倒、不越过停车边界且结束前连续停稳的原判据。",
+            "en": "Use the same five fresh starts and scene settings for both models and retain all attempts. Record completed trials, full successes, goals and falls for each model/lighting combination. Resolve and retain startup failures rather than reporting only successful fragments. Keep the original whole-ball goal, no fall, no stop-boundary crossing and continuous final stop criteria."
+          },
+          {
+            "type": "p",
+            "zh": "五次测试可以帮助发现明显问题，但不能证明已适应所有家庭环境。同种子也不保证物理轨迹逐位相同，不能把单次结果变化当作严格的反事实救回。如果增强组没有改善，检查生成画面是否保留任务线索，以及失败是否其实来自动作时机、接触或制动。不要为得到更好的表格反复更换片段和测试种子。",
+            "en": "Five trials can expose obvious problems but do not establish generalization to all homes. Matching seeds do not guarantee bitwise-identical physical trajectories; a changed single outcome is not a strict counterfactual rescue. If augmentation does not help, inspect image cues and action timing, contact or braking failures. Do not repeatedly change clips and test seeds to obtain a better table."
           }
         ]
       },
@@ -4122,8 +5175,8 @@
           },
           {
             "type": "p",
-            "zh": "这里提供的是前五章实验和第六章传统演示所用权重，不包含 GR00T 或 Cosmos 大模型。后续若开始微调，需按对应模型的授权与访问条件单独获取权重，并使用独立环境。",
-            "en": "These weights support Chapters 1–5 and the Chapter 6 baseline. GR00T and Cosmos foundation models are not bundled. Future adaptation requires separate model access under the applicable terms and an isolated environment."
+            "zh": "这里提供的是前五章实验和第六章传统演示所用权重，不包含 GR00T 或 Cosmos 大模型。进行第七章微调和第九章数据生成时，按对应模型的授权与访问条件单独获取权重，并使用各章指定的独立环境。",
+            "en": "These weights support Chapters 1–5 and the Chapter 6 baseline. GR00T and Cosmos foundation models are not bundled. For Chapter 7 fine-tuning and Chapter 9 data generation, obtain weights under the corresponding access and license terms and use each chapter’s isolated environment."
           }
         ]
       },
@@ -4232,6 +5285,10 @@
                   "查看日志是否仍在下载资源或编译；等待初始化，不要反复启动多个实例。"
                 ],
                 [
+                  "视频解码提示",
+                  "若 TorchCodec 加载失败后显示 Falling back to 'pyav'，且读取或训练进度仍在增长，程序已切换到另一种视频解码方式，可以继续等待。若进程退出或视频仍无法读取，请保留完整报错并检查第 7 章的学习环境。"
+                ],
+                [
                   "提示输出目录已存在",
                   "为新实验使用新的目录名，并保留上一次运行的结果。"
                 ],
@@ -4260,6 +5317,10 @@
                 [
                   "First launch is slow",
                   "Check for downloads and compilation. Allow initialization and avoid starting duplicate instances."
+                ],
+                [
+                  "Video decoder warning",
+                  "If a TorchCodec loading error is followed by Falling back to 'pyav' and reading or training continues to progress, an alternative video decoder is active; keep waiting. If the process exits or videos still cannot be read, retain the full error and check the Chapter 7 learning environment."
                 ],
                 [
                   "Output directory exists",

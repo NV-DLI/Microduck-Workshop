@@ -1,0 +1,3 @@
+# Settings loaded by every shell in the Microduck Workshop container.
+# Edit on the host (docker/env) or with `setenv KEY VALUE` inside the container.
+export TOKENIZERS_PARALLELISM=false

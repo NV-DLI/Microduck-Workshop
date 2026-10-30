@@ -1,0 +1,68 @@
+{
+ "schema": "microduck.course-data.v2",
+ "package": "terrain-ppo",
+ "description": "Configuration, training ledgers and TensorBoard event files of the three training stages of the fixed course terrain model (models/terrain-walk.onnx).",
+ "files": [
+  {
+   "path": "terrain-direction-03/agent.yaml",
+   "bytes": 1296,
+   "sha256": "ec7a74aff5b6d1153b3d48fb12bf74984d4938a7212d7a5304c1561ea7aef23b"
+  },
+  {
+   "path": "terrain-direction-03/env.yaml",
+   "bytes": 70148,
+   "sha256": "cd2d8c96abeb1fe96d4cc2a60b2bed70df486449b5cd8cea7c37213b04e74866"
+  },
+  {
+   "path": "terrain-direction-03/events.out.tfevents.1792683461.spark-c239.2554062.0",
+   "bytes": 4441410,
+   "sha256": "93e5083e28bc6d089c0eff74b4b6796bfe45e336db3eb12591abbcfa0753c312"
+  },
+  {
+   "path": "terrain-direction-03/training-ledger.json",
+   "bytes": 776,
+   "sha256": "3b847e877c80e1842ec7fd7fa06180dbbf79a9168a588c51a4826685d54df4db"
+  },
+  {
+   "path": "terrain-heading-02/agent.yaml",
+   "bytes": 1296,
+   "sha256": "7ebb7d4ee7521bc43b91888fe6fd58384c7321ad78c40c6474288eef465a586c"
+  },
+  {
+   "path": "terrain-heading-02/env.yaml",
+   "bytes": 70032,
+   "sha256": "8a3fd61256cec383632d99fc3167edee0fcb2a17a0980cdfb86968341101a89f"
+  },
+  {
+   "path": "terrain-heading-02/events.out.tfevents.1792682574.spark-c239.2503555.0",
+   "bytes": 3230438,
+   "sha256": "1bf8ac5d2079532f8635274621ddf7b30f60b623362de6df3ce799d4a51e6892"
+  },
+  {
+   "path": "terrain-heading-02/training-ledger.json",
+   "bytes": 749,
+   "sha256": "d4a128428854b6594c955d89965917476f33d08a9ae3a02853d27e6ee8eff824"
+  },
+  {
+   "path": "terrain-training-01/agent.yaml",
+   "bytes": 1296,
+   "sha256": "86362057b2ae46fd63896137813f6fe2c8ad63c8cb349bd5417944727e4c9408"
+  },
+  {
+   "path": "terrain-training-01/env.yaml",
+   "bytes": 77547,
+   "sha256": "240cc81aff29b3d764f17609294aa09df95d8b57469c60cd7e85398834c93617"
+  },
+  {
+   "path": "terrain-training-01/events.out.tfevents.1792681469.spark-c239.2495779.0",
+   "bytes": 2149398,
+   "sha256": "941a2da55c1b892eefa286a82fa81be639d1391b212e40ac84c5c6b8e4bf7bf1"
+  },
+  {
+   "path": "terrain-training-01/training-ledger.json",
+   "bytes": 650,
+   "sha256": "2b3eccb8054a28dc52ffccf36991aa3af60bd38a5970e0f6a5f42d69842d31fb"
+  }
+ ],
+ "total_bytes": 10045036
+}

@@ -1,0 +1,8 @@
+{#- Same lesson in the other language; both builds share page names. -#}
+<div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ course_ui_strings.language_menu }}" title="{{ course_ui_strings.language_menu }}"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item{% if course_lang == 'zh' %} active{% endif %}" lang="zh-CN" href="../zh/{{ pagename }}.html"{% if course_lang == 'zh' %} aria-current="true"{% endif %}>简体中文</a></li>
+    <li><a class="dropdown-item{% if course_lang == 'en' %} active{% endif %}" lang="en" href="../en/{{ pagename }}.html"{% if course_lang == 'en' %} aria-current="true"{% endif %}>English</a></li>
+  </ul>
+</div>

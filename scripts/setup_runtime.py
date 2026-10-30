@@ -145,4 +145,4 @@ def setup_runtime(a):
         [str(py), str(m / "evaluation/football/execute_media.py"), "--verify-only"],
         check=True,
     )
-    print("Runtime ready. Run: python3 scripts/workshop.py doctor")
+    print("Runtime ready. Run: python3 scripts/run.py doctor")

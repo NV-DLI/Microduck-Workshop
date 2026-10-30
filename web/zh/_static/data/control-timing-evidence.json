@@ -1,0 +1,306 @@
+{
+ "description": "Recorded update timing from the course's walking-shot simulation runs on DGX Spark. Times in ms; relative times are measured from the excerpt start. Server times are server-side computation only (no network transfer or image capture). The excerpts illustrate update order, not task success or end-to-end real-time performance.",
+ "groot": {
+  "run": "GR00T walking-shot evaluation, episode 7944101",
+  "calls": [
+   80,
+   91
+  ],
+  "excerpt_sim_s": [
+   8.24,
+   9.2
+  ],
+  "round_start_ms": [
+   0,
+   320,
+   640,
+   960
+  ],
+  "capture_ms": [
+   30,
+   95,
+   160,
+   230,
+   295,
+   360,
+   430,
+   495,
+   560,
+   630,
+   695,
+   760,
+   830,
+   895
+  ],
+  "actor_ms": [
+   0,
+   20,
+   40,
+   60,
+   80,
+   100,
+   120,
+   140,
+   160,
+   180,
+   200,
+   220,
+   240,
+   260,
+   280,
+   300,
+   320,
+   340,
+   360,
+   380,
+   400,
+   420,
+   440,
+   460,
+   480,
+   500,
+   520,
+   540,
+   560,
+   580,
+   600,
+   620,
+   640,
+   660,
+   680,
+   700,
+   720,
+   740,
+   760,
+   780,
+   800,
+   820,
+   840,
+   860,
+   880,
+   900,
+   920,
+   940
+  ],
+  "calls_detail": [
+   {
+    "call": 80,
+    "sim_ms": 0,
+    "kind": "new_prediction",
+    "server_ms": 326.522,
+    "latest_frame_ms": -40
+   },
+   {
+    "call": 81,
+    "sim_ms": 80,
+    "kind": "cached_command",
+    "server_ms": 34.266,
+    "latest_frame_ms": 30
+   },
+   {
+    "call": 82,
+    "sim_ms": 160,
+    "kind": "cached_command",
+    "server_ms": 15.724,
+    "latest_frame_ms": 160
+   },
+   {
+    "call": 83,
+    "sim_ms": 240,
+    "kind": "cached_command",
+    "server_ms": 15.434,
+    "latest_frame_ms": 230
+   },
+   {
+    "call": 84,
+    "sim_ms": 320,
+    "kind": "new_prediction",
+    "server_ms": 323.48,
+    "latest_frame_ms": 295
+   },
+   {
+    "call": 85,
+    "sim_ms": 400,
+    "kind": "cached_command",
+    "server_ms": 15.517,
+    "latest_frame_ms": 360
+   },
+   {
+    "call": 86,
+    "sim_ms": 480,
+    "kind": "cached_command",
+    "server_ms": 15.221,
+    "latest_frame_ms": 430
+   },
+   {
+    "call": 87,
+    "sim_ms": 560,
+    "kind": "cached_command",
+    "server_ms": 15.708,
+    "latest_frame_ms": 560
+   },
+   {
+    "call": 88,
+    "sim_ms": 640,
+    "kind": "new_prediction",
+    "server_ms": 333.921,
+    "latest_frame_ms": 630
+   },
+   {
+    "call": 89,
+    "sim_ms": 720,
+    "kind": "cached_command",
+    "server_ms": 16.083,
+    "latest_frame_ms": 695
+   },
+   {
+    "call": 90,
+    "sim_ms": 800,
+    "kind": "cached_command",
+    "server_ms": 14.714,
+    "latest_frame_ms": 760
+   },
+   {
+    "call": 91,
+    "sim_ms": 880,
+    "kind": "cached_command",
+    "server_ms": 16.011,
+    "latest_frame_ms": 830
+   }
+  ],
+  "inference_image_frames_ms": [
+   [
+    -5770,
+    -3840,
+    -1970,
+    -40
+   ],
+   [
+    -5440,
+    -3570,
+    -1640,
+    295
+   ],
+   [
+    -5170,
+    -3240,
+    -1305,
+    630
+   ]
+  ]
+ },
+ "onboard": {
+  "run": "Onboard closed-loop timing run, seed 8670101, approach-the-ball state",
+  "excerpt_sim_s": [
+   2.2,
+   2.4
+  ],
+  "selection": "Three consecutive NAV2_APPROACH decisions after its first decision; start-up support excluded",
+  "rgb_capture_ms": [
+   0,
+   70,
+   135,
+   200
+  ],
+  "tof_capture_ms": [
+   0,
+   70,
+   135,
+   200
+  ],
+  "decision_source_capture_ms": [
+   0,
+   70,
+   135,
+   200
+  ],
+  "actor_ms": [
+   0,
+   20,
+   40,
+   60,
+   80,
+   100,
+   120,
+   140,
+   160,
+   180
+  ],
+  "actor_round": [
+   0,
+   0,
+   0,
+   0,
+   1,
+   1,
+   1,
+   2,
+   2,
+   2
+  ],
+  "motor_updates_per_round": [
+   4,
+   3,
+   3
+  ],
+  "decision_compute_ms": [
+   110.418338,
+   266.223269,
+   148.434121
+  ],
+  "detector_ms": [
+   40.214468,
+   36.874673,
+   58.136762
+  ],
+  "navigation_and_gaze_ms": [
+   70.1371660688892,
+   229.20526703819633,
+   90.22252692375332
+  ],
+  "decisions": [
+   {
+    "timestamp_s": 2.2,
+    "capture_index": 32,
+    "state": "NAV2_APPROACH",
+    "decision_ms": 110.418338,
+    "detector_ms": 40.214468,
+    "navigation_and_gaze_ms": 70.1371660688892
+   },
+   {
+    "timestamp_s": 2.27,
+    "capture_index": 33,
+    "state": "NAV2_APPROACH",
+    "decision_ms": 266.223269,
+    "detector_ms": 36.874673,
+    "navigation_and_gaze_ms": 229.20526703819633
+   },
+   {
+    "timestamp_s": 2.335,
+    "capture_index": 34,
+    "state": "NAV2_APPROACH",
+    "decision_ms": 148.434121,
+    "detector_ms": 58.136762,
+    "navigation_and_gaze_ms": 90.22252692375332
+   }
+  ],
+  "measurement_scope": "Host elapsed from sensor packet ready / archive submission through detection, geometry, navigation, gaze and guards to command ready; excludes sensor capture, motor policy inference and final control trace write. DGX Spark under concurrent GR00T feature-cache load. Not a robot-board measurement or isolated-hardware benchmark. Simulation time does not advance during this synchronous processing."
+ },
+ "statistics": {
+  "new_predictions": 899,
+  "new_prediction_median_ms": 332.2,
+  "new_prediction_p95_ms": 351.4,
+  "cached_commands": 2680,
+  "cached_command_median_ms": 15.0,
+  "sensor_interval_counts_ms": {
+   "65": 170,
+   "70": 85
+  },
+  "motor_interval_counts_ms": {
+   "20": 854
+  },
+  "latency_scope": "All 10 episodes in the completed evaluation batch; includes startup calls. Server processing only, excluding network and capture.",
+  "interval_count_scope": "Consecutive timestamp differences in episode 7944101 only: 256 captures and 855 motor records, including initialization. The displayed excerpts are after initialization.",
+  "p95_method": "Sorted value at floor(0.95*(n-1)); no interpolation."
+ }
+}

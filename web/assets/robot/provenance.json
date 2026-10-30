@@ -46,5 +46,24 @@
       "bytes": 1148,
       "sha256": "51526767ce31785f88f318ede4870f4b0d466267c79ce6fb9009c682f798da30"
     }
+  },
+  "anatomy_viewer": {
+    "kind": "mechanical-assembly-teaching-layout",
+    "physics_rollout": false,
+    "geometry": "microduck.glb unchanged (70 nodes, 38 meshes, STAND pose); only node translations and joint rotations about recorded pivots/axes",
+    "source": "Blender scene microduck-anatomy.blend (anatomy layout and three joint demonstrations)",
+    "poster_renderer": "Blender Cycles OptiX GPU, 128 samples, transparent film",
+    "license": "CC BY-NC-SA 4.0",
+    "author_geometry": "Pollen Robotics",
+    "files": {
+      "anatomy-layout.json": {
+        "bytes": 14244,
+        "sha256": "7bcdc7416e65a0352183032fa0cf3daa1aaaf6f2f71a2703274fbb6bdeb85989"
+      },
+      "anatomy-poster.webp": {
+        "bytes": 93644,
+        "sha256": "ffa194e8d5c1f0d2c2592cf5d46aa84112d8e4d637ad8222cb44dbec63e2ef3d"
+      }
+    }
   }
 }

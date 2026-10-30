@@ -9,7 +9,7 @@ import hashlib
 from course_diagrams import lines
 
 
-def learning_flow(b, lang):
+def original_learning_flow(b, lang):
     d = {**b, **(b.get("english_diagram", {}) if lang == "en" else {})}
     nodes = d["nodes"]
     details = d.get("details", [text for _, text in nodes])
@@ -87,3 +87,44 @@ def learning_flow(b, lang):
         for i, detail in enumerate(details)
     )
     return f"""<figure class="learning-figure" data-learning-flow="{uid}"><p class="learning-help">{prompt}<span class="learning-scroll-hint">{scroll_hint}</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="{e(d['label'])}"><svg class="learning-svg" viewBox="0 0 828 {height}" role="group" aria-labelledby="{uid}-title"><title id="{uid}-title">{e(d['label'])}</title><defs><marker id="{uid}-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs>{''.join(paths)}{''.join(cards)}</svg></div><div class="learning-details"><p class="learning-empty">{e(d['label'])}</p><button type="button" class="learning-reset" aria-label="{reset}" hidden>×</button>{articles}</div><span class="sr-only learning-status" role="status"></span><figcaption>{b.get(lang, '')}</figcaption></figure>"""
+
+
+def learning_flow(b, lang):
+    """Numbered explanations remain visible as the neighboring diagram highlights."""
+    d = {**b, **(b.get("english_diagram", {}) if lang == "en" else {})}
+    nodes = d["nodes"]
+    details = d.get("details", [text for _, text in nodes])
+    uid = "story-" + hashlib.sha1((lang + b["label"]).encode()).hexdigest()[:10]
+    n = len(nodes)
+    if n > 6:
+        return original_learning_flow(b, lang)
+    positions = [(24, 24), (250, 24), (250, 204), (24, 204), (24, 384), (250, 384)][:n]
+    links = ([(0,1),(1,2),(2,3),(3,4),(4,2),(3,5),(5,0)] if b.get("layout") == "groot" else [(i,i+1) for i in range(n-1)])
+    if b.get("loop") and b.get("layout") != "groot":
+        links.append((n-1,b.get("loop_to",0)))
+    paths=[]
+    for a,z in links:
+        x,y=positions[a]; xx,yy=positions[z]
+        if b.get("layout") == "groot" and (a,z)==(4,2):
+            path="M204 452H218V362H340V345"
+        elif b.get("layout") == "groot" and (a,z)==(3,5):
+            path="M204 308H236V374H340V379"
+        elif y==yy:
+            path=f"M{x+180 if xx>x else x} {y+68}H{xx-5 if xx>x else xx+185}"
+        elif x==xx and abs(y-yy)==180:
+            path=f"M{x+90} {y+136 if yy>y else y}V{yy-5 if yy>y else yy+141}"
+        else:
+            # Feedback travels outside all rows and enters above its target.
+            lane=466 if x>200 else 10
+            path=f"M{x+180 if x>200 else x} {y+68}H{lane}V{yy-12}H{xx+90}V{yy-5}"
+        paths.append(f'<path class="story-edge" data-from="{a}" data-to="{z}" d="{path}" marker-end="url(#{uid}-arrow)"/>')
+    cards=[]; steps=[]
+    for i,((title,subtitle),(x,y)) in enumerate(zip(nodes,positions)):
+        ts=lines(title,22); ss=lines(subtitle,25)
+        texts=f'<text class="story-index" x="{x+90}" y="{y+22}">{i+1:02d}</text>'
+        texts+=''.join(f'<text x="{x+90}" y="{y+49+j*20}">{e(t)}</text>' for j,t in enumerate(ts))
+        texts+=''.join(f'<text class="story-subtitle" x="{x+90}" y="{y+88+j*16}">{e(t)}</text>' for j,t in enumerate(ss))
+        cards.append(f'<g class="story-node" data-story-target="{i}" role="button" tabindex="0" aria-label="{e(title)}"><rect x="{x}" y="{y}" width="180" height="136" rx="6"/>{texts}</g>')
+        steps.append(f'<article class="story-step" data-story-step="{i}" tabindex="0"><h4><span>{i+1}</span>{e(title)}</h4><p>{details[i]}</p></article>')
+    height=max(y for x,y in positions)+160
+    return f'<figure class="flow-story" data-story><div class="story-steps">{"".join(steps)}</div><div class="story-diagram"><svg viewBox="0 0 480 {height}" role="group" aria-label="{e(d["label"])}"><defs><marker id="{uid}-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L6 3.5L0 7" fill="none" stroke="var(--muted)"/></marker></defs>{"".join(paths)}{"".join(cards)}</svg></div><figcaption>{b.get(lang, "")}</figcaption></figure>'

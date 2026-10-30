@@ -1,10 +1,646 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="所有主线实验使用明确命名的固定文件。下载一次，即可在各章节重复使用。"><meta name="theme-color" content="#76b900"><title>模型与数据 · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="zh" data-page="models"><a class="skip" href="#main">跳至正文</a>
-<header><button class="menu-toggle" aria-label="目录" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">搜索课程 <kbd>/</kbd></button><details class="language-menu"><summary aria-label="选择语言"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/models.html" aria-current="true">简体中文</a><a lang="en" href="../en/models.html" >English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="目录"><div class="sidebar-intro">Microduck 机器人学习实战</div><p class="nav-group">学习准备</p><a href="index.html"><span class="nav-number"></span>让 Microduck 学会自主射门</a><a href="how-to-learn.html"><span class="nav-number"></span>如何学习本课程</a><a href="setup.html"><span class="nav-number"></span>准备环境与获取代码</a><p class="nav-group">课程章节</p><a href="01-play.html"><span class="nav-number">1</span>认识 Microduck：先来踢一场球</a><a href="02-anatomy.html"><span class="nav-number">2</span>拆解机械结构与控制周期</a><a href="03-learning.html"><span class="nav-number">3</span>用 Isaac Lab 训练行走策略</a><a href="04-terrain.html"><span class="nav-number">4</span>让行走技能适应坡地</a><a href="05-skills.html"><span class="nav-number">5</span>探索社区的更多运动技能</a><a href="06-autonomy.html"><span class="nav-number">6</span>从手工流程到智能机器人</a><a href="07-groot.html"><span class="nav-number">7</span>让 GR00T 从示范中学习射门</a><a href="08-aspire.html"><span class="nav-number">8</span>用 ASPIRE 组织任务并积累技能</a><a href="09-worlds.html"><span class="nav-number">9</span>从一个球场走向更多环境</a><p class="nav-group">参考与帮助</p><a aria-current="page" href="models.html"><span class="nav-number"></span>模型与数据</a><a href="troubleshooting.html"><span class="nav-number"></span>故障排查</a><a href="references.html"><span class="nav-number"></span>继续学习与参考资料</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> 参考与帮助</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>模型与数据</h1><p class="lead">所有主线实验使用明确命名的固定文件。下载一次，即可在各章节重复使用。</p><div class="lesson-meta">快速参考 · 无需重新训练</div></div></div><section id="inventory"><h2>课程模型清单</h2><div class="table-scroll"><table><thead><tr><th>文件</th><th>用途</th></tr></thead><tbody><tr><td><code>walk.onnx</code></td><td>固定行走策略</td></tr><tr><td><code>terrain-walk.onnx</code></td><td>第 4 章固定坡地行走策略，约 0.79 MB</td></tr><tr><td><code>kick-teacher.onnx</code></td><td>踢球基础动作</td></tr><tr><td><code>kick-residual.onnx</code></td><td>踢球残差修正</td></tr><tr><td><code>kick-checkpoint.pt</code></td><td>保留的踢球训练检查点</td></tr><tr><td><code>detector.pt</code></td><td>固定视觉检测器</td></tr><tr><td><code>detector.onnx</code></td><td>检测器 ONNX 导出</td></tr><tr><td><code>indoor-detector/detector.pt</code> / <code>indoor-detector/detector.onnx</code></td><td>保留的旧室内检测器，适用于旧 7 cm 球场景</td></tr><tr><td><code>scene-detector/detector.pt</code> / <code>scene-detector/detector.onnx</code></td><td>官网 10 cm 球与四种地面检测器；当前默认</td></tr><tr><td><code>official-browser/rollers.onnx</code></td><td>官方四被动轮策略；14 个舵机动作</td></tr><tr><td><code>official-browser/walking.onnx</code> / <code>sitstand.onnx</code></td><td>官网版本核对与站立试验，未替换完整步行任务的固定策略</td></tr></tbody></table></div><p>在课程仓库根目录运行下面的命令，核对固定模型的文件大小与哈希。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py verify-models</code></pre></div><p>这些文件随 Git 仓库一同提供，不需要 Git LFS 或额外的模型账户。<code>models/manifest.json</code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。 新检测器的相对路径与 SHA-256 单独记录在 <code>models/scene-detector/deployment.json</code>，原七份文件保持不变。</p><p>这里提供的是前五章实验和第六章传统演示所用权重，不包含 GR00T 或 Cosmos 大模型。后续若开始微调，需按对应模型的授权与访问条件单独获取权重，并使用独立环境。</p></section><section id="practice-data"><h2>练习数据与自己的输出</h2><p><code>datasets/scene-sample/</code> 是一套小型图像与标签练习集，用于体验检测推理和短训练流程，但不足以证明模型能够泛化到真实环境。自行训练的模型和日志应保存在 <code>outputs/</code>，不要将其复制到 <code>models/</code> 并覆盖课程文件。</p></section><section id="licenses"><h2>来源与使用条款</h2><p>机器人几何、社区策略和依赖组件分别保留各自的来源与许可条款，课程代码的许可并不覆盖第三方资产。分发修改版本前，请先查阅仓库中的 <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">来源与许可说明</a>。</p></section>
-<nav class="pager" aria-label="Pagination"><a href="09-worlds.html"><small>← 上一页</small>从一个球场走向更多环境</a><a href="troubleshooting.html"><small>下一页 →</small>故障排查</a></nav><footer>Microduck Workshop · <a href="references.html">参考资料</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">来源与许可</a></span></footer></main>
-<aside class="toc"><p>本页内容</p><a href="#inventory">课程模型清单</a><a href="#practice-data">练习数据与自己的输出</a><a href="#licenses">来源与使用条款</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">搜索课程</label><button aria-label="关闭">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="搜索课程…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="所有主线实验使用明确命名的固定文件。下载一次，即可在各章节重复使用。" name="description" />
+
+  <title>5.1 模型与数据 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="5.2 故障排查" href="troubleshooting.html" />
+    <link rel="prev" title="4.4 从球场走向更多环境" href="09-worlds.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="models">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/models.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/models.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/models.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/models.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 模型与数据</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>5.1 模型与数据<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>所有主线实验使用明确命名的固定文件。下载一次，即可在各章节重复使用。</p>
+</div><div class="lesson-meta">快速参考 · 无需重新训练</div></div></div><section id="inventory">
+<h2>课程模型清单<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>文件（宿主机 <code class="docutils literal notranslate"><span class="pre">models/</span></code>，容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/</span></code>）</p></th>
+<th class="head cell-short"><p>用途</p></th>
+<th class="head"><p>哪些课程命令读取它</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
+<td class="cell-short"><p>固定行走策略</p></td>
+<td><p>2.1 节键盘踢球（步行模式，自动读取）；2.2 节 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>；4.3 节验证场景里的底层行走策略使用同一模型的副本</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
+<td><p>3.3 节固定坡地行走策略，约 0.79 MB</p></td>
+<td><p>3.3 节 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
+<td class="cell-short"><p>踢球基础动作</p></td>
+<td><p>2.1 节键盘踢球（空格键，自动读取）</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
+<td class="cell-short"><p>踢球残差修正</p></td>
+<td><p>保留；本课程的动手命令不直接读取</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
+<td><p>保留的踢球训练检查点</p></td>
+<td><p>保留；本课程的动手命令不直接读取</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">detector.pt</span></code></p></td>
+<td class="cell-short"><p>固定视觉检测器</p></td>
+<td><p>保留；本课程的动手命令不直接读取</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detector.onnx</span></code></p></td>
+<td><p>检测器 ONNX 导出</p></td>
+<td><p>保留；本课程的动手命令不直接读取</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.onnx</span></code></p></td>
+<td><p>另一套室内检测器，对应 7 cm 足球的场景；本课的球场不使用</p></td>
+<td><p>保留；本课程的动手命令不直接读取</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
+<td><p>官网 10 cm 球与四种地面检测器；当前默认</p></td>
+<td><p>机载策略（Onboard）的视觉检测器；本课程的动手命令不直接读取</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code></p></td>
+<td><p>官方四被动轮策略；14 个舵机动作</p></td>
+<td><p>2.1 节按 M 后的轮滑模式（自动读取）；3.3 节 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code> 与 <code class="docutils literal notranslate"><span class="pre">train-terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code> 的 <code class="docutils literal notranslate"><span class="pre">--model</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
+<td><p>用于官网版本核对与站立试验；完整步行任务使用 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
+<td><p>保留；本课程的动手命令不直接读取</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在<strong>容器内</strong>运行下面的命令，核对固定模型的文件大小与哈希。</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>verify-models
+</pre></div>
+</div>
+</div>
+<p>这些文件随 Git 仓库一同提供，克隆仓库即可使用，无需 Git LFS 或额外的模型账户。<code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。当前默认检测器的相对路径与 SHA-256 记录在 <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>。</p>
+<p><strong>仓库自带。</strong> 第 2–3 部分实验和机载策略（Onboard）所用的权重；3.2 节预先训练好的 PPO 行走结果与坡地训练日志在 <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code>（容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code>，只读）。<code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment</span></code> 是一次没有学会上坡的轮滑坡地训练记录，作为奖励设计的反例保留，不是可用的坡地模型。</p>
+<p><strong>单独的资料包。</strong> 4.3 节的 GR00T 步行射门数据、特征缓存与训练好的检查点来自单独的 GR00T 课程资料包（容器内 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code>，用 <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/groot_walking.py</span> <span class="pre">verify</span></code> 核对）。GR00T 基础模型与 Cosmos-Reason2-2B 处理器按其授权与访问条件从 Hugging Face 下载。</p>
+</section>
+<section id="practice-data">
+<h2>练习数据与自己的输出<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">datasets/scene-sample/</span></code> 是一套小型图像与标签样例，本课的动手实验不直接使用；它的规模不足以检验模型在真实环境中的泛化能力。自行训练的模型和日志请保存在 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>，<code class="docutils literal notranslate"><span class="pre">models/</span></code> 中的课程文件保持原样。</p>
+</section>
+<section id="licenses">
+<h2>来源与使用条款<a class="headerlink" href="#licenses" title="Link to this heading">#</a></h2>
+<p>机器人几何、社区策略和依赖组件分别适用各自的来源与许可条款；第三方资产以其自身条款为准，课程代码的许可不能替代这些条款。分发修改版本前，请先查阅仓库中的 <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md" rel="noreferer noopener" target="_blank">来源与许可说明</a>。</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09-worlds.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">4.4 从球场走向更多环境</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="troubleshooting.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">5.2 故障排查</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventory">课程模型清单</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practice-data">练习数据与自己的输出</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses">来源与使用条款</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,37 +1,711 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Meet Microduck: play football first. Explore the concepts, run the lab, and inspect its results."><meta name="theme-color" content="#76b900"><title>Meet Microduck: play football first · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="01-play"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/01-play.html" >简体中文</a><a lang="en" href="../en/01-play.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a aria-current="page" href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Course chapters</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Meet Microduck: play football first</h1><p class="lead">Meet Microduck: play football first. Explore the concepts, run the lab, and inspect its results.</p><div class="lesson-meta">Chapter 1 · Estimated learning time: 20 minutes</div></div></div><section id="meet"><h2>A small robot that learns new skills</h2><p>Microduck is an open biped from Pollen Robotics and Hugging Face with 14 actuated joints. Start with the official walking and right-foot kick ONNX policies in Isaac Sim, then learn how Isaac Lab trains and evaluates new skills.</p></section><section id="play"><h2>Open the pitch and try the keyboard</h2><figure class="media"><a class="still-link" href="../assets/media/keyboard-football.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/keyboard-football.png" alt="Microduck football scene in Isaac Sim"></a><figcaption>Walk toward the ball, stop, then switch to the right-foot kick.</figcaption></figure><p>Complete <a href="setup.html">setup</a> and run the command below from the repository root. Click the Isaac Sim window to focus it. The robot, ball and goal use the same dimensions and physical settings as the autonomous task. Use an English keyboard input mode so an IME does not consume movement keys.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py manual \
-  --seconds 600 \
-  --output outputs/manual-football-01</code></pre></div><div class="table-scroll"><table><thead><tr><th>Key</th><th>Action</th></tr></thead><tbody><tr><td>W / S</td><td>Forward / backward</td></tr><tr><td>A / D</td><td>Step left / right</td></tr><tr><td>Q / E</td><td>Turn left / right</td></tr><tr><td>Release movement keys</td><td>Stand with zero velocity command</td></tr><tr><td>Space</td><td>Right-foot kick, then stand</td></tr><tr><td>R / Esc</td><td>Restart / exit</td></tr></tbody></table></div><p>Walk toward the ball, stop with the ball in front of the right foot, and face the goal before pressing Space. Reposition after a miss; press R after a fall. You choose the target and direction; the policies coordinate the joints.</p><p>Default standing is the walking policy responding to zero movement commands. Getting up after a fall, sitting and rolling are separate skills. The keyboard lab starts its policy on the contact surface. Chapter 6 additionally gates autonomous detection on settled body motion and observations.</p></section><section id="rollers"><h2>Try a gliding shot on passive wheels</h2><p>This run uses the roller model from initialization to the end. Its four wheels are passive; the same 14 servos propel, steer and brake through leg posture. It never switches to walking or invokes a leg kick. First observe coasting after key release, then practise slowing early so the ball enters the goal while the robot stops before it.</p><p>Close the previous scene, then run the command below in the same terminal. <code>--locomotion rollers</code> selects the roller physics model and fixed actor, writing to a new output directory.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py manual \
-  --locomotion rollers \
-  --seconds 600 \
-  --output outputs/manual-rollers-01</code></pre></div><div class="table-scroll"><table><thead><tr><th>Key</th><th>Meaning in roller mode</th></tr></thead><tbody><tr><td>W</td><td>Push forward</td></tr><tr><td>S</td><td>Brake briefly and observe; holding it can reverse motion</td></tr><tr><td>Q / E</td><td>Turn left / right</td></tr><tr><td>Release keys</td><td>Coast; this does not guarantee a stop</td></tr><tr><td>Space</td><td>Run a bounded gliding-shot helper; no leg kick</td></tr><tr><td>R / Esc</td><td>Reset / exit; A and D do not strafe</td></tr></tbody></table></div><p>Use W, Q and E to bring the ball in front of a wheel, then brief S presses to control approach speed; after alignment, you can also try the Space helper. The roller push input is not a velocity target in metres per second. Compare the modes: a walking shot settles before kicking; a gliding shot transfers momentum through moving contact and then brakes.</p><p>Roller mode initializes in a stationary roller posture. Official tyre visuals, mass and inertia are retained; rolling contacts use cylinders 30 mm in diameter and 7.6 mm wide, simplifying the rounded shoulders. Keyboard, football and slope roller experiments share this configuration. Real tyre friction and deformation remain uncalibrated.</p></section><section id="scene"><h2>How Isaac Sim builds the experiment</h2><figure class="learning-figure" data-learning-flow="learn-35978b6599"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Scene to motion"><svg class="learning-svg" viewBox="0 0 828 228" role="group" aria-labelledby="learn-35978b6599-title"><title id="learn-35978b6599-title">Scene to motion</title><defs><marker id="learn-35978b6599-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-35978b6599-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-35978b6599-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="USD scene" aria-controls="learn-35978b6599-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">USD scene</text><text x="138" y="132" class="learning-node-subtitle">Robot, pitch, ball and goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="Physics" aria-controls="learn-35978b6599-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">Physics</text><text x="414" y="132" class="learning-node-subtitle">Mass, contact and motors</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Policy and input" aria-controls="learn-35978b6599-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Policy and input</text><text x="690" y="132" class="learning-node-subtitle">Keys → ONNX → joint goals</text></g></svg></div><div class="learning-details"><p class="learning-empty">Scene to motion</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-35978b6599-detail-0" data-node-detail="0" class="learning-definition"><h3>USD scene</h3><p>USD places the robot, ball and goal in a shared space. Geometry and materials also affect camera images.</p></article><article id="learn-35978b6599-detail-1" data-node-detail="1" class="learning-definition"><h3>Physics</h3><p>Mass, inertia, friction and colliders determine contact and motion. Identical appearances can have different physics; realism alone does not validate dynamics.</p></article><article id="learn-35978b6599-detail-2" data-node-detail="2" class="learning-definition"><h3>Policy and input</h3><p>Keyboard requests specify motion; the ONNX policy converts observations and commands into joint targets. Moving the ball changes the task, not the policy weights.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Rendering, physics and policy have separate roles. A different skill reuses the scene; a different ball position reuses the walking actor.</figcaption></figure><p>The robot USD includes joints, collision geometry and inertial properties. The ball has a 5 cm radius and 30 g mass; the goal opening is 38.8 cm wide. Isaac Sim provides the scene and rendering; Isaac Lab configures the Newton physics backend.</p><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">Full source ↗</a></div><pre><code class="language-python">cfg.scene.ball = RigidObjectCfg(
-    prim_path=&quot;{ENV_REGEX_NS}/Ball&quot;,
-    spawn=sim_utils.SphereCfg(
-        radius=0.05,
-        mass_props=sim_utils.MassPropertiesCfg(mass=0.03),
-        collision_props=sim_utils.CollisionPropertiesCfg(),
-        rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True),
-    ),
-    init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.05)),
-)
-# Apply the shared official-ball asset, goal and floor materials.
-scene_profile = configure_football(cfg, style=&quot;A&quot;)</code></pre></div></section><section id="scene-contract"><h2>Fix the scene and hardware contract</h2><p>The indoor scene uses a 1 × 1.6 m mat, a secured steel-mesh goal measuring 40 cm wide × 20 cm deep × 25 cm high, and an official black-and-white ball with a 10 cm diameter and 30 g mass. This supports short approaches and shots, not arbitrary obstacle avoidance in a confined space. With an assumed 6 mm frame diameter, post centres are 39.4 cm apart and the clear opening is 38.8 × 24.4 cm. Localization uses centre spacing; scoring uses the clear opening.</p><p>Choose two football graphics, pale marble or brown wood within the same 1 × 1.6 m area, robot and lighting. The fixed steel-mesh goal has trapezoidal sides and a sloping back, following the product photo. Frame and wires collide; the floor is a rigid plane without foam compression or raised edges. Different textures do not imply calibrated physical friction for each real surface.</p><figure class="media"><a class="still-link" href="../assets/media/indoor-mats.webp" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/indoor-mats.webp" alt="Four mat patterns with the same robot and goal"></a><figcaption>A: striped football pitch; B: plain football pitch; C: pale marble; D: brown wood. The same pose isolates appearance; these are not four task outcomes.</figcaption></figure><p>The robot uses official Microduck CAD with backlash and full-body collisions. The course pins the XL330 BAM actuator fit, 200 Hz physics and 50 Hz actor updates. The walking actor controls 14 of the 15 physical servos; it does not independently drive the mouth. Full-body collision geometry allows the head, legs and battery to rest on the ground after a fall.</p><p>This is a versioned simulation configuration. The camera corresponds to GC2093, but simulation samples at 960 × 540 and 15 Hz with an uncalibrated 70° horizontal field of view. ToF and body IMU models also contain approximations. This does not establish parity with every latest firmware or hardware error, nor validate full deployment on RK3566. Check the real hardware revision, voltage, joint offsets, lens parameters and end-to-end delay before transfer.</p><p>The robot uses official CAD, base mass/joint parameters, motor fits and whole-body collision shapes. The displayed board shape comes from Pi Zero 2 W CAD, while Beta software targets RK3566. Distinguish mechanical appearance from the actual electronics revision.</p></section><section id="policies"><h2>How walking mode switches between gait and kick policies</h2><div class="table-scroll"><table><thead><tr><th>File</th><th>Size</th><th>Role</th></tr></thead><tbody><tr><td>walk.onnx</td><td>793,705 bytes, about 0.79 MB</td><td>Walking and standing</td></tr><tr><td>kick-teacher.onnx</td><td>793,685 bytes, about 0.79 MB</td><td>Right-foot kick</td></tr></tbody></table></div><p>The walking and kicking combination retains the fixed official weights used in the existing task validation; those files are not the latest browser walking weights. The roller lab uses the official browser roller model. Hardware correspondence, policy identity and task success require separate checks.</p><figure class="concept-figure network-figure"><div class="diagram-scroll"><svg class="network-svg" viewBox="0 0 760 350" role="img" aria-label="61 → 512 → 256 → 128 → 14; ELU" font-family="Open Sans, Noto Sans SC, sans-serif"><path d="M79 95L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><text x="70" y="26" text-anchor="middle" fill="#405367" font-size="15">Observation</text><text x="70" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">61</text><circle cx="70" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="70" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="70" y="296" text-anchor="middle" fill="#405367" font-size="14">Normalize</text><text x="225" y="26" text-anchor="middle" fill="#405367" font-size="15">Hidden 1</text><text x="225" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">512</text><circle cx="225" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="225" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="225" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="380" y="26" text-anchor="middle" fill="#405367" font-size="15">Hidden 2</text><text x="380" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">256</text><circle cx="380" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="380" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="380" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="535" y="26" text-anchor="middle" fill="#405367" font-size="15">Hidden 3</text><text x="535" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">128</text><circle cx="535" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="535" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="535" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="690" y="26" text-anchor="middle" fill="#405367" font-size="15">Action</text><text x="690" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">14</text><circle cx="690" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="690" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="690" y="296" text-anchor="middle" fill="#405367" font-size="14">Joint actions</text><text x="380" y="335" text-anchor="middle" fill="#526779" font-size="13">Fully connected · inference every 20 ms · no camera images</text></svg></div><figcaption>Circles show a subset of units; numbers give actual dimensions. The official walking and kick actors share this structure but have different weights. The training critic is not shown.</figcaption></figure><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">Full source ↗</a></div><pre><code class="language-python"># Read the state once per policy step, then select the active skill.
-obs = env.observation_manager.compute(update_history=True)[&quot;policy&quot;]
-action = walk(obs)
 
-if kick_start is not None:
-    phase = (step - kick_start) * 0.02
-    weight = 1.0 if phase &lt; 0.14 else max(0.0, 1.0 - (phase - 0.14) / 0.12)
-    if weight:
-        action = torch.lerp(action, kick(obs), weight)
+<!DOCTYPE html>
 
-# The action manager maps network outputs to joint targets.
-env.action_manager.process_action(action)</code></pre></div><p>The lab holds the kick for 0.14 s and blends back over 0.12 s. This is a handoff setting, not retraining of the official weights. Small policy files do not imply a small simulator memory footprint.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py inspect-model --model models/walk.onnx</code></pre></div></section><section id="reflect"><h2>Who decided the next step?</h2><div class="quiz"><h3>Check your understanding</h3><p>Which decisions did you make for the robot?</p><details><summary>Show explanation</summary><p>You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Chapter 6 shows an engineered pipeline; Chapters 7–9 explore learned policies and task agents.</p></details></div><p>Next, inspect the mechanism and the timing between policy and physics.</p></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://huggingface.co/pollen-robotics/microduck-policies/tree/665ae4eb20bfe13bca1ef4ea6d4bb6b4a096e448" target="_blank" rel="noopener">Pollen Robotics: pinned official policies ↗</a></li><li><a href="https://nvidianews.nvidia.com/news/nvidia-advances-isaac-platform-for-general-purpose-robotics-with-new-reference-humanoid-frameworks-simulation-pipelines-and-data/" target="_blank" rel="noopener">NVIDIA: Isaac platform and Microduck ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="setup.html"><small>← Previous</small>Prepare your environment</a><a href="02-anatomy.html"><small>Next →</small>Mechanism and control timing</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#meet">A small robot that learns new skills</a><a href="#play">Open the pitch and try the keyboard</a><a href="#rollers">Try a gliding shot on passive wheels</a><a href="#scene">How Isaac Sim builds the experiment</a><a href="#scene-contract">Fix the scene and hardware contract</a><a href="#policies">How walking mode switches between gait and kick policies</a><a href="#reflect">Who decided the next step?</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Drive Microduck with the keyboard to walk, turn and kick, switch to roller skates in the same window, then see how Isaac Sim connects the scene, the robot and pretrained policies." name="description" />
+
+  <title>2.1 Meet Microduck: play football first - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2.2 Mechanism and control timing" href="02-anatomy.html" />
+    <link rel="prev" title="1.3 Set up the environment and get the code" href="setup.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="01-play">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/01-play.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/01-play.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/01-play.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/01-play.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">2.1 Meet Microduck: play football first</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="meet-microduck-play-football-first">
+<h1>2.1 Meet Microduck: play football first<a class="headerlink" href="#meet-microduck-play-football-first" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Drive Microduck with the keyboard to walk, turn and kick, switch to roller skates in the same window, then see how Isaac Sim connects the scene, the robot and pretrained policies.</p>
+</div><div class="lesson-meta">Section 2.1 · Estimated learning time: 20 minutes</div></div></div><section id="meet">
+<h2>A small robot that learns new skills<a class="headerlink" href="#meet" title="Link to this heading">#</a></h2>
+<p>Microduck is an open-source biped from Pollen Robotics and Hugging Face. It has 14 actuated joints and can be trained to walk, kick and learn other skills. We use NVIDIA Isaac Sim to build repeatable scenes and Isaac Lab to organize training and evaluation, step by step, until the robot finds the ball and scores on its own. No training yet: load the official pretrained walking and right-foot kick ONNX policies and take a manual shot.</p>
+</section>
+<section id="play">
+<h2>Open the pitch and try the keyboard<a class="headerlink" href="#play" title="Link to this heading">#</a></h2>
+<p>Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>). It opens Isaac Sim with the same green pitch, ball and goal as the autonomous shot in Part 4.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>manual<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seconds<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/manual-football-01
+</pre></div>
+</div>
+</div>
+<p>The window opens in <strong>walking mode</strong>. Switch your input method to English, click the simulation window, and use the keys in the table; if keys do nothing, an input method is usually capturing them. Press <strong>M</strong> for roller mode: the same window rebuilds the pitch with roller feet, which takes some tens of seconds. The key help is also in the “Microduck • Keyboard football” tab on the right of the window.</p>
+<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Models.</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">manual</span></code> needs no model argument: it reads <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models</span></code> in the container, which is the host repository's <code class="docutils literal notranslate"><span class="pre">models/</span></code> (read-only). Walking mode uses <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code> and <code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code>; roller mode uses <code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code>.</p></li>
+<li><p><strong>Scene assets.</strong> The pitch, ball, goal and robot come from the repository's <code class="docutils literal notranslate"><span class="pre">lab/assets/</span></code>: <code class="docutils literal notranslate"><span class="pre">pitch_A.usda</span></code>, <code class="docutils literal notranslate"><span class="pre">official_ball.usda</span></code>, <code class="docutils literal notranslate"><span class="pre">steel_goal.usda</span></code>, <code class="docutils literal notranslate"><span class="pre">microduck_contact.usda</span></code>, and <code class="docutils literal notranslate"><span class="pre">rollers/microduck_rollers_analytic.usdc</span></code> for the roller feet.</p></li>
+<li><p><strong>Start.</strong> The duck first settles on the pitch with its joints locked, and the lock is released when the policy takes control; M works only after that.</p></li>
+<li><p><strong>Switching modes.</strong> M closes the current scene and rebuilds the pitch in the same window with the other robot configuration and its policy.</p></li>
+<li><p><strong>Output.</strong> <code class="docutils literal notranslate"><span class="pre">outputs/manual-football-01</span></code>, given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>, is under the host repository's <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>. Each switch starts a numbered subfolder such as <code class="docutils literal notranslate"><span class="pre">00-walking</span></code> and <code class="docutils literal notranslate"><span class="pre">01-rollers</span></code>, so the two modes keep separate records. <code class="docutils literal notranslate"><span class="pre">--seconds</span></code> is the longest simulated time the window runs.</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-walking.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-walking.png" alt="The complete Isaac Sim window of keyboard football in walking mode: Microduck, ball and goal on the green pitch, and the walking keys listed in a tab on the right."></a><figcaption><p>Walking mode. The screenshot comes from a real session of the command above in the course container.</p>
+</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Key</p></th>
+<th class="head cell-short"><p>Walking mode</p></th>
+<th class="head cell-short"><p>Roller mode</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>W / S</p></td>
+<td><p>Walk forward / backward</p></td>
+<td><p>Push / brake (holding S can start rolling backward)</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>A / D</p></td>
+<td><p>Step left / right</p></td>
+<td class="cell-short"><p>Not used</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Q / E</p></td>
+<td><p>Turn left / right</p></td>
+<td><p>Turn left / right</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Release keys</p></td>
+<td><p>Zero-velocity command; return to standing</p></td>
+<td><p>Keep coasting; it may not stop at once</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Space</p></td>
+<td><p>One right-foot kick, then standing</p></td>
+<td><p>One time-limited gliding-shot assist; no kick</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>M</p></td>
+<td><p>Switch to roller mode</p></td>
+<td><p>Switch to walking mode</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>R / Esc</p></td>
+<td><p>Reset the current scene / quit</p></td>
+<td><p>Reset the current scene / quit</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Walking mode:</strong> walk next to the ball and stop with the ball in front of the right foot and the body facing the goal, then press Space. If you miss, adjust your stance; if the robot loses balance, press R. You decide where the ball is and where to go; the policy only turns your commands into joint motion. When a shot misses, ask whether the stance, the heading or the timing was off: those are exactly the decisions Part 4 hands to an autonomous shooting system. Standing after you release the keys is also done by the walking policy: it keeps running and holds a stance under a zero-velocity command.</p>
+<p><span id="rollers"></span><strong>Roller mode:</strong> the four wheels are passive; the same 14 servos shape the legs to push, steer and brake, and the robot never switches to walking or kicking. Notice that it keeps coasting when you release the keys, and practise slowing down early; the goal is to roll the ball into the goal and stop in front of it. W gives a push amount, not a speed in metres per second. Compare the two styles: a walking shot stops first and then kicks; a roller shot transfers momentum through contact while moving, then brakes.</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-rollers.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-rollers.png" alt="Roller mode in the same window after pressing M: the Microduck on the same pitch now has wheeled feet, and the tab on the right lists the roller keys."></a><figcaption><p>Roller mode after pressing M, from the same session and window as the previous screenshot: the scene was rebuilt, the feet swapped for roller feet, and the key help changed with them.</p>
+</figcaption></figure><div class="note admonition">
+<p class="admonition-title">The two kinds of feet are two different robot configurations</p>
+<p>Plain feet and the official roller feet differ in structure, mass and collision shape, so switching modes rebuilds the scene with the other robot configuration and its official policy. It is like changing the robot's feet on the bench; it does not mean the real robot can transform itself while moving. The four tyres keep the official appearance, mass and inertia; to compute rolling contact stably, their collision shapes are cylinders 30 mm in diameter and 7.6 mm wide. Real tyre friction and deformation have not been calibrated.</p>
+</div>
+</section>
+<section id="scene">
+<h2>How Isaac Sim builds the experiment<a class="headerlink" href="#scene" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-a9916e857c"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Scene to motion"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-a9916e857c-title"><title id="learn-a9916e857c-title">Scene to motion</title><defs><marker id="learn-a9916e857c-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-a9916e857c-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-a9916e857c-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. USD scene" aria-controls="learn-a9916e857c-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">USD scene</text><text x="114.0" y="98" class="learning-node-subtitle">Robot, pitch,</text><text x="114.0" y="115" class="learning-node-subtitle">ball and goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Physics" aria-controls="learn-a9916e857c-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Physics</text><text x="450.0" y="98" class="learning-node-subtitle">Mass, contact</text><text x="450.0" y="115" class="learning-node-subtitle">and motors</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Policy and input" aria-controls="learn-a9916e857c-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Policy and input</text><text x="786.0" y="98" class="learning-node-subtitle">Keys → ONNX →</text><text x="786.0" y="115" class="learning-node-subtitle">joint goals</text></g></svg></div><div class="learning-details" aria-label="Scene to motion"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-a9916e857c-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>USD scene</h3><p>USD places the robot, ball and goal in a shared space. Geometry and materials also affect camera images.</p></article><article id="learn-a9916e857c-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Physics</h3><p>Mass, inertia, friction and colliders determine contact and motion. Identical appearances can have different physics; realism alone does not validate dynamics.</p></article><article id="learn-a9916e857c-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Policy and input</h3><p>Keys request a direction and speed; the ONNX policy converts observations and commands into joint targets.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Rendering, physics and policy have separate roles. A new skill reuses the same scene, and moving the ball needs no retraining of the walking policy.</figcaption></figure><p>Beyond the visible mesh, the robot USD holds joints, collision shapes and mass properties: joints define connections, collision shapes decide where contact happens, mass and inertia shape acceleration and turning, and the servo model decides how a target angle becomes motion. The code below sets the official ball's 5 cm radius and 30 g mass. Isaac Sim provides the scene and rendering; the Isaac Lab task configuration connects the Newton physics backend.</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Register the ball in the scene</h4> <p><code>RigidObjectCfg</code> declares a rigid body; <code>{ENV_REGEX_NS}</code> gives every parallel environment its own ball.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">ball</span> <span class="o">=</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">"</span><span class="si">{ENV_REGEX_NS}</span><span class="s2">/Ball"</span><span class="p">,</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Set shape and physical properties</h4> <p>A 0.05 m radius and 0.03 kg mass, with collision and rigid-body dynamics enabled so Newton computes how the ball moves when kicked.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
+        <span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">0.03</span><span class="p">),</span>
+        <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+        <span class="n">rigid_props</span><span class="o">=</span><span class="n">UsdPhysicsRigidBodyCfg</span><span class="p">(</span><span class="n">rigid_body_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">),</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Place it on the floor</h4> <p>The initial height of 0.05 m equals the radius, so the ball just touches the floor.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)),</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Apply the shared football scene</h4> <p><code>configure_football</code> swaps in the official ball asset and adds the goal and floor materials; <code>style=&quot;A&quot;</code> selects the green striped pitch used throughout the course.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># Apply the shared official-ball asset, goal and floor materials.</span>
+<span class="n">scene_profile</span> <span class="o">=</span> <span class="n">configure_football</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"A"</span><span class="p">)</span></code></pre></div></div></div></section>
+<section id="scene-contract">
+<h2>Fix the scene and hardware contract<a class="headerlink" href="#scene-contract" title="Link to this heading">#</a></h2>
+<p>Keyboard football and the GR00T shot in Part 4 use the same 1 × 1.6 m green pitch, the official black-and-white ball (10 cm diameter, 30 g) and a fixed steel-mesh goal. Scoring uses the goal's clear opening, 38.8 cm wide and 24.4 cm high. Part 3 uses the training surfaces and test terrain described in each section; Section 4.4 discusses how other pitches, lighting or indoor backgrounds affect a learned policy.</p>
+<details class="enrichment"><summary>Scene parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Goal.</strong> Outer size 40 cm wide × 20 cm deep × 25 cm high; with a 6 mm frame diameter, the post centres are 39.4 cm apart. Localization uses the centre spacing and scoring uses the clear opening, so keep them apart.</p></li>
+<li><p><strong>Floor.</strong> A rigid plane without foam compression or raised edges; the friction of the mat against a real floor has not been calibrated.</p></li>
+</ul>
+</div></details><p>The robot uses official Microduck CAD, base mass and joint parameters, and a full-body collision model with backlash. The course pins the XL330 BAM actuator fit, 200 Hz physics and a 50 Hz policy period. The walking policy controls 14 of the 15 physical servos; it does not drive the mouth. Full-body collisions let the head, legs and battery rest on the ground after a fall instead of sinking through it.</p>
+<p>This simulation configuration still differs from the real robot. The camera corresponds to GC2093, but simulation samples at 960 × 540 and 15 Hz with an uncalibrated 70° horizontal field of view; ToF and body IMU models are also approximate. It therefore cannot establish parity with the latest firmware, every hardware error or full deployment on RK3566. Before transfer, check the real hardware revision, voltage, joint offsets, lens parameters and end-to-end delay.</p>
+</section>
+<section id="policies">
+<h2>How walking mode switches between gait and kick policies<a class="headerlink" href="#policies" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>File</p></th>
+<th class="head cell-short"><p>Size</p></th>
+<th class="head cell-short"><p>Role</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>walk.onnx</p></td>
+<td><p>793,705 bytes, about 0.79 MB</p></td>
+<td><p>Walking and standing</p></td>
+</tr>
+<tr class="row-odd"><td><p>kick-teacher.onnx</p></td>
+<td><p>793,685 bytes, about 0.79 MB</p></td>
+<td><p>Right-foot kick</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Walking and kicking use pinned official weights (see the version link under References), which may differ from the latest walking weights in the official browser simulator. The roller lab uses the official roller model.</p>
+<figure class="concept-figure network-figure" data-network><div class="diagram-scroll"><svg xmlns="http://www.w3.org/2000/svg" class="network-svg" viewBox="0 0 760 428" role="group" aria-labelledby="actor-network-title" font-family="Open Sans, Noto Sans SC, sans-serif"><title id="actor-network-title">Walking actor: 61 → 512 → 256 → 128 → 14</title><g class="network-part network-band" data-part="band-0" data-info="Fully connected 61 → 512: every input connects to every neuron, 61 × 512 = 31,232 connection weights." role="button" tabindex="0" aria-label="Fully connected 61 → 512: every input connects to every neuron, 61 × 512 = 31,232 connection weights."><rect class="network-hit" x="100" y="10" width="95" height="408"/><g class="network-edges"><path d="M77 181.68L218 90.00"/><path d="M77 181.68L218 118.00"/><path d="M77 181.68L218 146.00"/><path d="M77 181.68L218 174.00"/><path d="M77 181.68L218 202.00"/><path d="M77 181.68L218 258.00"/><path d="M77 181.68L218 286.00"/><path d="M77 181.68L218 314.00"/><path d="M77 181.68L218 342.00"/><path d="M77 181.68L218 370.00"/><path d="M77 205.84L218 90.00"/><path d="M77 205.84L218 118.00"/><path d="M77 205.84L218 146.00"/><path d="M77 205.84L218 174.00"/><path d="M77 205.84L218 202.00"/><path d="M77 205.84L218 258.00"/><path d="M77 205.84L218 286.00"/><path d="M77 205.84L218 314.00"/><path d="M77 205.84L218 342.00"/><path d="M77 205.84L218 370.00"/><path d="M77 254.16L218 90.00"/><path d="M77 254.16L218 118.00"/><path d="M77 254.16L218 146.00"/><path d="M77 254.16L218 174.00"/><path d="M77 254.16L218 202.00"/><path d="M77 254.16L218 258.00"/><path d="M77 254.16L218 286.00"/><path d="M77 254.16L218 314.00"/><path d="M77 254.16L218 342.00"/><path d="M77 254.16L218 370.00"/><path d="M77 278.32L218 90.00"/><path d="M77 278.32L218 118.00"/><path d="M77 278.32L218 146.00"/><path d="M77 278.32L218 174.00"/><path d="M77 278.32L218 202.00"/><path d="M77 278.32L218 258.00"/><path d="M77 278.32L218 286.00"/><path d="M77 278.32L218 314.00"/><path d="M77 278.32L218 342.00"/><path d="M77 278.32L218 370.00"/></g></g><g class="network-part network-band" data-part="band-1" data-info="Fully connected 512 → 256: every input connects to every neuron, 512 × 256 = 131,072 connection weights." role="button" tabindex="0" aria-label="Fully connected 512 → 256: every input connects to every neuron, 512 × 256 = 131,072 connection weights."><rect class="network-hit" x="255" y="10" width="95" height="408"/><g class="network-edges"><path d="M232 90.00L373 131.01"/><path d="M232 90.00L373 155.75"/><path d="M232 90.00L373 180.50"/><path d="M232 90.00L373 205.25"/><path d="M232 90.00L373 254.75"/><path d="M232 90.00L373 279.50"/><path d="M232 90.00L373 304.25"/><path d="M232 90.00L373 328.99"/><path d="M232 118.00L373 131.01"/><path d="M232 118.00L373 155.75"/><path d="M232 118.00L373 180.50"/><path d="M232 118.00L373 205.25"/><path d="M232 118.00L373 254.75"/><path d="M232 118.00L373 279.50"/><path d="M232 118.00L373 304.25"/><path d="M232 118.00L373 328.99"/><path d="M232 146.00L373 131.01"/><path d="M232 146.00L373 155.75"/><path d="M232 146.00L373 180.50"/><path d="M232 146.00L373 205.25"/><path d="M232 146.00L373 254.75"/><path d="M232 146.00L373 279.50"/><path d="M232 146.00L373 304.25"/><path d="M232 146.00L373 328.99"/><path d="M232 174.00L373 131.01"/><path d="M232 174.00L373 155.75"/><path d="M232 174.00L373 180.50"/><path d="M232 174.00L373 205.25"/><path d="M232 174.00L373 254.75"/><path d="M232 174.00L373 279.50"/><path d="M232 174.00L373 304.25"/><path d="M232 174.00L373 328.99"/><path d="M232 202.00L373 131.01"/><path d="M232 202.00L373 155.75"/><path d="M232 202.00L373 180.50"/><path d="M232 202.00L373 205.25"/><path d="M232 202.00L373 254.75"/><path d="M232 202.00L373 279.50"/><path d="M232 202.00L373 304.25"/><path d="M232 202.00L373 328.99"/><path d="M232 258.00L373 131.01"/><path d="M232 258.00L373 155.75"/><path d="M232 258.00L373 180.50"/><path d="M232 258.00L373 205.25"/><path d="M232 258.00L373 254.75"/><path d="M232 258.00L373 279.50"/><path d="M232 258.00L373 304.25"/><path d="M232 258.00L373 328.99"/><path d="M232 286.00L373 131.01"/><path d="M232 286.00L373 155.75"/><path d="M232 286.00L373 180.50"/><path d="M232 286.00L373 205.25"/><path d="M232 286.00L373 254.75"/><path d="M232 286.00L373 279.50"/><path d="M232 286.00L373 304.25"/><path d="M232 286.00L373 328.99"/><path d="M232 314.00L373 131.01"/><path d="M232 314.00L373 155.75"/><path d="M232 314.00L373 180.50"/><path d="M232 314.00L373 205.25"/><path d="M232 314.00L373 254.75"/><path d="M232 314.00L373 279.50"/><path d="M232 314.00L373 304.25"/><path d="M232 314.00L373 328.99"/><path d="M232 342.00L373 131.01"/><path d="M232 342.00L373 155.75"/><path d="M232 342.00L373 180.50"/><path d="M232 342.00L373 205.25"/><path d="M232 342.00L373 254.75"/><path d="M232 342.00L373 279.50"/><path d="M232 342.00L373 304.25"/><path d="M232 342.00L373 328.99"/><path d="M232 370.00L373 131.01"/><path d="M232 370.00L373 155.75"/><path d="M232 370.00L373 180.50"/><path d="M232 370.00L373 205.25"/><path d="M232 370.00L373 254.75"/><path d="M232 370.00L373 279.50"/><path d="M232 370.00L373 304.25"/><path d="M232 370.00L373 328.99"/></g></g><g class="network-part network-band" data-part="band-2" data-info="Fully connected 256 → 128: every input connects to every neuron, 256 × 128 = 32,768 connection weights." role="button" tabindex="0" aria-label="Fully connected 256 → 128: every input connects to every neuron, 256 × 128 = 32,768 connection weights."><rect class="network-hit" x="410" y="10" width="95" height="408"/><g class="network-edges"><path d="M387 131.01L528 160.00"/><path d="M387 131.01L528 183.33"/><path d="M387 131.01L528 206.67"/><path d="M387 131.01L528 253.33"/><path d="M387 131.01L528 276.67"/><path d="M387 131.01L528 300.00"/><path d="M387 155.75L528 160.00"/><path d="M387 155.75L528 183.33"/><path d="M387 155.75L528 206.67"/><path d="M387 155.75L528 253.33"/><path d="M387 155.75L528 276.67"/><path d="M387 155.75L528 300.00"/><path d="M387 180.50L528 160.00"/><path d="M387 180.50L528 183.33"/><path d="M387 180.50L528 206.67"/><path d="M387 180.50L528 253.33"/><path d="M387 180.50L528 276.67"/><path d="M387 180.50L528 300.00"/><path d="M387 205.25L528 160.00"/><path d="M387 205.25L528 183.33"/><path d="M387 205.25L528 206.67"/><path d="M387 205.25L528 253.33"/><path d="M387 205.25L528 276.67"/><path d="M387 205.25L528 300.00"/><path d="M387 254.75L528 160.00"/><path d="M387 254.75L528 183.33"/><path d="M387 254.75L528 206.67"/><path d="M387 254.75L528 253.33"/><path d="M387 254.75L528 276.67"/><path d="M387 254.75L528 300.00"/><path d="M387 279.50L528 160.00"/><path d="M387 279.50L528 183.33"/><path d="M387 279.50L528 206.67"/><path d="M387 279.50L528 253.33"/><path d="M387 279.50L528 276.67"/><path d="M387 279.50L528 300.00"/><path d="M387 304.25L528 160.00"/><path d="M387 304.25L528 183.33"/><path d="M387 304.25L528 206.67"/><path d="M387 304.25L528 253.33"/><path d="M387 304.25L528 276.67"/><path d="M387 304.25L528 300.00"/><path d="M387 328.99L528 160.00"/><path d="M387 328.99L528 183.33"/><path d="M387 328.99L528 206.67"/><path d="M387 328.99L528 253.33"/><path d="M387 328.99L528 276.67"/><path d="M387 328.99L528 300.00"/></g></g><g class="network-part network-band" data-part="band-3" data-info="Fully connected 128 → 14: every input connects to every neuron, 128 × 14 = 1,792 connection weights." role="button" tabindex="0" aria-label="Fully connected 128 → 14: every input connects to every neuron, 128 × 14 = 1,792 connection weights."><rect class="network-hit" x="565" y="10" width="95" height="408"/><g class="network-edges"><path d="M542 160.00L683 206.85"/><path d="M542 160.00L683 253.15"/><path d="M542 183.33L683 206.85"/><path d="M542 183.33L683 253.15"/><path d="M542 206.67L683 206.85"/><path d="M542 206.67L683 253.15"/><path d="M542 253.33L683 206.85"/><path d="M542 253.33L683 253.15"/><path d="M542 276.67L683 206.85"/><path d="M542 276.67L683 253.15"/><path d="M542 300.00L683 206.85"/><path d="M542 300.00L683 253.15"/></g></g><g class="network-part network-layer" data-part="layer-0" data-dimension="61" data-span="96.647" data-info="Observation input: 61 values, normalized before entering the network; the table below lists the order and meaning of each." role="button" tabindex="0" aria-label="Observation input: 61 values, normalized before entering the network; the table below lists the order and meaning of each."><rect class="network-hit" x="40" y="10" width="60" height="408"/><text class="network-name" x="70" y="26" text-anchor="middle" font-size="15">Observation</text><text class="network-width" x="70" y="56" text-anchor="middle" font-size="23" font-weight="600">61</text><circle class="network-neuron" cx="70" cy="181.68" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="205.84" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="254.16" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="278.32" r="7" stroke-width="1.5"/><rect x="60" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="70" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="70" y="408" text-anchor="middle" font-size="14">Normalize</text></g><g class="network-part network-layer" data-part="layer-1" data-dimension="512" data-span="280.000" data-info="Hidden layer 1: 512 neurons with ELU activation." role="button" tabindex="0" aria-label="Hidden layer 1: 512 neurons with ELU activation."><rect class="network-hit" x="195" y="10" width="60" height="408"/><text class="network-name" x="225" y="26" text-anchor="middle" font-size="15">Hidden 1</text><text class="network-width" x="225" y="56" text-anchor="middle" font-size="23" font-weight="600">512</text><circle class="network-neuron" cx="225" cy="90.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="118.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="146.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="174.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="202.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="258.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="286.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="314.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="342.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="370.00" r="7" stroke-width="1.5"/><rect x="215" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="225" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="225" y="408" text-anchor="middle" font-size="14">ELU</text></g><g class="network-part network-layer" data-part="layer-2" data-dimension="256" data-span="197.990" data-info="Hidden layer 2: 256 neurons with ELU activation." role="button" tabindex="0" aria-label="Hidden layer 2: 256 neurons with ELU activation."><rect class="network-hit" x="350" y="10" width="60" height="408"/><text class="network-name" x="380" y="26" text-anchor="middle" font-size="15">Hidden 2</text><text class="network-width" x="380" y="56" text-anchor="middle" font-size="23" font-weight="600">256</text><circle class="network-neuron" cx="380" cy="131.01" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="155.75" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="180.50" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="205.25" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="254.75" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="279.50" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="304.25" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="328.99" r="7" stroke-width="1.5"/><rect x="370" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="380" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="380" y="408" text-anchor="middle" font-size="14">ELU</text></g><g class="network-part network-layer" data-part="layer-3" data-dimension="128" data-span="140.000" data-info="Hidden layer 3: 128 neurons with ELU activation." role="button" tabindex="0" aria-label="Hidden layer 3: 128 neurons with ELU activation."><rect class="network-hit" x="505" y="10" width="60" height="408"/><text class="network-name" x="535" y="26" text-anchor="middle" font-size="15">Hidden 3</text><text class="network-width" x="535" y="56" text-anchor="middle" font-size="23" font-weight="600">128</text><circle class="network-neuron" cx="535" cy="160.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="183.33" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="206.67" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="253.33" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="276.67" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="300.00" r="7" stroke-width="1.5"/><rect x="525" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="535" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="535" y="408" text-anchor="middle" font-size="14">ELU</text></g><g class="network-part network-layer" data-part="layer-4" data-dimension="14" data-span="46.301" data-info="Action output: 14 values, one target angle offset per joint; the table below lists the joints." role="button" tabindex="0" aria-label="Action output: 14 values, one target angle offset per joint; the table below lists the joints."><rect class="network-hit" x="660" y="10" width="60" height="408"/><text class="network-name" x="690" y="26" text-anchor="middle" font-size="15">Action</text><text class="network-width" x="690" y="56" text-anchor="middle" font-size="23" font-weight="600">14</text><circle class="network-neuron" cx="690" cy="206.85" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="690" cy="253.15" r="7" stroke-width="1.5"/><rect x="680" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="690" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="690" y="408" text-anchor="middle" font-size="14">Joint actions</text></g></svg></div><div class="network-panel"><p class="network-readout" aria-live="polite" data-default="61 observation values pass through three hidden layers of 512, 256 and 128 neurons to 14 joint actions. Point to or select a layer or a band of connections to see its size; the input and output layers also list what every value means.">61 observation values pass through three hidden layers of 512, 256 and 128 neurons to 14 joint actions. Point to or select a layer or a band of connections to see its size; the input and output layers also list what every value means.</p><div class="network-detail" data-for="layer-0"><p class="network-detail-title">The order of the 61 inputs</p><p>The 61 numbers are concatenated in the order below and normalized before entering the network. The first 48 describe the robot&#x27;s current state and its previous action; the last 13 say what it should do. All three joint groups use the same 14-joint order as the output.</p><table class="network-table"><thead><tr><th>Index</th><th>Count</th><th>Content</th><th>Unit</th><th>Kind</th></tr></thead><tbody><tr><td>1–3</td><td>3</td><td>Body angular velocity about the body x, y and z axes</td><td>rad/s</td><td>State</td></tr><tr><td>4–6</td><td>3</td><td>Gravity direction projected onto the body x, y and z axes</td><td>dimensionless (unit vector)</td><td>State</td></tr><tr><td>7–20</td><td>14</td><td>Joint angles relative to the default pose</td><td>rad</td><td>State</td></tr><tr><td>21–34</td><td>14</td><td>Joint velocities</td><td>rad/s</td><td>State</td></tr><tr><td>35–48</td><td>14</td><td>The 14 raw actions output at the previous step</td><td>same as output</td><td>Previous action</td></tr><tr><td>49–51</td><td>3</td><td>Desired forward, lateral and turning velocity</td><td>m/s, m/s, rad/s</td><td>Command</td></tr><tr><td>52–55</td><td>4</td><td>Desired angle offsets for neck pitch, head pitch, head yaw and head roll</td><td>rad</td><td>Command</td></tr><tr><td>56–61</td><td>6</td><td>Body pose command offsets: x, y, z position and roll, pitch, yaw angle</td><td>m; rad</td><td>Command</td></tr></tbody></table><p class="network-note">The six body-pose commands remain part of the interface; the walking experiments in this course keep them at 0.</p></div><div class="network-detail" data-for="layer-4"><p class="network-detail-title">Which joints the 14 outputs drive</p><p>Every 20 ms the policy outputs 14 numbers, each a target joint angle offset from the default pose (rad). The action manager adds it to the default pose to get an absolute target angle, subtracts the encoder bias calibration where applicable, and passes it to the servo&#x27;s position control. Each step recomputes the target angle relative to the same default pose.</p><div class="network-output-groups"><table class="network-table"><caption>Left leg · 1–5</caption><thead><tr><th>Index</th><th>Joint</th></tr></thead><tbody><tr><td>1</td><td><code>left_hip_yaw</code><span class="network-joint-name">Left hip yaw</span></td></tr><tr><td>2</td><td><code>left_hip_roll</code><span class="network-joint-name">Left hip roll</span></td></tr><tr><td>3</td><td><code>left_hip_pitch</code><span class="network-joint-name">Left hip pitch</span></td></tr><tr><td>4</td><td><code>left_knee</code><span class="network-joint-name">Left knee</span></td></tr><tr><td>5</td><td><code>left_ankle</code><span class="network-joint-name">Left ankle</span></td></tr></tbody></table><table class="network-table"><caption>Neck and head · 6–9</caption><thead><tr><th>Index</th><th>Joint</th></tr></thead><tbody><tr><td>6</td><td><code>neck_pitch</code><span class="network-joint-name">Neck pitch</span></td></tr><tr><td>7</td><td><code>head_pitch</code><span class="network-joint-name">Head pitch</span></td></tr><tr><td>8</td><td><code>head_yaw</code><span class="network-joint-name">Head yaw</span></td></tr><tr><td>9</td><td><code>head_roll</code><span class="network-joint-name">Head roll</span></td></tr></tbody></table><table class="network-table"><caption>Right leg · 10–14</caption><thead><tr><th>Index</th><th>Joint</th></tr></thead><tbody><tr><td>10</td><td><code>right_hip_yaw</code><span class="network-joint-name">Right hip yaw</span></td></tr><tr><td>11</td><td><code>right_hip_roll</code><span class="network-joint-name">Right hip roll</span></td></tr><tr><td>12</td><td><code>right_hip_pitch</code><span class="network-joint-name">Right hip pitch</span></td></tr><tr><td>13</td><td><code>right_knee</code><span class="network-joint-name">Right knee</span></td></tr><tr><td>14</td><td><code>right_ankle</code><span class="network-joint-name">Right ankle</span></td></tr></tbody></table></div></div></div><figcaption><p>The policy network reads a 61-dimensional observation, passes it through hidden layers of 512, 256 and 128 units, and outputs 14 joint actions. The official walking and kick policies share this structure with different weights, which is why they behave as different skills. The value network used during training is not shown.</p>
+</figcaption></figure><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Read the observation once per policy step</h4> <p>The observation manager updates its history and returns the policy observation; the walking policy computes the default action first.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="c1"># Read the state once per policy step, then select the active skill.</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_manager</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">update_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"policy"</span><span class="p">]</span>
+<span class="n">action</span> <span class="o">=</span> <span class="n">walk</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Compute the kick weight</h4> <p>The policy period is 0.02 s (50 Hz), so <code>phase</code> is the time in seconds since the kick started. The weight is 1 for the first 0.14 s, then falls linearly to 0 over 0.12 s.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">if</span> <span class="n">kick_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">step</span> <span class="o">-</span> <span class="n">kick_start</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.02</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">&lt;</span> <span class="mf">0.14</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">phase</span> <span class="o">-</span> <span class="mf">0.14</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.12</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Blend the two policies&#x27; actions</h4> <p><code>torch.lerp</code> interpolates between the walking and kick actions by that weight; at weight 0 the walking action is used unchanged.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">kick</span><span class="p">(</span><span class="n">obs</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Turn the action into joint targets</h4> <p>The action manager maps network outputs to joint targets for the actuators and physics simulation.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># The action manager maps network outputs to joint targets.</span>
+<span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div></div><p>The lab plays the kick fully for 0.14 s, then blends back to the walking policy's stance over 0.12 s. These times only shape the handoff between skills; the official weights stay unchanged.</p>
+<p>A policy file is under 1 MB, but the full simulation also needs GPU memory for the scene, physics and rendering, so do not size memory by file size. The <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> command from Section 1.3 prints a policy file's SHA-256, input and output tensor shapes, and the operators it uses.</p>
+</section>
+<section id="reflect">
+<h2>Who decided the next step?<a class="headerlink" href="#reflect" title="Link to this heading">#</a></h2>
+<div class="quiz"><h3>Check your understanding</h3><p>Which decisions did you just make that the robot cannot yet make on its own?</p>
+<details><summary>Show explanation</summary><p>You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Part 4 trains GR00T to learn these decisions from demonstrations; Section 4.4 then discusses environment variation and data expansion.</p>
+</details></div><p>Section 2.2 looks at the mechanism behind these motions and the rhythm at which the policy and the physics engine work together.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/pollen-robotics/microduck-policies/tree/665ae4eb20bfe13bca1ef4ea6d4bb6b4a096e448" rel="noreferer noopener" target="_blank">Pollen Robotics: pinned official policies ↗</a></p></li>
+<li><p><a class="reference external" href="https://nvidianews.nvidia.com/news/nvidia-advances-isaac-platform-for-general-purpose-robotics-with-new-reference-humanoid-frameworks-simulation-pipelines-and-data/" rel="noreferer noopener" target="_blank">NVIDIA: Isaac platform and Microduck ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="setup.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1.3 Set up the environment and get the code</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-anatomy.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2.2 Mechanism and control timing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meet">A small robot that learns new skills</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#play">Open the pitch and try the keyboard</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene">How Isaac Sim builds the experiment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-contract">Fix the scene and hardware contract</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policies">How walking mode switches between gait and kick policies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reflect">Who decided the next step?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

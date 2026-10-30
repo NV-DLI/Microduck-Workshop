@@ -1,0 +1,43 @@
+{
+  "schema": "microduck.training-ledger.v1",
+  "run_id": "training",
+  "skill": "walking",
+  "runtime_id": "newton-bam-20261019",
+  "hardware_profile_id": "beta-gc2093-l8cx-v1",
+  "initialization": "random",
+  "parent_checkpoint": null,
+  "parent_checkpoint_sha256": null,
+  "env_count": 1024,
+  "rollout_steps": 24,
+  "iterations_planned": 2500,
+  "seed": 970311,
+  "task": "IsaacContrib-Velocity-Flat-MicroDuck",
+  "presets": [
+    "backlash"
+  ],
+  "source_sha256": "747a705e478ce4c0957b64ea395e6badbac0dfce70bbac53cbf71ae740993363",
+  "export_cache_sha256": "287602586c13b1fd966ada403f7556528a3f56f55569bf7ff1926098952c4037",
+  "entry_scope": "Student chain smoke or draft baseline budget; not qualified full course recipe",
+  "domain_randomization": "official preset, saved complete env.yaml",
+  "action_adapter": {
+    "name": "official-native-scale1-no-wrapper-clip",
+    "scale": 1.0,
+    "wrapper_clip": null,
+    "offset": "default_joint_position",
+    "previous_action": "actual action_manager last_action"
+  },
+  "control_hz": 50,
+  "physics_hz": 200,
+  "state": "completed",
+  "shared_gpu": true,
+  "evaluation_data_used_for_training": false,
+  "initial_checkpoint_sha256": "da1b2b4eb4d677045126c6bf39a754433ac8873190fa7216d19ab3fb95f1d6d6",
+  "started_at_unix": 1792407484.0144465,
+  "latest_checkpoint": "/home/yuki/Documents/course/microduck/outputs/student-labs/beta-20261019/jobs/20261019-185746-6158284e/training/model_2499.pt",
+  "latest_checkpoint_sha256": "6c04519124f4d26cc0ef150538f649f34b3f986d0dcd9d34ddca22cd034dee4d",
+  "training_wall_seconds": 7246.319073069,
+  "iterations_cumulative": 2500,
+  "iterations_this_run": 2500,
+  "selected_checkpoint_sha256": "6c04519124f4d26cc0ef150538f649f34b3f986d0dcd9d34ddca22cd034dee4d",
+  "exported_onnx_sha256": "0141820d5b6b465cadb832ac6f7b91fff837256cf4009151165cecf469d94e93"
+}

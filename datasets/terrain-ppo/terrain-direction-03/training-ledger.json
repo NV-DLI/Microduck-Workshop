@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "initialization": "checkpoint continuation",
+  "parent_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "seed": 43003,
+  "num_envs": 256,
+  "iterations": 2000,
+  "training_slopes": "pyramids, tan(angle)=0.03..0.22; 25% flat",
+  "evaluation_seeds_excluded": [
+    42001,
+    44001
+  ],
+  "original_weights_modified": false,
+  "yaw_precision": true,
+  "initial_actor_max_abs_error": 1.4901161193847656e-07,
+  "parent_checkpoint_sha256": "ce3247fad9111be41bb48a9a5552b049e6710a080ac3c11a681a55325986147f",
+  "refine_heading": true,
+  "latest_checkpoint": "/home/yuki/Documents/course/microduck/outputs/course-eight-chapters-20261022-v4/terrain-direction-03/model_4497.pt",
+  "training_wall_seconds": 790.2012678550091
+}

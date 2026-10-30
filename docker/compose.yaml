@@ -1,0 +1,97 @@
+# Start the course container from the repository root on the host:
+#   xhost +local:
+#   docker compose -f docker/compose.yaml up -d
+#   docker exec -it microduck-workshop bash
+# Every lab command then runs inside that shell. Stopping a lab with Ctrl+C ends
+# only that command; the container keeps running until
+#   docker compose -f docker/compose.yaml down
+#
+# DISPLAY and XAUTHORITY come from your desktop session (`echo $DISPLAY $XAUTHORITY`).
+# docker/prepare_host.sh creates outputs/ and the cache folders once. Missing
+# sources are reported as errors instead of being created as empty folders.
+name: microduck-workshop
+
+x-bind: &bind
+  type: bind
+  bind:
+    create_host_path: false
+
+services:
+  workshop:
+    image: microduck-workshop:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: microduck-workshop
+    # A minimal init as PID 1 reaps finished lab processes (the main process only idles).
+    init: true
+    # All GPUs through the NVIDIA Container Toolkit (same as `docker run --gpus all`);
+    # no extra Docker runtime has to be registered on the host.
+    gpus: all
+    network_mode: host
+    ipc: host
+    environment:
+      DISPLAY: ${DISPLAY:?Run this from a desktop terminal so DISPLAY is set}
+      XAUTHORITY: /root/.Xauthority
+      # Compiled GPU kernels go to the persistent cache mounted below (ComputeCache);
+      # the size is the documented maximum. WSL 2 also relies on this cache (see compose.wslg.yaml).
+      CUDA_CACHE_PATH: /root/.nv/ComputeCache
+      CUDA_CACHE_MAXSIZE: "4294967296"
+    volumes:
+      # Isaac Sim window on the host desktop
+      - <<: *bind
+        source: /tmp/.X11-unix
+        target: /tmp/.X11-unix
+      - <<: *bind
+        # X authority of the desktop session; WSLg has none (see compose.wslg.yaml).
+        source: ${XAUTHORITY:-/dev/null}
+        target: /root/.Xauthority
+        read_only: true
+      # Course settings and live source: edits on the host apply immediately
+      - <<: *bind
+        source: ./env
+        target: /root/env
+      - <<: *bind
+        source: ../lab
+        target: /workspace/Microduck-Workshop/lab
+      - <<: *bind
+        source: ../scripts
+        target: /workspace/Microduck-Workshop/scripts
+      # Fixed course models and sample data are read-only; your runs go to outputs/
+      - <<: *bind
+        source: ../models
+        target: /workspace/Microduck-Workshop/models
+        read_only: true
+      - <<: *bind
+        source: ../datasets
+        target: /workspace/Microduck-Workshop/datasets
+        read_only: true
+      - <<: *bind
+        source: ../outputs
+        target: /workspace/Microduck-Workshop/outputs
+      # GR00T walking-shot course data (unpacked course data package, read-only)
+      - <<: *bind
+        source: ${MICRODUCK_COURSE_DATA:-../course-data}
+        target: /workspace/Microduck-Workshop/course-data
+        read_only: true
+      # Download, shader and compilation caches persist between starts
+      - <<: *bind
+        source: ${HOME}/.cache/huggingface
+        target: /root/.cache/huggingface
+      - <<: *bind
+        source: ${HOME}/.cache/microduck/ov
+        target: /root/.cache/ov
+      - <<: *bind
+        source: ${HOME}/.cache/microduck/warp
+        target: /root/.cache/warp
+      - <<: *bind
+        source: ${HOME}/.cache/microduck/nv
+        target: /root/.nv/ComputeCache
+      - <<: *bind
+        source: ${HOME}/.cache/microduck/kit
+        target: /root/.local/share/ov
+      # RTX shader and derived-data cache of the Isaac Sim install; without it every
+      # new container compiles the shaders again when its first window opens
+      - <<: *bind
+        source: ${HOME}/.cache/microduck/kit-cache
+        target: /workspace/IsaacLab/.venv/lib/python3.12/site-packages/isaacsim/kit/cache

@@ -1,37 +1,712 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="先用键盘指挥 Microduck 走路、转向和踢球，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。"><meta name="theme-color" content="#76b900"><title>认识 Microduck：先来踢一场球 · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="zh" data-page="01-play"><a class="skip" href="#main">跳至正文</a>
-<header><button class="menu-toggle" aria-label="目录" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">搜索课程 <kbd>/</kbd></button><details class="language-menu"><summary aria-label="选择语言"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/01-play.html" aria-current="true">简体中文</a><a lang="en" href="../en/01-play.html" >English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="目录"><div class="sidebar-intro">Microduck 机器人学习实战</div><p class="nav-group">学习准备</p><a href="index.html"><span class="nav-number"></span>让 Microduck 学会自主射门</a><a href="how-to-learn.html"><span class="nav-number"></span>如何学习本课程</a><a href="setup.html"><span class="nav-number"></span>准备环境与获取代码</a><p class="nav-group">课程章节</p><a aria-current="page" href="01-play.html"><span class="nav-number">1</span>认识 Microduck：先来踢一场球</a><a href="02-anatomy.html"><span class="nav-number">2</span>拆解机械结构与控制周期</a><a href="03-learning.html"><span class="nav-number">3</span>用 Isaac Lab 训练行走策略</a><a href="04-terrain.html"><span class="nav-number">4</span>让行走技能适应坡地</a><a href="05-skills.html"><span class="nav-number">5</span>探索社区的更多运动技能</a><a href="06-autonomy.html"><span class="nav-number">6</span>从手工流程到智能机器人</a><a href="07-groot.html"><span class="nav-number">7</span>让 GR00T 从示范中学习射门</a><a href="08-aspire.html"><span class="nav-number">8</span>用 ASPIRE 组织任务并积累技能</a><a href="09-worlds.html"><span class="nav-number">9</span>从一个球场走向更多环境</a><p class="nav-group">参考与帮助</p><a href="models.html"><span class="nav-number"></span>模型与数据</a><a href="troubleshooting.html"><span class="nav-number"></span>故障排查</a><a href="references.html"><span class="nav-number"></span>继续学习与参考资料</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> 课程章节</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>认识 Microduck：先来踢一场球</h1><p class="lead">先用键盘指挥 Microduck 走路、转向和踢球，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。</p><div class="lesson-meta">第 1 章 · 预计学习时长 20 分钟</div></div></div><section id="meet"><h2>一只可以学习新技能的小机器人</h2><p>Microduck 是 Pollen Robotics 与 Hugging Face 推出的开源双足机器人。它有 14 个主动关节，可以通过训练获得行走、踢腿等技能。我们用 NVIDIA Isaac Sim 搭建可反复试验的场景，用 Isaac Lab 组织训练与评测，逐步让机器人自己找到足球并完成射门。先不训练：加载官方已经训练好的行走与右脚踢球 ONNX 策略，体验一次手动射门。</p></section><section id="play"><h2>打开球场，用键盘试一试</h2><figure class="media"><a class="still-link" href="../assets/media/keyboard-football.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/keyboard-football.png" alt="Isaac Sim 中的 Microduck 足球场景"></a><figcaption>先用行走策略接近足球，再停稳并切换到右脚踢球动作。</figcaption></figure><p>先完成<a href="setup.html">环境准备</a>，在课程仓库根目录打开终端。下面的命令会打开 Isaac Sim，场景中的机器人、足球和球门与第 6 章自主射门任务采用相同的尺寸与物理配置。将输入法切换到英文，鼠标点击仿真窗口后，用下面的按键操作。若按键没有反应，先检查是否仍处于中文输入状态。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py manual \
-  --seconds 600 \
-  --output outputs/manual-football-01</code></pre></div><div class="table-scroll"><table><thead><tr><th>按键</th><th>作用</th></tr></thead><tbody><tr><td>W / S</td><td>向前 / 向后走</td></tr><tr><td>A / D</td><td>向左 / 向右侧移</td></tr><tr><td>Q / E</td><td>向左 / 向右转</td></tr><tr><td>松开方向键</td><td>给出零速度指令，回到站立</td></tr><tr><td>空格</td><td>执行一次右脚踢球，然后切回站立</td></tr><tr><td>R / Esc</td><td>重置本次场景 / 退出</td></tr></tbody></table></div><p>先走到球旁边，再停下来：球应位于右脚前方，身体朝向球门。按空格出脚。若踢空，先调整站位；若失去平衡，按 R 重来。这里由您判断球在哪里、应该朝哪走，策略只负责把指令变成关节动作。如果某次尝试没能进球，可以想一想：是站位偏了、朝向不对，还是出脚时机不合适？这些判断正是后面要交给自主射门系统的任务。</p><p>默认站立并不是另一个始终抢占控制的“站起”技能：行走策略持续运行，收到零移动指令时保持站立；摔倒后的站起、坐下和轮滑是不同技能。键盘实验直接在接触面上运行策略；第 6 章自主任务另外等待身体与观测稳定后才开始检测。</p></section><section id="rollers"><h2>再用轮滑，把球碰进球门</h2><p>这一次从初始化到结束都使用轮滑模型：四个轮子是被动轮，仍由原来的 14 个舵机调整腿部姿态完成推进、转向和制动。无需切换走路，也不调用踢腿策略。先观察松开按键后仍会滑行，再练习提前减速；目标是把球碰进门，同时让小鸭子停在门前。</p><p>关闭上一场景后，在同一终端运行下面的命令。<code>--locomotion rollers</code> 选择轮滑的物理模型与固定策略，输出另存到一个新目录。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py manual \
-  --locomotion rollers \
-  --seconds 600 \
-  --output outputs/manual-rollers-01</code></pre></div><div class="table-scroll"><table><thead><tr><th>按键</th><th>轮滑中的含义</th></tr></thead><tbody><tr><td>W</td><td>向前推进</td></tr><tr><td>S</td><td>制动；短按并观察，持续按住可能开始倒滑</td></tr><tr><td>Q / E</td><td>左转 / 右转</td></tr><tr><td>松开按键</td><td>滑行，不保证立即停住</td></tr><tr><td>空格</td><td>调用一次有限时的滑行推射辅助；不会踢腿</td></tr><tr><td>R / Esc</td><td>重置 / 退出；A、D 不用于侧移</td></tr></tbody></table></div><p>先用 W、Q、E 把球对到前轮前方，再用短促的 S 控制接近速度；您也可以在完成对位后试空格辅助。轮滑的推进量不是以米每秒为单位的速度目标，不能把 W 的内部数值直接当作实际速度。比较两种方式：步行射门先停稳再出脚；轮滑射门通过运动中的接触传递动量，随后制动。</p><p>轮滑从已经展开的静止腿姿初始化，不先播放步行或踢腿动作。四个轮胎保留官方外观、质量和惯量；为了稳定计算滚动接触，碰撞采用直径 30 毫米、宽 7.6 毫米的圆柱近似，简化了胎肩圆角。键盘、射门和坡地的轮滑实验共用这一配置，实际轮胎的摩擦与变形尚未标定。</p></section><section id="scene"><h2>Isaac Sim 如何构成这场实验</h2><figure class="learning-figure" data-learning-flow="learn-00136b19a7"><p class="learning-help">点击图中的模块，查看模块作用与数据流。也可按 Tab 选择，按 Enter 确认。<span class="learning-scroll-hint">左右滑动查看完整图示</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从场景到运动"><svg class="learning-svg" viewBox="0 0 828 228" role="group" aria-labelledby="learn-00136b19a7-title"><title id="learn-00136b19a7-title">从场景到运动</title><defs><marker id="learn-00136b19a7-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-00136b19a7-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-00136b19a7-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="USD 场景" aria-controls="learn-00136b19a7-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">USD 场景</text><text x="138" y="132" class="learning-node-subtitle">机器人、球场、足球与球门</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="物理配置" aria-controls="learn-00136b19a7-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">物理配置</text><text x="414" y="132" class="learning-node-subtitle">质量、碰撞、摩擦与执行器</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="策略与输入" aria-controls="learn-00136b19a7-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">策略与输入</text><text x="690" y="132" class="learning-node-subtitle">键盘速度 → ONNX → 关节目标</text></g></svg></div><div class="learning-details"><p class="learning-empty">从场景到运动</p><button type="button" class="learning-reset" aria-label="关闭说明" hidden>×</button><article id="learn-00136b19a7-detail-0" data-node-detail="0" class="learning-definition"><h3>USD 场景</h3><p>USD 场景将机器人、球与球门放在同一空间。网格负责可见外形，几何与材质也会影响相机看到的图像。</p></article><article id="learn-00136b19a7-detail-1" data-node-detail="1" class="learning-definition"><h3>物理配置</h3><p>质量、惯量、摩擦和碰撞体决定接触后的运动。相同外观可以对应不同物理配置，因此外观逼真不能代替物理检查。</p></article><article id="learn-00136b19a7-detail-2" data-node-detail="2" class="learning-definition"><h3>策略与输入</h3><p>键盘提供期望运动方向与速度，ONNX 策略把观测和指令转换为关节目标。移动足球只改变任务目标，不会改变行走策略的网络权重。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>画面、物理与策略各司其职。更换技能不需要重新制作场景；改变球的位置也不需要重新训练行走策略。</figcaption></figure><p>机器人 USD 不只是一张好看的网格：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型影响目标角度如何变成实际运动。官网黑白足球的半径为 5 cm、质量为 30 g；球门内宽为 38.8 cm。Isaac Sim 提供场景与渲染，这里通过 Isaac Lab 的任务配置接入 Newton 物理后端。</p><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">完整代码 ↗</a></div><pre><code class="language-python">cfg.scene.ball = RigidObjectCfg(
-    prim_path=&quot;{ENV_REGEX_NS}/Ball&quot;,
-    spawn=sim_utils.SphereCfg(
-        radius=0.05,
-        mass_props=sim_utils.MassPropertiesCfg(mass=0.03),
-        collision_props=sim_utils.CollisionPropertiesCfg(),
-        rigid_props=UsdPhysicsRigidBodyCfg(rigid_body_enabled=True),
-    ),
-    init_state=RigidObjectCfg.InitialStateCfg(pos=(0.0, 0.0, 0.05)),
-)
-# Apply the shared official-ball asset, goal and floor materials.
-scene_profile = configure_football(cfg, style=&quot;A&quot;)</code></pre></div></section><section id="scene-contract"><h2>先固定场景与硬件约定</h2><p>本课程的室内射门场景使用 1 × 1.6 米垫子、外尺寸为宽 40 × 深 20 × 高 25 厘米的固定式钢网球门，以及官网直径 10 厘米、质量 30 克的黑白足球。垫子提供短距离接近和射门空间；它并不代表机器人已能在狭小场地中任意绕行。门框直径暂取 6 毫米，因此两根立柱的中心距为 39.4 厘米，净开口为宽 38.8、高 24.4 厘米。定位使用中心距，进球判定使用净开口，不能互换。</p><p>地面提供两种足球场图案、浅色大理石和棕色木地板，均使用 1 × 1.6 米的展示区域、同一套机器人和灯光。球门按商品图做成侧面呈梯形、后网倾斜的钢网结构，固定其尺寸和材质。门框、网丝都有碰撞；地面暂按刚性平面处理，尚未模拟软垫压缩或起翘。不同贴图不意味着已经标定了各类实物地面的摩擦。</p><figure class="media"><a class="still-link" href="../assets/media/indoor-mats.webp" aria-label="放大图片"><img loading="lazy" src="../assets/media/indoor-mats.webp" alt="同一机器人和球门，四种地面样式"></a><figcaption>A：条纹足球场；B：简洁足球场；C：浅色大理石；D：棕色木地板。相同姿态用于观察地面外观变化，不代表四次任务结果。</figcaption></figure><p>机器人使用官方 Microduck CAD 与带齿隙的全身碰撞模型。课程锁定 XL330 的 BAM 电机拟合、200 Hz 物理和 50 Hz 策略周期；15 个实体舵机中，行走策略控制 14 个，嘴部不由这份策略独立驱动。全身碰撞让头、腿与电池等部位在摔倒后能受到地面支撑，避免只有脚有碰撞时身体穿过地面。</p><p>这仍是有明确版本的仿真配置。相机型号对应 GC2093，但仿真采样为 960 × 540、15 Hz，70° 水平视场角尚未经过镜头标定；ToF 和身体 IMU 也有近似。它不能直接证明最新固件、所有硬件误差或 RK3566 上的完整部署已经复现。移到真机前，应核对实际硬件版本、电压、关节零位、镜头参数与端到端延迟。</p><p>课程机器人采用官方 CAD 网格、基础质量与关节参数、电机拟合和全身碰撞配置。机械展示中的主控板外形来自 Pi Zero 2 W 版 CAD，Beta 软件平台则面向 RK3566；阅读机械模型时，要区分外形展示与实际电子硬件版本。</p></section><section id="policies"><h2>步行模式如何切换行走与踢球策略</h2><div class="table-scroll"><table><thead><tr><th>文件</th><th>大小</th><th>作用</th></tr></thead><tbody><tr><td>walk.onnx</td><td>793,705 字节，约 0.79 MB</td><td>速度非零时行走；速度为零时站立</td></tr><tr><td>kick-teacher.onnx</td><td>793,685 字节，约 0.79 MB</td><td>右脚踢球动作</td></tr></tbody></table></div><p>课程的步行与踢球组合保留经过原任务验证的固定官方权重；它们不等于官网网页模拟器当天的最新步行权重。轮滑实验使用官网轮滑模型。硬件参数是否对应、策略文件是否相同、任务是否通过，是三个需要分别检查的问题。</p><figure class="concept-figure network-figure"><div class="diagram-scroll"><svg class="network-svg" viewBox="0 0 760 350" role="img" aria-label="61 → 512 → 256 → 128 → 14; ELU" font-family="Open Sans, Noto Sans SC, sans-serif"><path d="M79 95L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><text x="70" y="26" text-anchor="middle" fill="#405367" font-size="15">观测输入</text><text x="70" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">61</text><circle cx="70" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="70" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="70" y="296" text-anchor="middle" fill="#405367" font-size="14">输入归一化</text><text x="225" y="26" text-anchor="middle" fill="#405367" font-size="15">隐藏层 1</text><text x="225" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">512</text><circle cx="225" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="225" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="225" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="380" y="26" text-anchor="middle" fill="#405367" font-size="15">隐藏层 2</text><text x="380" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">256</text><circle cx="380" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="380" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="380" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="535" y="26" text-anchor="middle" fill="#405367" font-size="15">隐藏层 3</text><text x="535" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">128</text><circle cx="535" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="535" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="535" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="690" y="26" text-anchor="middle" fill="#405367" font-size="15">动作输出</text><text x="690" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">14</text><circle cx="690" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="690" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="690" y="296" text-anchor="middle" fill="#405367" font-size="14">关节动作</text><text x="380" y="335" text-anchor="middle" fill="#526779" font-size="13">全连接层 · 每 20 ms 推理一次 · 不输入相机图像</text></svg></div><figcaption>每列圆点只代表这一层的部分单元；数字才是实际维数。两个官方策略的结构相同、权重不同，因此能产生不同的动作技能。图中是推理用的策略网络，训练时使用的价值网络不在其中。</figcaption></figure><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">完整代码 ↗</a></div><pre><code class="language-python"># Read the state once per policy step, then select the active skill.
-obs = env.observation_manager.compute(update_history=True)[&quot;policy&quot;]
-action = walk(obs)
 
-if kick_start is not None:
-    phase = (step - kick_start) * 0.02
-    weight = 1.0 if phase &lt; 0.14 else max(0.0, 1.0 - (phase - 0.14) / 0.12)
-    if weight:
-        action = torch.lerp(action, kick(obs), weight)
+<!DOCTYPE html>
 
-# The action manager maps network outputs to joint targets.
-env.action_manager.process_action(action)</code></pre></div><p>手动实验把踢球保持时间设为 0.14 秒，再用 0.12 秒切回站立；这是本实验的技能切换设置，不是对官方权重的重新训练。策略文件大小小于 1 MB，不代表完整仿真只需要这么多显存。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py inspect-model --model models/walk.onnx</code></pre></div></section><section id="reflect"><h2>刚才是谁在决定下一步</h2><div class="quiz"><h3>检查理解</h3><p>刚才您已经完成了哪些机器人还不会自主完成的判断？</p><details><summary>查看解析</summary><p>您识别了足球和球门、估计了距离、选择了接近路线和出脚位置，并决定何时踢球。第六章展示手工流程怎样完成这些判断，第七至九章讨论学习策略与任务智能体。</p></details></div><p>下一章先看看这些动作背后的机械结构，以及策略和物理引擎按什么节奏协同工作。</p></section><section id="references"><h2>参考资料</h2><ul class="references"><li><a href="https://huggingface.co/pollen-robotics/microduck-policies/tree/665ae4eb20bfe13bca1ef4ea6d4bb6b4a096e448" target="_blank" rel="noopener">Pollen Robotics：课程采用的官方策略版本 ↗</a></li><li><a href="https://nvidianews.nvidia.com/news/nvidia-advances-isaac-platform-for-general-purpose-robotics-with-new-reference-humanoid-frameworks-simulation-pipelines-and-data/" target="_blank" rel="noopener">NVIDIA：Isaac 平台与 Microduck ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="setup.html"><small>← 上一页</small>准备环境与获取代码</a><a href="02-anatomy.html"><small>下一页 →</small>拆解机械结构与控制周期</a></nav><footer>Microduck Workshop · <a href="references.html">参考资料</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">来源与许可</a></span></footer></main>
-<aside class="toc"><p>本页内容</p><a href="#meet">一只可以学习新技能的小机器人</a><a href="#play">打开球场，用键盘试一试</a><a href="#rollers">再用轮滑，把球碰进球门</a><a href="#scene">Isaac Sim 如何构成这场实验</a><a href="#scene-contract">先固定场景与硬件约定</a><a href="#policies">步行模式如何切换行走与踢球策略</a><a href="#reflect">刚才是谁在决定下一步</a><a href="#references">参考资料</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">搜索课程</label><button aria-label="关闭">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="搜索课程…"><div class="search-results"></div></dialog>
-</body></html>
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="先用键盘指挥 Microduck 走路、转向和踢球，在同一个窗口里切换到轮滑，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。" name="description" />
+
+  <title>2.1 认识 Microduck：先来踢一场球 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="2.2 拆解机械结构与控制周期" href="02-anatomy.html" />
+    <link rel="prev" title="1.3 准备环境与获取代码" href="setup.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="01-play">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/01-play.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/01-play.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/01-play.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/01-play.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">2.1 认识 Microduck：先来踢一场球</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="microduck">
+<h1>2.1 认识 Microduck：先来踢一场球<a class="headerlink" href="#microduck" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>先用键盘指挥 Microduck 走路、转向和踢球，在同一个窗口里切换到轮滑，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。</p>
+</div><div class="lesson-meta">第 2.1 节 · 预计学习时长 20 分钟</div></div></div><section id="meet">
+<h2>一只可以学习新技能的小机器人<a class="headerlink" href="#meet" title="Link to this heading">#</a></h2>
+<p>Microduck 是 Pollen Robotics 与 Hugging Face 推出的开源双足机器人。它有 14 个主动关节，可以通过训练获得行走、踢腿等技能。我们用 NVIDIA Isaac Sim 搭建可反复试验的场景，用 Isaac Lab 组织训练与评测，逐步让机器人自己找到足球并完成射门。先不训练：加载官方已经训练好的行走与右脚踢球 ONNX 策略，体验一次手动射门。</p>
+</section>
+<section id="play">
+<h2>打开球场，用键盘试一试<a class="headerlink" href="#play" title="Link to this heading">#</a></h2>
+<p>在 1.3 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.3 节</a>）。它打开 Isaac Sim，场景中是第 4 部分自主射门同样的绿色球场、足球和球门。</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>manual<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seconds<span class="w"> </span><span class="m">600</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/manual-football-01
+</pre></div>
+</div>
+</div>
+<p>窗口打开时是<strong>步行模式</strong>。把输入法切换到英文，用鼠标点击仿真窗口，就可以用下表的按键操作；按键没有反应时，通常是中文输入法拦截了按键。按 <strong>M</strong> 切换到轮滑模式，同一个窗口会重新搭好球场、换上轮滑脚，大约需要几十秒。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。</p>
+<details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>模型。</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">manual</span></code> 不需要模型参数：它读取容器内的 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models</span></code>（即宿主机仓库的 <code class="docutils literal notranslate"><span class="pre">models/</span></code>，只读）。步行模式用其中的 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code> 和 <code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code>，轮滑模式用 <code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code>。</p></li>
+<li><p><strong>场景资产。</strong> 球场、足球、球门和机器人来自仓库的 <code class="docutils literal notranslate"><span class="pre">lab/assets/</span></code>：<code class="docutils literal notranslate"><span class="pre">pitch_A.usda</span></code>、<code class="docutils literal notranslate"><span class="pre">official_ball.usda</span></code>、<code class="docutils literal notranslate"><span class="pre">steel_goal.usda</span></code>、<code class="docutils literal notranslate"><span class="pre">microduck_contact.usda</span></code>，轮滑脚为 <code class="docutils literal notranslate"><span class="pre">rollers/microduck_rollers_analytic.usdc</span></code>。</p></li>
+<li><p><strong>起步。</strong> 小鸭子先锁住关节在球场上落稳，策略开始控制时再松开；M 键只在策略接管之后才生效。</p></li>
+<li><p><strong>切换模式。</strong> 按 M 时当前场景关闭，同一个窗口里重新搭好球场，换入另一套机器人配置和对应策略。</p></li>
+<li><p><strong>输出。</strong> <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的 <code class="docutils literal notranslate"><span class="pre">outputs/manual-football-01</span></code> 在宿主机仓库的 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下。每次切换模式都会新建一个编号子文件夹，例如 <code class="docutils literal notranslate"><span class="pre">00-walking</span></code>、<code class="docutils literal notranslate"><span class="pre">01-rollers</span></code>，两种模式的记录分开保存。<code class="docutils literal notranslate"><span class="pre">--seconds</span></code> 是窗口最长运行的仿真时间。</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-walking.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-walking.png" alt="键盘踢球的 Isaac Sim 完整界面（步行模式）：绿色球场上的 Microduck、足球和球门，右侧标签页列出步行模式的按键。"></a><figcaption><p>步行模式。截图来自课程在容器中运行上面这条命令的一次真实会话。</p>
+</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>按键</p></th>
+<th class="head cell-short"><p>步行模式</p></th>
+<th class="head cell-short"><p>轮滑模式</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>W / S</p></td>
+<td class="cell-short"><p>向前 / 向后走</p></td>
+<td><p>推进 / 制动（持续按住 S 可能开始倒滑）</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>A / D</p></td>
+<td><p>向左 / 向右侧移</p></td>
+<td class="cell-short"><p>不使用</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Q / E</p></td>
+<td class="cell-short"><p>向左 / 向右转</p></td>
+<td class="cell-short"><p>左转 / 右转</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>松开按键</p></td>
+<td><p>零速度指令，回到站立</p></td>
+<td><p>继续滑行，不保证立即停住</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>空格</p></td>
+<td><p>一次右脚踢球，然后回到站立</p></td>
+<td><p>一次有限时的滑行推射辅助，不会踢腿</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>M</p></td>
+<td class="cell-short"><p>切换到轮滑模式</p></td>
+<td class="cell-short"><p>切换到步行模式</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>R / Esc</p></td>
+<td><p>重置当前场景 / 退出</p></td>
+<td><p>重置当前场景 / 退出</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>步行模式</strong>：先走到球旁边并停下，让球位于右脚前方、身体朝向球门，再按空格出脚。踢空了就调整站位；失去平衡就按 R 重来。这里由你判断球在哪里、应该朝哪走，策略只负责把指令变成关节动作。没能进球时想一想：是站位偏了、朝向不对，还是出脚时机不合适？这些判断正是第 4 部分要交给自主射门系统的任务。松开按键后的站立也由行走策略完成：它一直在运行，收到零速度指令就保持站立。</p>
+<p><span id="rollers"></span><strong>轮滑模式</strong>：四个轮子是被动轮，仍由原来的 14 个舵机调整腿部姿态完成推进、转向和制动，不会切换到走路或踢腿。先观察松开按键后仍会滑行，再练习提前减速；目标是把球碰进门，同时让小鸭子停在门前。W 给出的是推进量，并不对应以米每秒为单位的速度。比较两种方式：步行射门先停稳再出脚；轮滑射门通过运动中的接触传递动量，随后制动。</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-rollers.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-rollers.png" alt="同一窗口按 M 后的轮滑模式：同一块球场上的 Microduck 换上了带轮子的脚，右侧标签页改为轮滑模式的按键。"></a><figcaption><p>按 M 之后的轮滑模式，与上一张截图来自同一次会话、同一个窗口：场景重新搭建，脚换成了轮滑脚，按键说明也随之改变。</p>
+</figcaption></figure><div class="note admonition">
+<p class="admonition-title">两种脚是两套不同的机器人配置</p>
+<p>普通脚掌和官方轮滑脚的结构、质量和碰撞形状都不同，所以切换模式时程序会重新搭建场景、换入另一套机器人配置和对应的官方策略。这相当于在实验台上换了一副脚，并不表示真机能在运动中自己变形。四个轮胎保留官方外观、质量和惯量；为了稳定计算滚动接触，碰撞体用直径 30 毫米、宽 7.6 毫米的圆柱近似。真实轮胎的摩擦与变形尚未标定。</p>
+</div>
+</section>
+<section id="scene">
+<h2>Isaac Sim 如何构成这场实验<a class="headerlink" href="#scene" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-00136b19a7"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从场景到运动"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-00136b19a7-title"><title id="learn-00136b19a7-title">从场景到运动</title><defs><marker id="learn-00136b19a7-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-00136b19a7-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-00136b19a7-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. USD 场景" aria-controls="learn-00136b19a7-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">USD 场景</text><text x="114.0" y="98" class="learning-node-subtitle">机器人、球场</text><text x="114.0" y="115" class="learning-node-subtitle">、足球与球门</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 物理配置" aria-controls="learn-00136b19a7-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">物理配置</text><text x="450.0" y="98" class="learning-node-subtitle">质量、碰撞、</text><text x="450.0" y="115" class="learning-node-subtitle">摩擦与执行器</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 策略与输入" aria-controls="learn-00136b19a7-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">策略与输入</text><text x="786.0" y="98" class="learning-node-subtitle">键盘速度 → ONNX</text><text x="786.0" y="115" class="learning-node-subtitle">→ 关节目标</text></g></svg></div><div class="learning-details" aria-label="从场景到运动"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-00136b19a7-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>USD 场景</h3><p>USD 场景将机器人、球与球门放在同一空间。网格负责可见外形，几何与材质也会影响相机看到的图像。</p></article><article id="learn-00136b19a7-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>物理配置</h3><p>质量、惯量、摩擦和碰撞体决定接触后的运动。相同外观可以对应不同物理配置，因此外观逼真不能代替物理检查。</p></article><article id="learn-00136b19a7-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>策略与输入</h3><p>键盘提供期望的运动方向与速度，ONNX 策略把观测和指令转换为关节目标。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>画面、物理与策略各司其职：更换技能可以沿用同一个场景，移动足球也无需重新训练行走策略。</figcaption></figure><p>机器人 USD 除了可见网格，还包含关节、碰撞形状和质量属性：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型决定目标角度如何变成实际运动。下面的代码按官网黑白足球设置半径 5 cm、质量 30 g。Isaac Sim 提供场景与渲染，Isaac Lab 的任务配置则接入 Newton 物理后端。</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>在场景中登记足球</h4> <p><code>RigidObjectCfg</code> 声明一个刚体；<code>{ENV_REGEX_NS}</code> 让每个并行环境都有自己的一颗球。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">ball</span> <span class="o">=</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
+    <span class="n">prim_path</span><span class="o">=</span><span class="s2">"</span><span class="si">{ENV_REGEX_NS}</span><span class="s2">/Ball"</span><span class="p">,</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>设置形状与物理属性</h4> <p>半径 0.05 m、质量 0.03 kg，并启用碰撞与刚体动力学，Newton 才会计算球被踢后的运动。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
+        <span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">mass_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">MassPropertiesCfg</span><span class="p">(</span><span class="n">mass</span><span class="o">=</span><span class="mf">0.03</span><span class="p">),</span>
+        <span class="n">collision_props</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">CollisionPropertiesCfg</span><span class="p">(),</span>
+        <span class="n">rigid_props</span><span class="o">=</span><span class="n">UsdPhysicsRigidBodyCfg</span><span class="p">(</span><span class="n">rigid_body_enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="p">),</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>放到地面上</h4> <p>初始高度 0.05 m 正好等于半径，球刚好接触地面。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="n">init_state</span><span class="o">=</span><span class="n">RigidObjectCfg</span><span class="o">.</span><span class="n">InitialStateCfg</span><span class="p">(</span><span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)),</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>套用共享的足球场景</h4> <p><code>configure_football</code> 换入官网足球资产，加入球门与地面材质；<code>style=&quot;A&quot;</code> 选择全课统一使用的绿色条纹球场。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># Apply the shared official-ball asset, goal and floor materials.</span>
+<span class="n">scene_profile</span> <span class="o">=</span> <span class="n">configure_football</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"A"</span><span class="p">)</span></code></pre></div></div></div></section>
+<section id="scene-contract">
+<h2>先固定场景与硬件约定<a class="headerlink" href="#scene-contract" title="Link to this heading">#</a></h2>
+<p>键盘射门与第 4 部分的 GR00T 射门使用同一块 1 × 1.6 米的绿色球场、直径 10 厘米、质量 30 克的官网黑白足球和固定式钢网球门。进球判定使用球门的净开口：宽 38.8 厘米、高 24.4 厘米。第 3 部分使用各节说明的训练地面和测试地形；换场地、灯光或室内背景的影响留到 4.4 节讨论。</p>
+<details class="enrichment"><summary>场景参数</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>球门。</strong> 外尺寸宽 40 × 深 20 × 高 25 厘米；门框直径按 6 毫米计，两根立柱的中心距为 39.4 厘米。定位用中心距，进球判定用净开口，两者不要混用。</p></li>
+<li><p><strong>地面。</strong> 按刚性平面处理，没有模拟软垫的压缩或起翘；场地垫与实物地面的摩擦尚未标定。</p></li>
+</ul>
+</div></details><p>机器人使用官方 Microduck CAD、基础质量与关节参数，以及带齿隙的全身碰撞模型。课程锁定 XL330 的 BAM 电机拟合、200 Hz 物理和 50 Hz 策略周期；15 个实体舵机中，行走策略控制 14 个，嘴部不由这份策略驱动。全身碰撞让头、腿与电池等部位摔倒后也能被地面托住，不会穿过地面。</p>
+<p>这套仿真配置与真机仍有差距：相机对应 GC2093，仿真按 960 × 540、15 Hz 采样，70° 水平视场角尚未经过镜头标定；ToF 和身体 IMU 也是近似。因此它不能证明最新固件、各种硬件误差或 RK3566 上的完整部署都已复现。移到真机前，应核对实际硬件版本、电压、关节零位、镜头参数与端到端延迟。</p>
+</section>
+<section id="policies">
+<h2>步行模式如何切换行走与踢球策略<a class="headerlink" href="#policies" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>文件</p></th>
+<th class="head cell-short"><p>大小</p></th>
+<th class="head cell-short"><p>作用</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>walk.onnx</p></td>
+<td><p>793,705 字节，约 0.79 MB</p></td>
+<td><p>速度非零时行走；速度为零时站立</p></td>
+</tr>
+<tr class="row-odd"><td><p>kick-teacher.onnx</p></td>
+<td><p>793,685 字节，约 0.79 MB</p></td>
+<td class="cell-short"><p>右脚踢球动作</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>步行与踢球使用固定版本的官方权重（版本链接见本页参考资料），可能与官网网页模拟器中最新的步行权重不同。轮滑实验使用官网的轮滑模型。</p>
+<figure class="concept-figure network-figure" data-network><div class="diagram-scroll"><svg xmlns="http://www.w3.org/2000/svg" class="network-svg" viewBox="0 0 760 428" role="group" aria-labelledby="actor-network-title" font-family="Open Sans, Noto Sans SC, sans-serif"><title id="actor-network-title">行走策略网络：61 → 512 → 256 → 128 → 14</title><g class="network-part network-band" data-part="band-0" data-info="全连接 61 → 512：每个输入都连到每个神经元，共 61 × 512 = 31,232 个连接权重。" role="button" tabindex="0" aria-label="全连接 61 → 512：每个输入都连到每个神经元，共 61 × 512 = 31,232 个连接权重。"><rect class="network-hit" x="100" y="10" width="95" height="408"/><g class="network-edges"><path d="M77 181.68L218 90.00"/><path d="M77 181.68L218 118.00"/><path d="M77 181.68L218 146.00"/><path d="M77 181.68L218 174.00"/><path d="M77 181.68L218 202.00"/><path d="M77 181.68L218 258.00"/><path d="M77 181.68L218 286.00"/><path d="M77 181.68L218 314.00"/><path d="M77 181.68L218 342.00"/><path d="M77 181.68L218 370.00"/><path d="M77 205.84L218 90.00"/><path d="M77 205.84L218 118.00"/><path d="M77 205.84L218 146.00"/><path d="M77 205.84L218 174.00"/><path d="M77 205.84L218 202.00"/><path d="M77 205.84L218 258.00"/><path d="M77 205.84L218 286.00"/><path d="M77 205.84L218 314.00"/><path d="M77 205.84L218 342.00"/><path d="M77 205.84L218 370.00"/><path d="M77 254.16L218 90.00"/><path d="M77 254.16L218 118.00"/><path d="M77 254.16L218 146.00"/><path d="M77 254.16L218 174.00"/><path d="M77 254.16L218 202.00"/><path d="M77 254.16L218 258.00"/><path d="M77 254.16L218 286.00"/><path d="M77 254.16L218 314.00"/><path d="M77 254.16L218 342.00"/><path d="M77 254.16L218 370.00"/><path d="M77 278.32L218 90.00"/><path d="M77 278.32L218 118.00"/><path d="M77 278.32L218 146.00"/><path d="M77 278.32L218 174.00"/><path d="M77 278.32L218 202.00"/><path d="M77 278.32L218 258.00"/><path d="M77 278.32L218 286.00"/><path d="M77 278.32L218 314.00"/><path d="M77 278.32L218 342.00"/><path d="M77 278.32L218 370.00"/></g></g><g class="network-part network-band" data-part="band-1" data-info="全连接 512 → 256：每个输入都连到每个神经元，共 512 × 256 = 131,072 个连接权重。" role="button" tabindex="0" aria-label="全连接 512 → 256：每个输入都连到每个神经元，共 512 × 256 = 131,072 个连接权重。"><rect class="network-hit" x="255" y="10" width="95" height="408"/><g class="network-edges"><path d="M232 90.00L373 131.01"/><path d="M232 90.00L373 155.75"/><path d="M232 90.00L373 180.50"/><path d="M232 90.00L373 205.25"/><path d="M232 90.00L373 254.75"/><path d="M232 90.00L373 279.50"/><path d="M232 90.00L373 304.25"/><path d="M232 90.00L373 328.99"/><path d="M232 118.00L373 131.01"/><path d="M232 118.00L373 155.75"/><path d="M232 118.00L373 180.50"/><path d="M232 118.00L373 205.25"/><path d="M232 118.00L373 254.75"/><path d="M232 118.00L373 279.50"/><path d="M232 118.00L373 304.25"/><path d="M232 118.00L373 328.99"/><path d="M232 146.00L373 131.01"/><path d="M232 146.00L373 155.75"/><path d="M232 146.00L373 180.50"/><path d="M232 146.00L373 205.25"/><path d="M232 146.00L373 254.75"/><path d="M232 146.00L373 279.50"/><path d="M232 146.00L373 304.25"/><path d="M232 146.00L373 328.99"/><path d="M232 174.00L373 131.01"/><path d="M232 174.00L373 155.75"/><path d="M232 174.00L373 180.50"/><path d="M232 174.00L373 205.25"/><path d="M232 174.00L373 254.75"/><path d="M232 174.00L373 279.50"/><path d="M232 174.00L373 304.25"/><path d="M232 174.00L373 328.99"/><path d="M232 202.00L373 131.01"/><path d="M232 202.00L373 155.75"/><path d="M232 202.00L373 180.50"/><path d="M232 202.00L373 205.25"/><path d="M232 202.00L373 254.75"/><path d="M232 202.00L373 279.50"/><path d="M232 202.00L373 304.25"/><path d="M232 202.00L373 328.99"/><path d="M232 258.00L373 131.01"/><path d="M232 258.00L373 155.75"/><path d="M232 258.00L373 180.50"/><path d="M232 258.00L373 205.25"/><path d="M232 258.00L373 254.75"/><path d="M232 258.00L373 279.50"/><path d="M232 258.00L373 304.25"/><path d="M232 258.00L373 328.99"/><path d="M232 286.00L373 131.01"/><path d="M232 286.00L373 155.75"/><path d="M232 286.00L373 180.50"/><path d="M232 286.00L373 205.25"/><path d="M232 286.00L373 254.75"/><path d="M232 286.00L373 279.50"/><path d="M232 286.00L373 304.25"/><path d="M232 286.00L373 328.99"/><path d="M232 314.00L373 131.01"/><path d="M232 314.00L373 155.75"/><path d="M232 314.00L373 180.50"/><path d="M232 314.00L373 205.25"/><path d="M232 314.00L373 254.75"/><path d="M232 314.00L373 279.50"/><path d="M232 314.00L373 304.25"/><path d="M232 314.00L373 328.99"/><path d="M232 342.00L373 131.01"/><path d="M232 342.00L373 155.75"/><path d="M232 342.00L373 180.50"/><path d="M232 342.00L373 205.25"/><path d="M232 342.00L373 254.75"/><path d="M232 342.00L373 279.50"/><path d="M232 342.00L373 304.25"/><path d="M232 342.00L373 328.99"/><path d="M232 370.00L373 131.01"/><path d="M232 370.00L373 155.75"/><path d="M232 370.00L373 180.50"/><path d="M232 370.00L373 205.25"/><path d="M232 370.00L373 254.75"/><path d="M232 370.00L373 279.50"/><path d="M232 370.00L373 304.25"/><path d="M232 370.00L373 328.99"/></g></g><g class="network-part network-band" data-part="band-2" data-info="全连接 256 → 128：每个输入都连到每个神经元，共 256 × 128 = 32,768 个连接权重。" role="button" tabindex="0" aria-label="全连接 256 → 128：每个输入都连到每个神经元，共 256 × 128 = 32,768 个连接权重。"><rect class="network-hit" x="410" y="10" width="95" height="408"/><g class="network-edges"><path d="M387 131.01L528 160.00"/><path d="M387 131.01L528 183.33"/><path d="M387 131.01L528 206.67"/><path d="M387 131.01L528 253.33"/><path d="M387 131.01L528 276.67"/><path d="M387 131.01L528 300.00"/><path d="M387 155.75L528 160.00"/><path d="M387 155.75L528 183.33"/><path d="M387 155.75L528 206.67"/><path d="M387 155.75L528 253.33"/><path d="M387 155.75L528 276.67"/><path d="M387 155.75L528 300.00"/><path d="M387 180.50L528 160.00"/><path d="M387 180.50L528 183.33"/><path d="M387 180.50L528 206.67"/><path d="M387 180.50L528 253.33"/><path d="M387 180.50L528 276.67"/><path d="M387 180.50L528 300.00"/><path d="M387 205.25L528 160.00"/><path d="M387 205.25L528 183.33"/><path d="M387 205.25L528 206.67"/><path d="M387 205.25L528 253.33"/><path d="M387 205.25L528 276.67"/><path d="M387 205.25L528 300.00"/><path d="M387 254.75L528 160.00"/><path d="M387 254.75L528 183.33"/><path d="M387 254.75L528 206.67"/><path d="M387 254.75L528 253.33"/><path d="M387 254.75L528 276.67"/><path d="M387 254.75L528 300.00"/><path d="M387 279.50L528 160.00"/><path d="M387 279.50L528 183.33"/><path d="M387 279.50L528 206.67"/><path d="M387 279.50L528 253.33"/><path d="M387 279.50L528 276.67"/><path d="M387 279.50L528 300.00"/><path d="M387 304.25L528 160.00"/><path d="M387 304.25L528 183.33"/><path d="M387 304.25L528 206.67"/><path d="M387 304.25L528 253.33"/><path d="M387 304.25L528 276.67"/><path d="M387 304.25L528 300.00"/><path d="M387 328.99L528 160.00"/><path d="M387 328.99L528 183.33"/><path d="M387 328.99L528 206.67"/><path d="M387 328.99L528 253.33"/><path d="M387 328.99L528 276.67"/><path d="M387 328.99L528 300.00"/></g></g><g class="network-part network-band" data-part="band-3" data-info="全连接 128 → 14：每个输入都连到每个神经元，共 128 × 14 = 1,792 个连接权重。" role="button" tabindex="0" aria-label="全连接 128 → 14：每个输入都连到每个神经元，共 128 × 14 = 1,792 个连接权重。"><rect class="network-hit" x="565" y="10" width="95" height="408"/><g class="network-edges"><path d="M542 160.00L683 206.85"/><path d="M542 160.00L683 253.15"/><path d="M542 183.33L683 206.85"/><path d="M542 183.33L683 253.15"/><path d="M542 206.67L683 206.85"/><path d="M542 206.67L683 253.15"/><path d="M542 253.33L683 206.85"/><path d="M542 253.33L683 253.15"/><path d="M542 276.67L683 206.85"/><path d="M542 276.67L683 253.15"/><path d="M542 300.00L683 206.85"/><path d="M542 300.00L683 253.15"/></g></g><g class="network-part network-layer" data-part="layer-0" data-dimension="61" data-span="96.647" data-info="观测输入：61 维，进入网络前先做归一化；每一维的顺序与含义见下表。" role="button" tabindex="0" aria-label="观测输入：61 维，进入网络前先做归一化；每一维的顺序与含义见下表。"><rect class="network-hit" x="40" y="10" width="60" height="408"/><text class="network-name" x="70" y="26" text-anchor="middle" font-size="15">观测输入</text><text class="network-width" x="70" y="56" text-anchor="middle" font-size="23" font-weight="600">61</text><circle class="network-neuron" cx="70" cy="181.68" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="205.84" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="254.16" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="278.32" r="7" stroke-width="1.5"/><rect x="60" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="70" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="70" y="408" text-anchor="middle" font-size="14">输入归一化</text></g><g class="network-part network-layer" data-part="layer-1" data-dimension="512" data-span="280.000" data-info="隐藏层 1：512 个神经元，激活函数 ELU。" role="button" tabindex="0" aria-label="隐藏层 1：512 个神经元，激活函数 ELU。"><rect class="network-hit" x="195" y="10" width="60" height="408"/><text class="network-name" x="225" y="26" text-anchor="middle" font-size="15">隐藏层 1</text><text class="network-width" x="225" y="56" text-anchor="middle" font-size="23" font-weight="600">512</text><circle class="network-neuron" cx="225" cy="90.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="118.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="146.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="174.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="202.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="258.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="286.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="314.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="342.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="225" cy="370.00" r="7" stroke-width="1.5"/><rect x="215" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="225" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="225" y="408" text-anchor="middle" font-size="14">ELU</text></g><g class="network-part network-layer" data-part="layer-2" data-dimension="256" data-span="197.990" data-info="隐藏层 2：256 个神经元，激活函数 ELU。" role="button" tabindex="0" aria-label="隐藏层 2：256 个神经元，激活函数 ELU。"><rect class="network-hit" x="350" y="10" width="60" height="408"/><text class="network-name" x="380" y="26" text-anchor="middle" font-size="15">隐藏层 2</text><text class="network-width" x="380" y="56" text-anchor="middle" font-size="23" font-weight="600">256</text><circle class="network-neuron" cx="380" cy="131.01" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="155.75" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="180.50" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="205.25" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="254.75" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="279.50" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="304.25" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="380" cy="328.99" r="7" stroke-width="1.5"/><rect x="370" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="380" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="380" y="408" text-anchor="middle" font-size="14">ELU</text></g><g class="network-part network-layer" data-part="layer-3" data-dimension="128" data-span="140.000" data-info="隐藏层 3：128 个神经元，激活函数 ELU。" role="button" tabindex="0" aria-label="隐藏层 3：128 个神经元，激活函数 ELU。"><rect class="network-hit" x="505" y="10" width="60" height="408"/><text class="network-name" x="535" y="26" text-anchor="middle" font-size="15">隐藏层 3</text><text class="network-width" x="535" y="56" text-anchor="middle" font-size="23" font-weight="600">128</text><circle class="network-neuron" cx="535" cy="160.00" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="183.33" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="206.67" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="253.33" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="276.67" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="535" cy="300.00" r="7" stroke-width="1.5"/><rect x="525" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="535" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="535" y="408" text-anchor="middle" font-size="14">ELU</text></g><g class="network-part network-layer" data-part="layer-4" data-dimension="14" data-span="46.301" data-info="动作输出：14 维，每个关节一个目标角度偏移；对应的关节见下表。" role="button" tabindex="0" aria-label="动作输出：14 维，每个关节一个目标角度偏移；对应的关节见下表。"><rect class="network-hit" x="660" y="10" width="60" height="408"/><text class="network-name" x="690" y="26" text-anchor="middle" font-size="15">动作输出</text><text class="network-width" x="690" y="56" text-anchor="middle" font-size="23" font-weight="600">14</text><circle class="network-neuron" cx="690" cy="206.85" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="690" cy="253.15" r="7" stroke-width="1.5"/><rect x="680" y="217" width="20" height="26" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="690" y="236" text-anchor="middle" font-size="20">⋮</text><text class="network-foot" x="690" y="408" text-anchor="middle" font-size="14">关节动作</text></g></svg></div><div class="network-panel"><p class="network-readout" aria-live="polite" data-default="观测 61 维，经过 512、256、128 个神经元的三个隐藏层，输出 14 维关节动作。指向或选中某一层、某一组连线，可查看它的维度；输入层和输出层还会列出每一维的含义。">观测 61 维，经过 512、256、128 个神经元的三个隐藏层，输出 14 维关节动作。指向或选中某一层、某一组连线，可查看它的维度；输入层和输出层还会列出每一维的含义。</p><div class="network-detail" data-for="layer-0"><p class="network-detail-title">61 维输入按什么顺序排列</p><p>61 个数按下表顺序拼接，归一化后送入网络。前 48 个描述机器人此刻的状态和上一步动作，后 13 个是希望它做什么。三组关节数据都使用与输出相同的 14 个关节顺序。</p><table class="network-table"><thead><tr><th>序号</th><th>个数</th><th>内容</th><th>单位</th><th>类型</th></tr></thead><tbody><tr><td>1–3</td><td>3</td><td>机身角速度，依次绕前后轴、左右轴和上下轴</td><td>rad/s</td><td>状态</td></tr><tr><td>4–6</td><td>3</td><td>重力方向在机身前后轴、左右轴和上下轴上的投影</td><td>无量纲（单位向量）</td><td>状态</td></tr><tr><td>7–20</td><td>14</td><td>各关节相对默认姿态的角度偏差</td><td>rad</td><td>状态</td></tr><tr><td>21–34</td><td>14</td><td>各关节角速度</td><td>rad/s</td><td>状态</td></tr><tr><td>35–48</td><td>14</td><td>上一步输出的 14 个原始动作</td><td>与输出相同</td><td>上一步动作</td></tr><tr><td>49–51</td><td>3</td><td>期望的前进速度、横向速度和转向角速度</td><td>m/s、m/s、rad/s</td><td>指令</td></tr><tr><td>52–55</td><td>4</td><td>颈部俯仰、头部俯仰、头部偏航、头部侧倾的期望角度偏移</td><td>rad</td><td>指令</td></tr><tr><td>56–61</td><td>6</td><td>机身姿态指令偏移：前后、左右、上下位置，以及横滚、俯仰、偏航角</td><td>m；rad</td><td>指令</td></tr></tbody></table><p class="network-note">机身姿态的 6 个指令保留在接口中；本课的行走实验把它们固定为 0。</p></div><div class="network-detail" data-for="layer-4"><p class="network-detail-title">14 维输出对应哪些关节</p><p>策略每 20 ms 输出 14 个数，表示各关节目标角度相对默认姿态的偏移（rad）。动作管理器把它加到默认姿态上，得到绝对目标角，需要时再扣除编码器偏置校准，然后交给舵机的位置控制。每一步都以默认姿态为基准重新计算目标角。</p><div class="network-output-groups"><table class="network-table"><caption>左腿 · 1–5</caption><thead><tr><th>序号</th><th>关节</th></tr></thead><tbody><tr><td>1</td><td><code>left_hip_yaw</code><span class="network-joint-name">左髋偏航</span></td></tr><tr><td>2</td><td><code>left_hip_roll</code><span class="network-joint-name">左髋侧倾</span></td></tr><tr><td>3</td><td><code>left_hip_pitch</code><span class="network-joint-name">左髋俯仰</span></td></tr><tr><td>4</td><td><code>left_knee</code><span class="network-joint-name">左膝</span></td></tr><tr><td>5</td><td><code>left_ankle</code><span class="network-joint-name">左踝</span></td></tr></tbody></table><table class="network-table"><caption>颈部与头部 · 6–9</caption><thead><tr><th>序号</th><th>关节</th></tr></thead><tbody><tr><td>6</td><td><code>neck_pitch</code><span class="network-joint-name">颈部俯仰</span></td></tr><tr><td>7</td><td><code>head_pitch</code><span class="network-joint-name">头部俯仰</span></td></tr><tr><td>8</td><td><code>head_yaw</code><span class="network-joint-name">头部偏航</span></td></tr><tr><td>9</td><td><code>head_roll</code><span class="network-joint-name">头部侧倾</span></td></tr></tbody></table><table class="network-table"><caption>右腿 · 10–14</caption><thead><tr><th>序号</th><th>关节</th></tr></thead><tbody><tr><td>10</td><td><code>right_hip_yaw</code><span class="network-joint-name">右髋偏航</span></td></tr><tr><td>11</td><td><code>right_hip_roll</code><span class="network-joint-name">右髋侧倾</span></td></tr><tr><td>12</td><td><code>right_hip_pitch</code><span class="network-joint-name">右髋俯仰</span></td></tr><tr><td>13</td><td><code>right_knee</code><span class="network-joint-name">右膝</span></td></tr><tr><td>14</td><td><code>right_ankle</code><span class="network-joint-name">右踝</span></td></tr></tbody></table></div></div></div><figcaption><p>策略网络读入 61 维观测，依次经过 512、256、128 维隐藏层，输出 14 个关节动作。行走与踢球两个官方策略结构相同、权重不同，因此表现为不同的技能。训练时配合使用的价值网络不在图中。</p>
+</figcaption></figure><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>每个策略步读取一次观察</h4> <p>观测管理器更新历史，给出 policy 观察；行走策略先算出默认动作。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="c1"># Read the state once per policy step, then select the active skill.</span>
+<span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_manager</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">update_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"policy"</span><span class="p">]</span>
+<span class="n">action</span> <span class="o">=</span> <span class="n">walk</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>计算踢球权重</h4> <p>策略周期为 0.02 s（50 Hz），<code>phase</code> 是踢球开始后经过的秒数。前 0.14 s 权重为 1，之后 0.12 s 内线性降到 0。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">if</span> <span class="n">kick_start</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">step</span> <span class="o">-</span> <span class="n">kick_start</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.02</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">&lt;</span> <span class="mf">0.14</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">phase</span> <span class="o">-</span> <span class="mf">0.14</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.12</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>混合两个策略的动作</h4> <p><code>torch.lerp</code> 按权重在行走动作与踢球动作之间插值；权重为 0 时直接沿用行走动作。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">kick</span><span class="p">(</span><span class="n">obs</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>转换为关节目标</h4> <p>动作管理器把网络输出映射为关节目标，再交给执行器和物理仿真。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># The action manager maps network outputs to joint targets.</span>
+<span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div></div><p>手动实验让踢球动作完整保持 0.14 秒，再用 0.12 秒平滑切回行走策略的站立动作。这两个时间只影响技能之间的切换，官方权重保持不变。</p>
+<p>策略文件不到 1 MB，但运行完整仿真还要为场景、物理和渲染占用显存，不能按文件大小估算。1.3 节运行过的 <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> 会显示策略文件的 SHA-256、输入输出张量形状和用到的算子。</p>
+</section>
+<section id="reflect">
+<h2>刚才是谁在决定下一步<a class="headerlink" href="#reflect" title="Link to this heading">#</a></h2>
+<div class="quiz"><h3>检查理解</h3><p>刚才您已经完成了哪些机器人还不会自主完成的判断？</p>
+<details><summary>查看解析</summary><p>您识别了足球和球门、估计了距离、选择了接近路线和出脚位置，并决定何时踢球。第 4 部分训练 GR00T 从示范数据中学习这些判断，4.4 节再讨论环境变化与数据扩展。</p>
+</details></div><p>2.2 节先看看这些动作背后的机械结构，以及策略和物理引擎按什么节奏协同工作。</p>
+</section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/pollen-robotics/microduck-policies/tree/665ae4eb20bfe13bca1ef4ea6d4bb6b4a096e448" rel="noreferer noopener" target="_blank">Pollen Robotics：课程采用的官方策略版本 ↗</a></p></li>
+<li><p><a class="reference external" href="https://nvidianews.nvidia.com/news/nvidia-advances-isaac-platform-for-general-purpose-robotics-with-new-reference-humanoid-frameworks-simulation-pipelines-and-data/" rel="noreferer noopener" target="_blank">NVIDIA：Isaac 平台与 Microduck ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="setup.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">1.3 准备环境与获取代码</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02-anatomy.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">2.2 拆解机械结构与控制周期</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meet">一只可以学习新技能的小机器人</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#play">打开球场，用键盘试一试</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene">Isaac Sim 如何构成这场实验</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene-contract">先固定场景与硬件约定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policies">步行模式如何切换行走与踢球策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reflect">刚才是谁在决定下一步</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

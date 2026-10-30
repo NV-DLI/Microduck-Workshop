@@ -1,29 +1,783 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="先把外壳、关节、执行器和传感器分开理解，再看它们如何组成一台可控制的机器人。"><meta name="theme-color" content="#76b900"><title>拆解机械结构与控制周期 · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="zh" data-page="02-anatomy"><a class="skip" href="#main">跳至正文</a>
-<header><button class="menu-toggle" aria-label="目录" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">搜索课程 <kbd>/</kbd></button><details class="language-menu"><summary aria-label="选择语言"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/02-anatomy.html" aria-current="true">简体中文</a><a lang="en" href="../en/02-anatomy.html" >English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="目录"><div class="sidebar-intro">Microduck 机器人学习实战</div><p class="nav-group">学习准备</p><a href="index.html"><span class="nav-number"></span>让 Microduck 学会自主射门</a><a href="how-to-learn.html"><span class="nav-number"></span>如何学习本课程</a><a href="setup.html"><span class="nav-number"></span>准备环境与获取代码</a><p class="nav-group">课程章节</p><a href="01-play.html"><span class="nav-number">1</span>认识 Microduck：先来踢一场球</a><a aria-current="page" href="02-anatomy.html"><span class="nav-number">2</span>拆解机械结构与控制周期</a><a href="03-learning.html"><span class="nav-number">3</span>用 Isaac Lab 训练行走策略</a><a href="04-terrain.html"><span class="nav-number">4</span>让行走技能适应坡地</a><a href="05-skills.html"><span class="nav-number">5</span>探索社区的更多运动技能</a><a href="06-autonomy.html"><span class="nav-number">6</span>从手工流程到智能机器人</a><a href="07-groot.html"><span class="nav-number">7</span>让 GR00T 从示范中学习射门</a><a href="08-aspire.html"><span class="nav-number">8</span>用 ASPIRE 组织任务并积累技能</a><a href="09-worlds.html"><span class="nav-number">9</span>从一个球场走向更多环境</a><p class="nav-group">参考与帮助</p><a href="models.html"><span class="nav-number"></span>模型与数据</a><a href="troubleshooting.html"><span class="nav-number"></span>故障排查</a><a href="references.html"><span class="nav-number"></span>继续学习与参考资料</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> 课程章节</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>拆解机械结构与控制周期</h1><p class="lead">先把外壳、关节、执行器和传感器分开理解，再看它们如何组成一台可控制的机器人。</p><div class="lesson-meta">第 2 章 · 预计学习时长 20 分钟</div></div></div><section id="assembly"><h2>从整体到组件</h2><p>在 Isaac Sim 中，机器人模型不仅包含外观，还定义关节、碰撞几何和质量属性。先认识 Microduck 的机械结构，后续才能把关节名称、动作向量与仿真中的运动对应起来。Isaac Lab 会在此基础上组织观测、动作和训练任务。</p><p>Microduck 是一台小型双足机器人：双腿承担支撑与移动，颈部机构负责调整视线，机身则容纳计算、电源和连接部件。视觉网格用于呈现外观，关节与碰撞模型用于规定可发生的运动和接触，二者在仿真中承担不同职责。</p><div class="anatomy" data-robot-viewer><div class="viewer-stage"><img class="robot-fallback" src="../assets/robot/studio-hd.webp" alt="Microduck"><div class="viewer-status" role="status"></div><button type="button" class="load-robot">加载交互模型</button></div><div class="viewer-toolbar"><label>装配 <input type="range" min="0" max="100" value="0" class="explode" aria-label="结构展开程度"> 展开</label><button type="button" class="view-reset">返回总览</button></div><div class="component-info" aria-live="polite"><strong>点击部件或名称，即可放大查看</strong><p>左键拖动旋转，按住滚轮拖动平移，滚轮或双指缩放；移动滑块可展开结构。</p></div></div><p>将展开滑块移到中间，先找出左右腿和头颈部的舵机，再点击名称查看它们驱动的关节。继续展开，观察相机、主控板和电池的位置。最后返回总览，沿一条腿追踪关节之间的连接关系。</p><aside class="note"><strong>硬件版本与仿真关节</strong><p>Microduck 配有 15 个舵机：两条腿各 5 个，头颈部 4 个，喙部 1 个。这里的仿真策略控制其中 14 个关节，喙部保持固定。图中保留了 CAD 的 Raspberry Pi Zero 2 W 板外形，它不代表当前 Beta 的 RK3566 电子配置，相机、ToF 测距和 IMU 在第六章用于观察任务，在第七章作为可学习策略的数据来源。</p></aside></section><section id="kinematic-chain"><h2>从机械结构到关节控制</h2><p>本章要解决一个基础问题：策略输出的 14 个数字，怎样变成可见的机器人动作？先在模型中找到躯干、左右腿和头部，再沿“躯干 → 髋关节 → 膝关节 → 踝关节 → 脚”观察连接关系。这样，后面遇到关节顺序、坐标变换或脚部接触问题时，就能找到它们在实体结构中的对应位置。</p><figure class="learning-figure" data-learning-flow="learn-8093091528"><p class="learning-help">点击图中的模块，查看模块作用与数据流。也可按 Tab 选择，按 Enter 确认。<span class="learning-scroll-hint">左右滑动查看完整图示</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从关节目标到脚的位置"><svg class="learning-svg" viewBox="0 0 828 228" role="group" aria-labelledby="learn-8093091528-title"><title id="learn-8093091528-title">从关节目标到脚的位置</title><defs><marker id="learn-8093091528-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-8093091528-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-8093091528-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="关节目标 q*" aria-controls="learn-8093091528-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">关节目标 q*</text><text x="138" y="132" class="learning-node-subtitle">策略决定希望转到哪里</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="舵机与关节" aria-controls="learn-8093091528-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">舵机与关节</text><text x="414" y="132" class="learning-node-subtitle">实际角度 q 会随受力变化</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="连杆与脚" aria-controls="learn-8093091528-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">连杆与脚</text><text x="690" y="132" class="learning-node-subtitle">连杆关系决定脚的位置</text></g></svg></div><div class="learning-details"><p class="learning-empty">从关节目标到脚的位置</p><button type="button" class="learning-reset" aria-label="关闭说明" hidden>×</button><article id="learn-8093091528-detail-0" data-node-detail="0" class="learning-definition"><h3>关节目标 q*</h3><p>策略给出希望关节达到的目标角度。它表达运动意图，不是瞬间把关节移动到指定位置。</p></article><article id="learn-8093091528-detail-1" data-node-detail="1" class="learning-definition"><h3>舵机与关节</h3><p>执行器受力矩、速度和响应限制，接触也会改变实际角度。因此应同时看关节目标与实际状态。</p></article><article id="learn-8093091528-detail-2" data-node-detail="2" class="learning-definition"><h3>连杆与脚</h3><p>脚的位置由各段连杆与关节角度共同决定。某个关节变化会影响末端位置，也可能改变支撑。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>目标角度与实际角度并不总是相同。惯性、接触和执行器响应都会影响最终运动。</figcaption></figure><p>关节角度决定连杆的相对姿态；沿一条机械链组合这些姿态，就能算出脚或相机相对于机身的位置。先理解这个关系，后面就能区分“头转了”和“身体转了”。</p><details class="enrichment"><summary>拓展：怎样沿机械链计算位置</summary><div class="enrichment-body"><p>描述一个零件的位置，还需要说明它相对于哪个坐标系。齐次变换矩阵统一表示旋转 R 和平移 t；沿机械链依次相乘，就能把脚坐标系中的点转换到躯干坐标系。这就是正向运动学：根据已知关节角度计算末端位置。</p><div class="formula"><div class="formula-label">齐次变换与机械链</div><div>\[T=\begin{bmatrix}R&amp;\mathbf t\\\mathbf 0^{\mathsf T}&amp;1\end{bmatrix},\qquad {}^{B}T_F(q)= {}^{B}T_1(q_1)\,{}^{1}T_2(q_2)\cdots{}^{k}T_F(q_k)\]</div></div><p>上标 B 表示躯干坐标系，下标 F 表示脚坐标系；每一项变换都来自零件的装配位置和关节转角。把相机安装在头上时，也需要沿颈部和头部的机械链计算相机朝向，不能把头部转动误认为整个身体转动。</p></div></details><p>展开模型，分别找到膝关节舵机、电池和脚，说明它们在驱动、供电和支撑中的作用。再回到装配状态，沿一条腿解释支撑力如何传回躯干。</p></section><section id="joint-map"><h2>先分清零件、关节和自由度</h2><p>一支笔以笔尖为支点时可以朝多个方向转动，而铰链通常只能绕一条固定轴旋转，机器人关节也受到类似约束。自由度表示描述允许运动所需的独立变量数量，零件数量则表示装配体包含多少实体，两者并不相等。因此，网页中展示 70 个组件，并不意味着策略需要输出 70 个动作。</p><div class="table-scroll"><table><thead><tr><th>区域</th><th>活动关节</th><th>主要作用</th></tr></thead><tbody><tr><td>每条腿</td><td>髋偏航、髋侧倾、髋俯仰、膝、踝，共 5 个</td><td>控制支撑与脚的位置</td></tr><tr><td>颈部与头部</td><td>颈俯仰、头俯仰、头偏航、头侧倾，共 4 个</td><td>改变相机朝向与头部姿态</td></tr><tr><td>喙部</td><td>实物有舵机；本课程策略不控制</td><td>仅用于 3D 模型 展示，不计入 14 维策略动作</td></tr></tbody></table></div><p>点击髋部舵机，观察输出轴及其附近的轴承。舵机驱动关节转动，轴承支撑旋转部件，支架连接相邻关节。对照模型，区分哪些零件随输出轴转动、哪些零件固定在上一级连杆上。</p></section><section id="control"><h2>软件如何让部件运动</h2><ol class="pipeline"><li><span>1</span>策略输出动作</li><li><span>2</span>转换关节目标</li><li><span>3</span>执行器产生力矩</li><li><span>4</span>物理更新状态</li><li><span>5</span>传感器提供新观测</li></ol><p>策略不会直接把机器人移动到指定位置，而是输出一组动作，再由动作接口转换成关节目标。执行器根据目标状态与实际状态之间的差异产生力矩；机器人最终如何运动，还会受到接触、重力、惯量和摩擦的共同影响。</p><p>这里的控制循环频率为 50 Hz，物理步进频率为 200 Hz，因此每个策略动作会持续四个物理步。齿隙模型还会引入被动关节来描述传动间隙，但这些关节并不是额外的策略输出。</p></section><section id="frames"><h2>用坐标系描述运动</h2><div class="table-scroll"><table><thead><tr><th>坐标系</th><th>课程中的对应内容</th></tr></thead><tbody><tr><td>世界坐标系</td><td>场地、球门和机器人整体位置</td></tr><tr><td>身体坐标系</td><td>前进、侧移、转向指令以及球相对身体的位置</td></tr><tr><td>相机坐标系</td><td>图像射线与检测目标方向</td></tr><tr><td>关节局部坐标系</td><td>一个关节的旋转轴与角度</td></tr></tbody></table></div><div class="quiz"><h3>检查理解</h3><p>头部关节保持不动时，相机画面一定稳定吗？</p><details><summary>查看解析</summary><p>不一定。机身可能发生俯仰和横滚，颈部也会随之运动。判断画面是否稳定，应观察相机相对于世界坐标系的姿态，不能只看头部关节角度。</p></details></div></section><section id="read-assembly"><h2>练习：沿一条受力路径找部件</h2><p>先在装配状态下沿脚踝、小腿、膝部、大腿和髋部向上追踪。脚掌着地后，支撑力会沿这条路径传到机身。随后展开模型，点击关节附近的舵机，辨认相邻连杆的连接方式。</p><p>舵机内部不仅有电机，还包括减速齿轮、位置反馈和控制电路。收到目标角度后，舵机需要一定时间进行跟踪，并受到可用扭矩、速度、摩擦和齿隙的限制。因此，“策略输出一个角度”不等于“关节立即到达该角度”。本章说明这一差别，第三章则介绍策略如何适应它。</p><div class="quiz"><h3>检查理解</h3><p>在拆解图中把脚部拉得更远，会改变仿真的腿长吗？</p><details><summary>查看解析</summary><p>不会。网页中的拆解图只用于认识组件，仿真里的部件长度和关节连接仍由机器人描述文件定义。</p></details></div></section><section id="control-loop"><h2>先把“指令—动作—反馈”闭环跑通</h2><p>第一章的实验使用 Isaac Lab 的 Microduck 任务加载固定行走策略，以 Newton 作为物理后端，并通过 Isaac Sim 窗口观察给定速度指令下的运动。Isaac Lab 3 把物理、渲染与可视化分开：Newton 可以在不启动 Kit 的轻量路径中运行，而交互实验入口为了显示场景显式要求 Isaac Sim 6。重点是接口与反馈：输入是否正确、动作是否按时更新、实际速度是否接近指令。</p><figure class="concept-figure"><p class="diagram-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll"><svg xmlns="http://www.w3.org/2000/svg" class="architecture-svg" viewBox="0 0 760 384" role="img" aria-labelledby="platform-title platform-desc"><title id="platform-title">Isaac Lab、Newton 与 Isaac Sim 的职责</title><desc id="platform-desc">Isaac Lab 定义机器人学习任务，Newton 在 GPU 上推进物理状态。需要图像或交互界面时，由 Isaac Sim 提供渲染和传感器能力。Newton 物理执行不必依赖 Kit。</desc><defs><marker id="platform-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto-start-reverse"><path d="M0 0L6 3.5L0 7" fill="none" stroke="#57606a" stroke-width="1.3"/></marker></defs>
-<rect x="16" y="16" width="728" height="352" rx="10" fill="#f6f8fa" stroke="#d0d7de" stroke-dasharray="4 4"/>
-<text x="36" y="42" fill="#57606a" font-size="13">任务接口、物理后端与渲染能力分工</text>
-<path marker-start="url(#platform-arrow)" d="M310 150V176Q310 184 302 184H180Q172 184 172 192V226" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#platform-arrow)"/>
-<path d="M588 232V192Q588 184 580 184H458Q450 184 450 176V156" fill="none" stroke="#57606a" stroke-width="1.5" marker-end="url(#platform-arrow)"/>
-<text x="176" y="174" fill="#57606a" font-size="13">动作 ⇄ 物理状态</text><text x="488" y="174" fill="#57606a" font-size="13">按需接入图像与界面</text>
-<rect x="240" y="62" width="280" height="88" rx="7" fill="#e6f3d4" stroke="#4a7a00"/><text x="380" y="95" text-anchor="middle" fill="#24292f" font-size="20" font-weight="600">Isaac Lab</text><text x="380" y="124" text-anchor="middle" fill="#424a53" font-size="14">任务 · 观测 · 奖励 · 并行环境</text>
-<rect x="40" y="232" width="264" height="94" rx="7" fill="#d6f1ee" stroke="#0d8078"/><text x="172" y="264" text-anchor="middle" fill="#24292f" font-size="19" font-weight="600">Newton</text><text x="172" y="292" text-anchor="middle" fill="#424a53" font-size="14">Warp / CUDA · 动力学与接触</text><text x="172" y="348" text-anchor="middle" fill="#57606a" font-size="13">物理执行可不依赖 Kit</text>
-<rect x="456" y="232" width="264" height="94" rx="7" fill="#dfeaf5" stroke="#0969da"/><text x="588" y="264" text-anchor="middle" fill="#24292f" font-size="19" font-weight="600">Isaac Sim</text><text x="588" y="292" text-anchor="middle" fill="#424a53" font-size="14">OpenUSD · RTX · 相机与交互</text><text x="588" y="348" text-anchor="middle" fill="#57606a" font-size="13">本课程可视化任务使用此路径</text></svg></div><figcaption class="diagram-caption">Isaac Lab 统一组织学习任务，Newton 负责物理推进；需要相机图像或交互界面时，再使用 Isaac Sim 的渲染与传感器能力。区分这些职责，有助于按训练和验证任务选择运行方式。</figcaption></figure><figure class="learning-figure" data-learning-flow="learn-4602d581e2"><p class="learning-help">点击图中的模块，查看模块作用与数据流。也可按 Tab 选择，按 Enter 确认。<span class="learning-scroll-hint">左右滑动查看完整图示</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="行走闭环"><svg class="learning-svg" viewBox="0 0 828 276" role="group" aria-labelledby="learn-4602d581e2-title"><title id="learn-4602d581e2-title">行走闭环</title><defs><marker id="learn-4602d581e2-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-4602d581e2-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-4602d581e2-arrow)"/><path class="learning-edge" data-from="2" data-to="0" d="M690 190V254H12V119H18" marker-end="url(#learn-4602d581e2-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="观测 oₜ" aria-controls="learn-4602d581e2-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">观测 oₜ</text><text x="138" y="132" class="learning-node-subtitle">姿态、关节状态、上一动作与指</text><text x="138" y="151" class="learning-node-subtitle">令</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="策略 π" aria-controls="learn-4602d581e2-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">策略 π</text><text x="414" y="132" class="learning-node-subtitle">61 维输入 → 14 维动作</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Newton 仿真" aria-controls="learn-4602d581e2-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Newton 仿真</text><text x="690" y="132" class="learning-node-subtitle">执行动作，产生下一次观测</text></g></svg></div><div class="learning-details"><p class="learning-empty">行走闭环</p><button type="button" class="learning-reset" aria-label="关闭说明" hidden>×</button><article id="learn-4602d581e2-detail-0" data-node-detail="0" class="learning-definition"><h3>观测 oₜ</h3><p>观测把机器人姿态、关节状态、上一动作与当前速度指令整理成固定顺序的输入。顺序和归一化应与训练保持一致。</p></article><article id="learn-4602d581e2-detail-1" data-node-detail="1" class="learning-definition"><h3>策略 π</h3><p>策略根据 61 维观测输出 14 维动作。输出先经过动作转换与执行器模型，再影响关节；它不是一条导航路径。</p></article><article id="learn-4602d581e2-detail-2" data-node-detail="2" class="learning-definition"><h3>Newton 仿真</h3><p>Newton 推进动力学与接触，产生新的姿态和关节状态。下一拍策略重新读取观测，因此动作始终处于反馈闭环中。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>速度指令决定“往哪里、以多快的速度走”；策略负责把它转为协调的关节动作。</figcaption></figure><div class="formula"><div class="formula-label">位置控制接口</div><div>\[\mathbf a_t=\pi_\theta(\mathbf o_t),\qquad \mathbf q_t^{*}=\mathbf q_{\mathrm{default}}+s\mathbf a_t,\quad s=1\]</div></div><p>q* 是关节目标角度，q<sub>default</sub> 是默认站姿。这里动作缩放系数 s 为 1；动作既不是力矩指令，也不是把速度直接写入机器人位置。实际运动由执行器和物理引擎计算。即使输入输出维度相同，关节顺序、偏置或观测归一化不一致，也会导致动作错误。</p><figure class="concept-figure" data-diagram="timing"><svg viewBox="0 0 640 320" role="img" aria-label="50 Hz 策略更新与 200 Hz 物理更新" font-family="Open Sans, Noto Sans SC, sans-serif" font-size="15"><defs><marker id="arrow-timing" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#577642"/></marker></defs><text x="36" y="43">策略：每 20 ms 输出一次动作（50 Hz）</text><rect x="60" y="70" width="520" height="52" rx="5" fill="#e6f0da" stroke="#91aa79"/><text x="270" y="102">aₜ：关节目标</text><path d="M320 123V169" stroke="#65844f" marker-end="url(#arrow-timing)"/><text x="36" y="156">物理：每 5 ms 推进一步（200 Hz）</text><rect x="60" y="182" width="124" height="48" rx="4" fill="white" stroke="#91aa79"/><text x="85" y="213">第 1 步</text><text x="60" y="255">0 ms</text><rect x="190" y="182" width="124" height="48" rx="4" fill="white" stroke="#91aa79"/><text x="215" y="213">第 2 步</text><text x="190" y="255">5 ms</text><rect x="320" y="182" width="124" height="48" rx="4" fill="white" stroke="#91aa79"/><text x="345" y="213">第 3 步</text><text x="320" y="255">10 ms</text><rect x="450" y="182" width="124" height="48" rx="4" fill="white" stroke="#91aa79"/><text x="475" y="213">第 4 步</text><text x="450" y="255">15 ms</text><text x="550" y="255">20 ms</text><text x="90" y="298">动作保持不变；位置、速度与接触力仍在逐步变化</text></svg><figcaption class="diagram-caption">一个策略周期包含四次物理更新。画面帧率与这两个更新频率不是同一概念：画面变慢不一定表示仿真时间步长发生变化。</figcaption></figure><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py" target="_blank" rel="noopener">完整代码 ↗</a></div><pre><code class="language-python">action = policy(
-    env.observation_manager.compute(update_history=True)[&quot;policy&quot;]
-)
-env.action_manager.process_action(action)
-for tick in range(4):
-    env.action_manager.apply_action()
-    env.scene.write_data_to_sim()
-    env.sim.step(render=not a.headless and tick == 3)
-    env.scene.update(0.005)</code></pre></div><p>这段节选对应图中的闭环：Isaac Lab 的观测管理器生成策略输入，动作管理器处理动作并驱动执行器，Newton 随后执行四个 5 ms 物理步。完整程序还会更新计数器并检查是否跌倒。下面的命令先保持约 2 秒站姿，再发送速度指令；不要把启动阶段的静止误判为策略无响应。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py walk \
-  --model models/walk.onnx --velocity 0.25 0 0 \
-  --seconds 12 --seed 202 \
-  --output outputs/walk-control-01</code></pre></div><p>运行结束后，同时查看画面和 <code>report.json</code>：是否达到设定时长，<code>fell</code> 是否为 false。再用 <code>trajectory.json</code> 比较稳定行走阶段的实际速度与指令速度。均方根误差可用于概括速度跟踪表现，但本章不设未经验证的统一及格阈值；先确认不跌倒，再比较不同方向和速度。</p><div class="formula"><div class="formula-label">速度跟踪的一个统计量</div><div>\[\mathrm{RMSE}_v=\sqrt{\frac{1}{N}\sum_{t=1}^{N}\|\mathbf v_{xy,t}-\mathbf v_{xy,t}^{\mathrm{cmd}}\|_2^2}\]</div></div><p>本章只做推理，不更新模型参数，也不需要带标签的数据集。仿真中的观测、动作、接触状态和轨迹就是本次实验的数据。Newton 处理足地接触、执行器延迟与齿隙后，实际关节不一定立即到达策略给出的目标；这正是闭环观测不可省略的原因。后续训练会用 Isaac Lab 把相同交互扩展到多个 GPU 并行环境。</p></section><section id="policy-interface"><h2>策略收到什么，又输出什么</h2><p>第一章使用已经训练好的策略进行推理：它把当前观测映射为 14 个关节动作，运行过程中不会更新神经网络参数。需要特别区分的是，更改速度指令只是在测试同一个模型的响应，并非重新训练；更新策略参数需要训练或更换模型权重。</p><div class="table-scroll"><table><thead><tr><th>观测项（按接口顺序）</th><th>维数</th><th>帮助策略判断什么</th></tr></thead><tbody><tr><td>角速度与身体坐标下的重力方向</td><td>6</td><td>身体正在怎样转动、倾斜</td></tr><tr><td>相对关节位置</td><td>14</td><td>当前姿态与默认姿态的差异</td></tr><tr><td>关节速度</td><td>14</td><td>各关节正在怎样运动</td></tr><tr><td>上一动作</td><td>14</td><td>上一次的控制输出，为策略提供时序信息</td></tr><tr><td>速度、头部与身体姿态指令</td><td>3 + 4 + 6</td><td>这一步希望机器人做什么</td></tr></tbody></table></div><figure class="concept-figure network-figure"><div class="diagram-scroll"><svg class="network-svg" viewBox="0 0 760 350" role="img" aria-label="61 → 512 → 256 → 128 → 14; ELU" font-family="Open Sans, Noto Sans SC, sans-serif"><path d="M79 95L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 95L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 130L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 165L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 220L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M79 255L216 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 95L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 130L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 165L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 220L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M234 255L371 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 95L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 130L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 165L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 220L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M389 255L526 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 95L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 130L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 165L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 220L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 95" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 130" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 165" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 220" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><path d="M544 255L681 255" stroke="#8ca5b7" stroke-opacity=".24" fill="none"/><text x="70" y="26" text-anchor="middle" fill="#405367" font-size="15">观测输入</text><text x="70" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">61</text><circle cx="70" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="70" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="70" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="70" y="296" text-anchor="middle" fill="#405367" font-size="14">输入归一化</text><text x="225" y="26" text-anchor="middle" fill="#405367" font-size="15">隐藏层 1</text><text x="225" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">512</text><circle cx="225" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="225" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="225" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="225" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="380" y="26" text-anchor="middle" fill="#405367" font-size="15">隐藏层 2</text><text x="380" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">256</text><circle cx="380" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="380" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="380" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="380" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="535" y="26" text-anchor="middle" fill="#405367" font-size="15">隐藏层 3</text><text x="535" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">128</text><circle cx="535" cy="95" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="130" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="165" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="220" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><circle cx="535" cy="255" r="9" stroke="#366c91" fill="#e0edf8" stroke-width="1.5"/><text x="535" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="535" y="296" text-anchor="middle" fill="#405367" font-size="14">ELU</text><text x="690" y="26" text-anchor="middle" fill="#405367" font-size="15">动作输出</text><text x="690" y="56" text-anchor="middle" fill="#172d40" font-size="23" font-weight="600">14</text><circle cx="690" cy="95" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="130" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="165" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="220" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><circle cx="690" cy="255" r="9" stroke="#366c91" fill="#dcebd1" stroke-width="1.5"/><text x="690" y="198" text-anchor="middle" fill="#526779" font-size="20">⋮</text><text x="690" y="296" text-anchor="middle" fill="#405367" font-size="14">关节动作</text><text x="380" y="335" text-anchor="middle" fill="#526779" font-size="13">全连接层 · 每 20 ms 推理一次 · 不输入相机图像</text></svg></div><figcaption>61 维观测按固定顺序拼接，归一化后经过三个隐藏层，得到 14 维动作。圆点数量为示意，层宽以数字为准。动作管理器再将动作转换为关节目标；相机图像不在这个行走策略的输入中。</figcaption></figure><p>这些数值合计构成 61 维输入。即使输入形状仍为 61，只要打乱关节顺序，语义就会被破坏，例如策略可能把膝关节状态误当成髋关节状态。实验入口会保持关节顺序、默认姿态和控制节拍一致。应先通过指令、时间预算和输出目录开展实验，理解接口后再修改底层观测。</p><p>现在已经知道策略如何读取状态、输出动作，以及舵机和物理仿真怎样执行这些动作。下一章从加载现成模型转向训练模型：用 Isaac Lab 让策略通过反复尝试学会行走。</p></section><section id="references"><h2>参考资料</h2><ul class="references"><li><a href="https://github.com/pollen-robotics/microduck" target="_blank" rel="noopener">Pollen Robotics：Microduck 硬件 ↗</a></li><li><a href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" target="_blank" rel="noopener">Isaac Lab：Microduck 任务源码 ↗</a></li><li><a href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Newton 物理引擎 ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="01-play.html"><small>← 上一页</small>认识 Microduck：先来踢一场球</a><a href="03-learning.html"><small>下一页 →</small>用 Isaac Lab 训练行走策略</a></nav><footer>Microduck Workshop · <a href="references.html">参考资料</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">来源与许可</a></span></footer></main>
-<aside class="toc"><p>本页内容</p><a href="#assembly">从整体到组件</a><a href="#kinematic-chain">从机械结构到关节控制</a><a href="#joint-map">先分清零件、关节和自由度</a><a href="#control">软件如何让部件运动</a><a href="#frames">用坐标系描述运动</a><a href="#read-assembly">练习：沿一条受力路径找部件</a><a href="#control-loop">先把“指令—动作—反馈”闭环跑通</a><a href="#policy-interface">策略收到什么，又输出什么</a><a href="#references">参考资料</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">搜索课程</label><button aria-label="关闭">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="搜索课程…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="先把外壳、关节、执行器和传感器分开理解，再看它们如何组成一台可控制的机器人。" name="description" />
+
+  <title>2.2 拆解机械结构与控制周期 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/robot-explorer.css?v=3b9f77ac" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script defer="defer" src="_static/robot-explorer-loader.js?v=520db9d8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '02-anatomy';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="3.1 强化学习与 PPO" href="03-learning.html" />
+    <link rel="prev" title="2.1 认识 Microduck：先来踢一场球" href="01-play.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="02-anatomy">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/02-anatomy.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/02-anatomy.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/02-anatomy.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/02-anatomy.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">2.2 拆解机械结构与控制周期</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>2.2 拆解机械结构与控制周期<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>先把外壳、关节、执行器和传感器分开理解，再看它们如何组成一台可控制的机器人。</p>
+</div><div class="lesson-meta">第 2.2 节 · 预计学习时长 20 分钟</div></div></div><script type="application/json" class="course-symbols">{"T_hom": {"tex": "T", "text": "齐次变换矩阵（4×4）：用一个矩阵同时表示旋转和平移，可以沿机械链连乘。"}, "R": {"tex": "R", "text": "3×3 旋转矩阵：子坐标系相对于父坐标系的朝向。"}, "t_vec": {"tex": "\\mathbf t", "text": "平移向量：子坐标系原点在父坐标系中的位置。"}, "zero_row": {"tex": "\\mathbf 0^{\\mathsf T}", "text": "1×3 零行向量；与右下角的 1 一起，使矩阵成为可以连乘的 4×4 形式。"}, "T_BF": {"tex": "{}^{B}T_F", "text": "从脚坐标系到躯干坐标系的变换：把脚上的点换算到机身坐标中。"}, "q": {"tex": "q", "text": "这条机械链上全部关节角组成的向量。"}, "q_joint": {"tex": "q", "text": "3D 小鸭里当前选中关节的角度：仿真模型中的关节坐标，程序里以弧度存储，面板显示为度。"}, "T_joint": {"tex": "{}^{i-1}T_i", "text": "相邻两个连杆之间的变换，由装配位置和这个关节的转角决定。"}, "q_i": {"tex": "q_i", "text": "链上某一个关节的转角（rad）；下标是这个关节在链上的序号。"}, "frame_B": {"tex": "B", "text": "躯干（机身）坐标系。"}, "frame_F": {"tex": "F", "text": "脚坐标系。"}, "a_t": {"tex": "\\mathbf a_t", "text": "当前控制周期策略输出的 14 维动作（归一化值）。"}, "pi_theta": {"tex": "\\pi_\\theta", "text": "行走策略网络；下标表示训练得到的网络参数，推理时保持不变。"}, "o_t": {"tex": "\\mathbf o_t", "text": "当前控制周期输入策略的 61 维观测。"}, "q_target": {"tex": "\\mathbf q_t^{*}", "text": "当前控制周期发给执行器的关节目标角度（rad）。"}, "q_default": {"tex": "\\mathbf q_{\\mathrm{default}}", "text": "默认站姿下的关节角度。"}, "s": {"tex": "s", "text": "动作缩放系数；这个策略取 1。"}, "rmse": {"tex": "\\mathrm{RMSE}_v", "text": "水平速度跟踪的均方根误差（m/s）：越小表示实际速度越贴近指令。"}, "N": {"tex": "N", "text": "参与统计的采样时刻数。"}, "t_idx": {"tex": "t", "text": "采样时刻的序号。"}, "sqnorm": {"tex": "\\|\\cdot\\|_2^2", "text": "速度误差向量长度的平方。"}, "v_xy": {"tex": "\\mathbf v_{xy,t}", "text": "某一采样时刻机身的实际水平速度（m/s）。"}, "v_cmd": {"tex": "\\mathbf v_{xy,t}^{\\mathrm{cmd}}", "text": "同一时刻的指令水平速度（m/s）。"}}</script><section id="assembly">
+<h2>从整体到组件<a class="headerlink" href="#assembly" title="Link to this heading">#</a></h2>
+<p>Microduck 是一台小型双足机器人：双腿负责支撑与移动，颈部机构调整视线，机身容纳计算、电源和连接部件。在 Isaac Sim 中，机器人模型除了呈现外观的网格，还定义关节、碰撞几何和质量属性，规定可发生的运动和接触。先认识这些结构，后面才能把关节名称、动作向量与仿真中的运动对应起来。</p>
+<div class="duck-explorer-figure docutils container" id="duck-explorer">
+<div class="duck-explorer" data-duck-explorer data-chapter="0" data-state="pending" data-dx-module="../assets/robot-explorer.js?v=e5f5d14c8c0d194c" data-dx-version="e5f5d14c8c0d194c" data-dx-model-version="16310dfd0643e869"><div class="dx-chapters" hidden><div class="dx-tabs" role="group" aria-label="选择观察方式"><button type="button" class="dx-chapter" aria-pressed="true">整只小鸭</button><button type="button" class="dx-chapter" aria-pressed="false">拆解图</button><button type="button" class="dx-chapter" aria-pressed="false">电机怎样驱动关节</button></div><button type="button" class="dx-reset">从头看</button></div><div class="dx-body"><div class="dx-stage"><svg class="dx-leaders" aria-hidden="true"></svg><svg class="dx-gizmo" aria-hidden="true" hidden></svg><div class="dx-callouts"></div><div class="dx-handle" role="slider" tabindex="0" aria-orientation="horizontal" hidden></div><button type="button" class="dx-back" hidden>返回</button><div class="dx-launch" hidden><button type="button" class="dx-open"><svg class="dx-open-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 2.8 4.2 7.2v9.6L12 21.2l7.8-4.4V7.2L12 2.8Z"/><path d="M4.2 7.2 12 11.6l7.8-4.4M12 11.6v9.6"/></svg><span class="dx-open-label">重新加载</span></button></div><p class="dx-status" role="status" aria-live="polite" data-loading="正在加载 3D 小鸭…" data-error="3D 小鸭未能加载，请检查网络后重试；下方说明仍可阅读。"></p><noscript><p class="dx-status">3D 小鸭需要启用 JavaScript；下方说明仍可阅读。</p></noscript></div><div class="dx-panel" hidden><div class="dx-card" aria-live="polite"><p class="dx-title"></p><p class="dx-fact"></p><p class="dx-part" hidden></p></div><div class="dx-drive" role="group" aria-label="关节控制" hidden><ul class="dx-legend"><li class="dx-legend-actuator"><span class="dx-chip" aria-hidden="true"></span>转动舵机</li><li class="dx-legend-link"><span class="dx-chip" aria-hidden="true"></span>跟随部分</li><li class="dx-legend-joint"><svg class="dx-legend-arc" viewBox="0 0 24 14" width="24" height="14" aria-hidden="true" focusable="false"><path d="M4.47 11.54L3.54 6.90L4.75 7.71L5.30 6.98L5.92 6.31L6.61 5.70L7.36 5.18L8.16 4.74L9.01 4.38L9.88 4.11L10.78 3.94L11.69 3.86L12.61 3.87L13.52 3.98L14.41 4.19L15.28 4.49L16.11 4.87L16.89 5.35L17.62 5.90L18.29 6.52L18.90 7.21L19.25 7.71L20.46 6.90L19.53 11.54L16.15 9.80L17.35 8.99L16.94 8.45L16.48 7.96L15.97 7.52L15.42 7.13L14.83 6.80L14.21 6.54L13.56 6.34L12.90 6.21L12.23 6.15L11.55 6.17L10.88 6.25L10.22 6.40L9.58 6.62L8.97 6.90L8.39 7.25L7.85 7.66L7.36 8.12L6.92 8.63L6.65 8.99L7.85 9.80Z"/></svg>驱动方向</li></ul><div class="dx-field"><p class="dx-field-label">选择部位</p><div class="dx-regions" role="group" aria-label="选择部位"></div></div><div class="dx-field"><p class="dx-field-label">选择动作</p><div class="dx-joints" role="group" aria-label="选择动作"></div><p class="dx-fixed" hidden></p></div><div class="dx-readout"><p class="dx-field-label">关节角 <code class="dx-q-id"></code></p><p class="dx-q"></p><p class="dx-q-detail"></p></div><div class="dx-actions"><button type="button" class="dx-play" aria-pressed="false"></button><button type="button" class="dx-zero"></button></div></div></div></div></div><div class="dx-caption docutils container">
+<p>颜色经过简化，用来区分零件的作用，不是实物涂装；零件的形状、比例、关节位置和转轴来自原始 CAD 与仿真模型。拆解图中零件分开的距离只是为了看清结构，不代表实际的装配步骤。</p>
+</div>
+</div>
+<p>3D 小鸭加载后，按上方三个视图依次看：</p>
+<ul class="simple">
+<li><p><strong>整只小鸭</strong>：先认出头、脖子、身体、髋、膝和脚六个部分。点名称可以看哪些舵机让它动起来，点零件可以放大，拖动可以转着看。</p></li>
+<li><p><strong>拆解图</strong>：同一组零件一起散开。带数字的标签和“电机怎样驱动关节”里的部位一一对应，说明有几个舵机驱动这一部位；引线从每个舵机外壳出发、汇合后指向部位名称，腿部按每侧计数。眼睛就是摄像头；ToF 测距传感器和它装在同一块面板上，就在眼睛旁边。CAD 里只有面板上为它留的开窗，没有传感器本身的零件，所以图中用十字圆圈标出它的位置。</p></li>
+<li><p><strong>电机怎样驱动关节</strong>：先选部位，再选动作，也可以直接点模型里的舵机。白色细线是舵机的输出轴，轴端外的白色纸带箭头表示驱动方向：拖动纸带，或者点一下纸带中间的圆点后用方向键微调。珊瑚色是转动的舵机，紫色是跟着它转的支架，保持不动的零件只留下浅色轮廓。腿部以左腿为例，右腿对称。</p></li>
+</ul>
+<p>三个视图用同一套部位：头 3 个舵机（头俯仰、头偏航、头侧倾）、脖子 1 个、鸭嘴 1 个（仿真模型中固定），每侧髋 3 个、膝 1 个、脚 1 个，合计 15 个。同一部位的舵机不一定装在一起：每侧髋的偏航、侧倾、俯仰舵机分别装在身体、髋支架和大腿里，所以拆解图中三条引线从三处汇合到同一个“髋”标签。</p>
+<p>面板中的 <span class="math notranslate nohighlight">\(\htmlData{sym=q_joint}{q}\)</span> 是这个关节在仿真模型里的角度。程序以弧度存储，面板换算成度（<span class="math notranslate nohighlight">\(1\ \mathrm{rad}\approx 57.3^\circ\)</span>）；正负号按右手定则绕关节轴确定。站立时 <span class="math notranslate nohighlight">\(\htmlData{sym=q_joint}{q}\)</span> 一般不为 0，例如左髋俯仰约 <span class="math notranslate nohighlight">\(-26.2^\circ\)</span>，所以面板同时给出相对站姿的变化。下文控制公式中的动作，正是加在这组站姿角上的偏移。实物舵机还有各自的校准偏置，所以这里的读数是模型中的关节角，不是舵机编码器的原始读数。</p>
+<div class="note admonition">
+<p class="admonition-title">硬件版本与仿真关节</p>
+<p>Microduck 的 15 个舵机中，仿真策略控制 14 个关节，喙部在仿真模型中固定，所以 3D 小鸭里的喙不能转动。图中的主控板沿用 CAD 里的 Raspberry Pi Zero 2 W 外形，当前 Beta 版的电子配置则基于 RK3566。摄像头、ToF 测距和 IMU 用于观察任务，在 4.1 节成为学习策略的数据来源。</p>
+</div>
+<div class="quiz"><h3>检查理解</h3><p>在“电机怎样驱动关节”里比较左腿的“髋侧倾”和“髋俯仰”：转动时，驱动关节的舵机外壳会跟着动吗？</p>
+<details><summary>查看解析</summary><p>髋侧倾时不会：这个舵机固定在上一级的髋偏航支架上，转动的是输出轴，输出轴带动下面的支架和整条腿。髋俯仰时会：这个舵机装在大腿里，输出轴连在上一级的髋支架上，所以是舵机外壳连同大腿、小腿和脚一起绕输出轴转。两种装法都能驱动关节，区别只在于关节哪一侧跟着动。颈俯仰、头偏航和头侧倾也属于后一种装法。</p>
+</details></div></section>
+<section id="kinematic-chain">
+<h2>从机械结构到关节控制<a class="headerlink" href="#kinematic-chain" title="Link to this heading">#</a></h2>
+<p>本节要解决一个基础问题：策略输出的 14 个数字，怎样变成可见的机器人动作？先在模型中找到躯干、左右腿和头部，再沿“躯干 → 髋关节 → 膝关节 → 踝关节 → 脚”观察连接关系。这样，后面遇到关节顺序、坐标变换或脚部接触问题时，就能找到它们在实体结构中的对应位置。</p>
+<figure class="learning-figure" data-learning-flow="learn-8093091528"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从关节目标到脚的位置"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-8093091528-title"><title id="learn-8093091528-title">从关节目标到脚的位置</title><defs><marker id="learn-8093091528-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-8093091528-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-8093091528-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 关节目标 q*" aria-controls="learn-8093091528-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">关节目标 q*</text><text x="114.0" y="98" class="learning-node-subtitle">策略决定希望转到哪里</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 舵机与关节" aria-controls="learn-8093091528-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">舵机与关节</text><text x="450.0" y="98" class="learning-node-subtitle">实际角度 q</text><text x="450.0" y="115" class="learning-node-subtitle">会随受力变化</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 连杆与脚" aria-controls="learn-8093091528-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">连杆与脚</text><text x="786.0" y="98" class="learning-node-subtitle">连杆关系决定脚的位置</text></g></svg></div><div class="learning-details" aria-label="从关节目标到脚的位置"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-8093091528-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>关节目标 q*</h3><p>策略给出希望关节达到的目标角度，表达的是运动意图；关节需要一段时间去跟踪它。</p></article><article id="learn-8093091528-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>舵机与关节</h3><p>执行器受力矩、速度和响应限制，接触也会改变实际角度。因此应同时看关节目标与实际状态。</p></article><article id="learn-8093091528-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>连杆与脚</h3><p>脚的位置由各段连杆与关节角度共同决定。某个关节变化会影响末端位置，也可能改变支撑。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>目标角度与实际角度并不总是相同。惯性、接触和执行器响应都会影响最终运动。</figcaption></figure><p>关节角度决定连杆的相对姿态；沿一条机械链组合这些姿态，就能算出脚或相机相对于机身的位置。先理解这个关系，后面就能区分“头转了”和“身体转了”。</p>
+<details class="enrichment"><summary>拓展：怎样沿机械链计算位置</summary><div class="enrichment-body"><p>描述一个零件的位置，还需要说明它相对于哪个坐标系。齐次变换矩阵统一表示旋转 <span class="math notranslate nohighlight">\(\htmlData{sym=R}{R}\)</span> 和平移 <span class="math notranslate nohighlight">\(\htmlData{sym=t_vec}{\mathbf t}\)</span>；沿机械链依次相乘，就能把脚坐标系中的点转换到躯干坐标系。这就是正向运动学：根据已知关节角度计算末端位置。</p>
+<div class="formula"><div class="formula-label">齐次变换与机械链</div><div class="formula-body">\[\htmlData{sym=T_hom}{T}=\begin{bmatrix}\htmlData{sym=R}{R}&amp;\htmlData{sym=t_vec}{\mathbf t}\\\htmlData{sym=zero_row}{\mathbf 0^{\mathsf T}}&amp;1\end{bmatrix},\qquad \htmlData{sym=T_BF}{{}^{B}T_F}(\htmlData{sym=q}{q})= \htmlData{sym=T_joint}{{}^{B}T_1}(\htmlData{sym=q_i}{q_1})\,\htmlData{sym=T_joint}{{}^{1}T_2}(\htmlData{sym=q_i}{q_2})\cdots\htmlData{sym=T_joint}{{}^{k}T_F}(\htmlData{sym=q_i}{q_k})\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(T\)</dt><dd>齐次变换矩阵（4×4）：用一个矩阵同时表示旋转和平移，可以沿机械链连乘。</dd></div><div><dt>\(R\)</dt><dd>3×3 旋转矩阵：子坐标系相对于父坐标系的朝向。</dd></div><div><dt>\(\mathbf t\)</dt><dd>平移向量：子坐标系原点在父坐标系中的位置。</dd></div><div><dt>\(\mathbf 0^{\mathsf T}\)</dt><dd>1×3 零行向量；与右下角的 1 一起，使矩阵成为可以连乘的 4×4 形式。</dd></div><div><dt>\({}^{B}T_F\)</dt><dd>从脚坐标系到躯干坐标系的变换：把脚上的点换算到机身坐标中。</dd></div><div><dt>\(q\)</dt><dd>这条机械链上全部关节角组成的向量。</dd></div><div><dt>\({}^{i-1}T_i\)</dt><dd>相邻两个连杆之间的变换，由装配位置和这个关节的转角决定。</dd></div><div><dt>\(q_i\)</dt><dd>链上某一个关节的转角（rad）；下标是这个关节在链上的序号。</dd></div></dl></details></div><p>上标 <span class="math notranslate nohighlight">\(\htmlData{sym=frame_B}{B}\)</span> 表示躯干坐标系，下标 <span class="math notranslate nohighlight">\(\htmlData{sym=frame_F}{F}\)</span> 表示脚坐标系；每一项变换都来自零件的装配位置和关节转角。把相机安装在头上时，也需要沿颈部和头部的机械链计算相机朝向，不能把头部转动误认为整个身体转动。</p>
+</div></details><p>展开模型，分别找到膝关节舵机、电池和脚，说明它们在驱动、供电和支撑中的作用。</p>
+</section>
+<section id="joint-map">
+<h2>先分清零件、关节和自由度<a class="headerlink" href="#joint-map" title="Link to this heading">#</a></h2>
+<p>一支笔以笔尖为支点时可以朝多个方向转动，而铰链通常只能绕一条固定轴旋转，机器人关节也受到类似约束。自由度是描述允许运动所需的独立变量个数，零件数量则是装配体包含多少实体。网页中展示了 70 个组件，但策略只需为 14 个活动关节输出动作。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>区域</p></th>
+<th class="head cell-short"><p>活动关节</p></th>
+<th class="head cell-short"><p>主要作用</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>每条腿</p></td>
+<td><p>髋偏航、髋侧倾、髋俯仰、膝、踝，共 5 个</p></td>
+<td><p>控制支撑与脚的位置</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>颈部与头部</p></td>
+<td><p>颈俯仰、头俯仰、头偏航、头侧倾，共 4 个</p></td>
+<td><p>改变相机朝向与头部姿态</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>喙部</p></td>
+<td><p>实物有舵机；本课程策略不控制</p></td>
+<td><p>只在 3D 模型中展示，不计入 14 维策略动作</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>在 3D 小鸭的“电机怎样驱动关节”里选“髋”，依次转动左腿的髋偏航、髋侧倾和髋俯仰，观察三个舵机的输出轴及其附近的轴承。舵机驱动关节转动，轴承支撑旋转部件，支架连接相邻关节。每转一个关节，都看一看哪些零件跟着转、哪些零件只剩轮廓。</p>
+</section>
+<section id="control">
+<h2>软件如何让部件运动<a class="headerlink" href="#control" title="Link to this heading">#</a></h2>
+<ol class="arabic simple pipeline">
+<li><p>策略输出动作</p></li>
+<li><p>转换关节目标</p></li>
+<li><p>执行器产生力矩</p></li>
+<li><p>物理更新状态</p></li>
+<li><p>传感器提供新观测</p></li>
+</ol>
+<p>策略输出一组动作，动作接口把它们转换成关节目标。执行器根据目标状态与实际状态之间的差异产生力矩；机器人最终如何运动，还取决于接触、重力、惯量和摩擦。</p>
+<p>这里的控制循环频率为 50 Hz，物理步进频率为 200 Hz，因此每个策略动作会持续四个物理步。齿隙模型用被动关节描述传动间隙，这些关节由物理引擎计算，不属于策略输出。</p>
+</section>
+<section id="frames">
+<h2>用坐标系描述运动<a class="headerlink" href="#frames" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>坐标系</p></th>
+<th class="head"><p>课程中的对应内容</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>世界坐标系</p></td>
+<td><p>场地、球门和机器人整体位置</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>身体坐标系</p></td>
+<td><p>前进、侧移、转向指令以及球相对身体的位置</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>相机坐标系</p></td>
+<td><p>图像射线与检测目标方向</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>关节局部坐标系</p></td>
+<td><p>一个关节的旋转轴与角度</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="quiz"><h3>检查理解</h3><p>头部关节保持不动时，相机画面一定稳定吗？</p>
+<details><summary>查看解析</summary><p>不一定。机身可能发生俯仰和横滚，颈部也会随之运动。判断画面是否稳定，应观察相机相对于世界坐标系的姿态，不能只看头部关节角度。</p>
+</details></div></section>
+<section id="read-assembly">
+<h2>练习：沿一条受力路径找部件<a class="headerlink" href="#read-assembly" title="Link to this heading">#</a></h2>
+<p>先在装配状态下沿脚踝、小腿、膝部、大腿和髋部向上追踪。脚掌着地后，支撑力会沿这条路径传到机身。随后展开模型，点击关节附近的舵机，辨认相邻连杆的连接方式。</p>
+<p>舵机内部除了电机，还有减速齿轮、位置反馈和控制电路。收到目标角度后，舵机需要一定时间跟踪，并受到可用扭矩、速度、摩擦和齿隙的限制。本节先观察目标与实际角度之间的这种差别，3.2 节再介绍怎样在训练中随机化执行器特性，让策略适应它。</p>
+</section>
+<section id="policy-interface">
+<h2>策略收到什么，又输出什么<a class="headerlink" href="#policy-interface" title="Link to this heading">#</a></h2>
+<p>2.1 节用已经训练好的策略做推理：它把当前观测映射为 14 个关节动作，运行时神经网络参数保持不变。更改速度指令是在测试同一个模型如何响应；要改变策略本身，需要重新训练或换用其他模型权重。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>观测项（按接口顺序）</p></th>
+<th class="head cell-short"><p>维数</p></th>
+<th class="head"><p>帮助策略判断什么</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>角速度与身体坐标下的重力方向</p></td>
+<td class="cell-short"><p>6</p></td>
+<td><p>身体正在怎样转动、倾斜</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>相对关节位置</p></td>
+<td class="cell-short"><p>14</p></td>
+<td><p>当前姿态与默认姿态的差异</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>关节速度</p></td>
+<td class="cell-short"><p>14</p></td>
+<td><p>各关节正在怎样运动</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>上一动作</p></td>
+<td class="cell-short"><p>14</p></td>
+<td><p>上一次的控制输出，为策略提供时序信息</p></td>
+</tr>
+<tr class="row-even"><td><p>速度、头部与身体姿态指令</p></td>
+<td class="cell-short"><p>3 + 4 + 6</p></td>
+<td><p>这一步希望机器人做什么</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>还记得 <a href="01-play.html#policies">2.1 节的策略网络</a>吗？这些观测按固定顺序拼接、归一化，组成它的 61 维输入。输入形状不变时，打乱关节顺序也会破坏语义，例如策略会把膝关节状态误当成髋关节状态，所以实验入口始终保持关节顺序、默认姿态和控制节拍。先通过指令、时长和输出目录做实验，理解接口后再修改观测。</p>
+<p>了解策略读入的观测和输出的动作后，再看它怎样与物理引擎反复交换数据。</p>
+</section>
+<section id="control-loop">
+<h2>先把指令、动作与反馈的闭环跑通<a class="headerlink" href="#control-loop" title="Link to this heading">#</a></h2>
+<p>Isaac Lab 组织观测与动作，Newton 计算运动和接触，Isaac Sim 显示场景。下面沿控制闭环检查三件事：输入是否正确、动作是否按时更新、实际运动是否跟随指令。</p>
+<figure class="concept-figure"><p class="diagram-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll"><svg xmlns="http://www.w3.org/2000/svg" class="architecture-svg" viewBox="0 0 760 384" role="img" aria-labelledby="platform-title platform-desc"><title id="platform-title">Isaac Lab、Newton 与 Isaac Sim 的职责</title><desc id="platform-desc">Isaac Lab 定义机器人学习任务，Newton 在 GPU 上推进物理状态。需要图像或交互界面时，由 Isaac Sim 提供渲染和传感器能力。Newton 物理执行不必依赖 Kit。</desc><defs><marker id="platform-arrow" markerWidth="5.25" markerHeight="5.25" refX="4.5" refY="2.625" orient="auto-start-reverse"><path d="M0 0L4.5 2.625L0 5.25" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.3"/></marker></defs>
+<rect x="16" y="16" width="728" height="352" rx="10" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-layer-container-accent-background)" stroke-dasharray="4 4"/>
+<text x="36" y="42" fill="var(--nve-sys-text-muted-color)" font-size="13">任务接口、物理后端与渲染能力分工</text>
+<path marker-start="url(#platform-arrow)" d="M310 150V176Q310 184 302 184H180Q172 184 172 192V226" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.5" marker-end="url(#platform-arrow)"/>
+<path d="M588 232V192Q588 184 580 184H458Q450 184 450 176V156" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.5" marker-end="url(#platform-arrow)"/>
+<text x="176" y="174" fill="var(--nve-sys-text-muted-color)" font-size="13">动作 ⇄ 物理状态</text><text x="470" y="174" fill="var(--nve-sys-text-muted-color)" font-size="13">按需接入图像与界面</text>
+<rect x="240" y="62" width="280" height="88" rx="7" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-color)"/><text x="380" y="95" text-anchor="middle" fill="var(--nve-sys-text-color)" font-size="20" font-weight="600">Isaac Lab</text><text x="380" y="124" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="14">任务 · 观测 · 奖励 · 并行环境</text>
+<rect x="40" y="232" width="264" height="94" rx="7" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-support-success-color)"/><text x="172" y="264" text-anchor="middle" fill="var(--nve-sys-text-color)" font-size="19" font-weight="600">Newton</text><text x="172" y="292" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="14">Warp / CUDA · 动力学与接触</text><text x="172" y="348" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="13">物理执行可不依赖 Kit</text>
+<rect x="456" y="232" width="264" height="94" rx="7" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="588" y="264" text-anchor="middle" fill="var(--nve-sys-text-color)" font-size="19" font-weight="600">Isaac Sim</text><text x="588" y="292" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="14">OpenUSD · RTX · 相机与交互</text><text x="588" y="348" text-anchor="middle" fill="var(--nve-sys-text-muted-color)" font-size="13">本课程可视化任务使用此路径</text></svg></div><figcaption class="diagram-caption"><p>Isaac Lab 统一组织学习任务，Newton 负责物理推进；需要相机图像或交互界面时，再使用 Isaac Sim 的渲染与传感器能力。区分这些职责，有助于按训练和验证任务选择运行方式。</p>
+</figcaption></figure><figure class="learning-figure" data-learning-flow="learn-4602d581e2"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="行走闭环"><svg class="learning-svg" viewBox="0 0 900 194" role="group" aria-labelledby="learn-4602d581e2-title"><title id="learn-4602d581e2-title">行走闭环</title><defs><marker id="learn-4602d581e2-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-4602d581e2-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-4602d581e2-arrow)"/><path class="learning-edge" data-from="2" data-to="0" d="M786.0 134V170H114.0V134" marker-end="url(#learn-4602d581e2-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 观测 oₜ" aria-controls="learn-4602d581e2-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">观测 oₜ</text><text x="114.0" y="98" class="learning-node-subtitle">姿态、关节状态、</text><text x="114.0" y="115" class="learning-node-subtitle">上一动作与指令</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 策略 π" aria-controls="learn-4602d581e2-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">策略 π</text><text x="450.0" y="98" class="learning-node-subtitle">61 维输入 → 14 维动作</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Newton 仿真" aria-controls="learn-4602d581e2-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Newton 仿真</text><text x="786.0" y="98" class="learning-node-subtitle">执行动作，产</text><text x="786.0" y="115" class="learning-node-subtitle">生下一次观测</text></g></svg></div><div class="learning-details" aria-label="行走闭环"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-4602d581e2-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>观测 oₜ</h3><p>观测把机器人姿态、关节状态、上一动作与当前速度指令整理成固定顺序的输入。顺序和归一化应与训练保持一致。</p></article><article id="learn-4602d581e2-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>策略 π</h3><p>策略根据 61 维观测输出 14 维动作。输出先经过动作转换与执行器模型，再作用到关节。</p></article><article id="learn-4602d581e2-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Newton 仿真</h3><p>Newton 推进动力学与接触，产生新的姿态和关节状态。下一拍策略重新读取观测，因此动作始终处于反馈闭环中。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>速度指令决定“往哪里、以多快的速度走”；策略负责把它转为协调的关节动作。</figcaption></figure><div class="formula"><div class="formula-label">位置控制接口</div><div class="formula-body">\[\htmlData{sym=a_t}{\mathbf a_t}=\htmlData{sym=pi_theta}{\pi_\theta}(\htmlData{sym=o_t}{\mathbf o_t}),\qquad \htmlData{sym=q_target}{\mathbf q_t^{*}}=\htmlData{sym=q_default}{\mathbf q_{\mathrm{default}}}+\htmlData{sym=s}{s}\htmlData{sym=a_t}{\mathbf a_t},\quad \htmlData{sym=s}{s}=1\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(\mathbf a_t\)</dt><dd>当前控制周期策略输出的 14 维动作（归一化值）。</dd></div><div><dt>\(\pi_\theta\)</dt><dd>行走策略网络；下标表示训练得到的网络参数，推理时保持不变。</dd></div><div><dt>\(\mathbf o_t\)</dt><dd>当前控制周期输入策略的 61 维观测。</dd></div><div><dt>\(\mathbf q_t^{*}\)</dt><dd>当前控制周期发给执行器的关节目标角度（rad）。</dd></div><div><dt>\(\mathbf q_{\mathrm{default}}\)</dt><dd>默认站姿下的关节角度。</dd></div><div><dt>\(s\)</dt><dd>动作缩放系数；这个策略取 1。</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=q_target}{\mathbf q_t^{*}}\)</span> 是关节目标角度，<span class="math notranslate nohighlight">\(\htmlData{sym=q_default}{\mathbf q_{\mathrm{default}}}\)</span> 是默认站姿，动作缩放系数 <span class="math notranslate nohighlight">\(\htmlData{sym=s}{s}\)</span> 为 1。也就是说，动作表示相对默认站姿的关节角度偏移，执行器和物理引擎再据此计算实际运动。即使输入输出维度相同，关节顺序、偏置或观测归一化不一致，也会导致动作错误。</p>
+<figure class="concept-figure" data-diagram="timing"><svg viewBox="0 0 640 320" role="img" aria-label="50 Hz 策略更新与 200 Hz 物理更新" font-family="Open Sans, Noto Sans SC, sans-serif" font-size="15"><defs><marker id="arrow-timing" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6" fill="none" stroke="var(--nve-sys-text-muted-color)"/></marker></defs><text x="36" y="43">策略：每 20 ms 输出一次动作（50 Hz）</text><rect x="60" y="70" width="514" height="52" rx="5" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="317" y="96" text-anchor="middle" dominant-baseline="central">aₜ：关节目标</text><path d="M317 123V169" stroke="var(--nve-sys-text-muted-color)" marker-end="url(#arrow-timing)"/><text x="36" y="156">物理：每 5 ms 推进一步（200 Hz）</text><rect x="60" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="122" y="206" text-anchor="middle" dominant-baseline="central">第 1 步</text><text x="60" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">0 ms</text><rect x="190" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="252" y="206" text-anchor="middle" dominant-baseline="central">第 2 步</text><text x="190" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">5 ms</text><rect x="320" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="382" y="206" text-anchor="middle" dominant-baseline="central">第 3 步</text><text x="320" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">10 ms</text><rect x="450" y="182" width="124" height="48" rx="4" fill="var(--nve-sys-layer-container-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="512" y="206" text-anchor="middle" dominant-baseline="central">第 4 步</text><text x="450" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">15 ms</text><text x="574" y="255" text-anchor="middle" font-size="13" fill="var(--nve-sys-text-muted-color)">20 ms</text><text x="317" y="296" text-anchor="middle" font-size="14" fill="var(--nve-sys-text-muted-color)">动作保持不变；位置、速度与接触力仍在逐步变化</text></svg><figcaption class="diagram-caption">一个策略周期包含四次物理更新。画面帧率是另一个量：画面变慢，并不说明仿真时间步长改变了。</figcaption></figure><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>组装观察，再运行策略</h4> <p>更新观察历史，把 policy 观察送入运动策略。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">observation_manager</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">update_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"policy"</span><span class="p">]</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>处理策略动作</h4> <p>动作管理器接收本次策略输出，准备驱动仿真。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>推进 4 个物理步</h4> <p>策略动作跨越 4 × 5 ms；每步写入动作并更新场景，形成 50 Hz 控制与 200 Hz 物理的关系。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">apply_action</span><span class="p">()</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">headless</span> <span class="ow">and</span> <span class="n">tick</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mf">0.005</span><span class="p">)</span></code></pre></div></div></div><p>这段节选对应图中的闭环：Isaac Lab 的观测管理器生成策略输入，动作管理器处理动作并驱动执行器，Newton 随后执行四个 5 ms 物理步。完整程序还会更新计数器并检查是否跌倒。</p>
+<p>下面是课程在容器中用这段程序实际运行过的一次记录，不需要你再运行。机器人先锁住关节在地面上落稳（3.2 节会解释这种启动方式）；之后程序先发送约 2 秒的零速度指令，再持续发送 0.25 m/s 的前进指令，共 12 秒仿真时间。开头的静止并不是策略没有响应。</p>
+<figure class="recorded-run"><div class="recorded-head"><span class="recorded-badge">录制示例 · 无需运行</span><span class="recorded-where">课程容器 · Isaac Sim 窗口</span><span class="recorded-meta">DGX Spark · 官方行走模型 <code>models/walk.onnx</code></span></div><div class="recorded-command highlight"><pre><code>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>walk<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span>--velocity<span class="w"> </span><span class="m">0</span>.25<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seconds<span class="w"> </span><span class="m">12</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">202</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/final-live-livew</code></pre></div><details class="recorded-result"><summary>展开查看真实输出与结果解读</summary><div class="recorded-body"><img class="recorded-image" src="../assets/media/isaac-ui-walk-container.png" alt="这次运行时的 Isaac Sim 完整界面：视口中一只 Microduck 正在平地上迈步，顶部显示 RTX 实时渲染与 Newton MJWarp 物理，右侧是场景树与 Isaac Lab 面板。" loading="lazy"><p class="recorded-output-label">终端末尾打印的 report.json（省略记录落稳过程的 startup 段）</p><pre class="recorded-output"><code>{
+  &quot;status&quot;: &quot;completed&quot;,
+  &quot;seed&quot;: 202,
+  &quot;model_sha256&quot;: &quot;2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492&quot;,
+  &quot;command&quot;: [
+    0.25,
+    0.0,
+    0.0
+  ],
+  &quot;physics_hz&quot;: 200,
+  &quot;policy_hz&quot;: 50,
+  &quot;scope&quot;: &quot;nominal walking observation; not full-task evaluation&quot;,
+  &quot;viewport&quot;: {
+    &quot;status&quot;: &quot;ok&quot;,
+    &quot;requested&quot;: [
+      960,
+      540
+    ],
+    &quot;render_texture&quot;: [
+      960,
+      540
+    ],
+    &quot;resolution_scale&quot;: 1.0,
+    &quot;render_every_control_steps&quot;: 2
+  },
+  &quot;real_time_factor&quot;: 0.9490529826355415,
+  &quot;fell&quot;: false,
+  &quot;simulated_seconds&quot;: 12.0,
+  &quot;automatic_resets&quot;: false
+}</code></pre><p>先看三项：<code>status</code> 为 completed、<code>fell</code> 为 false、<code>simulated_seconds</code> 为 12.0，说明这次运行跑满了设定时长且没有跌倒，<code>automatic_resets</code> 为 false 表示中途没有被自动重置掩盖失败。<code>model_sha256</code> 与 <code>models/manifest.json</code> 中的记录一致，证明用的确实是固定的官方模型。<code>viewport</code> 记录窗口的显示设置（按 960×540 绘制，每 2 个控制步刷新一次），<code>real_time_factor</code> 约 0.95 表示这 12 秒仿真用的真实时间只比 12 秒略长；它们只描述窗口，不影响仿真结果。</p><p>再看同目录 <code>trajectory.json</code> 中每 0.1 秒一条的位置记录：发出前进指令后的约 10 秒里，机身从 (0.00, 0.00) m 走到 (1.07, 0.15) m，直线距离约 1.08 m，平均约 0.11 m/s，不到 0.25 m/s 指令的一半；行进方向也逐渐向左偏，整段位移偏左约 8°，最后 2 秒约 15°。速度指令是给策略的“请求”，实际速度与方向由策略、执行器和接触共同决定，所以只看“没摔倒”还不够，还要比较实际运动与指令。</p></div></details><figcaption>录制示例：命令、真实界面与终端输出均来自同一次运行。</figcaption></figure><details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><p><code class="docutils literal notranslate"><span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code> 读取容器内的 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/walk.onnx</span></code>，也就是宿主机仓库 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 里的官方行走模型（只读）；机器人模型是 <code class="docutils literal notranslate"><span class="pre">lab/assets/microduck_contact.usda</span></code>；<code class="docutils literal notranslate"><span class="pre">report.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的 <code class="docutils literal notranslate"><span class="pre">outputs/final-live-livew</span></code>。</p>
+</div></details><div class="formula"><div class="formula-label">速度跟踪的一个统计量</div><div class="formula-body">\[\htmlData{sym=rmse}{\mathrm{RMSE}_v}=\sqrt{\frac{1}{\htmlData{sym=N}{N}}\sum_{\htmlData{sym=t_idx}{t}=1}^{\htmlData{sym=N}{N}}\htmlData{sym=sqnorm}{\|\htmlData{sym=v_xy}{\mathbf v_{xy,t}}-\htmlData{sym=v_cmd}{\mathbf v_{xy,t}^{\mathrm{cmd}}}\|_2^2}}\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(\mathrm{RMSE}_v\)</dt><dd>水平速度跟踪的均方根误差（m/s）：越小表示实际速度越贴近指令。</dd></div><div><dt>\(N\)</dt><dd>参与统计的采样时刻数。</dd></div><div><dt>\(t\)</dt><dd>采样时刻的序号。</dd></div><div><dt>\(\|\cdot\|_2^2\)</dt><dd>速度误差向量长度的平方。</dd></div><div><dt>\(\mathbf v_{xy,t}\)</dt><dd>某一采样时刻机身的实际水平速度（m/s）。</dd></div><div><dt>\(\mathbf v_{xy,t}^{\mathrm{cmd}}\)</dt><dd>同一时刻的指令水平速度（m/s）。</dd></div></dl></details></div><p>均方根误差概括一段时间内的速度跟踪表现；本节不设统一的及格阈值，先确认不跌倒，再比较不同方向和速度。由于足地接触、执行器延迟与齿隙，实际关节往往滞后于目标，所以策略每一拍都要重新读取观测。</p>
+<p>现在已经知道策略如何读取状态、输出动作，以及舵机和物理仿真怎样执行这些动作。3.1 节从加载现成模型转向训练模型：用 Isaac Lab 让策略通过反复尝试学会行走。</p>
+</section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://github.com/pollen-robotics/microduck" rel="noreferer noopener" target="_blank">Pollen Robotics：Microduck 硬件 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab：Microduck 任务源码 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton 物理引擎 ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01-play.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">2.1 认识 Microduck：先来踢一场球</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03-learning.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">3.1 强化学习与 PPO</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assembly">从整体到组件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kinematic-chain">从机械结构到关节控制</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-map">先分清零件、关节和自由度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control">软件如何让部件运动</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#frames">用坐标系描述运动</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#read-assembly">练习：沿一条受力路径找部件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#policy-interface">策略收到什么，又输出什么</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-loop">先把指令、动作与反馈的闭环跑通</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2050 @@
+{
+ "schema": "microduck.explorer-layout.v2",
+ "coordinate_system": "glTF Y-up metres; offsets add to each node's rest translation in microduck.glb",
+ "geometry": {
+  "nodes": 70,
+  "unique_meshes": 38,
+  "pose": "STAND",
+  "glb_sha256": "eea0931fefde8b2d352eaaa73b5e380f2790f63fb716a8c1a2ce219ffe58c1ac",
+  "components_sha256": "06bb65fa1db2959215f686919940b8eeb8836254bb13fda0b70a939e3b3d25ef"
+ },
+ "kinematics_source": {
+  "file": "robot_allcollisions.xml",
+  "sha256": "ec9d2f731596cfc847a7fc3898ef8b5e67a548928abc23216537f1da8af2729c",
+  "tree": {
+   "yaw2roll": [
+    "trunk_base",
+    "left_hip_yaw"
+   ],
+   "hip_l": [
+    "yaw2roll",
+    "left_hip_roll"
+   ],
+   "upper_leg_left": [
+    "hip_l",
+    "left_hip_pitch"
+   ],
+   "leg": [
+    "upper_leg_left",
+    "left_knee"
+   ],
+   "ankle_left": [
+    "leg",
+    "left_ankle"
+   ],
+   "bearing_roll": [
+    "trunk_base",
+    "right_hip_yaw"
+   ],
+   "hip_l_2": [
+    "bearing_roll",
+    "right_hip_roll"
+   ],
+   "upper_leg_right": [
+    "hip_l_2",
+    "right_hip_pitch"
+   ],
+   "leg_2": [
+    "upper_leg_right",
+    "right_knee"
+   ],
+   "ankle_right": [
+    "leg_2",
+    "right_ankle"
+   ],
+   "neck": [
+    "trunk_base",
+    "neck_pitch"
+   ],
+   "neck_pitch": [
+    "neck",
+    "head_pitch"
+   ],
+   "yaw_roll_motion": [
+    "neck_pitch",
+    "head_yaw"
+   ],
+   "jaw_soft": [
+    "yaw_roll_motion",
+    "head_roll"
+   ]
+  }
+ },
+ "palette": {
+  "roles": {
+   "shell": [
+    "#F7ECD7",
+    "#E9D6B6",
+    "#CDB592"
+   ],
+   "beak": [
+    "#F7A043",
+    "#E8822C",
+    "#C7631F"
+   ],
+   "foot": [
+    "#F49A3E",
+    "#E27F2B",
+    "#BF5F1E"
+   ],
+   "sole": [
+    "#DF7B34",
+    "#C9662A",
+    "#A54E20"
+   ],
+   "amber": [
+    "#F8C35A",
+    "#EDA840",
+    "#CC8A2C"
+   ],
+   "servo": [
+    "#5B6E8C",
+    "#4A5B76",
+    "#38465D"
+   ],
+   "bracket": [
+    "#A7B5CB",
+    "#8E9EB7",
+    "#72829C"
+   ],
+   "plate": [
+    "#C4CCD9",
+    "#AAB4C5",
+    "#8D98AC"
+   ],
+   "bearing": [
+    "#E6EBF2",
+    "#CDD5E0",
+    "#AEB8C7"
+   ],
+   "battery": [
+    "#495372",
+    "#3B4460",
+    "#2D354B"
+   ],
+   "board": [
+    "#7DB7A8",
+    "#669F91",
+    "#4E8376"
+   ],
+   "ink": [
+    "#3A3F52",
+    "#30344A",
+    "#262A3B"
+   ],
+   "grey": [
+    "#8C95A6",
+    "#768093",
+    "#5F687A"
+   ]
+  },
+  "accents": {
+   "actuator": "#FF7A6B",
+   "link": "#9A8CF8",
+   "moving": "#6FD6AE",
+   "focus": "#FF7A6B"
+  },
+  "outline": {
+   "ink": "#2A2E3F",
+   "halo": "#FFF8EC",
+   "inner_px": 1.25,
+   "outer_px": 2.4,
+   "halo_px": 2.0
+  },
+  "bands": [
+   0.0,
+   0.34,
+   0.66
+  ],
+  "bands_half_lambert": [
+   0.42,
+   0.7
+  ],
+  "light_view": [
+   -0.45,
+   0.62,
+   0.64
+  ]
+ },
+ "roles": {
+  "jaw_soft--bottom_head_shell--12": "beak",
+  "jaw_soft--motor_support--04": "bracket",
+  "jaw_soft--seeed_bearing__configuration_default--07": "bearing",
+  "jaw_soft--xl330--02": "servo",
+  "jaw_soft--xl330--06": "servo",
+  "jaw_soft--face_part--01": "plate",
+  "jaw_soft--lens--00": "ink",
+  "jaw_soft--m12_lens_holder--13": "ink",
+  "jaw_soft--noenoeil--10": "amber",
+  "jaw_soft--jaw--11": "beak",
+  "jaw_soft--jaw_soft--03": "beak",
+  "jaw_soft--soft_mouth_top--09": "beak",
+  "jaw_soft--elec_rpi_robot_hat_pcb--08": "board",
+  "jaw_soft--pcb__raspberry_pi_zero_2_w--14": "board",
+  "jaw_soft--speaker--15": "grey",
+  "neck--neck--00": "plate",
+  "neck--neck--03": "plate",
+  "neck--xl330--01": "servo",
+  "neck--xl330--02": "servo",
+  "neck_pitch--neck_pitch--00": "bracket",
+  "neck_pitch--seeed_bearing__configuration__22x16x4--01": "bearing",
+  "yaw_roll_motion--seeed_bearing__configuration__22x16x4--02": "bearing",
+  "yaw_roll_motion--seeed_bearing__configuration__22x16x4--03": "bearing",
+  "yaw_roll_motion--xl330--01": "servo",
+  "yaw_roll_motion--yaw_roll_motion--00": "bracket",
+  "trunk_base--left_shell--08": "shell",
+  "trunk_base--right_shell--01": "shell",
+  "trunk_base--np_f970--06": "battery",
+  "trunk_base--banana_pcb_locker--02": "grey",
+  "trunk_base--power_support--05": "plate",
+  "trunk_base--seeed_bearing__configuration__22x16x4--00": "bearing",
+  "trunk_base--seeed_bearing__configuration__22x16x4--09": "bearing",
+  "trunk_base--trunk_base--03": "bracket",
+  "trunk_base--xl330--04": "servo",
+  "trunk_base--xl330--07": "servo",
+  "hip_l--hip_l--01": "plate",
+  "hip_l--seeed_bearing__configuration__22x16x4--00": "bearing",
+  "yaw2roll--bearing_roll--03": "bracket",
+  "yaw2roll--seeed_bearing__configuration__22x16x4--02": "bearing",
+  "yaw2roll--xl330--01": "servo",
+  "yaw2roll--yaw2roll--00": "bracket",
+  "upper_leg_left--seeed_bearing__configuration__22x16x4--03": "bearing",
+  "upper_leg_left--upper_leg_left--00": "shell",
+  "upper_leg_left--upper_leg_rigidity_plate--02": "plate",
+  "upper_leg_left--xl330--01": "servo",
+  "upper_leg_left--xl330--04": "servo",
+  "leg--leg--00": "plate",
+  "leg--xl330--01": "servo",
+  "ankle_left--ankle_left--03": "foot",
+  "ankle_left--foot_left--01": "foot",
+  "ankle_left--seeed_bearing__configuration_default--02": "bearing",
+  "ankle_left--sole_left--00": "sole",
+  "bearing_roll--bearing_roll--02": "bracket",
+  "bearing_roll--seeed_bearing__configuration__22x16x4--03": "bearing",
+  "bearing_roll--xl330--01": "servo",
+  "bearing_roll--yaw2roll--00": "bracket",
+  "hip_l_2--hip_l--00": "plate",
+  "hip_l_2--seeed_bearing__configuration__22x16x4--01": "bearing",
+  "upper_leg_right--seeed_bearing__configuration__22x16x4--01": "bearing",
+  "upper_leg_right--upper_leg_right--03": "shell",
+  "upper_leg_right--upper_leg_rigidity_plate--02": "plate",
+  "upper_leg_right--xl330--00": "servo",
+  "upper_leg_right--xl330--04": "servo",
+  "leg_2--leg--01": "plate",
+  "leg_2--xl330--00": "servo",
+  "ankle_right--ankle_right--00": "foot",
+  "ankle_right--foot_right--03": "foot",
+  "ankle_right--seeed_bearing__configuration_default--02": "bearing",
+  "ankle_right--sole_right--01": "sole",
+  "jaw_soft--top_head_shell--05": "shell"
+ },
+ "view": [
+  1.0,
+  0.52,
+  0.62
+ ],
+ "explode": {
+  "duration_s": 1.6,
+  "group_share": 0.42,
+  "easing": "cubic-in-out",
+  "groups": [
+   {
+    "id": "head-top",
+    "parts": [
+     "jaw_soft--top_head_shell--05"
+    ],
+    "offset": [
+     0.0,
+     0.15,
+     0.0
+    ],
+    "delay": 0.12,
+    "label_zh": "头顶外壳",
+    "label_en": "Head top shell",
+    "fact_zh": "奶油色的头顶外壳像盖子一样罩在最上面，保护下面的电路板和舵机。",
+    "fact_en": "The cream top shell sits over everything like a lid, protecting the boards and servos underneath.",
+    "callout": null
+   },
+   {
+    "id": "head",
+    "parts": [
+     "jaw_soft--bottom_head_shell--12",
+     "jaw_soft--motor_support--04",
+     "jaw_soft--seeed_bearing__configuration_default--07",
+     "jaw_soft--xl330--02",
+     "jaw_soft--xl330--06"
+    ],
+    "offset": [
+     0.0,
+     0.07,
+     0.0
+    ],
+    "delay": 0.18,
+    "label_zh": "头",
+    "label_en": "Head",
+    "fact_zh": "橙色的头底座上装着两个舵机：一个让头左右歪，一个让下喙开合。",
+    "fact_en": "The orange head base carries two servos: one tilts the head sideways, one opens the beak.",
+    "callout": {
+     "zh": "头",
+     "en": "Head"
+    }
+   },
+   {
+    "id": "face",
+    "parts": [
+     "jaw_soft--face_part--01",
+     "jaw_soft--lens--00",
+     "jaw_soft--m12_lens_holder--13",
+     "jaw_soft--noenoeil--10"
+    ],
+    "offset": [
+     0.05,
+     0.07,
+     0.0
+    ],
+    "delay": 0.24,
+    "label_zh": "眼睛与相机",
+    "label_en": "Eye and camera",
+    "fact_zh": "小鸭的“眼睛”是一枚 M12 相机镜头，装在脸部正中，朝前看。",
+    "fact_en": "The duck's 'eye' is an M12 camera lens set in the middle of the face, looking ahead.",
+    "callout": {
+     "zh": "眼睛 = 相机",
+     "en": "Eye = camera"
+    }
+   },
+   {
+    "id": "beak",
+    "parts": [
+     "jaw_soft--jaw--11",
+     "jaw_soft--jaw_soft--03",
+     "jaw_soft--soft_mouth_top--09"
+    ],
+    "offset": [
+     0.12,
+     0.04,
+     0.0
+    ],
+    "delay": 0.28,
+    "label_zh": "喙",
+    "label_en": "Beak",
+    "fact_zh": "下喙有自己的舵机，可以张合；本课程的行走策略不控制它。",
+    "fact_en": "The lower beak has its own servo and can open; the course's walking policy does not control it.",
+    "callout": null
+   },
+   {
+    "id": "boards",
+    "parts": [
+     "jaw_soft--elec_rpi_robot_hat_pcb--08",
+     "jaw_soft--pcb__raspberry_pi_zero_2_w--14",
+     "jaw_soft--speaker--15"
+    ],
+    "offset": [
+     0.0,
+     0.112,
+     0.0
+    ],
+    "delay": 0.2,
+    "label_zh": "头里的电路板",
+    "label_en": "Boards in the head",
+    "fact_zh": "模型保留了 CAD 里的 Raspberry Pi Zero 2 W、扩展板外形和一个扬声器；现在的主控板已经换代。",
+    "fact_en": "The model keeps the CAD's Raspberry Pi Zero 2 W and HAT outlines plus a speaker; today's controller board is a newer one.",
+    "callout": null
+   },
+   {
+    "id": "neck",
+    "parts": [
+     "neck--neck--00",
+     "neck--neck--03",
+     "neck--xl330--01",
+     "neck--xl330--02",
+     "neck_pitch--neck_pitch--00",
+     "neck_pitch--seeed_bearing__configuration__22x16x4--01",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--02",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--03",
+     "yaw_roll_motion--xl330--01",
+     "yaw_roll_motion--yaw_roll_motion--00"
+    ],
+    "offset": [
+     0.0,
+     0.032,
+     0.0
+    ],
+    "delay": 0.22,
+    "label_zh": "脖子",
+    "label_en": "Neck",
+    "fact_zh": "脖子由舵机和支架一节一节串起来：颈部俯仰、头部俯仰和头部偏航各有一个舵机。",
+    "fact_en": "The neck stacks servos and brackets link by link: neck pitch, head pitch and head yaw each have a servo.",
+    "callout": {
+     "zh": "脖子",
+     "en": "Neck"
+    }
+   },
+   {
+    "id": "shells",
+    "parts": [
+     "trunk_base--left_shell--08",
+     "trunk_base--right_shell--01"
+    ],
+    "offset": [
+     0.0,
+     0.012,
+     0.0
+    ],
+    "delay": 0.0,
+    "label_zh": "身体外壳",
+    "label_en": "Body shells",
+    "fact_zh": "左右两片外壳像蛋壳一样合起来，包住髋部舵机和电池。",
+    "fact_en": "Two shell halves close like an egg around the hip servos and the battery.",
+    "callout": {
+     "zh": "外壳",
+     "en": "Shell"
+    }
+   },
+   {
+    "id": "battery",
+    "parts": [
+     "trunk_base--np_f970--06"
+    ],
+    "offset": [
+     -0.065,
+     0.045,
+     0.0
+    ],
+    "delay": 0.08,
+    "label_zh": "电池",
+    "label_en": "Battery",
+    "fact_zh": "电池竖着装在身体后部，是整只小鸭的电源。",
+    "fact_en": "The battery stands upright at the back of the body and powers the whole duck.",
+    "callout": {
+     "zh": "电池",
+     "en": "Battery"
+    }
+   },
+   {
+    "id": "frame",
+    "parts": [
+     "trunk_base--banana_pcb_locker--02",
+     "trunk_base--power_support--05",
+     "trunk_base--seeed_bearing__configuration__22x16x4--00",
+     "trunk_base--seeed_bearing__configuration__22x16x4--09",
+     "trunk_base--trunk_base--03",
+     "trunk_base--xl330--04",
+     "trunk_base--xl330--07"
+    ],
+    "offset": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "delay": 0.0,
+    "label_zh": "身体骨架",
+    "label_en": "Body frame",
+    "fact_zh": "底板上固定着两个髋偏航舵机，两条腿都从这里挂下来。",
+    "fact_en": "The base plate carries the two hip-yaw servos; both legs hang from here.",
+    "callout": null
+   },
+   {
+    "id": "left-hip",
+    "parts": [
+     "hip_l--hip_l--01",
+     "hip_l--seeed_bearing__configuration__22x16x4--00",
+     "yaw2roll--bearing_roll--03",
+     "yaw2roll--seeed_bearing__configuration__22x16x4--02",
+     "yaw2roll--xl330--01",
+     "yaw2roll--yaw2roll--00"
+    ],
+    "offset": [
+     0.0,
+     -0.012,
+     -0.03
+    ],
+    "delay": 0.34,
+    "label_zh": "左髋",
+    "label_en": "Left hip",
+    "fact_zh": "髋部把偏航和滚转两根转轴叠在一起，让腿既能扭转，也能向外摆。",
+    "fact_en": "The hip stacks a yaw axis and a roll axis, so the leg can twist and also swing outward.",
+    "callout": null
+   },
+   {
+    "id": "left-thigh",
+    "parts": [
+     "upper_leg_left--seeed_bearing__configuration__22x16x4--03",
+     "upper_leg_left--upper_leg_left--00",
+     "upper_leg_left--upper_leg_rigidity_plate--02",
+     "upper_leg_left--xl330--01",
+     "upper_leg_left--xl330--04"
+    ],
+    "offset": [
+     0.0,
+     -0.03,
+     -0.055
+    ],
+    "delay": 0.4,
+    "label_zh": "左大腿",
+    "label_en": "Left thigh",
+    "fact_zh": "大腿外壳里装着两个舵机：上面的驱动髋俯仰，下面的驱动膝关节。",
+    "fact_en": "The thigh shell holds two servos: the upper one drives hip pitch, the lower one the knee.",
+    "callout": null
+   },
+   {
+    "id": "left-shank",
+    "parts": [
+     "leg--leg--00",
+     "leg--xl330--01"
+    ],
+    "offset": [
+     0.0,
+     -0.048,
+     -0.064
+    ],
+    "delay": 0.46,
+    "label_zh": "左小腿",
+    "label_en": "Left shank",
+    "fact_zh": "小腿是一块支架，下端挂着踝关节舵机。",
+    "fact_en": "The shank is a bracket with the ankle servo hanging at its lower end.",
+    "callout": null
+   },
+   {
+    "id": "left-foot",
+    "parts": [
+     "ankle_left--ankle_left--03",
+     "ankle_left--foot_left--01",
+     "ankle_left--seeed_bearing__configuration_default--02",
+     "ankle_left--sole_left--00"
+    ],
+    "offset": [
+     0.0,
+     -0.068,
+     -0.07
+    ],
+    "delay": 0.52,
+    "label_zh": "左鸭掌",
+    "label_en": "Left duck foot",
+    "fact_zh": "橙色鸭掌、鞋底和踝座连成一体；踝舵机一转，整只脚一起翘起。",
+    "fact_en": "The orange foot, sole and ankle housing are one unit; when the ankle servo turns, the whole foot tilts.",
+    "callout": {
+     "zh": "鸭掌",
+     "en": "Duck foot"
+    }
+   },
+   {
+    "id": "right-hip",
+    "parts": [
+     "bearing_roll--bearing_roll--02",
+     "bearing_roll--seeed_bearing__configuration__22x16x4--03",
+     "bearing_roll--xl330--01",
+     "bearing_roll--yaw2roll--00",
+     "hip_l_2--hip_l--00",
+     "hip_l_2--seeed_bearing__configuration__22x16x4--01"
+    ],
+    "offset": [
+     0.0,
+     -0.012,
+     0.03
+    ],
+    "delay": 0.34,
+    "label_zh": "右髋",
+    "label_en": "Right hip",
+    "fact_zh": "髋部把偏航和滚转两根转轴叠在一起，让腿既能扭转，也能向外摆。",
+    "fact_en": "The hip stacks a yaw axis and a roll axis, so the leg can twist and also swing outward.",
+    "callout": null
+   },
+   {
+    "id": "right-thigh",
+    "parts": [
+     "upper_leg_right--seeed_bearing__configuration__22x16x4--01",
+     "upper_leg_right--upper_leg_right--03",
+     "upper_leg_right--upper_leg_rigidity_plate--02",
+     "upper_leg_right--xl330--00",
+     "upper_leg_right--xl330--04"
+    ],
+    "offset": [
+     0.0,
+     -0.03,
+     0.055
+    ],
+    "delay": 0.4,
+    "label_zh": "右大腿",
+    "label_en": "Right thigh",
+    "fact_zh": "大腿外壳里装着两个舵机：上面的驱动髋俯仰，下面的驱动膝关节。",
+    "fact_en": "The thigh shell holds two servos: the upper one drives hip pitch, the lower one the knee.",
+    "callout": {
+     "zh": "大腿里的舵机",
+     "en": "Servos in the thigh"
+    }
+   },
+   {
+    "id": "right-shank",
+    "parts": [
+     "leg_2--leg--01",
+     "leg_2--xl330--00"
+    ],
+    "offset": [
+     0.0,
+     -0.048,
+     0.064
+    ],
+    "delay": 0.46,
+    "label_zh": "右小腿",
+    "label_en": "Right shank",
+    "fact_zh": "小腿是一块支架，下端挂着踝关节舵机。",
+    "fact_en": "The shank is a bracket with the ankle servo hanging at its lower end.",
+    "callout": null
+   },
+   {
+    "id": "right-foot",
+    "parts": [
+     "ankle_right--ankle_right--00",
+     "ankle_right--foot_right--03",
+     "ankle_right--seeed_bearing__configuration_default--02",
+     "ankle_right--sole_right--01"
+    ],
+    "offset": [
+     0.0,
+     -0.068,
+     0.07
+    ],
+    "delay": 0.52,
+    "label_zh": "右鸭掌",
+    "label_en": "Right duck foot",
+    "fact_zh": "橙色鸭掌、鞋底和踝座连成一体；踝舵机一转，整只脚一起翘起。",
+    "fact_en": "The orange foot, sole and ankle housing are one unit; when the ankle servo turns, the whole foot tilts.",
+    "callout": null
+   }
+  ],
+  "parts": {
+   "jaw_soft--top_head_shell--05": [
+    0.0,
+    0.15,
+    0.0
+   ],
+   "jaw_soft--bottom_head_shell--12": [
+    0.0,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--motor_support--04": [
+    0.0,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--seeed_bearing__configuration_default--07": [
+    0.0,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--xl330--02": [
+    0.0,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--xl330--06": [
+    0.0,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--face_part--01": [
+    0.05,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--lens--00": [
+    0.066,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--m12_lens_holder--13": [
+    0.06,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--noenoeil--10": [
+    0.078,
+    0.07,
+    0.0
+   ],
+   "jaw_soft--jaw--11": [
+    0.12,
+    0.03,
+    0.0
+   ],
+   "jaw_soft--jaw_soft--03": [
+    0.132,
+    0.024,
+    0.0
+   ],
+   "jaw_soft--soft_mouth_top--09": [
+    0.12,
+    0.04,
+    0.0
+   ],
+   "jaw_soft--elec_rpi_robot_hat_pcb--08": [
+    -0.012,
+    0.112,
+    0.0
+   ],
+   "jaw_soft--pcb__raspberry_pi_zero_2_w--14": [
+    0.0,
+    0.112,
+    0.0
+   ],
+   "jaw_soft--speaker--15": [
+    -0.012,
+    0.112,
+    0.0
+   ],
+   "neck--neck--00": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "neck--neck--03": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "neck--xl330--01": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "neck--xl330--02": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "neck_pitch--neck_pitch--00": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "neck_pitch--seeed_bearing__configuration__22x16x4--01": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "yaw_roll_motion--seeed_bearing__configuration__22x16x4--02": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "yaw_roll_motion--seeed_bearing__configuration__22x16x4--03": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "yaw_roll_motion--xl330--01": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "yaw_roll_motion--yaw_roll_motion--00": [
+    0.0,
+    0.032,
+    0.0
+   ],
+   "trunk_base--left_shell--08": [
+    0.0,
+    0.01,
+    -0.062
+   ],
+   "trunk_base--right_shell--01": [
+    0.0,
+    0.01,
+    0.062
+   ],
+   "trunk_base--np_f970--06": [
+    -0.065,
+    0.045,
+    0.0
+   ],
+   "trunk_base--banana_pcb_locker--02": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "trunk_base--power_support--05": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "trunk_base--seeed_bearing__configuration__22x16x4--00": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "trunk_base--seeed_bearing__configuration__22x16x4--09": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "trunk_base--trunk_base--03": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "trunk_base--xl330--04": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "trunk_base--xl330--07": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "hip_l--hip_l--01": [
+    0.0,
+    -0.012,
+    -0.03
+   ],
+   "hip_l--seeed_bearing__configuration__22x16x4--00": [
+    0.0,
+    -0.012,
+    -0.03
+   ],
+   "yaw2roll--bearing_roll--03": [
+    0.0,
+    -0.012,
+    -0.03
+   ],
+   "yaw2roll--seeed_bearing__configuration__22x16x4--02": [
+    0.0,
+    -0.012,
+    -0.03
+   ],
+   "yaw2roll--xl330--01": [
+    0.0,
+    -0.012,
+    -0.03
+   ],
+   "yaw2roll--yaw2roll--00": [
+    0.0,
+    -0.012,
+    -0.03
+   ],
+   "upper_leg_left--seeed_bearing__configuration__22x16x4--03": [
+    0.0,
+    -0.03,
+    -0.055
+   ],
+   "upper_leg_left--upper_leg_left--00": [
+    0.0,
+    -0.03,
+    -0.085
+   ],
+   "upper_leg_left--upper_leg_rigidity_plate--02": [
+    0.0,
+    -0.03,
+    -0.043
+   ],
+   "upper_leg_left--xl330--01": [
+    0.0,
+    -0.03,
+    -0.055
+   ],
+   "upper_leg_left--xl330--04": [
+    0.0,
+    -0.03,
+    -0.055
+   ],
+   "leg--leg--00": [
+    0.0,
+    -0.048,
+    -0.064
+   ],
+   "leg--xl330--01": [
+    0.0,
+    -0.048,
+    -0.064
+   ],
+   "ankle_left--ankle_left--03": [
+    0.0,
+    -0.068,
+    -0.07
+   ],
+   "ankle_left--foot_left--01": [
+    0.0,
+    -0.068,
+    -0.07
+   ],
+   "ankle_left--seeed_bearing__configuration_default--02": [
+    0.0,
+    -0.068,
+    -0.07
+   ],
+   "ankle_left--sole_left--00": [
+    0.0,
+    -0.08,
+    -0.07
+   ],
+   "bearing_roll--bearing_roll--02": [
+    0.0,
+    -0.012,
+    0.03
+   ],
+   "bearing_roll--seeed_bearing__configuration__22x16x4--03": [
+    0.0,
+    -0.012,
+    0.03
+   ],
+   "bearing_roll--xl330--01": [
+    0.0,
+    -0.012,
+    0.03
+   ],
+   "bearing_roll--yaw2roll--00": [
+    0.0,
+    -0.012,
+    0.03
+   ],
+   "hip_l_2--hip_l--00": [
+    0.0,
+    -0.012,
+    0.03
+   ],
+   "hip_l_2--seeed_bearing__configuration__22x16x4--01": [
+    0.0,
+    -0.012,
+    0.03
+   ],
+   "upper_leg_right--seeed_bearing__configuration__22x16x4--01": [
+    0.0,
+    -0.03,
+    0.055
+   ],
+   "upper_leg_right--upper_leg_right--03": [
+    0.0,
+    -0.03,
+    0.085
+   ],
+   "upper_leg_right--upper_leg_rigidity_plate--02": [
+    0.0,
+    -0.03,
+    0.043
+   ],
+   "upper_leg_right--xl330--00": [
+    0.0,
+    -0.03,
+    0.055
+   ],
+   "upper_leg_right--xl330--04": [
+    0.0,
+    -0.03,
+    0.055
+   ],
+   "leg_2--leg--01": [
+    0.0,
+    -0.048,
+    0.064
+   ],
+   "leg_2--xl330--00": [
+    0.0,
+    -0.048,
+    0.064
+   ],
+   "ankle_right--ankle_right--00": [
+    0.0,
+    -0.068,
+    0.07
+   ],
+   "ankle_right--foot_right--03": [
+    0.0,
+    -0.068,
+    0.07
+   ],
+   "ankle_right--seeed_bearing__configuration_default--02": [
+    0.0,
+    -0.068,
+    0.07
+   ],
+   "ankle_right--sole_right--01": [
+    0.0,
+    -0.08,
+    0.07
+   ]
+  }
+ },
+ "drive": {
+  "source": {
+   "xml_sha256": "ec9d2f731596cfc847a7fc3898ef8b5e67a548928abc23216537f1da8af2729c",
+   "scene_sha256": "0d2f58227a3e1c4caae4e847a368ae83516d0f398f428c4e96737b67dd894ef1",
+   "glb_sha256": "eea0931fefde8b2d352eaaa73b5e380f2790f63fb716a8c1a2ce219ffe58c1ac",
+   "components_sha256": "06bb65fa1db2959215f686919940b8eeb8836254bb13fda0b70a939e3b3d25ef",
+   "angle": "q is the signed MJCF hinge coordinate in radians (right-hand rule about axis); the glb rest pose is the STAND key, so a part moves by q - stand_rad",
+   "max_fk_error": 6.044394246613914e-07
+  },
+  "joints": [
+   {
+    "id": "left_hip_yaw",
+    "side": "left",
+    "label_zh": "髋偏航",
+    "label_en": "Hip yaw",
+    "pivot": [
+     0.006,
+     0.112182,
+     -0.0175
+    ],
+    "axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ],
+    "stand_rad": 0.0,
+    "range_rad": [
+     -0.4363323129985824,
+     0.5235987755982988
+    ],
+    "action_index": 0,
+    "parent_body": "trunk_base",
+    "child_body": "yaw2roll",
+    "ancestors": [],
+    "servo": "trunk_base--xl330--04",
+    "servo_moves": false,
+    "bracket": [
+     "yaw2roll--yaw2roll--00",
+     "yaw2roll--bearing_roll--03"
+    ],
+    "moving": [
+     "yaw2roll--yaw2roll--00",
+     "yaw2roll--xl330--01",
+     "yaw2roll--seeed_bearing__configuration__22x16x4--02",
+     "yaw2roll--bearing_roll--03",
+     "hip_l--seeed_bearing__configuration__22x16x4--00",
+     "hip_l--hip_l--01",
+     "upper_leg_left--upper_leg_left--00",
+     "upper_leg_left--xl330--01",
+     "upper_leg_left--upper_leg_rigidity_plate--02",
+     "upper_leg_left--seeed_bearing__configuration__22x16x4--03",
+     "upper_leg_left--xl330--04",
+     "leg--leg--00",
+     "leg--xl330--01",
+     "ankle_left--sole_left--00",
+     "ankle_left--foot_left--01",
+     "ankle_left--seeed_bearing__configuration_default--02",
+     "ankle_left--ankle_left--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "left_hip_roll",
+    "side": "left",
+    "label_zh": "髋侧倾",
+    "label_en": "Hip roll",
+    "pivot": [
+     0.0225,
+     0.099682,
+     -0.0175
+    ],
+    "axis": [
+     1.0,
+     0.0,
+     -0.0
+    ],
+    "stand_rad": -0.08726646259971647,
+    "range_rad": [
+     -0.3839724354386992,
+     0.38397243543880577
+    ],
+    "action_index": 1,
+    "parent_body": "yaw2roll",
+    "child_body": "hip_l",
+    "ancestors": [
+     "left_hip_yaw"
+    ],
+    "servo": "yaw2roll--xl330--01",
+    "servo_moves": false,
+    "bracket": [
+     "hip_l--hip_l--01"
+    ],
+    "moving": [
+     "hip_l--seeed_bearing__configuration__22x16x4--00",
+     "hip_l--hip_l--01",
+     "upper_leg_left--upper_leg_left--00",
+     "upper_leg_left--xl330--01",
+     "upper_leg_left--upper_leg_rigidity_plate--02",
+     "upper_leg_left--seeed_bearing__configuration__22x16x4--03",
+     "upper_leg_left--xl330--04",
+     "leg--leg--00",
+     "leg--xl330--01",
+     "ankle_left--sole_left--00",
+     "ankle_left--foot_left--01",
+     "ankle_left--seeed_bearing__configuration_default--02",
+     "ankle_left--ankle_left--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "left_hip_pitch",
+    "side": "left",
+    "label_zh": "髋俯仰",
+    "label_en": "Hip pitch",
+    "pivot": [
+     0.004000000000000007,
+     0.09750310643130855,
+     -0.04240486745229363
+    ],
+    "axis": [
+     0.0,
+     -0.08715574274765814,
+     -0.9961946980917455
+    ],
+    "stand_rad": -0.457924,
+    "range_rad": [
+     -1.570796326794949,
+     1.5707963267948442
+    ],
+    "action_index": 2,
+    "parent_body": "hip_l",
+    "child_body": "upper_leg_left",
+    "ancestors": [
+     "left_hip_yaw",
+     "left_hip_roll"
+    ],
+    "servo": "upper_leg_left--xl330--04",
+    "servo_moves": true,
+    "bracket": [
+     "upper_leg_left--upper_leg_left--00",
+     "upper_leg_left--upper_leg_rigidity_plate--02"
+    ],
+    "moving": [
+     "upper_leg_left--upper_leg_left--00",
+     "upper_leg_left--xl330--01",
+     "upper_leg_left--upper_leg_rigidity_plate--02",
+     "upper_leg_left--seeed_bearing__configuration__22x16x4--03",
+     "upper_leg_left--xl330--04",
+     "leg--leg--00",
+     "leg--xl330--01",
+     "ankle_left--sole_left--00",
+     "ankle_left--foot_left--01",
+     "ankle_left--seeed_bearing__configuration_default--02",
+     "ankle_left--ankle_left--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "left_knee",
+    "side": "left",
+    "label_zh": "膝屈伸",
+    "label_en": "Knee bend",
+    "pivot": [
+     -0.018365151350322212,
+     0.06243703045032531,
+     -0.035321703979445514
+    ],
+    "axis": [
+     -2.7755575615628926e-17,
+     0.08715574274765828,
+     0.9961946980917455
+    ],
+    "stand_rad": -0.00494,
+    "range_rad": [
+     -1.5707963267948983,
+     1.5707963267948948
+    ],
+    "action_index": 3,
+    "parent_body": "upper_leg_left",
+    "child_body": "leg",
+    "ancestors": [
+     "left_hip_yaw",
+     "left_hip_roll",
+     "left_hip_pitch"
+    ],
+    "servo": "upper_leg_left--xl330--01",
+    "servo_moves": false,
+    "bracket": [
+     "leg--leg--00"
+    ],
+    "moving": [
+     "leg--leg--00",
+     "leg--xl330--01",
+     "ankle_left--sole_left--00",
+     "ankle_left--foot_left--01",
+     "ankle_left--seeed_bearing__configuration_default--02",
+     "ankle_left--ankle_left--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "left_ankle",
+    "side": "left",
+    "label_zh": "踝俯仰",
+    "label_en": "Ankle pitch",
+    "pivot": [
+     1.6170815443684178e-05,
+     0.02255058828257761,
+     -0.05793140823751222
+    ],
+    "axis": [
+     8.326672684688678e-17,
+     -0.08715574274765836,
+     -0.9961946980917455
+    ],
+    "stand_rad": 0.452984,
+    "range_rad": [
+     -1.5707963267949063,
+     1.5707963267948868
+    ],
+    "action_index": 4,
+    "parent_body": "leg",
+    "child_body": "ankle_left",
+    "ancestors": [
+     "left_hip_yaw",
+     "left_hip_roll",
+     "left_hip_pitch",
+     "left_knee"
+    ],
+    "servo": "leg--xl330--01",
+    "servo_moves": false,
+    "bracket": [
+     "ankle_left--ankle_left--03"
+    ],
+    "moving": [
+     "ankle_left--sole_left--00",
+     "ankle_left--foot_left--01",
+     "ankle_left--seeed_bearing__configuration_default--02",
+     "ankle_left--ankle_left--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "neck_pitch",
+    "side": null,
+    "label_zh": "颈俯仰",
+    "label_en": "Neck pitch",
+    "pivot": [
+     0.026,
+     0.1496035,
+     -0.0145
+    ],
+    "axis": [
+     0.0,
+     0.0,
+     1.0
+    ],
+    "stand_rad": 0.3490658503988659,
+    "range_rad": [
+     -1.5707963267948974,
+     1.0471975511965967
+    ],
+    "action_index": 5,
+    "parent_body": "trunk_base",
+    "child_body": "neck",
+    "ancestors": [],
+    "servo": "neck--xl330--01",
+    "servo_moves": true,
+    "bracket": [
+     "neck--neck--00",
+     "neck--neck--03"
+    ],
+    "moving": [
+     "neck--neck--00",
+     "neck--xl330--01",
+     "neck--xl330--02",
+     "neck--neck--03",
+     "neck_pitch--neck_pitch--00",
+     "neck_pitch--seeed_bearing__configuration__22x16x4--01",
+     "yaw_roll_motion--yaw_roll_motion--00",
+     "yaw_roll_motion--xl330--01",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--02",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--03",
+     "jaw_soft--lens--00",
+     "jaw_soft--face_part--01",
+     "jaw_soft--xl330--02",
+     "jaw_soft--jaw_soft--03",
+     "jaw_soft--motor_support--04",
+     "jaw_soft--top_head_shell--05",
+     "jaw_soft--xl330--06",
+     "jaw_soft--seeed_bearing__configuration_default--07",
+     "jaw_soft--elec_rpi_robot_hat_pcb--08",
+     "jaw_soft--soft_mouth_top--09",
+     "jaw_soft--noenoeil--10",
+     "jaw_soft--jaw--11",
+     "jaw_soft--bottom_head_shell--12",
+     "jaw_soft--m12_lens_holder--13",
+     "jaw_soft--pcb__raspberry_pi_zero_2_w--14",
+     "jaw_soft--speaker--15"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "head_pitch",
+    "side": null,
+    "label_zh": "头俯仰（点头）",
+    "label_en": "Head pitch (nod)",
+    "pivot": [
+     0.008898992833716566,
+     0.1965881310392954,
+     -0.0145
+    ],
+    "axis": [
+     0.0,
+     0.0,
+     -1.0
+    ],
+    "stand_rad": 0.3490658503988659,
+    "range_rad": [
+     -1.5707963267948966,
+     1.5707963267948966
+    ],
+    "action_index": 6,
+    "parent_body": "neck",
+    "child_body": "neck_pitch",
+    "ancestors": [
+     "neck_pitch"
+    ],
+    "servo": "neck--xl330--02",
+    "servo_moves": false,
+    "bracket": [
+     "neck_pitch--neck_pitch--00"
+    ],
+    "moving": [
+     "neck_pitch--neck_pitch--00",
+     "neck_pitch--seeed_bearing__configuration__22x16x4--01",
+     "yaw_roll_motion--yaw_roll_motion--00",
+     "yaw_roll_motion--xl330--01",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--02",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--03",
+     "jaw_soft--lens--00",
+     "jaw_soft--face_part--01",
+     "jaw_soft--xl330--02",
+     "jaw_soft--jaw_soft--03",
+     "jaw_soft--motor_support--04",
+     "jaw_soft--top_head_shell--05",
+     "jaw_soft--xl330--06",
+     "jaw_soft--seeed_bearing__configuration_default--07",
+     "jaw_soft--elec_rpi_robot_hat_pcb--08",
+     "jaw_soft--soft_mouth_top--09",
+     "jaw_soft--noenoeil--10",
+     "jaw_soft--jaw--11",
+     "jaw_soft--bottom_head_shell--12",
+     "jaw_soft--m12_lens_holder--13",
+     "jaw_soft--pcb__raspberry_pi_zero_2_w--14",
+     "jaw_soft--speaker--15"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "head_yaw",
+    "side": null,
+    "label_zh": "头偏航（转头）",
+    "label_en": "Head yaw (turn)",
+    "pivot": [
+     0.008898992833716566,
+     0.2152812310392954,
+     -1.734723475976807e-18
+    ],
+    "axis": [
+     3.9252311467094385e-17,
+     1.0,
+     -0.0
+    ],
+    "stand_rad": 0.0,
+    "range_rad": [
+     -2.9670597283903613,
+     2.9670597283903595
+    ],
+    "action_index": 7,
+    "parent_body": "neck_pitch",
+    "child_body": "yaw_roll_motion",
+    "ancestors": [
+     "neck_pitch",
+     "head_pitch"
+    ],
+    "servo": "yaw_roll_motion--xl330--01",
+    "servo_moves": true,
+    "bracket": [
+     "yaw_roll_motion--yaw_roll_motion--00"
+    ],
+    "moving": [
+     "yaw_roll_motion--yaw_roll_motion--00",
+     "yaw_roll_motion--xl330--01",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--02",
+     "yaw_roll_motion--seeed_bearing__configuration__22x16x4--03",
+     "jaw_soft--lens--00",
+     "jaw_soft--face_part--01",
+     "jaw_soft--xl330--02",
+     "jaw_soft--jaw_soft--03",
+     "jaw_soft--motor_support--04",
+     "jaw_soft--top_head_shell--05",
+     "jaw_soft--xl330--06",
+     "jaw_soft--seeed_bearing__configuration_default--07",
+     "jaw_soft--elec_rpi_robot_hat_pcb--08",
+     "jaw_soft--soft_mouth_top--09",
+     "jaw_soft--noenoeil--10",
+     "jaw_soft--jaw--11",
+     "jaw_soft--bottom_head_shell--12",
+     "jaw_soft--m12_lens_holder--13",
+     "jaw_soft--pcb__raspberry_pi_zero_2_w--14",
+     "jaw_soft--speaker--15"
+    ],
+    "amplitude_deg": 45
+   },
+   {
+    "id": "head_roll",
+    "side": null,
+    "label_zh": "头侧倾（歪头）",
+    "label_en": "Head roll (tilt)",
+    "pivot": [
+     -0.009001007166283426,
+     0.22978123103929537,
+     -1.734723475976807e-18
+    ],
+    "axis": [
+     -1.0,
+     0.0,
+     -0.0
+    ],
+    "stand_rad": 0.0,
+    "range_rad": [
+     -0.43633231299858327,
+     0.4363323129985815
+    ],
+    "action_index": 8,
+    "parent_body": "yaw_roll_motion",
+    "child_body": "jaw_soft",
+    "ancestors": [
+     "neck_pitch",
+     "head_pitch",
+     "head_yaw"
+    ],
+    "servo": "jaw_soft--xl330--06",
+    "servo_moves": true,
+    "bracket": [
+     "jaw_soft--motor_support--04"
+    ],
+    "moving": [
+     "jaw_soft--lens--00",
+     "jaw_soft--face_part--01",
+     "jaw_soft--xl330--02",
+     "jaw_soft--jaw_soft--03",
+     "jaw_soft--motor_support--04",
+     "jaw_soft--top_head_shell--05",
+     "jaw_soft--xl330--06",
+     "jaw_soft--seeed_bearing__configuration_default--07",
+     "jaw_soft--elec_rpi_robot_hat_pcb--08",
+     "jaw_soft--soft_mouth_top--09",
+     "jaw_soft--noenoeil--10",
+     "jaw_soft--jaw--11",
+     "jaw_soft--bottom_head_shell--12",
+     "jaw_soft--m12_lens_holder--13",
+     "jaw_soft--pcb__raspberry_pi_zero_2_w--14",
+     "jaw_soft--speaker--15"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "right_hip_yaw",
+    "side": "right",
+    "label_zh": "髋偏航",
+    "label_en": "Hip yaw",
+    "pivot": [
+     0.006,
+     0.112182,
+     0.0175
+    ],
+    "axis": [
+     0.0,
+     -1.0,
+     -0.0
+    ],
+    "stand_rad": 0.0,
+    "range_rad": [
+     -0.523598775598297,
+     0.43633231299858416
+    ],
+    "action_index": 9,
+    "parent_body": "trunk_base",
+    "child_body": "bearing_roll",
+    "ancestors": [],
+    "servo": "trunk_base--xl330--07",
+    "servo_moves": false,
+    "bracket": [
+     "bearing_roll--yaw2roll--00",
+     "bearing_roll--bearing_roll--02"
+    ],
+    "moving": [
+     "bearing_roll--yaw2roll--00",
+     "bearing_roll--xl330--01",
+     "bearing_roll--bearing_roll--02",
+     "bearing_roll--seeed_bearing__configuration__22x16x4--03",
+     "hip_l_2--hip_l--00",
+     "hip_l_2--seeed_bearing__configuration__22x16x4--01",
+     "upper_leg_right--xl330--00",
+     "upper_leg_right--seeed_bearing__configuration__22x16x4--01",
+     "upper_leg_right--upper_leg_rigidity_plate--02",
+     "upper_leg_right--upper_leg_right--03",
+     "upper_leg_right--xl330--04",
+     "leg_2--xl330--00",
+     "leg_2--leg--01",
+     "ankle_right--ankle_right--00",
+     "ankle_right--sole_right--01",
+     "ankle_right--seeed_bearing__configuration_default--02",
+     "ankle_right--foot_right--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "right_hip_roll",
+    "side": "right",
+    "label_zh": "髋侧倾",
+    "label_en": "Hip roll",
+    "pivot": [
+     0.0225,
+     0.099682,
+     0.0175
+    ],
+    "axis": [
+     1.0,
+     0.0,
+     -0.0
+    ],
+    "stand_rad": 0.08726646259971647,
+    "range_rad": [
+     -0.3839724354387507,
+     0.38397243543875426
+    ],
+    "action_index": 10,
+    "parent_body": "bearing_roll",
+    "child_body": "hip_l_2",
+    "ancestors": [
+     "right_hip_yaw"
+    ],
+    "servo": "bearing_roll--xl330--01",
+    "servo_moves": false,
+    "bracket": [
+     "hip_l_2--hip_l--00"
+    ],
+    "moving": [
+     "hip_l_2--hip_l--00",
+     "hip_l_2--seeed_bearing__configuration__22x16x4--01",
+     "upper_leg_right--xl330--00",
+     "upper_leg_right--seeed_bearing__configuration__22x16x4--01",
+     "upper_leg_right--upper_leg_rigidity_plate--02",
+     "upper_leg_right--upper_leg_right--03",
+     "upper_leg_right--xl330--04",
+     "leg_2--xl330--00",
+     "leg_2--leg--01",
+     "ankle_right--ankle_right--00",
+     "ankle_right--sole_right--01",
+     "ankle_right--seeed_bearing__configuration_default--02",
+     "ankle_right--foot_right--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "right_hip_pitch",
+    "side": "right",
+    "label_zh": "髋俯仰",
+    "label_en": "Hip pitch",
+    "pivot": [
+     0.004000000000000007,
+     0.09750310643130855,
+     0.04240486745229363
+    ],
+    "axis": [
+     0.0,
+     -0.08715574274765814,
+     0.9961946980917455
+    ],
+    "stand_rad": 0.457924,
+    "range_rad": [
+     -1.57079632679494,
+     1.570796326794853
+    ],
+    "action_index": 11,
+    "parent_body": "hip_l_2",
+    "child_body": "upper_leg_right",
+    "ancestors": [
+     "right_hip_yaw",
+     "right_hip_roll"
+    ],
+    "servo": "upper_leg_right--xl330--04",
+    "servo_moves": true,
+    "bracket": [
+     "upper_leg_right--upper_leg_rigidity_plate--02",
+     "upper_leg_right--upper_leg_right--03"
+    ],
+    "moving": [
+     "upper_leg_right--xl330--00",
+     "upper_leg_right--seeed_bearing__configuration__22x16x4--01",
+     "upper_leg_right--upper_leg_rigidity_plate--02",
+     "upper_leg_right--upper_leg_right--03",
+     "upper_leg_right--xl330--04",
+     "leg_2--xl330--00",
+     "leg_2--leg--01",
+     "ankle_right--ankle_right--00",
+     "ankle_right--sole_right--01",
+     "ankle_right--seeed_bearing__configuration_default--02",
+     "ankle_right--foot_right--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "right_knee",
+    "side": "right",
+    "label_zh": "膝屈伸",
+    "label_en": "Knee bend",
+    "pivot": [
+     -0.018365151350322212,
+     0.06243703045032531,
+     0.035321703979445514
+    ],
+    "axis": [
+     -5.551115123125784e-17,
+     0.08715574274765826,
+     -0.9961946980917455
+    ],
+    "stand_rad": 0.00494,
+    "range_rad": [
+     -1.5707963267949339,
+     1.5707963267948593
+    ],
+    "action_index": 12,
+    "parent_body": "upper_leg_right",
+    "child_body": "leg_2",
+    "ancestors": [
+     "right_hip_yaw",
+     "right_hip_roll",
+     "right_hip_pitch"
+    ],
+    "servo": "upper_leg_right--xl330--00",
+    "servo_moves": false,
+    "bracket": [
+     "leg_2--leg--01"
+    ],
+    "moving": [
+     "leg_2--xl330--00",
+     "leg_2--leg--01",
+     "ankle_right--ankle_right--00",
+     "ankle_right--sole_right--01",
+     "ankle_right--seeed_bearing__configuration_default--02",
+     "ankle_right--foot_right--03"
+    ],
+    "amplitude_deg": 25
+   },
+   {
+    "id": "right_ankle",
+    "side": "right",
+    "label_zh": "踝俯仰",
+    "label_en": "Ankle pitch",
+    "pivot": [
+     1.6170815443687647e-05,
+     0.02255058828257761,
+     0.05793140823751222
+    ],
+    "axis": [
+     8.32667268468868e-17,
+     -0.08715574274765847,
+     0.9961946980917455
+    ],
+    "stand_rad": -0.452984,
+    "range_rad": [
+     -1.5707963267949028,
+     1.5707963267948903
+    ],
+    "action_index": 13,
+    "parent_body": "leg_2",
+    "child_body": "ankle_right",
+    "ancestors": [
+     "right_hip_yaw",
+     "right_hip_roll",
+     "right_hip_pitch",
+     "right_knee"
+    ],
+    "servo": "leg_2--xl330--00",
+    "servo_moves": false,
+    "bracket": [
+     "ankle_right--ankle_right--00"
+    ],
+    "moving": [
+     "ankle_right--ankle_right--00",
+     "ankle_right--sole_right--01",
+     "ankle_right--seeed_bearing__configuration_default--02",
+     "ankle_right--foot_right--03"
+    ],
+    "amplitude_deg": 25
+   }
+  ],
+  "enabled": [
+   "head_pitch",
+   "head_yaw",
+   "head_roll",
+   "neck_pitch",
+   "left_hip_yaw",
+   "left_hip_roll",
+   "left_hip_pitch",
+   "left_knee",
+   "left_ankle"
+  ],
+  "regions": [
+   {
+    "id": "head",
+    "label_zh": "头",
+    "label_en": "Head",
+    "joints": [
+     "head_pitch",
+     "head_yaw",
+     "head_roll"
+    ],
+    "fixed": {
+     "servo": "jaw_soft--xl330--02",
+     "label_zh": "鸭嘴",
+     "label_en": "Beak",
+     "note_zh": "有 1 个舵机，但课程模型里喙固定在头上，没有可转动的关节。",
+     "note_en": "It has one servo, but the course model fixes the beak to the head, so there is no joint to turn."
+    },
+    "fact_zh": "3 个舵机分别负责头俯仰（点头）、头偏航（转头）和头侧倾（歪头）。",
+    "fact_en": "Three servos drive head pitch (nod), head yaw (turn) and head roll (tilt)."
+   },
+   {
+    "id": "neck",
+    "label_zh": "脖子",
+    "label_en": "Neck",
+    "joints": [
+     "neck_pitch"
+    ],
+    "fact_zh": "1 个舵机负责颈俯仰，让脖子连同头一起前后倾。",
+    "fact_en": "One servo drives neck pitch, tilting the neck and head forward and back."
+   },
+   {
+    "id": "hip",
+    "label_zh": "髋",
+    "label_en": "Hip",
+    "joints": [
+     "left_hip_yaw",
+     "left_hip_roll",
+     "left_hip_pitch"
+    ],
+    "fact_zh": "每侧 3 个舵机：髋偏航的装在身体里，髋侧倾的装在髋支架上，髋俯仰的装在大腿里。",
+    "fact_en": "Three servos per side: hip yaw sits in the body, hip roll on the hip bracket and hip pitch in the thigh.",
+    "mirror": {
+     "left_hip_yaw": "right_hip_yaw",
+     "left_hip_roll": "right_hip_roll",
+     "left_hip_pitch": "right_hip_pitch"
+    }
+   },
+   {
+    "id": "knee",
+    "label_zh": "膝",
+    "label_en": "Knee",
+    "joints": [
+     "left_knee"
+    ],
+    "fact_zh": "每侧 1 个舵机，装在大腿里，带动小腿屈伸。",
+    "fact_en": "One servo per side, mounted in the thigh, bends the shank.",
+    "mirror": {
+     "left_knee": "right_knee"
+    }
+   },
+   {
+    "id": "foot",
+    "label_zh": "脚",
+    "label_en": "Foot",
+    "joints": [
+     "left_ankle"
+    ],
+    "fact_zh": "每侧 1 个舵机，装在小腿里，带动脚掌俯仰。",
+    "fact_en": "One servo per side, mounted in the shank, pitches the foot.",
+    "mirror": {
+     "left_ankle": "right_ankle"
+    }
+   }
+  ],
+  "side_note": {
+   "zh": "髋、膝、脚以左腿为例，右腿对称。",
+   "en": "Hip, knee and foot show the left leg; the right leg mirrors it."
+  },
+  "gizmo": {
+   "head_pitch": {
+    "end": [
+     0,
+     0,
+     1
+    ],
+    "toward": [
+     -1,
+     0,
+     0
+    ]
+   },
+   "head_yaw": {
+    "end": [
+     0,
+     1,
+     0
+    ],
+    "toward": [
+     -1,
+     0,
+     0
+    ],
+    "radius": 0.048
+   },
+   "head_roll": {
+    "end": [
+     -1,
+     0,
+     0
+    ],
+    "toward": [
+     0,
+     1,
+     0
+    ]
+   },
+   "neck_pitch": {
+    "end": [
+     0,
+     0,
+     1
+    ],
+    "toward": [
+     -1,
+     0,
+     0
+    ]
+   },
+   "left_hip_yaw": {
+    "end": [
+     0,
+     1,
+     0
+    ],
+    "toward": [
+     0,
+     0,
+     -1
+    ]
+   },
+   "left_hip_roll": {
+    "end": [
+     1,
+     0,
+     0
+    ],
+    "toward": [
+     0,
+     0,
+     -1
+    ]
+   },
+   "left_hip_pitch": {
+    "end": [
+     0,
+     0,
+     -1
+    ],
+    "toward": [
+     -1,
+     0,
+     0
+    ]
+   },
+   "left_knee": {
+    "end": [
+     0,
+     0,
+     -1
+    ],
+    "toward": [
+     -1,
+     0,
+     0
+    ]
+   },
+   "left_ankle": {
+    "end": [
+     0,
+     0,
+     -1
+    ],
+    "toward": [
+     -1,
+     0,
+     0
+    ]
+   }
+  },
+  "functional": [
+   {
+    "id": "head",
+    "per_side": false,
+    "both": {
+     "joints": [
+      "head_pitch",
+      "head_yaw",
+      "head_roll"
+     ],
+     "servos": [
+      "neck--xl330--02",
+      "yaw_roll_motion--xl330--01",
+      "jaw_soft--xl330--06"
+     ],
+     "focus_groups": [
+      "head",
+      "neck"
+     ]
+    }
+   },
+   {
+    "id": "beak",
+    "per_side": false,
+    "fixed": true,
+    "both": {
+     "joints": [],
+     "servos": [
+      "jaw_soft--xl330--02"
+     ],
+     "focus_groups": [
+      "beak",
+      "head"
+     ]
+    }
+   },
+   {
+    "id": "neck",
+    "per_side": false,
+    "both": {
+     "joints": [
+      "neck_pitch"
+     ],
+     "servos": [
+      "neck--xl330--01"
+     ],
+     "focus_groups": [
+      "neck"
+     ]
+    }
+   },
+   {
+    "id": "hip",
+    "per_side": true,
+    "left": {
+     "joints": [
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch"
+     ],
+     "servos": [
+      "trunk_base--xl330--04",
+      "yaw2roll--xl330--01",
+      "upper_leg_left--xl330--04"
+     ],
+     "focus_groups": [
+      "frame",
+      "left-hip",
+      "left-thigh"
+     ]
+    },
+    "right": {
+     "joints": [
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch"
+     ],
+     "servos": [
+      "trunk_base--xl330--07",
+      "bearing_roll--xl330--01",
+      "upper_leg_right--xl330--04"
+     ],
+     "focus_groups": [
+      "frame",
+      "right-hip",
+      "right-thigh"
+     ]
+    }
+   },
+   {
+    "id": "knee",
+    "per_side": true,
+    "left": {
+     "joints": [
+      "left_knee"
+     ],
+     "servos": [
+      "upper_leg_left--xl330--01"
+     ],
+     "focus_groups": [
+      "left-shank",
+      "left-thigh"
+     ]
+    },
+    "right": {
+     "joints": [
+      "right_knee"
+     ],
+     "servos": [
+      "upper_leg_right--xl330--00"
+     ],
+     "focus_groups": [
+      "right-shank",
+      "right-thigh"
+     ]
+    }
+   },
+   {
+    "id": "foot",
+    "per_side": true,
+    "left": {
+     "joints": [
+      "left_ankle"
+     ],
+     "servos": [
+      "leg--xl330--01"
+     ],
+     "focus_groups": [
+      "left-foot",
+      "left-shank"
+     ]
+    },
+    "right": {
+     "joints": [
+      "right_ankle"
+     ],
+     "servos": [
+      "leg_2--xl330--00"
+     ],
+     "focus_groups": [
+      "right-foot",
+      "right-shank"
+     ]
+    }
+   }
+  ],
+  "sensors": {
+   "tof": {
+    "pos": [
+     0.06429899283371655,
+     0.2432812310392954,
+     -0.022408599999999994
+    ],
+    "body": "jaw_soft",
+    "near_part": "jaw_soft--top_head_shell--05",
+    "group": "head-top"
+   },
+   "head_camera": {
+    "pos": [
+     0.06429899283371655,
+     0.24528123103929536,
+     9.137779999999823e-05
+    ],
+    "body": "jaw_soft",
+    "near_part": "jaw_soft--face_part--01",
+    "group": "face"
+   }
+  },
+  "annotations": {
+   "tof": {
+    "pos": [
+     0.064299,
+     0.243231,
+     -0.022409
+    ],
+    "near_part": "jaw_soft--face_part--01",
+    "group": "face",
+    "basis": "Teaching marker for the exploded view: centre of the ToF window cut in the face board beside the camera lens, on the board's front surface (CAD opening 5.9 x 10.6 mm; within 0.05 mm of sensors.tof, which stays unchanged). It moves with the face board."
+   }
+  }
+ }
+}

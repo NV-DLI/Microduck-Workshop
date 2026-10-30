@@ -1,0 +1,21 @@
+{
+  "autonomous-explained.gif": {
+    "name": "autonomous-explained-clean",
+    "stages": "autonomous-stages-i18n.json"
+  },
+  "rollers-autonomous.gif": {
+    "name": "rollers-autonomous-clean",
+    "stages": "rollers-stages-i18n.json"
+  },
+  "terrain-ascent.gif": {
+    "name": "terrain-ascent-close",
+    "comparison": true
+  },
+  "terrain-descent.gif": {
+    "name": "terrain-descent-close",
+    "comparison": true
+  },
+  "rollers-slope.gif": {
+    "name": "rollers-slope-close"
+  }
+}

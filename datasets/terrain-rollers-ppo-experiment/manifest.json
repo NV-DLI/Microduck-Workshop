@@ -1,0 +1,48 @@
+{
+ "schema": "microduck.course-data.v2",
+ "package": "terrain-rollers-ppo-experiment",
+ "description": "Course roller slope PPO experiment (256 envs x 1000 iterations, seed 47001, official roller ONNX as the actor start, own roller reward set). Status: NEGATIVE RESULT kept as a reward-design example, not a qualified or default model. Training reward and episode length rose while the terrain curriculum fell to the easiest tiles; on the +5 deg verification (5 envs, 20 s, seed 55011) 0/5 passed, 0 falls, all robots ended about 0.7-1.1 m behind the start without reaching the slope (verification-up-05.json).",
+ "total_bytes": 8097066,
+ "files": [
+  {
+   "path": "agent.yaml",
+   "bytes": 1296,
+   "sha256": "76b6edd2079d4100b8dc92f6eec8d09f9f0393277ba2be7ceb3cca348cd2b540"
+  },
+  {
+   "path": "env.yaml",
+   "bytes": 43224,
+   "sha256": "b2d26d1e54534eba6e0bc53b013f6d7f4f07917a78275bec7b77ca8cb190d4a2"
+  },
+  {
+   "path": "training-ledger.json",
+   "bytes": 2575,
+   "sha256": "33a4253f1694a4842bf174ae119c0887a5be117b7d37d1861280133d7d45fe42"
+  },
+  {
+   "path": "events.out.tfevents.1793354473.spark-c239.6998.0",
+   "bytes": 1701398,
+   "sha256": "b23412d8d3ac12a1bc4b9c29542a247e9b7e73b0bf9f0e10727b5138d10d56e0"
+  },
+  {
+   "path": "exported/policy.onnx",
+   "bytes": 793215,
+   "sha256": "6652c2e559dc8499719e93541f62ef93de9e2bc9719c88fbe6ac172b7320f32b"
+  },
+  {
+   "path": "exported/policy.onnx.data",
+   "bytes": 791040,
+   "sha256": "b116f565d6c674d9f3e7b5d4c31935ccb220c024777713b8abd35b6dd1f6e170"
+  },
+  {
+   "path": "model_999.pt",
+   "bytes": 4750947,
+   "sha256": "d57f4c9c8e59b0b642fffc865de8d0761137ce394ff772f362a1dfe4700593d4"
+  },
+  {
+   "path": "verification-up-05.json",
+   "bytes": 13371,
+   "sha256": "a6be3f536603b878b32324783956d620916c20e047dc07b95f98cfab8b48e6b5"
+  }
+ ]
+}

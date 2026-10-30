@@ -1,10 +1,870 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Explore jumping, ball balancing and skill handoffs using the same observation–action–reward framework."><meta name="theme-color" content="#76b900"><title>Explore community movement skills · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="05-skills"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/05-skills.html" >简体中文</a><a lang="en" href="../en/05-skills.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a aria-current="page" href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Course chapters</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Explore community movement skills</h1><p class="lead">Explore jumping, ball balancing and skill handoffs using the same observation–action–reward framework.</p><div class="lesson-meta">Chapter 5 · Estimated learning time: 20 minutes</div></div></div><section id="community"><h2>What else can the same robot learn?</h2><p>Community projects train jumping and ball balancing using different tasks, rewards and initial states. These demonstrations come from their original simulation environments and do not establish equivalent Newton or hardware performance.</p><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-jump-hd.jpg" aria-label="Community jump demonstration in the original four-times slow motion. Observe takeoff, flight, landing and the standing handoff."><source src="../assets/media/community-jump-hd.mp4" type="video/mp4"></video><figcaption>Community jump demonstration in the original four-times slow motion. Observe takeoff, flight, landing and the standing handoff.</figcaption></figure><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="Community ball-balancing demonstration: watch the moving support surface and continuous posture corrections."><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption>Community ball-balancing demonstration: watch the moving support surface and continuous posture corrections.</figcaption></figure><div class="table-scroll"><table><thead><tr><th>Skill</th><th>Observations and actions</th><th>Rewards and completion</th></tr></thead><tbody><tr><td>Jumping</td><td>Body state and a jump command → joint actions</td><td>Height, landing posture and recovery</td></tr><tr><td>Basketball balance</td><td>Robot and ball state → joint actions</td><td>Balance, relative position and survival</td></tr><tr><td>Walking</td><td>Body state and velocity command → joint actions</td><td>Speed tracking, stability, energy and smoothness</td></tr></tbody></table></div><p>Isaac Sim supplies props and contact geometry; Isaac Lab organizes observations, rewards and reset distributions. Equal observation dimensions do not guarantee compatibility: the jump policy repurposes a command field as a launch trigger.</p></section><section id="contract"><h2>Define a skill’s boundaries</h2><p>Walking continuously accepts velocity commands. A kick is a short skill with a start and an end. Integrating it into an autonomous task requires entry conditions, a defined exit state, and a way to stop when conditions are unsafe.</p><div class="table-scroll"><table><thead><tr><th>Phase</th><th>What to check</th></tr></thead><tbody><tr><td>Jumping</td><td>Body state and a jump command → joint actions</td><td>Height, landing posture and recovery</td></tr><tr><td>Basketball balance</td><td>Robot and ball state → joint actions</td><td>Balance, relative position and survival</td></tr><tr><td>Walking</td><td>Body state and velocity command → joint actions</td><td>Speed tracking, stability, energy and smoothness</td></tr></tbody></table></div></section><section id="compatible"><h2>Why ONNX files are not interchangeable</h2><p>ONNX is a model representation, not a universal robot-skill protocol. The walking model takes 61 inputs, while the kicking residual takes 62. Both output 14 numbers, yet they are not interchangeable. Input ordering, additional state, action scaling, teacher blending, and termination conditions are all part of the runtime contract.</p><p>Loading a model only establishes that its format is readable. Units, joint order and scaling must match the controller. The <a href="models.html">models page</a> lists the fixed weights and their roles. Chapter 6 shows the complete task assembled from these skills.</p><p>Watch the kick in three phases: before it, inspect ball and support-foot positions; during it, identify whether contact comes from the foot or another body part; afterwards, inspect recovery of support. Pause the video in each phase and describe the entry and completion conditions. This is more informative than asking only whether the ball moved.</p></section><section id="handoff"><h2>Describe a skill by its contract</h2><p>Describe a skill using entry conditions, observations, actions, and exit conditions. A kick requires a useful right-foot ball position, goal alignment, stable support, and fresh target information. Execution combines the kicking teacher with a residual correction. It must then return to a stable standing or walking state; touching the ball alone does not finish the task.</p><p>A residual adds a constrained correction to an existing action. This reduces what must be learned from scratch but inherits the teacher’s operating range. Starting a local kick far from the ball does not make it search or approach. Navigation creates a valid handoff state; the skill performs its local action.</p><div class="quiz"><h3>Check your understanding</h3><p>The robot is beside the ball, but its remembered position has expired. Should the kick start immediately?</p><details><summary>Show explanation</summary><p>No. Observe again and confirm the entry conditions. Proximity alone does not guarantee valid inputs.</p></details></div></section><section id="eyes"><h2>Executing a skill is not completing a task</h2><p>We currently tell the robot when to move or kick. Joint and IMU feedback support balance, but the policy does not decide where the ball is or which route to take. Next we review a complete perception/planning pipeline, then consider how learned models can take on more decisions.</p></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" target="_blank" rel="noopener">Isaac Lab: Microduck task source ↗</a></li><li><a href="https://github.com/ThomasBurgess2000/microduck-max-height-jump" target="_blank" rel="noopener">Community jump: actor, slow-motion video and handoff ↗</a></li><li><a href="https://github.com/Vottivott/microduck-playground/tree/main/experiments/basketball" target="_blank" rel="noopener">Community basketball: demonstration, training and evaluation ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="04-terrain.html"><small>← Previous</small>Adapt walking to slopes</a><a href="06-autonomy.html"><small>Next →</small>From engineered pipelines to intelligent robots</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#community">What else can the same robot learn?</a><a href="#contract">Define a skill’s boundaries</a><a href="#compatible">Why ONNX files are not interchangeable</a><a href="#handoff">Describe a skill by its contract</a><a href="#eyes">Executing a skill is not completing a task</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task." name="description" />
+
+  <title>3.4 Community skills: from goal to reward - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '05-skills';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.1 Vision-language-action models and GR00T" href="07-groot.html" />
+    <link rel="prev" title="3.3 Reward design: walking steadily up and down slopes" href="04-terrain.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="05-skills">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/05-skills.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/05-skills.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/05-skills.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/05-skills.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 Community skills: from goal to reward</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="community-skills-from-goal-to-reward">
+<h1>3.4 Community skills: from goal to reward<a class="headerlink" href="#community-skills-from-goal-to-reward" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task.</p>
+</div><div class="lesson-meta">Section 3.4 · Reading and analysis · Estimated learning time: 45 minutes</div></div></div><script type="application/json" class="course-symbols">{"dt": {"tex": "\\Delta t", "text": "Control step: the time between two policy outputs. All three skills here use 0.02 s (50 Hz)."}, "alpha_f": {"tex": "\\alpha", "text": "Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself."}, "p_target": {"tex": "p^{*}_{xy}", "text": "Target horizontal position of the centre of mass (m): moves from the midpoint of the feet to above the stance foot."}, "p_mid": {"tex": "p_{\\mathrm{mid}}", "text": "Midpoint between the two feet (horizontal position, m)."}, "p_stance": {"tex": "p_{\\mathrm{stance}}", "text": "Horizontal position of the stance foot (m)."}, "c_com": {"tex": "c_{xy}", "text": "Horizontal position of the whole-robot centre of mass (m), computed by the simulator over all parts."}, "sigma_c": {"tex": "\\sigma_c", "text": "Centre-of-mass error scale: 0.03 m, tightened to 0.02 m after training iteration 700."}, "r_com": {"tex": "r_{\\mathrm{com}}", "text": "Centre-of-mass target term (weight 3)."}, "S": {"tex": "S", "text": "Smoothstep: rises smoothly from 0 to 1 while the blend is inside $[a,b]$; 0 before, 1 after."}, "tau": {"tex": "\\tau", "text": "Normalized progress inside the smoothstep, clamped to between 0 and 1."}, "a_lo": {"tex": "a", "text": "Where the smoothstep starts to rise."}, "b_hi": {"tex": "b", "text": "Where the smoothstep reaches 1."}, "clip": {"tex": "\\operatorname{clip}", "text": "Clamp: limits a value to a given interval."}, "k_swing": {"tex": "k_{\\mathrm{swing}}", "text": "Whether the foot to be lifted touches the ground right now (1 contact, 0 airborne)."}, "k_stance": {"tex": "k_{\\mathrm{stance}}", "text": "Whether the stance foot touches the ground right now (1 contact)."}, "z_swing": {"tex": "z_{\\mathrm{swing}}", "text": "Height of the foot to be lifted above the ground (m)."}, "r_contact": {"tex": "r_{\\mathrm{contact}}", "text": "Swing-foot contact term (weight 0.5): rewards contact while standing is due, penalizes it once the lift is due."}, "r_clear": {"tex": "r_{\\mathrm{clear}}", "text": "Swing-foot height term (weight 1.5): target 0.10 m, scale 0.06 m."}, "p_ball": {"tex": "p_{\\mathrm{ball}}", "text": "Position of the basketball centre (m), read directly from the simulation state; the deployed policy cannot see it."}, "p_root": {"tex": "p_{\\mathrm{root}}", "text": "Position of the robot root (body) (m)."}, "p_foot": {"tex": "p_{\\mathrm{foot}}", "text": "Position of one foot's sole reference point (m)."}, "z_root": {"tex": "z_{\\mathrm{root}}", "text": "Height of the robot root (m)."}, "z_ball": {"tex": "z_{\\mathrm{ball}}", "text": "Height of the ball centre (m)."}, "R_ball": {"tex": "R", "text": "Basketball radius, 0.12 m (size 7)."}, "g_x": {"tex": "g_x", "text": "Forward/backward component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "g_y": {"tex": "g_y", "text": "Left/right component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "v_ball": {"tex": "v_{\\mathrm{ball}}", "text": "Horizontal velocity of the basketball (m/s), simulation state."}, "r_center": {"tex": "r_{\\mathrm{center}}", "text": "Body-over-ball-centre term (weight 2)."}, "r_feet": {"tex": "r_{\\mathrm{feet}}", "text": "Feet-resting-on-the-ball term (weight 1), averaged over both feet."}, "r_height": {"tex": "r_{\\mathrm{height}}", "text": "Standing-height-on-the-apex term (weight 1)."}, "r_up": {"tex": "r_{\\mathrm{up}}", "text": "Upright-body term (weight 1)."}, "r_ball": {"tex": "r_{\\mathrm{ball}}", "text": "Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays."}, "v_cmd": {"tex": "v^{*}_{xy}", "text": "Horizontal velocity command (m/s). In the moonwalk training the forward component is −0.25 to −0.08 m/s, i.e. backward."}, "v_xy": {"tex": "v_{xy}", "text": "Horizontal velocity in the body frame (m/s)."}, "v_z": {"tex": "v_z", "text": "Vertical velocity in the body frame (m/s); 0 for ideal translation."}, "omega_cmd": {"tex": "\\omega^{*}_z", "text": "Turn-rate command (rad/s)."}, "sigma_v": {"tex": "\\sigma_v", "text": "Velocity-tracking scale, $\\sigma_v^2 = 0.1\\ (\\mathrm{m/s})^2$."}, "r_lin": {"tex": "r_{\\mathrm{lin}}", "text": "Linear-velocity tracking term (weight 2 in the base walking recipe)."}, "v_foot": {"tex": "v_{\\mathrm{foot}}", "text": "Horizontal velocity of one foot in the world frame (m/s)."}, "k_foot": {"tex": "k_{\\mathrm{foot}}", "text": "Whether this foot touches the ground (1 contact)."}, "r_slip": {"tex": "r_{\\mathrm{slip}}", "text": "Foot-slip cost: counts feet that still move horizontally while in contact; negative weight."}, "one": {"tex": "\\mathbf{1}", "text": "Indicator: 1 when the condition in brackets holds, otherwise 0."}, "exp": {"tex": "\\exp", "text": "Exponential: turns a squared error into a smooth reward between 0 and 1."}}</script><section id="community">
+<h2>What else can the same robot learn?<a class="headerlink" href="#community" title="Link to this heading">#</a></h2>
+<p>Section 3.3 used six steps to design rewards for slopes. Community authors have trained many other skills on the same Microduck, and several have published their policies, training code and evaluation records. Start from these two entry points:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" rel="noreferer noopener" target="_blank">Official Microduck web simulator ↗</a>: a browser simulator published by Pollen Robotics where you can switch between and try the official walking, roller and other policies without installing anything.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/models?search=microduck" rel="noreferer noopener" target="_blank">Microduck models on Hugging Face ↗</a>: searching for “microduck” lists policies uploaded by the community; each model card describes its command format, training method and known limits.</p></li>
+</ul>
+<p>This section reads three of them closely: the flamingo (one-leg) cycle uses gates to order its movements, basketball balance separates privileged information in the reward from what the deployed policy observes, and the backward glide shows that a written goal is not a verified capability. The hardware is the same; the goals, rewards, initial states and termination conditions change. All three were trained and evaluated in their authors' own MuJoCo / mjlab environments; the results below are the authors' simulation reports and have not been retested in the course's Newton scene or on the robot.</p>
+<p>These three models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.</p>
+</section>
+<section id="how-to-read">
+<h2>Read three skills with one table<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
+<p>Read every skill in the same order:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>What to read</p></th>
+<th class="head"><p>Question to answer</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Goal</p></td>
+<td><p>What should the robot achieve? How is success decided?</p></td>
+</tr>
+<tr class="row-odd"><td><p>Observable quantities</p></td>
+<td><p>Which quantities does the reward read? In which units and frames? Which are simulation states the policy cannot see?</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Formula</p></td>
+<td><p>What shape is each term? What are its scale, sign and gate?</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Code</p></td>
+<td><p>How does the author's code implement the formula? Which parameters are actually passed in?</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Failure modes</p></td>
+<td><p>Which loopholes or failures did the author record, and how were they closed?</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Success checks</p></td>
+<td><p>Which independent evaluation did the author use? What remains unverified?</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Before reading community reward code, know three things:</p>
+<ul class="simple">
+<li><p><strong>Rewards are scaled by the step.</strong> Like Isaac Lab, the mjlab 1.3.0 reward manager multiplies each raw term by its weight and the control step <span class="math notranslate nohighlight">\(\htmlData{sym=dt}{\Delta t}\)</span> before adding them up (<a class="reference external" href="https://github.com/mujocolab/mjlab/blob/19d6c06c17572dafcb31ad5110a902006b58d944/src/mjlab/managers/reward_manager.py" rel="noreferer noopener" target="_blank">source ↗</a>). A term that returns “value ÷ <span class="math notranslate nohighlight">\(\htmlData{sym=dt}{\Delta t}\)</span>” at one step therefore pays exactly “weight × value” once.</p></li>
+<li><p><strong>Check signs term by term.</strong> Most penalties return non-negative values with a negative weight, but there are exceptions: one term in the flamingo cycle returns negative values with a positive weight. The sign of the weight alone can mislead you.</p></li>
+<li><p><strong>Function defaults are not the actual parameters.</strong> Reward functions often have defaults that differ from what the configuration passes; the <code class="docutils literal notranslate"><span class="pre">params</span></code> used when the term is registered are what count.</p></li>
+</ul>
+</section>
+<section id="flamingo">
+<h2>Flamingo cycle: gates set the order of movements<a class="headerlink" href="#flamingo" title="Link to this heading">#</a></h2>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-flamingo-hd.jpg" aria-label="Author preview of the community flamingo cycle: Microduck stands on both feet, shifts its weight onto one foot, lifts and holds the other, puts it down, then stands on the other foot."><source src="../assets/media/community-flamingo-hd.mp4" type="video/mp4"></video><figcaption><p>Author preview of the community flamingo cycle: the author ran the exported ONNX policy in MuJoCo with a preset sequence of commands, standing on one foot, putting it down, then standing on the other; the recording ends during the second one-foot stance. This is the author's original simulation environment, not a Newton run of this course. Watch the weight move onto the stance foot before the other foot lifts, and the reverse order when it comes down.</p>
+</figcaption></figure><p><strong>Goal.</strong> The <a class="reference external" href="https://huggingface.co/RemiFabre/microduck-flamingo-cycle" rel="noreferer noopener" target="_blank">flamingo cycle ↗</a> switches on command between standing on two feet and standing on one: in the command <code class="docutils literal notranslate"><span class="pre">[flag,</span> <span class="pre">side,</span> <span class="pre">0]</span></code>, <code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">1</span></code> shifts the weight onto the stance foot chosen by <code class="docutils literal notranslate"><span class="pre">side</span></code>, lifts the other foot about 9 cm and holds; <code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">0</span></code> lowers it and stands on both feet. Each transition takes about 1.5 s and can be interrupted at any time. The author's simulation preview from the model card is above, so you can watch the motion first.</p>
+<p><strong>Observable quantities.</strong> The whole-robot centre of mass (the author deliberately uses the whole-body centre of mass rather than that of the single body part: the head is about 38% of the mass, and with a lifted leg the two differ by centimetres), the positions and contacts of both feet, the gravity direction in the body frame, joint angles and velocities. The reward also uses an internal quantity, the blend <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span>, which moves from 0 to 1 (or back) over 1.5 s after a command change; the policy observes only the command.</p>
+<p><strong>Formula.</strong> Instead of scripting “shift the weight, then lift the foot” as a timetable, the author lets each term switch on or off with <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span>:</p>
+<div class="formula"><div class="formula-label">The centre-of-mass target moves with the blend (weight 3)</div><div class="formula-body">\[\htmlData{sym=p_target}{p^{*}_{xy}}=(1-\htmlData{sym=alpha_f}{\alpha})\,\htmlData{sym=p_mid}{p_{\mathrm{mid}}}+\htmlData{sym=alpha_f}{\alpha}\,\htmlData{sym=p_stance}{p_{\mathrm{stance}}},\qquad \htmlData{sym=r_com}{r_{\mathrm{com}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=c_com}{c_{xy}}-\htmlData{sym=p_target}{p^{*}_{xy}}\|^2}{\htmlData{sym=sigma_c}{\sigma_c}^2}\right)\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(p^{*}_{xy}\)</dt><dd>Target horizontal position of the centre of mass (m): moves from the midpoint of the feet to above the stance foot.</dd></div><div><dt>\(\alpha\)</dt><dd>Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself.</dd></div><div><dt>\(p_{\mathrm{mid}}\)</dt><dd>Midpoint between the two feet (horizontal position, m).</dd></div><div><dt>\(p_{\mathrm{stance}}\)</dt><dd>Horizontal position of the stance foot (m).</dd></div><div><dt>\(r_{\mathrm{com}}\)</dt><dd>Centre-of-mass target term (weight 3).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(c_{xy}\)</dt><dd>Horizontal position of the whole-robot centre of mass (m), computed by the simulator over all parts.</dd></div><div><dt>\(\sigma_c\)</dt><dd>Centre-of-mass error scale: 0.03 m, tightened to 0.02 m after training iteration 700.</dd></div></dl></details></div><div class="formula"><div class="formula-label">Smoothstep gate</div><div class="formula-body">\[\htmlData{sym=S}{S(\htmlData{sym=alpha_f}{\alpha};\htmlData{sym=a_lo}{a},\htmlData{sym=b_hi}{b})}=\htmlData{sym=tau}{\tau}^2(3-2\htmlData{sym=tau}{\tau}),\qquad \htmlData{sym=tau}{\tau}=\htmlData{sym=clip}{\operatorname{clip}}\!\left(\frac{\htmlData{sym=alpha_f}{\alpha}-\htmlData{sym=a_lo}{a}}{\htmlData{sym=b_hi}{b}-\htmlData{sym=a_lo}{a}},0,1\right)\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(S\)</dt><dd>Smoothstep: rises smoothly from 0 to 1 while the blend is inside \([a,b]\); 0 before, 1 after.</dd></div><div><dt>\(\alpha\)</dt><dd>Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself.</dd></div><div><dt>\(a\)</dt><dd>Where the smoothstep starts to rise.</dd></div><div><dt>\(b\)</dt><dd>Where the smoothstep reaches 1.</dd></div><div><dt>\(\tau\)</dt><dd>Normalized progress inside the smoothstep, clamped to between 0 and 1.</dd></div><div><dt>\(\operatorname{clip}\)</dt><dd>Clamp: limits a value to a given interval.</dd></div></dl></details></div><div class="formula"><div class="formula-label">Swing-foot contact (weight 0.5) and swing-foot height (weight 1.5)</div><div class="formula-body">\[\htmlData{sym=r_contact}{r_{\mathrm{contact}}}=\htmlData{sym=k_swing}{k_{\mathrm{swing}}}\left[1-2\,\htmlData{sym=S}{S(\htmlData{sym=alpha_f}{\alpha};0.4,0.9)}\right],\qquad \htmlData{sym=r_clear}{r_{\mathrm{clear}}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=z_swing}{z_{\mathrm{swing}}}-0.10}{0.06}\right)^2\right]\htmlData{sym=k_stance}{k_{\mathrm{stance}}}\,\htmlData{sym=S}{S(\htmlData{sym=alpha_f}{\alpha};0.6,1.0)}\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{contact}}\)</dt><dd>Swing-foot contact term (weight 0.5): rewards contact while standing is due, penalizes it once the lift is due.</dd></div><div><dt>\(k_{\mathrm{swing}}\)</dt><dd>Whether the foot to be lifted touches the ground right now (1 contact, 0 airborne).</dd></div><div><dt>\(S\)</dt><dd>Smoothstep: rises smoothly from 0 to 1 while the blend is inside \([a,b]\); 0 before, 1 after.</dd></div><div><dt>\(\alpha\)</dt><dd>Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself.</dd></div><div><dt>\(r_{\mathrm{clear}}\)</dt><dd>Swing-foot height term (weight 1.5): target 0.10 m, scale 0.06 m.</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(z_{\mathrm{swing}}\)</dt><dd>Height of the foot to be lifted above the ground (m).</dd></div><div><dt>\(k_{\mathrm{stance}}\)</dt><dd>Whether the stance foot touches the ground right now (1 contact).</dd></div></dl></details></div><p>The order of movements then emerges by itself: the centre-of-mass target moves toward the stance foot first; while <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span> is below 0.4, contact of the foot to be lifted earns +1, above 0.9 it costs −1, and in between it changes continuously, reaching exactly 0 at <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha} = 0.65\)</span>; foot height counts only once <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span> exceeds 0.6 and the stance foot is down, so hopping on one foot cannot earn it. Lowering the foot is the same process in reverse.</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Community author source excerpt</span><a class="source-link" href="https://github.com/pollen-robotics/microduck_rl/blob/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks/mdp.py#L7523-L7696" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Smoothstep</h4> <p>Clamp the blend to 0–1, then use \(\htmlData{sym=tau}{\tau}^2(3-2\htmlData{sym=tau}{\tau})\) for a smooth transition with zero slope at both ends, so the reward does not jump when the gate opens.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">_smoothstep</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>The centre-of-mass target moves between the feet midpoint and the stance foot</h4> <p>The author calls it the “leader” of the whole stack: the weight shift is the transition. Note the function default <code>std=0.02</code>; the configuration passes 0.03 m and tightens it to 0.02 m after iteration 700.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">fl_com_target</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span>
+    <span class="n">command_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">left_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">right_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on CoM_xy vs the BLENDED support target: (1−α)·midpoint(feet) +</span>
+<span class="sd">    α·stance foot. The leader of the stack: the weight shift IS the transition."""</span>
+    <span class="n">flag</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">_fl_ctx</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">command_name</span><span class="p">)</span>
+    <span class="n">asset</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">_fl_site_xyz</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">left_cfg</span><span class="p">,</span> <span class="n">right_cfg</span><span class="p">)</span>
+    <span class="n">stance</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">side</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">target_xy</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">mid</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">stance</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">com_xy</span> <span class="o">=</span> <span class="n">_robot_com_xy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">asset</span><span class="p">)</span>
+    <span class="n">dist2</span> <span class="o">=</span> <span class="p">((</span><span class="n">com_xy</span> <span class="o">-</span> <span class="n">target_xy</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dist2</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>A contact term whose sign flips with the blend</h4> <p>Contact of the foot to be lifted is 1, multiplied by \(1-2S\): +1 while standing is due, −1 once the lift is due, changing continuously in between and exactly 0 at a blend of 0.65. The author notes that the mixed sign is by design.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">fl_swing_foot_contact</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">command_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Swing-foot contact: +1 when standing is commanded (α ≤ lo), −1 once the</span>
+<span class="sd">    lift is due (α ≥ hi), neutral in between. Mixed sign by design."""</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">_fl_ctx</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">command_name</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">swing</span> <span class="o">=</span> <span class="n">_fl_feet_found</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swing</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">_smoothstep</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Foot height behind two gates</h4> <p>The height Gaussian is multiplied by two gates, “stance foot down” and “lift is due”. The function default target is 0.05 m; the configuration passes 0.10 m with scale 0.06 m.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">fl_swing_foot_clear</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span>
+    <span class="n">command_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">left_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">right_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">sensor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on the swing-foot height around ``target``, gated on stance</span>
+<span class="sd">    contact (no hopping) and on the lift being due (smoothstep of α)."""</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">_fl_ctx</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">command_name</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">_fl_site_xyz</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">left_cfg</span><span class="p">,</span> <span class="n">right_cfg</span><span class="p">)</span>
+    <span class="n">swing</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">side</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">swing</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">terrain</span><span class="o">.</span><span class="n">env_origins</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">z</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">stance_found</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_fl_feet_found</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reward</span> <span class="o">*</span> <span class="n">stance_found</span> <span class="o">*</span> <span class="n">_smoothstep</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">)</span></code></pre></div></div></div><p>The remaining terms constrain support, posture and smoothness. Note that the term against rolling too far toward the stance side returns non-positive values and therefore carries a positive weight of 4.0: the sign of a weight alone does not tell you whether a term rewards or penalizes. See the author's <a class="reference external" href="https://github.com/pollen-robotics/microduck_rl/blob/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks/microduck_flamingo_cycle_env_cfg.py" rel="noreferer noopener" target="_blank">configuration ↗</a> for all weights.</p>
+<p><strong>Failures and fixes recorded by the author.</strong></p>
+<ul class="simple">
+<li><p>The first stage asked for a lifted-foot height of 0.05 ± 0.03 m, while the target pose lifts the foot about 0.17 m, so two reward terms contradicted each other; with 0.10 ± 0.06 m the term pays 0.5 at 5 cm, 1 at 10 cm and still 0.26 at 17 cm.</p></li>
+<li><p>In the first stage, a 0.25 m/s push stage on top of a −1.0 action-change penalty halved the reward, and the policy never recovered; the cycle task therefore limits pushes to 0.15 m/s and the action-change penalty to −0.5. The first cycle run fell outright under backward pushes of 0.18 m/s or more, so the released Hard variant adds a 0.25 m/s push stage after iteration 1400.</p></li>
+<li><p>When pushed too hard, a touchdown of the lifted foot is only a small cost and never ends the episode, while staying upright is worth far more, so the learned answer is to step down and lift again. The author describes this as intended, not as a loophole.</p></li>
+</ul>
+<p><strong>Success checks and limits.</strong> In CPU MuJoCo with the BAM XL330 servo model, the author ran 10 fixed scenarios and all passed (cycles on both sides, 0.1 m/s pushes toward either side and 0.15 m/s forward, a 0.3 m/s push toward the lifted side with a brief touchdown and re-lift, lowering from a static hold, a 10 s hold); in 24 random pushes of 0.05–0.25 m/s it held 20 times, stepped down and recovered twice and fell twice. Known limits: backward pushes of 0.18 m/s make it fall; pushes toward the stance side above about 0.15 m/s end in a step-down; it has run only in simulation and never on hardware.</p>
+</section>
+<section id="basketball">
+<h2>Basketball balance: the reward sees the ball, the policy does not<a class="headerlink" href="#basketball" title="Link to this heading">#</a></h2>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="Community basketball-balance demo. Watch how the robot keeps adjusting its posture as the support surface rolls under it."><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption><p>Community basketball-balance demo (recording of an earlier version). Watch how the robot keeps adjusting its posture as the support surface rolls under it. The analysis below covers the author's latest release, b11.</p>
+</figcaption></figure><p><strong>Goal.</strong> In <a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">basketball balance ↗</a> the robot balances on a free-rolling size-7 basketball (0.24 m diameter, 0.62 kg) and moves according to velocity commands; <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code> means balance in place. Each episode starts with the robot placed on the apex of the ball; it does not climb onto the ball or get up from the floor.</p>
+<p><strong>Observable quantities.</strong> The reward reads the ball centre and ball speed, the body position, the sole reference points of both feet and the gravity direction in the body frame. The key point: <strong>the deployed policy cannot see the ball</strong>. In the author's latest release, b11, the policy uses only proprioception and velocity commands, passed through one LSTM layer of memory, and infers the ball under its feet from how its own state changes; the value network (critic) can read the ball state during training, but it is not part of the exported ONNX. The reward is computed in simulation, so it can use the ball position directly.</p>
+<div class="formula"><div class="formula-label">Standing on the ball: over the centre, feet on the ball (weights 2 and 1)</div><div class="formula-body">\[\htmlData{sym=r_center}{r_{\mathrm{center}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=p_ball}{p_{\mathrm{ball}}}-\htmlData{sym=p_root}{p_{\mathrm{root}}}\|_{xy}^2}{0.04^2}\right),\qquad \htmlData{sym=r_feet}{r_{\mathrm{feet}}}=\frac{1}{2}\sum_{\mathrm{L,R}}\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\|\htmlData{sym=p_foot}{p_{\mathrm{foot}}}-\htmlData{sym=p_ball}{p_{\mathrm{ball}}}\|-(\htmlData{sym=R_ball}{R}+0.012)}{0.02}\right)^2\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{center}}\)</dt><dd>Body-over-ball-centre term (weight 2).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(p_{\mathrm{ball}}\)</dt><dd>Position of the basketball centre (m), read directly from the simulation state; the deployed policy cannot see it.</dd></div><div><dt>\(p_{\mathrm{root}}\)</dt><dd>Position of the robot root (body) (m).</dd></div><div><dt>\(r_{\mathrm{feet}}\)</dt><dd>Feet-resting-on-the-ball term (weight 1), averaged over both feet.</dd></div><div><dt>\(p_{\mathrm{foot}}\)</dt><dd>Position of one foot&#x27;s sole reference point (m).</dd></div><div><dt>\(R\)</dt><dd>Basketball radius, 0.12 m (size 7).</dd></div></dl></details></div><div class="formula"><div class="formula-label">Standing on the ball: height and upright (weights 1 and 1)</div><div class="formula-body">\[\htmlData{sym=r_height}{r_{\mathrm{height}}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=z_root}{z_{\mathrm{root}}}-\htmlData{sym=z_ball}{z_{\mathrm{ball}}}-(\htmlData{sym=R_ball}{R}+0.125)}{0.03}\right)^2\right],\qquad \htmlData{sym=r_up}{r_{\mathrm{up}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\htmlData{sym=g_x}{g_x}^2+\htmlData{sym=g_y}{g_y}^2}{0.3^2}\right)\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{height}}\)</dt><dd>Standing-height-on-the-apex term (weight 1).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(z_{\mathrm{root}}\)</dt><dd>Height of the robot root (m).</dd></div><div><dt>\(z_{\mathrm{ball}}\)</dt><dd>Height of the ball centre (m).</dd></div><div><dt>\(R\)</dt><dd>Basketball radius, 0.12 m (size 7).</dd></div><div><dt>\(r_{\mathrm{up}}\)</dt><dd>Upright-body term (weight 1).</dd></div><div><dt>\(g_x\)</dt><dd>Forward/backward component of the gravity direction in the body frame (dimensionless); 0 when upright.</dd></div><div><dt>\(g_y\)</dt><dd>Left/right component of the gravity direction in the body frame (dimensionless); 0 when upright.</dd></div></dl></details></div><div class="formula"><div class="formula-label">Ball-speed penalty (weight −0.05)</div><div class="formula-body">\[\htmlData{sym=r_ball}{r_{\mathrm{ball}}}=\|\htmlData{sym=v_ball}{v_{\mathrm{ball}}}\|^2\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{ball}}\)</dt><dd>Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays.</dd></div><div><dt>\(v_{\mathrm{ball}}\)</dt><dd>Horizontal velocity of the basketball (m/s), simulation state.</dd></div></dl></details></div><p>The scales all carry length units: with the body 4 cm off the ball centre, a sole 2 cm off the ball surface or a 3 cm height error, the corresponding term drops to <span class="math notranslate nohighlight">\(e^{-1}\approx 0.37\)</span>. <span class="math notranslate nohighlight">\(\htmlData{sym=r_ball}{r_{\mathrm{ball}}}\)</span> has a small weight: it keeps the ball quiet at zero command, but when a command asks for rolling, velocity tracking still pays more. The termination reads the ball too: the body too low relative to the ball centre (below <span class="math notranslate nohighlight">\(\htmlData{sym=R_ball}{R}\)</span> + 0.05 m), more than 0.16 m off horizontally, or tilted beyond 55° counts as falling off the ball.</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Community author source excerpt</span><a class="source-link" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/src/mjlab_microduck/tasks/mdp.py#L8137-L8186" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Body over the ball centre</h4> <p><code>_bb_ball_pos</code> reads the ball centre straight from the simulation, privileged information that is not in the policy observations. The smaller the horizontal offset, the closer the reward is to 1; weight 2.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_centered</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.04</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on the horizontal offset root &lt;-&gt; ball centre (mass over the ball)."""</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_pos_w</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">*</span> <span class="n">std</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Both feet resting on the ball</h4> <p>Each foot&#x27;s distance to the ball centre should equal the radius plus a 12 mm sole gap; each foot gets its own Gaussian and the two are averaged, so a dangling foot scores close to 0. Weight 1.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_feet_on_ball</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">asset_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span> <span class="n">ball_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">sole_gap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.012</span><span class="p">,</span> <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Per-foot Gaussian on (|foot site - ball centre| - (R + gap)); both soles</span>
+<span class="sd">    resting on the ball pay 1, a lifted or dangling foot pays ~0 for that foot."""</span>
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="n">asset_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">feet</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">site_pos_w</span><span class="p">[:,</span> <span class="n">asset_cfg</span><span class="o">.</span><span class="n">site_ids</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">feet</span> <span class="o">-</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">ball_radius</span> <span class="o">+</span> <span class="n">sole_gap</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">*</span> <span class="n">std</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Standing height on the apex</h4> <p>The body should sit “radius + 0.125 m” above the ball centre, i.e. the normal standing height placed on top of the ball. Weight 1.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_height</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">ball_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">root_height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.125</span><span class="p">,</span> <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on the root height above the ball centre (standing tall on the apex)."""</span>
+    <span class="n">dz</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_pos_w</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">ball_radius</span> <span class="o">+</span> <span class="n">root_height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">dz</span> <span class="o">*</span> <span class="n">dz</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">*</span> <span class="n">std</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Ball-speed penalty</h4> <p>Returns a non-negative value and is registered with −0.05. The comment says the weight is small on purpose.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_ball_speed_l2</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Squared horizontal ball speed (&gt;= 0, use a negative weight): keeps the</span>
+<span class="sd">    ball quiet at zero command; small weight so commanded rolling still pays."""</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"ball"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_lin_vel_w</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="4" tabindex="0"><div class="story-text"><h4><span>5</span>Termination</h4> <p>Falling off is judged from the ball as well: too low, off the apex or tilted too far ends the episode. Termination removes all reward the policy could have earned after “falling off the ball”, so ending early also shapes the learned balance behavior.</p></div></article><div class="story-code-chunk" data-story-target="4"><span class="story-code-number" aria-hidden="true">5</span><div class="highlight"><pre><code><span class="c1"># --- terminations -----------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">basketball_fell</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span>
+    <span class="n">ball_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">,</span>
+    <span class="n">fall_tilt_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">55.0</span><span class="p">,</span>
+    <span class="n">min_height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">max_offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.16</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Off the ball: root too low above the ball centre, root horizontally off</span>
+<span class="sd">    the ball, or tilted past ``fall_tilt_deg``."""</span>
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span>
+    <span class="n">ball</span> <span class="o">=</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_pos_w</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">dz</span> <span class="o">=</span> <span class="n">root</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ball</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">off</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">root</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ball</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">tilt</span> <span class="o">=</span> <span class="n">wrestle_tilt</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">"robot"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dz</span> <span class="o">&lt;</span> <span class="n">ball_radius</span> <span class="o">+</span> <span class="n">min_height</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">off</span> <span class="o">&gt;</span> <span class="n">max_offset</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">tilt</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">fall_tilt_deg</span><span class="p">))</span></code></pre></div></div></div><p>The walking recipe's velocity tracking, pose, upright, smoothness and joint-limit terms are also retained; see the author's <a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/src/mjlab_microduck/tasks/microduck_basketball_env_cfg.py" rel="noreferer noopener" target="_blank">configuration ↗</a> for all weights. Early training also puts an adjustable “spring hold” on the ball, relaxed step by step from fully held to free rolling; environments that survive long enough are promoted and quick falls are demoted.</p>
+<p><strong>Failures and fixes recorded by the author.</strong> According to the author's <a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/experiments/basketball/TRAINING.md" rel="noreferer noopener" target="_blank">training record ↗</a>, removing direct observation of the ball made balancing harder; LSTM memory improved it, while a teacher–student distillation attempt failed to preserve balance. With <strong>the reward unchanged</strong>, adjusting only the learning rate and the frequency of push practice improved it further. The reward is only one lever: what the policy can see, remember and has practised also decides the result.</p>
+<p><strong>Success checks and limits.</strong> The author ran 3 seeds × 1024 environments, 3072 trials of 60 seconds, with the first fall counted as failure: b11 survived 20 s in 98.86% and 60 s in 97.01% of trials; the reference version that sees the ball reached 99.67% and 99.12%. Its turn-tracking error of 1.26 rad/s is clearly worse than the reference's 0.76 rad/s, and its actions are less smooth; these tracking metrics count only samples before a fall. The exported ONNX needs extra LSTM-state inputs and outputs, so a plain feed-forward loader cannot run it. Onboard real-time timing and real-robot behaviour are untested.</p>
+</section>
+<section id="moonwalk">
+<h2>Moonwalk: in the prompt, not in the reward<a class="headerlink" href="#moonwalk" title="Link to this heading">#</a></h2>
+<p><strong>Goal.</strong> <a class="reference external" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af" rel="noreferer noopener" target="_blank">Moonwalk backward ↗</a> was generated by an automated tool from a text prompt: “a moonwalk-style backward gliding gait, alternating feet, creating the visual illusion of sliding rather than ordinary backward walking, upper body stable and upright, avoiding jumps or large vertical motion, balanced throughout, finishing in a stable standing pose after a few seconds.”</p>
+<p><strong>What was actually trained.</strong> The tool chose the walking velocity-tracking recipe from its existing recipes and made only three changes: the forward velocity command became backward, −0.25 to −0.08 m/s (with only small sideways and turning ranges); the foot-slip penalty was weakened from −0.1 to −0.015; and left–right symmetry augmentation was enabled.</p>
+<div class="formula"><div class="formula-label">Two terms inherited from the walking recipe (mjlab 1.3.0)</div><div class="formula-body">\[\htmlData{sym=r_lin}{r_{\mathrm{lin}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=v_cmd}{v^{*}_{xy}}-\htmlData{sym=v_xy}{v_{xy}}\|^2+\htmlData{sym=v_z}{v_z}^2}{\htmlData{sym=sigma_v}{\sigma_v}^2}\right),\qquad \htmlData{sym=r_slip}{r_{\mathrm{slip}}}=\htmlData{sym=one}{\mathbf{1}}\!\left[\|\htmlData{sym=v_cmd}{v^{*}_{xy}}\|+|\htmlData{sym=omega_cmd}{\omega^{*}_z}|&gt;0.01\right]\sum_{\mathrm{L,R}}\htmlData{sym=k_foot}{k_{\mathrm{foot}}}\,\|\htmlData{sym=v_foot}{v_{\mathrm{foot}}}\|^2\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{lin}}\)</dt><dd>Linear-velocity tracking term (weight 2 in the base walking recipe).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(v^{*}_{xy}\)</dt><dd>Horizontal velocity command (m/s). In the moonwalk training the forward component is −0.25 to −0.08 m/s, i.e. backward.</dd></div><div><dt>\(v_{xy}\)</dt><dd>Horizontal velocity in the body frame (m/s).</dd></div><div><dt>\(v_z\)</dt><dd>Vertical velocity in the body frame (m/s); 0 for ideal translation.</dd></div><div><dt>\(\sigma_v\)</dt><dd>Velocity-tracking scale, \(\sigma_v^2 = 0.1\ (\mathrm{m/s})^2\).</dd></div><div><dt>\(r_{\mathrm{slip}}\)</dt><dd>Foot-slip cost: counts feet that still move horizontally while in contact; negative weight.</dd></div><div><dt>\(\mathbf{1}\)</dt><dd>Indicator: 1 when the condition in brackets holds, otherwise 0.</dd></div><div><dt>\(\omega^{*}_z\)</dt><dd>Turn-rate command (rad/s).</dd></div><div><dt>\(k_{\mathrm{foot}}\)</dt><dd>Whether this foot touches the ground (1 contact).</dd></div><div><dt>\(v_{\mathrm{foot}}\)</dt><dd>Horizontal velocity of one foot in the world frame (m/s).</dd></div></dl></details></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Automatically generated task configuration (complete)</span><a class="source-link" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af/blob/951073cb7791a898e3e5ecb242c5bcccf40aa72f/compiled_motion.json" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Start from the walking recipe</h4> <p>Observations, actuators, domain randomization, terminations and every reward term come from the official walking recipe (pinned revision <code>d424a0c</code>). This code is stored in <code>compiled_motion.json</code> on the model card.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab_microduck.tasks.microduck_velocity_env_cfg</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_microduck_velocity_env_cfg</span><span class="p">,</span> <span class="n">MicroduckRlCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab_microduck.tasks.symmetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">SYMMETRY_CFG</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_generated_env_cfg</span><span class="p">(</span><span class="n">play</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">rough</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">make_microduck_velocity_env_cfg</span><span class="p">(</span><span class="n">play</span><span class="o">=</span><span class="n">play</span><span class="p">,</span> <span class="n">rough</span><span class="o">=</span><span class="n">rough</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>The only “moonwalk” information: a backward velocity command</h4> <p>Forward velocity is sampled only between −0.25 and −0.08 m/s, and 8% of environments practise standing. The velocity-tracking reward therefore asks the robot to move backward.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">command</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="s2">"twist"</span><span class="p">]</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">lin_vel_x</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">lin_vel_y</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">ang_vel_z</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">rel_standing_envs</span> <span class="o">=</span> <span class="mf">0.08</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">rel_turn_in_place_envs</span> <span class="o">=</span> <span class="mf">0.0</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Relax the foot-slip penalty</h4> <p>The weight changes from −0.1 to −0.015, allowing more sliding while a foot touches the ground. It merely objects less to sliding; it does not reward “looking like a glide”.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="s1">'foot_slip'</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.015</span>
+    <span class="k">return</span> <span class="n">cfg</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Enable symmetry augmentation</h4> <p>Training uses left–right mirrored data to keep the legs&#x27; motions symmetric.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="n">GeneratedRlCfg</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">MicroduckRlCfg</span><span class="p">)</span>
+<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">experiment_name</span> <span class="o">=</span> <span class="s1">'motionlab_moonwalk_backward'</span>
+<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="s1">'moonwalk_backward'</span>
+<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">symmetry_cfg</span> <span class="o">=</span> <span class="n">SYMMETRY_CFG</span></code></pre></div></div></div><p>Compare with the goal item by item: moving backward and an upright upper body have matching reward terms (velocity tracking and the inherited upright term); “alternating feet” can come only from the walking recipe's existing gait terms; “finish standing” relies on switching the command back to 0 at deployment and on the recipe's existing zero-command standing practice; and “the visual illusion of sliding” is described by no reward term or check at all. The tool's generated notes also say that vertical motion is suppressed by a body-pose reward, but in this base recipe the body-pose tracking term has weight 0.</p>
+<p><strong>Success checks and limits.</strong> The model card records that the export check and an ONNX rehearsal in CPU MuJoCo passed (61 inputs, 14 outputs); in a 5-second preview (<code class="docutils literal notranslate"><span class="pre">preview.mp4</span></code> on the model card) the maximum horizontal displacement was 0.33 m and the largest joint change 14.7°; when you watch it, check the goal item by item. But the automatic motion-quality gate says “needs review”, and the card explicitly marks the semantic match as unverified. The file loads, the interface is correct and the robot moves, but there is no evidence that it learned a moonwalk. The lesson: an effect that is wanted in the prompt, but written into neither a reward nor an acceptance test, cannot be expected to emerge from training.</p>
+<details class="enrichment"><summary>Going further: if you wanted to really test a “moonwalk”</summary><div class="enrichment-body"><p>What follows is a direction proposed by the course, not the author's implementation, and it has not been trained or validated. Write the acceptance test first: for example, over a fixed duration the body really moves backward; within each gait cycle the foot in contact slides backward relative to the ground while the lifted foot moves forward; the vertical motion of the centre of mass stays below a threshold; the robot ends in its standing pose. Then ask: can these quantities be read from the simulation? Should each become a tracking term, a penalty or only a final check? Which are suitable as rewards, and which are better kept as independent evaluation metrics?</p>
+</div></details></section>
+<section id="compare">
+<h2>The three skills side by side<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head cell-short"><p>Flamingo cycle</p></th>
+<th class="head"><p>Basketball balance</p></th>
+<th class="head cell-short"><p>Moonwalk</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Type of goal</p></td>
+<td><p>Switching between two postures on command</p></td>
+<td><p>Continuous balance while following velocity</p></td>
+<td><p>Stylized continuous gait</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Key technique</p></td>
+<td><p>Gate every term with the blend</p></td>
+<td><p>Use the true ball state in rewards and termination</p></td>
+<td><p>Change only the command range and one weight</p></td>
+</tr>
+<tr class="row-even"><td><p>Privileged information</p></td>
+<td><p>Whole-body centre of mass, contacts</p></td>
+<td><p>Ball position and speed (invisible to the policy)</p></td>
+<td><p>Same as the walking recipe</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Termination</p></td>
+<td><p>Inherited fall termination</p></td>
+<td><p>Falling off the ball</p></td>
+<td><p>Inherited from the walking recipe</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Author's check</p></td>
+<td><p>10 scenarios + 24 random pushes</p></td>
+<td><p>3 seeds × 1024 environments × 60 s</p></td>
+<td><p>Export and interface pass; semantics unverified</p></td>
+</tr>
+<tr class="row-odd"><td><p>Not verified by any</p></td>
+<td class="cell-short"><p>Real robot</p></td>
+<td><p>Real robot and onboard timing</p></td>
+<td><p>Whether the motion matches the prompt</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Check four things: whether the goal has matching rewards or acceptance criteria; whether high scores are possible without success; whether privileged reward inputs are separated from deployed observations; and whether an independent test judges the result.</p>
+</section>
+<section id="new-task">
+<h2>Design a reward for a new task<a class="headerlink" href="#new-task" title="Link to this heading">#</a></h2>
+<p>Pick a task outside these three, for example “turn once on the spot and stop facing the original direction” or “sit down and stand up again”, and work through the six steps of Section 3.3 on paper:</p>
+<ol class="arabic simple">
+<li><p>Write the success and failure criteria in measurable quantities and fix them before writing any reward.</p></li>
+<li><p>List the quantities you need, with units, frames, and whether the policy will have them at deployment.</p></li>
+<li><p>Choose a shape for each requirement: tracking, penalty or one-time event; if the order of movements matters, look at the flamingo gates.</p></li>
+<li><p>Estimate the typical size of each term and check that none outweighs the rest.</p></li>
+<li><p>Write down at least two loopholes, and how the termination conditions change what the reward means.</p></li>
+<li><p>Plan the independent evaluation and the ablation: which seeds, how many trials, which metrics, and the same training budget.</p></li>
+</ol>
+<div class="quiz"><h3>Check your understanding</h3><p>The reward curve of a new task keeps rising, and the exported ONNX passes the 61-input, 14-output interface check. Does that show the task is done?</p>
+<details><summary>Show explanation</summary><p>No. A rising reward only shows that the policy got better at collecting this reward set; an interface check only shows that the controller can call the file. The moonwalk meets both, yet its semantic match is unverified; the roller training in Section 3.3 raised its reward sharply while the ramp verification gave 0/5. Judge with acceptance criteria fixed before training, independent seeds and actual observation.</p>
+</details></div></section>
+<section id="compatible">
+<h2>Same interface, different conventions<a class="headerlink" href="#compatible" title="Link to this heading">#</a></h2>
+<p>ONNX is a model file format: it stores the network structure and weights but does not define how a robot skill is called. The flamingo cycle and the moonwalk both use the shared 61-input, 14-output interface, yet neither can replace the other: the flamingo cycle uses the first two velocity-command slots for “lift a foot” and “which side”, and only the moonwalk uses them as a real velocity command. The basketball policy additionally needs its LSTM memory state passed in and back out alongside the same 61 observations. The course walking model takes 61 inputs and the kicking residual takes 62; both output 14 numbers, and they cannot be swapped either.</p>
+<p>A file that loads is only readable. For the robot to perform the motion, the meaning of every command slot, the units, joint order, action scaling and termination conditions must all match the controller. The <a class="reference internal" href="models.html"><span class="std std-doc">models page</span></a> lists the fixed course weights and their roles. Handovers between skills also need their own design: after the kick in the Section 2.1 keyboard game, a 0.12 s smooth blend returns to the walking policy's standing pose, and that blend is not part of the kick model.</p>
+</section>
+<section id="kick-example">
+<h2>A skill’s start and end matter equally<a class="headerlink" href="#kick-example" title="Link to this heading">#</a></h2>
+<p>Walking continuously accepts velocity commands, while a kick is a short skill with a clear start and end. To add a kick to an autonomous task, besides the motion itself you must define when it may start, which state it ends in, and how it stops on failure.</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task."><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task.</p>
+</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Phase</p></th>
+<th class="head cell-short"><p>What to check</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Prepare</p></td>
+<td><p>Ball in the kickable zone, suitable body heading, observations still fresh</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Contact</p></td>
+<td><p>The ball moves only through physical foot contact; the simulation never overwrites its state</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Retract</p></td>
+<td><p>End the swing promptly and return to support</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Recover</p></td>
+<td><p>The robot stays stable, without falling or exceeding joint limits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A shot requires the ball in a useful right-foot position, the body facing the goal, stable support and fresh target information. Execution combines the kicking teacher with a residual correction; after touching the ball, the robot must return to stable standing or walking before the skill ends. A residual is a constrained correction to an existing action: it narrows what must be learned from scratch and also inherits the teacher’s operating range, so a local kick started far from the ball will not search for it. When watching the clip, use the physical contact record to confirm that the foot, not another body part, touches the ball, then check that the centre of mass returns over the support area and body tilt settles.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>The robot is beside the ball, but its remembered position has expired. Should the kick start immediately?</p>
+<details><summary>Show explanation</summary><p>No. Observe again and confirm the entry conditions. Proximity alone does not guarantee valid inputs.</p>
+</details></div></section>
+<section id="eyes">
+<h2>Executing a skill is not completing a task<a class="headerlink" href="#eyes" title="Link to this heading">#</a></h2>
+<p>So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" rel="noreferer noopener" target="_blank">Official Microduck web simulator (Hugging Face Space) ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/models?search=microduck" rel="noreferer noopener" target="_blank">Hugging Face: search Microduck models ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab: Microduck task source ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/mujocolab/mjlab/blob/19d6c06c17572dafcb31ad5110a902006b58d944/src/mjlab/managers/reward_manager.py" rel="noreferer noopener" target="_blank">mjlab 1.3.0: reward manager source ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/RemiFabre/microduck-flamingo-cycle" rel="noreferer noopener" target="_blank">Community flamingo cycle ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pollen-robotics/microduck_rl/tree/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks" rel="noreferer noopener" target="_blank">Community flamingo cycle: training source (pinned revision) ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">Community basketball balance: model card and evaluation ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Vottivott/microduck-playground/tree/main/experiments/basketball" rel="noreferer noopener" target="_blank">Community basketball balance: training source ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af" rel="noreferer noopener" target="_blank">Community moonwalk backward ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04-terrain.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3.3 Reward design: walking steadily up and down slopes</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07-groot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.1 Vision-language-action models and GR00T</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community">What else can the same robot learn?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">Read three skills with one table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flamingo">Flamingo cycle: gates set the order of movements</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basketball">Basketball balance: the reward sees the ball, the policy does not</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moonwalk">Moonwalk: in the prompt, not in the reward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">The three skills side by side</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#new-task">Design a reward for a new task</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compatible">Same interface, different conventions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kick-example">A skill’s start and end matter equally</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eyes">Executing a skill is not completing a task</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

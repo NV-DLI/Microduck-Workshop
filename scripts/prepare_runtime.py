@@ -12,6 +12,7 @@ import shutil
 import os
 
 ROOT = Path(__file__).resolve().parents[1]
+LOCAL = Path(os.environ.get("MICRODUCK_STATE", ROOT / ".local"))
 
 
 def sha(p):
@@ -21,14 +22,14 @@ def sha(p):
 
 def prepare():
     manifest = json.loads((ROOT / "lab/bundle-manifest.json").read_text())
-    dest = ROOT / ".local/student-course"
+    dest = LOCAL / "student-course"
     dest.mkdir(parents=True, exist_ok=True)
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("Install ffmpeg before preparing the runtime.")
     runtime_config = (
-        json.loads((ROOT / ".local/runtime.json").read_text())
-        if (ROOT / ".local/runtime.json").exists()
+        json.loads((LOCAL / "runtime.json").read_text())
+        if (LOCAL / "runtime.json").exists()
         else {}
     )
     replacements = {
@@ -106,7 +107,7 @@ def prepare():
         "new_physics_evidence": False,
         "resolved_root": str(dest),
     }
-    (ROOT / ".local/relocation.json").write_text(json.dumps(record, indent=2) + "\n")
+    (LOCAL / "relocation.json").write_text(json.dumps(record, indent=2) + "\n")
     return dest / "simulation/core"
 
 

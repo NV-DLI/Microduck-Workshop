@@ -182,6 +182,7 @@ def arguments():
         help="Explicit developer-only diagnostic; frames and traces are still retained",
     )
     add_launcher_args(p)
+    p.add_argument("--walking-policy-server", default=None)
     a = p.parse_args()
     a.enable_cameras = True
     if a.device is None:
@@ -247,8 +248,12 @@ def arguments():
     from recovery_config import verify_approval, ApprovalError
 
     try:
+        # The opt-in VLA entry loads this newer executor beside the installed
+        # frozen runtime. This check still binds the preserved recovery helper;
+        # it is not approval or qualification of the new learned controller.
+        recovery_dir = M / "evaluation/football" if a.walking_policy_server else ENTRY_DIR
         a.recovery_approval_verified = verify_approval(
-            a.recovery_approval, parameters_dir=ENTRY_DIR, allow_test_only=False
+            a.recovery_approval, parameters_dir=recovery_dir, allow_test_only=False
         )
     except ApprovalError as error:
         p.error("v121 retreat recovery refused: " + str(error))
@@ -893,6 +898,11 @@ def run(a, cfg, fixture):
         from kick_runtime import NativeKickRuntime
 
         k10 = NativeKickRuntime(K10_DEPLOYMENT)
+        walking_policy = None
+        if a.walking_policy_server:
+            from learning.walking_runtime import WalkingPolicy
+            walking_policy = WalkingPolicy(a.walking_policy_server, a.output, names, a.seed)
+            report["walking_policy"] = walking_policy.identity
         report["native_k10_runtime"] = {
             "source_sha256": k10.source_sha256,
             "development_point_estimate_only": True,
@@ -1311,6 +1321,22 @@ def run(a, cfg, fixture):
                     if head_feedback.failure:
                         kick_requested = False
                         active_policy = "walk"
+                    if walking_policy is not None:
+                        request, phase = walking_policy.step(
+                            timestamp=t, packet=last_body_imu,
+                            default_q=robot.data.default_joint_pos.torch[0, ids].cpu().tolist(),
+                            previous_raw=previous_raw_action[0].cpu().tolist(),
+                            enabled=support_row["navigation_enabled"],
+                        )
+                        velocity, actual_head = request[:3], request[3:7]
+                        kick_requested = bool(request[7] >= 0.5 and phase is not None)
+                        active_policy = "kick_right" if kick_requested else "walk"
+                        handoff_state = dict(
+                            state="GR00T_KICK" if kick_requested else "GR00T_WALK",
+                            kick_runtime_authorized=kick_requested, kick_phase_s=phase,
+                            head_return_complete=kick_requested,
+                            request_source="GR00T", truth_used=False,
+                        )
                     commands.is_standing_env[:] = False
                     commands.vel_command_b[:] = torch.tensor(
                         [velocity], device=env.device
@@ -1703,6 +1729,8 @@ def run(a, cfg, fixture):
                     section = time.monotonic()
                     third = array(overhead.data.output["rgb"])[0, :, :, :3].copy()
                     rgb = capture["rgb_raw"]
+                    if walking_policy is not None:
+                        walking_policy.capture(rgb, t)
                     q_effective, qd_effective = encoders()
                     sample = imu_predictor.latest_head_sample
                     body_imu = (
@@ -1762,6 +1790,7 @@ def run(a, cfg, fixture):
                             imu_valid
                             and support_row["navigation_enabled"]
                             and detector is not None
+                            and walking_policy is None
                         ):
                             section = time.monotonic()
                             detector_result = detector.detect(rgb)
@@ -1787,6 +1816,15 @@ def run(a, cfg, fixture):
                                 "kick_request": False,
                                 "reason": "Measured IMU valid; zero-command policy with explicitly fading physical startup support",
                                 "gaze_body_yaw_pitch_rad": [0.0, 0.0],
+                            }
+                        elif walking_policy is not None:
+                            last_control = {
+                                "state": "GR00T_KICK" if kick_requested else "GR00T_WALK",
+                                "velocity_body_xyw": list(walking_policy.previous[:3]),
+                                "kick_request": kick_requested,
+                                "reason": "RGB and BODY50 walking skill requests",
+                                "gaze_body_yaw_pitch_rad": [0.0, 0.0],
+                                "truth_inputs": False,
                             }
                         elif a.calibration_command is not None:
                             gaze = calibration_gaze.update(a.calibration_gaze, t)
@@ -2183,7 +2221,7 @@ def run(a, cfg, fixture):
                             if handoff_state["override_body_zero"]:
                                 last_control["velocity_body_xyw"] = [0.0, 0.0, 0.0]
                                 last_control["state"] = handoff_state["state"]
-                        if last_control["kick_request"]:
+                        if walking_policy is None and last_control["kick_request"]:
                             # Do not borrow the old kick: retain this request as
                             # an explicit integration gap, keep current walk zero.
                             last_control["velocity_body_xyw"] = [0.0, 0.0, 0.0]
@@ -2264,7 +2302,10 @@ def run(a, cfg, fixture):
                         else "initialization_fall"
                     )
                     break
-                if head_feedback.failure is not None:
+                if walking_policy is not None and walking_policy.latch.completed:
+                    report["terminal_reason"] = "development_kick_window_complete"
+                    break
+                if walking_policy is None and head_feedback.failure is not None:
                     report["terminal_reason"] = "public_head_feedback_failed"
                     report["head_feedback_failure_reason"] = head_feedback.failure
                     break

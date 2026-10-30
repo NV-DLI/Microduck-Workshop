@@ -1,58 +1,839 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="用 Isaac Sim 构建可控的坡道，在 Isaac Lab 中测试现有策略，再用多种地形训练并比较结果。"><meta name="theme-color" content="#76b900"><title>让行走技能适应坡地 · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="zh" data-page="04-terrain"><a class="skip" href="#main">跳至正文</a>
-<header><button class="menu-toggle" aria-label="目录" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">搜索课程 <kbd>/</kbd></button><details class="language-menu"><summary aria-label="选择语言"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/04-terrain.html" aria-current="true">简体中文</a><a lang="en" href="../en/04-terrain.html" >English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="目录"><div class="sidebar-intro">Microduck 机器人学习实战</div><p class="nav-group">学习准备</p><a href="index.html"><span class="nav-number"></span>让 Microduck 学会自主射门</a><a href="how-to-learn.html"><span class="nav-number"></span>如何学习本课程</a><a href="setup.html"><span class="nav-number"></span>准备环境与获取代码</a><p class="nav-group">课程章节</p><a href="01-play.html"><span class="nav-number">1</span>认识 Microduck：先来踢一场球</a><a href="02-anatomy.html"><span class="nav-number">2</span>拆解机械结构与控制周期</a><a href="03-learning.html"><span class="nav-number">3</span>用 Isaac Lab 训练行走策略</a><a aria-current="page" href="04-terrain.html"><span class="nav-number">4</span>让行走技能适应坡地</a><a href="05-skills.html"><span class="nav-number">5</span>探索社区的更多运动技能</a><a href="06-autonomy.html"><span class="nav-number">6</span>从手工流程到智能机器人</a><a href="07-groot.html"><span class="nav-number">7</span>让 GR00T 从示范中学习射门</a><a href="08-aspire.html"><span class="nav-number">8</span>用 ASPIRE 组织任务并积累技能</a><a href="09-worlds.html"><span class="nav-number">9</span>从一个球场走向更多环境</a><p class="nav-group">参考与帮助</p><a href="models.html"><span class="nav-number"></span>模型与数据</a><a href="troubleshooting.html"><span class="nav-number"></span>故障排查</a><a href="references.html"><span class="nav-number"></span>继续学习与参考资料</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> 课程章节</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>让行走技能适应坡地</h1><p class="lead">用 Isaac Sim 构建可控的坡道，在 Isaac Lab 中测试现有策略，再用多种地形训练并比较结果。</p><div class="lesson-meta">第 4 章 · 预计学习时长 30 分钟</div></div></div><section id="question"><h2>先提出可检验的问题</h2><p>本章不预设“旧模型一定会摔倒”。任务是从平地出发，走上或走下一段坡道，抵达另一端并保持平衡。先固定模型、速度、时长、摩擦和起点扰动，只改变坡度。这样才能判断性能变化来自地形，而不是换了几项设置。</p><figure class="learning-figure" data-learning-flow="learn-0ea79ec50b"><p class="learning-help">点击图中的模块，查看模块作用与数据流。也可按 Tab 选择，按 Enter 确认。<span class="learning-scroll-hint">左右滑动查看完整图示</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="地形泛化实验"><svg class="learning-svg" viewBox="0 0 828 228" role="group" aria-labelledby="learn-0ea79ec50b-title"><title id="learn-0ea79ec50b-title">地形泛化实验</title><defs><marker id="learn-0ea79ec50b-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-0ea79ec50b-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-0ea79ec50b-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="建立基线" aria-controls="learn-0ea79ec50b-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">建立基线</text><text x="138" y="132" class="learning-node-subtitle">同一策略：平地 / 上坡 / 下坡</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="Isaac Lab 训练" aria-controls="learn-0ea79ec50b-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">Isaac Lab 训练</text><text x="414" y="132" class="learning-node-subtitle">多环境采样不同地形</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="独立评测" aria-controls="learn-0ea79ec50b-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">独立评测</text><text x="690" y="132" class="learning-node-subtitle">对比到达率、跌倒率与速度误差</text></g></svg></div><div class="learning-details"><p class="learning-empty">地形泛化实验</p><button type="button" class="learning-reset" aria-label="关闭说明" hidden>×</button><article id="learn-0ea79ec50b-detail-0" data-node-detail="0" class="learning-definition"><h3>建立基线</h3><p>先用同一策略测试平地、上坡与下坡，找出能力边界。不要把上坡与下坡的成绩混为一个结论。</p></article><article id="learn-0ea79ec50b-detail-1" data-node-detail="1" class="learning-definition"><h3>Isaac Lab 训练</h3><p>在并行环境中采样不同坡度，让策略在训练时经历新的接触和重力分量。保留平地样本，避免只适应坡面。</p></article><article id="learn-0ea79ec50b-detail-2" data-node-detail="2" class="learning-definition"><h3>独立评测</h3><p>用没有参与调参的起点与种子检验到达、跌倒和速度误差。保持相同测试条件，才便于判断训练是否有帮助。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>先测后训；保留平地能力，再检查坡地能力是否提高。</figcaption></figure></section><section id="scene"><h2>搭建平地—坡道—平台场景</h2><p>评测场景由三段连续表面组成：出发后 0.35 m 为平地，接着是水平长度 1 m 的坡道，最后是落脚平台。正角度表示上坡，负角度表示下坡。用一个连续碰撞网格连接它们，避免装饰性台阶意外改变实验。视觉材质与灯光用于辨认坡面；质量、摩擦和碰撞几何才决定接触运动。</p><figure class="media"><a class="still-link" href="../assets/media/terrain-scene.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/terrain-scene.png" alt="Isaac Sim 中的平地、上坡和目标线"></a><figcaption>深色区域标出坡面，金色虚线帮助观察行走方向，绿色横线是到达位置的参考标记。标线与颜色不改变物理接触。</figcaption></figure><figure class="concept-figure" data-diagram="terrain"><svg viewBox="0 0 640 320" role="img" aria-label="平地、坡道与平台的侧视图" font-family="Open Sans, Noto Sans SC, sans-serif" font-size="15"><defs><marker id="arrow-terrain" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#577642"/></marker></defs><path d="M60 165H585" stroke="#87958b" stroke-dasharray="5 5"/><path class="terrain-fill" fill="#dfeaf5" stroke="none"/><path class="terrain-surface" fill="none" stroke="#0969da" stroke-width="4"/><path d="M60 280H165M165 274V286M60 274V286M165 280H465M465 274V286" fill="none" stroke="#57606a"/><text x="110" y="305" text-anchor="middle" font-size="13">平地 0.35 m</text><text x="315" y="305" text-anchor="middle">坡道水平长度 1 m</text><text class="terrain-landing" x="520" y="100" text-anchor="middle" font-size="13">落脚平台</text><circle cx="90" cy="148" r="10" fill="#e3a54d"/><path d="M85 157L82 165M95 157L98 165" stroke="#9a6700" stroke-width="3"/><path class="terrain-height" stroke="#4a7a00" stroke-width="2"/><text class="terrain-height-label" x="485" y="140" fill="#4a7a00" font-size="13"/><text x="24" y="28">h(x) = tan(α) · clip(x − 0.35, 0, 1)</text></svg><div class="concept-controls"><label>坡度 α / ° <input class="terrain-angle" type="range" min="-15" max="15" step="1" value="5"></label></div><p class="concept-output" aria-live="polite"></p><figcaption class="diagram-caption">拖动滑块比较上坡与下坡。横向和高度使用相同比例；改变坡度会同时改变平台高度。</figcaption></figure><div class="formula"><div class="formula-label">坡面高度</div><div>\[h(x)=\tan(\alpha)\,\operatorname{clip}(x-0.35,0,1)\]</div></div><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/terrain.py" target="_blank" rel="noopener">完整代码 ↗</a></div><pre><code class="language-python">slope = math.tan(math.radians(cfg.slope_deg))
-xs = [-48.0, 2.35, 3.35, 52.0]
-zs = [0.0, 0.0, slope, slope]
-vertices = [(x, y, z) for x, z in zip(xs, zs) for y in [-48.0, 52.0]]
-origin = np.array([2.0, 2.0, 0.0])</code></pre></div><p>网格坐标的起点为 (2, 2, 0)；减去这个原点后，机器人相对起点为 x = 0，坡道从 x = 0.35 m 延伸到 1.35 m。前后的支撑面总计扩展到 100 × 100 m，避免失败后从小块地形边缘掉落。Isaac Lab 的 TerrainGenerator 和 TerrainImporter 让同一几何用于可视化、物理测试与并行训练。</p></section><section id="baseline"><h2>先测官方行走策略</h2><p>先让官方行走策略在 5° 上坡运行 20 秒。在课程仓库根目录打开终端，运行下面的命令；输出目录应使用尚不存在的新名称。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py terrain \
-  --model models/walk.onnx \
-  --slope 5 --num-envs 1 --seconds 20 --seed 42001 \
-  --output outputs/slope-up-05</code></pre></div><p>不加 <code>--headless</code> 会打开 Isaac Sim。批量评测时使用 <code>--num-envs 5 --headless</code>；将坡度依次改为 0、5、−5、10、−10、15、−15，并给每次运行使用新的输出目录。前 2 秒站立，随后给出 0.25 m/s 前进指令；实际速度由策略和物理系统共同决定，并不保证等于指令。</p><p>达到目标须在 20 秒内走到 x ≥ 1.45 m，抵达时横向偏移小于 0.3 m，并且整段实验不跌倒。跌倒后不自动重置；机器人即使随后滑过终点，也不计为成功。报告分别保存到达情况、跌倒情况和速度均方根误差。</p><div class="table-scroll"><table><thead><tr><th>坡度</th><th>到达且全程未跌倒</th><th>跌倒</th></tr></thead><tbody><tr><td>0°</td><td>5/5</td><td>0/5</td></tr><tr><td>+5°</td><td>0/5</td><td>0/5</td></tr><tr><td>-5°</td><td>0/5</td><td>5/5</td></tr><tr><td>+10°</td><td>0/5</td><td>0/5</td></tr><tr><td>-10°</td><td>0/5</td><td>5/5</td></tr><tr><td>+15°</td><td>0/5</td><td>0/5</td></tr><tr><td>-15°</td><td>0/5</td><td>5/5</td></tr></tbody></table></div><p>这组基线每个坡度使用 5 个起点轻微扰动的环境。平地 5/5 通过；上坡没有跌倒，但停滞在坡道中；下坡 5/5 跌倒。它说明当前模型需要适应这些地形，但样本数较小，不应据此推断任意坡地的可靠性。</p></section><section id="why"><h2>为什么平地经验不能直接覆盖坡地</h2><p>坡面改变了脚与地面的相对高度、重力沿坡方向的分量和可用摩擦。上坡时，抬脚和推进不足可能让机器人停在坡上；下坡时，重心向前移动与落脚高度变化可能让机器人来不及恢复平衡。仅看“是否摔倒”会漏掉上坡停滞，因此到达率与速度误差也很重要。</p><p>Newton 会在每个物理步计算重力、接触和执行器响应；Isaac Lab 则让同一策略在多种坡度上反复试验。我们不必手写一套上坡步态，但需要让训练场景和奖励覆盖这些变化。</p><details class="enrichment"><summary>拓展：坡度怎样改变重力与摩擦</summary><div class="enrichment-body"><p>把重力沿坡面和垂直坡面两个方向分解，就能理解为什么上坡需要更多推进、下坡更需要控制速度。这里把机器人暂时看作坡面上的一个物体，用准静态近似说明趋势。</p><div class="formula"><div class="formula-label">坡面上的重力分量与简化摩擦约束</div><div>\[F_{\parallel}=mg\sin\alpha,\qquad N\approx mg\cos\alpha,\qquad |F_{\mathrm{tangent}}|\leq\mu N\]</div></div><p>m 是质量，g 是重力加速度，α 在这里取坡面与水平面的夹角大小；前面测试中的正负号只用来区分上坡和下坡。沿坡向下的分量 mg sin α 会阻碍上坡、促进下坡；垂直坡面的分量 mg cos α 决定近似支持力 N。α = 0 时，沿坡分量为零；坡越陡，这个分量越大。</p><p>μ 是摩擦系数，F_tangent 是接触面所需的切向力。要保持不滑动，所需切向力的大小不能超过 μN。以 10° 坡道为例，沿坡重力约为重量的 17%，支持力约为重量的 98%；这些比例说明受力趋势，不能直接变成策略的最大坡度。</p><p>这个近似忽略了迈步加速、单脚支撑和足底碰撞。实际行走时支持力会变化，Newton 会逐步求解相应动力学。判断策略是否适用，仍要同时检查到达、跌倒和速度误差。</p></div></details></section><section id="train"><h2>在多种地形中继续学习</h2><p>保留官方 ONNX，复制其网络权重与归一化参数作为新策略的起点。训练使用 25% 平地、其余为不同坡度的上坡和下坡地形；环境并行收集不同状态下的经验。新价值网络与优化器单独初始化。训练前先检查新策略网络与原 ONNX 对同一观测的输出一致，避免接口错误被误认为“需要更多训练”。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py train-terrain \
-  --model models/walk.onnx \
-  --num-envs 256 --iterations 1000 --seed 43001 \
-  --output outputs/terrain-training-01</code></pre></div><p>这里的坡度参数是 <code>tan(α)</code>，不是角度值；范围 0.03–0.22 对应约 1.7°–12.4°。训练地形使用金字塔坡面与反向坡面，评测保留直线坡道，因此不是在训练场景原位重复演示。训练和评测随机种子也分开。</p><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">完整代码 ↗</a></div><pre><code class="language-python">sub_terrains = {
-    &quot;flat&quot;: MeshPlaneTerrainCfg(proportion=0.25),
-    &quot;slopes&quot;: HfPyramidSlopedTerrainCfg(
-        proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7
-    ),
-    &quot;descending&quot;: HfInvertedPyramidSlopedTerrainCfg(
-        proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7
-    ),
-}</code></pre></div><p>本节固定坡地权重保留原训练结果。当前训练入口使用与演示一致的全身碰撞资产，因此新练习的接触配置与历史训练不同，输出属于新实验。训练本身不渲染画面；完成后用统一 RTX 场景检查导出的策略。</p></section><section id="direction"><h2>不仅要站稳，还要走向目标</h2><p>在坡道上，站稳只是第一步。机器人还要朝目标方向走：即使一直迈步，只要出现持续的小幅转向，走过一段距离后也会偏离落脚平台。前进速度奖励主要约束机身坐标系下的速度，身体转偏后仍可能“向自己的前方走得很好”，因此需要单独检查转向速度。</p><p>先把期望行为写清楚：指令要求直行时，绕身体 z 轴的角速度应接近零；指令要求转弯时，实际角速度应接近指令。这里约束的是转向速度，不是身体始终朝向某个固定世界方向；它也不能直接修正已经积累的航向误差。坡面上身体 z 轴与世界竖直方向不完全重合，这仍是一个局部控制指标。</p><div class="formula"><div class="formula-label">第一步：定义有物理含义的误差</div><div>\[e_{\omega}=\omega_z-\omega_z^*,\qquad u=\frac{e_{\omega}}{\sigma}\]</div></div><p>ωz 是机身坐标系中绕 z 轴的角速度，训练时从仿真状态读取；ωz* 是转向指令，单位都是 rad/s。误差可以为正也可以为负，两边都需要惩罚，所以用平方；再除以容忍尺度 σ，把不同量级的误差变为无量纲数。这里取 σ = 0.15 rad/s，表示我们希望重点区分这一量级附近的转向误差。</p><div class="formula"><div class="formula-label">第二步：把误差转换为平滑、有界的奖励</div><div>\[r_{\omega}=\exp(-u^2)=\exp\!\left[-\left(\frac{\omega_z-\omega_z^*}{0.15}\right)^2\right]\]</div></div><p>误差为零时奖励为 1；误差增大时奖励平滑降向 0，而且左右转偏受到同样的影响。这个指数形式是便于优化的一种设计选择，不是由物理定律唯一推出的公式。σ 太小，大多数动作都只能得到接近零的奖励；σ 太大，又难以区分方向保持得好不好。</p><div class="table-scroll"><table><thead><tr><th>转向误差的大小</th><th>原始奖励 rω</th><th>如何理解</th></tr></thead><tbody><tr><td>0 rad/s</td><td>1.000</td><td>完全跟随转向指令</td></tr><tr><td>0.075 rad/s（0.5σ）</td><td>0.779</td><td>小幅偏差仍有较高奖励</td></tr><tr><td>0.15 rad/s（1σ）</td><td>0.368</td><td>误差达到容忍尺度，奖励明显降低</td></tr><tr><td>0.30 rad/s（2σ）</td><td>0.018</td><td>偏差较大，几乎得不到这一项奖励</td></tr></tbody></table></div><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">完整代码 ↗</a></div><pre><code class="language-python">def yaw_rate_tracking(env, std=0.15):
-    # Match the commanded turn rate without penalizing normal roll/pitch motion.
-    velocity = env.scene[&quot;robot&quot;].data.root_link_ang_vel_b.torch
-    target = env.command_manager.get_command(&quot;base_velocity&quot;)[:, 2]
 
-    # Squared, normalized error gives a symmetric reward in (0, 1].
-    return torch.exp(-((velocity[:, 2] - target) / std).square())
+<!DOCTYPE html>
 
 
-cfg.rewards.yaw_precision = RewardTermCfg(
-    func=yaw_rate_tracking, weight=4.0, params={&quot;std&quot;: 0.15}
-)</code></pre></div><p>代码取出所有并行环境的机身角速度和转向指令，按环境逐项计算上式。weight = 4 把原始奖励乘以 4，再交给 Isaac Lab 的奖励管理器与其他项组合；管理器还按策略步长统一缩放。它表示相对重视程度，不是“成功率提高 4 倍”。姿态、动作平滑和前进速度项仍然保留，防止策略只顾停止转动而不走路。</p><p>为什么单独取 z 分量？行走本身伴随横滚和俯仰角速度。如果把三轴误差一起放进过窄的奖励范围，正常步态的晃动也可能压低得分。单独的 z 轴项让转向反馈更明确，同时继续用其他奖励约束身体稳定。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py train-terrain \
-  --model models/walk.onnx \
-  --resume outputs/terrain-training-01/model_999.pt \
-  --refine-heading --num-envs 256 --iterations 1500 --seed 43002 \
-  --output outputs/terrain-heading-01
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
 
-python3 scripts/workshop.py train-terrain \
-  --model models/walk.onnx \
-  --resume outputs/terrain-heading-01/model_2498.pt \
-  --refine-heading --yaw-precision \
-  --num-envs 256 --iterations 2000 --seed 43003 \
-  --output outputs/terrain-direction-01</code></pre></div><p>第一条命令继续训练并加强原有角速度跟踪，同时固定名义物理参数。第二条增加独立的 z 轴转向奖励，也调整了原角速度项和线速度项的权重。每一步都从已有检查点继续，原官方模型保留；改变训练轮数后，请以实际保存的检查点文件名为准。</p><p>怎样验证它是否有用？先在 TensorBoard 看这一项的平均奖励，再用相同坡度、相同速度指令和独立种子比较实际角速度误差、横向偏移、到达率与跌倒率。奖励提高而机器人不前进，或走得更直却频繁摔倒，都不能算改进。奖励是训练信号，任务条件才是最后的验收标准。</p><p>已有实验提供了什么证据？前一阶段的策略在 +5° 开发测试中走上坡道，却因横向偏离而未通过到达条件；后续策略在相同开发坡度上达到 5/5，固定模型后的独立评测也在 +5° 达到 5/5。不过，后续阶段还改变了其他奖励设置并增加了训练轮数，因此这组结果只能说明整套调整有效，不能单独证明转向奖励的因果贡献。</p><details class="enrichment"><summary>拓展：设计一个只检验转向奖励的消融实验</summary><div class="enrichment-body"><p>从同一个检查点复制两份训练，保持地形、指令分布、其他奖励、优化器、训练步数和种子配对一致。实验组启用 z 轴转向奖励，对照组只把这一项权重设为零；用多个训练种子重复。这样比较的才是这一项奖励带来的差异。</p><p>训练后冻结两个候选策略，用未参与调参的相同评测种子逐对测试。预先约定比较转向速度误差、横向偏移、到达率和跌倒率，并报告所有结果。如果转向误差下降且到达率提高，同时没有增加跌倒，才有更充分的证据支持这个设计。这里提供的是可选实验设计，尚未完成这组独立消融。</p></div></details></section><section id="evaluate"><h2>用同一把尺子比较新旧策略</h2><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-ascent-hd.jpg" aria-label="上坡 10°时官方策略与坡地策略对比"><source src="../assets/media/terrain-ascent-hd.mp4" type="video/mp4"></video><figcaption>上坡 10°：上方为官方策略，下方为坡地策略。同一速度指令下，前者在坡道前部停滞，后者继续走到目标区域。两次运行使用相同的起点设置，按仿真时间同步播放；这是单组演示，整体表现以下表为准。</figcaption></figure><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-descent-hd.jpg" aria-label="下坡 10°时官方策略与坡地策略对比"><source src="../assets/media/terrain-descent-hd.mp4" type="video/mp4"></video><figcaption>下坡 10°：上方为官方策略，下方为坡地策略。官方策略失去平衡后仍由连续地面支撑；坡地策略保持站立，但这次运行的横向偏移超出到达条件，判为未通过。两次运行使用相同起点设置，按仿真时间同步播放；宽镜头保留走过坡道后的运动。这组演示使用单独的种子，不计入下表；没有跌倒不等于完成任务。</figcaption></figure><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py terrain \
-  --model models/terrain-walk.onnx \
-  --slope 5 --num-envs 5 --seconds 20 --seed 49001 --headless \
-  --output outputs/terrain-evaluation-up-05</code></pre></div><p>默认使用已训练好的 <code>models/terrain-walk.onnx</code>，大小约 0.79 MB；想评估自己的模型时，将路径显式改为 <code>outputs/terrain-direction-01/exported/policy.onnx</code>。这个坡地模型只用于本章，第一章与第六章仍使用原行走策略。</p><p>对官方模型和新模型使用相同的评测种子与坡度表。至少同时报告平地、上坡和下坡的通过数、跌倒数、速度误差及训练耗时。没有跌倒但停在坡上，属于未完成任务；坡地改善却丢失平地能力，也不算合格替代。学生训练出的模型只有经过这样的验证，才适合显式替换默认策略。</p><div class="table-scroll"><table><thead><tr><th>坡度</th><th>官方策略通过</th><th>坡地策略通过</th><th>坡地策略跌倒</th><th>坡地策略速度 RMSE</th></tr></thead><tbody><tr><td>0°</td><td>5/5</td><td>5/5</td><td>0/5</td><td>0.094 m/s</td></tr><tr><td>+5°</td><td>0/5</td><td>5/5</td><td>0/5</td><td>0.105 m/s</td></tr><tr><td>-5°</td><td>0/5</td><td>5/5</td><td>0/5</td><td>0.089 m/s</td></tr><tr><td>+10°</td><td>0/5</td><td>5/5</td><td>0/5</td><td>0.122 m/s</td></tr><tr><td>-10°</td><td>0/5</td><td>2/5</td><td>0/5</td><td>0.090 m/s</td></tr><tr><td>+15°</td><td>0/5</td><td>0/5</td><td>5/5</td><td>0.210 m/s</td></tr><tr><td>-15°</td><td>0/5</td><td>0/5</td><td>5/5</td><td>0.179 m/s</td></tr></tbody></table></div><p>表中每个坡度各运行 5 个环境，使用未参与模型训练与选型的固定评测种子 49001，两种策略均使用官方全身碰撞模型。支撑面修正时复用了同一种子，不计作额外独立样本。通过要求与前面完全相同；表中的速度 RMSE 是五个环境的均值，每个环境仅统计首次跌倒前、开始前进后的采样，避免跌落后的运动混入行走误差。到达时横向偏移小于 0.3 m，不等于全程严格沿直线行走。样本较少，这些结果不能推广为任意坡地的成功率。完整条件与逐环境结果见<a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/contact-evaluation.json">评测数据</a>。</p><p>坡地策略在平地、±5°和上坡 10°保持较好的通过表现；下坡 10°虽然五次都没有跌倒，但三次偏离到达区域，±15°则全部跌倒。这说明稳定性、行走方向和任务完成是不同指标。每个坡度仅五次，不能把结果差异全部归因于某个参数。先检查失败轨迹，再决定是否增加训练难度或调整奖励；行走接口相同，也不意味着这份坡地策略已经适配自主射门的接近与出脚切换。</p><div class="quiz"><h3>检查理解</h3><p>为什么评测坡道不应和训练地形完全相同？</p><details><summary>查看解析</summary><p>目的是检验学到的能力能否适应新的起点与几何，而不仅是在熟悉的布局里重复动作。两种模型应共享评测条件，且评测结果不能反过来当作独立测试仍未见过的数据。</p></details></div></section><section id="rollers"><h2>同一条坡道，再试轮滑模式</h2><p>四个轮子会改变支撑与阻力。上坡时必须通过腿部动作持续提供推进，下坡时松开指令仍可能加速；不能把平地轮滑直接当成坡地技能。这里沿用相同坡面、连续支撑地面、20 秒时限、到达位置与不跌倒标准，另列轮滑结果。推进命令与行走的速度命令语义不同，因此不比较两者的速度跟踪误差。</p><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/rollers-slope-hd.jpg" aria-label="官方轮滑策略在 5 度上坡时发生明显侧偏"><source src="../assets/media/rollers-slope-hd.mp4" type="video/mp4"></video><figcaption>这是 +5° 上坡回合的前 7 秒：小鸭子保持轮滑姿态，但逐渐横向偏离测试通道。完整 20 秒记录中未跌倒，却没有满足到达位置要求。这次录像使用另一个种子 55012，不计入下表；片段用于观察侧偏过程，不代表成功上坡。</figcaption></figure><p>下面的命令在 +5° 坡道上运行 5 个轮滑副本。先看终端结果中的 <code>passed</code> 与 <code>fell</code>；需要录像时改为一个环境并增加 <code>--record</code>，为每次运行换一个输出目录。</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="已复制">复制命令</button></div><pre><code class="language-bash">python3 scripts/workshop.py terrain \
-  --locomotion rollers \
-  --model models/official-browser/rollers.onnx \
-  --slope 5 --seconds 20 --num-envs 5 \
-  --seed 55011 \
-  --output outputs/rollers-slope-01</code></pre></div><p>进一步试 −5°、+10° 和 −10°。记录“是否到达”和“整段是否跌倒”两个不同结果：下坡滑过终点后摔倒仍不算通过。这里没有换用专门训练的坡地轮滑模型，失败也是这项迁移实验的有效结果。</p><div class="table-scroll"><table><thead><tr><th>坡度</th><th>完整通过</th><th>整段未跌倒</th></tr></thead><tbody><tr><td>0°</td><td>5/5</td><td>5/5</td></tr><tr><td>5°</td><td>0/5</td><td>5/5</td></tr><tr><td>-5°</td><td>0/5</td><td>0/5</td></tr><tr><td>10°</td><td>0/5</td><td>3/5</td></tr><tr><td>-10°</td><td>0/5</td><td>0/5</td></tr></tbody></table></div><p>官方轮滑策略在这组平地测试中通过 5/5；+5° 上坡虽然全部保持直立，却明显横向偏离，未到达规定位置。这说明“没有跌倒”和“完成上坡”是不同的结果。此表与步行实验的测试种子不同，不能作为严格配对比较；原始条件见<a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json">轮滑坡地结果</a>。</p></section><section id="next"><h2>同一套平台，还能学会什么</h2><p>您已经用 Isaac Sim 改变了任务环境，用 Isaac Lab 继续训练，并通过统一评测检验了技能的适用范围。下一章看看社区如何用不同任务、观测与奖励，让 Microduck 学会跳跃和平衡等动作。</p></section><section id="references"><h2>参考资料</h2><ul class="references"><li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank" rel="noopener">Isaac Lab：任务、地形与并行训练 ↗</a></li><li><a href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Newton 物理引擎 ↗</a></li><li><a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" target="_blank" rel="noopener">坡地策略：网络、训练配置与模型信息 ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="03-learning.html"><small>← 上一页</small>用 Isaac Lab 训练行走策略</a><a href="05-skills.html"><small>下一页 →</small>探索社区的更多运动技能</a></nav><footer>Microduck Workshop · <a href="references.html">参考资料</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">来源与许可</a></span></footer></main>
-<aside class="toc"><p>本页内容</p><a href="#question">先提出可检验的问题</a><a href="#scene">搭建平地—坡道—平台场景</a><a href="#baseline">先测官方行走策略</a><a href="#why">为什么平地经验不能直接覆盖坡地</a><a href="#train">在多种地形中继续学习</a><a href="#direction">不仅要站稳，还要走向目标</a><a href="#evaluate">用同一把尺子比较新旧策略</a><a href="#rollers">同一条坡道，再试轮滑模式</a><a href="#next">同一套平台，还能学会什么</a><a href="#references">参考资料</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">搜索课程</label><button aria-label="关闭">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="搜索课程…"><div class="search-results"></div></dialog>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行与轮滑，并在同一个楔形坡台上验证。" name="description" />
+
+  <title>3.3 奖励设计：走稳上下坡 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="3.4 社区技能：从目标到奖励" href="05-skills.html" />
+    <link rel="prev" title="3.2 域随机化：训练并测试行走策略" href="03-walk-training.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="04-terrain">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/04-terrain.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/04-terrain.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/04-terrain.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/04-terrain.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.3 奖励设计：走稳上下坡</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>3.3 奖励设计：走稳上下坡<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行与轮滑，并在同一个楔形坡台上验证。</p>
+</div><div class="lesson-meta">第 3.3 节 · 方法与操作实验 · 预计学习时长 45 分钟（训练观察几分钟即可）</div></div></div><script type="application/json" class="course-symbols">{"w_i": {"tex": "w_i", "text": "第 $i$ 个奖励项的权重。正权重表示“越大越好”，负权重表示惩罚。"}, "g_i": {"tex": "g_i", "text": "门控，取 0 到 1：决定这一项在当前状态下是否生效，例如只在收到推进指令时才奖励前进。"}, "phi": {"tex": "\\phi", "text": "形状函数：把归一化误差变成奖励值，例如跟踪核 $\\exp(-z^2)$ 或平方惩罚 $z^2$。"}, "e_i": {"tex": "e_i", "text": "这一项要衡量的误差或物理量，带单位，例如速度误差（m/s）。"}, "sigma_i": {"tex": "\\sigma_i", "text": "尺度，与 $e_i$ 同单位：多大的误差算“明显”。除以它之后误差变成无量纲数。"}, "z_norm": {"tex": "z", "text": "归一化后的无量纲误差，即 $e_i/\\sigma_i$。"}, "exp": {"tex": "\\exp", "text": "指数函数：把平方误差转换成 0 到 1 之间的平滑奖励。"}, "r_omega": {"tex": "r_{\\omega}", "text": "转向跟踪奖励：误差为 0 时为 1，误差增大时平滑降向 0。"}, "omega_z": {"tex": "\\omega_z", "text": "机身坐标系中绕 $z$ 轴的实际角速度，训练时从仿真状态读取（rad/s）；机身倾斜时，它不一定等同于世界坐标系的偏航角速度。"}, "omega_cmd": {"tex": "\\omega_z^*", "text": "转向指令要求的角速度（rad/s）；直行时为 0。"}, "sigma": {"tex": "\\sigma", "text": "转向误差的容忍尺度，这里取 0.15 rad/s。"}}</script><section id="motivation">
+<h2>2026 GTC 柏林的演讲<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p>在 2026 年 GTC 柏林的演讲中，Microduck 要穿过由坡台、平台和道具组成的障碍场地。</p>
+<figure class="media"><a class="still-link" href="../assets/media/gtc-berlin-microduck-environment.webp" aria-label="放大图片"><img loading="lazy" src="../assets/media/gtc-berlin-microduck-environment.webp" alt="Isaac Sim 中搭好的 Microduck 障碍场地：白色地面上散布着木质与金属坡台、平台、纸箱、器材箱和灯具，Microduck 站在一组金属坡台中间的平台上。"></a><figcaption><p>NVIDIA 技术博客中的 Microduck 障碍场地。图片来源：<a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA 技术博客，图 6 ↗</a>。</p>
+</figcaption></figure><p>本节只取其中最简单的任务：走上木质楔形坡台并站稳，再走下来。怎样把“到达、站稳、不跌倒”变成策略能学习的反馈？先设计奖励，再训练和验证。</p>
+</section>
+<section id="reward">
+<h2>任务与奖励设计<a class="headerlink" href="#reward" title="Link to this heading">#</a></h2>
+<p><strong>奖励</strong>是每一步的训练反馈，PPO 用累计奖励调整策略（见 <a href="03-learning.html#reward-design">3.1 节</a>）；<strong>成功判据</strong>则在评测时判断任务是否完成。前者引导学习，后者检验结果。</p>
+<p>只在成功时给分，反馈可能太稀疏；只奖励站直，策略又可能停着不走。设计奖励，就是把任务拆成可学习的信号，并用权重平衡前进、稳定和平滑。</p>
+<p id="method">下面六步不依赖具体机器人，3.4 节读社区技能时也会用到：</p>
+<ol class="arabic simple">
+<li><p><strong>先写验收。</strong> 明确目标、时限和失败条件，并固定评测方法。</p></li>
+<li><p><strong>列出可用量。</strong> 注明坐标系、单位和来源；奖励可读仿真真值，策略输入必须能在部署时获取。</p></li>
+<li><p><strong>选择形状。</strong> 跟踪目标用有界奖励，抑制偏差用惩罚，单次事件只计一次分。</p></li>
+<li><p><strong>确定尺度。</strong> 核对权重正负、归一化尺度和门控，并比较各项的实际贡献。</p></li>
+<li><p><strong>检查漏洞。</strong> 不完成任务能否拿高分？提前终止会不会让策略少受惩罚（每步大多是惩罚时，早摔倒反而“少扣分”）？</p></li>
+<li><p><strong>独立验证。</strong> 按成功判据评测，最好另留没有参与调参的种子和场景；想知道某一项的作用，要在同一起点、同等预算、配对种子下只移除这一项再训练比较。</p></li>
+</ol>
+<div class="formula"><div class="formula-label">一个奖励项的常见写法（课程的通用记法）</div><div class="formula-body">\[\htmlData{sym=w_i}{w_i}\,\htmlData{sym=g_i}{g_i}\,\htmlData{sym=phi}{\phi}\!\left(\frac{\htmlData{sym=e_i}{e_i}}{\htmlData{sym=sigma_i}{\sigma_i}}\right)\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(w_i\)</dt><dd>第 \(i\) 个奖励项的权重。正权重表示“越大越好”，负权重表示惩罚。</dd></div><div><dt>\(g_i\)</dt><dd>门控，取 0 到 1：决定这一项在当前状态下是否生效，例如只在收到推进指令时才奖励前进。</dd></div><div><dt>\(\phi\)</dt><dd>形状函数：把归一化误差变成奖励值，例如跟踪核 \(\exp(-z^2)\) 或平方惩罚 \(z^2\)。</dd></div><div><dt>\(e_i\)</dt><dd>这一项要衡量的误差或物理量，带单位，例如速度误差（m/s）。</dd></div><div><dt>\(\sigma_i\)</dt><dd>尺度，与 \(e_i\) 同单位：多大的误差算“明显”。除以它之后误差变成无量纲数。</dd></div></dl></details></div><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>形状 <span class="math notranslate nohighlight">\(\htmlData{sym=phi}{\phi}(\htmlData{sym=z_norm}{z})\)</span></p></th>
+<th class="head cell-short"><p>权重</p></th>
+<th class="head cell-short"><p>适合</p></th>
+<th class="head cell-short"><p>需要注意</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>跟踪核 <span class="math notranslate nohighlight">\(\htmlData{sym=exp}{\exp}(-\htmlData{sym=z_norm}{z}^2)\)</span></p></td>
+<td class="cell-short"><p>正</p></td>
+<td><p>让速度、姿态等接近目标</p></td>
+<td><p>取值在 0–1 之间；尺度太小几乎总是 0，太大则好坏难分</p></td>
+</tr>
+<tr class="row-odd"><td><p>平方惩罚 <span class="math notranslate nohighlight">\(\htmlData{sym=z_norm}{z}^2\)</span></p></td>
+<td class="cell-short"><p>负</p></td>
+<td><p>侧滑、动作变化等越小越好的量</p></td>
+<td><p>没有上界，个别异常值会主导总奖励</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>截断的进展</p></td>
+<td class="cell-short"><p>正</p></td>
+<td><p>奖励前进，又不鼓励无限加速</p></td>
+<td><p>只看速度大小，不检查方向是否朝向目标</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>一次性事件</p></td>
+<td class="cell-short"><p>正或负</p></td>
+<td><p>起跳、着地、到达、失败</p></td>
+<td><p>要防止同一事件被反复触发</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>实际代码的写法各不相同，但通常都能拆成“读取什么量、怎样归一化、何时生效、权重多大”。</p>
+<p id="question"><strong>本节的验收。</strong> 白色平地上放着一个有限大小的木质楔形坡台：两侧是实心侧面，前面是斜坡，顶上是 0.6 m 宽的平台。同一个坡台测试两个方向：</p>
+<ul class="simple">
+<li><p><strong>上坡</strong>：从坡脚前的地面出发。机身越过坡顶 0.15 m、两只脚都踏上平台（离坡顶边缘至少 0.06 m）时算到达；之后留在平台上保持直立至少 2 秒并持续到回合结束，不跌倒、不从边缘掉下，才算通过。</p></li>
+<li><p><strong>下坡</strong>：从平台上出发。机身越过坡脚 0.25 m、两只脚都踏上坡脚之外的地面时算到达；之后在地面上保持直立至少 2 秒并持续到回合结束，才算通过。</p></li>
+</ul>
+<p>到达后前进指令随即停止，这样“按指令继续往前走、从平台另一侧掉下去”不会被算成策略的失败。和 3.2 节一样，每只小鸭子先锁住关节在出发位置落稳，策略第一次输出后再松开。</p>
+<p id="scene">验证命令会先创建白色平地，再添加带碰撞的木纹楔形坡台，摩擦设置沿用原配置。上坡时从坡脚前出发，下坡时从平台朝坡脚出发。</p>
+<p id="baseline"><strong>先测基线。</strong> 官方行走策略只在平地上训练过。在这个坡台上，它上坡时在斜坡前部偏向一侧，最后摔倒；下坡时走到斜坡上就停住，20 秒内既没有到达，也没有摔倒。两种失败都不是“走不动”：上坡失去方向和平衡，下坡停滞不前。所以报告要把到达、跌倒和停滞分开记录，只看“是否摔倒”会漏掉下坡的停滞。</p>
+<p id="why">坡面改变了脚与地面的相对高度、重力沿坡面的分量和可用摩擦：10° 坡道上，沿坡向下的重力约为体重的 17%，上坡需要更多推进，下坡更需要控制速度。我们不手写上坡步态，而是让训练场景和奖励覆盖这些变化；Newton 在每个物理步计算重力、接触和执行器响应，Isaac Lab 让同一策略在大量坡面上并行试验。</p>
+</section>
+<section id="train">
+<h2>随机坡面训练：在训练分布中练习<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
+<p>3.2 节的域随机化改变摩擦、质量和延迟等物理参数；地形随机化把“地面形状”也加入随机抽样。训练地形混合了平地和各种坡度的上坡、下坡。Isaac Lab 的地形课程（curriculum）按表现逐步调整坡度：走得好的环境移到更陡的坡面，走不好的退回较缓处，TensorBoard 中的 <code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> 记录平均难度等级。</p>
+<p>这些随机坡面是<strong>训练分布</strong>：策略在其中练习上坡、下坡和在坡面上保持平衡。后面验证用的固定楔形坡台（一段斜坡接一块平台）这一完整布局没有出现在训练地形中，所以坡台上的结果是在单独的验证场景中检验这些能力，而不是在训练场景里打分。</p>
+<p>训练不从零开始：复制官方 ONNX 的网络权重与归一化参数作为新策略的起点，价值网络与优化器重新初始化。训练前先核对新策略网络与原 ONNX 对同一观测的输出一致，避免把接口错误误认为“需要更多训练”。</p>
+<figure class="learning-figure" data-learning-flow="learn-bc61625db6"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="训练分布与单独的验证场景"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-bc61625db6-title"><title id="learn-bc61625db6-title">训练分布与单独的验证场景</title><defs><marker id="learn-bc61625db6-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-bc61625db6-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-bc61625db6-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 写下验收" aria-controls="learn-bc61625db6-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">写下验收</text><text x="114.0" y="98" class="learning-node-subtitle">到达平台并保持 /</text><text x="114.0" y="115" class="learning-node-subtitle">下到地面并站稳</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 随机坡面训练" aria-controls="learn-bc61625db6-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">随机坡面训练</text><text x="450.0" y="98" class="learning-node-subtitle">平地与各种坡度</text><text x="450.0" y="115" class="learning-node-subtitle">的上坡、下坡</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 楔形坡台验证" aria-controls="learn-bc61625db6-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">楔形坡台验证</text><text x="786.0" y="98" class="learning-node-subtitle">固定的验证布</text><text x="786.0" y="115" class="learning-node-subtitle">局、同一判据</text></g></svg></div><div class="learning-details" aria-label="训练分布与单独的验证场景"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-bc61625db6-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>写下验收</h3><p>训练开始前固定判据：到达、保持、跌倒分开记录，上坡和下坡分别报告。</p></article><article id="learn-bc61625db6-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>随机坡面训练</h3><p>并行环境在随机坡面上采样，地形课程按表现调整难度；保留的平地样本让平地能力继续得到练习。</p></article><article id="learn-bc61625db6-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>楔形坡台验证</h3><p>楔形坡台的完整布局不在随机训练地形中；新旧策略用同一坡台、同一判据比较。更严格的独立测试还应另留没有参与调参的种子和布局。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>训练分布与验证场景分开，才能看出学到的能力能否用到新的布局上。</figcaption></figure><p>在 1.3 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.3 节</a>），用 256 个环境继续训练 1000 轮；<code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开 Isaac Sim，可以看到小鸭子分布在不同地块上同时练习。</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">256</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--show<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-training-01
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="坡地步行训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只 Microduck，有的在走，有的已经摔倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的坡地步行训练窗口，展示训练刚开始的样子。画面里是随机生成的训练地形，不是后面验证用的楔形坡台。</p>
+</figcaption></figure><p>观察一会儿就可以按 Ctrl+C 停止。训练每 250 轮保存一次检查点并导出一份可测试的策略（例如 <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>），跑完 1000 轮后才生成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。后面的验证默认使用课程提供的坡地模型，不需要等你的训练完成。</p>
+<p><strong>这条命令不等于课程模型的训练过程。</strong> 固定模型 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> 来自三个连续阶段：1000 轮（与上面的命令设置相同，DGX Spark 上不开窗口约 8 分钟），续训 1500 轮（加强角速度跟踪、固定名义物理参数），再续训 2000 轮（加入下一部分的转向奖励）。而且那次训练使用的接触配置与当前命令的全身碰撞模型不同。所以你的 1000 轮是一次新实验，不能期望复现固定模型的成绩。</p>
+<figure class="media"><a class="still-link" href="../assets/media/tensorboard-terrain.png"><img loading="lazy" src="../assets/media/tensorboard-terrain.png" alt="TensorBoard 标量页面，显示三个连续训练阶段（橙、蓝、红三色）。绿框 1 为地形难度等级，2 为平均回合回报，3 为转向角速度误差。"></a><figcaption><p>固定坡地模型三个训练阶段的 TensorBoard 记录（日志在 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>），横轴是累计迭代次数，绿框与编号为课程标注。① 地形难度等级在第一阶段从约 0.6 升到 2.0 左右，课程机制把表现好的环境移到了更陡的地块；② 每次续训开始时奖励设置改变，回报随之跳变，不同阶段的回报数值不能直接比较；③ 第三阶段加入转向奖励后，转向误差降到 0.25–0.35 rad/s 附近，波动较大。</p>
+</figcaption></figure><details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code>。</strong> 程序加载哪个文件只由 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 决定。<code class="docutils literal notranslate"><span class="pre">train-terrain</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code> 以官方行走策略为训练起点；<code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code> 在验证时每个控制步用它推理。轮滑命令同时加 <code class="docutils literal notranslate"><span class="pre">--locomotion</span> <span class="pre">rollers</span></code>，把场景中的机器人换成轮滑脚。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code>。</strong> 必须是 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下尚不存在的目录；已存在的目录或 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 下的路径会被拒绝。训练出的策略要在验证时用 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 显式指定。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">datasets/</span></code>。</strong> <code class="docutils literal notranslate"><span class="pre">terrain-ppo/</span></code> 是固定坡地模型三个训练阶段的配置与 TensorBoard 日志，<code class="docutils literal notranslate"><span class="pre">terrain-rollers-ppo-experiment/</span></code> 是本页轮滑训练的记录。</p></li>
+<li><p><strong>场景。</strong> 训练地形由 <code class="docutils literal notranslate"><span class="pre">lab/train_terrain.py</span></code> 中的地形配置生成，验证坡台由 <code class="docutils literal notranslate"><span class="pre">terrain</span></code> 命令的参数（如 <code class="docutils literal notranslate"><span class="pre">--slope</span></code>）即时生成，都不从场景文件读取。</p></li>
+</ul>
+</div></details></section>
+<section id="direction">
+<h2>用转向奖励减少走偏<a class="headerlink" href="#direction" title="Link to this heading">#</a></h2>
+<p>第三阶段之前的策略在 +5° 坡道上已经能迈步上坡，却会一边走一边慢慢转偏，偏离要到达的目标。前进速度奖励按机身坐标系计算，身体转偏后仍可能“向自己的前方走得很好”，所以第三阶段加入一项单独的 z 轴转向奖励：</p>
+<div class="formula"><div class="formula-label">转向跟踪奖励</div><div class="formula-body">\[\htmlData{sym=r_omega}{r_{\omega}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=omega_z}{\omega_z}-\htmlData{sym=omega_cmd}{\omega_z^*}}{\htmlData{sym=sigma}{0.15}}\right)^2\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\omega}\)</dt><dd>转向跟踪奖励：误差为 0 时为 1，误差增大时平滑降向 0。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差转换成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(\omega_z\)</dt><dd>机身坐标系中绕 \(z\) 轴的实际角速度，训练时从仿真状态读取（rad/s）；机身倾斜时，它不一定等同于世界坐标系的偏航角速度。</dd></div><div><dt>\(\omega_z^*\)</dt><dd>转向指令要求的角速度（rad/s）；直行时为 0。</dd></div><div><dt>\(\sigma\)</dt><dd>转向误差的容忍尺度，这里取 0.15 rad/s。</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=omega_z}{\omega_z}\)</span> 是机身绕 z 轴的实际角速度，<span class="math notranslate nohighlight">\(\htmlData{sym=omega_cmd}{\omega_z^*}\)</span> 是转向指令，直行时为 0。误差为 0 时奖励为 1；误差达到 <span class="math notranslate nohighlight">\(\htmlData{sym=sigma}{\sigma}\)</span> = 0.15 rad/s 时降到 0.37，达到 0.30 rad/s 时只剩 0.02。只取 z 分量，是因为行走本身伴随横滚和俯仰的晃动，三轴一起放进窄的跟踪核会压低正常步态的得分。</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>奖励函数入口</h4> <p>一次为所有并行环境计算；文档字符串说明它不评价步态中的横滚和俯仰。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">yaw_rate_tracking</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Reward turning accuracy independently of gait roll and pitch motion."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>读取实际与目标转向速度</h4> <p>读取机身坐标系的角速度，以及速度指令中的转向分量（第 3 列）。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">velocity</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_ang_vel_b</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="s2">"torch"</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">command_manager</span><span class="o">.</span><span class="n">get_command</span><span class="p">(</span><span class="s2">"base_velocity"</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>计算有界奖励</h4> <p>只取角速度的 z 分量，减去指令后除以 <code>std</code>，平方再取负指数，对应上面的公式。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">velocity</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">square</span><span class="p">())</span></code></pre></div></div></div><p>训练时这一项以权重 4.0 加入奖励管理器；同一阶段还把原三轴角速度项的权重降到 0.5、线速度项设为 3.0。</p>
+<p><strong>它约束转向速度，不纠正已累积的航向偏差。</strong> 原地不转也能得满分，因此还要配合前进、姿态和平滑等奖励。</p>
+<p>最终模型通过了后面的坡台测试。但这一阶段同时改了多个权重并增加训练，无法单独确认转向奖励的贡献；可以按第 6 步设计对照实验。</p>
+</section>
+<section id="evaluate">
+<h2>在同一个楔形坡台上比较<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h2>
+<p>比较新旧策略时，坡台、判据和起点设置都相同。下面两段对比录像各是一次单独运行，按仿真时间同步播放。</p>
+<figure class="media"><div class="comparison-labels"><span>上：官方策略</span><span>下：坡地策略</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-ascent.jpg" aria-label="上坡 +5° 的对比：上方官方行走策略在坡道前部侧倒，下方坡地策略走上平台并站稳。"><source src="../assets/media/terrain-v4fast-ascent.mp4" type="video/mp4"></video><figcaption><p>上坡 +5°（截取前 15 秒）：官方行走策略（上）在坡道前部偏向一侧，约 12.1 秒摔倒；坡地策略（下）约 8.9 秒走上平台，之后一直站在平台上。</p>
+</figcaption></figure><figure class="media"><div class="comparison-labels"><span>上：官方策略</span><span>下：坡地策略</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-descent.jpg" aria-label="下坡 −5° 的对比：上方官方行走策略停在斜坡上，下方坡地策略走下坡台并在地面上站稳。"><source src="../assets/media/terrain-v4fast-descent.mp4" type="video/mp4"></video><figcaption><p>下坡 −5°（20 秒）：官方行走策略（上）停在斜坡上，既没有到达也没有摔倒；坡地策略（下）约 8.3 秒走下坡台，之后在地面上站稳。</p>
+</figcaption></figure><p>在<strong>容器内</strong>运行下面的命令，默认加载课程提供的坡地模型。完成自己的训练后，把 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 换成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>，换一个输出目录再运行。5 个环境在同一个坡台上互不碰撞地运行，窗口只显示第 1 个。</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/terrain-walk.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--slope<span class="w"> </span><span class="m">5</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">49001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-evaluation-up-05
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-test.png" alt="坡台测试运行时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只 Microduck 已经走上平台并站稳，头朝前方，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>课程在容器中运行这条命令时的 Isaac Sim 窗口：小鸭子已经走上平台、在目标位置停住。</p>
+</figcaption></figure><p>终端会打印每个环境的 <code class="docutils literal notranslate"><span class="pre">passed</span></code>、<code class="docutils literal notranslate"><span class="pre">fell</span></code>、<code class="docutils literal notranslate"><span class="pre">reached_goal</span></code>、<code class="docutils literal notranslate"><span class="pre">held_seconds</span></code> 和速度均方根误差，完整结果写在输出目录的 <code class="docutils literal notranslate"><span class="pre">report.json</span></code>。下坡把 <code class="docutils literal notranslate"><span class="pre">--slope</span></code> 改成 <code class="docutils literal notranslate"><span class="pre">-5</span></code>、换一个输出目录即可。课程按这两条命令实测，时间从策略接管算起（前 2 秒站立）：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>方向</p></th>
+<th class="head cell-short"><p>通过</p></th>
+<th class="head cell-short"><p>跌倒</p></th>
+<th class="head cell-short"><p>到达目标</p></th>
+<th class="head cell-short"><p>到达后保持</p></th>
+<th class="head"><p>行进中速度 RMSE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>上坡 +5°</p></td>
+<td class="cell-short"><p>5/5</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>8.9–9.0 秒</p></td>
+<td><p>11.0–11.1 秒，到第 20 秒仍在平台上</p></td>
+<td class="cell-short"><p>约 0.11 m/s</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>下坡 −5°</p></td>
+<td class="cell-short"><p>5/5</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>8.2–8.3 秒</p></td>
+<td><p>11.7–11.8 秒，到第 20 秒仍站在地面上</p></td>
+<td class="cell-short"><p>约 0.09 m/s</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>读这张表时注意三点：</p>
+<ul class="simple">
+<li><p><strong>只是 ±5°、每个方向 5 个环境。</strong> 它描述的是测过的这组条件，不是一般的成功率，也不是独立的留出测试。更陡的坡度要单独测量，可以依次把 <code class="docutils literal notranslate"><span class="pre">--slope</span></code> 改成 ±10、±15（加 <code class="docutils literal notranslate"><span class="pre">--headless</span></code> 不开窗口更快）。每个环境的结果见<a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">评测摘要 ↗</a>。</p></li>
+<li><p><strong>站立时有课程的头部保持。</strong> 这个策略在速度指令为 0 时（出发前 2 秒与到达之后）会把头压得很低。验证脚本只在这两段时间把 4 个头部舵机的目标换成站姿角度（俯仰再抬高 0.2 rad），腿部动作始终来自策略。所以“到达后保持”是策略和这个头部保持一起做到的。</p></li>
+<li><p><strong>只用于本节。</strong> 2.1 节和第 4 部分仍使用原行走策略。自己训练的模型要在相同条件下同时报告平地、上坡和下坡，坡地改善却丢失平地能力不算合格替代。</p></li>
+</ul>
+<details class="enrichment"><summary>窗口速度与录像</summary><div class="enrichment-body"><p>验证窗口按 960×540 绘制、每 2 个控制步刷新一次，让动作接近真实速度；物理仍为每秒 200 步，策略每秒 50 次。在 DGX Spark 上，5 个环境的 20 秒测试整段约用 20 秒。需要更清楚的画面时，在命令前加 <code class="docutils literal notranslate"><span class="pre">MICRODUCK_VIEWPORT_RESOLUTION=1920x1080</span></code>，运行会变慢；加 <code class="docutils literal notranslate"><span class="pre">--record</span></code>（只能 1 个环境）按仿真时间逐帧录像，画质与窗口相同。</p>
+</div></details><div class="quiz"><h3>检查理解</h3><p>训练地形里已经有很多坡，为什么还要在楔形坡台上单独验证？</p>
+<details><summary>查看解析</summary><p>随机坡面是训练分布，楔形坡台这一完整布局没有出现在训练地形中，验证的是在随机坡面上学到的能力能否用到这个具体布局上，而不是在训练场景里重复动作。新旧策略要在同一坡台、同一判据下比较；如果根据验证结果反复调参，它就不再是独立测试，更严格的做法是另留没有参与调参的种子和布局。</p>
+</details></div></section>
+<section id="rollers">
+<h2>轮滑：奖励上升不等于完成任务<a class="headerlink" href="#rollers" title="Link to this heading">#</a></h2>
+<p>这一部分的目的不是给出一个能用的坡地轮滑模型，而是展示一个反例：训练回报大幅上升，验收却没有通过。课程目前<strong>没有</strong>通过坡台验证的坡地轮滑模型。</p>
+<p>四个轮子改变了支撑与阻力：上坡要靠腿部动作持续推进，下坡松开指令仍可能加速。验收沿用同一个坡台和同样的到达与保持判据；轮滑推进量为 0 时仍会滑行，所以到达之后由课程的一个制动调节器根据前向速度给出小的反向推进量，所有轮滑模型共用它。</p>
+<p>步行奖励里有抬脚高度、腾空时间等项，会把轮架当成脚底来评价；轮滑指令表示“推进量”而不是米每秒，速度跟踪项也没有意义。所以轮滑训练只保留站直、动作平滑、关节限位和机身角速度这些通用项，再加入三项专用项，并沿用上面的转向项（权重 1.0）：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>专用项</p></th>
+<th class="head cell-short"><p>形状</p></th>
+<th class="head cell-short"><p>作用</p></th>
+<th class="head cell-short"><p>权重</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>推进</p></td>
+<td><p>带门控的截断进展</p></td>
+<td><p>按推进量奖励机身前向速度，超过 0.5 m/s 不再加分</p></td>
+<td class="cell-short"><p>+3</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>滑行</p></td>
+<td><p>平方惩罚，只在推进量为 0 时生效</p></td>
+<td><p>惩罚不推进时的前后滑动</p></td>
+<td class="cell-short"><p>−1</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>侧滑</p></td>
+<td class="cell-short"><p>平方惩罚</p></td>
+<td><p>惩罚机身侧向速度</p></td>
+<td class="cell-short"><p>−2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>完整的奖励代码见 <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/course_labs/train_terrain_rollers.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">lab/course_labs/train_terrain_rollers.py</span></code> ↗</a>。下面的命令从官方轮滑模型出发，在同一组随机坡面上用这些奖励继续 PPO；价值网络从零开始训练。</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--locomotion<span class="w"> </span>rollers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/official-browser/rollers.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">256</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">47001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--show<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-rollers-training-01
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-roller-terrain-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-roller-terrain-training.png" alt="轮滑坡地训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只装着轮滑脚的 Microduck，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的轮滑坡地训练窗口，展示训练刚开始的样子；画面里是随机训练地形，不是验证用的楔形坡台。</p>
+</figcaption></figure><p>观察一会儿后可以 Ctrl+C 停止；跑完 1000 轮后，导出的策略在 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-rollers-training-01/exported/policy.onnx</span></code>。下面的验证命令默认测试官方轮滑模型，也就是基线：</p>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--locomotion<span class="w"> </span>rollers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/official-browser/rollers.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--slope<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seed<span class="w"> </span><span class="m">55011</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/rollers-slope-01
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-roller-slope-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-roller-slope-test.png" alt="轮滑坡台测试时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只装着轮滑脚的 Microduck 从坡台右侧边缘掉下，倒在地面上。"></a><figcaption><p><strong>官方轮滑模型（基线）</strong>：课程在容器中运行这条命令时的窗口。小鸭子一边上坡一边向右偏，从坡台右侧边缘掉了下去。</p>
+</figcaption></figure><p>想测试训练后的策略，把 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 换成 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment/exported/policy.onnx</span></code>（课程跑完的那次训练）或你自己的 <code class="docutils literal notranslate"><span class="pre">exported/policy.onnx</span></code>，并换一个输出目录。</p>
+<p id="rollers-result"><strong>训练后的反例。</strong> 课程用上面的训练命令在 DGX Spark 上不开窗口跑完了 1000 轮（约 8.8 分钟，记录在 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment/</span></code>）。</p>
+<figure class="course-chart" data-chart><div class="chart-header"><h3>训练后的轮滑策略（反例）· 256 个环境 · 1000 轮</h3><span>训练阶段 525.8 秒</span></div><div class="chart-grid-pair"><div class="chart-panel"><h4>平均回合回报</h4><svg viewBox="0 0 370 242" role="group" aria-label="平均回合回报"><path class="chart-grid" d="M44 190.00H344"/><text x="36" y="194.00" text-anchor="end">-0.2</text><path class="chart-grid" d="M44 152.50H344"/><text x="36" y="156.50" text-anchor="end">13.6</text><path class="chart-grid" d="M44 115.00H344"/><text x="36" y="119.00" text-anchor="end">27.4</text><path class="chart-grid" d="M44 77.50H344"/><text x="36" y="81.50" text-anchor="end">41.1</text><path class="chart-grid" d="M44 40.00H344"/><text x="36" y="44.00" text-anchor="end">54.9</text><text x="44.00" y="213" text-anchor="middle">1</text><text x="118.77" y="213" text-anchor="middle">250</text><text x="193.85" y="213" text-anchor="middle">500</text><text x="268.92" y="213" text-anchor="middle">750</text><text x="344.00" y="213" text-anchor="middle">1000</text><polyline class="chart-line" points="44.00,190.00 47.00,177.03 50.01,161.23 53.01,149.01 56.01,133.96 59.02,103.24 62.02,107.08 65.02,118.75 68.02,106.75 71.03,95.12 74.03,98.05 77.03,92.75 80.04,89.30 83.04,85.80 86.04,88.80 89.05,101.21 92.05,107.15 95.05,89.70 98.05,81.34 101.06,84.31 104.06,100.56 107.06,90.63 110.07,89.12 113.07,96.95 116.07,86.03 119.08,75.54 122.08,88.70 125.08,79.01 128.08,75.58 131.09,77.28 134.09,72.63 137.09,77.78 140.10,83.63 143.10,82.55 146.10,66.21 149.11,72.53 152.11,73.58 155.11,65.39 158.11,66.43 161.12,68.37 164.12,74.20 167.12,65.74 170.13,68.48 173.13,67.66 176.13,73.09 179.14,65.75 182.14,65.34 185.14,72.41 188.14,72.13 191.15,66.79 194.15,71.66 197.15,64.00 200.16,63.73 203.16,58.22 206.16,53.59 209.17,56.89 212.17,57.28 215.17,57.77 218.17,53.68 221.18,59.36 224.18,60.25 227.18,58.68 230.19,61.55 233.19,56.36 236.19,63.37 239.20,59.34 242.20,53.63 245.20,59.12 248.20,64.36 251.21,61.50 254.21,63.24 257.21,62.23 260.22,61.49 263.22,59.23 266.22,56.62 269.23,68.25 272.23,67.19 275.23,75.47 278.23,78.49 281.24,60.97 284.24,55.61 287.24,60.80 290.25,60.49 293.25,60.89 296.25,63.38 299.26,68.38 302.26,72.77 305.26,63.26 308.26,57.90 311.27,66.53 314.27,71.90 317.27,76.28 320.28,74.27 323.28,73.55 326.28,64.60 329.29,55.56 332.29,56.57 335.29,58.69 338.29,62.48 341.30,59.05 344.00,59.99"/><circle class="chart-dot" cx="44.00" cy="190.00" r="1.6" tabindex="0" data-value="平均回合回报 · 1: -0.1799" aria-label="平均回合回报, 1, -0.1799"><title>1: -0.1799</title></circle><circle class="chart-dot" cx="47.00" cy="177.03" r="1.6" tabindex="0" data-value="平均回合回报 · 11: 4.5818" aria-label="平均回合回报, 11, 4.5818"><title>11: 4.5818</title></circle><circle class="chart-dot" cx="50.01" cy="161.23" r="1.6" tabindex="0" data-value="平均回合回报 · 21: 10.3811" aria-label="平均回合回报, 21, 10.3811"><title>21: 10.3811</title></circle><circle class="chart-dot" cx="53.01" cy="149.01" r="1.6" tabindex="0" data-value="平均回合回报 · 31: 14.8668" aria-label="平均回合回报, 31, 14.8668"><title>31: 14.8668</title></circle><circle class="chart-dot" cx="56.01" cy="133.96" r="1.6" tabindex="0" data-value="平均回合回报 · 41: 20.3924" aria-label="平均回合回报, 41, 20.3924"><title>41: 20.3924</title></circle><circle class="chart-dot" cx="59.02" cy="103.24" r="1.6" tabindex="0" data-value="平均回合回报 · 51: 31.6702" aria-label="平均回合回报, 51, 31.6702"><title>51: 31.6702</title></circle><circle class="chart-dot" cx="62.02" cy="107.08" r="1.6" tabindex="0" data-value="平均回合回报 · 61: 30.2604" aria-label="平均回合回报, 61, 30.2604"><title>61: 30.2604</title></circle><circle class="chart-dot" cx="65.02" cy="118.75" r="1.6" tabindex="0" data-value="平均回合回报 · 71: 25.9786" aria-label="平均回合回报, 71, 25.9786"><title>71: 25.9786</title></circle><circle class="chart-dot" cx="68.02" cy="106.75" r="1.6" tabindex="0" data-value="平均回合回报 · 81: 30.3827" aria-label="平均回合回报, 81, 30.3827"><title>81: 30.3827</title></circle><circle class="chart-dot" cx="71.03" cy="95.12" r="1.6" tabindex="0" data-value="平均回合回报 · 91: 34.6530" aria-label="平均回合回报, 91, 34.6530"><title>91: 34.6530</title></circle><circle class="chart-dot" cx="74.03" cy="98.05" r="1.6" tabindex="0" data-value="平均回合回报 · 101: 33.5770" aria-label="平均回合回报, 101, 33.5770"><title>101: 33.5770</title></circle><circle class="chart-dot" cx="77.03" cy="92.75" r="1.6" tabindex="0" data-value="平均回合回报 · 111: 35.5224" aria-label="平均回合回报, 111, 35.5224"><title>111: 35.5224</title></circle><circle class="chart-dot" cx="80.04" cy="89.30" r="1.6" tabindex="0" data-value="平均回合回报 · 121: 36.7879" aria-label="平均回合回报, 121, 36.7879"><title>121: 36.7879</title></circle><circle class="chart-dot" cx="83.04" cy="85.80" r="1.6" tabindex="0" data-value="平均回合回报 · 131: 38.0743" aria-label="平均回合回报, 131, 38.0743"><title>131: 38.0743</title></circle><circle class="chart-dot" cx="86.04" cy="88.80" r="1.6" tabindex="0" data-value="平均回合回报 · 141: 36.9716" aria-label="平均回合回报, 141, 36.9716"><title>141: 36.9716</title></circle><circle class="chart-dot" cx="89.05" cy="101.21" r="1.6" tabindex="0" data-value="平均回合回报 · 151: 32.4146" aria-label="平均回合回报, 151, 32.4146"><title>151: 32.4146</title></circle><circle class="chart-dot" cx="92.05" cy="107.15" r="1.6" tabindex="0" data-value="平均回合回报 · 161: 30.2349" aria-label="平均回合回报, 161, 30.2349"><title>161: 30.2349</title></circle><circle class="chart-dot" cx="95.05" cy="89.70" r="1.6" tabindex="0" data-value="平均回合回报 · 171: 36.6399" aria-label="平均回合回报, 171, 36.6399"><title>171: 36.6399</title></circle><circle class="chart-dot" cx="98.05" cy="81.34" r="1.6" tabindex="0" data-value="平均回合回报 · 181: 39.7116" aria-label="平均回合回报, 181, 39.7116"><title>181: 39.7116</title></circle><circle class="chart-dot" cx="101.06" cy="84.31" r="1.6" tabindex="0" data-value="平均回合回报 · 191: 38.6213" aria-label="平均回合回报, 191, 38.6213"><title>191: 38.6213</title></circle><circle class="chart-dot" cx="104.06" cy="100.56" r="1.6" tabindex="0" data-value="平均回合回报 · 201: 32.6540" aria-label="平均回合回报, 201, 32.6540"><title>201: 32.6540</title></circle><circle class="chart-dot" cx="107.06" cy="90.63" r="1.6" tabindex="0" data-value="平均回合回报 · 211: 36.3000" aria-label="平均回合回报, 211, 36.3000"><title>211: 36.3000</title></circle><circle class="chart-dot" cx="110.07" cy="89.12" r="1.6" tabindex="0" data-value="平均回合回报 · 221: 36.8544" aria-label="平均回合回报, 221, 36.8544"><title>221: 36.8544</title></circle><circle class="chart-dot" cx="113.07" cy="96.95" r="1.6" tabindex="0" data-value="平均回合回报 · 231: 33.9813" aria-label="平均回合回报, 231, 33.9813"><title>231: 33.9813</title></circle><circle class="chart-dot" cx="116.07" cy="86.03" r="1.6" tabindex="0" data-value="平均回合回报 · 241: 37.9882" aria-label="平均回合回报, 241, 37.9882"><title>241: 37.9882</title></circle><circle class="chart-dot" cx="119.08" cy="75.54" r="1.6" tabindex="0" data-value="平均回合回报 · 251: 41.8397" aria-label="平均回合回报, 251, 41.8397"><title>251: 41.8397</title></circle><circle class="chart-dot" cx="122.08" cy="88.70" r="1.6" tabindex="0" data-value="平均回合回报 · 261: 37.0070" aria-label="平均回合回报, 261, 37.0070"><title>261: 37.0070</title></circle><circle class="chart-dot" cx="125.08" cy="79.01" r="1.6" tabindex="0" data-value="平均回合回报 · 271: 40.5648" aria-label="平均回合回报, 271, 40.5648"><title>271: 40.5648</title></circle><circle class="chart-dot" cx="128.08" cy="75.58" r="1.6" tabindex="0" data-value="平均回合回报 · 281: 41.8233" aria-label="平均回合回报, 281, 41.8233"><title>281: 41.8233</title></circle><circle class="chart-dot" cx="131.09" cy="77.28" r="1.6" tabindex="0" data-value="平均回合回报 · 291: 41.2026" aria-label="平均回合回报, 291, 41.2026"><title>291: 41.2026</title></circle><circle class="chart-dot" cx="134.09" cy="72.63" r="1.6" tabindex="0" data-value="平均回合回报 · 301: 42.9085" aria-label="平均回合回报, 301, 42.9085"><title>301: 42.9085</title></circle><circle class="chart-dot" cx="137.09" cy="77.78" r="1.6" tabindex="0" data-value="平均回合回报 · 311: 41.0183" aria-label="平均回合回报, 311, 41.0183"><title>311: 41.0183</title></circle><circle class="chart-dot" cx="140.10" cy="83.63" r="1.6" tabindex="0" data-value="平均回合回报 · 321: 38.8685" aria-label="平均回合回报, 321, 38.8685"><title>321: 38.8685</title></circle><circle class="chart-dot" cx="143.10" cy="82.55" r="1.6" tabindex="0" data-value="平均回合回报 · 331: 39.2645" aria-label="平均回合回报, 331, 39.2645"><title>331: 39.2645</title></circle><circle class="chart-dot" cx="146.10" cy="66.21" r="1.6" tabindex="0" data-value="平均回合回报 · 341: 45.2646" aria-label="平均回合回报, 341, 45.2646"><title>341: 45.2646</title></circle><circle class="chart-dot" cx="149.11" cy="72.53" r="1.6" tabindex="0" data-value="平均回合回报 · 351: 42.9455" aria-label="平均回合回报, 351, 42.9455"><title>351: 42.9455</title></circle><circle class="chart-dot" cx="152.11" cy="73.58" r="1.6" tabindex="0" data-value="平均回合回报 · 361: 42.5582" aria-label="平均回合回报, 361, 42.5582"><title>361: 42.5582</title></circle><circle class="chart-dot" cx="155.11" cy="65.39" r="1.6" tabindex="0" data-value="平均回合回报 · 371: 45.5663" aria-label="平均回合回报, 371, 45.5663"><title>371: 45.5663</title></circle><circle class="chart-dot" cx="158.11" cy="66.43" r="1.6" tabindex="0" data-value="平均回合回报 · 381: 45.1858" aria-label="平均回合回报, 381, 45.1858"><title>381: 45.1858</title></circle><circle class="chart-dot" cx="161.12" cy="68.37" r="1.6" tabindex="0" data-value="平均回合回报 · 391: 44.4708" aria-label="平均回合回报, 391, 44.4708"><title>391: 44.4708</title></circle><circle class="chart-dot" cx="164.12" cy="74.20" r="1.6" tabindex="0" data-value="平均回合回报 · 401: 42.3320" aria-label="平均回合回报, 401, 42.3320"><title>401: 42.3320</title></circle><circle class="chart-dot" cx="167.12" cy="65.74" r="1.6" tabindex="0" data-value="平均回合回报 · 411: 45.4359" aria-label="平均回合回报, 411, 45.4359"><title>411: 45.4359</title></circle><circle class="chart-dot" cx="170.13" cy="68.48" r="1.6" tabindex="0" data-value="平均回合回报 · 421: 44.4319" aria-label="平均回合回报, 421, 44.4319"><title>421: 44.4319</title></circle><circle class="chart-dot" cx="173.13" cy="67.66" r="1.6" tabindex="0" data-value="平均回合回报 · 431: 44.7322" aria-label="平均回合回报, 431, 44.7322"><title>431: 44.7322</title></circle><circle class="chart-dot" cx="176.13" cy="73.09" r="1.6" tabindex="0" data-value="平均回合回报 · 441: 42.7379" aria-label="平均回合回报, 441, 42.7379"><title>441: 42.7379</title></circle><circle class="chart-dot" cx="179.14" cy="65.75" r="1.6" tabindex="0" data-value="平均回合回报 · 451: 45.4335" aria-label="平均回合回报, 451, 45.4335"><title>451: 45.4335</title></circle><circle class="chart-dot" cx="182.14" cy="65.34" r="1.6" tabindex="0" data-value="平均回合回报 · 461: 45.5855" aria-label="平均回合回报, 461, 45.5855"><title>461: 45.5855</title></circle><circle class="chart-dot" cx="185.14" cy="72.41" r="1.6" tabindex="0" data-value="平均回合回报 · 471: 42.9896" aria-label="平均回合回报, 471, 42.9896"><title>471: 42.9896</title></circle><circle class="chart-dot" cx="188.14" cy="72.13" r="1.6" tabindex="0" data-value="平均回合回报 · 481: 43.0918" aria-label="平均回合回报, 481, 43.0918"><title>481: 43.0918</title></circle><circle class="chart-dot" cx="191.15" cy="66.79" r="1.6" tabindex="0" data-value="平均回合回报 · 491: 45.0505" aria-label="平均回合回报, 491, 45.0505"><title>491: 45.0505</title></circle><circle class="chart-dot" cx="194.15" cy="71.66" r="1.6" tabindex="0" data-value="平均回合回报 · 501: 43.2649" aria-label="平均回合回报, 501, 43.2649"><title>501: 43.2649</title></circle><circle class="chart-dot" cx="197.15" cy="64.00" r="1.6" tabindex="0" data-value="平均回合回报 · 511: 46.0746" aria-label="平均回合回报, 511, 46.0746"><title>511: 46.0746</title></circle><circle class="chart-dot" cx="200.16" cy="63.73" r="1.6" tabindex="0" data-value="平均回合回报 · 521: 46.1758" aria-label="平均回合回报, 521, 46.1758"><title>521: 46.1758</title></circle><circle class="chart-dot" cx="203.16" cy="58.22" r="1.6" tabindex="0" data-value="平均回合回报 · 531: 48.1972" aria-label="平均回合回报, 531, 48.1972"><title>531: 48.1972</title></circle><circle class="chart-dot" cx="206.16" cy="53.59" r="1.6" tabindex="0" data-value="平均回合回报 · 541: 49.8972" aria-label="平均回合回报, 541, 49.8972"><title>541: 49.8972</title></circle><circle class="chart-dot" cx="209.17" cy="56.89" r="1.6" tabindex="0" data-value="平均回合回报 · 551: 48.6875" aria-label="平均回合回报, 551, 48.6875"><title>551: 48.6875</title></circle><circle class="chart-dot" cx="212.17" cy="57.28" r="1.6" tabindex="0" data-value="平均回合回报 · 561: 48.5430" aria-label="平均回合回报, 561, 48.5430"><title>561: 48.5430</title></circle><circle class="chart-dot" cx="215.17" cy="57.77" r="1.6" tabindex="0" data-value="平均回合回报 · 571: 48.3629" aria-label="平均回合回报, 571, 48.3629"><title>571: 48.3629</title></circle><circle class="chart-dot" cx="218.17" cy="53.68" r="1.6" tabindex="0" data-value="平均回合回报 · 581: 49.8641" aria-label="平均回合回报, 581, 49.8641"><title>581: 49.8641</title></circle><circle class="chart-dot" cx="221.18" cy="59.36" r="1.6" tabindex="0" data-value="平均回合回报 · 591: 47.7795" aria-label="平均回合回报, 591, 47.7795"><title>591: 47.7795</title></circle><circle class="chart-dot" cx="224.18" cy="60.25" r="1.6" tabindex="0" data-value="平均回合回报 · 601: 47.4540" aria-label="平均回合回报, 601, 47.4540"><title>601: 47.4540</title></circle><circle class="chart-dot" cx="227.18" cy="58.68" r="1.6" tabindex="0" data-value="平均回合回报 · 611: 48.0298" aria-label="平均回合回报, 611, 48.0298"><title>611: 48.0298</title></circle><circle class="chart-dot" cx="230.19" cy="61.55" r="1.6" tabindex="0" data-value="平均回合回报 · 621: 46.9756" aria-label="平均回合回报, 621, 46.9756"><title>621: 46.9756</title></circle><circle class="chart-dot" cx="233.19" cy="56.36" r="1.6" tabindex="0" data-value="平均回合回报 · 631: 48.8813" aria-label="平均回合回报, 631, 48.8813"><title>631: 48.8813</title></circle><circle class="chart-dot" cx="236.19" cy="63.37" r="1.6" tabindex="0" data-value="平均回合回报 · 641: 46.3079" aria-label="平均回合回报, 641, 46.3079"><title>641: 46.3079</title></circle><circle class="chart-dot" cx="239.20" cy="59.34" r="1.6" tabindex="0" data-value="平均回合回报 · 651: 47.7869" aria-label="平均回合回报, 651, 47.7869"><title>651: 47.7869</title></circle><circle class="chart-dot" cx="242.20" cy="53.63" r="1.6" tabindex="0" data-value="平均回合回报 · 661: 49.8817" aria-label="平均回合回报, 661, 49.8817"><title>661: 49.8817</title></circle><circle class="chart-dot" cx="245.20" cy="59.12" r="1.6" tabindex="0" data-value="平均回合回报 · 671: 47.8684" aria-label="平均回合回报, 671, 47.8684"><title>671: 47.8684</title></circle><circle class="chart-dot" cx="248.20" cy="64.36" r="1.6" tabindex="0" data-value="平均回合回报 · 681: 45.9427" aria-label="平均回合回报, 681, 45.9427"><title>681: 45.9427</title></circle><circle class="chart-dot" cx="251.21" cy="61.50" r="1.6" tabindex="0" data-value="平均回合回报 · 691: 46.9951" aria-label="平均回合回报, 691, 46.9951"><title>691: 46.9951</title></circle><circle class="chart-dot" cx="254.21" cy="63.24" r="1.6" tabindex="0" data-value="平均回合回报 · 701: 46.3560" aria-label="平均回合回报, 701, 46.3560"><title>701: 46.3560</title></circle><circle class="chart-dot" cx="257.21" cy="62.23" r="1.6" tabindex="0" data-value="平均回合回报 · 711: 46.7265" aria-label="平均回合回报, 711, 46.7265"><title>711: 46.7265</title></circle><circle class="chart-dot" cx="260.22" cy="61.49" r="1.6" tabindex="0" data-value="平均回合回报 · 721: 46.9990" aria-label="平均回合回报, 721, 46.9990"><title>721: 46.9990</title></circle><circle class="chart-dot" cx="263.22" cy="59.23" r="1.6" tabindex="0" data-value="平均回合回报 · 731: 47.8269" aria-label="平均回合回报, 731, 47.8269"><title>731: 47.8269</title></circle><circle class="chart-dot" cx="266.22" cy="56.62" r="1.6" tabindex="0" data-value="平均回合回报 · 741: 48.7862" aria-label="平均回合回报, 741, 48.7862"><title>741: 48.7862</title></circle><circle class="chart-dot" cx="269.23" cy="68.25" r="1.6" tabindex="0" data-value="平均回合回报 · 751: 44.5171" aria-label="平均回合回报, 751, 44.5171"><title>751: 44.5171</title></circle><circle class="chart-dot" cx="272.23" cy="67.19" r="1.6" tabindex="0" data-value="平均回合回报 · 761: 44.9050" aria-label="平均回合回报, 761, 44.9050"><title>761: 44.9050</title></circle><circle class="chart-dot" cx="275.23" cy="75.47" r="1.6" tabindex="0" data-value="平均回合回报 · 771: 41.8666" aria-label="平均回合回报, 771, 41.8666"><title>771: 41.8666</title></circle><circle class="chart-dot" cx="278.23" cy="78.49" r="1.6" tabindex="0" data-value="平均回合回报 · 781: 40.7550" aria-label="平均回合回报, 781, 40.7550"><title>781: 40.7550</title></circle><circle class="chart-dot" cx="281.24" cy="60.97" r="1.6" tabindex="0" data-value="平均回合回报 · 791: 47.1890" aria-label="平均回合回报, 791, 47.1890"><title>791: 47.1890</title></circle><circle class="chart-dot" cx="284.24" cy="55.61" r="1.6" tabindex="0" data-value="平均回合回报 · 801: 49.1559" aria-label="平均回合回报, 801, 49.1559"><title>801: 49.1559</title></circle><circle class="chart-dot" cx="287.24" cy="60.80" r="1.6" tabindex="0" data-value="平均回合回报 · 811: 47.2509" aria-label="平均回合回报, 811, 47.2509"><title>811: 47.2509</title></circle><circle class="chart-dot" cx="290.25" cy="60.49" r="1.6" tabindex="0" data-value="平均回合回报 · 821: 47.3650" aria-label="平均回合回报, 821, 47.3650"><title>821: 47.3650</title></circle><circle class="chart-dot" cx="293.25" cy="60.89" r="1.6" tabindex="0" data-value="平均回合回报 · 831: 47.2187" aria-label="平均回合回报, 831, 47.2187"><title>831: 47.2187</title></circle><circle class="chart-dot" cx="296.25" cy="63.38" r="1.6" tabindex="0" data-value="平均回合回报 · 841: 46.3038" aria-label="平均回合回报, 841, 46.3038"><title>841: 46.3038</title></circle><circle class="chart-dot" cx="299.26" cy="68.38" r="1.6" tabindex="0" data-value="平均回合回报 · 851: 44.4676" aria-label="平均回合回报, 851, 44.4676"><title>851: 44.4676</title></circle><circle class="chart-dot" cx="302.26" cy="72.77" r="1.6" tabindex="0" data-value="平均回合回报 · 861: 42.8575" aria-label="平均回合回报, 861, 42.8575"><title>861: 42.8575</title></circle><circle class="chart-dot" cx="305.26" cy="63.26" r="1.6" tabindex="0" data-value="平均回合回报 · 871: 46.3479" aria-label="平均回合回报, 871, 46.3479"><title>871: 46.3479</title></circle><circle class="chart-dot" cx="308.26" cy="57.90" r="1.6" tabindex="0" data-value="平均回合回报 · 881: 48.3149" aria-label="平均回合回报, 881, 48.3149"><title>881: 48.3149</title></circle><circle class="chart-dot" cx="311.27" cy="66.53" r="1.6" tabindex="0" data-value="平均回合回报 · 891: 45.1458" aria-label="平均回合回报, 891, 45.1458"><title>891: 45.1458</title></circle><circle class="chart-dot" cx="314.27" cy="71.90" r="1.6" tabindex="0" data-value="平均回合回报 · 901: 43.1775" aria-label="平均回合回报, 901, 43.1775"><title>901: 43.1775</title></circle><circle class="chart-dot" cx="317.27" cy="76.28" r="1.6" tabindex="0" data-value="平均回合回报 · 911: 41.5663" aria-label="平均回合回报, 911, 41.5663"><title>911: 41.5663</title></circle><circle class="chart-dot" cx="320.28" cy="74.27" r="1.6" tabindex="0" data-value="平均回合回报 · 921: 42.3063" aria-label="平均回合回报, 921, 42.3063"><title>921: 42.3063</title></circle><circle class="chart-dot" cx="323.28" cy="73.55" r="1.6" tabindex="0" data-value="平均回合回报 · 931: 42.5698" aria-label="平均回合回报, 931, 42.5698"><title>931: 42.5698</title></circle><circle class="chart-dot" cx="326.28" cy="64.60" r="1.6" tabindex="0" data-value="平均回合回报 · 941: 45.8566" aria-label="平均回合回报, 941, 45.8566"><title>941: 45.8566</title></circle><circle class="chart-dot" cx="329.29" cy="55.56" r="1.6" tabindex="0" data-value="平均回合回报 · 951: 49.1737" aria-label="平均回合回报, 951, 49.1737"><title>951: 49.1737</title></circle><circle class="chart-dot" cx="332.29" cy="56.57" r="1.6" tabindex="0" data-value="平均回合回报 · 961: 48.8043" aria-label="平均回合回报, 961, 48.8043"><title>961: 48.8043</title></circle><circle class="chart-dot" cx="335.29" cy="58.69" r="1.6" tabindex="0" data-value="平均回合回报 · 971: 48.0269" aria-label="平均回合回报, 971, 48.0269"><title>971: 48.0269</title></circle><circle class="chart-dot" cx="338.29" cy="62.48" r="1.6" tabindex="0" data-value="平均回合回报 · 981: 46.6330" aria-label="平均回合回报, 981, 46.6330"><title>981: 46.6330</title></circle><circle class="chart-dot" cx="341.30" cy="59.05" r="1.6" tabindex="0" data-value="平均回合回报 · 991: 47.8923" aria-label="平均回合回报, 991, 47.8923"><title>991: 47.8923</title></circle><circle class="chart-dot" cx="344.00" cy="59.99" r="1.6" tabindex="0" data-value="平均回合回报 · 1000: 47.5471" aria-label="平均回合回报, 1000, 47.5471"><title>1000: 47.5471</title></circle><text x="194" y="238" text-anchor="middle">训练迭代次数</text></svg></div><div class="chart-panel"><h4>平均地形难度等级</h4><svg viewBox="0 0 370 242" role="group" aria-label="平均地形难度等级"><path class="chart-grid" d="M44 190.00H344"/><text x="36" y="194.00" text-anchor="end">0.0</text><path class="chart-grid" d="M44 152.50H344"/><text x="36" y="156.50" text-anchor="end">0.4</text><path class="chart-grid" d="M44 115.00H344"/><text x="36" y="119.00" text-anchor="end">0.8</text><path class="chart-grid" d="M44 77.50H344"/><text x="36" y="81.50" text-anchor="end">1.2</text><path class="chart-grid" d="M44 40.00H344"/><text x="36" y="44.00" text-anchor="end">1.6</text><text x="44.00" y="213" text-anchor="middle">1</text><text x="118.77" y="213" text-anchor="middle">250</text><text x="193.85" y="213" text-anchor="middle">500</text><text x="268.92" y="213" text-anchor="middle">750</text><text x="344.00" y="213" text-anchor="middle">1000</text><polyline class="chart-line" points="44.00,53.64 47.00,84.70 50.01,87.88 53.01,86.09 56.01,83.27 59.02,72.95 62.02,63.83 65.02,67.61 68.02,72.56 71.03,80.89 74.03,86.71 77.03,94.21 80.04,104.43 83.04,113.40 86.04,123.08 89.05,132.38 92.05,141.78 95.05,148.26 98.05,153.77 101.06,158.43 104.06,161.85 107.06,167.70 110.07,174.45 113.07,177.87 116.07,177.93 119.08,181.22 122.08,184.52 125.08,186.34 128.08,186.34 131.09,187.15 134.09,187.44 137.09,187.81 140.10,187.81 143.10,187.81 146.10,188.54 149.11,188.90 152.11,189.63 155.11,189.27 158.11,189.27 161.12,189.63 164.12,189.63 167.12,190.00 170.13,189.63 173.13,190.00 176.13,190.00 179.14,189.63 182.14,189.63 185.14,189.63 188.14,189.27 191.15,189.63 194.15,189.63 197.15,189.27 200.16,189.27 203.16,189.27 206.16,188.54 209.17,188.54 212.17,187.81 215.17,187.81 218.17,188.84 221.18,188.54 224.18,188.17 227.18,188.54 230.19,188.90 233.19,188.90 236.19,189.27 239.20,189.63 242.20,189.27 245.20,188.90 248.20,189.63 251.21,189.63 254.21,189.63 257.21,189.63 260.22,188.90 263.22,188.54 266.22,189.27 269.23,189.27 272.23,189.63 275.23,190.00 278.23,190.00 281.24,189.63 284.24,189.63 287.24,189.27 290.25,189.27 293.25,189.27 296.25,189.27 299.26,189.63 302.26,189.63 305.26,189.27 308.26,189.63 311.27,189.62 314.27,189.27 317.27,189.63 320.28,189.63 323.28,189.63 326.28,189.27 329.29,189.27 332.29,189.63 335.29,189.27 338.29,188.54 341.30,188.90 344.00,188.17"/><circle class="chart-dot" cx="44.00" cy="53.64" r="1.6" tabindex="0" data-value="平均地形难度等级 · 1: 1.4569" aria-label="平均地形难度等级, 1, 1.4569"><title>1: 1.4569</title></circle><circle class="chart-dot" cx="47.00" cy="84.70" r="1.6" tabindex="0" data-value="平均地形难度等级 · 11: 1.1250" aria-label="平均地形难度等级, 11, 1.1250"><title>11: 1.1250</title></circle><circle class="chart-dot" cx="50.01" cy="87.88" r="1.6" tabindex="0" data-value="平均地形难度等级 · 21: 1.0910" aria-label="平均地形难度等级, 21, 1.0910"><title>21: 1.0910</title></circle><circle class="chart-dot" cx="53.01" cy="86.09" r="1.6" tabindex="0" data-value="平均地形难度等级 · 31: 1.1102" aria-label="平均地形难度等级, 31, 1.1102"><title>31: 1.1102</title></circle><circle class="chart-dot" cx="56.01" cy="83.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 41: 1.1403" aria-label="平均地形难度等级, 41, 1.1403"><title>41: 1.1403</title></circle><circle class="chart-dot" cx="59.02" cy="72.95" r="1.6" tabindex="0" data-value="平均地形难度等级 · 51: 1.2505" aria-label="平均地形难度等级, 51, 1.2505"><title>51: 1.2505</title></circle><circle class="chart-dot" cx="62.02" cy="63.83" r="1.6" tabindex="0" data-value="平均地形难度等级 · 61: 1.3480" aria-label="平均地形难度等级, 61, 1.3480"><title>61: 1.3480</title></circle><circle class="chart-dot" cx="65.02" cy="67.61" r="1.6" tabindex="0" data-value="平均地形难度等级 · 71: 1.3076" aria-label="平均地形难度等级, 71, 1.3076"><title>71: 1.3076</title></circle><circle class="chart-dot" cx="68.02" cy="72.56" r="1.6" tabindex="0" data-value="平均地形难度等级 · 81: 1.2547" aria-label="平均地形难度等级, 81, 1.2547"><title>81: 1.2547</title></circle><circle class="chart-dot" cx="71.03" cy="80.89" r="1.6" tabindex="0" data-value="平均地形难度等级 · 91: 1.1657" aria-label="平均地形难度等级, 91, 1.1657"><title>91: 1.1657</title></circle><circle class="chart-dot" cx="74.03" cy="86.71" r="1.6" tabindex="0" data-value="平均地形难度等级 · 101: 1.1035" aria-label="平均地形难度等级, 101, 1.1035"><title>101: 1.1035</title></circle><circle class="chart-dot" cx="77.03" cy="94.21" r="1.6" tabindex="0" data-value="平均地形难度等级 · 111: 1.0234" aria-label="平均地形难度等级, 111, 1.0234"><title>111: 1.0234</title></circle><circle class="chart-dot" cx="80.04" cy="104.43" r="1.6" tabindex="0" data-value="平均地形难度等级 · 121: 0.9142" aria-label="平均地形难度等级, 121, 0.9142"><title>121: 0.9142</title></circle><circle class="chart-dot" cx="83.04" cy="113.40" r="1.6" tabindex="0" data-value="平均地形难度等级 · 131: 0.8184" aria-label="平均地形难度等级, 131, 0.8184"><title>131: 0.8184</title></circle><circle class="chart-dot" cx="86.04" cy="123.08" r="1.6" tabindex="0" data-value="平均地形难度等级 · 141: 0.7150" aria-label="平均地形难度等级, 141, 0.7150"><title>141: 0.7150</title></circle><circle class="chart-dot" cx="89.05" cy="132.38" r="1.6" tabindex="0" data-value="平均地形难度等级 · 151: 0.6156" aria-label="平均地形难度等级, 151, 0.6156"><title>151: 0.6156</title></circle><circle class="chart-dot" cx="92.05" cy="141.78" r="1.6" tabindex="0" data-value="平均地形难度等级 · 161: 0.5151" aria-label="平均地形难度等级, 161, 0.5151"><title>161: 0.5151</title></circle><circle class="chart-dot" cx="95.05" cy="148.26" r="1.6" tabindex="0" data-value="平均地形难度等级 · 171: 0.4460" aria-label="平均地形难度等级, 171, 0.4460"><title>171: 0.4460</title></circle><circle class="chart-dot" cx="98.05" cy="153.77" r="1.6" tabindex="0" data-value="平均地形难度等级 · 181: 0.3870" aria-label="平均地形难度等级, 181, 0.3870"><title>181: 0.3870</title></circle><circle class="chart-dot" cx="101.06" cy="158.43" r="1.6" tabindex="0" data-value="平均地形难度等级 · 191: 0.3372" aria-label="平均地形难度等级, 191, 0.3372"><title>191: 0.3372</title></circle><circle class="chart-dot" cx="104.06" cy="161.85" r="1.6" tabindex="0" data-value="平均地形难度等级 · 201: 0.3008" aria-label="平均地形难度等级, 201, 0.3008"><title>201: 0.3008</title></circle><circle class="chart-dot" cx="107.06" cy="167.70" r="1.6" tabindex="0" data-value="平均地形难度等级 · 211: 0.2383" aria-label="平均地形难度等级, 211, 0.2383"><title>211: 0.2383</title></circle><circle class="chart-dot" cx="110.07" cy="174.45" r="1.6" tabindex="0" data-value="平均地形难度等级 · 221: 0.1662" aria-label="平均地形难度等级, 221, 0.1662"><title>221: 0.1662</title></circle><circle class="chart-dot" cx="113.07" cy="177.87" r="1.6" tabindex="0" data-value="平均地形难度等级 · 231: 0.1296" aria-label="平均地形难度等级, 231, 0.1296"><title>231: 0.1296</title></circle><circle class="chart-dot" cx="116.07" cy="177.93" r="1.6" tabindex="0" data-value="平均地形难度等级 · 241: 0.1289" aria-label="平均地形难度等级, 241, 0.1289"><title>241: 0.1289</title></circle><circle class="chart-dot" cx="119.08" cy="181.22" r="1.6" tabindex="0" data-value="平均地形难度等级 · 251: 0.0938" aria-label="平均地形难度等级, 251, 0.0938"><title>251: 0.0938</title></circle><circle class="chart-dot" cx="122.08" cy="184.52" r="1.6" tabindex="0" data-value="平均地形难度等级 · 261: 0.0586" aria-label="平均地形难度等级, 261, 0.0586"><title>261: 0.0586</title></circle><circle class="chart-dot" cx="125.08" cy="186.34" r="1.6" tabindex="0" data-value="平均地形难度等级 · 271: 0.0391" aria-label="平均地形难度等级, 271, 0.0391"><title>271: 0.0391</title></circle><circle class="chart-dot" cx="128.08" cy="186.34" r="1.6" tabindex="0" data-value="平均地形难度等级 · 281: 0.0391" aria-label="平均地形难度等级, 281, 0.0391"><title>281: 0.0391</title></circle><circle class="chart-dot" cx="131.09" cy="187.15" r="1.6" tabindex="0" data-value="平均地形难度等级 · 291: 0.0304" aria-label="平均地形难度等级, 291, 0.0304"><title>291: 0.0304</title></circle><circle class="chart-dot" cx="134.09" cy="187.44" r="1.6" tabindex="0" data-value="平均地形难度等级 · 301: 0.0273" aria-label="平均地形难度等级, 301, 0.0273"><title>301: 0.0273</title></circle><circle class="chart-dot" cx="137.09" cy="187.81" r="1.6" tabindex="0" data-value="平均地形难度等级 · 311: 0.0234" aria-label="平均地形难度等级, 311, 0.0234"><title>311: 0.0234</title></circle><circle class="chart-dot" cx="140.10" cy="187.81" r="1.6" tabindex="0" data-value="平均地形难度等级 · 321: 0.0234" aria-label="平均地形难度等级, 321, 0.0234"><title>321: 0.0234</title></circle><circle class="chart-dot" cx="143.10" cy="187.81" r="1.6" tabindex="0" data-value="平均地形难度等级 · 331: 0.0234" aria-label="平均地形难度等级, 331, 0.0234"><title>331: 0.0234</title></circle><circle class="chart-dot" cx="146.10" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 341: 0.0156" aria-label="平均地形难度等级, 341, 0.0156"><title>341: 0.0156</title></circle><circle class="chart-dot" cx="149.11" cy="188.90" r="1.6" tabindex="0" data-value="平均地形难度等级 · 351: 0.0117" aria-label="平均地形难度等级, 351, 0.0117"><title>351: 0.0117</title></circle><circle class="chart-dot" cx="152.11" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 361: 0.0039" aria-label="平均地形难度等级, 361, 0.0039"><title>361: 0.0039</title></circle><circle class="chart-dot" cx="155.11" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 371: 0.0078" aria-label="平均地形难度等级, 371, 0.0078"><title>371: 0.0078</title></circle><circle class="chart-dot" cx="158.11" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 381: 0.0078" aria-label="平均地形难度等级, 381, 0.0078"><title>381: 0.0078</title></circle><circle class="chart-dot" cx="161.12" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 391: 0.0039" aria-label="平均地形难度等级, 391, 0.0039"><title>391: 0.0039</title></circle><circle class="chart-dot" cx="164.12" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 401: 0.0039" aria-label="平均地形难度等级, 401, 0.0039"><title>401: 0.0039</title></circle><circle class="chart-dot" cx="167.12" cy="190.00" r="1.6" tabindex="0" data-value="平均地形难度等级 · 411: 0.0000" aria-label="平均地形难度等级, 411, 0.0000"><title>411: 0.0000</title></circle><circle class="chart-dot" cx="170.13" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 421: 0.0039" aria-label="平均地形难度等级, 421, 0.0039"><title>421: 0.0039</title></circle><circle class="chart-dot" cx="173.13" cy="190.00" r="1.6" tabindex="0" data-value="平均地形难度等级 · 431: 0.0000" aria-label="平均地形难度等级, 431, 0.0000"><title>431: 0.0000</title></circle><circle class="chart-dot" cx="176.13" cy="190.00" r="1.6" tabindex="0" data-value="平均地形难度等级 · 441: 0.0000" aria-label="平均地形难度等级, 441, 0.0000"><title>441: 0.0000</title></circle><circle class="chart-dot" cx="179.14" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 451: 0.0039" aria-label="平均地形难度等级, 451, 0.0039"><title>451: 0.0039</title></circle><circle class="chart-dot" cx="182.14" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 461: 0.0039" aria-label="平均地形难度等级, 461, 0.0039"><title>461: 0.0039</title></circle><circle class="chart-dot" cx="185.14" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 471: 0.0039" aria-label="平均地形难度等级, 471, 0.0039"><title>471: 0.0039</title></circle><circle class="chart-dot" cx="188.14" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 481: 0.0078" aria-label="平均地形难度等级, 481, 0.0078"><title>481: 0.0078</title></circle><circle class="chart-dot" cx="191.15" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 491: 0.0039" aria-label="平均地形难度等级, 491, 0.0039"><title>491: 0.0039</title></circle><circle class="chart-dot" cx="194.15" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 501: 0.0039" aria-label="平均地形难度等级, 501, 0.0039"><title>501: 0.0039</title></circle><circle class="chart-dot" cx="197.15" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 511: 0.0078" aria-label="平均地形难度等级, 511, 0.0078"><title>511: 0.0078</title></circle><circle class="chart-dot" cx="200.16" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 521: 0.0078" aria-label="平均地形难度等级, 521, 0.0078"><title>521: 0.0078</title></circle><circle class="chart-dot" cx="203.16" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 531: 0.0078" aria-label="平均地形难度等级, 531, 0.0078"><title>531: 0.0078</title></circle><circle class="chart-dot" cx="206.16" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 541: 0.0156" aria-label="平均地形难度等级, 541, 0.0156"><title>541: 0.0156</title></circle><circle class="chart-dot" cx="209.17" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 551: 0.0156" aria-label="平均地形难度等级, 551, 0.0156"><title>551: 0.0156</title></circle><circle class="chart-dot" cx="212.17" cy="187.81" r="1.6" tabindex="0" data-value="平均地形难度等级 · 561: 0.0234" aria-label="平均地形难度等级, 561, 0.0234"><title>561: 0.0234</title></circle><circle class="chart-dot" cx="215.17" cy="187.81" r="1.6" tabindex="0" data-value="平均地形难度等级 · 571: 0.0234" aria-label="平均地形难度等级, 571, 0.0234"><title>571: 0.0234</title></circle><circle class="chart-dot" cx="218.17" cy="188.84" r="1.6" tabindex="0" data-value="平均地形难度等级 · 581: 0.0124" aria-label="平均地形难度等级, 581, 0.0124"><title>581: 0.0124</title></circle><circle class="chart-dot" cx="221.18" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 591: 0.0156" aria-label="平均地形难度等级, 591, 0.0156"><title>591: 0.0156</title></circle><circle class="chart-dot" cx="224.18" cy="188.17" r="1.6" tabindex="0" data-value="平均地形难度等级 · 601: 0.0195" aria-label="平均地形难度等级, 601, 0.0195"><title>601: 0.0195</title></circle><circle class="chart-dot" cx="227.18" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 611: 0.0156" aria-label="平均地形难度等级, 611, 0.0156"><title>611: 0.0156</title></circle><circle class="chart-dot" cx="230.19" cy="188.90" r="1.6" tabindex="0" data-value="平均地形难度等级 · 621: 0.0117" aria-label="平均地形难度等级, 621, 0.0117"><title>621: 0.0117</title></circle><circle class="chart-dot" cx="233.19" cy="188.90" r="1.6" tabindex="0" data-value="平均地形难度等级 · 631: 0.0117" aria-label="平均地形难度等级, 631, 0.0117"><title>631: 0.0117</title></circle><circle class="chart-dot" cx="236.19" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 641: 0.0078" aria-label="平均地形难度等级, 641, 0.0078"><title>641: 0.0078</title></circle><circle class="chart-dot" cx="239.20" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 651: 0.0039" aria-label="平均地形难度等级, 651, 0.0039"><title>651: 0.0039</title></circle><circle class="chart-dot" cx="242.20" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 661: 0.0078" aria-label="平均地形难度等级, 661, 0.0078"><title>661: 0.0078</title></circle><circle class="chart-dot" cx="245.20" cy="188.90" r="1.6" tabindex="0" data-value="平均地形难度等级 · 671: 0.0117" aria-label="平均地形难度等级, 671, 0.0117"><title>671: 0.0117</title></circle><circle class="chart-dot" cx="248.20" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 681: 0.0039" aria-label="平均地形难度等级, 681, 0.0039"><title>681: 0.0039</title></circle><circle class="chart-dot" cx="251.21" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 691: 0.0039" aria-label="平均地形难度等级, 691, 0.0039"><title>691: 0.0039</title></circle><circle class="chart-dot" cx="254.21" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 701: 0.0039" aria-label="平均地形难度等级, 701, 0.0039"><title>701: 0.0039</title></circle><circle class="chart-dot" cx="257.21" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 711: 0.0039" aria-label="平均地形难度等级, 711, 0.0039"><title>711: 0.0039</title></circle><circle class="chart-dot" cx="260.22" cy="188.90" r="1.6" tabindex="0" data-value="平均地形难度等级 · 721: 0.0117" aria-label="平均地形难度等级, 721, 0.0117"><title>721: 0.0117</title></circle><circle class="chart-dot" cx="263.22" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 731: 0.0156" aria-label="平均地形难度等级, 731, 0.0156"><title>731: 0.0156</title></circle><circle class="chart-dot" cx="266.22" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 741: 0.0078" aria-label="平均地形难度等级, 741, 0.0078"><title>741: 0.0078</title></circle><circle class="chart-dot" cx="269.23" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 751: 0.0078" aria-label="平均地形难度等级, 751, 0.0078"><title>751: 0.0078</title></circle><circle class="chart-dot" cx="272.23" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 761: 0.0039" aria-label="平均地形难度等级, 761, 0.0039"><title>761: 0.0039</title></circle><circle class="chart-dot" cx="275.23" cy="190.00" r="1.6" tabindex="0" data-value="平均地形难度等级 · 771: 0.0000" aria-label="平均地形难度等级, 771, 0.0000"><title>771: 0.0000</title></circle><circle class="chart-dot" cx="278.23" cy="190.00" r="1.6" tabindex="0" data-value="平均地形难度等级 · 781: 0.0000" aria-label="平均地形难度等级, 781, 0.0000"><title>781: 0.0000</title></circle><circle class="chart-dot" cx="281.24" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 791: 0.0039" aria-label="平均地形难度等级, 791, 0.0039"><title>791: 0.0039</title></circle><circle class="chart-dot" cx="284.24" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 801: 0.0039" aria-label="平均地形难度等级, 801, 0.0039"><title>801: 0.0039</title></circle><circle class="chart-dot" cx="287.24" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 811: 0.0078" aria-label="平均地形难度等级, 811, 0.0078"><title>811: 0.0078</title></circle><circle class="chart-dot" cx="290.25" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 821: 0.0078" aria-label="平均地形难度等级, 821, 0.0078"><title>821: 0.0078</title></circle><circle class="chart-dot" cx="293.25" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 831: 0.0078" aria-label="平均地形难度等级, 831, 0.0078"><title>831: 0.0078</title></circle><circle class="chart-dot" cx="296.25" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 841: 0.0078" aria-label="平均地形难度等级, 841, 0.0078"><title>841: 0.0078</title></circle><circle class="chart-dot" cx="299.26" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 851: 0.0039" aria-label="平均地形难度等级, 851, 0.0039"><title>851: 0.0039</title></circle><circle class="chart-dot" cx="302.26" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 861: 0.0039" aria-label="平均地形难度等级, 861, 0.0039"><title>861: 0.0039</title></circle><circle class="chart-dot" cx="305.26" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 871: 0.0078" aria-label="平均地形难度等级, 871, 0.0078"><title>871: 0.0078</title></circle><circle class="chart-dot" cx="308.26" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 881: 0.0039" aria-label="平均地形难度等级, 881, 0.0039"><title>881: 0.0039</title></circle><circle class="chart-dot" cx="311.27" cy="189.62" r="1.6" tabindex="0" data-value="平均地形难度等级 · 891: 0.0041" aria-label="平均地形难度等级, 891, 0.0041"><title>891: 0.0041</title></circle><circle class="chart-dot" cx="314.27" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 901: 0.0078" aria-label="平均地形难度等级, 901, 0.0078"><title>901: 0.0078</title></circle><circle class="chart-dot" cx="317.27" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 911: 0.0039" aria-label="平均地形难度等级, 911, 0.0039"><title>911: 0.0039</title></circle><circle class="chart-dot" cx="320.28" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 921: 0.0039" aria-label="平均地形难度等级, 921, 0.0039"><title>921: 0.0039</title></circle><circle class="chart-dot" cx="323.28" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 931: 0.0039" aria-label="平均地形难度等级, 931, 0.0039"><title>931: 0.0039</title></circle><circle class="chart-dot" cx="326.28" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 941: 0.0078" aria-label="平均地形难度等级, 941, 0.0078"><title>941: 0.0078</title></circle><circle class="chart-dot" cx="329.29" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 951: 0.0078" aria-label="平均地形难度等级, 951, 0.0078"><title>951: 0.0078</title></circle><circle class="chart-dot" cx="332.29" cy="189.63" r="1.6" tabindex="0" data-value="平均地形难度等级 · 961: 0.0039" aria-label="平均地形难度等级, 961, 0.0039"><title>961: 0.0039</title></circle><circle class="chart-dot" cx="335.29" cy="189.27" r="1.6" tabindex="0" data-value="平均地形难度等级 · 971: 0.0078" aria-label="平均地形难度等级, 971, 0.0078"><title>971: 0.0078</title></circle><circle class="chart-dot" cx="338.29" cy="188.54" r="1.6" tabindex="0" data-value="平均地形难度等级 · 981: 0.0156" aria-label="平均地形难度等级, 981, 0.0156"><title>981: 0.0156</title></circle><circle class="chart-dot" cx="341.30" cy="188.90" r="1.6" tabindex="0" data-value="平均地形难度等级 · 991: 0.0117" aria-label="平均地形难度等级, 991, 0.0117"><title>991: 0.0117</title></circle><circle class="chart-dot" cx="344.00" cy="188.17" r="1.6" tabindex="0" data-value="平均地形难度等级 · 1000: 0.0195" aria-label="平均地形难度等级, 1000, 0.0195"><title>1000: 0.0195</title></circle><text x="194" y="238" text-anchor="middle">训练迭代次数</text></svg></div></div><p class="chart-readout" aria-live="polite">悬停、点选或用 Tab 选择数据点，查看原始数值。</p><details class="chart-data"><summary>查看全部数据</summary><div class="table-scroll"><table><thead><tr><th>迭代</th><th>平均回合回报</th><th>平均地形难度等级</th></tr></thead><tbody><tr><td>1</td><td>-0.179899</td><td>1.456869</td></tr><tr><td>11</td><td>4.581765</td><td>1.125000</td></tr><tr><td>21</td><td>10.381079</td><td>1.090983</td></tr><tr><td>31</td><td>14.866784</td><td>1.110189</td></tr><tr><td>41</td><td>20.392378</td><td>1.140300</td></tr><tr><td>51</td><td>31.670181</td><td>1.250488</td></tr><tr><td>61</td><td>30.260370</td><td>1.347982</td></tr><tr><td>71</td><td>25.978621</td><td>1.307617</td></tr><tr><td>81</td><td>30.382683</td><td>1.254720</td></tr><tr><td>91</td><td>34.652992</td><td>1.165690</td></tr><tr><td>101</td><td>33.576988</td><td>1.103516</td></tr><tr><td>111</td><td>35.522419</td><td>1.023438</td></tr><tr><td>121</td><td>36.787903</td><td>0.914225</td></tr><tr><td>131</td><td>38.074265</td><td>0.818359</td></tr><tr><td>141</td><td>36.971607</td><td>0.715007</td></tr><tr><td>151</td><td>32.414555</td><td>0.615560</td></tr><tr><td>161</td><td>30.234884</td><td>0.515137</td></tr><tr><td>171</td><td>36.639915</td><td>0.445964</td></tr><tr><td>181</td><td>39.711601</td><td>0.387044</td></tr><tr><td>191</td><td>38.621265</td><td>0.337240</td></tr><tr><td>201</td><td>32.654026</td><td>0.300781</td></tr><tr><td>211</td><td>36.300041</td><td>0.238281</td></tr><tr><td>221</td><td>36.854412</td><td>0.166178</td></tr><tr><td>231</td><td>33.981266</td><td>0.129557</td></tr><tr><td>241</td><td>37.988224</td><td>0.128906</td></tr><tr><td>251</td><td>41.839741</td><td>0.093750</td></tr><tr><td>261</td><td>37.007008</td><td>0.058594</td></tr><tr><td>271</td><td>40.564766</td><td>0.039062</td></tr><tr><td>281</td><td>41.823292</td><td>0.039062</td></tr><tr><td>291</td><td>41.202576</td><td>0.030436</td></tr><tr><td>301</td><td>42.908535</td><td>0.027344</td></tr><tr><td>311</td><td>41.018261</td><td>0.023438</td></tr><tr><td>321</td><td>38.868526</td><td>0.023438</td></tr><tr><td>331</td><td>39.264530</td><td>0.023438</td></tr><tr><td>341</td><td>45.264629</td><td>0.015625</td></tr><tr><td>351</td><td>42.945457</td><td>0.011719</td></tr><tr><td>361</td><td>42.558167</td><td>0.003906</td></tr><tr><td>371</td><td>45.566311</td><td>0.007812</td></tr><tr><td>381</td><td>45.185772</td><td>0.007812</td></tr><tr><td>391</td><td>44.470810</td><td>0.003906</td></tr><tr><td>401</td><td>42.331966</td><td>0.003906</td></tr><tr><td>411</td><td>45.435867</td><td>0.000000</td></tr><tr><td>421</td><td>44.431923</td><td>0.003906</td></tr><tr><td>431</td><td>44.732220</td><td>0.000000</td></tr><tr><td>441</td><td>42.737949</td><td>0.000000</td></tr><tr><td>451</td><td>45.433544</td><td>0.003906</td></tr><tr><td>461</td><td>45.585457</td><td>0.003906</td></tr><tr><td>471</td><td>42.989613</td><td>0.003906</td></tr><tr><td>481</td><td>43.091766</td><td>0.007812</td></tr><tr><td>491</td><td>45.050522</td><td>0.003906</td></tr><tr><td>501</td><td>43.264900</td><td>0.003906</td></tr><tr><td>511</td><td>46.074631</td><td>0.007812</td></tr><tr><td>521</td><td>46.175797</td><td>0.007812</td></tr><tr><td>531</td><td>48.197155</td><td>0.007812</td></tr><tr><td>541</td><td>49.897160</td><td>0.015625</td></tr><tr><td>551</td><td>48.687504</td><td>0.015625</td></tr><tr><td>561</td><td>48.543011</td><td>0.023438</td></tr><tr><td>571</td><td>48.362915</td><td>0.023438</td></tr><tr><td>581</td><td>49.864128</td><td>0.012370</td></tr><tr><td>591</td><td>47.779549</td><td>0.015625</td></tr><tr><td>601</td><td>47.453964</td><td>0.019531</td></tr><tr><td>611</td><td>48.029816</td><td>0.015625</td></tr><tr><td>621</td><td>46.975643</td><td>0.011719</td></tr><tr><td>631</td><td>48.881264</td><td>0.011719</td></tr><tr><td>641</td><td>46.307896</td><td>0.007812</td></tr><tr><td>651</td><td>47.786903</td><td>0.003906</td></tr><tr><td>661</td><td>49.881676</td><td>0.007812</td></tr><tr><td>671</td><td>47.868408</td><td>0.011719</td></tr><tr><td>681</td><td>45.942696</td><td>0.003906</td></tr><tr><td>691</td><td>46.995068</td><td>0.003906</td></tr><tr><td>701</td><td>46.356022</td><td>0.003906</td></tr><tr><td>711</td><td>46.726536</td><td>0.003906</td></tr><tr><td>721</td><td>46.998989</td><td>0.011719</td></tr><tr><td>731</td><td>47.826942</td><td>0.015625</td></tr><tr><td>741</td><td>48.786194</td><td>0.007812</td></tr><tr><td>751</td><td>44.517090</td><td>0.007812</td></tr><tr><td>761</td><td>44.905041</td><td>0.003906</td></tr><tr><td>771</td><td>41.866623</td><td>0.000000</td></tr><tr><td>781</td><td>40.755043</td><td>0.000000</td></tr><tr><td>791</td><td>47.189041</td><td>0.003906</td></tr><tr><td>801</td><td>49.155872</td><td>0.003906</td></tr><tr><td>811</td><td>47.250870</td><td>0.007812</td></tr><tr><td>821</td><td>47.364967</td><td>0.007812</td></tr><tr><td>831</td><td>47.218681</td><td>0.007812</td></tr><tr><td>841</td><td>46.303848</td><td>0.007812</td></tr><tr><td>851</td><td>44.467552</td><td>0.003906</td></tr><tr><td>861</td><td>42.857544</td><td>0.003906</td></tr><tr><td>871</td><td>46.347919</td><td>0.007812</td></tr><tr><td>881</td><td>48.314949</td><td>0.003906</td></tr><tr><td>891</td><td>45.145828</td><td>0.004069</td></tr><tr><td>901</td><td>43.177528</td><td>0.007812</td></tr><tr><td>911</td><td>41.566273</td><td>0.003906</td></tr><tr><td>921</td><td>42.306335</td><td>0.003906</td></tr><tr><td>931</td><td>42.569767</td><td>0.003906</td></tr><tr><td>941</td><td>45.856628</td><td>0.007812</td></tr><tr><td>951</td><td>49.173672</td><td>0.007812</td></tr><tr><td>961</td><td>48.804314</td><td>0.003906</td></tr><tr><td>971</td><td>48.026894</td><td>0.007812</td></tr><tr><td>981</td><td>46.632973</td><td>0.015625</td></tr><tr><td>991</td><td>47.892323</td><td>0.011719</td></tr><tr><td>1000</td><td>47.547089</td><td>0.019531</td></tr></tbody></table></div></details><figcaption>每 10 轮取一个记录值。平均回合回报从约 −0.18 升到 47.6，地形难度等级却从 1.46 降到 0.02。</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>+5° 坡台，5 个环境</p></th>
+<th class="head cell-short"><p>通过</p></th>
+<th class="head cell-short"><p>跌倒</p></th>
+<th class="head cell-short"><p>发生了什么</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>官方轮滑模型（基线，即上面的测试窗口）</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>5/5</p></td>
+<td><p>4 只向右偏，从坡台侧面掉下；1 只在 5.0 秒短暂到达平台目标，之后也跌倒</p></td>
+</tr>
+<tr class="row-odd"><td><p>训练后的轮滑策略（反例，即上方曲线）</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>1/5</p></td>
+<td><p>4 只没有上坡，停在出发点后方约 0.5–1.1 m；1 只斜着上了坡台，从侧面掉下</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>每个环境的结果见<a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">评测摘要 ↗</a>。</p>
+<p>回报上升、跌倒减少，验收仍是 0/5。地形难度等级降到接近 0，说明训练后期主要在近乎平地的地块上练习；4 次验证没有上坡，也就谈不上任务改善。</p>
+<p>可能的漏洞是：站着少动就能拿分，而推进奖励没有检查是否朝向平台。下一步应一次只改一处，用相同预算和种子对照，再按坡台的成功判据验证。</p>
+<p>这是一个奖励设计的反例：它只说明这一套奖励在这次训练中没有学会上坡，不能证明轮滑普遍更难，也不意味着轮滑学不会上坡。</p>
+<div class="quiz"><h3>检查理解</h3><p>一次训练的平均回报从接近 0 升到 47，回合长度也接近上限。能据此说它学会了上坡轮滑吗？</p>
+<details><summary>查看解析</summary><p>不能。回报只说明策略更会拿到这组奖励给出的分数；本页的轮滑训练正是这样，回报大幅上升，+5° 坡台验证却是 0/5，大多停在出发点后方。要用训练前固定的验收判据来评测（最好另留没有参与调参的种子和场景），并检查地形难度等级这类能说明“训练实际在练什么”的指标。</p>
+</details></div></section>
+<section id="next">
+<h2>小结<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>奖励是训练信号，成功判据是验收；两者分开写，先写验收。</p></li>
+<li><p>随机坡面是训练分布，固定楔形坡台是单独的验证场景；结论来自后者，而且只适用于测过的条件。</p></li>
+<li><p>固定坡地模型在 ±5° 坡台上各 5/5 通过（每个方向 5 个环境）。转向奖励约束转向速度，不纠正已累积的航向；没有对照实验，不能把通过归功于它或其他某项调整。</p></li>
+<li><p>轮滑的回报大幅上升，验收仍是 0/5：回报曲线不能代替验收。</p></li>
+</ul>
+<p>3.4 节阅读社区作者为单脚站立、篮球平衡和倒滑写的奖励代码，用同样的六步判断它们的目标、写法和局限。</p>
+</section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab" rel="noreferer noopener" target="_blank">Isaac Lab：任务、地形与并行训练 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton 物理引擎 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" rel="noreferer noopener" target="_blank">坡地策略：网络、训练配置与模型信息 ↗</a></p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA 技术博客：用 AI 智能体在仿真中教 Microduck 行走 ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-walk-training.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">3.2 域随机化：训练并测试行走策略</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05-skills.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">3.4 社区技能：从目标到奖励</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">2026 GTC 柏林的演讲</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">任务与奖励设计</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">随机坡面训练：在训练分布中练习</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direction">用转向奖励减少走偏</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">在同一个楔形坡台上比较</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rollers">轮滑：奖励上升不等于完成任务</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">小结</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

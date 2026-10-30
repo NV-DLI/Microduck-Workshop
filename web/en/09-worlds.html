@@ -1,10 +1,708 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Diagnose failures before choosing corrections, physics calibration or Cosmos 3 data expansion; evaluate generalization step by step."><meta name="theme-color" content="#76b900"><title>From one field to more environments · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="09-worlds"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/09-worlds.html" >简体中文</a><a lang="en" href="../en/09-worlds.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a aria-current="page" href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Course chapters</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>From one field to more environments</h1><p class="lead">Diagnose failures before choosing corrections, physics calibration or Cosmos 3 data expansion; evaluate generalization step by step.</p><div class="lesson-meta">Chapter 9 · Estimated learning time: 25 minutes</div></div></div><section id="first"><h2>Make one scene reliable first</h2><p>Fix one mat, background and set of props. Establish a reliable traditional baseline, then evaluate independent GR00T execution and ASPIRE skill organization. This order makes failures interpretable: if the original scene is unreliable, adding ten rooms usually makes diagnosis harder.</p><p>After reliable handling of fresh starts, modest ball offsets and complete stopping on one field, ask whether the system transfers to another home. Lighting, background, layout and surfaces do vary, but training need not change every factor at once.</p></section><section id="diagnose"><h2>Distinguish appearance from action failures</h2><div class="table-scroll"><table><thead><tr><th>Observed failure</th><th>Useful direction</th><th>Avoid assuming</th></tr></thead><tbody><tr><td>Ball is missed under new light</td><td>Visual coverage and appearance variation</td><td>Random goal materials fix every failure</td></tr><tr><td>Ball is seen but approach drifts</td><td>Corrections from off-course states</td><td>More background images teach recovery</td></tr><tr><td>Ball scores but robot cannot stop</td><td>Braking, dynamics and delay calibration</td><td>Photorealism guarantees stopping</td></tr><tr><td>Furniture blocks the route</td><td>Layout variation and obstacle-handling skills</td><td>Changing floor textures teaches navigation</td></tr></tbody></table></div><p>Domain randomization changes selected training conditions to reduce dependence on one environment. Appearance variation changes images; dynamics variation changes motion. Design them separately. Keep goal-frame material fixed; possible floor expansion includes two football patterns, marble and brown wood.</p></section><section id="cosmos"><h2>Cosmos 3: visual variation for an action sequence</h2><p>Cosmos 3 is an omnimodal family for understanding and generating world-related data. One relevant research path is video transfer: use existing simulation video with controls such as edges, depth or segmentation to generate candidate lighting and interior variations.</p><figure class="learning-figure" data-learning-flow="learn-e065837d1e"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Vary appearance and check whether action labels remain valid"><svg class="learning-svg" viewBox="0 0 828 480" role="group" aria-labelledby="learn-e065837d1e-title"><title id="learn-e065837d1e-title">Vary appearance and check whether action labels remain valid</title><defs><marker id="learn-e065837d1e-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-e065837d1e-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-e065837d1e-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M690 190V264" marker-end="url(#learn-e065837d1e-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="Reliable source trace" aria-controls="learn-e065837d1e-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">Reliable source trace</text><text x="138" y="132" class="learning-node-subtitle">Images, state and actions</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="Cosmos 3 transfer" aria-controls="learn-e065837d1e-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">Cosmos 3 transfer</text><text x="414" y="132" class="learning-node-subtitle">Conditioned visual variation</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Check consistency" aria-controls="learn-e065837d1e-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Check consistency</text><text x="690" y="132" class="learning-node-subtitle">Geometry, contact and timing</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="Train and compare" aria-controls="learn-e065837d1e-detail-3" aria-expanded="false"><rect x="576" y="270" width="228" height="142" rx="8"/><text x="690" y="305" class="learning-node-title">Train and compare</text><text x="690" y="354" class="learning-node-subtitle">Unaided success in new scenes</text></g></svg></div><div class="learning-details"><p class="learning-empty">Vary appearance and check whether action labels remain valid</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-e065837d1e-detail-0" data-node-detail="0" class="learning-definition"><h3>Reliable source trace</h3><p>Source data need correct actions and timing. Restyling a demonstration without braking skill does not add that skill.</p></article><article id="learn-e065837d1e-detail-1" data-node-detail="1" class="learning-definition"><h3>Cosmos 3 transfer</h3><p>Structural controls help preserve layout while appearance changes. Outputs remain candidates: conditioning does not guarantee every frame is correct.</p></article><article id="learn-e065837d1e-detail-2" data-node-detail="2" class="learning-definition"><h3>Check consistency</h3><p>Inspect ball scale, posts, robot shape, contact time and temporal continuity. If a ball moves to the other side of a foot, the old action label may be invalid; reject the segment.</p></article><article id="learn-e065837d1e-detail-3" data-node-detail="3" class="learning-definition"><h3>Train and compare</h3><p>Compare against training without generated data under matched data and compute budgets. Hold out rooms or combinations to evaluate the benefit.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Follow the arrows and select modules for explanations.</figcaption></figure><p>Generated video is not a new physics experiment. A prettier goal does not establish executable actions; reliability still needs closed-loop simulation and later hardware tests. Friction, mass and braking-distance changes require physics parameters and measurements.</p></section><section id="arena"><h2>Composing robots, scenes and tasks</h2><p>Isaac Lab-Arena separates Scene, Embodiment (robot, sensors and actions), and Task (goals and completion criteria) for compositional evaluation and data collection. Isaac Lab organizes learning environments, Newton advances physics and a renderer produces images. OSMO can orchestrate data generation, training and evaluation workflows.</p><p>Combinations require compatible sensors, actions and clear evaluation criteria. Walking and skating are two modes of one Microduck, evaluated separately. Running environments concurrently does not itself produce one policy controlling every robot.</p><div class="scenario-matrix" data-scenario-matrix><p><strong>Design an evaluation matrix</strong></p><div class="matrix-options"><label><input type="checkbox" data-factor="4"> Four floors</label><label><input type="checkbox" data-factor="3"> Three lighting conditions</label><label><input type="checkbox" data-factor="3"> Three indoor layouts</label><label><input type="checkbox" data-factor="2"> Walking and skating, evaluated separately</label></div><label>Fresh seeds per combination <input class="matrix-seeds" type="number" min="1" max="100" value="5"></label><p class="matrix-output" aria-live="polite"></p><p class="matrix-scope">This only counts combinations; it launches no simulation or training. Unchecking a factor fixes it to one condition.</p></div></section><section id="experiment"><h2>Expand one factor at a time</h2><p>A useful progression is: stable completion on one field → modest lighting variation → new floor appearance → new room layouts → measured dynamics variation. Keep the previous stage as a baseline with the same complete-success criteria. Add visual coverage for perception failures, or revisit corrections and control calibration for drift and braking.</p><div class="quiz"><h3>Check your understanding</h3><p>Do ten restyled backgrounds provide ten times the action experience?</p><details><summary>Show explanation</summary><p>No. Visual conditions expand, but action/state coverage may remain unchanged. Recovery, new routes and braking need corresponding trajectories or corrections.</p></details></div></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://docs.nvidia.com/cosmos/latest/cosmos3/" target="_blank" rel="noopener">Cosmos 3 documentation ↗</a></li><li><a href="https://github.com/NVIDIA/cosmos/blob/main/cookbooks/cosmos3/generator/transfer/README.md" target="_blank" rel="noopener">Cosmos 3 video transfer controls ↗</a></li><li><a href="https://github.com/NVIDIA/cosmos" target="_blank" rel="noopener">Cosmos examples and data workflows ↗</a></li><li><a href="https://github.com/isaac-sim/IsaacLab-Arena" target="_blank" rel="noopener">Isaac Lab-Arena ↗</a></li><li><a href="https://nvidia.github.io/OSMO/" target="_blank" rel="noopener">OSMO workflow orchestration ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="08-aspire.html"><small>← Previous</small>Organize tasks and accumulate skills with ASPIRE</a><a href="models.html"><small>Next →</small>Models and data</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#first">Make one scene reliable first</a><a href="#diagnose">Distinguish appearance from action failures</a><a href="#cosmos">Cosmos 3: visual variation for an action sequence</a><a href="#arena">Composing robots, scenes and tasks</a><a href="#experiment">Expand one factor at a time</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="After a task has been made reliable on the green pitch, how environment domain randomization and Cosmos 3 data augmentation can prepare a model for the different floors, lighting and layouts of real homes; which changes keep the original action labels and which require new simulation." name="description" />
+
+  <title>4.4 From the pitch to more environments - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '09-worlds';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5.1 Models and data" href="models.html" />
+    <link rel="prev" title="4.3 Train and validate the GR00T walking shot" href="08-groot-lab.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="09-worlds">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/09-worlds.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/09-worlds.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/09-worlds.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/09-worlds.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.4 From the pitch to more environments</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="from-the-pitch-to-more-environments">
+<h1>4.4 From the pitch to more environments<a class="headerlink" href="#from-the-pitch-to-more-environments" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>After a task has been made reliable on the green pitch, how environment domain randomization and Cosmos 3 data augmentation can prepare a model for the different floors, lighting and layouts of real homes; which changes keep the original action labels and which require new simulation.</p>
+</div><div class="lesson-meta">Section 4.4 · Estimated learning time: 35 minutes</div></div></div><section id="first">
+<h2>Make one scene reliable first<a class="headerlink" href="#first" title="Link to this heading">#</a></h2>
+<p>The shooting exercises of this course (keyboard football in Section 2.1 and the GR00T walking shot in Part 4) all use the same green football pitch: the same field, goal, ball and lighting. That is deliberate. Only when a task is stable in one fixed scene are failures easy to explain; if the original scene cannot be completed reliably, adding ten rooms only makes problems harder to locate.</p>
+<p>A real robot will not stay on a green pitch, though. Floors at home may be wooden boards, tiles or carpet; light differs between day and night; the background holds sofas, table legs and clutter. The checkpoint in Section 4.3 has not yet scored in its five validation episodes, so the immediate next step is to analyse the failures on the fixed pitch, improve the data and control, and evaluate again. This section looks ahead to a later question: once shooting is reliable, how should the environment be expanded step by step? It covers ideas and principles only; there is no hands-on exercise.</p>
+</section>
+<section id="why-variation">
+<h2>Why a real robot needs environment variation<a class="headerlink" href="#why-variation" title="Link to this heading">#</a></h2>
+<p>A model trained only on the green pitch may have learned cues we do not want it to rely on, such as “a white spot on a green background is the ball” or “the goal always appears within this brightness range”. In simulation those cues always hold, so the model has no reason not to use them; on a light wooden floor they vanish and the model may lose the ball.</p>
+<p>There are other gaps between simulation and reality: real cameras have exposure changes, motion blur and noise; real lights cast shadows and reflections; real floors have friction that differs from the simulated setting. Together these are called the sim-to-real gap. Letting a model see sufficiently varied conditions during training is one of the main ways to narrow it.</p>
+</section>
+<section id="domain-randomization">
+<h2>Environment domain randomization<a class="headerlink" href="#domain-randomization" title="Link to this heading">#</a></h2>
+<p>Sections 3.2 and 3.3 already used domain randomization to vary servo characteristics, friction and terrain: rather than matching one real environment exactly, selected conditions vary randomly within a range, ideally with the real environment inside it. GR00T, which reads images, also needs visual variation such as lighting, materials and backgrounds. Choose ranges for the intended setting and evaluate unseen combinations and boundary conditions.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Category</p></th>
+<th class="head"><p>Conditions that can vary</p></th>
+<th class="head"><p>Effect on the shooting task</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Appearance</p></td>
+<td><p>Floor material and pattern, walls and background, unrelated furniture and clutter</p></td>
+<td><p>Changes the image; the actions need not change</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Lighting</p></td>
+<td><p>Brightness, color temperature, light direction, shadows</p></td>
+<td><p>Changes the image; the actions need not change</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Camera</p></td>
+<td><p>Exposure, small mounting-angle offsets, noise</p></td>
+<td><p>Changes the image; larger mounting changes also alter the visible geometry</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Starts</p></td>
+<td><p>Robot and ball positions, headings and distances</p></td>
+<td><p>Changes both the image and the required actions</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Physics</p></td>
+<td><p>Floor friction, ball mass and bounce, joint characteristics</p></td>
+<td><p>Changes the motion outcome; the original actions may no longer work</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A useful rule of thumb: <strong>think about what you expect to change in the real scene, and randomize that</strong>. Too narrow a range misses real conditions; too wide a range gives the model too much to learn and can make it conservative everywhere.</p>
+<p>Randomization must also keep the task itself unchanged. The goal size, the ball size, the robot’s body and the criterion “a goal counts as success” should not drift along with the appearance. Changing appearance is meant to teach the model to ignore irrelevant variation, not to turn the task into a different one.</p>
+</section>
+<section id="initial-state-variation">
+<h2>Randomize starts first, then expand rooms<a class="headerlink" href="#initial-state-variation" title="Link to this heading">#</a></h2>
+<p>Start variation usually comes first: on the same green pitch, change the robot and ball positions and test whether the model completes the task from unseen combinations; then widen the range of headings and distances; only then introduce indoor backgrounds, lighting and floor appearance.</p>
+<p>When starts or physics change, the robot needs different actions, so the physics simulation must be rerun and the teacher must provide new actions under the new conditions; the action labels of the original trajectory no longer apply. Only pure appearance changes (same positions, same motion, just a different-looking image) can possibly keep the original action labels.</p>
+</section>
+<section id="diagnose">
+<h2>“Can’t see” or “can’t do”?<a class="headerlink" href="#diagnose" title="Link to this heading">#</a></h2>
+<p>After moving to new environments, failures have different causes and need different help:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Observed failure</p></th>
+<th class="head cell-short"><p>Likely help</p></th>
+<th class="head"><p>What to verify next</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Loses the ball under new lighting</p></td>
+<td><p>Visual data coverage and appearance randomization</p></td>
+<td><p>Whether finding the ball and full shots both recover under lighting not seen in training</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sees the ball but drifts off to one side</p></td>
+<td><p>Corrective demonstrations for drifted states</p></td>
+<td><p>Whether corrective data covers the drifted states the model actually reaches</p></td>
+</tr>
+<tr class="row-even"><td><p>Unsteady or falls after kicking on a new floor</p></td>
+<td><p>Physics randomization and adaptation of the low-level skills</p></td>
+<td><p>Whether measured friction and contact fall within the simulated range</p></td>
+</tr>
+<tr class="row-odd"><td><p>Furniture blocks the original path</p></td>
+<td><p>Layout variation and an executable detour skill</p></td>
+<td><p>Whether an executable route exists in the new layout and the shot still succeeds after detouring</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Appearance randomization changes “what it looks like”; physics randomization changes “how it actually moves”. Design and verify them separately.</p>
+</section>
+<section id="direct-joints">
+<h2>Another option: GR00T outputs the 14 servo actions directly<a class="headerlink" href="#direct-joints" title="Link to this heading">#</a></h2>
+<p>In this course GR00T outputs 8D high-level requests, and the low-level action policy trained with reinforcement learning turns them into targets for the 14 servos (Section 4.2). One could also remove that middle layer and let a VLA output the 14 servo joint targets directly: the inputs stay RGB images, a language instruction and the robot state, and the output becomes 14 joint target angles at every step.</p>
+<figure class="concept-figure network-figure vla-figure" data-network><div class="diagram-scroll"><svg xmlns="http://www.w3.org/2000/svg" class="network-svg vla-svg" viewBox="0 0 760 460" role="group" aria-labelledby="vla-joint-title" font-family="Open Sans, Noto Sans SC, sans-serif"><title id="vla-joint-title">A VLA that outputs the 14 servo targets directly (schematic)</title><g class="network-part network-band" data-part="img-vlm" data-info="The images are encoded into features and enter the vision-language model. The lines show where data flows, not the actual connection pattern or the number of layers." role="button" tabindex="0" aria-label="The images are encoded into features and enter the vision-language model. The lines show where data flows, not the actual connection pattern or the number of layers."><rect class="network-hit" x="100" y="70" width="130" height="124"/><g class="network-edges"><path d="M77 96L253 96"/><path d="M77 96L253 118"/><path d="M77 96L253 140"/><path d="M77 96L253 184"/><path d="M77 96L253 206"/><path d="M77 96L253 228"/><path d="M77 116L253 96"/><path d="M77 116L253 118"/><path d="M77 116L253 140"/><path d="M77 116L253 184"/><path d="M77 116L253 206"/><path d="M77 116L253 228"/><path d="M77 156L253 96"/><path d="M77 156L253 118"/><path d="M77 156L253 140"/><path d="M77 156L253 184"/><path d="M77 156L253 206"/><path d="M77 156L253 228"/><path d="M77 176L253 96"/><path d="M77 176L253 118"/><path d="M77 176L253 140"/><path d="M77 176L253 184"/><path d="M77 176L253 206"/><path d="M77 176L253 228"/></g></g><g class="network-part network-band" data-part="text-vlm" data-info="The instruction is split into tokens, encoded and enters the vision-language model together with the image features." role="button" tabindex="0" aria-label="The instruction is split into tokens, encoded and enters the vision-language model together with the image features."><rect class="network-hit" x="100" y="194" width="130" height="124"/><g class="network-edges"><path d="M77 222L253 96"/><path d="M77 222L253 118"/><path d="M77 222L253 140"/><path d="M77 222L253 184"/><path d="M77 222L253 206"/><path d="M77 222L253 228"/><path d="M77 242L253 96"/><path d="M77 242L253 118"/><path d="M77 242L253 140"/><path d="M77 242L253 184"/><path d="M77 242L253 206"/><path d="M77 242L253 228"/><path d="M77 282L253 96"/><path d="M77 282L253 118"/><path d="M77 282L253 140"/><path d="M77 282L253 184"/><path d="M77 282L253 206"/><path d="M77 282L253 228"/><path d="M77 302L253 96"/><path d="M77 302L253 118"/><path d="M77 302L253 140"/><path d="M77 302L253 184"/><path d="M77 302L253 206"/><path d="M77 302L253 228"/></g></g><g class="network-part network-band" data-part="state-head" data-info="The robot state bypasses the vision-language model: it is encoded separately and goes straight into the action head, where it decides the action together with the vision-language features." role="button" tabindex="0" aria-label="The robot state bypasses the vision-language model: it is encoded separately and goes straight into the action head, where it decides the action together with the vision-language features."><rect class="network-hit" x="100" y="318" width="320" height="124"/><g class="network-edges"><path d="M77 348L443 150"/><path d="M77 348L443 172"/><path d="M77 348L443 194"/><path d="M77 348L443 216"/><path d="M77 348L443 238"/><path d="M77 348L443 260"/><path d="M77 348L443 304"/><path d="M77 348L443 326"/><path d="M77 348L443 348"/><path d="M77 348L443 370"/><path d="M77 348L443 392"/><path d="M77 348L443 414"/><path d="M77 368L443 150"/><path d="M77 368L443 172"/><path d="M77 368L443 194"/><path d="M77 368L443 216"/><path d="M77 368L443 238"/><path d="M77 368L443 260"/><path d="M77 368L443 304"/><path d="M77 368L443 326"/><path d="M77 368L443 348"/><path d="M77 368L443 370"/><path d="M77 368L443 392"/><path d="M77 368L443 414"/><path d="M77 408L443 150"/><path d="M77 408L443 172"/><path d="M77 408L443 194"/><path d="M77 408L443 216"/><path d="M77 408L443 238"/><path d="M77 408L443 260"/><path d="M77 408L443 304"/><path d="M77 408L443 326"/><path d="M77 408L443 348"/><path d="M77 408L443 370"/><path d="M77 408L443 392"/><path d="M77 408L443 414"/><path d="M77 428L443 150"/><path d="M77 428L443 172"/><path d="M77 428L443 194"/><path d="M77 428L443 216"/><path d="M77 428L443 238"/><path d="M77 428L443 260"/><path d="M77 428L443 304"/><path d="M77 428L443 326"/><path d="M77 428L443 348"/><path d="M77 428L443 370"/><path d="M77 428L443 392"/><path d="M77 428L443 414"/></g></g><g class="network-part network-band" data-part="vlm-head" data-info="The vision-language features condition the action head; the action head does not read the raw pixels." role="button" tabindex="0" aria-label="The vision-language features condition the action head; the action head does not read the raw pixels."><rect class="network-hit" x="290" y="70" width="130" height="248"/><g class="network-edges"><path d="M267 96L443 150"/><path d="M267 96L443 172"/><path d="M267 96L443 194"/><path d="M267 96L443 216"/><path d="M267 96L443 238"/><path d="M267 96L443 260"/><path d="M267 96L443 304"/><path d="M267 96L443 326"/><path d="M267 96L443 348"/><path d="M267 96L443 370"/><path d="M267 96L443 392"/><path d="M267 96L443 414"/><path d="M267 118L443 150"/><path d="M267 118L443 172"/><path d="M267 118L443 194"/><path d="M267 118L443 216"/><path d="M267 118L443 238"/><path d="M267 118L443 260"/><path d="M267 118L443 304"/><path d="M267 118L443 326"/><path d="M267 118L443 348"/><path d="M267 118L443 370"/><path d="M267 118L443 392"/><path d="M267 118L443 414"/><path d="M267 140L443 150"/><path d="M267 140L443 172"/><path d="M267 140L443 194"/><path d="M267 140L443 216"/><path d="M267 140L443 238"/><path d="M267 140L443 260"/><path d="M267 140L443 304"/><path d="M267 140L443 326"/><path d="M267 140L443 348"/><path d="M267 140L443 370"/><path d="M267 140L443 392"/><path d="M267 140L443 414"/><path d="M267 184L443 150"/><path d="M267 184L443 172"/><path d="M267 184L443 194"/><path d="M267 184L443 216"/><path d="M267 184L443 238"/><path d="M267 184L443 260"/><path d="M267 184L443 304"/><path d="M267 184L443 326"/><path d="M267 184L443 348"/><path d="M267 184L443 370"/><path d="M267 184L443 392"/><path d="M267 184L443 414"/><path d="M267 206L443 150"/><path d="M267 206L443 172"/><path d="M267 206L443 194"/><path d="M267 206L443 216"/><path d="M267 206L443 238"/><path d="M267 206L443 260"/><path d="M267 206L443 304"/><path d="M267 206L443 326"/><path d="M267 206L443 348"/><path d="M267 206L443 370"/><path d="M267 206L443 392"/><path d="M267 206L443 414"/><path d="M267 228L443 150"/><path d="M267 228L443 172"/><path d="M267 228L443 194"/><path d="M267 228L443 216"/><path d="M267 228L443 238"/><path d="M267 228L443 260"/><path d="M267 228L443 304"/><path d="M267 228L443 326"/><path d="M267 228L443 348"/><path d="M267 228L443 370"/><path d="M267 228L443 392"/><path d="M267 228L443 414"/></g></g><g class="network-part network-band" data-part="head-out" data-info="In this design the action head gives 14 numbers per step, each the target angle of one servo; one call generates several future steps, each made of these 14 numbers." role="button" tabindex="0" aria-label="In this design the action head gives 14 numbers per step, each the target angle of one servo; one call generates several future steps, each made of these 14 numbers."><rect class="network-hit" x="480" y="70" width="110" height="372"/><g class="network-edges"><path d="M457 150L613 96"/><path d="M457 150L613 118"/><path d="M457 150L613 140"/><path d="M457 150L613 162"/><path d="M457 150L613 184"/><path d="M457 150L613 220"/><path d="M457 150L613 242"/><path d="M457 150L613 264"/><path d="M457 150L613 286"/><path d="M457 150L613 322"/><path d="M457 150L613 344"/><path d="M457 150L613 366"/><path d="M457 150L613 388"/><path d="M457 150L613 410"/><path d="M457 172L613 96"/><path d="M457 172L613 118"/><path d="M457 172L613 140"/><path d="M457 172L613 162"/><path d="M457 172L613 184"/><path d="M457 172L613 220"/><path d="M457 172L613 242"/><path d="M457 172L613 264"/><path d="M457 172L613 286"/><path d="M457 172L613 322"/><path d="M457 172L613 344"/><path d="M457 172L613 366"/><path d="M457 172L613 388"/><path d="M457 172L613 410"/><path d="M457 194L613 96"/><path d="M457 194L613 118"/><path d="M457 194L613 140"/><path d="M457 194L613 162"/><path d="M457 194L613 184"/><path d="M457 194L613 220"/><path d="M457 194L613 242"/><path d="M457 194L613 264"/><path d="M457 194L613 286"/><path d="M457 194L613 322"/><path d="M457 194L613 344"/><path d="M457 194L613 366"/><path d="M457 194L613 388"/><path d="M457 194L613 410"/><path d="M457 216L613 96"/><path d="M457 216L613 118"/><path d="M457 216L613 140"/><path d="M457 216L613 162"/><path d="M457 216L613 184"/><path d="M457 216L613 220"/><path d="M457 216L613 242"/><path d="M457 216L613 264"/><path d="M457 216L613 286"/><path d="M457 216L613 322"/><path d="M457 216L613 344"/><path d="M457 216L613 366"/><path d="M457 216L613 388"/><path d="M457 216L613 410"/><path d="M457 238L613 96"/><path d="M457 238L613 118"/><path d="M457 238L613 140"/><path d="M457 238L613 162"/><path d="M457 238L613 184"/><path d="M457 238L613 220"/><path d="M457 238L613 242"/><path d="M457 238L613 264"/><path d="M457 238L613 286"/><path d="M457 238L613 322"/><path d="M457 238L613 344"/><path d="M457 238L613 366"/><path d="M457 238L613 388"/><path d="M457 238L613 410"/><path d="M457 260L613 96"/><path d="M457 260L613 118"/><path d="M457 260L613 140"/><path d="M457 260L613 162"/><path d="M457 260L613 184"/><path d="M457 260L613 220"/><path d="M457 260L613 242"/><path d="M457 260L613 264"/><path d="M457 260L613 286"/><path d="M457 260L613 322"/><path d="M457 260L613 344"/><path d="M457 260L613 366"/><path d="M457 260L613 388"/><path d="M457 260L613 410"/><path d="M457 304L613 96"/><path d="M457 304L613 118"/><path d="M457 304L613 140"/><path d="M457 304L613 162"/><path d="M457 304L613 184"/><path d="M457 304L613 220"/><path d="M457 304L613 242"/><path d="M457 304L613 264"/><path d="M457 304L613 286"/><path d="M457 304L613 322"/><path d="M457 304L613 344"/><path d="M457 304L613 366"/><path d="M457 304L613 388"/><path d="M457 304L613 410"/><path d="M457 326L613 96"/><path d="M457 326L613 118"/><path d="M457 326L613 140"/><path d="M457 326L613 162"/><path d="M457 326L613 184"/><path d="M457 326L613 220"/><path d="M457 326L613 242"/><path d="M457 326L613 264"/><path d="M457 326L613 286"/><path d="M457 326L613 322"/><path d="M457 326L613 344"/><path d="M457 326L613 366"/><path d="M457 326L613 388"/><path d="M457 326L613 410"/><path d="M457 348L613 96"/><path d="M457 348L613 118"/><path d="M457 348L613 140"/><path d="M457 348L613 162"/><path d="M457 348L613 184"/><path d="M457 348L613 220"/><path d="M457 348L613 242"/><path d="M457 348L613 264"/><path d="M457 348L613 286"/><path d="M457 348L613 322"/><path d="M457 348L613 344"/><path d="M457 348L613 366"/><path d="M457 348L613 388"/><path d="M457 348L613 410"/><path d="M457 370L613 96"/><path d="M457 370L613 118"/><path d="M457 370L613 140"/><path d="M457 370L613 162"/><path d="M457 370L613 184"/><path d="M457 370L613 220"/><path d="M457 370L613 242"/><path d="M457 370L613 264"/><path d="M457 370L613 286"/><path d="M457 370L613 322"/><path d="M457 370L613 344"/><path d="M457 370L613 366"/><path d="M457 370L613 388"/><path d="M457 370L613 410"/><path d="M457 392L613 96"/><path d="M457 392L613 118"/><path d="M457 392L613 140"/><path d="M457 392L613 162"/><path d="M457 392L613 184"/><path d="M457 392L613 220"/><path d="M457 392L613 242"/><path d="M457 392L613 264"/><path d="M457 392L613 286"/><path d="M457 392L613 322"/><path d="M457 392L613 344"/><path d="M457 392L613 366"/><path d="M457 392L613 388"/><path d="M457 392L613 410"/><path d="M457 414L613 96"/><path d="M457 414L613 118"/><path d="M457 414L613 140"/><path d="M457 414L613 162"/><path d="M457 414L613 184"/><path d="M457 414L613 220"/><path d="M457 414L613 242"/><path d="M457 414L613 264"/><path d="M457 414L613 286"/><path d="M457 414L613 322"/><path d="M457 414L613 344"/><path d="M457 414L613 366"/><path d="M457 414L613 388"/><path d="M457 414L613 410"/></g></g><g class="network-part network-layer" data-part="img" data-info="RGB images: views from the onboard camera, possibly including past frames. From them the model has to work out where the ball, the goal and the surroundings are." role="button" tabindex="0" aria-label="RGB images: views from the onboard camera, possibly including past frames. From them the model has to work out where the ball, the goal and the surroundings are."><rect class="network-hit" x="10" y="64" width="120" height="124"/><text class="network-name" x="70" y="80" text-anchor="middle" font-size="14">RGB images</text><circle class="network-neuron" cx="70" cy="96" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="116" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="156" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="176" r="7" stroke-width="1.5"/><rect x="60" y="124" width="20" height="24" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="70" y="143" text-anchor="middle" font-size="20">⋮</text></g><g class="network-part network-layer" data-part="text" data-info="Instruction: one sentence describing the task, such as “walk to the football and kick it into the goal with the right foot”. It enters the vision-language model together with the images." role="button" tabindex="0" aria-label="Instruction: one sentence describing the task, such as “walk to the football and kick it into the goal with the right foot”. It enters the vision-language model together with the images."><rect class="network-hit" x="10" y="190" width="120" height="124"/><text class="network-name" x="70" y="206" text-anchor="middle" font-size="14">Instruction</text><circle class="network-neuron" cx="70" cy="222" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="242" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="282" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="302" r="7" stroke-width="1.5"/><rect x="60" y="250" width="20" height="24" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="70" y="269" text-anchor="middle" font-size="20">⋮</text></g><g class="network-part network-layer" data-part="state" data-info="Robot state: joint angles and velocities, body angular velocity and gravity direction, and the last action sent. With direct joint output, the model relies on it to judge whether the body is balanced right now." role="button" tabindex="0" aria-label="Robot state: joint angles and velocities, body angular velocity and gravity direction, and the last action sent. With direct joint output, the model relies on it to judge whether the body is balanced right now."><rect class="network-hit" x="10" y="316" width="120" height="124"/><text class="network-name" x="70" y="332" text-anchor="middle" font-size="14">Robot state</text><circle class="network-neuron" cx="70" cy="348" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="368" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="408" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="70" cy="428" r="7" stroke-width="1.5"/><rect x="60" y="376" width="20" height="24" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="70" y="395" text-anchor="middle" font-size="20">⋮</text></g><g class="network-part network-layer" data-part="vlm" data-info="Vision-language model: encodes the images and the instruction into features, for example Cosmos-Reason2-2B in GR00T. It does not output joint actions itself." role="button" tabindex="0" aria-label="Vision-language model: encodes the images and the instruction into features, for example Cosmos-Reason2-2B in GR00T. It does not output joint actions itself."><rect class="network-hit" x="230" y="10" width="60" height="242"/><text class="network-name" x="260" y="26" text-anchor="middle" font-size="15">Vision-language model</text><text class="network-foot" x="260" y="48" text-anchor="middle" font-size="13">encodes images and text</text><circle class="network-neuron" cx="260" cy="96" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="260" cy="118" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="260" cy="140" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="260" cy="184" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="260" cy="206" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="260" cy="228" r="7" stroke-width="1.5"/><rect x="250" y="148" width="20" height="28" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="260" y="169" text-anchor="middle" font-size="20">⋮</text></g><g class="network-part network-layer" data-part="head" data-info="Action head: combines the vision-language features with the robot state and uses flow matching to turn noise step by step into a sequence of actions. With direct joint control, every step of that sequence is 14 servo targets." role="button" tabindex="0" aria-label="Action head: combines the vision-language features with the robot state and uses flow matching to turn noise step by step into a sequence of actions. With direct joint control, every step of that sequence is 14 servo targets."><rect class="network-hit" x="420" y="10" width="60" height="428"/><text class="network-name" x="450" y="26" text-anchor="middle" font-size="15">Action head</text><text class="network-foot" x="450" y="48" text-anchor="middle" font-size="13">flow matching</text><circle class="network-neuron" cx="450" cy="150" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="172" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="194" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="216" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="238" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="260" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="304" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="326" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="348" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="370" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="392" r="7" stroke-width="1.5"/><circle class="network-neuron" cx="450" cy="414" r="7" stroke-width="1.5"/><rect x="440" y="268" width="20" height="28" fill="var(--soft, var(--nve-sys-layer-container-background))"/><text class="network-ellipsis" x="450" y="289" text-anchor="middle" font-size="20">⋮</text></g><text class="network-name" x="620" y="26" text-anchor="middle" font-size="15">Servo targets</text><text class="network-width" x="620" y="56" text-anchor="middle" font-size="23" font-weight="600">14</text><text class="network-foot" x="660" y="450" text-anchor="middle" font-size="13">several future steps per call</text><g class="network-part network-layer" data-part="out-0" data-info="Left leg: outputs 1–5, 5 servo targets, in order: Left hip yaw, Left hip roll, Left hip pitch, Left knee, Left ankle." role="button" tabindex="0" aria-label="Left leg: outputs 1–5, 5 servo targets, in order: Left hip yaw, Left hip roll, Left hip pitch, Left knee, Left ankle."><rect class="network-hit" x="600" y="85" width="160" height="110"/><circle class="network-neuron" cx="620" cy="96" r="7" stroke-width="1.5"><title>1 Left hip yaw</title></circle><circle class="network-neuron" cx="620" cy="118" r="7" stroke-width="1.5"><title>2 Left hip roll</title></circle><circle class="network-neuron" cx="620" cy="140" r="7" stroke-width="1.5"><title>3 Left hip pitch</title></circle><circle class="network-neuron" cx="620" cy="162" r="7" stroke-width="1.5"><title>4 Left knee</title></circle><circle class="network-neuron" cx="620" cy="184" r="7" stroke-width="1.5"><title>5 Left ankle</title></circle><text class="network-name" x="638" y="138.0" text-anchor="start" font-size="14">Left leg</text><text class="network-foot" x="638" y="155.0" font-size="12">1–5</text></g><g class="network-part network-layer" data-part="out-1" data-info="Neck and head: outputs 6–9, 4 servo targets, in order: Neck pitch, Head pitch, Head yaw, Head roll." role="button" tabindex="0" aria-label="Neck and head: outputs 6–9, 4 servo targets, in order: Neck pitch, Head pitch, Head yaw, Head roll."><rect class="network-hit" x="600" y="209" width="160" height="88"/><circle class="network-neuron" cx="620" cy="220" r="7" stroke-width="1.5"><title>6 Neck pitch</title></circle><circle class="network-neuron" cx="620" cy="242" r="7" stroke-width="1.5"><title>7 Head pitch</title></circle><circle class="network-neuron" cx="620" cy="264" r="7" stroke-width="1.5"><title>8 Head yaw</title></circle><circle class="network-neuron" cx="620" cy="286" r="7" stroke-width="1.5"><title>9 Head roll</title></circle><text class="network-name" x="638" y="251.0" text-anchor="start" font-size="14">Neck and head</text><text class="network-foot" x="638" y="268.0" font-size="12">6–9</text></g><g class="network-part network-layer" data-part="out-2" data-info="Right leg: outputs 10–14, 5 servo targets, in order: Right hip yaw, Right hip roll, Right hip pitch, Right knee, Right ankle." role="button" tabindex="0" aria-label="Right leg: outputs 10–14, 5 servo targets, in order: Right hip yaw, Right hip roll, Right hip pitch, Right knee, Right ankle."><rect class="network-hit" x="600" y="311" width="160" height="110"/><circle class="network-neuron" cx="620" cy="322" r="7" stroke-width="1.5"><title>10 Right hip yaw</title></circle><circle class="network-neuron" cx="620" cy="344" r="7" stroke-width="1.5"><title>11 Right hip roll</title></circle><circle class="network-neuron" cx="620" cy="366" r="7" stroke-width="1.5"><title>12 Right hip pitch</title></circle><circle class="network-neuron" cx="620" cy="388" r="7" stroke-width="1.5"><title>13 Right knee</title></circle><circle class="network-neuron" cx="620" cy="410" r="7" stroke-width="1.5"><title>14 Right ankle</title></circle><text class="network-name" x="638" y="364.0" text-anchor="start" font-size="14">Right leg</text><text class="network-foot" x="638" y="381.0" font-size="12">10–14</text></g></svg></div><div class="network-panel"><p class="network-readout" aria-live="polite" data-default="RGB images and the instruction enter the vision-language model, the robot state goes separately into the action head, and the action head outputs 14 servo targets per step. Point to or select a group of nodes or a band of lines to see what it does; the three output groups list their joints, in the same order as the walking-policy output in Section 2.1.">RGB images and the instruction enter the vision-language model, the robot state goes separately into the action head, and the action head outputs 14 servo targets per step. Point to or select a group of nodes or a band of lines to see what it does; the three output groups list their joints, in the same order as the walking-policy output in Section 2.1.</p><div class="network-detail" data-for="state"><p class="network-detail-title">What the robot state can contain</p><table class="network-table"><thead><tr><th>Content</th><th>Source</th></tr></thead><tbody><tr><td>Angles of the 14 joints relative to the default pose</td><td>Joint encoders</td></tr><tr><td>Velocities of the 14 joints</td><td>Joint encoders</td></tr><tr><td>Body angular velocity and gravity direction</td><td>Body IMU</td></tr><tr><td>The 14 servo targets sent at the previous step</td><td>The controller&#x27;s own record</td></tr></tbody></table><p class="network-note">All of these can really be measured or recorded on the robot; simulated ball and goal coordinates are not among them.</p></div><div class="network-detail" data-for="out-0"><table class="network-table"><caption>Left leg · 1–5</caption><thead><tr><th>Index</th><th>Joint</th></tr></thead><tbody><tr><td>1</td><td><code>left_hip_yaw</code><span class="network-joint-name">Left hip yaw</span></td></tr><tr><td>2</td><td><code>left_hip_roll</code><span class="network-joint-name">Left hip roll</span></td></tr><tr><td>3</td><td><code>left_hip_pitch</code><span class="network-joint-name">Left hip pitch</span></td></tr><tr><td>4</td><td><code>left_knee</code><span class="network-joint-name">Left knee</span></td></tr><tr><td>5</td><td><code>left_ankle</code><span class="network-joint-name">Left ankle</span></td></tr></tbody></table></div><div class="network-detail" data-for="out-1"><table class="network-table"><caption>Neck and head · 6–9</caption><thead><tr><th>Index</th><th>Joint</th></tr></thead><tbody><tr><td>6</td><td><code>neck_pitch</code><span class="network-joint-name">Neck pitch</span></td></tr><tr><td>7</td><td><code>head_pitch</code><span class="network-joint-name">Head pitch</span></td></tr><tr><td>8</td><td><code>head_yaw</code><span class="network-joint-name">Head yaw</span></td></tr><tr><td>9</td><td><code>head_roll</code><span class="network-joint-name">Head roll</span></td></tr></tbody></table></div><div class="network-detail" data-for="out-2"><table class="network-table"><caption>Right leg · 10–14</caption><thead><tr><th>Index</th><th>Joint</th></tr></thead><tbody><tr><td>10</td><td><code>right_hip_yaw</code><span class="network-joint-name">Right hip yaw</span></td></tr><tr><td>11</td><td><code>right_hip_roll</code><span class="network-joint-name">Right hip roll</span></td></tr><tr><td>12</td><td><code>right_hip_pitch</code><span class="network-joint-name">Right hip pitch</span></td></tr><tr><td>13</td><td><code>right_knee</code><span class="network-joint-name">Right knee</span></td></tr><tr><td>14</td><td><code>right_ankle</code><span class="network-joint-name">Right ankle</span></td></tr></tbody></table></div></div><figcaption><p>This illustrates a possible direct-joint design. Intermediate nodes and connections are schematic, and the number of dots is not the number of neurons; each output step contains 14 servo targets. The course has not trained or validated this controller.</p>
+</figcaption></figure><p>The potential benefit is that the model is no longer limited to what the low-level skills can express: in principle it could learn new combinations of movement, such as adjusting the kicking pose while walking, and one model might learn a wider range of tasks and bring the visual and language knowledge from pretraining to new scenes. These are possibilities, not a guarantee of better generalization. To turn them into a reliable ability, at least these requirements have to be met:</p>
+<ul class="simple">
+<li><p><strong>Data</strong>: a large and varied set of demonstrations covering different tasks, observations and actions, including recovery after losing balance. With 8D requests the low-level policy supplies balance; with direct joint output all of that has to be learned from demonstrations.</p></li>
+<li><p><strong>Control</strong>: the servos' own position control, joint limits and safety protection are still needed. Joint targets from the VLA have to be clamped and rate-limited; when inference times out or the output is abnormal, the robot has to enter a controlled stop or a stable stance instead of executing stale actions.</p></li>
+<li><p><strong>Inference and timing</strong>: the course's low-level policy updates the joint actions at 50 Hz (every 20 ms) to keep balance, while one GR00T inference took a median of about 0.33 s in the course logs. When controlling joints directly, every step of an action chunk must be accurate enough. Inference can overlap asynchronously with execution of the current chunk, but the next chunk must still arrive before the usable action buffer runs out, aligned to its observation time and the steps already executed; smooth transitions neither remove inference latency nor by themselves guarantee balance. On a real robot, network transfer adds to the delay (Section 4.2). The trade-off between inference delay, chunk length and executed length becomes much stricter.</p></li>
+<li><p><strong>Embodiment</strong>: 14D joint actions are tied to one robot design; change the leg length, servos or gear ratios and the model usually needs adapting to the new body, whereas high-level requests are easier to reuse across different low-level controllers.</p></li>
+</ul>
+<p>The course does not implement this approach; it is offered here as a design trade-off to think about.</p>
+</section>
+<section id="cosmos">
+<h2>Cosmos 3: add visual variation to the same actions<a class="headerlink" href="#cosmos" title="Link to this heading">#</a></h2>
+<p>Changing materials and lights in simulation needs assets for every condition and a fresh render. A complementary route is to change the appearance of existing video directly with a generative model.</p>
+<p>NVIDIA Cosmos is a platform of world foundation models for physical AI. Cosmos 3 brings scene understanding (reasoning), video generation (world generation) and action generation into one model family. For this task, a use worth studying is video transfer: starting from an existing simulated demonstration video, structural conditions such as edges, depth or segmentation constrain where objects are and what shape they have, while a text prompt changes the lighting, floor or room appearance to produce new candidate videos.</p>
+<figure class="learning-figure" data-learning-flow="learn-63435119a6"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Change visual appearance; check whether action labels still hold"><svg class="learning-svg" viewBox="0 0 900 174" role="group" aria-labelledby="learn-63435119a6-title"><title id="learn-63435119a6-title">Change visual appearance; check whether action labels still hold</title><defs><marker id="learn-63435119a6-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H244.0" marker-end="url(#learn-63435119a6-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 87.0H468.0" marker-end="url(#learn-63435119a6-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 87.0H692.0" marker-end="url(#learn-63435119a6-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Reliable source trajectory" aria-controls="learn-63435119a6-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Reliable source</text><text x="114.0" y="94" class="learning-node-title">trajectory</text><text x="114.0" y="118" class="learning-node-subtitle">Images, state,</text><text x="114.0" y="135" class="learning-node-subtitle">executed actions</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Cosmos 3 transfer" aria-controls="learn-63435119a6-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="126" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Cosmos 3 transfer</text><text x="338.0" y="98" class="learning-node-subtitle">Generate constrained</text><text x="338.0" y="115" class="learning-node-subtitle">appearance</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Check data consistency" aria-controls="learn-63435119a6-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="126" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">Check data</text><text x="562.0" y="94" class="learning-node-title">consistency</text><text x="562.0" y="118" class="learning-node-subtitle">Geometry,</text><text x="562.0" y="135" class="learning-node-subtitle">contact, timing</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Train and compare" aria-controls="learn-63435119a6-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Train and compare</text><text x="786.0" y="98" class="learning-node-subtitle">Autonomous success</text><text x="786.0" y="115" class="learning-node-subtitle">in unfamiliar scenes</text></g></svg></div><div class="learning-details" aria-label="Change visual appearance; check whether action labels still hold"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-63435119a6-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Reliable source trajectory</h3><p>The source data first needs correct actions and timing. Behavior the original demonstration never taught cannot be added by changing its appearance.</p></article><article id="learn-63435119a6-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Cosmos 3 transfer</h3><p>Structural conditions help keep the layout while the prompt changes lighting or room appearance. Generated results are only candidates; even with constraints, some frames can be wrong.</p></article><article id="learn-63435119a6-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Check data consistency</h3><p>Check the size and position of the ball and goal, the robot’s shape, the moment of contact and consistency across frames. If the ball is generated on the other side of the foot, the original action label no longer holds and the clip should be discarded.</p></article><article id="learn-63435119a6-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Train and compare</h3><p>Compare against a model trained without generated data, with the same demonstrations and training budget; keep new rooms or new combinations for testing to judge whether the augmentation helps.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>When augmenting data with generated video, several constraints must hold:</p>
+<ul class="simple">
+<li><p><strong>Geometry must be preserved.</strong> The relative positions of the ball, goal, camera view and robot must not change. An action label means “what to do given this geometry”; if the geometry changes, the label is invalid.</p></li>
+<li><p><strong>The meaning of the action labels must be preserved.</strong> Generation changes only the images; the state and the 8-D requests are reused unchanged. That is valid only when the appearance change does not affect what should be done.</p></li>
+<li><p><strong>It must be consistent over time.</strong> The walking-shot GR00T reads four history images spanning about 5.8 seconds at once. If earlier and later frames of the same clip are generated as different rooms or lighting, the model sees a scene that could never happen.</p></li>
+<li><p><strong>Physics does not happen again.</strong> A generated video changes only the picture; how the ball rolls and how the feet touch the floor are not recomputed. Swapping the carpet for a more slippery floor may break the original gait and kick timing; changes involving friction, mass or contact must be collected again in physics simulation.</p></li>
+</ul>
+<p>So the role Cosmos 3 suits is a <strong>supplement of appearance diversity</strong>: letting the model see more lighting and room appearances while geometry, actions and physics stay the same. It cannot replace new action demonstrations, nor prove that the actions can be executed in a new environment; reliability still has to be tested in closed-loop simulation and then on the real robot.</p>
+</section>
+<section id="arena">
+<h2>Plan a set of environment evaluations<a class="headerlink" href="#arena" title="Link to this heading">#</a></h2>
+<p>As conditions multiply, the number of evaluation combinations grows quickly. Isaac Lab-Arena splits an environment into Scene, Embodiment (robot and sensors) and Task, making combined evaluation and data collection easier; Isaac Lab organizes the learning environment, Newton advances the physics and the renderer produces images.</p>
+<div class="scenario-matrix" data-scenario-matrix><p><strong>Plan an evaluation set</strong></p><div class="matrix-options"><label><input type="checkbox" data-factor="4"> Four floors</label><label><input type="checkbox" data-factor="3"> Three lighting setups</label><label><input type="checkbox" data-factor="3"> Three indoor layouts</label></div><label>New test starts per combination <input class="matrix-seeds" type="number" min="1" max="100" value="5"></label><p class="matrix-output" aria-live="polite"></p><p class="matrix-scope">This is only a combination counter; it does not launch simulation or training. Unchecking a factor fixes it to one condition.</p></div></section>
+<section id="experiment">
+<h2>Widen one factor at a time<a class="headerlink" href="#experiment" title="Link to this heading">#</a></h2>
+<p>A sensible order is: reliable on the green pitch → a new range of starts → small lighting changes → new floor appearance → new indoor layouts → physics changes backed by measurements. Keep the previous step as a control at every stage and compare with the same full-success criterion. If the main new failure is not seeing well, add visual coverage; if it is drifting or unsteadiness, go back to corrective demonstrations or to calibrating the low-level skills and physics parameters.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>If a video of the same actions is given ten different backgrounds, is that ten times as much action experience?</p>
+<details><summary>Show explanation</summary><p>No. It broadens the visual conditions, but the coverage of actions and states stays the same. Learning to recover from drift, take another route or adapt to a new floor needs corresponding new trajectories or corrective data.</p>
+</details></div><div class="quiz"><h3>Check your understanding</h3><p>Why can the original action labels be kept after a lighting change, but not after switching to a more slippery floor?</p>
+<details><summary>Show explanation</summary><p>Lighting changes only the images; the motion of the ball and robot is unchanged, so the original actions remain correct. A slippery floor changes the gait and contact, so the original actions may not be executable; the physics simulation must be rerun and new actions recorded.</p>
+</details></div></section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://developer.nvidia.com/blog/develop-physical-ai-reasoning-world-and-action-models-with-nvidia-cosmos-3/" rel="noreferer noopener" target="_blank">NVIDIA technical blog: develop physical AI reasoning, world and action models with Cosmos 3 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/cosmos" rel="noreferer noopener" target="_blank">NVIDIA Cosmos examples and workflows ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NVIDIA/cosmos/blob/main/cookbooks/cosmos3/generator/transfer/README.md" rel="noreferer noopener" target="_blank">Cosmos 3 video transfer cookbook: new appearance from edge, blur, depth and segmentation controls ↗</a></p></li>
+<li><p><a class="reference external" href="https://www.nvidia.com/en-us/ai/cosmos/" rel="noreferer noopener" target="_blank">NVIDIA Cosmos ↗</a></p></li>
+<li><p><a class="reference external" href="https://arxiv.org/abs/1703.06907" rel="noreferer noopener" target="_blank">Domain randomization for transferring from simulation to the real world ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab-Arena" rel="noreferer noopener" target="_blank">Isaac Lab-Arena ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08-groot-lab.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.3 Train and validate the GR00T walking shot</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="models.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5.1 Models and data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first">Make one scene reliable first</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-variation">Why a real robot needs environment variation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-randomization">Environment domain randomization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-state-variation">Randomize starts first, then expand rooms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnose">“Can’t see” or “can’t do”?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-joints">Another option: GR00T outputs the 14 servo actions directly</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmos">Cosmos 3: add visual variation to the same actions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arena">Plan a set of environment evaluations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#experiment">Widen one factor at a time</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

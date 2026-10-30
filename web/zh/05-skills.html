@@ -1,10 +1,871 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="用同样的观察—动作—奖励思路，认识社区的跳跃、篮球平衡与技能切换。"><meta name="theme-color" content="#76b900"><title>探索社区的更多运动技能 · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="zh" data-page="05-skills"><a class="skip" href="#main">跳至正文</a>
-<header><button class="menu-toggle" aria-label="目录" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">搜索课程 <kbd>/</kbd></button><details class="language-menu"><summary aria-label="选择语言"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/05-skills.html" aria-current="true">简体中文</a><a lang="en" href="../en/05-skills.html" >English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="目录"><div class="sidebar-intro">Microduck 机器人学习实战</div><p class="nav-group">学习准备</p><a href="index.html"><span class="nav-number"></span>让 Microduck 学会自主射门</a><a href="how-to-learn.html"><span class="nav-number"></span>如何学习本课程</a><a href="setup.html"><span class="nav-number"></span>准备环境与获取代码</a><p class="nav-group">课程章节</p><a href="01-play.html"><span class="nav-number">1</span>认识 Microduck：先来踢一场球</a><a href="02-anatomy.html"><span class="nav-number">2</span>拆解机械结构与控制周期</a><a href="03-learning.html"><span class="nav-number">3</span>用 Isaac Lab 训练行走策略</a><a href="04-terrain.html"><span class="nav-number">4</span>让行走技能适应坡地</a><a aria-current="page" href="05-skills.html"><span class="nav-number">5</span>探索社区的更多运动技能</a><a href="06-autonomy.html"><span class="nav-number">6</span>从手工流程到智能机器人</a><a href="07-groot.html"><span class="nav-number">7</span>让 GR00T 从示范中学习射门</a><a href="08-aspire.html"><span class="nav-number">8</span>用 ASPIRE 组织任务并积累技能</a><a href="09-worlds.html"><span class="nav-number">9</span>从一个球场走向更多环境</a><p class="nav-group">参考与帮助</p><a href="models.html"><span class="nav-number"></span>模型与数据</a><a href="troubleshooting.html"><span class="nav-number"></span>故障排查</a><a href="references.html"><span class="nav-number"></span>继续学习与参考资料</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> 课程章节</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>探索社区的更多运动技能</h1><p class="lead">用同样的观察—动作—奖励思路，认识社区的跳跃、篮球平衡与技能切换。</p><div class="lesson-meta">第 5 章 · 预计学习时长 20 分钟</div></div></div><section id="community"><h2>同一机器人，可以学什么</h2><p>前两次训练关注行走与地形适应。社区还用强化学习训练了跳跃、篮球平衡等技能：硬件可以相同，但任务、奖励、初始状态与结束条件不同。下面的社区演示来自各项目自己的仿真环境；它们展示技能思路，不代表已在这里的 Newton 场景或真机上通过相同评测。</p><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-jump-hd.jpg" aria-label="社区跳跃演示，按原作品的四倍慢动作播放。观察起跳、腾空、落地以及切回站立的衔接。"><source src="../assets/media/community-jump-hd.mp4" type="video/mp4"></video><figcaption>社区跳跃演示，按原作品的四倍慢动作播放。观察起跳、腾空、落地以及切回站立的衔接。</figcaption></figure><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="社区篮球平衡演示。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。"><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption>社区篮球平衡演示。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。</figcaption></figure><div class="table-scroll"><table><thead><tr><th>技能</th><th>观测与动作</th><th>奖励与完成条件</th></tr></thead><tbody><tr><td>跳跃</td><td>本体状态与一次性起跳指令 → 关节动作</td><td>起跳高度、落地姿态、落地后是否站稳</td></tr><tr><td>篮球平衡</td><td>机器人与球的状态 → 关节动作</td><td>持续平衡、球与身体位置、存活时长</td></tr><tr><td>行走</td><td>本体状态与速度指令 → 关节动作</td><td>速度跟踪、稳定性、能耗与动作平滑性</td></tr></tbody></table></div><p>迁移这些技能时，可在 Isaac Sim 添加对应的道具和接触几何，再通过 Isaac Lab 配置观测、奖励与重置分布。即使观测维度相同，也不保证模型能直接互换：例如社区跳跃把速度指令的第一个分量用作起跳开关，必须遵循该技能的接口约定。</p></section><section id="contract"><h2>给技能定义边界</h2><p>行走策略可以持续接收速度指令，而踢球是一个有明确起止点的短时技能。Isaac Lab 的任务结构便于复用相同的观测、动作与执行器接口，并用命令、事件和终止条件表达技能边界；Newton 的接触与机身状态则让“脚确实碰球”和“机器人恢复站稳”成为可检查条件。要把踢球接入自主任务，除了定义动作本身，还必须说明何时允许启动、结束后应进入什么状态，以及发生失败时如何停止。</p><div class="table-scroll"><table><thead><tr><th>阶段</th><th>需要检查什么</th></tr></thead><tbody><tr><td>准备</td><td>球是否在可踢区域，身体朝向是否合适，观测是否仍在有效期内</td></tr><tr><td>触球</td><td>由真实足部接触推动球，而不是直接修改球状态</td></tr><tr><td>收脚</td><td>及时结束出脚并回到支撑状态</td></tr><tr><td>恢复</td><td>机器人保持稳定，没有摔倒或关节越界</td></tr></tbody></table></div></section><section id="compatible"><h2>为什么两个 ONNX 不能随意互换</h2><p>ONNX 只是一种模型表示格式，并不是统一的机器人技能协议。行走模型读取 61 维输入，当前踢球残差模型读取 62 维输入；即使两者都输出 14 个数，也不能直接互换。输入顺序、附加状态、动作缩放、教师混合方式和结束条件都属于模型的运行约定。</p><p>“文件能够成功加载”只能证明模型格式可读，不能证明机器人能够完成动作。单位、关节顺序和缩放仍需与控制器一致；<a href="models.html">模型与数据页</a>列出了固定权重的用途。第六章会展示这些技能组成完整任务后的表现。</p><p>观看出脚过程时，可以分三个阶段观察：出脚前，检查球与支撑脚的位置是否合适；出脚过程中，观察摆动腿是否形成足够空间，并用物理接触记录确认接触来自脚部而非身体其他部位；出脚后，观察重心是否重新回到支撑区域、机身倾角是否收敛。请分别描述技能的进入条件与完成条件。相比只看“球有没有动”，这种观察方式更能反映机器人系统的实际要求。</p></section><section id="handoff"><h2>用输入、输出与结束条件描述技能</h2><p>描述一项技能时，可以拆分为四部分：进入条件、所用观测、输出动作和退出时机。以射门为例，球必须位于适合右脚出脚的位置，机身朝向球门，支撑保持稳定，而且目标观测尚未过期。技能执行期间会结合踢球教师策略与残差修正；结束后还必须恢复到稳定的站立或行走状态，不能把“已经碰到球”直接当作任务完成。</p><p>残差可以看作对已有动作施加的受约束修正。这样做缩小了需要从头学习的问题范围，同时也会继承教师策略的适用边界。如果在远离球的位置启动局部射门技能，它不会因此自动学会找球或接近目标。导航模块负责创造技能可以接手的条件，技能模块则负责完成局部动作。</p><div class="quiz"><h3>检查理解</h3><p>机器人已走到球旁，但球的位置记忆过期。应立刻运行踢球技能吗？</p><details><summary>查看解析</summary><p>不应立即运行。需要先重新观察并确认进入条件；仅仅靠近目标，并不能保证技能输入仍然有效。</p></details></div></section><section id="kick-example"><h2>技能的开始与结束同样重要</h2><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="只观察出脚、触球与恢复站立。该片段使用第 6 章的踢球组合策略，不是跳跃或篮球技能的评测。"><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption>只观察出脚、触球与恢复站立。该片段使用第 6 章的踢球组合策略，不是跳跃或篮球技能的评测。</figcaption></figure></section><section id="eyes"><h2>会执行动作，还不等于会完成任务</h2><p>目前主要由我们告诉机器人“向前走”或“现在踢”。策略已利用关节和 IMU 反馈保持平衡，却还不能自己决定足球在哪里、该走哪条路。下一章先观看传统感知与规划怎样串起完整射门，再讨论怎样把更多判断交给可学习的模型。</p></section><section id="references"><h2>参考资料</h2><ul class="references"><li><a href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" target="_blank" rel="noopener">Isaac Lab：Microduck 任务源码 ↗</a></li><li><a href="https://github.com/ThomasBurgess2000/microduck-max-height-jump" target="_blank" rel="noopener">社区跳跃：模型、慢动作视频与衔接说明 ↗</a></li><li><a href="https://github.com/Vottivott/microduck-playground/tree/main/experiments/basketball" target="_blank" rel="noopener">社区篮球平衡：演示、训练与评测 ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="04-terrain.html"><small>← 上一页</small>让行走技能适应坡地</a><a href="06-autonomy.html"><small>下一页 →</small>从手工流程到智能机器人</a></nav><footer>Microduck Workshop · <a href="references.html">参考资料</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">来源与许可</a></span></footer></main>
-<aside class="toc"><p>本页内容</p><a href="#community">同一机器人，可以学什么</a><a href="#contract">给技能定义边界</a><a href="#compatible">为什么两个 ONNX 不能随意互换</a><a href="#handoff">用输入、输出与结束条件描述技能</a><a href="#kick-example">技能的开始与结束同样重要</a><a href="#eyes">会执行动作，还不等于会完成任务</a><a href="#references">参考资料</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">搜索课程</label><button aria-label="关闭">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="搜索课程…"><div class="search-results"></div></dialog>
-</body></html>
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="阅读三个社区技能（单脚站立循环、篮球平衡、倒滑）的真实奖励代码：目标是什么、读取哪些量、公式怎样写、可能怎样失败、作者怎样检验，再用同样的步骤构思新任务。" name="description" />
+
+  <title>3.4 社区技能：从目标到奖励 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '05-skills';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="4.1 视觉-语言-动作模型与 GR00T" href="07-groot.html" />
+    <link rel="prev" title="3.3 奖励设计：走稳上下坡" href="04-terrain.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="05-skills">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/05-skills.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/05-skills.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/05-skills.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/05-skills.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 社区技能：从目标到奖励</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>3.4 社区技能：从目标到奖励<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>阅读三个社区技能（单脚站立循环、篮球平衡、倒滑）的真实奖励代码：目标是什么、读取哪些量、公式怎样写、可能怎样失败、作者怎样检验，再用同样的步骤构思新任务。</p>
+</div><div class="lesson-meta">第 3.4 节 · 阅读与分析 · 预计学习时长 45 分钟</div></div></div><script type="application/json" class="course-symbols">{"dt": {"tex": "\\Delta t", "text": "控制步长：两次策略输出之间的时间。本节三个技能都是 0.02 s（50 Hz）。"}, "alpha_f": {"tex": "\\alpha", "text": "姿势混合进度：0 表示双脚站立，1 表示单脚站立。指令切换后，它以 1.5 s 从一端平滑走到另一端。它只在奖励中使用，策略观测里只有指令本身。"}, "p_target": {"tex": "p^{*}_{xy}", "text": "质心的目标水平位置（m）：从两脚中点逐渐移到支撑脚上方。"}, "p_mid": {"tex": "p_{\\mathrm{mid}}", "text": "两只脚的中点（水平位置，m）。"}, "p_stance": {"tex": "p_{\\mathrm{stance}}", "text": "支撑脚的水平位置（m）。"}, "c_com": {"tex": "c_{xy}", "text": "整机质心的水平位置（m），由仿真对全身所有部件计算。"}, "sigma_c": {"tex": "\\sigma_c", "text": "质心误差尺度：0.03 m，训练第 700 轮后收紧到 0.02 m。"}, "r_com": {"tex": "r_{\\mathrm{com}}", "text": "质心目标项（权重 3）。"}, "S": {"tex": "S", "text": "平滑阶跃（smoothstep）：混合进度在区间 $[a,b]$ 内时从 0 平滑升到 1，之前为 0，之后为 1。"}, "tau": {"tex": "\\tau", "text": "平滑阶跃内部的归一化进度，截断在 0 到 1 之间。"}, "a_lo": {"tex": "a", "text": "平滑阶跃开始上升的位置。"}, "b_hi": {"tex": "b", "text": "平滑阶跃升到 1 的位置。"}, "clip": {"tex": "\\operatorname{clip}", "text": "截断：把数值限制在给定区间内。"}, "k_swing": {"tex": "k_{\\mathrm{swing}}", "text": "要抬起的那只脚此刻是否接触地面（1 为接触，0 为离地）。"}, "k_stance": {"tex": "k_{\\mathrm{stance}}", "text": "支撑脚此刻是否接触地面（1 为接触）。"}, "z_swing": {"tex": "z_{\\mathrm{swing}}", "text": "要抬起的那只脚离地面的高度（m）。"}, "r_contact": {"tex": "r_{\\mathrm{contact}}", "text": "抬起脚的接触项（权重 0.5）：该站立时奖励接触，该抬脚时惩罚接触。"}, "r_clear": {"tex": "r_{\\mathrm{clear}}", "text": "抬脚高度项（权重 1.5）：目标 0.10 m，尺度 0.06 m。"}, "p_ball": {"tex": "p_{\\mathrm{ball}}", "text": "篮球球心位置（m），直接从仿真状态读取；部署的策略看不到它。"}, "p_root": {"tex": "p_{\\mathrm{root}}", "text": "机器人根部（机身）位置（m）。"}, "p_foot": {"tex": "p_{\\mathrm{foot}}", "text": "某只脚的足底参考点位置（m）。"}, "z_root": {"tex": "z_{\\mathrm{root}}", "text": "机身根部高度（m）。"}, "z_ball": {"tex": "z_{\\mathrm{ball}}", "text": "球心高度（m）。"}, "R_ball": {"tex": "R", "text": "篮球半径，0.12 m（7 号球）。"}, "g_x": {"tex": "g_x", "text": "重力方向在机身坐标系中的前后分量（无单位）；站直时为 0。"}, "g_y": {"tex": "g_y", "text": "重力方向在机身坐标系中的左右分量（无单位）；站直时为 0。"}, "v_ball": {"tex": "v_{\\mathrm{ball}}", "text": "篮球的水平速度（m/s），仿真状态。"}, "r_center": {"tex": "r_{\\mathrm{center}}", "text": "机身对准球心项（权重 2）。"}, "r_feet": {"tex": "r_{\\mathrm{feet}}", "text": "双脚贴在球面上项（权重 1），两只脚取平均。"}, "r_height": {"tex": "r_{\\mathrm{height}}", "text": "站在球顶的高度项（权重 1）。"}, "r_up": {"tex": "r_{\\mathrm{up}}", "text": "机身直立项（权重 1）。"}, "r_ball": {"tex": "r_{\\mathrm{ball}}", "text": "球速平方（权重 −0.05）：零指令时让球保持安静，权重小，指令要求滚动时仍然划算。"}, "v_cmd": {"tex": "v^{*}_{xy}", "text": "水平速度指令（m/s）。倒滑训练中前进分量取 −0.25 到 −0.08 m/s，即向后。"}, "v_xy": {"tex": "v_{xy}", "text": "机身坐标系中的水平速度（m/s）。"}, "v_z": {"tex": "v_z", "text": "机身坐标系中的竖直速度（m/s）；理想平移时为 0。"}, "omega_cmd": {"tex": "\\omega^{*}_z", "text": "转向角速度指令（rad/s）。"}, "sigma_v": {"tex": "\\sigma_v", "text": "速度跟踪尺度，$\\sigma_v^2 = 0.1\\ (\\mathrm{m/s})^2$。"}, "r_lin": {"tex": "r_{\\mathrm{lin}}", "text": "线速度跟踪项（基础步行配方中权重 2）。"}, "v_foot": {"tex": "v_{\\mathrm{foot}}", "text": "某只脚在世界坐标系中的水平速度（m/s）。"}, "k_foot": {"tex": "k_{\\mathrm{foot}}", "text": "这只脚是否接触地面（1 为接触）。"}, "r_slip": {"tex": "r_{\\mathrm{slip}}", "text": "足底滑动代价：接触地面的脚仍在水平移动时计入；权重为负。"}, "one": {"tex": "\\mathbf{1}", "text": "指示函数：括号内条件成立时为 1，否则为 0。"}, "exp": {"tex": "\\exp", "text": "指数函数：把平方误差变成 0 到 1 之间的平滑奖励。"}}</script><section id="community">
+<h2>同一机器人，可以学什么<a class="headerlink" href="#community" title="Link to this heading">#</a></h2>
+<p>3.3 节用六步设计了上下坡的奖励。社区作者用同一只 Microduck 训练了很多别的技能，其中不少公开了策略、训练代码和评测记录。可以从这两个入口浏览：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" rel="noreferer noopener" target="_blank">Microduck 官方网页模拟器 ↗</a>：Pollen Robotics 发布的浏览器模拟器，可以直接在网页里切换并试用官方的行走、轮滑等策略，不需要安装。</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/models?search=microduck" rel="noreferer noopener" target="_blank">Hugging Face 上的 Microduck 模型 ↗</a>：搜索 “microduck” 可以看到社区上传的各种策略，每个模型卡说明它的指令格式、训练方法和已知局限。</p></li>
+</ul>
+<p>本节精读其中三个：单脚站立循环用门控安排动作的先后，篮球平衡区分奖励里的特权信息与部署时的观测，倒滑说明文字描述的目标不等于已验证的能力。硬件相同，变化的是目标、奖励、初始状态与结束条件。它们都在作者自己的 MuJoCo / mjlab 环境中训练和评测，下面的成绩是作者报告的仿真结果，本课程没有在 Newton 场景或真机上复测。</p>
+<p>这三个模型和它们的训练代码都不在课程仓库和容器中，课程命令也不会加载它们；代码节选来自作者公开的固定版本，只用于阅读，链接指向那个版本的完整文件。演示视频是课程网页保存的录像副本。</p>
+</section>
+<section id="how-to-read">
+<h2>用同一张表读三个技能<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
+<p>每个技能都按同样的顺序读：</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>读什么</p></th>
+<th class="head cell-short"><p>要回答的问题</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>目标</p></td>
+<td><p>作者想让机器人做成什么？成功怎样判定？</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>可观测量</p></td>
+<td><p>奖励读取了哪些量？单位和坐标系是什么？哪些是策略看不到的仿真状态？</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>公式</p></td>
+<td><p>每一项是什么形状？尺度、符号和门控是什么？</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>代码</p></td>
+<td><p>公式在作者代码里怎样实现？实际传入的参数是多少？</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>失败方式</p></td>
+<td><p>作者记录过哪些“钻空子”或失败？用什么办法堵上？</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>成功检查</p></td>
+<td><p>作者用什么独立评测判断结果？还有哪些没有验证？</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>读社区奖励代码前，先知道三件事：</p>
+<ul class="simple">
+<li><p><strong>奖励按步长缩放。</strong> mjlab 1.3.0 的奖励管理器和 Isaac Lab 一样，每一步把各项原始值乘以权重和控制步长 <span class="math notranslate nohighlight">\(\htmlData{sym=dt}{\Delta t}\)</span> 再相加（<a class="reference external" href="https://github.com/mujocolab/mjlab/blob/19d6c06c17572dafcb31ad5110a902006b58d944/src/mjlab/managers/reward_manager.py" rel="noreferer noopener" target="_blank">源码 ↗</a>）。所以一项如果只在某一步返回“数值 ÷ <span class="math notranslate nohighlight">\(\htmlData{sym=dt}{\Delta t}\)</span>”，乘回 <span class="math notranslate nohighlight">\(\htmlData{sym=dt}{\Delta t}\)</span> 之后正好一次性支付“权重 × 数值”。</p></li>
+<li><p><strong>符号要逐项看。</strong> 多数惩罚项返回非负值，再配负权重；但也有例外，例如单脚站立里有一项返回负值、配正权重。只看权重的正负会读错。</p></li>
+<li><p><strong>函数默认值不等于实际参数。</strong> 奖励函数的默认参数常常和配置里传入的不同，要以注册奖励项时的 <code class="docutils literal notranslate"><span class="pre">params</span></code> 为准。</p></li>
+</ul>
+</section>
+<section id="flamingo">
+<h2>单脚站立循环：用门控安排动作的先后<a class="headerlink" href="#flamingo" title="Link to this heading">#</a></h2>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-flamingo-hd.jpg" aria-label="社区单脚站立循环的作者预览：Microduck 先双脚站立，再把重心移到一只脚上、抬起另一只脚保持，放下双脚站好后，换另一侧单脚站立。"><source src="../assets/media/community-flamingo-hd.mp4" type="video/mp4"></video><figcaption><p>社区单脚站立循环的作者预览：作者在 MuJoCo 中运行导出的 ONNX 策略，按预设的指令顺序先用一侧单脚站立，放下后再换另一侧，录像在第二次单脚站立中结束。这是原作者的仿真环境，不是本课程在 Newton 中的运行。观察重心先移到支撑脚、再抬脚，放下时顺序相反。</p>
+</figcaption></figure><p><strong>目标。</strong> <a class="reference external" href="https://huggingface.co/RemiFabre/microduck-flamingo-cycle" rel="noreferer noopener" target="_blank">单脚站立循环 ↗</a> 按指令在双脚站立和单脚站立之间切换：指令 <code class="docutils literal notranslate"><span class="pre">[flag,</span> <span class="pre">side,</span> <span class="pre">0]</span></code> 中 <code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">1</span></code> 时把重心移到 <code class="docutils literal notranslate"><span class="pre">side</span></code> 指定的支撑脚，抬起另一只脚约 9 cm 并保持；<code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">0</span></code> 时放下脚、双脚站好。每次过渡约 1.5 s，任何时候都可以打断。上面是作者模型卡附带的仿真预览，可以先看一遍动作。</p>
+<p><strong>可观测量。</strong> 整机质心（作者特意用全身质心，而不是机身单个部件的质心：头部约占总质量的 38%，抬腿后两者相差几厘米）、两只脚的位置和接触、重力在机身坐标系中的方向、关节角与角速度。奖励中还用到一个内部量：混合进度 <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span>。它在指令切换后用 1.5 s 从 0 走到 1（或反过来），策略只观测指令本身。</p>
+<p><strong>公式。</strong> 作者没有写死“先移重心、再抬脚”的时间表，而是让每一项随 <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span> 打开或关闭：</p>
+<div class="formula"><div class="formula-label">质心目标随混合进度移动（权重 3）</div><div class="formula-body">\[\htmlData{sym=p_target}{p^{*}_{xy}}=(1-\htmlData{sym=alpha_f}{\alpha})\,\htmlData{sym=p_mid}{p_{\mathrm{mid}}}+\htmlData{sym=alpha_f}{\alpha}\,\htmlData{sym=p_stance}{p_{\mathrm{stance}}},\qquad \htmlData{sym=r_com}{r_{\mathrm{com}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=c_com}{c_{xy}}-\htmlData{sym=p_target}{p^{*}_{xy}}\|^2}{\htmlData{sym=sigma_c}{\sigma_c}^2}\right)\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(p^{*}_{xy}\)</dt><dd>质心的目标水平位置（m）：从两脚中点逐渐移到支撑脚上方。</dd></div><div><dt>\(\alpha\)</dt><dd>姿势混合进度：0 表示双脚站立，1 表示单脚站立。指令切换后，它以 1.5 s 从一端平滑走到另一端。它只在奖励中使用，策略观测里只有指令本身。</dd></div><div><dt>\(p_{\mathrm{mid}}\)</dt><dd>两只脚的中点（水平位置，m）。</dd></div><div><dt>\(p_{\mathrm{stance}}\)</dt><dd>支撑脚的水平位置（m）。</dd></div><div><dt>\(r_{\mathrm{com}}\)</dt><dd>质心目标项（权重 3）。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(c_{xy}\)</dt><dd>整机质心的水平位置（m），由仿真对全身所有部件计算。</dd></div><div><dt>\(\sigma_c\)</dt><dd>质心误差尺度：0.03 m，训练第 700 轮后收紧到 0.02 m。</dd></div></dl></details></div><div class="formula"><div class="formula-label">平滑阶跃门控</div><div class="formula-body">\[\htmlData{sym=S}{S(\htmlData{sym=alpha_f}{\alpha};\htmlData{sym=a_lo}{a},\htmlData{sym=b_hi}{b})}=\htmlData{sym=tau}{\tau}^2(3-2\htmlData{sym=tau}{\tau}),\qquad \htmlData{sym=tau}{\tau}=\htmlData{sym=clip}{\operatorname{clip}}\!\left(\frac{\htmlData{sym=alpha_f}{\alpha}-\htmlData{sym=a_lo}{a}}{\htmlData{sym=b_hi}{b}-\htmlData{sym=a_lo}{a}},0,1\right)\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(S\)</dt><dd>平滑阶跃（smoothstep）：混合进度在区间 \([a,b]\) 内时从 0 平滑升到 1，之前为 0，之后为 1。</dd></div><div><dt>\(\alpha\)</dt><dd>姿势混合进度：0 表示双脚站立，1 表示单脚站立。指令切换后，它以 1.5 s 从一端平滑走到另一端。它只在奖励中使用，策略观测里只有指令本身。</dd></div><div><dt>\(a\)</dt><dd>平滑阶跃开始上升的位置。</dd></div><div><dt>\(b\)</dt><dd>平滑阶跃升到 1 的位置。</dd></div><div><dt>\(\tau\)</dt><dd>平滑阶跃内部的归一化进度，截断在 0 到 1 之间。</dd></div><div><dt>\(\operatorname{clip}\)</dt><dd>截断：把数值限制在给定区间内。</dd></div></dl></details></div><div class="formula"><div class="formula-label">抬起脚的接触项（权重 0.5）与抬脚高度项（权重 1.5）</div><div class="formula-body">\[\htmlData{sym=r_contact}{r_{\mathrm{contact}}}=\htmlData{sym=k_swing}{k_{\mathrm{swing}}}\left[1-2\,\htmlData{sym=S}{S(\htmlData{sym=alpha_f}{\alpha};0.4,0.9)}\right],\qquad \htmlData{sym=r_clear}{r_{\mathrm{clear}}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=z_swing}{z_{\mathrm{swing}}}-0.10}{0.06}\right)^2\right]\htmlData{sym=k_stance}{k_{\mathrm{stance}}}\,\htmlData{sym=S}{S(\htmlData{sym=alpha_f}{\alpha};0.6,1.0)}\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{contact}}\)</dt><dd>抬起脚的接触项（权重 0.5）：该站立时奖励接触，该抬脚时惩罚接触。</dd></div><div><dt>\(k_{\mathrm{swing}}\)</dt><dd>要抬起的那只脚此刻是否接触地面（1 为接触，0 为离地）。</dd></div><div><dt>\(S\)</dt><dd>平滑阶跃（smoothstep）：混合进度在区间 \([a,b]\) 内时从 0 平滑升到 1，之前为 0，之后为 1。</dd></div><div><dt>\(\alpha\)</dt><dd>姿势混合进度：0 表示双脚站立，1 表示单脚站立。指令切换后，它以 1.5 s 从一端平滑走到另一端。它只在奖励中使用，策略观测里只有指令本身。</dd></div><div><dt>\(r_{\mathrm{clear}}\)</dt><dd>抬脚高度项（权重 1.5）：目标 0.10 m，尺度 0.06 m。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(z_{\mathrm{swing}}\)</dt><dd>要抬起的那只脚离地面的高度（m）。</dd></div><div><dt>\(k_{\mathrm{stance}}\)</dt><dd>支撑脚此刻是否接触地面（1 为接触）。</dd></div></dl></details></div><p>于是动作的先后自然出现：质心目标先移向支撑脚；<span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span> 还小于 0.4 时，抬起脚触地得 +1，超过 0.9 后触地变成 −1，两者之间连续过渡，<span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha} = 0.65\)</span> 时正好为 0；抬脚高度要等 <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span> 超过 0.6、并且支撑脚着地时才计分，避免靠单脚蹦跳拿分。放下脚是同一过程的反向。</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 社区作者源码节选</span><a class="source-link" href="https://github.com/pollen-robotics/microduck_rl/blob/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks/mdp.py#L7523-L7696" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>平滑阶跃</h4> <p>把混合进度先截断到 0–1，再用 \(\htmlData{sym=tau}{\tau}^2(3-2\htmlData{sym=tau}{\tau})\) 平滑过渡，两端斜率为零，门控打开时奖励不会突然跳变。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">_smoothstep</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">,</span> <span class="mf">1e-6</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="p">(</span><span class="mf">3.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>质心目标在两脚中点与支撑脚之间移动</h4> <p>作者在注释里称它为整组奖励的“领头项”：重心转移本身就是过渡。注意函数默认 <code>std=0.02</code>，实际配置传入 0.03 m，训练第 700 轮后再收紧到 0.02 m。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">fl_com_target</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span>
+    <span class="n">command_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">left_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">right_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on CoM_xy vs the BLENDED support target: (1−α)·midpoint(feet) +</span>
+<span class="sd">    α·stance foot. The leader of the stack: the weight shift IS the transition."""</span>
+    <span class="n">flag</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">_fl_ctx</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">command_name</span><span class="p">)</span>
+    <span class="n">asset</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">_fl_site_xyz</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">left_cfg</span><span class="p">,</span> <span class="n">right_cfg</span><span class="p">)</span>
+    <span class="n">stance</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">side</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+    <span class="n">mid</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">target_xy</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">mid</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span> <span class="o">*</span> <span class="n">stance</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">com_xy</span> <span class="o">=</span> <span class="n">_robot_com_xy</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">asset</span><span class="p">)</span>
+    <span class="n">dist2</span> <span class="o">=</span> <span class="p">((</span><span class="n">com_xy</span> <span class="o">-</span> <span class="n">target_xy</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">dist2</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>正负号随进度翻转的接触项</h4> <p>抬起脚触地时为 1，乘以 \(1-2S\)：该站立时为 +1，该抬脚时为 −1，中间连续过渡，混合进度为 0.65 时正好为 0。作者注明这是有意设计的混合符号。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">fl_swing_foot_contact</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">command_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">,</span> <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Swing-foot contact: +1 when standing is commanded (α ≤ lo), −1 once the</span>
+<span class="sd">    lift is due (α ≥ hi), neutral in between. Mixed sign by design."""</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">_fl_ctx</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">command_name</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">swing</span> <span class="o">=</span> <span class="n">_fl_feet_found</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swing</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">_smoothstep</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>双重门控的抬脚高度</h4> <p>高度高斯核再乘以“支撑脚着地”和“该抬脚了”两道门。函数默认目标 0.05 m，实际配置传入 0.10 m、尺度 0.06 m。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">fl_swing_foot_clear</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span>
+    <span class="n">command_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">left_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">right_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span>
+    <span class="n">sensor_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="n">lo</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">hi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on the swing-foot height around ``target``, gated on stance</span>
+<span class="sd">    contact (no hopping) and on the lift being due (smoothstep of α)."""</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">side</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">_fl_ctx</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">command_name</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">_fl_site_xyz</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">left_cfg</span><span class="p">,</span> <span class="n">right_cfg</span><span class="p">)</span>
+    <span class="n">swing</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">side</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">swing</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">terrain</span><span class="o">.</span><span class="n">env_origins</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">reward</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">z</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">stance_found</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_fl_feet_found</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">,</span> <span class="n">side</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">reward</span> <span class="o">*</span> <span class="n">stance_found</span> <span class="o">*</span> <span class="n">_smoothstep</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">)</span></code></pre></div></div></div><p>其余奖励约束支撑、姿态和动作平稳。注意防止向支撑侧倾倒过多的那一项返回非正值，所以配的是正权重 4.0：只看权重的正负，判断不了一项是奖励还是惩罚。完整权重见作者的<a class="reference external" href="https://github.com/pollen-robotics/microduck_rl/blob/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks/microduck_flamingo_cycle_env_cfg.py" rel="noreferer noopener" target="_blank">配置 ↗</a>。</p>
+<p><strong>作者记录的失败与对策。</strong></p>
+<ul class="simple">
+<li><p>第一阶段要求抬脚高度 0.05 ± 0.03 m，但目标姿态里脚实际抬起约 0.17 m，两项奖励互相矛盾；改为 0.10 ± 0.06 m 后，在 5 cm 处得 0.5，10 cm 处得 1，17 cm 处仍有 0.26。</p></li>
+<li><p>第一阶段在 −1.0 的动作变化惩罚上再叠加 0.25 m/s 的推力，回报减半且再也没恢复；循环任务因此把推力先限制在 0.15 m/s、动作变化惩罚限制在 −0.5。第一次循环训练遇到向后 0.18 m/s 以上的推力会直接跌倒，所以发布的 Hard 版本在第 1400 轮之后再加入 0.25 m/s 的推力阶段。</p></li>
+<li><p>被推得太狠时，抬起脚触地只是一笔小代价、不会终止回合，而保持站立的价值大得多，于是学到的应对是先放下脚、再重新抬起。作者把这写成设计意图，而不是漏洞。</p></li>
+</ul>
+<p><strong>成功检查与局限。</strong> 作者在带 BAM XL330 舵机模型的 CPU MuJoCo 中运行了 10 个固定情景，全部通过（左右两侧循环、向两侧 0.1 m/s 和向前 0.15 m/s 的推力、向抬脚一侧 0.3 m/s 的推力后短暂放脚再抬起、从静止单脚站立放下、保持 10 秒）；24 次 0.05–0.25 m/s 的随机推力测试中 20 次保持、2 次放脚后恢复、2 次跌倒。已知局限：向后推力达到 0.18 m/s 会跌倒；向支撑侧推力超过约 0.15 m/s 会放下脚；只在仿真中运行，从未上真机。</p>
+</section>
+<section id="basketball">
+<h2>篮球平衡：奖励能看见球，策略看不见<a class="headerlink" href="#basketball" title="Link to this heading">#</a></h2>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="社区篮球平衡演示。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。"><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption><p>社区篮球平衡演示（早期版本的录像）。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。下文分析的是作者最新发布的 b11 版本。</p>
+</figcaption></figure><p><strong>目标。</strong> <a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">篮球平衡 ↗</a> 让机器人站在一个自由滚动的 7 号篮球（直径 0.24 m、质量 0.62 kg）顶上保持平衡，并按速度指令移动；指令为 <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code> 时原地平衡。回合从机器人被放在球顶开始，它不会自己爬上球，也不会从地面爬起。</p>
+<p><strong>可观测量。</strong> 奖励读取球心位置和球速、机身位置、两只脚的足底参考点、重力在机身坐标系中的方向。关键在于：<strong>部署的策略看不见球</strong>。作者最新发布的 b11 版本中，策略只用本体感知和速度指令，经过一层 LSTM 记忆，从自身状态的变化里推测脚下的球；训练时的价值网络（critic）可以读取球的状态，但它不进入导出的 ONNX。奖励在仿真里计算，所以可以直接使用球的位置。</p>
+<div class="formula"><div class="formula-label">球上站姿：对准球心与双脚贴球（权重 2、1）</div><div class="formula-body">\[\htmlData{sym=r_center}{r_{\mathrm{center}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=p_ball}{p_{\mathrm{ball}}}-\htmlData{sym=p_root}{p_{\mathrm{root}}}\|_{xy}^2}{0.04^2}\right),\qquad \htmlData{sym=r_feet}{r_{\mathrm{feet}}}=\frac{1}{2}\sum_{\mathrm{L,R}}\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\|\htmlData{sym=p_foot}{p_{\mathrm{foot}}}-\htmlData{sym=p_ball}{p_{\mathrm{ball}}}\|-(\htmlData{sym=R_ball}{R}+0.012)}{0.02}\right)^2\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{center}}\)</dt><dd>机身对准球心项（权重 2）。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(p_{\mathrm{ball}}\)</dt><dd>篮球球心位置（m），直接从仿真状态读取；部署的策略看不到它。</dd></div><div><dt>\(p_{\mathrm{root}}\)</dt><dd>机器人根部（机身）位置（m）。</dd></div><div><dt>\(r_{\mathrm{feet}}\)</dt><dd>双脚贴在球面上项（权重 1），两只脚取平均。</dd></div><div><dt>\(p_{\mathrm{foot}}\)</dt><dd>某只脚的足底参考点位置（m）。</dd></div><div><dt>\(R\)</dt><dd>篮球半径，0.12 m（7 号球）。</dd></div></dl></details></div><div class="formula"><div class="formula-label">球上站姿：高度与直立（权重 1、1）</div><div class="formula-body">\[\htmlData{sym=r_height}{r_{\mathrm{height}}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=z_root}{z_{\mathrm{root}}}-\htmlData{sym=z_ball}{z_{\mathrm{ball}}}-(\htmlData{sym=R_ball}{R}+0.125)}{0.03}\right)^2\right],\qquad \htmlData{sym=r_up}{r_{\mathrm{up}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\htmlData{sym=g_x}{g_x}^2+\htmlData{sym=g_y}{g_y}^2}{0.3^2}\right)\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{height}}\)</dt><dd>站在球顶的高度项（权重 1）。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(z_{\mathrm{root}}\)</dt><dd>机身根部高度（m）。</dd></div><div><dt>\(z_{\mathrm{ball}}\)</dt><dd>球心高度（m）。</dd></div><div><dt>\(R\)</dt><dd>篮球半径，0.12 m（7 号球）。</dd></div><div><dt>\(r_{\mathrm{up}}\)</dt><dd>机身直立项（权重 1）。</dd></div><div><dt>\(g_x\)</dt><dd>重力方向在机身坐标系中的前后分量（无单位）；站直时为 0。</dd></div><div><dt>\(g_y\)</dt><dd>重力方向在机身坐标系中的左右分量（无单位）；站直时为 0。</dd></div></dl></details></div><div class="formula"><div class="formula-label">球速惩罚（权重 −0.05）</div><div class="formula-body">\[\htmlData{sym=r_ball}{r_{\mathrm{ball}}}=\|\htmlData{sym=v_ball}{v_{\mathrm{ball}}}\|^2\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{ball}}\)</dt><dd>球速平方（权重 −0.05）：零指令时让球保持安静，权重小，指令要求滚动时仍然划算。</dd></div><div><dt>\(v_{\mathrm{ball}}\)</dt><dd>篮球的水平速度（m/s），仿真状态。</dd></div></dl></details></div><p>尺度都带长度单位：机身偏离球心 4 cm、脚底离开球面 2 cm、高度偏差 3 cm 时，对应项降到 <span class="math notranslate nohighlight">\(e^{-1}\approx 0.37\)</span>。<span class="math notranslate nohighlight">\(\htmlData{sym=r_ball}{r_{\mathrm{ball}}}\)</span> 的权重很小，零指令时让球安静，但指令要求滚动时，速度跟踪奖励仍然更划算。终止条件也读球：机身相对球心太低（低于 <span class="math notranslate nohighlight">\(\htmlData{sym=R_ball}{R}\)</span> + 0.05 m）、水平偏离超过 0.16 m 或倾斜超过 55° 即判为从球上掉落。</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 社区作者源码节选</span><a class="source-link" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/src/mjlab_microduck/tasks/mdp.py#L8137-L8186" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>机身对准球心</h4> <p><code>_bb_ball_pos</code> 直接读取仿真中的球心位置，这是策略观测里没有的特权信息。水平偏差越小，奖励越接近 1；权重 2。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_centered</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.04</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on the horizontal offset root &lt;-&gt; ball centre (mass over the ball)."""</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_pos_w</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">*</span> <span class="n">std</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>双脚贴在球面上</h4> <p>每只脚到球心的距离应等于半径加 12 mm 的鞋底间隙；两只脚各算一个高斯核再取平均，悬空的那只脚得分接近 0。权重 1。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_feet_on_ball</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">asset_cfg</span><span class="p">:</span> <span class="n">SceneEntityCfg</span><span class="p">,</span> <span class="n">ball_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">sole_gap</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.012</span><span class="p">,</span> <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Per-foot Gaussian on (|foot site - ball centre| - (R + gap)); both soles</span>
+<span class="sd">    resting on the ball pay 1, a lifted or dangling foot pays ~0 for that foot."""</span>
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="n">asset_cfg</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+    <span class="n">feet</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">site_pos_w</span><span class="p">[:,</span> <span class="n">asset_cfg</span><span class="o">.</span><span class="n">site_ids</span><span class="p">,</span> <span class="p">:]</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">feet</span> <span class="o">-</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">ball_radius</span> <span class="o">+</span> <span class="n">sole_gap</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">*</span> <span class="n">std</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>站在球顶的高度</h4> <p>机身应在球心上方“半径 + 0.125 m”处，即普通站立高度放到球顶。权重 1。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_height</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span> <span class="n">ball_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">,</span> <span class="n">root_height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.125</span><span class="p">,</span> <span class="n">std</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Gaussian on the root height above the ball centre (standing tall on the apex)."""</span>
+    <span class="n">dz</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_pos_w</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="p">(</span><span class="n">ball_radius</span> <span class="o">+</span> <span class="n">root_height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">dz</span> <span class="o">*</span> <span class="n">dz</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">std</span> <span class="o">*</span> <span class="n">std</span><span class="p">))</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>球速惩罚</h4> <p>返回非负值，注册时配 −0.05。注释写明权重故意很小。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">basketball_ball_speed_l2</span><span class="p">(</span><span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Squared horizontal ball speed (&gt;= 0, use a negative weight): keeps the</span>
+<span class="sd">    ball quiet at zero command; small weight so commanded rolling still pays."""</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"ball"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_lin_vel_w</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="4" tabindex="0"><div class="story-text"><h4><span>5</span>终止条件</h4> <p>掉落判定同样读球：太低、偏离球顶或倾斜过大都结束回合。终止让“掉下球”之后本可获得的奖励全部消失，所以提前跌落也会影响策略学到的平衡行为。</p></div></article><div class="story-code-chunk" data-story-target="4"><span class="story-code-number" aria-hidden="true">5</span><div class="highlight"><pre><code><span class="c1"># --- terminations -----------------------------------------------------------------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">basketball_fell</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">:</span> <span class="n">ManagerBasedRlEnv</span><span class="p">,</span>
+    <span class="n">ball_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">,</span>
+    <span class="n">fall_tilt_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">55.0</span><span class="p">,</span>
+    <span class="n">min_height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">max_offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.16</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Off the ball: root too low above the ball centre, root horizontally off</span>
+<span class="sd">    the ball, or tilted past ``fall_tilt_deg``."""</span>
+    <span class="n">robot</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span>
+    <span class="n">ball</span> <span class="o">=</span> <span class="n">_bb_ball_pos</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">robot</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_pos_w</span><span class="p">,</span> <span class="n">nan</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">dz</span> <span class="o">=</span> <span class="n">root</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ball</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">off</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">root</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">ball</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">tilt</span> <span class="o">=</span> <span class="n">wrestle_tilt</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">"robot"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dz</span> <span class="o">&lt;</span> <span class="n">ball_radius</span> <span class="o">+</span> <span class="n">min_height</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">off</span> <span class="o">&gt;</span> <span class="n">max_offset</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">tilt</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">fall_tilt_deg</span><span class="p">))</span></code></pre></div></div></div><p>其余沿用步行配方的速度跟踪、姿态、直立、动作平滑和关节限位等项，完整权重见作者的<a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/src/mjlab_microduck/tasks/microduck_basketball_env_cfg.py" rel="noreferer noopener" target="_blank">配置 ↗</a>。训练初期还给球加了一个可调的“弹簧固定”，从完全固定逐步放松到自由滚动，存活够久的环境升级、很快掉下的降级。</p>
+<p><strong>作者记录的失败与对策。</strong> 根据作者的<a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/experiments/basketball/TRAINING.md" rel="noreferer noopener" target="_blank">训练记录 ↗</a>，去掉球的直接观测后，策略更难保持平衡；加入 LSTM 记忆改善了表现，教师-学生蒸馏则没能保住平衡。之后在<strong>奖励保持不变</strong>时只调整学习率和推力练习的频率，表现仍有提高。奖励只是手段之一：策略能看到什么、记得什么、练过什么，同样决定结果。</p>
+<p><strong>成功检查与局限。</strong> 作者用 3 个种子 × 1024 个环境、共 3072 次 60 秒测试，首次掉落即算失败：b11 存活 20 秒 98.86%，存活 60 秒 97.01%；看得见球的参考版本为 99.67% 和 99.12%。转向跟踪误差 1.26 rad/s，明显差于参考版本的 0.76 rad/s，动作也更不平滑；这些跟踪指标只统计掉落之前的样本。导出的 ONNX 需要额外输入和输出 LSTM 状态，普通的前馈加载器不能直接运行它。机载计算的实时性和真机表现都没有测试。</p>
+</section>
+<section id="moonwalk">
+<h2>倒滑“太空步”：描述里有，奖励里没有<a class="headerlink" href="#moonwalk" title="Link to this heading">#</a></h2>
+<p><strong>目标。</strong> <a class="reference external" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af" rel="noreferer noopener" target="_blank">倒滑“太空步” ↗</a> 由一个自动工具根据文字描述生成：“像太空步一样向后滑行、双脚交替、制造滑动而不是普通后退的视觉错觉、上身稳定直立、避免跳动和大的上下起伏、全程平衡，几秒后稳定站好。”</p>
+<p><strong>实际训练了什么。</strong> 工具从现成的配方里选了步行速度跟踪配方，然后只做了三处修改：把前进速度指令改成向后的 −0.25 到 −0.08 m/s（侧向和转向只留很小的范围），把足底滑动惩罚从 −0.1 减弱到 −0.015，并开启左右对称的数据增强。</p>
+<div class="formula"><div class="formula-label">继承自步行配方的两项（mjlab 1.3.0）</div><div class="formula-body">\[\htmlData{sym=r_lin}{r_{\mathrm{lin}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=v_cmd}{v^{*}_{xy}}-\htmlData{sym=v_xy}{v_{xy}}\|^2+\htmlData{sym=v_z}{v_z}^2}{\htmlData{sym=sigma_v}{\sigma_v}^2}\right),\qquad \htmlData{sym=r_slip}{r_{\mathrm{slip}}}=\htmlData{sym=one}{\mathbf{1}}\!\left[\|\htmlData{sym=v_cmd}{v^{*}_{xy}}\|+|\htmlData{sym=omega_cmd}{\omega^{*}_z}|&gt;0.01\right]\sum_{\mathrm{L,R}}\htmlData{sym=k_foot}{k_{\mathrm{foot}}}\,\|\htmlData{sym=v_foot}{v_{\mathrm{foot}}}\|^2\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{lin}}\)</dt><dd>线速度跟踪项（基础步行配方中权重 2）。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(v^{*}_{xy}\)</dt><dd>水平速度指令（m/s）。倒滑训练中前进分量取 −0.25 到 −0.08 m/s，即向后。</dd></div><div><dt>\(v_{xy}\)</dt><dd>机身坐标系中的水平速度（m/s）。</dd></div><div><dt>\(v_z\)</dt><dd>机身坐标系中的竖直速度（m/s）；理想平移时为 0。</dd></div><div><dt>\(\sigma_v\)</dt><dd>速度跟踪尺度，\(\sigma_v^2 = 0.1\ (\mathrm{m/s})^2\)。</dd></div><div><dt>\(r_{\mathrm{slip}}\)</dt><dd>足底滑动代价：接触地面的脚仍在水平移动时计入；权重为负。</dd></div><div><dt>\(\mathbf{1}\)</dt><dd>指示函数：括号内条件成立时为 1，否则为 0。</dd></div><div><dt>\(\omega^{*}_z\)</dt><dd>转向角速度指令（rad/s）。</dd></div><div><dt>\(k_{\mathrm{foot}}\)</dt><dd>这只脚是否接触地面（1 为接触）。</dd></div><div><dt>\(v_{\mathrm{foot}}\)</dt><dd>某只脚在世界坐标系中的水平速度（m/s）。</dd></div></dl></details></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 自动生成的任务配置（全文）</span><a class="source-link" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af/blob/951073cb7791a898e3e5ecb242c5bcccf40aa72f/compiled_motion.json" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>从步行配方出发</h4> <p>观测、执行器、域随机化、终止条件和全部奖励项都来自官方步行配方（固定版本 <code>d424a0c</code>）。这段代码保存在模型卡的 <code>compiled_motion.json</code> 里。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab_microduck.tasks.microduck_velocity_env_cfg</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_microduck_velocity_env_cfg</span><span class="p">,</span> <span class="n">MicroduckRlCfg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab_microduck.tasks.symmetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">SYMMETRY_CFG</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_generated_env_cfg</span><span class="p">(</span><span class="n">play</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">rough</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">make_microduck_velocity_env_cfg</span><span class="p">(</span><span class="n">play</span><span class="o">=</span><span class="n">play</span><span class="p">,</span> <span class="n">rough</span><span class="o">=</span><span class="n">rough</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>唯一的“太空步”信息：向后的速度指令</h4> <p>前进速度只在 −0.25 到 −0.08 m/s 之间采样，8% 的环境练习站立。速度跟踪奖励因此要求机器人向后走。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">command</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="s2">"twist"</span><span class="p">]</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">lin_vel_x</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">lin_vel_y</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">ang_vel_z</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">rel_standing_envs</span> <span class="o">=</span> <span class="mf">0.08</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">rel_turn_in_place_envs</span> <span class="o">=</span> <span class="mf">0.0</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>放松足底滑动惩罚</h4> <p>权重从 −0.1 变为 −0.015，允许脚在接触地面时滑得更多。它只是不再那么反对滑动，并没有奖励“看起来像滑行”。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="s1">'foot_slip'</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.015</span>
+    <span class="k">return</span> <span class="n">cfg</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>开启对称增强</h4> <p>训练时用左右镜像的数据，让左右腿的动作保持对称。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="n">GeneratedRlCfg</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">MicroduckRlCfg</span><span class="p">)</span>
+<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">experiment_name</span> <span class="o">=</span> <span class="s1">'motionlab_moonwalk_backward'</span>
+<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="s1">'moonwalk_backward'</span>
+<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">symmetry_cfg</span> <span class="o">=</span> <span class="n">SYMMETRY_CFG</span></code></pre></div></div></div><p>对照目标逐条看：向后移动和上身直立有对应的奖励项（速度跟踪和继承的直立项）；“双脚交替”只能来自步行配方原有的步态项；“最后稳定站好”要靠部署时把指令切回 0，再依赖步行配方原有的零指令站立练习；而“制造滑行的视觉错觉”没有任何一项奖励或检查描述它。工具生成的说明里还写到用身体姿态奖励抑制上下起伏，但在这个基础配方中，身体姿态跟踪项的权重是 0。</p>
+<p><strong>成功检查与局限。</strong> 模型卡记录：导出检查和 ONNX 在 CPU MuJoCo 中的试运行都通过（61 维输入、14 维输出）；5 秒预览（模型卡里的 <code class="docutils literal notranslate"><span class="pre">preview.mp4</span></code>）中最大水平位移 0.33 m、关节最大变化 14.7°；看视频时可以对照目标逐条判断。但自动动作质量检查的结果是“需要人工复核”，模型卡明确标注“语义匹配未验证”。也就是说，文件能加载、接口正确、机器人也在动，但没有证据说明它学会了太空步。这个例子说明：描述里想要的效果，如果没有写成奖励或验收判据，就不能指望训练自动得到。</p>
+<details class="enrichment"><summary>拓展：如果要真的检验“太空步”</summary><div class="enrichment-body"><p>下面是课程提出的思考方向，不是作者的实现，也没有训练验证过。先写验收：例如在固定时长内，机身确实向后移动；每个步态周期中接触地面的那只脚相对地面向后滑动，而抬起的脚向前移动；质心上下起伏小于某个阈值；结束时回到站姿。然后问：这些量能否从仿真中读出？应该做成跟踪项、惩罚还是只在结束时检查？哪些可以直接用作奖励，哪些更适合只作为独立评测指标？</p>
+</div></details></section>
+<section id="compare">
+<h2>三个技能放在一起比较<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head cell-short"><p>单脚站立循环</p></th>
+<th class="head cell-short"><p>篮球平衡</p></th>
+<th class="head cell-short"><p>倒滑</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>目标类型</p></td>
+<td><p>按指令在两种姿势间切换</p></td>
+<td><p>持续平衡并跟随速度</p></td>
+<td><p>持续移动的风格化步态</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>关键写法</p></td>
+<td><p>用混合进度门控每一项</p></td>
+<td><p>用球的真实状态写奖励和终止</p></td>
+<td><p>只改指令范围和一个权重</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>特权信息</p></td>
+<td class="cell-short"><p>整机质心、接触</p></td>
+<td><p>球心位置与球速（策略看不到）</p></td>
+<td class="cell-short"><p>与步行配方相同</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>终止</p></td>
+<td class="cell-short"><p>沿用摔倒终止</p></td>
+<td class="cell-short"><p>从球上掉落</p></td>
+<td class="cell-short"><p>沿用步行配方</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>作者的检查</p></td>
+<td><p>10 个情景 + 24 次随机推力</p></td>
+<td><p>3 种子 × 1024 环境 × 60 秒</p></td>
+<td><p>导出与接口通过；语义未验证</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>都没有验证</p></td>
+<td class="cell-short"><p>真机</p></td>
+<td><p>真机与机载实时性</p></td>
+<td><p>动作是否符合描述</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>检查奖励时问四件事：目标是否有对应的奖励或验收；能否不完成任务也拿高分；奖励用到的特权信息与部署时的观测是否分清；最后是否用独立判据评测。</p>
+</section>
+<section id="new-task">
+<h2>为新任务设计奖励<a class="headerlink" href="#new-task" title="Link to this heading">#</a></h2>
+<p>挑一个这三个之外的新任务，例如“原地转一圈后面向原方向站定”或“坐下再站起来”，按 3.3 节的六步写在纸上：</p>
+<ol class="arabic simple">
+<li><p>用可测量的量写出成功判据和失败条件，在动笔写奖励之前固定下来。</p></li>
+<li><p>列出需要的量，标明单位、坐标系，以及部署时策略能否得到。</p></li>
+<li><p>为每条要求选形状：跟踪、惩罚、一次性事件；需要先后顺序时，参考单脚站立的门控。</p></li>
+<li><p>估算每一项的典型大小，检查有没有一项会压倒其他项。</p></li>
+<li><p>写出至少两种可能被钻的空子，以及终止条件会怎样改变奖励的含义。</p></li>
+<li><p>计划独立评测与消融：用哪些种子、多少次、比较哪些指标，同样的训练预算。</p></li>
+</ol>
+<div class="quiz"><h3>检查理解</h3><p>一个新任务的奖励曲线持续上升，导出的 ONNX 也通过了 61 维输入、14 维输出的接口检查。这能说明任务完成了吗？</p>
+<details><summary>查看解析</summary><p>不能。奖励上升只说明策略更会拿到这组奖励的分数；接口检查只说明文件能被控制器调用。倒滑的例子两者都满足，但语义匹配仍未验证；3.3 节的轮滑训练回报大幅上升，坡道验证却是 0/5。要用训练前固定的验收判据、独立种子和实际观察来判断。</p>
+</details></div></section>
+<section id="compatible">
+<h2>同样的接口，不同的约定<a class="headerlink" href="#compatible" title="Link to this heading">#</a></h2>
+<p>ONNX 是一种模型文件格式，记录网络结构和权重，但不规定机器人技能怎样被调用。单脚站立和倒滑都使用 61 维输入、14 维输出的共同接口，却不能互相替换：单脚站立把速度指令的前两个分量当作“是否抬脚”和“哪一侧”，倒滑才是真正的速度指令。篮球策略在同样的 61 维观测之外，还要输入并传回 LSTM 的记忆状态。课程中的行走模型读取 61 维输入，踢球残差模型读取 62 维输入；两者都输出 14 个数，同样不能互换。</p>
+<p>文件能成功加载，只说明格式可读。要让机器人完成动作，指令每个分量的含义、单位、关节顺序、动作缩放和结束条件都必须与控制器一致；<a class="reference internal" href="models.html"><span class="std std-doc">模型与数据页</span></a>列出了课程各固定权重的用途。技能之间的衔接也要单独设计：2.1 节的键盘射门在踢球动作结束后，用 0.12 s 平滑切回行走策略的站立动作，这个过渡并不在踢球模型里。</p>
+</section>
+<section id="kick-example">
+<h2>技能的开始与结束同样重要<a class="headerlink" href="#kick-example" title="Link to this heading">#</a></h2>
+<p>行走策略可以持续接收速度指令，而踢球是一个有明确起止点的短时技能。要把它接入自主任务，除了动作本身，还要说明何时允许启动、结束后进入什么状态，以及出现失败时如何停止。</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="出脚、触球与恢复站立的特写。片段来自完整足球任务使用的踢球组合策略。"><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>出脚、触球与恢复站立的特写。片段来自完整足球任务使用的踢球组合策略。</p>
+</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>阶段</p></th>
+<th class="head cell-short"><p>需要检查什么</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>准备</p></td>
+<td><p>球是否在可踢区域，身体朝向是否合适，观测是否仍在有效期内</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>触球</p></td>
+<td><p>球的运动完全来自足部的物理接触，仿真不直接改写球的状态</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>收脚</p></td>
+<td><p>及时结束出脚并回到支撑状态</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>恢复</p></td>
+<td><p>机器人保持稳定，没有摔倒或关节越界</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>射门时，球必须位于适合右脚出脚的位置，机身朝向球门，支撑保持稳定，而且目标观测尚未过期。技能执行期间结合踢球教师策略与残差修正；碰到球之后，还要恢复到稳定的站立或行走状态，技能才算结束。残差是对已有动作的受约束修正，它缩小了需要从头学习的范围，也继承了教师策略的适用边界：在远离球的位置启动局部射门技能，机器人并不会因此去找球。看片段时，用物理接触记录确认触球的是脚而非身体其他部位，再观察重心是否回到支撑区域、机身倾角是否收敛。</p>
+<div class="quiz"><h3>检查理解</h3><p>机器人已走到球旁，但球的位置记忆过期。应立刻运行踢球技能吗？</p>
+<details><summary>查看解析</summary><p>不应立即运行。需要先重新观察并确认进入条件；仅仅靠近目标，并不能保证技能输入仍然有效。</p>
+</details></div></section>
+<section id="eyes">
+<h2>会执行动作，还不等于会完成任务<a class="headerlink" href="#eyes" title="Link to this heading">#</a></h2>
+<p>到目前为止，都是我们告诉机器人“向前走”“抬起左脚”或“向后滑”。策略利用关节和 IMU 反馈保持平衡，但足球在哪里、该走哪条路，还要由别的模块来判断。第 4 部分将训练 GR00T，让它根据相机图像、指令和身体状态发出技能请求，把这些判断交给可学习的模型。</p>
+</section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" rel="noreferer noopener" target="_blank">Microduck 官方网页模拟器（Hugging Face Space）↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/models?search=microduck" rel="noreferer noopener" target="_blank">Hugging Face：搜索 Microduck 模型 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab：Microduck 任务源码 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/mujocolab/mjlab/blob/19d6c06c17572dafcb31ad5110a902006b58d944/src/mjlab/managers/reward_manager.py" rel="noreferer noopener" target="_blank">mjlab 1.3.0：奖励管理器源码 ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/RemiFabre/microduck-flamingo-cycle" rel="noreferer noopener" target="_blank">社区单脚站立循环 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pollen-robotics/microduck_rl/tree/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks" rel="noreferer noopener" target="_blank">社区单脚站立循环：训练源码（固定版本）↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">社区篮球平衡：模型卡与评测 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/Vottivott/microduck-playground/tree/main/experiments/basketball" rel="noreferer noopener" target="_blank">社区篮球平衡：训练源码 ↗</a></p></li>
+<li><p><a class="reference external" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af" rel="noreferer noopener" target="_blank">社区倒滑太空步 ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="04-terrain.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">3.3 奖励设计：走稳上下坡</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07-groot.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">4.1 视觉-语言-动作模型与 GR00T</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community">同一机器人，可以学什么</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">用同一张表读三个技能</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flamingo">单脚站立循环：用门控安排动作的先后</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basketball">篮球平衡：奖励能看见球，策略看不见</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moonwalk">倒滑“太空步”：描述里有，奖励里没有</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">三个技能放在一起比较</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#new-task">为新任务设计奖励</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compatible">同样的接口，不同的约定</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kick-example">技能的开始与结束同样重要</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eyes">会执行动作，还不等于会完成任务</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

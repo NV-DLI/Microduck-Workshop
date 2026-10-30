@@ -32,6 +32,13 @@
   );
   const dialog = $(".search-dialog"),
     input = $("#search-input");
+  // Close on the first Escape even when a search input would consume it.
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      dialog.close();
+    }
+  });
   let index;
   async function search() {
     const q = input.value.trim().toLowerCase(),
@@ -78,18 +85,6 @@
       openSearch();
     }
   });
-  const headingObserver = new IntersectionObserver(
-    (entries) => {
-      for (const ent of entries)
-        if (ent.isIntersecting) {
-          all(".toc a").forEach((a) =>
-            a.classList.toggle("active", a.hash === "#" + ent.target.id),
-          );
-        }
-    },
-    { rootMargin: "-90px 0px -65% 0px" },
-  );
-  all("main section[id]").forEach((s) => headingObserver.observe(s));
   all("[data-robot-viewer]").forEach((v) =>
     v.querySelector(".load-robot").addEventListener("click", async () => {
       const button = v.querySelector(".load-robot");

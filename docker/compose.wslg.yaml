@@ -1,0 +1,29 @@
+# Override for Ubuntu on WSL 2 (WSLg display), used together with compose.yaml:
+#   docker compose -f docker/compose.yaml -f docker/compose.wslg.yaml up -d
+# WSLg provides X11 and Wayland sockets under /mnt/wslg and no X authority file.
+# GPU access goes through the WSL CUDA driver (/usr/lib/wsl). On the WSL 2 setup the
+# course tested (Windows 11, RTX 5090, Windows driver 621.01) it provided CUDA but no
+# NVIDIA Linux Vulkan driver: CUDA and Newton runs without a window (--headless) worked,
+# Isaac Sim RTX windows, cameras and recordings failed with ERROR_INCOMPATIBLE_DRIVER.
+# Use DGX Spark or a Linux desktop for those labs.
+x-bind: &bind
+  type: bind
+  bind:
+    create_host_path: false
+
+services:
+  workshop:
+    environment:
+      DISPLAY: ${DISPLAY:-:0}
+      WAYLAND_DISPLAY: ${WAYLAND_DISPLAY:-wayland-0}
+      XDG_RUNTIME_DIR: /mnt/wslg/runtime-dir
+      PULSE_SERVER: /mnt/wslg/PulseServer
+      LD_LIBRARY_PATH: /usr/lib/wsl/lib
+    volumes:
+      - <<: *bind
+        source: /mnt/wslg
+        target: /mnt/wslg
+      - <<: *bind
+        source: /usr/lib/wsl
+        target: /usr/lib/wsl
+        read_only: true

@@ -1,0 +1,6 @@
+{
+  "mode": "human",
+  "low_level_stop": true,
+  "stop_kp": 1.5,
+  "stop_ki": 0.2
+}

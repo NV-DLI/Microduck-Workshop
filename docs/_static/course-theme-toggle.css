@@ -1,0 +1,57 @@
+/* Light/dark switch: a compact pill with sun and moon; the thumb sits under the active icon. */
+.course-theme-switch {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--pst-color-text-muted);
+  cursor: pointer;
+}
+.course-theme-switch__track {
+  position: relative;
+  display: inline-flex;
+  width: 3.25rem;
+  height: 1.75rem;
+  padding: 0.125rem;
+  border: 1px solid var(--pst-color-border);
+  border-radius: 999px;
+  background: var(--pst-color-surface);
+  transition: border-color 0.15s;
+}
+.course-theme-switch__icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex: 1 1 50%;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+.course-theme-switch__thumb {
+  position: absolute;
+  top: 0.125rem;
+  left: 0.125rem;
+  width: calc(50% - 0.125rem);
+  height: calc(100% - 0.25rem);
+  border-radius: 999px;
+  background: var(--pst-color-primary);
+  transition: transform 0.2s ease;
+}
+.course-theme-switch[aria-checked="true"] .course-theme-switch__thumb { transform: translateX(100%); }
+.course-theme-switch[aria-checked="false"] [data-side="light"],
+.course-theme-switch[aria-checked="true"] [data-side="dark"] { color: var(--pst-color-background); }
+.course-theme-switch:hover .course-theme-switch__track { border-color: var(--pst-color-primary); }
+.course-theme-switch:focus { outline: none; }
+.course-theme-switch:focus-visible .course-theme-switch__track {
+  outline: 2px solid var(--pst-color-accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .course-theme-switch__thumb,
+  .course-theme-switch__icon,
+  .course-theme-switch__track { transition: none; }
+}

@@ -1,58 +1,838 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Adapt walking to slopes. Explore the concepts, run the lab, and inspect its results."><meta name="theme-color" content="#76b900"><title>Adapt walking to slopes · Microduck Workshop</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link rel="preload" href="../assets/fonts/OpenSans.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="../assets/vendor/highlight/highlight-github-dark-11.10.0.min.css"><link rel="stylesheet" href="../assets/course.css"><script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script><link rel="stylesheet" href="../assets/vendor/katex/katex.min.css"><script defer src="../assets/vendor/katex/katex.min.js"></script><script defer src="../assets/vendor/katex/auto-render.min.js"></script><script defer src="../assets/vendor/highlight/highlight-11.10.0.min.js"></script><script defer src="../assets/course.js"></script><script defer src="../assets/teaching.js"></script></head>
-<body data-lang="en" data-page="04-terrain"><a class="skip" href="#main">Skip to content</a>
-<header><button class="menu-toggle" aria-label="Contents" aria-expanded="false">☰</button><a class="brand" href="index.html"><span class="brand-course">Microduck <b>Workshop</b></span></a><div class="header-actions"><button class="search-open">Search the course <kbd>/</kbd></button><details class="language-menu"><summary aria-label="Choose language"><svg viewBox="0 0 24 24" width="23" height="23" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 7h14M5 17h14"/></svg></summary><div class="language-options"><a lang="zh-CN" href="../zh/04-terrain.html" >简体中文</a><a lang="en" href="../en/04-terrain.html" aria-current="true">English</a></div></details><a class="repo-link" href="https://github.com/NV-DLI/Microduck-Workshop">GitHub ↗</a></div></header>
-<div class="layout"><nav class="sidebar" aria-label="Contents"><div class="sidebar-intro">Robot Learning with Microduck</div><p class="nav-group">Getting started</p><a href="index.html"><span class="nav-number"></span>Teach Microduck to score a goal</a><a href="how-to-learn.html"><span class="nav-number"></span>How to take this course</a><a href="setup.html"><span class="nav-number"></span>Prepare your environment</a><p class="nav-group">Course chapters</p><a href="01-play.html"><span class="nav-number">1</span>Meet Microduck: play football first</a><a href="02-anatomy.html"><span class="nav-number">2</span>Mechanism and control timing</a><a href="03-learning.html"><span class="nav-number">3</span>Learning to walk</a><a aria-current="page" href="04-terrain.html"><span class="nav-number">4</span>Adapt walking to slopes</a><a href="05-skills.html"><span class="nav-number">5</span>Explore community movement skills</a><a href="06-autonomy.html"><span class="nav-number">6</span>From engineered pipelines to intelligent robots</a><a href="07-groot.html"><span class="nav-number">7</span>Teach GR00T from demonstrations</a><a href="08-aspire.html"><span class="nav-number">8</span>Organize tasks and accumulate skills with ASPIRE</a><a href="09-worlds.html"><span class="nav-number">9</span>From one field to more environments</a><p class="nav-group">Reference and help</p><a href="models.html"><span class="nav-number"></span>Models and data</a><a href="troubleshooting.html"><span class="nav-number"></span>Troubleshooting</a><a href="references.html"><span class="nav-number"></span>Further learning and references</a></nav>
-<main id="main"><div class="breadcrumb">Microduck Workshop <span>/</span> Course chapters</div><div class="lesson-heading "><div><p class="eyebrow">SELF-PACED WORKSHOP</p><h1>Adapt walking to slopes</h1><p class="lead">Adapt walking to slopes. Explore the concepts, run the lab, and inspect its results.</p><div class="lesson-meta">Chapter 4 · Estimated learning time: 30 minutes</div></div></div><section id="question"><h2>Start with a testable question</h2><p>Do not assume the old actor will fail. Hold the policy, command, duration, friction and initial-state distribution fixed while varying slope. Test traversal and balance, not just a single attractive frame.</p><figure class="learning-figure" data-learning-flow="learn-79f57e6f7a"><p class="learning-help">Select a module to explore its role and data flow. You can also use Tab and Enter.<span class="learning-scroll-hint">Swipe horizontally to see the full diagram</span></p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Terrain generalization"><svg class="learning-svg" viewBox="0 0 828 228" role="group" aria-labelledby="learn-79f57e6f7a-title"><title id="learn-79f57e6f7a-title">Terrain generalization</title><defs><marker id="learn-79f57e6f7a-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M252 119H294" marker-end="url(#learn-79f57e6f7a-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M528 119H570" marker-end="url(#learn-79f57e6f7a-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="Baseline" aria-controls="learn-79f57e6f7a-detail-0" aria-expanded="false"><rect x="24" y="48" width="228" height="142" rx="8"/><text x="138" y="83" class="learning-node-title">Baseline</text><text x="138" y="132" class="learning-node-subtitle">Same actor: flat/up/down</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="Isaac Lab training" aria-controls="learn-79f57e6f7a-detail-1" aria-expanded="false"><rect x="300" y="48" width="228" height="142" rx="8"/><text x="414" y="83" class="learning-node-title">Isaac Lab training</text><text x="414" y="132" class="learning-node-subtitle">Sample parallel terrains</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="Held-out evaluation" aria-controls="learn-79f57e6f7a-detail-2" aria-expanded="false"><rect x="576" y="48" width="228" height="142" rx="8"/><text x="690" y="83" class="learning-node-title">Held-out evaluation</text><text x="690" y="132" class="learning-node-subtitle">Arrival, falls, speed error</text></g></svg></div><div class="learning-details"><p class="learning-empty">Terrain generalization</p><button type="button" class="learning-reset" aria-label="Close explanation" hidden>×</button><article id="learn-79f57e6f7a-detail-0" data-node-detail="0" class="learning-definition"><h3>Baseline</h3><p>Test the same actor on flat ground, uphill and downhill to locate its limits. Report the directions separately.</p></article><article id="learn-79f57e6f7a-detail-1" data-node-detail="1" class="learning-definition"><h3>Isaac Lab training</h3><p>Sample slopes in parallel environments so the policy experiences new contacts and gravity components. Retain flat-ground samples too.</p></article><article id="learn-79f57e6f7a-detail-2" data-node-detail="2" class="learning-definition"><h3>Held-out evaluation</h3><p>Use starts and seeds excluded from tuning. Compare arrival, falls and speed error under matched conditions.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Evaluate before adapting. Retain flat-ground ability while testing improvements on slopes.</figcaption></figure></section><section id="scene"><h2>Build a flat–ramp–landing scene</h2><p>The surface has a 0.35 m flat approach, a 1 m horizontal ramp, and a landing. Positive angles ascend; negative angles descend. A continuous collision mesh avoids unintended steps. Visual materials do not determine contact dynamics.</p><figure class="media"><a class="still-link" href="../assets/media/terrain-scene.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/terrain-scene.png" alt="Isaac Sim flat approach, ramp and target line"></a><figcaption>The darker surface marks the ramp; gold guides show direction and green marks the target. These visual markings do not change contact physics.</figcaption></figure><figure class="concept-figure" data-diagram="terrain"><svg viewBox="0 0 640 320" role="img" aria-label="平地、坡道与平台的侧视图" font-family="Open Sans, Noto Sans SC, sans-serif" font-size="15"><defs><marker id="arrow-terrain" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="none" stroke="#577642"/></marker></defs><path d="M60 165H585" stroke="#87958b" stroke-dasharray="5 5"/><path class="terrain-fill" fill="#dfeaf5" stroke="none"/><path class="terrain-surface" fill="none" stroke="#0969da" stroke-width="4"/><path d="M60 280H165M165 274V286M60 274V286M165 280H465M465 274V286" fill="none" stroke="#57606a"/><text x="110" y="305" text-anchor="middle" font-size="13">Flat: 0.35 m</text><text x="315" y="305" text-anchor="middle">Ramp run: 1 m</text><text class="terrain-landing" x="520" y="100" text-anchor="middle" font-size="13">Landing</text><circle cx="90" cy="148" r="10" fill="#e3a54d"/><path d="M85 157L82 165M95 157L98 165" stroke="#9a6700" stroke-width="3"/><path class="terrain-height" stroke="#4a7a00" stroke-width="2"/><text class="terrain-height-label" x="485" y="140" fill="#4a7a00" font-size="13"/><text x="24" y="28">h(x) = tan(α) · clip(x − 0.35, 0, 1)</text></svg><div class="concept-controls"><label>Slope α / ° <input class="terrain-angle" type="range" min="-15" max="15" step="1" value="5"></label></div><p class="concept-output" aria-live="polite"></p><figcaption class="diagram-caption">Adjust the slope to compare ascent and descent. Horizontal and vertical scales match; the landing height changes with the angle.</figcaption></figure><div class="formula"><div class="formula-label">坡面高度</div><div>\[h(x)=\tan(\alpha)\,\operatorname{clip}(x-0.35,0,1)\]</div></div><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/terrain.py" target="_blank" rel="noopener">Full source ↗</a></div><pre><code class="language-python">slope = math.tan(math.radians(cfg.slope_deg))
-xs = [-48.0, 2.35, 3.35, 52.0]
-zs = [0.0, 0.0, slope, slope]
-vertices = [(x, y, z) for x, z in zip(xs, zs) for y in [-48.0, 52.0]]
-origin = np.array([2.0, 2.0, 0.0])</code></pre></div><p>The mesh origin is (2, 2, 0). Subtracting it places the robot at relative x = 0 and the ramp between x = 0.35 m and 1.35 m. Continuous approach and landing support extends across 100 × 100 m so failures do not fall off a small terrain tile. Isaac Lab’s TerrainGenerator and TerrainImporter share this geometry across visualization, physics tests and parallel training.</p></section><section id="baseline"><h2>Test the official walking policy first</h2><p>Run the official walking policy on a 5° uphill ramp for 20 seconds. Run the command below from the repository root with a new output directory.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py terrain \
-  --model models/walk.onnx \
-  --slope 5 --num-envs 1 --seconds 20 --seed 42001 \
-  --output outputs/slope-up-05</code></pre></div><p>Without --headless this opens Isaac Sim. Use --num-envs 5 --headless for batched evaluation, and test 0, ±5, ±10 and ±15 degrees in separate output directories. The first 2 s are standing; then the command is 0.25 m/s. Actual speed may differ.</p><p>Success requires reaching x ≥ 1.45 m within 20 s with lateral error below 0.3 m and staying upright throughout. A fall remains a failure even if the body later slides across the finish. Reports separate reaching, falls and velocity RMSE.</p><div class="table-scroll"><table><thead><tr><th>Slope</th><th>Pass</th><th>Fall</th></tr></thead><tbody><tr><td>0°</td><td>5/5</td><td>0/5</td></tr><tr><td>+5°</td><td>0/5</td><td>0/5</td></tr><tr><td>-5°</td><td>0/5</td><td>5/5</td></tr><tr><td>+10°</td><td>0/5</td><td>0/5</td></tr><tr><td>-10°</td><td>0/5</td><td>5/5</td></tr><tr><td>+15°</td><td>0/5</td><td>0/5</td></tr><tr><td>-15°</td><td>0/5</td><td>5/5</td></tr></tbody></table></div><p>Each angle uses five lightly perturbed starts. Flat trials pass; uphill trials stall without falling; downhill trials fall. This small baseline identifies an adaptation need, not general reliability.</p></section><section id="why"><h2>Why flat-ground experience may not transfer</h2><p>A slope changes foot clearance, gravity along the surface and usable friction. Insufficient clearance or propulsion can stall ascent; downhill landing and balance changes can cause falls. Survival alone misses stalled traversal.</p></section><section id="train"><h2>Continue learning across terrain types</h2><p>Keep the official ONNX unchanged. Initialize a new actor from its weights and normalization, with a fresh critic and optimizer. Mix 25% flat terrain with ascending and descending terrain. Verify initial actor parity before learning.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py train-terrain \
-  --model models/walk.onnx \
-  --num-envs 256 --iterations 1000 --seed 43001 \
-  --output outputs/terrain-training-01</code></pre></div><p>Training slopes are tan(α), not degrees: 0.03–0.22 is about 1.7°–12.4°. Training uses pyramidal and inverted slopes; evaluation uses straight ramps and separate seeds.</p><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">Full source ↗</a></div><pre><code class="language-python">sub_terrains = {
-    &quot;flat&quot;: MeshPlaneTerrainCfg(proportion=0.25),
-    &quot;slopes&quot;: HfPyramidSlopedTerrainCfg(
-        proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7
-    ),
-    &quot;descending&quot;: HfInvertedPyramidSlopedTerrainCfg(
-        proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7
-    ),
-}</code></pre></div><p>The fixed terrain weights retain their original training lineage. Current practice runs use the same full-contact robot as the demonstrations, so their contact configuration differs from the historical training and defines a new experiment. Training is physics-only; inspect exported policies in the shared RTX scene.</p></section><section id="direction"><h2>Balance and direction both matter</h2><div class="formula"><div class="formula-label">第一步：定义有物理含义的误差</div><div>\[e_{\omega}=\omega_z-\omega_z^*,\qquad u=\frac{e_{\omega}}{\sigma}\]</div></div><div class="formula"><div class="formula-label">第二步：把误差转换为平滑、有界的奖励</div><div>\[r_{\omega}=\exp(-u^2)=\exp\!\left[-\left(\frac{\omega_z-\omega_z^*}{0.15}\right)^2\right]\]</div></div><div class="code-block source-excerpt"><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">Full source ↗</a></div><pre><code class="language-python">def yaw_rate_tracking(env, std=0.15):
-    # Match the commanded turn rate without penalizing normal roll/pitch motion.
-    velocity = env.scene[&quot;robot&quot;].data.root_link_ang_vel_b.torch
-    target = env.command_manager.get_command(&quot;base_velocity&quot;)[:, 2]
 
-    # Squared, normalized error gives a symmetric reward in (0, 1].
-    return torch.exp(-((velocity[:, 2] - target) / std).square())
+<!DOCTYPE html>
 
 
-cfg.rewards.yaw_precision = RewardTermCfg(
-    func=yaw_rate_tracking, weight=4.0, params={&quot;std&quot;: 0.15}
-)</code></pre></div><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py train-terrain \
-  --model models/walk.onnx \
-  --resume outputs/terrain-training-01/model_999.pt \
-  --refine-heading --num-envs 256 --iterations 1500 --seed 43002 \
-  --output outputs/terrain-heading-01
+<html lang="en" data-content_root="./" data-theme="dark">
 
-python3 scripts/workshop.py train-terrain \
-  --model models/walk.onnx \
-  --resume outputs/terrain-heading-01/model_2498.pt \
-  --refine-heading --yaw-precision \
-  --num-envs 256 --iterations 2000 --seed 43003 \
-  --output outputs/terrain-direction-01</code></pre></div></section><section id="evaluate"><h2>Compare both actors with the same benchmark</h2><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-ascent-hd.jpg" aria-label="ascent10 degree policy comparison"><source src="../assets/media/terrain-ascent-hd.mp4" type="video/mp4"></video><figcaption>Ascent10°: official actor above, terrain actor below. The original stalls while the adapted actor reaches the target. Matched starts and synchronized simulation time; this illustration does not replace the full benchmark.</figcaption></figure><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-descent-hd.jpg" aria-label="descent10 degree policy comparison"><source src="../assets/media/terrain-descent-hd.mp4" type="video/mp4"></video><figcaption>Downhill at 10°: the official policy is above and the terrain policy below. The official robot loses balance but remains supported by the continuous ground. The terrain policy stays upright but fails the arrival condition because of lateral drift. Both use the same starting setup and play in synchronized simulation time; the wide view retains motion beyond the ramp. This separate recording seed is excluded from the table below. Staying upright is not the same as completing the task.</figcaption></figure><div class="code-block terminal"><div class="code-toolbar"><span>Terminal</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py terrain \
-  --model models/terrain-walk.onnx \
-  --slope 5 --num-envs 5 --seconds 20 --seed 49001 --headless \
-  --output outputs/terrain-evaluation-up-05</code></pre></div><p>Use the fixed0.79 MB terrain actor by default. Explicitly select outputs/terrain-direction-01/exported/policy.onnx to test your own export. Chapters1 and7 retain the original walking actor.</p><p>Use matched evaluation seeds and angles for both actors. Report flat, uphill and downhill success, falls, tracking error and training time. Stalling is not success, and slope improvements do not justify losing flat-ground ability.</p><div class="table-scroll"><table><thead><tr><th>Slope</th><th>Official pass</th><th>Terrain pass</th><th>Terrain falls</th><th>Terrain speed RMSE</th></tr></thead><tbody><tr><td>0°</td><td>5/5</td><td>5/5</td><td>0/5</td><td>0.094 m/s</td></tr><tr><td>+5°</td><td>0/5</td><td>5/5</td><td>0/5</td><td>0.105 m/s</td></tr><tr><td>-5°</td><td>0/5</td><td>5/5</td><td>0/5</td><td>0.089 m/s</td></tr><tr><td>+10°</td><td>0/5</td><td>5/5</td><td>0/5</td><td>0.122 m/s</td></tr><tr><td>-10°</td><td>0/5</td><td>2/5</td><td>0/5</td><td>0.090 m/s</td></tr><tr><td>+15°</td><td>0/5</td><td>0/5</td><td>5/5</td><td>0.210 m/s</td></tr><tr><td>-15°</td><td>0/5</td><td>0/5</td><td>5/5</td><td>0.179 m/s</td></tr></tbody></table></div><p>Each angle uses five environments with fixed seed 49001, excluded from model training and selection, and official full-body contacts for both actors. Reusing this seed after correcting the support surface does not create additional independent samples. Success criteria are unchanged. The table averages each environment’s speed RMSE over moving-command samples before its first fall. The lateral gate applies at arrival, not continuously. This small sample does not establish general slope reliability. See the <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/contact-evaluation.json">per-environment results</a>.</p><p>The terrain actor passes all five trials on flat ground, ±5° and +10°. At −10° it stays upright in all five but misses the arrival region three times; it falls in every ±15° trial. Stability, direction and completion are distinct metrics. Five trials per angle cannot isolate a parameter effect. Inspect failures before changing training; the shared interface does not qualify this actor for football approach and kick handoff.</p><div class="quiz"><h3>Check your understanding</h3><p>Why evaluate on terrain geometry different from training?</p><details><summary>Show explanation</summary><p>To test transfer to new geometry and initial states. Both actors share evaluation conditions; tuning on those results makes them development data.</p></details></div></section><section id="rollers"><h2>Try the same ramp on passive wheels</h2><p>Wheels change support and resistance. Climbing requires propulsion through leg motion, while releasing input downhill may still permit acceleration. We retain the same ramp, continuous support surface, 20-second limit, arrival target and no-fall requirement, and report roller results separately. Roller push and walking velocity commands have different meanings, so their velocity-tracking errors are not compared.</p><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/rollers-slope-hd.jpg" aria-label="Official roller actor drifts sideways on a 5-degree incline"><source src="../assets/media/rollers-slope-hd.mp4" type="video/mp4"></video><figcaption>The first 7 seconds of a +5° trial show the robot remaining on its wheels but drifting out of the test corridor. The complete 20-second record has no fall but fails the arrival criterion. This recording uses a separate seed, 55012, excluded from the table. The clip illustrates drift, not successful climbing.</figcaption></figure><p>The command below runs five roller environments on a +5° ramp. Inspect <code>passed</code> and <code>fell</code>. For recording, select one environment and add <code>--record</code>; use a new output directory each time.</p><div class="code-block terminal"><div class="code-toolbar"><span>Terminal · Bash</span><button type="button" class="copy" data-done="Copied">Copy command</button></div><pre><code class="language-bash">python3 scripts/workshop.py terrain \
-  --locomotion rollers \
-  --model models/official-browser/rollers.onnx \
-  --slope 5 --seconds 20 --num-envs 5 \
-  --seed 55011 \
-  --output outputs/rollers-slope-01</code></pre></div><p>Then try −5°, +10° and −10°. Record arrival and whole-episode survival separately: crossing the finish downhill and falling later is still a failure. This experiment does not substitute a slope-trained roller policy; failure is a valid transfer result.</p><div class="table-scroll"><table><thead><tr><th>Slope</th><th>Complete pass</th><th>No fall throughout</th></tr></thead><tbody><tr><td>0°</td><td>5/5</td><td>5/5</td></tr><tr><td>5°</td><td>0/5</td><td>5/5</td></tr><tr><td>-5°</td><td>0/5</td><td>0/5</td></tr><tr><td>10°</td><td>0/5</td><td>3/5</td></tr><tr><td>-10°</td><td>0/5</td><td>0/5</td></tr></tbody></table></div><p>The official skating policy passes 5/5 flat-ground trials here. At +5°, all stay upright but drift sideways and miss the target. Survival and successful ascent differ. These seeds differ from the walking experiments, so this is not a strictly paired comparison; see the <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/scene-sample/rollers-terrain-evaluation.json">skating slope conditions</a>.</p></section><section id="next"><h2>What else can this platform teach?</h2><p>You changed the world with Isaac Sim, adapted a policy in Isaac Lab and tested its scope. Next, explore community jumping and balancing tasks.</p></section><section id="references"><h2>References</h2><ul class="references"><li><a href="https://github.com/isaac-sim/IsaacLab" target="_blank" rel="noopener">Isaac Lab: tasks, terrain and parallel learning ↗</a></li><li><a href="https://github.com/newton-physics/newton" target="_blank" rel="noopener">Newton physics engine ↗</a></li><li><a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" target="_blank" rel="noopener">Terrain actor: network, training and model information ↗</a></li></ul></section>
-<nav class="pager" aria-label="Pagination"><a href="03-learning.html"><small>← Previous</small>Learning to walk</a><a href="05-skills.html"><small>Next →</small>Explore community movement skills</a></nav><footer>Microduck Workshop · <a href="references.html">References</a><span>© 2026 · <a href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md">Attribution & licenses</a></span></footer></main>
-<aside class="toc"><p>On this page</p><a href="#question">Start with a testable question</a><a href="#scene">Build a flat–ramp–landing scene</a><a href="#baseline">Test the official walking policy first</a><a href="#why">Why flat-ground experience may not transfer</a><a href="#train">Continue learning across terrain types</a><a href="#direction">Balance and direction both matter</a><a href="#evaluate">Compare both actors with the same benchmark</a><a href="#rollers">Try the same ramp on passive wheels</a><a href="#next">What else can this platform teach?</a><a href="#references">References</a></aside></div>
-<dialog class="search-dialog"><form method="dialog"><label for="search-input">Search the course</label><button aria-label="Close">×</button></form><input id="search-input" type="search" autocomplete="off" placeholder="Search the course…"><div class="search-results"></div></dialog>
-</body></html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking and roller policies on random slopes and verify them on the same wedge ramp." name="description" />
+
+  <title>3.3 Reward design: walking steadily up and down slopes - Simulate and train Microduck with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="3.4 Community skills: from goal to reward" href="05-skills.html" />
+    <link rel="prev" title="3.2 Domain randomization: train and test a walking policy" href="03-walk-training.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="04-terrain">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/04-terrain.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/04-terrain.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/04-terrain.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/04-terrain.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.3 Reward design: walking steadily up and down slopes</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
+<section class="tex2jax_ignore mathjax_ignore" id="reward-design-walking-steadily-up-and-down-slopes">
+<h1>3.3 Reward design: walking steadily up and down slopes<a class="headerlink" href="#reward-design-walking-steadily-up-and-down-slopes" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking and roller policies on random slopes and verify them on the same wedge ramp.</p>
+</div><div class="lesson-meta">Section 3.3 · Method and hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough)</div></div></div><script type="application/json" class="course-symbols">{"w_i": {"tex": "w_i", "text": "Weight of reward term $i$. A positive weight means “more is better”; a negative weight makes the term a penalty."}, "g_i": {"tex": "g_i", "text": "Gate between 0 and 1 that decides whether this term applies in the current state, for example rewarding forward motion only while a push is commanded."}, "phi": {"tex": "\\phi", "text": "Shape function that turns the normalized error into a reward value, for example the tracking kernel $\\exp(-z^2)$ or the squared penalty $z^2$."}, "e_i": {"tex": "e_i", "text": "The error or physical quantity this term measures, with units, for example a velocity error (m/s)."}, "sigma_i": {"tex": "\\sigma_i", "text": "Scale in the same units as $e_i$, saying how large an error counts as “clear”. Dividing by it makes the error dimensionless."}, "z_norm": {"tex": "z", "text": "The normalized dimensionless error, $e_i/\\sigma_i$."}, "exp": {"tex": "\\exp", "text": "Exponential function, turning a squared error into a smooth reward between 0 and 1."}, "r_omega": {"tex": "r_{\\omega}", "text": "Turning-tracking reward, 1 at zero error and falling smoothly toward 0 as the error grows."}, "omega_z": {"tex": "\\omega_z", "text": "Actual angular velocity about the body $z$ axis, read from the simulation state during training (rad/s); when the body tilts it is not necessarily the world yaw rate."}, "omega_cmd": {"tex": "\\omega_z^*", "text": "Angular velocity requested by the turning command (rad/s); 0 when walking straight."}, "sigma": {"tex": "\\sigma", "text": "Tolerance scale of the turning error, here 0.15 rad/s."}}</script><section id="motivation">
+<h2>The 2026 GTC Berlin talk<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p>In the 2026 GTC Berlin talk, Microduck had to cross an obstacle course of ramps, platforms and props.</p>
+<figure class="media"><a class="still-link" href="../assets/media/gtc-berlin-microduck-environment.webp" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/gtc-berlin-microduck-environment.webp" alt="The assembled Microduck obstacle course in Isaac Sim: wooden and metal ramps, platforms, cardboard boxes, equipment cases and lights spread over a white floor, with Microduck standing on a platform between metal ramps."></a><figcaption><p>The Microduck obstacle course from the NVIDIA technical blog. Image: <a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA technical blog, Figure 6 ↗</a>.</p>
+</figcaption></figure><p>This section takes only the simplest task: walk up a wooden wedge, stay upright on top, then walk back down. How can reaching the top, staying there and not falling become feedback a policy can learn from? We design the rewards first, then train and verify.</p>
+</section>
+<section id="reward">
+<h2>Task and reward design<a class="headerlink" href="#reward" title="Link to this heading">#</a></h2>
+<p>A <strong>reward</strong> provides feedback at each training step; PPO uses accumulated reward to update the policy (see <a href="03-learning.html#reward-design">Section 3.1</a>). A <strong>success criterion</strong> determines whether evaluation passes. One guides learning; the other checks the result.</p>
+<p>Rewarding only success may give too little feedback; rewarding only uprightness may encourage standing still. Reward design breaks the task into learnable signals and uses weights to balance progress, stability and smoothness.</p>
+<p id="method">The six steps below do not depend on the robot; Section 3.4 uses them again to read community skills:</p>
+<ol class="arabic simple">
+<li><p><strong>Write the acceptance test first.</strong> State the goal, time limit and failure conditions, and fix how you will evaluate.</p></li>
+<li><p><strong>List usable quantities.</strong> Note frame, units and source; the reward may read simulation truth, but policy inputs must be available on deployment.</p></li>
+<li><p><strong>Choose a shape.</strong> Bounded rewards for tracking a target, penalties for suppressing deviations, single events paid once.</p></li>
+<li><p><strong>Set the scale.</strong> Check weight signs, normalization scales and gates, and compare what each term actually contributes.</p></li>
+<li><p><strong>Look for loopholes.</strong> Can the policy score high without the task? Would ending early spare it penalties (when most steps are penalties, falling early “loses less”)?</p></li>
+<li><p><strong>Validate independently.</strong> Evaluate against the success criterion, ideally with seeds and scenes kept out of tuning; to learn what one term does, retrain without only that term from the same start, with an equal budget and paired seeds, and compare.</p></li>
+</ol>
+<div class="formula"><div class="formula-label">A common way to write one reward term (course notation)</div><div class="formula-body">\[\htmlData{sym=w_i}{w_i}\,\htmlData{sym=g_i}{g_i}\,\htmlData{sym=phi}{\phi}\!\left(\frac{\htmlData{sym=e_i}{e_i}}{\htmlData{sym=sigma_i}{\sigma_i}}\right)\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(w_i\)</dt><dd>Weight of reward term \(i\). A positive weight means “more is better”; a negative weight makes the term a penalty.</dd></div><div><dt>\(g_i\)</dt><dd>Gate between 0 and 1 that decides whether this term applies in the current state, for example rewarding forward motion only while a push is commanded.</dd></div><div><dt>\(\phi\)</dt><dd>Shape function that turns the normalized error into a reward value, for example the tracking kernel \(\exp(-z^2)\) or the squared penalty \(z^2\).</dd></div><div><dt>\(e_i\)</dt><dd>The error or physical quantity this term measures, with units, for example a velocity error (m/s).</dd></div><div><dt>\(\sigma_i\)</dt><dd>Scale in the same units as \(e_i\), saying how large an error counts as “clear”. Dividing by it makes the error dimensionless.</dd></div></dl></details></div><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Shape <span class="math notranslate nohighlight">\(\htmlData{sym=phi}{\phi}(\htmlData{sym=z_norm}{z})\)</span></p></th>
+<th class="head cell-short"><p>Weight</p></th>
+<th class="head cell-short"><p>Suits</p></th>
+<th class="head cell-short"><p>Watch out for</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tracking kernel <span class="math notranslate nohighlight">\(\htmlData{sym=exp}{\exp}(-\htmlData{sym=z_norm}{z}^2)\)</span></p></td>
+<td class="cell-short"><p>Positive</p></td>
+<td><p>Bringing velocity or posture close to a target</p></td>
+<td><p>Bounded between 0 and 1; too small a scale gives almost always 0, too large hides the difference between good and poor</p></td>
+</tr>
+<tr class="row-odd"><td><p>Squared penalty <span class="math notranslate nohighlight">\(\htmlData{sym=z_norm}{z}^2\)</span></p></td>
+<td class="cell-short"><p>Negative</p></td>
+<td><p>Quantities that should be small, such as sideways slip or action change</p></td>
+<td><p>Unbounded, so a few outliers can dominate the total</p></td>
+</tr>
+<tr class="row-even"><td><p>Clipped progress</p></td>
+<td class="cell-short"><p>Positive</p></td>
+<td><p>Rewarding forward motion without encouraging runaway speed</p></td>
+<td><p>Looks only at speed, not at whether the direction leads to the target</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>One-time event</p></td>
+<td><p>Positive or negative</p></td>
+<td><p>Take-off, landing, arrival, failure</p></td>
+<td><p>Must not be triggerable again and again</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Real code varies, but it can usually be split into what is read, how it is normalized, when it applies and how large its weight is.</p>
+<p id="question"><strong>The acceptance test for this section.</strong> A finite wooden wedge stands on a flat white floor: solid sides, a slope at the front and a 0.6 m wide platform on top. The same wedge tests both directions:</p>
+<ul class="simple">
+<li><p><strong>Uphill</strong>: start on the floor in front of the slope. The robot has arrived when its body is 0.15 m past the top of the ramp and both feet are on the platform (at least 0.06 m from the edge); it passes only if it then stays upright on the platform for at least 2 s and until the episode ends, without falling or dropping off an edge.</p></li>
+<li><p><strong>Downhill</strong>: start on the platform. The robot has arrived when its body is 0.25 m past the foot of the ramp and both feet are on the floor beyond it; it passes only if it then stays upright on the floor for at least 2 s and until the episode ends.</p></li>
+</ul>
+<p>The forward command stops on arrival, so “walking on as commanded and dropping off the far side of the platform” does not count as a policy failure. As in Section 3.2, each duck first settles with locked joints at its start, and the lock is released after the policy's first output.</p>
+<p id="scene">The check command first creates a flat white floor, then adds a wood-grain wedge with collision, keeping the original friction settings. Uphill runs start in front of the ramp foot; downhill runs start on the platform, facing the ramp foot.</p>
+<p id="baseline"><strong>Measure a baseline first.</strong> The official walking policy was trained on flat ground only. On this wedge it veers to one side at the start of the ramp going uphill and finally falls; going downhill it stops on the ramp and, within 20 seconds, neither arrives nor falls. Neither failure is “unable to walk”: uphill it loses direction and balance, downhill it stalls. So the report keeps arrival, falls and stalling apart; looking only at falls would miss the downhill stall.</p>
+<p id="why">A slope changes the relative height of foot and ground, the component of gravity along the surface and the usable friction: on a 10° ramp the gravity component down the slope is about 17% of the weight, so climbing needs more propulsion and descending needs more speed control. We do not hand-write an uphill gait; the training scenes and rewards must cover these variations instead. Newton computes gravity, contact and actuator response at every physics step, and Isaac Lab lets the same policy practise on many slopes in parallel.</p>
+</section>
+<section id="train">
+<h2>Training on random slopes: practice inside the training distribution<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
+<p>The domain randomization of Section 3.2 varies physical parameters such as friction, mass and delay; terrain randomization adds the shape of the ground to the random draw. The training terrain mixes flat ground with uphill and downhill slopes of many gradients. Isaac Lab's terrain curriculum adjusts the gradient step by step according to performance: environments that walk well move to steeper slopes and those that struggle move back to gentler ones; <code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> in TensorBoard records the average level.</p>
+<p>These random slopes are the <strong>training distribution</strong>: the policy practises climbing, descending and keeping its balance on slopes there. The complete layout of the fixed wedge used later (a ramp leading to a platform) does not appear in the training terrain, so results on the wedge test these skills in a separate verification scene rather than scoring the policy inside its training scene.</p>
+<p>Training does not start from scratch: the official ONNX network weights and normalization parameters are copied as the starting point of the new policy, while the value network and optimizer start fresh. Before training, check that the new policy network and the original ONNX give the same output for the same observation, so an interface error is not mistaken for a need for more training.</p>
+<figure class="learning-figure" data-learning-flow="learn-8077310ef8"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Training distribution and a separate verification scene"><svg class="learning-svg" viewBox="0 0 900 174" role="group" aria-labelledby="learn-8077310ef8-title"><title id="learn-8077310ef8-title">Training distribution and a separate verification scene</title><defs><marker id="learn-8077310ef8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H356.0" marker-end="url(#learn-8077310ef8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 87.0H692.0" marker-end="url(#learn-8077310ef8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Write the test" aria-controls="learn-8077310ef8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Write the test</text><text x="114.0" y="98" class="learning-node-subtitle">Reach and hold /</text><text x="114.0" y="115" class="learning-node-subtitle">descend and stand</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Random-slope training" aria-controls="learn-8077310ef8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="126" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Random-slope</text><text x="450.0" y="94" class="learning-node-title">training</text><text x="450.0" y="118" class="learning-node-subtitle">Flat ground, uphill</text><text x="450.0" y="135" class="learning-node-subtitle">and downhill slopes</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Wedge verification" aria-controls="learn-8077310ef8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Wedge</text><text x="786.0" y="94" class="learning-node-title">verification</text><text x="786.0" y="118" class="learning-node-subtitle">Fixed verification</text><text x="786.0" y="135" class="learning-node-subtitle">layout, same test</text></g></svg></div><div class="learning-details" aria-label="Training distribution and a separate verification scene"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-8077310ef8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Write the test</h3><p>Fix the criteria before training. Record reaching, holding and falls separately, and report uphill and downhill separately.</p></article><article id="learn-8077310ef8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Random-slope training</h3><p>Parallel environments sample random slopes and the terrain curriculum adapts the difficulty; the flat samples keep flat walking in practice.</p></article><article id="learn-8077310ef8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Wedge verification</h3><p>The complete wedge layout is not in the random training terrain; old and new policies are compared on the same wedge with the same test. A stricter independent test would also keep seeds and layouts out of tuning.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Keeping the training distribution and the verification scene apart shows whether what was learned carries over to a new layout.</figcaption></figure><p>Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>) to continue training for 1000 iterations with 256 environments; <code class="docutils literal notranslate"><span class="pre">--show</span></code> opens Isaac Sim so you can watch the ducks practise on different tiles at once.</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">256</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--show<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-training-01
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="The complete Isaac Sim window of slope-walking training with --show: a few Microducks on rolling, wood-textured training terrain, some walking and some fallen; RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The slope-walking training window opened by <code class="docutils literal notranslate"><span class="pre">--show</span></code>, at the start of training. The picture shows the randomly generated training terrain, not the wedge used for verification later.</p>
+</figcaption></figure><p>Watch for a while and stop with Ctrl+C. Training saves a checkpoint every 250 iterations with a testable export (for example <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>); <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code> appears only after all 1000 iterations. The verification below uses the course terrain model by default, so you do not need to wait for your training.</p>
+<p><strong>This command is not how the course model was trained.</strong> The fixed model <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> comes from three consecutive stages: 1000 iterations (the same settings as the command above, about 8 minutes on a DGX Spark without a window), 1500 more (stronger angular-velocity tracking, fixed nominal physics parameters), and 2000 more (adding the turning reward of the next part). That training also used a different contact configuration from the full-body collision model of the current command. Your 1000 iterations are therefore a new experiment, and you should not expect them to reproduce the fixed model's results.</p>
+<figure class="media"><a class="still-link" href="../assets/media/tensorboard-terrain.png"><img loading="lazy" src="../assets/media/tensorboard-terrain.png" alt="The TensorBoard scalars page with three consecutive training stages in orange, blue and red. Green outline 1 is the terrain difficulty level, 2 the mean episode reward, 3 the yaw-rate error."></a><figcaption><p>TensorBoard record of the three training stages of the fixed terrain model (logs in <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>); the horizontal axis is the cumulative iteration, and the green boxes and numbers are course annotations. ① In the first stage the terrain level rises from about 0.6 to around 2.0 as the curriculum moves well-performing environments to steeper tiles; ② each continuation changes the reward settings, so the return jumps and values from different stages cannot be compared directly; ③ after the turning reward is added in stage three, the turning error falls to around 0.25–0.35 rad/s, with large fluctuations.</p>
+</figcaption></figure><details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code>.</strong> Which file a program loads is decided only by <code class="docutils literal notranslate"><span class="pre">--model</span></code>. <code class="docutils literal notranslate"><span class="pre">train-terrain</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code> starts training from the official walking policy; <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code> runs that file at every control step during verification. Roller commands also add <code class="docutils literal notranslate"><span class="pre">--locomotion</span> <span class="pre">rollers</span></code>, which swaps the robot in the scene for the roller-foot version.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code>.</strong> Must be a folder under <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> that does not exist yet; existing folders and paths under <code class="docutils literal notranslate"><span class="pre">models/</span></code> are refused. A policy you train must be named explicitly with <code class="docutils literal notranslate"><span class="pre">--model</span></code> for verification.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">datasets/</span></code>.</strong> <code class="docutils literal notranslate"><span class="pre">terrain-ppo/</span></code> holds the configurations and TensorBoard logs of the three training stages of the fixed terrain model, and <code class="docutils literal notranslate"><span class="pre">terrain-rollers-ppo-experiment/</span></code> holds the roller training record of this page.</p></li>
+<li><p><strong>Scenes.</strong> The training terrain is generated by the terrain configuration in <code class="docutils literal notranslate"><span class="pre">lab/train_terrain.py</span></code> and the verification wedge from the <code class="docutils literal notranslate"><span class="pre">terrain</span></code> command's arguments (such as <code class="docutils literal notranslate"><span class="pre">--slope</span></code>); neither is read from a scene file.</p></li>
+</ul>
+</div></details></section>
+<section id="direction">
+<h2>Reducing drift with a turning reward<a class="headerlink" href="#direction" title="Link to this heading">#</a></h2>
+<p>Before stage three the policy could already step up a +5° ramp, but it slowly turned while walking and drifted away from the goal. The forward-velocity reward is computed in the body frame, so a body that has turned can still be “walking well toward its own front”. Stage three therefore adds a separate body-z turning reward:</p>
+<div class="formula"><div class="formula-label">Turning-tracking reward</div><div class="formula-body">\[\htmlData{sym=r_omega}{r_{\omega}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=omega_z}{\omega_z}-\htmlData{sym=omega_cmd}{\omega_z^*}}{\htmlData{sym=sigma}{0.15}}\right)^2\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\omega}\)</dt><dd>Turning-tracking reward, 1 at zero error and falling smoothly toward 0 as the error grows.</dd></div><div><dt>\(\exp\)</dt><dd>Exponential function, turning a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(\omega_z\)</dt><dd>Actual angular velocity about the body \(z\) axis, read from the simulation state during training (rad/s); when the body tilts it is not necessarily the world yaw rate.</dd></div><div><dt>\(\omega_z^*\)</dt><dd>Angular velocity requested by the turning command (rad/s); 0 when walking straight.</dd></div><div><dt>\(\sigma\)</dt><dd>Tolerance scale of the turning error, here 0.15 rad/s.</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=omega_z}{\omega_z}\)</span> is the actual angular velocity about the body z axis and <span class="math notranslate nohighlight">\(\htmlData{sym=omega_cmd}{\omega_z^*}\)</span> the turning command, 0 when walking straight. At zero error the reward is 1; at an error of <span class="math notranslate nohighlight">\(\htmlData{sym=sigma}{\sigma}\)</span> = 0.15 rad/s it drops to 0.37, and at 0.30 rad/s only 0.02 remains. Only the z component is used because walking itself involves roll and pitch sway, and putting all three axes into a narrow tracking kernel would lower the score of a normal gait.</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core source excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Reward function entry</h4> <p>Computed for all parallel environments at once; the docstring says it does not judge the roll and pitch of the gait.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">yaw_rate_tracking</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Reward turning accuracy independently of gait roll and pitch motion."""</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Read actual and target turning rates</h4> <p>Read the body-frame angular velocity and the turning component of the velocity command (column 3).</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">velocity</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_ang_vel_b</span>
+    <span class="n">velocity</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="s2">"torch"</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">command_manager</span><span class="o">.</span><span class="n">get_command</span><span class="p">(</span><span class="s2">"base_velocity"</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Compute a bounded reward</h4> <p>Take only the z component of the angular velocity, subtract the command, divide by <code>std</code>, square and take the negative exponential, matching the formula above.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">velocity</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">square</span><span class="p">())</span></code></pre></div></div></div><p>In training this term joins the reward manager with weight 4.0; the same stage also lowers the weight of the original three-axis angular-velocity term to 0.5 and sets the linear-velocity term to 3.0.</p>
+<p><strong>It constrains turning speed without correcting accumulated heading error.</strong> Standing still also earns full marks, so it needs progress, posture and smoothness terms alongside it.</p>
+<p>The final model passed the wedge tests below. Several weights and the training budget changed together, so the turning reward's contribution remains untested. Use step 6 to design a controlled comparison.</p>
+</section>
+<section id="evaluate">
+<h2>Comparing on the same wedge<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h2>
+<p>Old and new policies are compared with the same wedge, test and start settings. The two comparison videos below are single runs each, played in sync on simulation time.</p>
+<figure class="media"><div class="comparison-labels"><span>Top: official policy</span><span>Bottom: terrain policy</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-ascent.jpg" aria-label="Uphill +5° comparison: the official walking policy above tips over at the front of the slope; the slope policy below walks onto the platform and stands."><source src="../assets/media/terrain-v4fast-ascent.mp4" type="video/mp4"></video><figcaption><p>Uphill +5° (first 15 seconds): the official walking policy (top) veers to one side at the front of the ramp and falls at about 12.1 s; the terrain policy (bottom) reaches the platform at about 8.9 s and stays on it.</p>
+</figcaption></figure><figure class="media"><div class="comparison-labels"><span>Top: official policy</span><span>Bottom: terrain policy</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-descent.jpg" aria-label="Downhill −5° comparison: the official walking policy above stops on the slope; the slope policy below walks down and stands on the floor."><source src="../assets/media/terrain-v4fast-descent.mp4" type="video/mp4"></video><figcaption><p>Downhill −5° (20 seconds): the official walking policy (top) stops on the ramp, neither arriving nor falling; the terrain policy (bottom) walks down at about 8.3 s and then stands on the floor.</p>
+</figcaption></figure><p>Run the command below <strong>inside the container</strong>; by default it loads the course terrain model. After your own training, change <code class="docutils literal notranslate"><span class="pre">--model</span></code> to <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code> and run again with a new output folder. Five environments run on the same wedge without colliding; the window shows only the first.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/terrain-walk.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--slope<span class="w"> </span><span class="m">5</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">49001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-evaluation-up-05
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-test.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-terrain-test.png" alt="The complete Isaac Sim window during the wedge test: a wood-textured wedge on a white floor; a Microduck has walked onto the platform and stands there, head facing forward; RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The Isaac Sim window when the course ran this command in the container: the duck has walked onto the platform and stopped at the target.</p>
+</figcaption></figure><p>The terminal prints <code class="docutils literal notranslate"><span class="pre">passed</span></code>, <code class="docutils literal notranslate"><span class="pre">fell</span></code>, <code class="docutils literal notranslate"><span class="pre">reached_goal</span></code>, <code class="docutils literal notranslate"><span class="pre">held_seconds</span></code> and the velocity RMS error for each environment, and the full result goes to <code class="docutils literal notranslate"><span class="pre">report.json</span></code> in the output folder. For downhill, change <code class="docutils literal notranslate"><span class="pre">--slope</span></code> to <code class="docutils literal notranslate"><span class="pre">-5</span></code> and use a new output folder. The course measured these two commands, with times counted from when the policy takes over (the first 2 s are standing):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Direction</p></th>
+<th class="head cell-short"><p>Passed</p></th>
+<th class="head cell-short"><p>Fell</p></th>
+<th class="head cell-short"><p>Reached goal</p></th>
+<th class="head"><p>Held after arrival</p></th>
+<th class="head"><p>Velocity RMSE while moving</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Uphill +5°</p></td>
+<td class="cell-short"><p>5/5</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>8.9–9.0 s</p></td>
+<td><p>11.0–11.1 s, still on the platform at 20 s</p></td>
+<td class="cell-short"><p>about 0.11 m/s</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Downhill −5°</p></td>
+<td class="cell-short"><p>5/5</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>8.2–8.3 s</p></td>
+<td><p>11.7–11.8 s, still standing on the floor at 20 s</p></td>
+<td class="cell-short"><p>about 0.09 m/s</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Keep three points in mind when reading this table:</p>
+<ul class="simple">
+<li><p><strong>Only ±5°, five environments per direction.</strong> It describes the conditions tested, not a general success rate, and it is not an independent held-out test. Steeper slopes need their own measurements; change <code class="docutils literal notranslate"><span class="pre">--slope</span></code> to ±10 and ±15 in turn (<code class="docutils literal notranslate"><span class="pre">--headless</span></code> runs faster without a window). See the <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">evaluation summary ↗</a> for per-environment results on this wedge.</p></li>
+<li><p><strong>Standing uses the course's head hold.</strong> With a zero velocity command (the 2 s before starting and after arrival) this policy lowers its head a long way. Only in those two periods does the check script replace the targets of the 4 head servos with the standing-pose angles (pitch raised by a further 0.2 rad); leg actions always come from the policy. “Held after arrival” is therefore achieved by the policy together with this head hold.</p></li>
+<li><p><strong>For this section only.</strong> Section 2.1 and Part 4 keep using the original walking policy. A model you train must report flat ground, uphill and downhill under the same conditions; a gain on slopes that loses flat walking is not a qualified replacement.</p></li>
+</ul>
+<details class="enrichment"><summary>Window speed and recording</summary><div class="enrichment-body"><p>The verification window draws at 960×540 and refreshes every 2 control steps so the motion is close to real time; physics still runs at 200 steps per second and the policy at 50 per second. On a DGX Spark, the 20-second test with 5 environments takes about 20 seconds overall. For a sharper picture, prefix the command with <code class="docutils literal notranslate"><span class="pre">MICRODUCK_VIEWPORT_RESOLUTION=1920x1080</span></code> (slower); <code class="docutils literal notranslate"><span class="pre">--record</span></code> (one environment only) records frame by frame on simulation time at the same quality as the window.</p>
+</div></details><div class="quiz"><h3>Check your understanding</h3><p>The training terrain already contains many slopes. Why verify separately on the wedge?</p>
+<details><summary>Show explanation</summary><p>The random slopes are the training distribution and the complete wedge layout does not appear in the training terrain, so the test checks whether skills learned on random slopes carry over to this specific layout rather than repeating moves in the training scene. Old and new policies are compared on the same wedge with the same test; if you keep tuning on the verification results, it stops being an independent test, and a stricter approach keeps seeds and layouts out of tuning.</p>
+</details></div></section>
+<section id="rollers">
+<h2>Rollers: a rising reward does not complete the task<a class="headerlink" href="#rollers" title="Link to this heading">#</a></h2>
+<p>The purpose of this part is not to provide a working slope roller model but to show a counter-example: the training return rises sharply and the acceptance test still fails. The course currently has <strong>no</strong> slope roller model that passes the wedge verification.</p>
+<p>Four wheels change support and resistance: climbing needs continuous propulsion from leg motion, and descending can still accelerate with the command released. The acceptance test keeps the same wedge and the same reach-and-hold criteria; with a push of 0 the rollers still glide, so after arrival a course brake regulator gives a small reverse push from the forward speed, shared by all roller models.</p>
+<p>The walking reward contains terms such as foot height and air time that would judge the roller blocks as if they were soles; a roller command means a push amount rather than metres per second, so velocity tracking makes no sense either. Roller training therefore keeps only the general terms (upright posture, smooth actions, joint limits and body angular velocity), adds three roller-specific terms and reuses the turning term above (weight 1.0):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Specific term</p></th>
+<th class="head cell-short"><p>Shape</p></th>
+<th class="head cell-short"><p>Effect</p></th>
+<th class="head cell-short"><p>Weight</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Push</p></td>
+<td><p>Gated clipped progress</p></td>
+<td><p>Rewards forward body speed in proportion to the push amount, with no extra credit above 0.5 m/s</p></td>
+<td class="cell-short"><p>+3</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Coast</p></td>
+<td><p>Squared penalty, active only when the push is 0</p></td>
+<td><p>Penalizes forward and backward sliding without a push</p></td>
+<td class="cell-short"><p>−1</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Drift</p></td>
+<td><p>Squared penalty</p></td>
+<td><p>Penalizes sideways body speed</p></td>
+<td class="cell-short"><p>−2</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The complete reward code is in <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/course_labs/train_terrain_rollers.py" rel="noreferer noopener" target="_blank"><code class="docutils literal notranslate"><span class="pre">lab/course_labs/train_terrain_rollers.py</span></code> ↗</a>. The command below starts from the official roller model and continues PPO with these rewards on the same random slopes; the value network trains from scratch.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--locomotion<span class="w"> </span>rollers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/official-browser/rollers.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">256</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">47001</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--show<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-rollers-training-01
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-roller-terrain-training.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-roller-terrain-training.png" alt="The complete Isaac Sim window of roller slope training with --show: a few Microducks on roller feet spread over rolling, wood-textured training terrain, RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The roller slope-training window opened by <code class="docutils literal notranslate"><span class="pre">--show</span></code>, at the start of training; the picture shows random training terrain, not the verification wedge.</p>
+</figcaption></figure><p>Watch for a while and stop with Ctrl+C; after all 1000 iterations the exported policy is at <code class="docutils literal notranslate"><span class="pre">outputs/terrain-rollers-training-01/exported/policy.onnx</span></code>. The verification command below tests the official roller model by default, that is, the baseline:</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>terrain<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--locomotion<span class="w"> </span>rollers<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>models/official-browser/rollers.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--slope<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seed<span class="w"> </span><span class="m">55011</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/rollers-slope-01
+</pre></div>
+</div>
+</div>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-roller-slope-test.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-roller-slope-test.png" alt="The complete Isaac Sim window during the roller wedge test: a wood-textured wedge on a white floor; a Microduck on roller feet has fallen off the right edge of the wedge onto the floor."></a><figcaption><p><strong>Official roller model (baseline)</strong>: the window when the course ran this command in the container. The duck veers right while climbing and drops off the right edge of the wedge.</p>
+</figcaption></figure><p>To test a trained policy, change <code class="docutils literal notranslate"><span class="pre">--model</span></code> to <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment/exported/policy.onnx</span></code> (the training the course completed) or to your own <code class="docutils literal notranslate"><span class="pre">exported/policy.onnx</span></code>, with a new output folder.</p>
+<p id="rollers-result"><strong>The counter-example after training.</strong> The course ran the training command above for all 1000 iterations on a DGX Spark without a window (about 8.8 minutes, recorded in <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment/</span></code>).</p>
+<figure class="course-chart" data-chart><div class="chart-header"><h3>Trained roller policy (counter-example) · 256 environments · 1000 iterations</h3><span>Training phase 525.8 s</span></div><div class="chart-grid-pair"><div class="chart-panel"><h4>Mean episode return</h4><svg viewBox="0 0 370 242" role="group" aria-label="Mean episode return"><path class="chart-grid" d="M44 190.00H344"/><text x="36" y="194.00" text-anchor="end">-0.2</text><path class="chart-grid" d="M44 152.50H344"/><text x="36" y="156.50" text-anchor="end">13.6</text><path class="chart-grid" d="M44 115.00H344"/><text x="36" y="119.00" text-anchor="end">27.4</text><path class="chart-grid" d="M44 77.50H344"/><text x="36" y="81.50" text-anchor="end">41.1</text><path class="chart-grid" d="M44 40.00H344"/><text x="36" y="44.00" text-anchor="end">54.9</text><text x="44.00" y="213" text-anchor="middle">1</text><text x="118.77" y="213" text-anchor="middle">250</text><text x="193.85" y="213" text-anchor="middle">500</text><text x="268.92" y="213" text-anchor="middle">750</text><text x="344.00" y="213" text-anchor="middle">1000</text><polyline class="chart-line" points="44.00,190.00 47.00,177.03 50.01,161.23 53.01,149.01 56.01,133.96 59.02,103.24 62.02,107.08 65.02,118.75 68.02,106.75 71.03,95.12 74.03,98.05 77.03,92.75 80.04,89.30 83.04,85.80 86.04,88.80 89.05,101.21 92.05,107.15 95.05,89.70 98.05,81.34 101.06,84.31 104.06,100.56 107.06,90.63 110.07,89.12 113.07,96.95 116.07,86.03 119.08,75.54 122.08,88.70 125.08,79.01 128.08,75.58 131.09,77.28 134.09,72.63 137.09,77.78 140.10,83.63 143.10,82.55 146.10,66.21 149.11,72.53 152.11,73.58 155.11,65.39 158.11,66.43 161.12,68.37 164.12,74.20 167.12,65.74 170.13,68.48 173.13,67.66 176.13,73.09 179.14,65.75 182.14,65.34 185.14,72.41 188.14,72.13 191.15,66.79 194.15,71.66 197.15,64.00 200.16,63.73 203.16,58.22 206.16,53.59 209.17,56.89 212.17,57.28 215.17,57.77 218.17,53.68 221.18,59.36 224.18,60.25 227.18,58.68 230.19,61.55 233.19,56.36 236.19,63.37 239.20,59.34 242.20,53.63 245.20,59.12 248.20,64.36 251.21,61.50 254.21,63.24 257.21,62.23 260.22,61.49 263.22,59.23 266.22,56.62 269.23,68.25 272.23,67.19 275.23,75.47 278.23,78.49 281.24,60.97 284.24,55.61 287.24,60.80 290.25,60.49 293.25,60.89 296.25,63.38 299.26,68.38 302.26,72.77 305.26,63.26 308.26,57.90 311.27,66.53 314.27,71.90 317.27,76.28 320.28,74.27 323.28,73.55 326.28,64.60 329.29,55.56 332.29,56.57 335.29,58.69 338.29,62.48 341.30,59.05 344.00,59.99"/><circle class="chart-dot" cx="44.00" cy="190.00" r="1.6" tabindex="0" data-value="Mean episode return · 1: -0.1799" aria-label="Mean episode return, 1, -0.1799"><title>1: -0.1799</title></circle><circle class="chart-dot" cx="47.00" cy="177.03" r="1.6" tabindex="0" data-value="Mean episode return · 11: 4.5818" aria-label="Mean episode return, 11, 4.5818"><title>11: 4.5818</title></circle><circle class="chart-dot" cx="50.01" cy="161.23" r="1.6" tabindex="0" data-value="Mean episode return · 21: 10.3811" aria-label="Mean episode return, 21, 10.3811"><title>21: 10.3811</title></circle><circle class="chart-dot" cx="53.01" cy="149.01" r="1.6" tabindex="0" data-value="Mean episode return · 31: 14.8668" aria-label="Mean episode return, 31, 14.8668"><title>31: 14.8668</title></circle><circle class="chart-dot" cx="56.01" cy="133.96" r="1.6" tabindex="0" data-value="Mean episode return · 41: 20.3924" aria-label="Mean episode return, 41, 20.3924"><title>41: 20.3924</title></circle><circle class="chart-dot" cx="59.02" cy="103.24" r="1.6" tabindex="0" data-value="Mean episode return · 51: 31.6702" aria-label="Mean episode return, 51, 31.6702"><title>51: 31.6702</title></circle><circle class="chart-dot" cx="62.02" cy="107.08" r="1.6" tabindex="0" data-value="Mean episode return · 61: 30.2604" aria-label="Mean episode return, 61, 30.2604"><title>61: 30.2604</title></circle><circle class="chart-dot" cx="65.02" cy="118.75" r="1.6" tabindex="0" data-value="Mean episode return · 71: 25.9786" aria-label="Mean episode return, 71, 25.9786"><title>71: 25.9786</title></circle><circle class="chart-dot" cx="68.02" cy="106.75" r="1.6" tabindex="0" data-value="Mean episode return · 81: 30.3827" aria-label="Mean episode return, 81, 30.3827"><title>81: 30.3827</title></circle><circle class="chart-dot" cx="71.03" cy="95.12" r="1.6" tabindex="0" data-value="Mean episode return · 91: 34.6530" aria-label="Mean episode return, 91, 34.6530"><title>91: 34.6530</title></circle><circle class="chart-dot" cx="74.03" cy="98.05" r="1.6" tabindex="0" data-value="Mean episode return · 101: 33.5770" aria-label="Mean episode return, 101, 33.5770"><title>101: 33.5770</title></circle><circle class="chart-dot" cx="77.03" cy="92.75" r="1.6" tabindex="0" data-value="Mean episode return · 111: 35.5224" aria-label="Mean episode return, 111, 35.5224"><title>111: 35.5224</title></circle><circle class="chart-dot" cx="80.04" cy="89.30" r="1.6" tabindex="0" data-value="Mean episode return · 121: 36.7879" aria-label="Mean episode return, 121, 36.7879"><title>121: 36.7879</title></circle><circle class="chart-dot" cx="83.04" cy="85.80" r="1.6" tabindex="0" data-value="Mean episode return · 131: 38.0743" aria-label="Mean episode return, 131, 38.0743"><title>131: 38.0743</title></circle><circle class="chart-dot" cx="86.04" cy="88.80" r="1.6" tabindex="0" data-value="Mean episode return · 141: 36.9716" aria-label="Mean episode return, 141, 36.9716"><title>141: 36.9716</title></circle><circle class="chart-dot" cx="89.05" cy="101.21" r="1.6" tabindex="0" data-value="Mean episode return · 151: 32.4146" aria-label="Mean episode return, 151, 32.4146"><title>151: 32.4146</title></circle><circle class="chart-dot" cx="92.05" cy="107.15" r="1.6" tabindex="0" data-value="Mean episode return · 161: 30.2349" aria-label="Mean episode return, 161, 30.2349"><title>161: 30.2349</title></circle><circle class="chart-dot" cx="95.05" cy="89.70" r="1.6" tabindex="0" data-value="Mean episode return · 171: 36.6399" aria-label="Mean episode return, 171, 36.6399"><title>171: 36.6399</title></circle><circle class="chart-dot" cx="98.05" cy="81.34" r="1.6" tabindex="0" data-value="Mean episode return · 181: 39.7116" aria-label="Mean episode return, 181, 39.7116"><title>181: 39.7116</title></circle><circle class="chart-dot" cx="101.06" cy="84.31" r="1.6" tabindex="0" data-value="Mean episode return · 191: 38.6213" aria-label="Mean episode return, 191, 38.6213"><title>191: 38.6213</title></circle><circle class="chart-dot" cx="104.06" cy="100.56" r="1.6" tabindex="0" data-value="Mean episode return · 201: 32.6540" aria-label="Mean episode return, 201, 32.6540"><title>201: 32.6540</title></circle><circle class="chart-dot" cx="107.06" cy="90.63" r="1.6" tabindex="0" data-value="Mean episode return · 211: 36.3000" aria-label="Mean episode return, 211, 36.3000"><title>211: 36.3000</title></circle><circle class="chart-dot" cx="110.07" cy="89.12" r="1.6" tabindex="0" data-value="Mean episode return · 221: 36.8544" aria-label="Mean episode return, 221, 36.8544"><title>221: 36.8544</title></circle><circle class="chart-dot" cx="113.07" cy="96.95" r="1.6" tabindex="0" data-value="Mean episode return · 231: 33.9813" aria-label="Mean episode return, 231, 33.9813"><title>231: 33.9813</title></circle><circle class="chart-dot" cx="116.07" cy="86.03" r="1.6" tabindex="0" data-value="Mean episode return · 241: 37.9882" aria-label="Mean episode return, 241, 37.9882"><title>241: 37.9882</title></circle><circle class="chart-dot" cx="119.08" cy="75.54" r="1.6" tabindex="0" data-value="Mean episode return · 251: 41.8397" aria-label="Mean episode return, 251, 41.8397"><title>251: 41.8397</title></circle><circle class="chart-dot" cx="122.08" cy="88.70" r="1.6" tabindex="0" data-value="Mean episode return · 261: 37.0070" aria-label="Mean episode return, 261, 37.0070"><title>261: 37.0070</title></circle><circle class="chart-dot" cx="125.08" cy="79.01" r="1.6" tabindex="0" data-value="Mean episode return · 271: 40.5648" aria-label="Mean episode return, 271, 40.5648"><title>271: 40.5648</title></circle><circle class="chart-dot" cx="128.08" cy="75.58" r="1.6" tabindex="0" data-value="Mean episode return · 281: 41.8233" aria-label="Mean episode return, 281, 41.8233"><title>281: 41.8233</title></circle><circle class="chart-dot" cx="131.09" cy="77.28" r="1.6" tabindex="0" data-value="Mean episode return · 291: 41.2026" aria-label="Mean episode return, 291, 41.2026"><title>291: 41.2026</title></circle><circle class="chart-dot" cx="134.09" cy="72.63" r="1.6" tabindex="0" data-value="Mean episode return · 301: 42.9085" aria-label="Mean episode return, 301, 42.9085"><title>301: 42.9085</title></circle><circle class="chart-dot" cx="137.09" cy="77.78" r="1.6" tabindex="0" data-value="Mean episode return · 311: 41.0183" aria-label="Mean episode return, 311, 41.0183"><title>311: 41.0183</title></circle><circle class="chart-dot" cx="140.10" cy="83.63" r="1.6" tabindex="0" data-value="Mean episode return · 321: 38.8685" aria-label="Mean episode return, 321, 38.8685"><title>321: 38.8685</title></circle><circle class="chart-dot" cx="143.10" cy="82.55" r="1.6" tabindex="0" data-value="Mean episode return · 331: 39.2645" aria-label="Mean episode return, 331, 39.2645"><title>331: 39.2645</title></circle><circle class="chart-dot" cx="146.10" cy="66.21" r="1.6" tabindex="0" data-value="Mean episode return · 341: 45.2646" aria-label="Mean episode return, 341, 45.2646"><title>341: 45.2646</title></circle><circle class="chart-dot" cx="149.11" cy="72.53" r="1.6" tabindex="0" data-value="Mean episode return · 351: 42.9455" aria-label="Mean episode return, 351, 42.9455"><title>351: 42.9455</title></circle><circle class="chart-dot" cx="152.11" cy="73.58" r="1.6" tabindex="0" data-value="Mean episode return · 361: 42.5582" aria-label="Mean episode return, 361, 42.5582"><title>361: 42.5582</title></circle><circle class="chart-dot" cx="155.11" cy="65.39" r="1.6" tabindex="0" data-value="Mean episode return · 371: 45.5663" aria-label="Mean episode return, 371, 45.5663"><title>371: 45.5663</title></circle><circle class="chart-dot" cx="158.11" cy="66.43" r="1.6" tabindex="0" data-value="Mean episode return · 381: 45.1858" aria-label="Mean episode return, 381, 45.1858"><title>381: 45.1858</title></circle><circle class="chart-dot" cx="161.12" cy="68.37" r="1.6" tabindex="0" data-value="Mean episode return · 391: 44.4708" aria-label="Mean episode return, 391, 44.4708"><title>391: 44.4708</title></circle><circle class="chart-dot" cx="164.12" cy="74.20" r="1.6" tabindex="0" data-value="Mean episode return · 401: 42.3320" aria-label="Mean episode return, 401, 42.3320"><title>401: 42.3320</title></circle><circle class="chart-dot" cx="167.12" cy="65.74" r="1.6" tabindex="0" data-value="Mean episode return · 411: 45.4359" aria-label="Mean episode return, 411, 45.4359"><title>411: 45.4359</title></circle><circle class="chart-dot" cx="170.13" cy="68.48" r="1.6" tabindex="0" data-value="Mean episode return · 421: 44.4319" aria-label="Mean episode return, 421, 44.4319"><title>421: 44.4319</title></circle><circle class="chart-dot" cx="173.13" cy="67.66" r="1.6" tabindex="0" data-value="Mean episode return · 431: 44.7322" aria-label="Mean episode return, 431, 44.7322"><title>431: 44.7322</title></circle><circle class="chart-dot" cx="176.13" cy="73.09" r="1.6" tabindex="0" data-value="Mean episode return · 441: 42.7379" aria-label="Mean episode return, 441, 42.7379"><title>441: 42.7379</title></circle><circle class="chart-dot" cx="179.14" cy="65.75" r="1.6" tabindex="0" data-value="Mean episode return · 451: 45.4335" aria-label="Mean episode return, 451, 45.4335"><title>451: 45.4335</title></circle><circle class="chart-dot" cx="182.14" cy="65.34" r="1.6" tabindex="0" data-value="Mean episode return · 461: 45.5855" aria-label="Mean episode return, 461, 45.5855"><title>461: 45.5855</title></circle><circle class="chart-dot" cx="185.14" cy="72.41" r="1.6" tabindex="0" data-value="Mean episode return · 471: 42.9896" aria-label="Mean episode return, 471, 42.9896"><title>471: 42.9896</title></circle><circle class="chart-dot" cx="188.14" cy="72.13" r="1.6" tabindex="0" data-value="Mean episode return · 481: 43.0918" aria-label="Mean episode return, 481, 43.0918"><title>481: 43.0918</title></circle><circle class="chart-dot" cx="191.15" cy="66.79" r="1.6" tabindex="0" data-value="Mean episode return · 491: 45.0505" aria-label="Mean episode return, 491, 45.0505"><title>491: 45.0505</title></circle><circle class="chart-dot" cx="194.15" cy="71.66" r="1.6" tabindex="0" data-value="Mean episode return · 501: 43.2649" aria-label="Mean episode return, 501, 43.2649"><title>501: 43.2649</title></circle><circle class="chart-dot" cx="197.15" cy="64.00" r="1.6" tabindex="0" data-value="Mean episode return · 511: 46.0746" aria-label="Mean episode return, 511, 46.0746"><title>511: 46.0746</title></circle><circle class="chart-dot" cx="200.16" cy="63.73" r="1.6" tabindex="0" data-value="Mean episode return · 521: 46.1758" aria-label="Mean episode return, 521, 46.1758"><title>521: 46.1758</title></circle><circle class="chart-dot" cx="203.16" cy="58.22" r="1.6" tabindex="0" data-value="Mean episode return · 531: 48.1972" aria-label="Mean episode return, 531, 48.1972"><title>531: 48.1972</title></circle><circle class="chart-dot" cx="206.16" cy="53.59" r="1.6" tabindex="0" data-value="Mean episode return · 541: 49.8972" aria-label="Mean episode return, 541, 49.8972"><title>541: 49.8972</title></circle><circle class="chart-dot" cx="209.17" cy="56.89" r="1.6" tabindex="0" data-value="Mean episode return · 551: 48.6875" aria-label="Mean episode return, 551, 48.6875"><title>551: 48.6875</title></circle><circle class="chart-dot" cx="212.17" cy="57.28" r="1.6" tabindex="0" data-value="Mean episode return · 561: 48.5430" aria-label="Mean episode return, 561, 48.5430"><title>561: 48.5430</title></circle><circle class="chart-dot" cx="215.17" cy="57.77" r="1.6" tabindex="0" data-value="Mean episode return · 571: 48.3629" aria-label="Mean episode return, 571, 48.3629"><title>571: 48.3629</title></circle><circle class="chart-dot" cx="218.17" cy="53.68" r="1.6" tabindex="0" data-value="Mean episode return · 581: 49.8641" aria-label="Mean episode return, 581, 49.8641"><title>581: 49.8641</title></circle><circle class="chart-dot" cx="221.18" cy="59.36" r="1.6" tabindex="0" data-value="Mean episode return · 591: 47.7795" aria-label="Mean episode return, 591, 47.7795"><title>591: 47.7795</title></circle><circle class="chart-dot" cx="224.18" cy="60.25" r="1.6" tabindex="0" data-value="Mean episode return · 601: 47.4540" aria-label="Mean episode return, 601, 47.4540"><title>601: 47.4540</title></circle><circle class="chart-dot" cx="227.18" cy="58.68" r="1.6" tabindex="0" data-value="Mean episode return · 611: 48.0298" aria-label="Mean episode return, 611, 48.0298"><title>611: 48.0298</title></circle><circle class="chart-dot" cx="230.19" cy="61.55" r="1.6" tabindex="0" data-value="Mean episode return · 621: 46.9756" aria-label="Mean episode return, 621, 46.9756"><title>621: 46.9756</title></circle><circle class="chart-dot" cx="233.19" cy="56.36" r="1.6" tabindex="0" data-value="Mean episode return · 631: 48.8813" aria-label="Mean episode return, 631, 48.8813"><title>631: 48.8813</title></circle><circle class="chart-dot" cx="236.19" cy="63.37" r="1.6" tabindex="0" data-value="Mean episode return · 641: 46.3079" aria-label="Mean episode return, 641, 46.3079"><title>641: 46.3079</title></circle><circle class="chart-dot" cx="239.20" cy="59.34" r="1.6" tabindex="0" data-value="Mean episode return · 651: 47.7869" aria-label="Mean episode return, 651, 47.7869"><title>651: 47.7869</title></circle><circle class="chart-dot" cx="242.20" cy="53.63" r="1.6" tabindex="0" data-value="Mean episode return · 661: 49.8817" aria-label="Mean episode return, 661, 49.8817"><title>661: 49.8817</title></circle><circle class="chart-dot" cx="245.20" cy="59.12" r="1.6" tabindex="0" data-value="Mean episode return · 671: 47.8684" aria-label="Mean episode return, 671, 47.8684"><title>671: 47.8684</title></circle><circle class="chart-dot" cx="248.20" cy="64.36" r="1.6" tabindex="0" data-value="Mean episode return · 681: 45.9427" aria-label="Mean episode return, 681, 45.9427"><title>681: 45.9427</title></circle><circle class="chart-dot" cx="251.21" cy="61.50" r="1.6" tabindex="0" data-value="Mean episode return · 691: 46.9951" aria-label="Mean episode return, 691, 46.9951"><title>691: 46.9951</title></circle><circle class="chart-dot" cx="254.21" cy="63.24" r="1.6" tabindex="0" data-value="Mean episode return · 701: 46.3560" aria-label="Mean episode return, 701, 46.3560"><title>701: 46.3560</title></circle><circle class="chart-dot" cx="257.21" cy="62.23" r="1.6" tabindex="0" data-value="Mean episode return · 711: 46.7265" aria-label="Mean episode return, 711, 46.7265"><title>711: 46.7265</title></circle><circle class="chart-dot" cx="260.22" cy="61.49" r="1.6" tabindex="0" data-value="Mean episode return · 721: 46.9990" aria-label="Mean episode return, 721, 46.9990"><title>721: 46.9990</title></circle><circle class="chart-dot" cx="263.22" cy="59.23" r="1.6" tabindex="0" data-value="Mean episode return · 731: 47.8269" aria-label="Mean episode return, 731, 47.8269"><title>731: 47.8269</title></circle><circle class="chart-dot" cx="266.22" cy="56.62" r="1.6" tabindex="0" data-value="Mean episode return · 741: 48.7862" aria-label="Mean episode return, 741, 48.7862"><title>741: 48.7862</title></circle><circle class="chart-dot" cx="269.23" cy="68.25" r="1.6" tabindex="0" data-value="Mean episode return · 751: 44.5171" aria-label="Mean episode return, 751, 44.5171"><title>751: 44.5171</title></circle><circle class="chart-dot" cx="272.23" cy="67.19" r="1.6" tabindex="0" data-value="Mean episode return · 761: 44.9050" aria-label="Mean episode return, 761, 44.9050"><title>761: 44.9050</title></circle><circle class="chart-dot" cx="275.23" cy="75.47" r="1.6" tabindex="0" data-value="Mean episode return · 771: 41.8666" aria-label="Mean episode return, 771, 41.8666"><title>771: 41.8666</title></circle><circle class="chart-dot" cx="278.23" cy="78.49" r="1.6" tabindex="0" data-value="Mean episode return · 781: 40.7550" aria-label="Mean episode return, 781, 40.7550"><title>781: 40.7550</title></circle><circle class="chart-dot" cx="281.24" cy="60.97" r="1.6" tabindex="0" data-value="Mean episode return · 791: 47.1890" aria-label="Mean episode return, 791, 47.1890"><title>791: 47.1890</title></circle><circle class="chart-dot" cx="284.24" cy="55.61" r="1.6" tabindex="0" data-value="Mean episode return · 801: 49.1559" aria-label="Mean episode return, 801, 49.1559"><title>801: 49.1559</title></circle><circle class="chart-dot" cx="287.24" cy="60.80" r="1.6" tabindex="0" data-value="Mean episode return · 811: 47.2509" aria-label="Mean episode return, 811, 47.2509"><title>811: 47.2509</title></circle><circle class="chart-dot" cx="290.25" cy="60.49" r="1.6" tabindex="0" data-value="Mean episode return · 821: 47.3650" aria-label="Mean episode return, 821, 47.3650"><title>821: 47.3650</title></circle><circle class="chart-dot" cx="293.25" cy="60.89" r="1.6" tabindex="0" data-value="Mean episode return · 831: 47.2187" aria-label="Mean episode return, 831, 47.2187"><title>831: 47.2187</title></circle><circle class="chart-dot" cx="296.25" cy="63.38" r="1.6" tabindex="0" data-value="Mean episode return · 841: 46.3038" aria-label="Mean episode return, 841, 46.3038"><title>841: 46.3038</title></circle><circle class="chart-dot" cx="299.26" cy="68.38" r="1.6" tabindex="0" data-value="Mean episode return · 851: 44.4676" aria-label="Mean episode return, 851, 44.4676"><title>851: 44.4676</title></circle><circle class="chart-dot" cx="302.26" cy="72.77" r="1.6" tabindex="0" data-value="Mean episode return · 861: 42.8575" aria-label="Mean episode return, 861, 42.8575"><title>861: 42.8575</title></circle><circle class="chart-dot" cx="305.26" cy="63.26" r="1.6" tabindex="0" data-value="Mean episode return · 871: 46.3479" aria-label="Mean episode return, 871, 46.3479"><title>871: 46.3479</title></circle><circle class="chart-dot" cx="308.26" cy="57.90" r="1.6" tabindex="0" data-value="Mean episode return · 881: 48.3149" aria-label="Mean episode return, 881, 48.3149"><title>881: 48.3149</title></circle><circle class="chart-dot" cx="311.27" cy="66.53" r="1.6" tabindex="0" data-value="Mean episode return · 891: 45.1458" aria-label="Mean episode return, 891, 45.1458"><title>891: 45.1458</title></circle><circle class="chart-dot" cx="314.27" cy="71.90" r="1.6" tabindex="0" data-value="Mean episode return · 901: 43.1775" aria-label="Mean episode return, 901, 43.1775"><title>901: 43.1775</title></circle><circle class="chart-dot" cx="317.27" cy="76.28" r="1.6" tabindex="0" data-value="Mean episode return · 911: 41.5663" aria-label="Mean episode return, 911, 41.5663"><title>911: 41.5663</title></circle><circle class="chart-dot" cx="320.28" cy="74.27" r="1.6" tabindex="0" data-value="Mean episode return · 921: 42.3063" aria-label="Mean episode return, 921, 42.3063"><title>921: 42.3063</title></circle><circle class="chart-dot" cx="323.28" cy="73.55" r="1.6" tabindex="0" data-value="Mean episode return · 931: 42.5698" aria-label="Mean episode return, 931, 42.5698"><title>931: 42.5698</title></circle><circle class="chart-dot" cx="326.28" cy="64.60" r="1.6" tabindex="0" data-value="Mean episode return · 941: 45.8566" aria-label="Mean episode return, 941, 45.8566"><title>941: 45.8566</title></circle><circle class="chart-dot" cx="329.29" cy="55.56" r="1.6" tabindex="0" data-value="Mean episode return · 951: 49.1737" aria-label="Mean episode return, 951, 49.1737"><title>951: 49.1737</title></circle><circle class="chart-dot" cx="332.29" cy="56.57" r="1.6" tabindex="0" data-value="Mean episode return · 961: 48.8043" aria-label="Mean episode return, 961, 48.8043"><title>961: 48.8043</title></circle><circle class="chart-dot" cx="335.29" cy="58.69" r="1.6" tabindex="0" data-value="Mean episode return · 971: 48.0269" aria-label="Mean episode return, 971, 48.0269"><title>971: 48.0269</title></circle><circle class="chart-dot" cx="338.29" cy="62.48" r="1.6" tabindex="0" data-value="Mean episode return · 981: 46.6330" aria-label="Mean episode return, 981, 46.6330"><title>981: 46.6330</title></circle><circle class="chart-dot" cx="341.30" cy="59.05" r="1.6" tabindex="0" data-value="Mean episode return · 991: 47.8923" aria-label="Mean episode return, 991, 47.8923"><title>991: 47.8923</title></circle><circle class="chart-dot" cx="344.00" cy="59.99" r="1.6" tabindex="0" data-value="Mean episode return · 1000: 47.5471" aria-label="Mean episode return, 1000, 47.5471"><title>1000: 47.5471</title></circle><text x="194" y="238" text-anchor="middle">Training iteration</text></svg></div><div class="chart-panel"><h4>Mean terrain level</h4><svg viewBox="0 0 370 242" role="group" aria-label="Mean terrain level"><path class="chart-grid" d="M44 190.00H344"/><text x="36" y="194.00" text-anchor="end">0.0</text><path class="chart-grid" d="M44 152.50H344"/><text x="36" y="156.50" text-anchor="end">0.4</text><path class="chart-grid" d="M44 115.00H344"/><text x="36" y="119.00" text-anchor="end">0.8</text><path class="chart-grid" d="M44 77.50H344"/><text x="36" y="81.50" text-anchor="end">1.2</text><path class="chart-grid" d="M44 40.00H344"/><text x="36" y="44.00" text-anchor="end">1.6</text><text x="44.00" y="213" text-anchor="middle">1</text><text x="118.77" y="213" text-anchor="middle">250</text><text x="193.85" y="213" text-anchor="middle">500</text><text x="268.92" y="213" text-anchor="middle">750</text><text x="344.00" y="213" text-anchor="middle">1000</text><polyline class="chart-line" points="44.00,53.64 47.00,84.70 50.01,87.88 53.01,86.09 56.01,83.27 59.02,72.95 62.02,63.83 65.02,67.61 68.02,72.56 71.03,80.89 74.03,86.71 77.03,94.21 80.04,104.43 83.04,113.40 86.04,123.08 89.05,132.38 92.05,141.78 95.05,148.26 98.05,153.77 101.06,158.43 104.06,161.85 107.06,167.70 110.07,174.45 113.07,177.87 116.07,177.93 119.08,181.22 122.08,184.52 125.08,186.34 128.08,186.34 131.09,187.15 134.09,187.44 137.09,187.81 140.10,187.81 143.10,187.81 146.10,188.54 149.11,188.90 152.11,189.63 155.11,189.27 158.11,189.27 161.12,189.63 164.12,189.63 167.12,190.00 170.13,189.63 173.13,190.00 176.13,190.00 179.14,189.63 182.14,189.63 185.14,189.63 188.14,189.27 191.15,189.63 194.15,189.63 197.15,189.27 200.16,189.27 203.16,189.27 206.16,188.54 209.17,188.54 212.17,187.81 215.17,187.81 218.17,188.84 221.18,188.54 224.18,188.17 227.18,188.54 230.19,188.90 233.19,188.90 236.19,189.27 239.20,189.63 242.20,189.27 245.20,188.90 248.20,189.63 251.21,189.63 254.21,189.63 257.21,189.63 260.22,188.90 263.22,188.54 266.22,189.27 269.23,189.27 272.23,189.63 275.23,190.00 278.23,190.00 281.24,189.63 284.24,189.63 287.24,189.27 290.25,189.27 293.25,189.27 296.25,189.27 299.26,189.63 302.26,189.63 305.26,189.27 308.26,189.63 311.27,189.62 314.27,189.27 317.27,189.63 320.28,189.63 323.28,189.63 326.28,189.27 329.29,189.27 332.29,189.63 335.29,189.27 338.29,188.54 341.30,188.90 344.00,188.17"/><circle class="chart-dot" cx="44.00" cy="53.64" r="1.6" tabindex="0" data-value="Mean terrain level · 1: 1.4569" aria-label="Mean terrain level, 1, 1.4569"><title>1: 1.4569</title></circle><circle class="chart-dot" cx="47.00" cy="84.70" r="1.6" tabindex="0" data-value="Mean terrain level · 11: 1.1250" aria-label="Mean terrain level, 11, 1.1250"><title>11: 1.1250</title></circle><circle class="chart-dot" cx="50.01" cy="87.88" r="1.6" tabindex="0" data-value="Mean terrain level · 21: 1.0910" aria-label="Mean terrain level, 21, 1.0910"><title>21: 1.0910</title></circle><circle class="chart-dot" cx="53.01" cy="86.09" r="1.6" tabindex="0" data-value="Mean terrain level · 31: 1.1102" aria-label="Mean terrain level, 31, 1.1102"><title>31: 1.1102</title></circle><circle class="chart-dot" cx="56.01" cy="83.27" r="1.6" tabindex="0" data-value="Mean terrain level · 41: 1.1403" aria-label="Mean terrain level, 41, 1.1403"><title>41: 1.1403</title></circle><circle class="chart-dot" cx="59.02" cy="72.95" r="1.6" tabindex="0" data-value="Mean terrain level · 51: 1.2505" aria-label="Mean terrain level, 51, 1.2505"><title>51: 1.2505</title></circle><circle class="chart-dot" cx="62.02" cy="63.83" r="1.6" tabindex="0" data-value="Mean terrain level · 61: 1.3480" aria-label="Mean terrain level, 61, 1.3480"><title>61: 1.3480</title></circle><circle class="chart-dot" cx="65.02" cy="67.61" r="1.6" tabindex="0" data-value="Mean terrain level · 71: 1.3076" aria-label="Mean terrain level, 71, 1.3076"><title>71: 1.3076</title></circle><circle class="chart-dot" cx="68.02" cy="72.56" r="1.6" tabindex="0" data-value="Mean terrain level · 81: 1.2547" aria-label="Mean terrain level, 81, 1.2547"><title>81: 1.2547</title></circle><circle class="chart-dot" cx="71.03" cy="80.89" r="1.6" tabindex="0" data-value="Mean terrain level · 91: 1.1657" aria-label="Mean terrain level, 91, 1.1657"><title>91: 1.1657</title></circle><circle class="chart-dot" cx="74.03" cy="86.71" r="1.6" tabindex="0" data-value="Mean terrain level · 101: 1.1035" aria-label="Mean terrain level, 101, 1.1035"><title>101: 1.1035</title></circle><circle class="chart-dot" cx="77.03" cy="94.21" r="1.6" tabindex="0" data-value="Mean terrain level · 111: 1.0234" aria-label="Mean terrain level, 111, 1.0234"><title>111: 1.0234</title></circle><circle class="chart-dot" cx="80.04" cy="104.43" r="1.6" tabindex="0" data-value="Mean terrain level · 121: 0.9142" aria-label="Mean terrain level, 121, 0.9142"><title>121: 0.9142</title></circle><circle class="chart-dot" cx="83.04" cy="113.40" r="1.6" tabindex="0" data-value="Mean terrain level · 131: 0.8184" aria-label="Mean terrain level, 131, 0.8184"><title>131: 0.8184</title></circle><circle class="chart-dot" cx="86.04" cy="123.08" r="1.6" tabindex="0" data-value="Mean terrain level · 141: 0.7150" aria-label="Mean terrain level, 141, 0.7150"><title>141: 0.7150</title></circle><circle class="chart-dot" cx="89.05" cy="132.38" r="1.6" tabindex="0" data-value="Mean terrain level · 151: 0.6156" aria-label="Mean terrain level, 151, 0.6156"><title>151: 0.6156</title></circle><circle class="chart-dot" cx="92.05" cy="141.78" r="1.6" tabindex="0" data-value="Mean terrain level · 161: 0.5151" aria-label="Mean terrain level, 161, 0.5151"><title>161: 0.5151</title></circle><circle class="chart-dot" cx="95.05" cy="148.26" r="1.6" tabindex="0" data-value="Mean terrain level · 171: 0.4460" aria-label="Mean terrain level, 171, 0.4460"><title>171: 0.4460</title></circle><circle class="chart-dot" cx="98.05" cy="153.77" r="1.6" tabindex="0" data-value="Mean terrain level · 181: 0.3870" aria-label="Mean terrain level, 181, 0.3870"><title>181: 0.3870</title></circle><circle class="chart-dot" cx="101.06" cy="158.43" r="1.6" tabindex="0" data-value="Mean terrain level · 191: 0.3372" aria-label="Mean terrain level, 191, 0.3372"><title>191: 0.3372</title></circle><circle class="chart-dot" cx="104.06" cy="161.85" r="1.6" tabindex="0" data-value="Mean terrain level · 201: 0.3008" aria-label="Mean terrain level, 201, 0.3008"><title>201: 0.3008</title></circle><circle class="chart-dot" cx="107.06" cy="167.70" r="1.6" tabindex="0" data-value="Mean terrain level · 211: 0.2383" aria-label="Mean terrain level, 211, 0.2383"><title>211: 0.2383</title></circle><circle class="chart-dot" cx="110.07" cy="174.45" r="1.6" tabindex="0" data-value="Mean terrain level · 221: 0.1662" aria-label="Mean terrain level, 221, 0.1662"><title>221: 0.1662</title></circle><circle class="chart-dot" cx="113.07" cy="177.87" r="1.6" tabindex="0" data-value="Mean terrain level · 231: 0.1296" aria-label="Mean terrain level, 231, 0.1296"><title>231: 0.1296</title></circle><circle class="chart-dot" cx="116.07" cy="177.93" r="1.6" tabindex="0" data-value="Mean terrain level · 241: 0.1289" aria-label="Mean terrain level, 241, 0.1289"><title>241: 0.1289</title></circle><circle class="chart-dot" cx="119.08" cy="181.22" r="1.6" tabindex="0" data-value="Mean terrain level · 251: 0.0938" aria-label="Mean terrain level, 251, 0.0938"><title>251: 0.0938</title></circle><circle class="chart-dot" cx="122.08" cy="184.52" r="1.6" tabindex="0" data-value="Mean terrain level · 261: 0.0586" aria-label="Mean terrain level, 261, 0.0586"><title>261: 0.0586</title></circle><circle class="chart-dot" cx="125.08" cy="186.34" r="1.6" tabindex="0" data-value="Mean terrain level · 271: 0.0391" aria-label="Mean terrain level, 271, 0.0391"><title>271: 0.0391</title></circle><circle class="chart-dot" cx="128.08" cy="186.34" r="1.6" tabindex="0" data-value="Mean terrain level · 281: 0.0391" aria-label="Mean terrain level, 281, 0.0391"><title>281: 0.0391</title></circle><circle class="chart-dot" cx="131.09" cy="187.15" r="1.6" tabindex="0" data-value="Mean terrain level · 291: 0.0304" aria-label="Mean terrain level, 291, 0.0304"><title>291: 0.0304</title></circle><circle class="chart-dot" cx="134.09" cy="187.44" r="1.6" tabindex="0" data-value="Mean terrain level · 301: 0.0273" aria-label="Mean terrain level, 301, 0.0273"><title>301: 0.0273</title></circle><circle class="chart-dot" cx="137.09" cy="187.81" r="1.6" tabindex="0" data-value="Mean terrain level · 311: 0.0234" aria-label="Mean terrain level, 311, 0.0234"><title>311: 0.0234</title></circle><circle class="chart-dot" cx="140.10" cy="187.81" r="1.6" tabindex="0" data-value="Mean terrain level · 321: 0.0234" aria-label="Mean terrain level, 321, 0.0234"><title>321: 0.0234</title></circle><circle class="chart-dot" cx="143.10" cy="187.81" r="1.6" tabindex="0" data-value="Mean terrain level · 331: 0.0234" aria-label="Mean terrain level, 331, 0.0234"><title>331: 0.0234</title></circle><circle class="chart-dot" cx="146.10" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 341: 0.0156" aria-label="Mean terrain level, 341, 0.0156"><title>341: 0.0156</title></circle><circle class="chart-dot" cx="149.11" cy="188.90" r="1.6" tabindex="0" data-value="Mean terrain level · 351: 0.0117" aria-label="Mean terrain level, 351, 0.0117"><title>351: 0.0117</title></circle><circle class="chart-dot" cx="152.11" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 361: 0.0039" aria-label="Mean terrain level, 361, 0.0039"><title>361: 0.0039</title></circle><circle class="chart-dot" cx="155.11" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 371: 0.0078" aria-label="Mean terrain level, 371, 0.0078"><title>371: 0.0078</title></circle><circle class="chart-dot" cx="158.11" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 381: 0.0078" aria-label="Mean terrain level, 381, 0.0078"><title>381: 0.0078</title></circle><circle class="chart-dot" cx="161.12" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 391: 0.0039" aria-label="Mean terrain level, 391, 0.0039"><title>391: 0.0039</title></circle><circle class="chart-dot" cx="164.12" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 401: 0.0039" aria-label="Mean terrain level, 401, 0.0039"><title>401: 0.0039</title></circle><circle class="chart-dot" cx="167.12" cy="190.00" r="1.6" tabindex="0" data-value="Mean terrain level · 411: 0.0000" aria-label="Mean terrain level, 411, 0.0000"><title>411: 0.0000</title></circle><circle class="chart-dot" cx="170.13" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 421: 0.0039" aria-label="Mean terrain level, 421, 0.0039"><title>421: 0.0039</title></circle><circle class="chart-dot" cx="173.13" cy="190.00" r="1.6" tabindex="0" data-value="Mean terrain level · 431: 0.0000" aria-label="Mean terrain level, 431, 0.0000"><title>431: 0.0000</title></circle><circle class="chart-dot" cx="176.13" cy="190.00" r="1.6" tabindex="0" data-value="Mean terrain level · 441: 0.0000" aria-label="Mean terrain level, 441, 0.0000"><title>441: 0.0000</title></circle><circle class="chart-dot" cx="179.14" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 451: 0.0039" aria-label="Mean terrain level, 451, 0.0039"><title>451: 0.0039</title></circle><circle class="chart-dot" cx="182.14" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 461: 0.0039" aria-label="Mean terrain level, 461, 0.0039"><title>461: 0.0039</title></circle><circle class="chart-dot" cx="185.14" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 471: 0.0039" aria-label="Mean terrain level, 471, 0.0039"><title>471: 0.0039</title></circle><circle class="chart-dot" cx="188.14" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 481: 0.0078" aria-label="Mean terrain level, 481, 0.0078"><title>481: 0.0078</title></circle><circle class="chart-dot" cx="191.15" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 491: 0.0039" aria-label="Mean terrain level, 491, 0.0039"><title>491: 0.0039</title></circle><circle class="chart-dot" cx="194.15" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 501: 0.0039" aria-label="Mean terrain level, 501, 0.0039"><title>501: 0.0039</title></circle><circle class="chart-dot" cx="197.15" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 511: 0.0078" aria-label="Mean terrain level, 511, 0.0078"><title>511: 0.0078</title></circle><circle class="chart-dot" cx="200.16" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 521: 0.0078" aria-label="Mean terrain level, 521, 0.0078"><title>521: 0.0078</title></circle><circle class="chart-dot" cx="203.16" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 531: 0.0078" aria-label="Mean terrain level, 531, 0.0078"><title>531: 0.0078</title></circle><circle class="chart-dot" cx="206.16" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 541: 0.0156" aria-label="Mean terrain level, 541, 0.0156"><title>541: 0.0156</title></circle><circle class="chart-dot" cx="209.17" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 551: 0.0156" aria-label="Mean terrain level, 551, 0.0156"><title>551: 0.0156</title></circle><circle class="chart-dot" cx="212.17" cy="187.81" r="1.6" tabindex="0" data-value="Mean terrain level · 561: 0.0234" aria-label="Mean terrain level, 561, 0.0234"><title>561: 0.0234</title></circle><circle class="chart-dot" cx="215.17" cy="187.81" r="1.6" tabindex="0" data-value="Mean terrain level · 571: 0.0234" aria-label="Mean terrain level, 571, 0.0234"><title>571: 0.0234</title></circle><circle class="chart-dot" cx="218.17" cy="188.84" r="1.6" tabindex="0" data-value="Mean terrain level · 581: 0.0124" aria-label="Mean terrain level, 581, 0.0124"><title>581: 0.0124</title></circle><circle class="chart-dot" cx="221.18" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 591: 0.0156" aria-label="Mean terrain level, 591, 0.0156"><title>591: 0.0156</title></circle><circle class="chart-dot" cx="224.18" cy="188.17" r="1.6" tabindex="0" data-value="Mean terrain level · 601: 0.0195" aria-label="Mean terrain level, 601, 0.0195"><title>601: 0.0195</title></circle><circle class="chart-dot" cx="227.18" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 611: 0.0156" aria-label="Mean terrain level, 611, 0.0156"><title>611: 0.0156</title></circle><circle class="chart-dot" cx="230.19" cy="188.90" r="1.6" tabindex="0" data-value="Mean terrain level · 621: 0.0117" aria-label="Mean terrain level, 621, 0.0117"><title>621: 0.0117</title></circle><circle class="chart-dot" cx="233.19" cy="188.90" r="1.6" tabindex="0" data-value="Mean terrain level · 631: 0.0117" aria-label="Mean terrain level, 631, 0.0117"><title>631: 0.0117</title></circle><circle class="chart-dot" cx="236.19" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 641: 0.0078" aria-label="Mean terrain level, 641, 0.0078"><title>641: 0.0078</title></circle><circle class="chart-dot" cx="239.20" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 651: 0.0039" aria-label="Mean terrain level, 651, 0.0039"><title>651: 0.0039</title></circle><circle class="chart-dot" cx="242.20" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 661: 0.0078" aria-label="Mean terrain level, 661, 0.0078"><title>661: 0.0078</title></circle><circle class="chart-dot" cx="245.20" cy="188.90" r="1.6" tabindex="0" data-value="Mean terrain level · 671: 0.0117" aria-label="Mean terrain level, 671, 0.0117"><title>671: 0.0117</title></circle><circle class="chart-dot" cx="248.20" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 681: 0.0039" aria-label="Mean terrain level, 681, 0.0039"><title>681: 0.0039</title></circle><circle class="chart-dot" cx="251.21" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 691: 0.0039" aria-label="Mean terrain level, 691, 0.0039"><title>691: 0.0039</title></circle><circle class="chart-dot" cx="254.21" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 701: 0.0039" aria-label="Mean terrain level, 701, 0.0039"><title>701: 0.0039</title></circle><circle class="chart-dot" cx="257.21" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 711: 0.0039" aria-label="Mean terrain level, 711, 0.0039"><title>711: 0.0039</title></circle><circle class="chart-dot" cx="260.22" cy="188.90" r="1.6" tabindex="0" data-value="Mean terrain level · 721: 0.0117" aria-label="Mean terrain level, 721, 0.0117"><title>721: 0.0117</title></circle><circle class="chart-dot" cx="263.22" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 731: 0.0156" aria-label="Mean terrain level, 731, 0.0156"><title>731: 0.0156</title></circle><circle class="chart-dot" cx="266.22" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 741: 0.0078" aria-label="Mean terrain level, 741, 0.0078"><title>741: 0.0078</title></circle><circle class="chart-dot" cx="269.23" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 751: 0.0078" aria-label="Mean terrain level, 751, 0.0078"><title>751: 0.0078</title></circle><circle class="chart-dot" cx="272.23" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 761: 0.0039" aria-label="Mean terrain level, 761, 0.0039"><title>761: 0.0039</title></circle><circle class="chart-dot" cx="275.23" cy="190.00" r="1.6" tabindex="0" data-value="Mean terrain level · 771: 0.0000" aria-label="Mean terrain level, 771, 0.0000"><title>771: 0.0000</title></circle><circle class="chart-dot" cx="278.23" cy="190.00" r="1.6" tabindex="0" data-value="Mean terrain level · 781: 0.0000" aria-label="Mean terrain level, 781, 0.0000"><title>781: 0.0000</title></circle><circle class="chart-dot" cx="281.24" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 791: 0.0039" aria-label="Mean terrain level, 791, 0.0039"><title>791: 0.0039</title></circle><circle class="chart-dot" cx="284.24" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 801: 0.0039" aria-label="Mean terrain level, 801, 0.0039"><title>801: 0.0039</title></circle><circle class="chart-dot" cx="287.24" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 811: 0.0078" aria-label="Mean terrain level, 811, 0.0078"><title>811: 0.0078</title></circle><circle class="chart-dot" cx="290.25" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 821: 0.0078" aria-label="Mean terrain level, 821, 0.0078"><title>821: 0.0078</title></circle><circle class="chart-dot" cx="293.25" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 831: 0.0078" aria-label="Mean terrain level, 831, 0.0078"><title>831: 0.0078</title></circle><circle class="chart-dot" cx="296.25" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 841: 0.0078" aria-label="Mean terrain level, 841, 0.0078"><title>841: 0.0078</title></circle><circle class="chart-dot" cx="299.26" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 851: 0.0039" aria-label="Mean terrain level, 851, 0.0039"><title>851: 0.0039</title></circle><circle class="chart-dot" cx="302.26" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 861: 0.0039" aria-label="Mean terrain level, 861, 0.0039"><title>861: 0.0039</title></circle><circle class="chart-dot" cx="305.26" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 871: 0.0078" aria-label="Mean terrain level, 871, 0.0078"><title>871: 0.0078</title></circle><circle class="chart-dot" cx="308.26" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 881: 0.0039" aria-label="Mean terrain level, 881, 0.0039"><title>881: 0.0039</title></circle><circle class="chart-dot" cx="311.27" cy="189.62" r="1.6" tabindex="0" data-value="Mean terrain level · 891: 0.0041" aria-label="Mean terrain level, 891, 0.0041"><title>891: 0.0041</title></circle><circle class="chart-dot" cx="314.27" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 901: 0.0078" aria-label="Mean terrain level, 901, 0.0078"><title>901: 0.0078</title></circle><circle class="chart-dot" cx="317.27" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 911: 0.0039" aria-label="Mean terrain level, 911, 0.0039"><title>911: 0.0039</title></circle><circle class="chart-dot" cx="320.28" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 921: 0.0039" aria-label="Mean terrain level, 921, 0.0039"><title>921: 0.0039</title></circle><circle class="chart-dot" cx="323.28" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 931: 0.0039" aria-label="Mean terrain level, 931, 0.0039"><title>931: 0.0039</title></circle><circle class="chart-dot" cx="326.28" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 941: 0.0078" aria-label="Mean terrain level, 941, 0.0078"><title>941: 0.0078</title></circle><circle class="chart-dot" cx="329.29" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 951: 0.0078" aria-label="Mean terrain level, 951, 0.0078"><title>951: 0.0078</title></circle><circle class="chart-dot" cx="332.29" cy="189.63" r="1.6" tabindex="0" data-value="Mean terrain level · 961: 0.0039" aria-label="Mean terrain level, 961, 0.0039"><title>961: 0.0039</title></circle><circle class="chart-dot" cx="335.29" cy="189.27" r="1.6" tabindex="0" data-value="Mean terrain level · 971: 0.0078" aria-label="Mean terrain level, 971, 0.0078"><title>971: 0.0078</title></circle><circle class="chart-dot" cx="338.29" cy="188.54" r="1.6" tabindex="0" data-value="Mean terrain level · 981: 0.0156" aria-label="Mean terrain level, 981, 0.0156"><title>981: 0.0156</title></circle><circle class="chart-dot" cx="341.30" cy="188.90" r="1.6" tabindex="0" data-value="Mean terrain level · 991: 0.0117" aria-label="Mean terrain level, 991, 0.0117"><title>991: 0.0117</title></circle><circle class="chart-dot" cx="344.00" cy="188.17" r="1.6" tabindex="0" data-value="Mean terrain level · 1000: 0.0195" aria-label="Mean terrain level, 1000, 0.0195"><title>1000: 0.0195</title></circle><text x="194" y="238" text-anchor="middle">Training iteration</text></svg></div></div><p class="chart-readout" aria-live="polite">Hover, tap or Tab to a point to inspect its logged value.</p><details class="chart-data"><summary>View all values</summary><div class="table-scroll"><table><thead><tr><th>Iteration</th><th>Mean episode return</th><th>Mean terrain level</th></tr></thead><tbody><tr><td>1</td><td>-0.179899</td><td>1.456869</td></tr><tr><td>11</td><td>4.581765</td><td>1.125000</td></tr><tr><td>21</td><td>10.381079</td><td>1.090983</td></tr><tr><td>31</td><td>14.866784</td><td>1.110189</td></tr><tr><td>41</td><td>20.392378</td><td>1.140300</td></tr><tr><td>51</td><td>31.670181</td><td>1.250488</td></tr><tr><td>61</td><td>30.260370</td><td>1.347982</td></tr><tr><td>71</td><td>25.978621</td><td>1.307617</td></tr><tr><td>81</td><td>30.382683</td><td>1.254720</td></tr><tr><td>91</td><td>34.652992</td><td>1.165690</td></tr><tr><td>101</td><td>33.576988</td><td>1.103516</td></tr><tr><td>111</td><td>35.522419</td><td>1.023438</td></tr><tr><td>121</td><td>36.787903</td><td>0.914225</td></tr><tr><td>131</td><td>38.074265</td><td>0.818359</td></tr><tr><td>141</td><td>36.971607</td><td>0.715007</td></tr><tr><td>151</td><td>32.414555</td><td>0.615560</td></tr><tr><td>161</td><td>30.234884</td><td>0.515137</td></tr><tr><td>171</td><td>36.639915</td><td>0.445964</td></tr><tr><td>181</td><td>39.711601</td><td>0.387044</td></tr><tr><td>191</td><td>38.621265</td><td>0.337240</td></tr><tr><td>201</td><td>32.654026</td><td>0.300781</td></tr><tr><td>211</td><td>36.300041</td><td>0.238281</td></tr><tr><td>221</td><td>36.854412</td><td>0.166178</td></tr><tr><td>231</td><td>33.981266</td><td>0.129557</td></tr><tr><td>241</td><td>37.988224</td><td>0.128906</td></tr><tr><td>251</td><td>41.839741</td><td>0.093750</td></tr><tr><td>261</td><td>37.007008</td><td>0.058594</td></tr><tr><td>271</td><td>40.564766</td><td>0.039062</td></tr><tr><td>281</td><td>41.823292</td><td>0.039062</td></tr><tr><td>291</td><td>41.202576</td><td>0.030436</td></tr><tr><td>301</td><td>42.908535</td><td>0.027344</td></tr><tr><td>311</td><td>41.018261</td><td>0.023438</td></tr><tr><td>321</td><td>38.868526</td><td>0.023438</td></tr><tr><td>331</td><td>39.264530</td><td>0.023438</td></tr><tr><td>341</td><td>45.264629</td><td>0.015625</td></tr><tr><td>351</td><td>42.945457</td><td>0.011719</td></tr><tr><td>361</td><td>42.558167</td><td>0.003906</td></tr><tr><td>371</td><td>45.566311</td><td>0.007812</td></tr><tr><td>381</td><td>45.185772</td><td>0.007812</td></tr><tr><td>391</td><td>44.470810</td><td>0.003906</td></tr><tr><td>401</td><td>42.331966</td><td>0.003906</td></tr><tr><td>411</td><td>45.435867</td><td>0.000000</td></tr><tr><td>421</td><td>44.431923</td><td>0.003906</td></tr><tr><td>431</td><td>44.732220</td><td>0.000000</td></tr><tr><td>441</td><td>42.737949</td><td>0.000000</td></tr><tr><td>451</td><td>45.433544</td><td>0.003906</td></tr><tr><td>461</td><td>45.585457</td><td>0.003906</td></tr><tr><td>471</td><td>42.989613</td><td>0.003906</td></tr><tr><td>481</td><td>43.091766</td><td>0.007812</td></tr><tr><td>491</td><td>45.050522</td><td>0.003906</td></tr><tr><td>501</td><td>43.264900</td><td>0.003906</td></tr><tr><td>511</td><td>46.074631</td><td>0.007812</td></tr><tr><td>521</td><td>46.175797</td><td>0.007812</td></tr><tr><td>531</td><td>48.197155</td><td>0.007812</td></tr><tr><td>541</td><td>49.897160</td><td>0.015625</td></tr><tr><td>551</td><td>48.687504</td><td>0.015625</td></tr><tr><td>561</td><td>48.543011</td><td>0.023438</td></tr><tr><td>571</td><td>48.362915</td><td>0.023438</td></tr><tr><td>581</td><td>49.864128</td><td>0.012370</td></tr><tr><td>591</td><td>47.779549</td><td>0.015625</td></tr><tr><td>601</td><td>47.453964</td><td>0.019531</td></tr><tr><td>611</td><td>48.029816</td><td>0.015625</td></tr><tr><td>621</td><td>46.975643</td><td>0.011719</td></tr><tr><td>631</td><td>48.881264</td><td>0.011719</td></tr><tr><td>641</td><td>46.307896</td><td>0.007812</td></tr><tr><td>651</td><td>47.786903</td><td>0.003906</td></tr><tr><td>661</td><td>49.881676</td><td>0.007812</td></tr><tr><td>671</td><td>47.868408</td><td>0.011719</td></tr><tr><td>681</td><td>45.942696</td><td>0.003906</td></tr><tr><td>691</td><td>46.995068</td><td>0.003906</td></tr><tr><td>701</td><td>46.356022</td><td>0.003906</td></tr><tr><td>711</td><td>46.726536</td><td>0.003906</td></tr><tr><td>721</td><td>46.998989</td><td>0.011719</td></tr><tr><td>731</td><td>47.826942</td><td>0.015625</td></tr><tr><td>741</td><td>48.786194</td><td>0.007812</td></tr><tr><td>751</td><td>44.517090</td><td>0.007812</td></tr><tr><td>761</td><td>44.905041</td><td>0.003906</td></tr><tr><td>771</td><td>41.866623</td><td>0.000000</td></tr><tr><td>781</td><td>40.755043</td><td>0.000000</td></tr><tr><td>791</td><td>47.189041</td><td>0.003906</td></tr><tr><td>801</td><td>49.155872</td><td>0.003906</td></tr><tr><td>811</td><td>47.250870</td><td>0.007812</td></tr><tr><td>821</td><td>47.364967</td><td>0.007812</td></tr><tr><td>831</td><td>47.218681</td><td>0.007812</td></tr><tr><td>841</td><td>46.303848</td><td>0.007812</td></tr><tr><td>851</td><td>44.467552</td><td>0.003906</td></tr><tr><td>861</td><td>42.857544</td><td>0.003906</td></tr><tr><td>871</td><td>46.347919</td><td>0.007812</td></tr><tr><td>881</td><td>48.314949</td><td>0.003906</td></tr><tr><td>891</td><td>45.145828</td><td>0.004069</td></tr><tr><td>901</td><td>43.177528</td><td>0.007812</td></tr><tr><td>911</td><td>41.566273</td><td>0.003906</td></tr><tr><td>921</td><td>42.306335</td><td>0.003906</td></tr><tr><td>931</td><td>42.569767</td><td>0.003906</td></tr><tr><td>941</td><td>45.856628</td><td>0.007812</td></tr><tr><td>951</td><td>49.173672</td><td>0.007812</td></tr><tr><td>961</td><td>48.804314</td><td>0.003906</td></tr><tr><td>971</td><td>48.026894</td><td>0.007812</td></tr><tr><td>981</td><td>46.632973</td><td>0.015625</td></tr><tr><td>991</td><td>47.892323</td><td>0.011719</td></tr><tr><td>1000</td><td>47.547089</td><td>0.019531</td></tr></tbody></table></div></details><figcaption>One recorded value every 10 iterations. The mean episode return rises from about −0.18 to 47.6, while the terrain level falls from 1.46 to 0.02.</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>+5° wedge, 5 environments</p></th>
+<th class="head cell-short"><p>Passed</p></th>
+<th class="head cell-short"><p>Fell</p></th>
+<th class="head cell-short"><p>What happened</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Official roller model (baseline, the test window above)</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>5/5</p></td>
+<td><p>Four veer right and drop off a side of the wedge; one briefly reaches the platform goal at 5.0 s and then falls too</p></td>
+</tr>
+<tr class="row-odd"><td><p>Trained roller policy (counter-example, the curves above)</p></td>
+<td class="cell-short"><p>0/5</p></td>
+<td class="cell-short"><p>1/5</p></td>
+<td><p>Four never climb and end about 0.5–1.1 m behind their start; one climbs the wedge at an angle and drops off a side</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>See the <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">evaluation summary ↗</a> for per-environment results on this wedge.</p>
+<p>Return rises and falls become less frequent, but the result is still 0/5. The terrain level drops almost to zero, so late training mainly uses nearly flat tiles. Four evaluation trials never climb; fewer falls alone do not show task improvement.</p>
+<p>Possible loopholes: standing still may earn enough reward, while the push reward does not check progress toward the platform. Change one term at a time with equal budgets and paired seeds, then evaluate against the wedge's success criterion.</p>
+<p>This is a negative reward-design example: it only shows that this reward set did not learn to climb in this training run. It does not prove that rollers are generally harder, nor that rollers cannot learn to climb.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>One training run's mean return rises from near 0 to 47, and the episode length approaches its limit. Can you say it learned to climb on rollers?</p>
+<details><summary>Show explanation</summary><p>No. The return only shows that the policy got better at collecting the scores of this reward set; that is exactly what happened with the roller training on this page: the return rose sharply, yet the +5° wedge verification was 0/5, with most robots stopping behind their start. Evaluate with an acceptance test fixed before training (ideally with seeds and scenes kept out of tuning), and check indicators such as the terrain level that show what training actually practised.</p>
+</details></div></section>
+<section id="next">
+<h2>Summary<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>The reward is the training signal, the success criterion is the acceptance test; write them separately and write the test first.</p></li>
+<li><p>Random slopes are the training distribution and the fixed wedge is a separate verification scene; conclusions come from the latter and apply only to the conditions tested.</p></li>
+<li><p>The fixed terrain model passed 5/5 each way on the ±5° wedge (five environments per direction). The turning reward constrains turning speed and does not correct accumulated heading; without a comparison experiment, the pass cannot be credited to it or to any other single change.</p></li>
+<li><p>The roller return rose sharply and the acceptance test was still 0/5: a reward curve cannot replace the acceptance test.</p></li>
+</ul>
+<p>Section 3.4 reads the reward code community authors wrote for the one-leg stand, basketball balance and backward glide, and uses the same six steps to judge their goals, implementation and limits.</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab" rel="noreferer noopener" target="_blank">Isaac Lab: tasks, terrain and parallel learning ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton physics engine ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" rel="noreferer noopener" target="_blank">Terrain actor: network, training and model information ↗</a></p></li>
+<li><p><a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA technical blog: using AI agents to teach robots like Microduck to walk in simulation  ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03-walk-training.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3.2 Domain randomization: train and test a walking policy</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05-skills.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3.4 Community skills: from goal to reward</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">The 2026 GTC Berlin talk</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">Task and reward design</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">Training on random slopes: practice inside the training distribution</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direction">Reducing drift with a turning reward</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Comparing on the same wedge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#rollers">Rollers: a rising reward does not complete the task</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

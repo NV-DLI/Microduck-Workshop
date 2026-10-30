@@ -1,0 +1,71 @@
+{
+  "status": "completed",
+  "locomotion": "rollers",
+  "recipe": "course roller slope adaptation v1 (own reward set; not a reference result)",
+  "initialization": "official roller ONNX actor; fresh critic and optimizer",
+  "critic_observations": "policy group (same inputs as the actor)",
+  "parent_sha256": "cf05651d2708a2f9364212e86b866c97a70ace8131c492500105e8f28bf99afd",
+  "seed": 47001,
+  "num_envs": 256,
+  "iterations": 1000,
+  "training_slopes": "pyramids, tan(angle)=0.03..0.22; 25% flat",
+  "roller_configuration": {
+    "kind": "official four passive wheels with native BAM and gearbox play",
+    "powered_joints": 14,
+    "passive_wheels": 4,
+    "passive_backlash_hinges": 14,
+    "tyre_collision": "analytic cylinder: radius 15 mm, width 7.6 mm; rounded shoulders approximated",
+    "tyre_visual_and_inertia": "official original mesh and inertia retained",
+    "initial_root_height_m": 0.122,
+    "reset_pose_sha256": "d53d726c8e60cf251353d819044050815f3b793f9249f6744bace65879b4ddc1",
+    "command_x": "positive push, zero coast, negative brake",
+    "command_y": "unused",
+    "command_z": "relative heading request, not calibrated yaw rate",
+    "shooting": "course gliding ball contact; roller model remains active, no kick actor"
+  },
+  "original_weights_modified": false,
+  "articulation": {
+    "servo_names": [
+      "right_hip_yaw",
+      "right_hip_roll",
+      "right_hip_pitch",
+      "right_knee",
+      "right_ankle",
+      "neck_pitch",
+      "head_pitch",
+      "head_yaw",
+      "head_roll",
+      "left_hip_yaw",
+      "left_hip_roll",
+      "left_hip_pitch",
+      "left_knee",
+      "left_ankle"
+    ],
+    "wheel_names": [
+      "passive_RF_wheel",
+      "passive_RR_wheel",
+      "passive_LF_wheel",
+      "passive_LR_wheel"
+    ],
+    "backlash_names": [
+      "passive_right_hip_yaw_backlash",
+      "passive_right_hip_roll_backlash",
+      "passive_right_hip_pitch_backlash",
+      "passive_right_knee_backlash",
+      "passive_right_ankle_backlash",
+      "passive_neck_pitch_backlash",
+      "passive_head_pitch_backlash",
+      "passive_head_yaw_backlash",
+      "passive_head_roll_backlash",
+      "passive_left_hip_yaw_backlash",
+      "passive_left_hip_roll_backlash",
+      "passive_left_hip_pitch_backlash",
+      "passive_left_knee_backlash",
+      "passive_left_ankle_backlash"
+    ],
+    "observation_width": 61
+  },
+  "initial_actor_max_abs_error": 1.043081283569336e-07,
+  "latest_checkpoint": "/workspace/Microduck-Workshop/outputs/terrain-rollers-training-01/model_999.pt",
+  "training_wall_seconds": 525.80328968307
+}

@@ -66,12 +66,11 @@ def configure_scene(cfg):
     )
 
 
-def camera_prestartup(env, env_ids):
+def camera_prestartup(env, env_ids, width=1920, height=1080):
     from isaaclab.sensors import Camera, CameraCfg
     from isaaclab_physx.renderers import IsaacRtxRendererCfg
     import isaaclab.sim as sim_utils
 
-    width, height = 1920, 1080
     focal = width / (2 * math.tan(math.radians(52) / 2))
     env.terrain_camera = Camera(
         CameraCfg(
@@ -149,6 +148,8 @@ def start_recording(
         env.sim.render()
     import json
 
+    width, height = int(camera.cfg.width), int(camera.cfg.height)
+
     root = env.scene["robot"].data.root_pos_w
     root = getattr(root, "torch", root)
     bounds = (
@@ -165,6 +166,9 @@ def start_recording(
                 root=root.cpu().tolist(),
                 usd_robot_bounds=str(bounds),
                 camera_matrix=str(matrix),
+                width=width,
+                height=height,
+                fps=fps,
             ),
             indent=2,
         )
@@ -181,7 +185,7 @@ def start_recording(
             "-pixel_format",
             "rgb24",
             "-video_size",
-            "1920x1080",
+            f"{width}x{height}",
             "-framerate",
             str(fps),
             "-i",
@@ -206,10 +210,18 @@ def start_recording(
     return camera, process
 
 
-def capture(env, camera, process):
-    for _ in range(4):
+def capture(env, camera, process, renders=4):
+    """Write one frame. renders=4 (default) renders the scene four more times first;
+    renders=0 reads the frame of the render that already happened this step (the caller
+    renders once per frame: sim.step(render=True) with a window, or the camera update's own
+    single Kit update when headless). Returns the frame bytes."""
+    for _ in range(renders):
         env.sim.render()
     camera.update(0.0, force_recompute=True)
     rgb = camera.data.output["rgb"]
     rgb = getattr(rgb, "torch", rgb)
-    process.stdin.write(rgb[0, :, :, :3].cpu().numpy().tobytes())
+    frame = rgb[0, :, :, :3].cpu().numpy().tobytes()
+    if len(frame) != int(camera.cfg.width) * int(camera.cfg.height) * 3:
+        raise RuntimeError(f"camera frame has {len(frame)} bytes, expected {camera.cfg.width}x{camera.cfg.height} RGB")
+    process.stdin.write(frame)
+    return frame
