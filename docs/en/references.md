@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 5.3 Further learning and references
+# 6.3 Further learning and references
 
 :::{lesson-intro}
 :meta: Reading resources
@@ -23,9 +23,10 @@ Begin with task observations, actions, and rewards, then explore physics and sen
 ## Suggested extensions
 
 - Vary the Section 3.2 training budget and compare on the same held-out seeds.
-- Analyse the failed episodes of the Section 4.3 validation: which come from observation, which from action requests and skill handoff?
-- Read the [GR00T chapter of the SO-101 Sim-to-Real course ↗](https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html) and, with the data design in Section 4.2, identify the shared data-workflow steps and the different action interfaces of Microduck and SO-101.
-- Use the Section 4.4 counter to plan held-out room evaluation and separate training from test conditions.
+- Pick a new task, such as dribbling the ball to the center circle and stopping, and compare it with the Section 4.2 shooting stages: which perception can be reused, and which stages and transitions must be redesigned?
+- Analyse the failed episodes of the Section 5.3 validation: which come from observation, which from action requests and skill handoff?
+- Read the [GR00T chapter of the SO-101 Sim-to-Real course ↗](https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html) and, with the data design in Section 5.2, identify the shared data-workflow steps and the different action interfaces of Microduck and SO-101.
+- Use the Section 5.4 counter to plan held-out room evaluation and separate training from test conditions.
 
 {#references}
 ## References

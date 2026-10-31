@@ -302,8 +302,12 @@ def main():
                 image.returncode == 0 and image.stdout.strip() == c["nav2_image"]
             )
         else:
-            # The container labs do not use the separate Nav2 image.
+            # The container runs Nav2 as a CPU child process instead of a separate image.
             data["nav2_image"] = None
+        if c.get("nav2_backend") == "local":
+            data["nav2_local"] = bool(c.get("nav2_install_record")) and Path(
+                "/opt/ros/jazzy/lib/nav2_planner/planner_server"
+            ).is_file()
         print(json.dumps(data, indent=2))
         return (
             0
@@ -313,6 +317,7 @@ def main():
                     data["ffmpeg"],
                     data["detector_python"],
                     data["nav2_image"] is not False,
+                    data.get("nav2_local") is not False,
                 ]
             )
             else 1
@@ -609,7 +614,9 @@ def main():
                 deployment[key] = str(artifact)
             local_deployment = LOCAL / "scene-detector-deployment.json"
             local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
-            cmd[1] = ROOT / "lab/football_scene.py"
+            # Same scene and controller as lab/football_scene.py, with the course
+            # joint-brake start-up (released at the walking actor's first output).
+            cmd[1] = ROOT / "lab/onboard_scene.py"
             cmd += [
                 "--runtime",
                 m,

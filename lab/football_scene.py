@@ -98,7 +98,15 @@ def main():
     nav2_bridge.prior = obstacle_contract.prior
     nav2_bridge.BridgeClient = client.BridgeClient
 
-    class SceneOwner(owner.ServiceOwner):
+    sys.path.append(str(HERE / "course_labs"))
+    # Same service source and protocol; in the course container the planner runs as a
+    # CPU child process (course_labs/nav2_local.py), on a host install in its own image.
+    from nav2_local import LocalServiceOwner, nav2_backend
+
+    backend = nav2_backend()
+    base_owner = LocalServiceOwner if backend == "local" else owner.ServiceOwner
+
+    class SceneOwner(base_owner):
         def __init__(self, source_dir, *args, **kwargs):
             super().__init__(HERE / "scene_nav2", *args, **kwargs)
 
@@ -107,8 +115,9 @@ def main():
 
     coarse_track.snapshot = map_contract.snapshot
     original_build = wrapper.base_build
-    scene_record = {}
+    scene_record = {"nav2_backend": backend}
     recording = {}
+    panel = {}
 
     def build(a):
         a.robot_usd = HERE / "assets/microduck_contact.usda"
@@ -203,6 +212,18 @@ def main():
                 env.beta_rig.capture = recorded_capture
 
             cfg.events.beta_sensors.func = sensor
+        from sensor_panel import attach as attach_sensor_panel
+
+        recorded_sensor = cfg.events.beta_sensors.func
+
+        def sensor_with_panel(env, env_ids, width, height, hfov, seed):
+            recorded_sensor(env, env_ids, width=width, height=height, hfov=hfov, seed=seed)
+            # Display only: with an Isaac Sim window, show the frames rig.capture() returns.
+            attachment = None if panel else attach_sensor_panel(env, remaining)
+            if attachment is not None:
+                panel.update(attachment=attachment)
+
+        cfg.events.beta_sensors.func = sensor_with_panel
         scene_record.update(
             locomotion_and_kick_models_retrained=False,
             perception_weights="explicit --detector-deployment; hash recorded in manifest.detector",
@@ -222,6 +243,10 @@ def main():
         HERE / "scene_localization.py",
         HERE / "scene_goal_points.py",
         HERE / "terrain_visuals.py",
+        HERE / "course_labs/sensor_panel.py",
+        HERE / "course_labs/sensor_payload.py",
+        HERE / "course_labs/nav2_local.py",
+        HERE / "course_labs/nav2_local_preflight.py",
         *sorted((HERE / "assets").glob("*")),
         *sorted((HERE / "scene_nav2").glob("*")),
     ]
@@ -239,6 +264,8 @@ def main():
             return original_run(*args, **kwargs)
         finally:
             code = 0
+            if panel:
+                scene_record["sensor_panel"] = panel["attachment"].close()
             if recording:
                 proc = recording["process"]
                 proc.stdin.close()

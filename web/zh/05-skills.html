@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="阅读三个社区技能（单脚站立循环、篮球平衡、倒滑）的真实奖励代码：目标是什么、读取哪些量、公式怎样写、可能怎样失败、作者怎样检验，再用同样的步骤构思新任务。" name="description" />
 
-  <title>3.4 社区技能：从目标到奖励 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <title>3.4 社区技能：从目标到奖励 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,14 +57,14 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '05-skills';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="4.1 视觉-语言-动作模型与 GR00T" href="07-groot.html" />
+    <link rel="next" title="4.1 识别球与球门：RGB 检测与 ToF 测距" href="06-perception.html" />
     <link rel="prev" title="3.3 奖励设计：走稳上下坡" href="04-terrain.html" />
 
 
@@ -146,11 +146,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a></div>
     
@@ -256,11 +256,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a>
 
@@ -323,8 +323,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 准备环境与获取代码</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -338,18 +337,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 社区技能：从目标到奖励</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 手工设计的射门阶段</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -455,7 +459,7 @@
 </section>
 <section id="flamingo">
 <h2>单脚站立循环：用门控安排动作的先后<a class="headerlink" href="#flamingo" title="Link to this heading">#</a></h2>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-flamingo-hd.jpg" aria-label="社区单脚站立循环的作者预览：Microduck 先双脚站立，再把重心移到一只脚上、抬起另一只脚保持，放下双脚站好后，换另一侧单脚站立。"><source src="../assets/media/community-flamingo-hd.mp4" type="video/mp4"></video><figcaption><p>社区单脚站立循环的作者预览：作者在 MuJoCo 中运行导出的 ONNX 策略，按预设的指令顺序先用一侧单脚站立，放下后再换另一侧，录像在第二次单脚站立中结束。这是原作者的仿真环境，不是本课程在 Newton 中的运行。观察重心先移到支撑脚、再抬脚，放下时顺序相反。</p>
+<figure class="media media-solo" style="--media-w: 640; --media-h: 480"><video controls playsinline preload="metadata" poster="../assets/media/community-flamingo-hd.jpg" aria-label="社区单脚站立循环的作者预览：Microduck 先双脚站立，再把重心移到一只脚上、抬起另一只脚保持，放下双脚站好后，换另一侧单脚站立。"><source src="../assets/media/community-flamingo-hd.mp4" type="video/mp4"></video><figcaption><p>社区单脚站立循环的作者预览：作者在 MuJoCo 中运行导出的 ONNX 策略，按预设的指令顺序先用一侧单脚站立，放下后再换另一侧，录像在第二次单脚站立中结束。这是原作者的仿真环境，不是本课程在 Newton 中的运行。观察重心先移到支撑脚、再抬脚，放下时顺序相反。</p>
 </figcaption></figure><p><strong>目标。</strong> <a class="reference external" href="https://huggingface.co/RemiFabre/microduck-flamingo-cycle" rel="noreferer noopener" target="_blank">单脚站立循环 ↗</a> 按指令在双脚站立和单脚站立之间切换：指令 <code class="docutils literal notranslate"><span class="pre">[flag,</span> <span class="pre">side,</span> <span class="pre">0]</span></code> 中 <code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">1</span></code> 时把重心移到 <code class="docutils literal notranslate"><span class="pre">side</span></code> 指定的支撑脚，抬起另一只脚约 9 cm 并保持；<code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">0</span></code> 时放下脚、双脚站好。每次过渡约 1.5 s，任何时候都可以打断。上面是作者模型卡附带的仿真预览，可以先看一遍动作。</p>
 <p><strong>可观测量。</strong> 整机质心（作者特意用全身质心，而不是机身单个部件的质心：头部约占总质量的 38%，抬腿后两者相差几厘米）、两只脚的位置和接触、重力在机身坐标系中的方向、关节角与角速度。奖励中还用到一个内部量：混合进度 <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span>。它在指令切换后用 1.5 s 从 0 走到 1（或反过来），策略只观测指令本身。</p>
 <p><strong>公式。</strong> 作者没有写死“先移重心、再抬脚”的时间表，而是让每一项随 <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span> 打开或关闭：</p>
@@ -517,7 +521,7 @@
 </section>
 <section id="basketball">
 <h2>篮球平衡：奖励能看见球，策略看不见<a class="headerlink" href="#basketball" title="Link to this heading">#</a></h2>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="社区篮球平衡演示。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。"><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption><p>社区篮球平衡演示（早期版本的录像）。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。下文分析的是作者最新发布的 b11 版本。</p>
+<figure class="media media-solo" style="--media-w: 720; --media-h: 720"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="社区篮球平衡演示。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。"><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption><p>社区篮球平衡演示（早期版本的录像）。观察脚下支撑面随球转动而变化，机器人怎样持续调整姿态。下文分析的是作者最新发布的 b11 版本。</p>
 </figcaption></figure><p><strong>目标。</strong> <a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">篮球平衡 ↗</a> 让机器人站在一个自由滚动的 7 号篮球（直径 0.24 m、质量 0.62 kg）顶上保持平衡，并按速度指令移动；指令为 <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code> 时原地平衡。回合从机器人被放在球顶开始，它不会自己爬上球，也不会从地面爬起。</p>
 <p><strong>可观测量。</strong> 奖励读取球心位置和球速、机身位置、两只脚的足底参考点、重力在机身坐标系中的方向。关键在于：<strong>部署的策略看不见球</strong>。作者最新发布的 b11 版本中，策略只用本体感知和速度指令，经过一层 LSTM 记忆，从自身状态的变化里推测脚下的球；训练时的价值网络（critic）可以读取球的状态，但它不进入导出的 ONNX。奖励在仿真里计算，所以可以直接使用球的位置。</p>
 <div class="formula"><div class="formula-label">球上站姿：对准球心与双脚贴球（权重 2、1）</div><div class="formula-body">\[\htmlData{sym=r_center}{r_{\mathrm{center}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=p_ball}{p_{\mathrm{ball}}}-\htmlData{sym=p_root}{p_{\mathrm{root}}}\|_{xy}^2}{0.04^2}\right),\qquad \htmlData{sym=r_feet}{r_{\mathrm{feet}}}=\frac{1}{2}\sum_{\mathrm{L,R}}\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\|\htmlData{sym=p_foot}{p_{\mathrm{foot}}}-\htmlData{sym=p_ball}{p_{\mathrm{ball}}}\|-(\htmlData{sym=R_ball}{R}+0.012)}{0.02}\right)^2\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{center}}\)</dt><dd>机身对准球心项（权重 2）。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(p_{\mathrm{ball}}\)</dt><dd>篮球球心位置（m），直接从仿真状态读取；部署的策略看不到它。</dd></div><div><dt>\(p_{\mathrm{root}}\)</dt><dd>机器人根部（机身）位置（m）。</dd></div><div><dt>\(r_{\mathrm{feet}}\)</dt><dd>双脚贴在球面上项（权重 1），两只脚取平均。</dd></div><div><dt>\(p_{\mathrm{foot}}\)</dt><dd>某只脚的足底参考点位置（m）。</dd></div><div><dt>\(R\)</dt><dd>篮球半径，0.12 m（7 号球）。</dd></div></dl></details></div><div class="formula"><div class="formula-label">球上站姿：高度与直立（权重 1、1）</div><div class="formula-body">\[\htmlData{sym=r_height}{r_{\mathrm{height}}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=z_root}{z_{\mathrm{root}}}-\htmlData{sym=z_ball}{z_{\mathrm{ball}}}-(\htmlData{sym=R_ball}{R}+0.125)}{0.03}\right)^2\right],\qquad \htmlData{sym=r_up}{r_{\mathrm{up}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\htmlData{sym=g_x}{g_x}^2+\htmlData{sym=g_y}{g_y}^2}{0.3^2}\right)\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{height}}\)</dt><dd>站在球顶的高度项（权重 1）。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差变成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(z_{\mathrm{root}}\)</dt><dd>机身根部高度（m）。</dd></div><div><dt>\(z_{\mathrm{ball}}\)</dt><dd>球心高度（m）。</dd></div><div><dt>\(R\)</dt><dd>篮球半径，0.12 m（7 号球）。</dd></div><div><dt>\(r_{\mathrm{up}}\)</dt><dd>机身直立项（权重 1）。</dd></div><div><dt>\(g_x\)</dt><dd>重力方向在机身坐标系中的前后分量（无单位）；站直时为 0。</dd></div><div><dt>\(g_y\)</dt><dd>重力方向在机身坐标系中的左右分量（无单位）；站直时为 0。</dd></div></dl></details></div><div class="formula"><div class="formula-label">球速惩罚（权重 −0.05）</div><div class="formula-body">\[\htmlData{sym=r_ball}{r_{\mathrm{ball}}}=\|\htmlData{sym=v_ball}{v_{\mathrm{ball}}}\|^2\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\mathrm{ball}}\)</dt><dd>球速平方（权重 −0.05）：零指令时让球保持安静，权重小，指令要求滚动时仍然划算。</dd></div><div><dt>\(v_{\mathrm{ball}}\)</dt><dd>篮球的水平速度（m/s），仿真状态。</dd></div></dl></details></div><p>尺度都带长度单位：机身偏离球心 4 cm、脚底离开球面 2 cm、高度偏差 3 cm 时，对应项降到 <span class="math notranslate nohighlight">\(e^{-1}\approx 0.37\)</span>。<span class="math notranslate nohighlight">\(\htmlData{sym=r_ball}{r_{\mathrm{ball}}}\)</span> 的权重很小，零指令时让球安静，但指令要求滚动时，速度跟踪奖励仍然更划算。终止条件也读球：机身相对球心太低（低于 <span class="math notranslate nohighlight">\(\htmlData{sym=R_ball}{R}\)</span> + 0.05 m）、水平偏离超过 0.16 m 或倾斜超过 55° 即判为从球上掉落。</p>
@@ -561,7 +565,7 @@
     <span class="n">tilt</span> <span class="o">=</span> <span class="n">wrestle_tilt</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s2">"robot"</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">dz</span> <span class="o">&lt;</span> <span class="n">ball_radius</span> <span class="o">+</span> <span class="n">min_height</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">off</span> <span class="o">&gt;</span> <span class="n">max_offset</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">tilt</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">fall_tilt_deg</span><span class="p">))</span></code></pre></div></div></div><p>其余沿用步行配方的速度跟踪、姿态、直立、动作平滑和关节限位等项，完整权重见作者的<a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/src/mjlab_microduck/tasks/microduck_basketball_env_cfg.py" rel="noreferer noopener" target="_blank">配置 ↗</a>。训练初期还给球加了一个可调的“弹簧固定”，从完全固定逐步放松到自由滚动，存活够久的环境升级、很快掉下的降级。</p>
 <p><strong>作者记录的失败与对策。</strong> 根据作者的<a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/experiments/basketball/TRAINING.md" rel="noreferer noopener" target="_blank">训练记录 ↗</a>，去掉球的直接观测后，策略更难保持平衡；加入 LSTM 记忆改善了表现，教师-学生蒸馏则没能保住平衡。之后在<strong>奖励保持不变</strong>时只调整学习率和推力练习的频率，表现仍有提高。奖励只是手段之一：策略能看到什么、记得什么、练过什么，同样决定结果。</p>
-<p><strong>成功检查与局限。</strong> 作者用 3 个种子 × 1024 个环境、共 3072 次 60 秒测试，首次掉落即算失败：b11 存活 20 秒 98.86%，存活 60 秒 97.01%；看得见球的参考版本为 99.67% 和 99.12%。转向跟踪误差 1.26 rad/s，明显差于参考版本的 0.76 rad/s，动作也更不平滑；这些跟踪指标只统计掉落之前的样本。导出的 ONNX 需要额外输入和输出 LSTM 状态，普通的前馈加载器不能直接运行它。机载计算的实时性和真机表现都没有测试。</p>
+<p><strong>成功检查与局限。</strong> 作者用 3 个种子 × 1024 个环境、共 3072 次 60 秒测试，首次掉落即算失败：b11 存活 20 秒 98.86%，存活 60 秒 97.01%；看得见球的参考版本为 99.67% 和 99.12%。转向跟踪误差 1.26 rad/s，明显差于参考版本的 0.76 rad/s，动作也更不平滑；这些跟踪指标只统计掉落之前的样本。导出的 ONNX 需要额外输入和输出 LSTM 状态，普通的前馈加载器不能直接运行它。板载计算的实时性和真机表现都没有测试。</p>
 </section>
 <section id="moonwalk">
 <h2>倒滑“太空步”：描述里有，奖励里没有<a class="headerlink" href="#moonwalk" title="Link to this heading">#</a></h2>
@@ -623,7 +627,7 @@
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>都没有验证</p></td>
 <td class="cell-short"><p>真机</p></td>
-<td><p>真机与机载实时性</p></td>
+<td><p>真机与板载实时性</p></td>
 <td><p>动作是否符合描述</p></td>
 </tr>
 </tbody>
@@ -653,7 +657,7 @@
 <section id="kick-example">
 <h2>技能的开始与结束同样重要<a class="headerlink" href="#kick-example" title="Link to this heading">#</a></h2>
 <p>行走策略可以持续接收速度指令，而踢球是一个有明确起止点的短时技能。要把它接入自主任务，除了动作本身，还要说明何时允许启动、结束后进入什么状态，以及出现失败时如何停止。</p>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="出脚、触球与恢复站立的特写。片段来自完整足球任务使用的踢球组合策略。"><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>出脚、触球与恢复站立的特写。片段来自完整足球任务使用的踢球组合策略。</p>
+<figure class="media media-solo" style="--media-w: 1920; --media-h: 1080"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="出脚、触球与恢复站立的特写。片段来自完整足球任务使用的踢球组合策略。"><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>出脚、触球与恢复站立的特写。片段来自完整足球任务使用的踢球组合策略。</p>
 </figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>阶段</p></th>
@@ -682,7 +686,7 @@
 </details></div></section>
 <section id="eyes">
 <h2>会执行动作，还不等于会完成任务<a class="headerlink" href="#eyes" title="Link to this heading">#</a></h2>
-<p>到目前为止，都是我们告诉机器人“向前走”“抬起左脚”或“向后滑”。策略利用关节和 IMU 反馈保持平衡，但足球在哪里、该走哪条路，还要由别的模块来判断。第 4 部分将训练 GR00T，让它根据相机图像、指令和身体状态发出技能请求，把这些判断交给可学习的模型。</p>
+<p>到目前为止，都是我们告诉机器人“向前走”“抬起左脚”或“向后滑”。策略利用关节和 IMU 反馈保持平衡，但足球在哪里、该走哪条路，还要由别的模块来判断。第 4 部分先由人把这些判断写成板载策略；第 5 部分再训练 GR00T，让它根据相机图像、指令和身体状态发出技能请求，把这些判断交给可学习的模型。</p>
 </section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -720,11 +724,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="07-groot.html"
+       href="06-perception.html"
        title="下一页">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">下一页</p>
-        <p class="prev-next-title">4.1 视觉-语言-动作模型与 GR00T</p>
+        <p class="prev-next-title">4.1 识别球与球门：RGB 检测与 ToF 测距</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

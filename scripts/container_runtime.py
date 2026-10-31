@@ -18,6 +18,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from prepare_runtime import LOCAL, prepare  # noqa: E402
 from setup_runtime import COMMIT, IMAGE as PINNED_NAV2_IMAGE  # noqa: E402
 
+NAV2_RECORD = Path("/usr/local/share/microduck-nav2/install-record.json")
+
 
 def main():
     lab = Path(os.environ.get("ISAACLAB_PATH", "/workspace/IsaacLab"))
@@ -31,13 +33,17 @@ def main():
         if (lab / name).read_bytes() != (ROOT / "lab/environment" / name).read_bytes():
             raise RuntimeError("Image Isaac Lab lock differs from lab/environment/" + name)
     LOCAL.mkdir(parents=True, exist_ok=True)
-    # The relocation keeps the pinned Nav2 image digest in the course modules; the
-    # container labs never start that separate image, so it is recorded as unused.
+    # The relocation keeps the pinned Nav2 image digest in the course modules. The
+    # container never starts that separate image: the onboard football route runs
+    # the same Nav2 service as a CPU child process (lab/course_labs/nav2_local.py)
+    # with the ROS 2 Jazzy packages installed by docker/nav2/install.sh.
     config = dict(python=str(python), isaaclab=str(lab), detector_python=str(detector),
                   ffmpeg=ffmpeg, nav2_image=PINNED_NAV2_IMAGE, container=True)
     (LOCAL / "runtime.json").write_text(json.dumps(config, indent=2) + "\n")
     materialized = prepare()
     config["nav2_image"] = None
+    config["nav2_backend"] = "local"
+    config["nav2_install_record"] = str(NAV2_RECORD) if NAV2_RECORD.is_file() else None
     link = materialized / "runtime" / ("IsaacLab-" + COMMIT)
     link.parent.mkdir(parents=True, exist_ok=True)
     if not link.exists():

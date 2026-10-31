@@ -109,7 +109,7 @@ The panel's $\sym{q_joint}$ is the joint's angle in the simulation model. Code s
 :::{admonition} Hardware revision and simulation joints
 :class: note
 
-Of the 15 servos, the simulated policy drives 14 joints; the beak is fixed in the simulation model, so it cannot turn in the 3D duck. The controller board keeps the Raspberry Pi Zero 2 W shape from the CAD, while the current Beta electronics are based on RK3566. The camera, ToF sensor and IMU observe the task and become data sources for learned policies in Section 4.1.
+Of the 15 servos, the simulated policy drives 14 joints; the beak is fixed in the simulation model, so it cannot turn in the 3D duck. The controller board keeps the Raspberry Pi Zero 2 W shape from the CAD, while the current Beta electronics are based on RK3566. The camera, ToF sensor and IMU observe the task: the onboard policy in Section 4.1 uses them to find the ball and goal, and GR00T in Part 5 reads the camera images and body state.
 :::
 
 ::::{quiz}

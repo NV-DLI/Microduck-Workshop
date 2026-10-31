@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Drive Microduck with the keyboard to walk, turn and kick, switch to roller skates in the same window, then see how Isaac Sim connects the scene, the robot and pretrained policies." name="description" />
 
-  <title>2.1 Meet Microduck: play football first - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>2.1 Meet Microduck: play football first - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="2.2 Mechanism and control timing" href="02-anatomy.html" />
-    <link rel="prev" title="1.3 Set up the environment and get the code" href="setup.html" />
+    <link rel="prev" title="1.2 Set up the environment and get the code" href="setup.html" />
 
 
 
@@ -145,11 +145,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -322,8 +322,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="current nav bd-sidenav">
@@ -337,18 +336,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -410,7 +414,7 @@
 </section>
 <section id="play">
 <h2>Open the pitch and try the keyboard<a class="headerlink" href="#play" title="Link to this heading">#</a></h2>
-<p>Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>). It opens Isaac Sim with the same green pitch, ball and goal as the autonomous shot in Part 4.</p>
+<p>Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>). It opens Isaac Sim with the same green pitch, ball and goal as the autonomous shots in Parts 4 and 5.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>manual<span class="w"> </span><span class="se">\</span>
@@ -477,7 +481,7 @@
 </section>
 <section id="scene">
 <h2>How Isaac Sim builds the experiment<a class="headerlink" href="#scene" title="Link to this heading">#</a></h2>
-<figure class="learning-figure" data-learning-flow="learn-a9916e857c"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Scene to motion"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-a9916e857c-title"><title id="learn-a9916e857c-title">Scene to motion</title><defs><marker id="learn-a9916e857c-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-a9916e857c-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-a9916e857c-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. USD scene" aria-controls="learn-a9916e857c-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">USD scene</text><text x="114.0" y="98" class="learning-node-subtitle">Robot, pitch,</text><text x="114.0" y="115" class="learning-node-subtitle">ball and goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Physics" aria-controls="learn-a9916e857c-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Physics</text><text x="450.0" y="98" class="learning-node-subtitle">Mass, contact</text><text x="450.0" y="115" class="learning-node-subtitle">and motors</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Policy and input" aria-controls="learn-a9916e857c-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Policy and input</text><text x="786.0" y="98" class="learning-node-subtitle">Keys → ONNX →</text><text x="786.0" y="115" class="learning-node-subtitle">joint goals</text></g></svg></div><div class="learning-details" aria-label="Scene to motion"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-a9916e857c-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>USD scene</h3><p>USD places the robot, ball and goal in a shared space. Geometry and materials also affect camera images.</p></article><article id="learn-a9916e857c-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Physics</h3><p>Mass, inertia, friction and colliders determine contact and motion. Identical appearances can have different physics; realism alone does not validate dynamics.</p></article><article id="learn-a9916e857c-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Policy and input</h3><p>Keys request a direction and speed; the ONNX policy converts observations and commands into joint targets.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Rendering, physics and policy have separate roles. A new skill reuses the same scene, and moving the ball needs no retraining of the walking policy.</figcaption></figure><p>Beyond the visible mesh, the robot USD holds joints, collision shapes and mass properties: joints define connections, collision shapes decide where contact happens, mass and inertia shape acceleration and turning, and the servo model decides how a target angle becomes motion. The code below sets the official ball's 5 cm radius and 30 g mass. Isaac Sim provides the scene and rendering; the Isaac Lab task configuration connects the Newton physics backend.</p>
+<figure class="learning-figure" data-learning-flow="learn-a9916e857c"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Scene to motion"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-a9916e857c-title"><title id="learn-a9916e857c-title">Scene to motion</title><defs><marker id="learn-a9916e857c-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-a9916e857c-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-a9916e857c-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. USD scene" aria-controls="learn-a9916e857c-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">USD scene</text><text x="114.0" y="98" class="learning-node-subtitle">Robot, pitch,</text><text x="114.0" y="115" class="learning-node-subtitle">ball and goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Physics" aria-controls="learn-a9916e857c-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Physics</text><text x="450.0" y="98" class="learning-node-subtitle">Mass, contact</text><text x="450.0" y="115" class="learning-node-subtitle">and motors</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Policy and input" aria-controls="learn-a9916e857c-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Policy and input</text><text x="786.0" y="98" class="learning-node-subtitle">Keys → ONNX →</text><text x="786.0" y="115" class="learning-node-subtitle">joint goals</text></g></svg></div><div class="learning-details" aria-label="Scene to motion"><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-a9916e857c-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>USD scene</h3><p>USD places the robot, ball and goal in a shared space. Geometry and materials also affect camera images.</p></article><article id="learn-a9916e857c-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Physics</h3><p>Mass, inertia, friction and colliders determine contact and motion. Identical appearances can have different physics; realism alone does not validate dynamics.</p></article><article id="learn-a9916e857c-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Policy and input</h3><p>Keys request a direction and speed; the ONNX policy converts observations and commands into joint targets.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Rendering, physics and policy have separate roles. A new skill reuses the same scene, and moving the ball needs no retraining of the walking policy.</figcaption></figure><p>Beyond the visible mesh, the robot USD holds joints, collision shapes and mass properties: joints define connections, collision shapes decide where contact happens, mass and inertia shape acceleration and turning, and the servo model decides how a target angle becomes motion. The code below sets the official ball's 5 cm radius and 30 g mass. Isaac Sim provides the scene and rendering; the Isaac Lab task configuration connects the Newton physics backend.</p>
 <div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Register the ball in the scene</h4> <p><code>RigidObjectCfg</code> declares a rigid body; <code>{ENV_REGEX_NS}</code> gives every parallel environment its own ball.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">ball</span> <span class="o">=</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
     <span class="n">prim_path</span><span class="o">=</span><span class="s2">"</span><span class="si">{ENV_REGEX_NS}</span><span class="s2">/Ball"</span><span class="p">,</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Set shape and physical properties</h4> <p>A 0.05 m radius and 0.03 kg mass, with collision and rigid-body dynamics enabled so Newton computes how the ball moves when kicked.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
         <span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
@@ -489,7 +493,7 @@
 <span class="n">scene_profile</span> <span class="o">=</span> <span class="n">configure_football</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"A"</span><span class="p">)</span></code></pre></div></div></div></section>
 <section id="scene-contract">
 <h2>Fix the scene and hardware contract<a class="headerlink" href="#scene-contract" title="Link to this heading">#</a></h2>
-<p>Keyboard football and the GR00T shot in Part 4 use the same 1 × 1.6 m green pitch, the official black-and-white ball (10 cm diameter, 30 g) and a fixed steel-mesh goal. Scoring uses the goal's clear opening, 38.8 cm wide and 24.4 cm high. Part 3 uses the training surfaces and test terrain described in each section; Section 4.4 discusses how other pitches, lighting or indoor backgrounds affect a learned policy.</p>
+<p>Keyboard football and the autonomous shots in Parts 4 and 5 use the same 1 × 1.6 m green pitch, the official black-and-white ball (10 cm diameter, 30 g) and a fixed steel-mesh goal. Scoring uses the goal's clear opening, 38.8 cm wide and 24.4 cm high. Part 3 uses the training surfaces and test terrain described in each section; Section 5.4 discusses how other pitches, lighting or indoor backgrounds affect a learned policy.</p>
 <details class="enrichment"><summary>Scene parameters</summary><div class="enrichment-body"><ul class="simple">
 <li><p><strong>Goal.</strong> Outer size 40 cm wide × 20 cm deep × 25 cm high; with a 6 mm frame diameter, the post centres are 39.4 cm apart. Localization uses the centre spacing and scoring uses the clear opening, so keep them apart.</p></li>
 <li><p><strong>Floor.</strong> A rigid plane without foam compression or raised edges; the friction of the mat against a real floor has not been calibrated.</p></li>
@@ -527,12 +531,12 @@
     <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">&lt;</span> <span class="mf">0.14</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">phase</span> <span class="o">-</span> <span class="mf">0.14</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.12</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Blend the two policies&#x27; actions</h4> <p><code>torch.lerp</code> interpolates between the walking and kick actions by that weight; at weight 0 the walking action is used unchanged.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
         <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">kick</span><span class="p">(</span><span class="n">obs</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Turn the action into joint targets</h4> <p>The action manager maps network outputs to joint targets for the actuators and physics simulation.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># The action manager maps network outputs to joint targets.</span>
 <span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div></div><p>The lab plays the kick fully for 0.14 s, then blends back to the walking policy's stance over 0.12 s. These times only shape the handoff between skills; the official weights stay unchanged.</p>
-<p>A policy file is under 1 MB, but the full simulation also needs GPU memory for the scene, physics and rendering, so do not size memory by file size. The <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> command from Section 1.3 prints a policy file's SHA-256, input and output tensor shapes, and the operators it uses.</p>
+<p>A policy file is under 1 MB, but the full simulation also needs GPU memory for the scene, physics and rendering, so do not size memory by file size. The <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> command from Section 1.2 prints a policy file's SHA-256, input and output tensor shapes, and the operators it uses.</p>
 </section>
 <section id="reflect">
 <h2>Who decided the next step?<a class="headerlink" href="#reflect" title="Link to this heading">#</a></h2>
 <div class="quiz"><h3>Check your understanding</h3><p>Which decisions did you just make that the robot cannot yet make on its own?</p>
-<details><summary>Show explanation</summary><p>You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Part 4 trains GR00T to learn these decisions from demonstrations; Section 4.4 then discusses environment variation and data expansion.</p>
+<details><summary>Show explanation</summary><p>You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Part 4 has people write these decisions into an onboard policy; Part 5 trains GR00T to learn them from demonstrations, and Section 5.4 discusses environment variation and data expansion.</p>
 </details></div><p>Section 2.2 looks at the mechanism behind these motions and the rhythm at which the policy and the physics engine work together.</p>
 </section>
 <section id="references">
@@ -560,7 +564,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">1.3 Set up the environment and get the code</p>
+        <p class="prev-next-title">1.2 Set up the environment and get the code</p>
       </div>
     </a>
     <a class="right-next"

@@ -1,0 +1,609 @@
+
+<!DOCTYPE html>
+
+
+<html lang="zh-CN" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="板载策略把步行射门拆成人设计的阶段，每个阶段满足条件才进入下一步。这些阶段来自我们对射门任务的理解，换一个任务就要重新设计。" name="description" />
+
+  <title>4.2 手工设计的射门阶段 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=1663b99f"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script src="_static/translations.js?v=beaddf03"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '06-onboard';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="next" title="5.1 视觉-语言-动作模型与 GR00T" href="07-groot.html" />
+    <link rel="prev" title="4.1 识别球与球门：RGB 检测与 ToF 测距" href="06-perception.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="zh-CN"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="zh" data-page="06-onboard">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">跳转至主要内容</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>回到顶部</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="版本警告"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="网页导航">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/06-onboard.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/06-onboard.html">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="搜索" aria-label="搜索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">搜索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="当前页面">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+  
+  
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="选择语言" title="选择语言"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item active" lang="zh-CN" href="../zh/06-onboard.html" aria-current="true">简体中文</a></li>
+    <li><a class="dropdown-item" lang="en" href="../en/06-onboard.html">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="深色模式" title="深色模式">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="目录">
+  <p class="bd-links__title" role="heading" aria-level="1">目录</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 准备环境与获取代码</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 认识 Microduck：先来踢一场球</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 拆解机械结构与控制周期</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.2 手工设计的射门阶段</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="初始页面">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.2 手工设计的射门阶段</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>4.2 手工设计的射门阶段<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>板载策略把步行射门拆成人设计的阶段，每个阶段满足条件才进入下一步。</p>
+</div><div class="lesson-meta">第 4.2 节 · 预计学习时长 15 分钟</div></div></div><section id="stages">
+<h2>射门的六个阶段<a class="headerlink" href="#stages" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-06adf3c7d7"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="板载策略的步行射门阶段"><svg class="learning-svg" viewBox="0 0 900 340" role="group" aria-labelledby="learn-06adf3c7d7-title"><title id="learn-06adf3c7d7-title">板载策略的步行射门阶段</title><defs><marker id="learn-06adf3c7d7-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-06adf3c7d7-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-06adf3c7d7-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-06adf3c7d7-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 134V206" marker-end="url(#learn-06adf3c7d7-arrow)"/><path class="learning-edge" data-from="4" data-to="5" d="M692.0 263.0H656.0" marker-end="url(#learn-06adf3c7d7-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 寻找目标" aria-controls="learn-06adf3c7d7-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">寻找目标</text><text x="114.0" y="98" class="learning-node-subtitle">转头观察球门与足球</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 规划接近" aria-controls="learn-06adf3c7d7-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">规划接近</text><text x="338.0" y="98" class="learning-node-subtitle">选好球后站位，分段走近</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 近距细调" aria-controls="learn-06adf3c7d7-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">近距细调</text><text x="562.0" y="98" class="learning-node-subtitle">小步移动，停稳后再看球</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 对准出脚位置" aria-controls="learn-06adf3c7d7-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">对准出脚位置</text><text x="786.0" y="98" class="learning-node-subtitle">球在右脚前，</text><text x="786.0" y="115" class="learning-node-subtitle">身体朝向球门</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. 交接给踢球" aria-controls="learn-06adf3c7d7-detail-4" aria-expanded="false"><rect x="696.0" y="210" width="180" height="106" rx="6"/><text x="786.0" y="234" class="learning-node-index">05</text><text x="786.0" y="260" class="learning-node-title">交接给踢球</text><text x="786.0" y="284" class="learning-node-subtitle">停步，头部回</text><text x="786.0" y="301" class="learning-node-subtitle">正，身体静止</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. 踢球与恢复" aria-controls="learn-06adf3c7d7-detail-5" aria-expanded="false"><rect x="472.0" y="210" width="180" height="106" rx="6"/><text x="562.0" y="234" class="learning-node-index">06</text><text x="562.0" y="260" class="learning-node-title">踢球与恢复</text><text x="562.0" y="284" class="learning-node-subtitle">踢球技能出脚，回到站立</text></g></svg></div><div class="learning-details" aria-label="板载策略的步行射门阶段"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-06adf3c7d7-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>寻找目标</h3><p>转头寻找球门和足球，确定自己相对球门的位置。信息过旧或互相矛盾时，停下来重新观察。</p></article><article id="learn-06adf3c7d7-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>规划接近</h3><p>由球和球门的位置算出射门方向，在球后方留出一段距离作为站位，用 ROS 2 导航框架 Nav2 规划路径分段接近；途中定期重新确认球门。</p></article><article id="learn-06adf3c7d7-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>近距细调</h3><p>离球较近后改为小步移动或原地转向。每走一段就停稳，等身体晃动减小后再看球，因为行走时相机在晃，测得的位置不够准。</p></article><article id="learn-06adf3c7d7-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>对准出脚位置</h3><p>检查球是否落在右脚前方、身体是否朝向球门。不满足就回到细调。</p></article><article id="learn-06adf3c7d7-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>交接给踢球</h3><p>停止行走，头部回到踢球姿态，并确认身体已经静止、球门信息仍然新鲜，才把控制交给踢球技能。</p></article><article id="learn-06adf3c7d7-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>踢球与恢复</h3><p>运行已训练好的踢球与恢复技能，随后回到站立。是否进球由评测程序用仿真真值判断。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>阶段之间不是按时间切换，而是看条件：条件不满足，策略就停下、重新观察或退回上一阶段，所以一次射门中细调常会重复好几次。板载策略不直接控制关节：移动请求交给 2.1 节体验过的行走策略，出脚交给踢球技能。</p>
+</section>
+<section id="run">
+<h2>观察自动射门<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
+<p>先按 <a class="reference internal" href="setup.html"><span class="std std-doc">1.2 节</span></a> 准备好课程容器，再回到容器终端；容器已在运行时，可以在宿主机用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> 进入。然后运行：</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>football<span class="w"> </span>--seconds<span class="w"> </span><span class="m">45</span><span class="w"> </span>--output<span class="w"> </span>outputs/onboard-football
+</pre></div>
+</div>
+</div>
+<p>Isaac Sim 窗口打开后，会自动显示头部 RGB 图像和 8×8 ToF 面板。观察机器人怎样走、停、看交替，任务阶段又怎样切换。一次运行不保证进球，结局以终端输出和输出目录里的记录为准。可以随时按 <strong>Ctrl+C</strong> 停止；重新运行时换一个新的 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 目录。</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="板载射门的 Isaac Sim 完整界面，同时显示绿色球场、头部 RGB 图像和 8×8 ToF 距离。"></a><figcaption><p>左侧观察机器人，右侧对照它此刻看到的图像与距离。NR 表示没有回波，不能据此认为前方没有障碍。</p>
+</figcaption></figure><details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>场景。</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard_scene.py</span></code> 创建绿色球场；<code class="docutils literal notranslate"><span class="pre">--scene</span> <span class="pre">indoor</span></code> 与 <code class="docutils literal notranslate"><span class="pre">--style</span> <span class="pre">A</span></code> 是 <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">football</span></code> 的默认值。</p></li>
+<li><p><strong>行走策略。</strong> 仓库的 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code> 复制为容器内的 <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/models/reference/velstand.onnx</span></code>，由 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 加载。</p></li>
+<li><p><strong>检测器。</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span></code> 先核对 <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code> 所列权重的 SHA-256，再写出 <code class="docutils literal notranslate"><span class="pre">/workspace/state/scene-detector-deployment.json</span></code>，经 <code class="docutils literal notranslate"><span class="pre">--detector-deployment</span></code> 加载。</p></li>
+<li><p><strong>踢球与恢复。</strong> 执行器从固定路径 <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/configuration/core/kick_policy/export/deployment.json</span></code> 加载，它绑定由 <code class="docutils literal notranslate"><span class="pre">models/kick-teacher.onnx</span></code> 和 <code class="docutils literal notranslate"><span class="pre">models/kick-residual.onnx</span></code> 复制的两个网络。</p></li>
+</ul>
+</div></details></section>
+<section id="design">
+<h2>这些阶段从哪里来<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
+<p>每个阶段和切换条件，都来自我们对射门这个任务的理解：踢球技能需要球在右脚前、身体朝向球门，所以要站位和对准；行走时看不准，所以要走、停、看交替；踢球要从静止站姿开始，所以要单独交接。</p>
+<p>这样的流程清楚、容易排查，但只适合这一个任务。换成“把球带到中圈停下”或“走到球旁但不要碰球”，阶段、条件和阈值大多要重新设计。能不能用一句指令说明任务，让模型从示范中学会该做什么？第 5 部分用 GR00T 尝试这条路线，它的示范来自板载策略。</p>
+<div class="quiz"><h3>检查理解</h3><p>想让 Microduck 把球带到中圈停下，现有的板载策略能直接复用吗？</p>
+<details><summary>查看解析</summary><p>感知部分大多可以复用，但站位、阶段顺序、切换条件和交接都是为射门设计的，需要重新设计和调试。为每个新任务手工重写流程，正是第 5 部分转向从示范中学习的原因。</p>
+</details></div></section>
+<section id="references">
+<h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://docs.nav2.org/" rel="noreferer noopener" target="_blank">Nav2 官方文档 ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06-perception.html"
+       title="上一页">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">上一页</p>
+        <p class="prev-next-title">4.1 识别球与球门：RGB 检测与 ToF 测距</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07-groot.html"
+       title="下一页">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">下一页</p>
+        <p class="prev-next-title">5.1 视觉-语言-动作模型与 GR00T</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 当前页面
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stages">射门的六个阶段</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">观察自动射门</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design">这些阶段从哪里来</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

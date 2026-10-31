@@ -262,19 +262,22 @@
   }
 })();
 
-// Node explanations remain readable without JavaScript. Selection is scoped to
-// each figure so Escape and Close do not reset another diagram on the page.
+// Node explanations remain readable without JavaScript. With it, the explanation
+// panel is hidden (no reserved space) until a node is hovered, focused or
+// selected, and hidden again by Close or Escape. Selection is scoped to each
+// figure so Escape and Close do not reset another diagram on the page.
 (() => {
   for (const root of document.querySelectorAll('[data-learning-flow]')) {
     const nodes = [...root.querySelectorAll('[data-node]')];
     const definitions = [...root.querySelectorAll('[data-node-detail]')];
+    const panel = root.querySelector('.learning-details');
     const reset = root.querySelector('.learning-reset');
-    const empty = root.querySelector('.learning-empty');
+    if (!panel || !reset || !nodes.length) continue;
     let selected = null;
     let preview = null;
-    root.classList.add('is-enhanced');
     function render() {
       const active = selected ?? preview;
+      panel.hidden = active === null;
       definitions.forEach(d => { d.hidden = d.dataset.nodeDetail !== active; });
       nodes.forEach(n => {
         const match = n.dataset.node === active;
@@ -284,7 +287,6 @@
       root.querySelectorAll('.learning-edge').forEach(edge => {
         edge.classList.toggle('is-active', edge.dataset.from === active || edge.dataset.to === active);
       });
-      empty.hidden = active !== null;
       reset.hidden = active === null;
     }
     function select(node) {
@@ -318,20 +320,30 @@
     root.addEventListener('keydown', event => {
       if (event.key === 'Escape') { event.preventDefault(); clear(); }
     });
-    // Reserve the largest explanation's height at the current width. This
-    // avoids page jumps when switching nodes, including after resizing.
+    // While open, the panel keeps the largest explanation's height at the
+    // current width, so switching nodes does not move the page. Measuring shows
+    // the panel and each explanation only inside this synchronous call, then
+    // restores their hidden state, so nothing is painted or reserved meanwhile.
     function sizePanel() {
-      const panel = root.querySelector('.learning-details');
+      const panelHidden = panel.hidden;
+      const states = definitions.map(d => d.hidden);
       panel.style.minHeight = '';
+      panel.hidden = false;
+      definitions.forEach(d => { d.hidden = true; });
+      const frame = panel.getBoundingClientRect().height; // padding and border only
       let max = 0;
       definitions.forEach(d => {
-        const hidden = d.hidden; d.hidden = false;
+        d.hidden = false;
         max = Math.max(max, d.getBoundingClientRect().height);
-        d.hidden = hidden;
+        d.hidden = true;
       });
-      panel.style.minHeight = `${Math.ceil(max + 52)}px`;
+      definitions.forEach((d, i) => { d.hidden = states[i]; });
+      panel.hidden = panelHidden;
+      panel.style.minHeight = max ? `${Math.ceil(frame + max)}px` : '';
     }
-    render(); sizePanel();
+    render();
+    root.classList.add('is-enhanced');
+    sizePanel();
     let width = 0;
     new ResizeObserver(entries => {
       const next = entries[0].contentRect.width;

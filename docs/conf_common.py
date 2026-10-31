@@ -17,13 +17,13 @@ sys.path.insert(0, str(DOCS / "_ext"))
 LANGS = {
     "zh": dict(
         language="zh_CN",
-        project="使用 NVIDIA Isaac 仿真并训练 Microduck",
+        project="使用 NVIDIA Isaac 在仿真环境训练 Microduck",
         language_menu="选择语言",
         dark_mode="深色模式",
     ),
     "en": dict(
         language="en",
-        project="Simulate and train Microduck with NVIDIA Isaac",
+        project="Train Microduck in Simulation with NVIDIA Isaac",
         language_menu="Choose language",
         dark_mode="Dark mode",
     ),

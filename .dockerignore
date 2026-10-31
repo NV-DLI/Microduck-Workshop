@@ -1,0 +1,20 @@
+# Repository metadata and local tools
+.git/
+.github/
+.agents/
+.local/
+.runtime/
+**/__pycache__/
+*.pyc
+node_modules/
+# Course website and its build inputs are not needed to run labs
+web/
+docs/
+content/
+artwork/
+validation/
+tests/
+# Runtime-mounted directories (docker/compose.yaml)
+outputs/
+course-data/
+weights/

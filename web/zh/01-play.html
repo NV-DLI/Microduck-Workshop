@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="先用键盘指挥 Microduck 走路、转向和踢球，在同一个窗口里切换到轮滑，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。" name="description" />
 
-  <title>2.1 认识 Microduck：先来踢一场球 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <title>2.1 认识 Microduck：先来踢一场球 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -65,7 +65,7 @@
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="2.2 拆解机械结构与控制周期" href="02-anatomy.html" />
-    <link rel="prev" title="1.3 准备环境与获取代码" href="setup.html" />
+    <link rel="prev" title="1.2 准备环境与获取代码" href="setup.html" />
 
 
 
@@ -146,11 +146,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a></div>
     
@@ -256,11 +256,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a>
 
@@ -323,8 +323,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 准备环境与获取代码</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
 <ul class="current nav bd-sidenav">
@@ -338,18 +337,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 手工设计的射门阶段</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -411,7 +415,7 @@
 </section>
 <section id="play">
 <h2>打开球场，用键盘试一试<a class="headerlink" href="#play" title="Link to this heading">#</a></h2>
-<p>在 1.3 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.3 节</a>）。它打开 Isaac Sim，场景中是第 4 部分自主射门同样的绿色球场、足球和球门。</p>
+<p>在 1.2 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.2 节</a>）。它打开 Isaac Sim，场景中是第 4、5 部分自主射门同样的绿色球场、足球和球门。</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>manual<span class="w"> </span><span class="se">\</span>
@@ -478,7 +482,7 @@
 </section>
 <section id="scene">
 <h2>Isaac Sim 如何构成这场实验<a class="headerlink" href="#scene" title="Link to this heading">#</a></h2>
-<figure class="learning-figure" data-learning-flow="learn-00136b19a7"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从场景到运动"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-00136b19a7-title"><title id="learn-00136b19a7-title">从场景到运动</title><defs><marker id="learn-00136b19a7-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-00136b19a7-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-00136b19a7-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. USD 场景" aria-controls="learn-00136b19a7-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">USD 场景</text><text x="114.0" y="98" class="learning-node-subtitle">机器人、球场</text><text x="114.0" y="115" class="learning-node-subtitle">、足球与球门</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 物理配置" aria-controls="learn-00136b19a7-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">物理配置</text><text x="450.0" y="98" class="learning-node-subtitle">质量、碰撞、</text><text x="450.0" y="115" class="learning-node-subtitle">摩擦与执行器</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 策略与输入" aria-controls="learn-00136b19a7-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">策略与输入</text><text x="786.0" y="98" class="learning-node-subtitle">键盘速度 → ONNX</text><text x="786.0" y="115" class="learning-node-subtitle">→ 关节目标</text></g></svg></div><div class="learning-details" aria-label="从场景到运动"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-00136b19a7-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>USD 场景</h3><p>USD 场景将机器人、球与球门放在同一空间。网格负责可见外形，几何与材质也会影响相机看到的图像。</p></article><article id="learn-00136b19a7-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>物理配置</h3><p>质量、惯量、摩擦和碰撞体决定接触后的运动。相同外观可以对应不同物理配置，因此外观逼真不能代替物理检查。</p></article><article id="learn-00136b19a7-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>策略与输入</h3><p>键盘提供期望的运动方向与速度，ONNX 策略把观测和指令转换为关节目标。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>画面、物理与策略各司其职：更换技能可以沿用同一个场景，移动足球也无需重新训练行走策略。</figcaption></figure><p>机器人 USD 除了可见网格，还包含关节、碰撞形状和质量属性：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型决定目标角度如何变成实际运动。下面的代码按官网黑白足球设置半径 5 cm、质量 30 g。Isaac Sim 提供场景与渲染，Isaac Lab 的任务配置则接入 Newton 物理后端。</p>
+<figure class="learning-figure" data-learning-flow="learn-00136b19a7"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从场景到运动"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-00136b19a7-title"><title id="learn-00136b19a7-title">从场景到运动</title><defs><marker id="learn-00136b19a7-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-00136b19a7-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-00136b19a7-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. USD 场景" aria-controls="learn-00136b19a7-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">USD 场景</text><text x="114.0" y="98" class="learning-node-subtitle">机器人、球场</text><text x="114.0" y="115" class="learning-node-subtitle">、足球与球门</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 物理配置" aria-controls="learn-00136b19a7-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">物理配置</text><text x="450.0" y="98" class="learning-node-subtitle">质量、碰撞、</text><text x="450.0" y="115" class="learning-node-subtitle">摩擦与执行器</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 策略与输入" aria-controls="learn-00136b19a7-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">策略与输入</text><text x="786.0" y="98" class="learning-node-subtitle">键盘速度 → ONNX</text><text x="786.0" y="115" class="learning-node-subtitle">→ 关节目标</text></g></svg></div><div class="learning-details" aria-label="从场景到运动"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-00136b19a7-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>USD 场景</h3><p>USD 场景将机器人、球与球门放在同一空间。网格负责可见外形，几何与材质也会影响相机看到的图像。</p></article><article id="learn-00136b19a7-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>物理配置</h3><p>质量、惯量、摩擦和碰撞体决定接触后的运动。相同外观可以对应不同物理配置，因此外观逼真不能代替物理检查。</p></article><article id="learn-00136b19a7-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>策略与输入</h3><p>键盘提供期望的运动方向与速度，ONNX 策略把观测和指令转换为关节目标。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>画面、物理与策略各司其职：更换技能可以沿用同一个场景，移动足球也无需重新训练行走策略。</figcaption></figure><p>机器人 USD 除了可见网格，还包含关节、碰撞形状和质量属性：关节定义连接关系，碰撞形状决定接触位置，质量与惯量影响加速和转身，舵机模型决定目标角度如何变成实际运动。下面的代码按官网黑白足球设置半径 5 cm、质量 30 g。Isaac Sim 提供场景与渲染，Isaac Lab 的任务配置则接入 Newton 物理后端。</p>
 <div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/manual.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>在场景中登记足球</h4> <p><code>RigidObjectCfg</code> 声明一个刚体；<code>{ENV_REGEX_NS}</code> 让每个并行环境都有自己的一颗球。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">ball</span> <span class="o">=</span> <span class="n">RigidObjectCfg</span><span class="p">(</span>
     <span class="n">prim_path</span><span class="o">=</span><span class="s2">"</span><span class="si">{ENV_REGEX_NS}</span><span class="s2">/Ball"</span><span class="p">,</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>设置形状与物理属性</h4> <p>半径 0.05 m、质量 0.03 kg，并启用碰撞与刚体动力学，Newton 才会计算球被踢后的运动。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">spawn</span><span class="o">=</span><span class="n">sim_utils</span><span class="o">.</span><span class="n">SphereCfg</span><span class="p">(</span>
         <span class="n">radius</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
@@ -490,7 +494,7 @@
 <span class="n">scene_profile</span> <span class="o">=</span> <span class="n">configure_football</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"A"</span><span class="p">)</span></code></pre></div></div></div></section>
 <section id="scene-contract">
 <h2>先固定场景与硬件约定<a class="headerlink" href="#scene-contract" title="Link to this heading">#</a></h2>
-<p>键盘射门与第 4 部分的 GR00T 射门使用同一块 1 × 1.6 米的绿色球场、直径 10 厘米、质量 30 克的官网黑白足球和固定式钢网球门。进球判定使用球门的净开口：宽 38.8 厘米、高 24.4 厘米。第 3 部分使用各节说明的训练地面和测试地形；换场地、灯光或室内背景的影响留到 4.4 节讨论。</p>
+<p>键盘射门与第 4、5 部分的自主射门使用同一块 1 × 1.6 米的绿色球场、直径 10 厘米、质量 30 克的官网黑白足球和固定式钢网球门。进球判定使用球门的净开口：宽 38.8 厘米、高 24.4 厘米。第 3 部分使用各节说明的训练地面和测试地形；换场地、灯光或室内背景的影响留到 5.4 节讨论。</p>
 <details class="enrichment"><summary>场景参数</summary><div class="enrichment-body"><ul class="simple">
 <li><p><strong>球门。</strong> 外尺寸宽 40 × 深 20 × 高 25 厘米；门框直径按 6 毫米计，两根立柱的中心距为 39.4 厘米。定位用中心距，进球判定用净开口，两者不要混用。</p></li>
 <li><p><strong>地面。</strong> 按刚性平面处理，没有模拟软垫的压缩或起翘；场地垫与实物地面的摩擦尚未标定。</p></li>
@@ -528,12 +532,12 @@
     <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">&lt;</span> <span class="mf">0.14</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">phase</span> <span class="o">-</span> <span class="mf">0.14</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.12</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>混合两个策略的动作</h4> <p><code>torch.lerp</code> 按权重在行走动作与踢球动作之间插值；权重为 0 时直接沿用行走动作。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
         <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">kick</span><span class="p">(</span><span class="n">obs</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>转换为关节目标</h4> <p>动作管理器把网络输出映射为关节目标，再交给执行器和物理仿真。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># The action manager maps network outputs to joint targets.</span>
 <span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div></div><p>手动实验让踢球动作完整保持 0.14 秒，再用 0.12 秒平滑切回行走策略的站立动作。这两个时间只影响技能之间的切换，官方权重保持不变。</p>
-<p>策略文件不到 1 MB，但运行完整仿真还要为场景、物理和渲染占用显存，不能按文件大小估算。1.3 节运行过的 <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> 会显示策略文件的 SHA-256、输入输出张量形状和用到的算子。</p>
+<p>策略文件不到 1 MB，但运行完整仿真还要为场景、物理和渲染占用显存，不能按文件大小估算。1.2 节运行过的 <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> 会显示策略文件的 SHA-256、输入输出张量形状和用到的算子。</p>
 </section>
 <section id="reflect">
 <h2>刚才是谁在决定下一步<a class="headerlink" href="#reflect" title="Link to this heading">#</a></h2>
 <div class="quiz"><h3>检查理解</h3><p>刚才您已经完成了哪些机器人还不会自主完成的判断？</p>
-<details><summary>查看解析</summary><p>您识别了足球和球门、估计了距离、选择了接近路线和出脚位置，并决定何时踢球。第 4 部分训练 GR00T 从示范数据中学习这些判断，4.4 节再讨论环境变化与数据扩展。</p>
+<details><summary>查看解析</summary><p>您识别了足球和球门、估计了距离、选择了接近路线和出脚位置，并决定何时踢球。第 4 部分先由人把这些判断写成板载策略，第 5 部分再训练 GR00T 从示范数据中学习它们，5.4 节讨论环境变化与数据扩展。</p>
 </details></div><p>2.2 节先看看这些动作背后的机械结构，以及策略和物理引擎按什么节奏协同工作。</p>
 </section>
 <section id="references">
@@ -561,7 +565,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">上一页</p>
-        <p class="prev-next-title">1.3 准备环境与获取代码</p>
+        <p class="prev-next-title">1.2 准备环境与获取代码</p>
       </div>
     </a>
     <a class="right-next"

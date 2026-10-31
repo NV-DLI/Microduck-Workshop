@@ -22,7 +22,7 @@ Microduck is an open-source biped from Pollen Robotics and Hugging Face. It has 
 {#play}
 ## Open the pitch and try the keyboard
 
-Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>). It opens Isaac Sim with the same green pitch, ball and goal as the autonomous shot in Part 4.
+Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>). It opens Isaac Sim with the same green pitch, ball and goal as the autonomous shots in Parts 4 and 5.
 
 ```{code-block} bash
 :caption: Terminal · inside the container
@@ -128,7 +128,7 @@ steps:
 {#scene-contract}
 ## Fix the scene and hardware contract
 
-Keyboard football and the GR00T shot in Part 4 use the same 1 × 1.6 m green pitch, the official black-and-white ball (10 cm diameter, 30 g) and a fixed steel-mesh goal. Scoring uses the goal's clear opening, 38.8 cm wide and 24.4 cm high. Part 3 uses the training surfaces and test terrain described in each section; Section 4.4 discusses how other pitches, lighting or indoor backgrounds affect a learned policy.
+Keyboard football and the autonomous shots in Parts 4 and 5 use the same 1 × 1.6 m green pitch, the official black-and-white ball (10 cm diameter, 30 g) and a fixed steel-mesh goal. Scoring uses the goal's clear opening, 38.8 cm wide and 24.4 cm high. Part 3 uses the training surfaces and test terrain described in each section; Section 5.4 discusses how other pitches, lighting or indoor backgrounds affect a learned policy.
 
 :::{enrichment} Scene parameters
 - **Goal.** Outer size 40 cm wide × 20 cm deep × 25 cm high; with a 6 mm frame diameter, the post centres are 39.4 cm apart. Localization uses the centre spacing and scoring uses the clear opening, so keep them apart.
@@ -187,7 +187,7 @@ steps:
 
 The lab plays the kick fully for 0.14 s, then blends back to the walking policy's stance over 0.12 s. These times only shape the handoff between skills; the official weights stay unchanged.
 
-A policy file is under 1 MB, but the full simulation also needs GPU memory for the scene, physics and rendering, so do not size memory by file size. The `inspect-model` command from Section 1.3 prints a policy file's SHA-256, input and output tensor shapes, and the operators it uses.
+A policy file is under 1 MB, but the full simulation also needs GPU memory for the scene, physics and rendering, so do not size memory by file size. The `inspect-model` command from Section 1.2 prints a policy file's SHA-256, input and output tensor shapes, and the operators it uses.
 
 {#reflect}
 ## Who decided the next step?
@@ -196,7 +196,7 @@ A policy file is under 1 MB, but the full simulation also needs GPU memory for t
 Which decisions did you just make that the robot cannot yet make on its own?
 
 :::{answer}
-You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Part 4 trains GR00T to learn these decisions from demonstrations; Section 4.4 then discusses environment variation and data expansion.
+You identified the ball and goal, estimated distance, selected a route and stance, and decided when to kick. Part 4 has people write these decisions into an onboard policy; Part 5 trains GR00T to learn them from demonstrations, and Section 5.4 discusses environment variation and data expansion.
 :::
 ::::
 

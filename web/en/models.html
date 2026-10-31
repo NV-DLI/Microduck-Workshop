@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters." name="description" />
 
-  <title>5.1 Models and data - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>6.1 Models and data - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,15 +56,15 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5.2 Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="4.4 From the pitch to more environments" href="09-worlds.html" />
+    <link rel="next" title="6.2 Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="5.4 From the pitch to more environments" href="09-worlds.html" />
 
 
 
@@ -145,11 +145,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -322,8 +322,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -337,18 +336,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -383,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 Models and data</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">6.1 Models and data</span></li>
   </ul>
 </nav>
 </div>
@@ -402,7 +406,7 @@
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 <section class="tex2jax_ignore mathjax_ignore" id="models-and-data">
-<h1>5.1 Models and data<a class="headerlink" href="#models-and-data" title="Link to this heading">#</a></h1>
+<h1>6.1 Models and data<a class="headerlink" href="#models-and-data" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters.</p>
 </div><div class="lesson-meta">Quick reference · No retraining required</div></div></div><section id="inventory">
 <h2>Course model inventory<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
@@ -416,7 +420,7 @@
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
 <td><p>Fixed walking policy</p></td>
-<td><p>Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>; the low-level walking policy in the Section 4.3 validation scene uses a copy of the same model</p></td>
+<td><p>Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>; the low-level walking policy of the Section 4.2 onboard shot and of the Section 5.3 validation scene uses a copy of the same model</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
 <td><p>Section 3.3 fixed terrain walking actor, about 0.79 MB</p></td>
@@ -424,11 +428,11 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
 <td><p>Base kicking action</p></td>
-<td><p>Section 2.1 keyboard football (Space, read automatically)</p></td>
+<td><p>Section 2.1 keyboard football (Space, read automatically); the kick skill of the Section 4.2 onboard shot uses a copy of the same model</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
 <td><p>Residual kick adjustment</p></td>
-<td><p>Retained; not read directly by this course's hands-on commands</p></td>
+<td><p>The kick skill of the Section 4.2 onboard shot uses a copy of the same model; not read directly by this course's hands-on commands</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
 <td><p>Retained kick training checkpoint</p></td>
@@ -448,7 +452,7 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
 <td><p>Official 10 cm ball and four-surface detector; current default</p></td>
-<td><p>The onboard policy's visual detector; not read directly by this course's hands-on commands</p></td>
+<td><p>The visual detector of the Section 4.1 onboard policy; not read directly by this course's hands-on commands</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code></p></td>
 <td><p>Official four-passive-wheel actor, 14 servo actions</p></td>
@@ -470,7 +474,7 @@
 </div>
 <p>These files ship with the Git repository, so cloning it is enough; no Git LFS or separate model account is needed. <code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> records sizes, sources, and SHA-256 identities, and each lab checks model identity before running to guard against same-name replacements. The relative paths and SHA-256 of the current default detector are recorded in <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>.</p>
 <p><strong>In the repository.</strong> The weights for Parts 2–3 and the onboard policy; the pretrained PPO walking result of Section 3.2 and the slope-training logs are in <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> and <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code> (<code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code> in the container, read-only). <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment</span></code> is the record of a roller slope training run that did not learn to climb; it is kept as a counterexample for reward design, not as a usable slope model.</p>
-<p><strong>Separate data package.</strong> The GR00T walking-shot data, feature cache and trained checkpoint of Section 4.3 come from the separate GR00T course data package (<code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code> in the container; check it with <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/groot_walking.py</span> <span class="pre">verify</span></code>). The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face under their access and license terms.</p>
+<p><strong>Separate data package.</strong> The GR00T walking-shot data, feature cache and trained checkpoint of Section 5.3 come from the separate GR00T course data package (<code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code> in the container; check it with <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/groot_walking.py</span> <span class="pre">verify</span></code>). The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face under their access and license terms.</p>
 </section>
 <section id="practice-data">
 <h2>Practice data and your outputs<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
@@ -498,7 +502,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">4.4 From the pitch to more environments</p>
+        <p class="prev-next-title">5.4 From the pitch to more environments</p>
       </div>
     </a>
     <a class="right-next"
@@ -506,7 +510,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">5.2 Troubleshooting</p>
+        <p class="prev-next-title">6.2 Troubleshooting</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

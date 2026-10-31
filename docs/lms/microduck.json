@@ -13,8 +13,8 @@
     {
       "id": "microduck-course",
       "title": {
-        "zh": "使用 NVIDIA Isaac 仿真并训练 Microduck",
-        "en": "Simulate and train Microduck with NVIDIA Isaac"
+        "zh": "使用 NVIDIA Isaac 在仿真环境训练 Microduck",
+        "en": "Train Microduck in Simulation with NVIDIA Isaac"
       },
       "sections": [
         {
@@ -36,21 +36,10 @@
               }
             },
             {
-              "id": "how-to-learn",
-              "title": {
-                "zh": "1.2 如何学习本课程",
-                "en": "1.2 How to take this course"
-              },
-              "paths": {
-                "zh": "zh/how-to-learn.html",
-                "en": "en/how-to-learn.html"
-              }
-            },
-            {
               "id": "setup",
               "title": {
-                "zh": "1.3 准备环境与获取代码",
-                "en": "1.3 Set up the environment and get the code"
+                "zh": "1.2 准备环境与获取代码",
+                "en": "1.2 Set up the environment and get the code"
               },
               "paths": {
                 "zh": "zh/setup.html",
@@ -144,17 +133,48 @@
           ]
         },
         {
+          "id": "onboard",
+          "title": {
+            "zh": "4 板载策略完成射门任务",
+            "en": "4 Complete the shooting task with an onboard policy"
+          },
+          "pages": [
+            {
+              "id": "06-perception",
+              "title": {
+                "zh": "4.1 识别球与球门：RGB 检测与 ToF 测距",
+                "en": "4.1 Find the ball and goal: RGB detection and ToF ranging"
+              },
+              "paths": {
+                "zh": "zh/06-perception.html",
+                "en": "en/06-perception.html"
+              }
+            },
+            {
+              "id": "06-onboard",
+              "title": {
+                "zh": "4.2 手工设计的射门阶段",
+                "en": "4.2 Hand-designed shooting stages"
+              },
+              "paths": {
+                "zh": "zh/06-onboard.html",
+                "en": "en/06-onboard.html"
+              }
+            }
+          ]
+        },
+        {
           "id": "groot",
           "title": {
-            "zh": "4 训练 GR00T 自主完成任务",
-            "en": "4 Train GR00T to complete tasks autonomously"
+            "zh": "5 训练 GR00T 自主完成任务",
+            "en": "5 Train GR00T to complete tasks autonomously"
           },
           "pages": [
             {
               "id": "07-groot",
               "title": {
-                "zh": "4.1 视觉-语言-动作模型与 GR00T",
-                "en": "4.1 Vision-language-action models and GR00T"
+                "zh": "5.1 视觉-语言-动作模型与 GR00T",
+                "en": "5.1 Vision-language-action models and GR00T"
               },
               "paths": {
                 "zh": "zh/07-groot.html",
@@ -164,8 +184,8 @@
             {
               "id": "08-groot-interface",
               "title": {
-                "zh": "4.2 步行射门：GR00T 的输入、输出与数据",
-                "en": "4.2 Walking shot: GR00T inputs, outputs and data"
+                "zh": "5.2 步行射门：GR00T 的输入、输出与数据",
+                "en": "5.2 Walking shot: GR00T inputs, outputs and data"
               },
               "paths": {
                 "zh": "zh/08-groot-interface.html",
@@ -175,8 +195,8 @@
             {
               "id": "08-groot-lab",
               "title": {
-                "zh": "4.3 训练与验证 GR00T 步行射门",
-                "en": "4.3 Train and validate the GR00T walking shot"
+                "zh": "5.3 训练与验证 GR00T 步行射门",
+                "en": "5.3 Train and validate the GR00T walking shot"
               },
               "paths": {
                 "zh": "zh/08-groot-lab.html",
@@ -186,8 +206,8 @@
             {
               "id": "09-worlds",
               "title": {
-                "zh": "4.4 从球场走向更多环境",
-                "en": "4.4 From the pitch to more environments"
+                "zh": "5.4 从球场走向更多环境",
+                "en": "5.4 From the pitch to more environments"
               },
               "paths": {
                 "zh": "zh/09-worlds.html",
@@ -199,15 +219,15 @@
         {
           "id": "reference",
           "title": {
-            "zh": "5 参考与帮助",
-            "en": "5 Reference and help"
+            "zh": "6 参考与帮助",
+            "en": "6 Reference and help"
           },
           "pages": [
             {
               "id": "models",
               "title": {
-                "zh": "5.1 模型与数据",
-                "en": "5.1 Models and data"
+                "zh": "6.1 模型与数据",
+                "en": "6.1 Models and data"
               },
               "paths": {
                 "zh": "zh/models.html",
@@ -217,8 +237,8 @@
             {
               "id": "troubleshooting",
               "title": {
-                "zh": "5.2 故障排查",
-                "en": "5.2 Troubleshooting"
+                "zh": "6.2 故障排查",
+                "en": "6.2 Troubleshooting"
               },
               "paths": {
                 "zh": "zh/troubleshooting.html",
@@ -228,8 +248,8 @@
             {
               "id": "references",
               "title": {
-                "zh": "5.3 继续学习与参考资料",
-                "en": "5.3 Further learning and references"
+                "zh": "6.3 继续学习与参考资料",
+                "en": "6.3 Further learning and references"
               },
               "paths": {
                 "zh": "zh/references.html",
@@ -256,7 +276,7 @@
         "org": "DLI",
         "course": "Microduck-Workshop",
         "run": "V1-ZH",
-        "title": "使用 NVIDIA Isaac 仿真并训练 Microduck",
+        "title": "使用 NVIDIA Isaac 在仿真环境训练 Microduck",
         "language": "zh_HANS",
         "start": "2026-10-30T00:00:00Z"
       }
@@ -273,7 +293,7 @@
         "org": "DLI",
         "course": "Microduck-Workshop",
         "run": "V1",
-        "title": "Simulate and train Microduck with NVIDIA Isaac",
+        "title": "Train Microduck in Simulation with NVIDIA Isaac",
         "language": "en",
         "start": "2026-10-30T00:00:00Z"
       }

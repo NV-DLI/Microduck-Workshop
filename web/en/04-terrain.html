@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking and roller policies on random slopes and verify them on the same wedge ramp." name="description" />
 
-  <title>3.3 Reward design: walking steadily up and down slopes - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>3.3 Reward design: walking steadily up and down slopes - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -145,11 +145,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -322,8 +322,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -337,18 +336,23 @@
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -471,7 +475,7 @@
 <p>The domain randomization of Section 3.2 varies physical parameters such as friction, mass and delay; terrain randomization adds the shape of the ground to the random draw. The training terrain mixes flat ground with uphill and downhill slopes of many gradients. Isaac Lab's terrain curriculum adjusts the gradient step by step according to performance: environments that walk well move to steeper slopes and those that struggle move back to gentler ones; <code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> in TensorBoard records the average level.</p>
 <p>These random slopes are the <strong>training distribution</strong>: the policy practises climbing, descending and keeping its balance on slopes there. The complete layout of the fixed wedge used later (a ramp leading to a platform) does not appear in the training terrain, so results on the wedge test these skills in a separate verification scene rather than scoring the policy inside its training scene.</p>
 <p>Training does not start from scratch: the official ONNX network weights and normalization parameters are copied as the starting point of the new policy, while the value network and optimizer start fresh. Before training, check that the new policy network and the original ONNX give the same output for the same observation, so an interface error is not mistaken for a need for more training.</p>
-<figure class="learning-figure" data-learning-flow="learn-8077310ef8"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Training distribution and a separate verification scene"><svg class="learning-svg" viewBox="0 0 900 174" role="group" aria-labelledby="learn-8077310ef8-title"><title id="learn-8077310ef8-title">Training distribution and a separate verification scene</title><defs><marker id="learn-8077310ef8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H356.0" marker-end="url(#learn-8077310ef8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 87.0H692.0" marker-end="url(#learn-8077310ef8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Write the test" aria-controls="learn-8077310ef8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Write the test</text><text x="114.0" y="98" class="learning-node-subtitle">Reach and hold /</text><text x="114.0" y="115" class="learning-node-subtitle">descend and stand</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Random-slope training" aria-controls="learn-8077310ef8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="126" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Random-slope</text><text x="450.0" y="94" class="learning-node-title">training</text><text x="450.0" y="118" class="learning-node-subtitle">Flat ground, uphill</text><text x="450.0" y="135" class="learning-node-subtitle">and downhill slopes</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Wedge verification" aria-controls="learn-8077310ef8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Wedge</text><text x="786.0" y="94" class="learning-node-title">verification</text><text x="786.0" y="118" class="learning-node-subtitle">Fixed verification</text><text x="786.0" y="135" class="learning-node-subtitle">layout, same test</text></g></svg></div><div class="learning-details" aria-label="Training distribution and a separate verification scene"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-8077310ef8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Write the test</h3><p>Fix the criteria before training. Record reaching, holding and falls separately, and report uphill and downhill separately.</p></article><article id="learn-8077310ef8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Random-slope training</h3><p>Parallel environments sample random slopes and the terrain curriculum adapts the difficulty; the flat samples keep flat walking in practice.</p></article><article id="learn-8077310ef8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Wedge verification</h3><p>The complete wedge layout is not in the random training terrain; old and new policies are compared on the same wedge with the same test. A stricter independent test would also keep seeds and layouts out of tuning.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Keeping the training distribution and the verification scene apart shows whether what was learned carries over to a new layout.</figcaption></figure><p>Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>) to continue training for 1000 iterations with 256 environments; <code class="docutils literal notranslate"><span class="pre">--show</span></code> opens Isaac Sim so you can watch the ducks practise on different tiles at once.</p>
+<figure class="learning-figure" data-learning-flow="learn-8077310ef8"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Training distribution and a separate verification scene"><svg class="learning-svg" viewBox="0 0 900 174" role="group" aria-labelledby="learn-8077310ef8-title"><title id="learn-8077310ef8-title">Training distribution and a separate verification scene</title><defs><marker id="learn-8077310ef8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H356.0" marker-end="url(#learn-8077310ef8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 87.0H692.0" marker-end="url(#learn-8077310ef8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Write the test" aria-controls="learn-8077310ef8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Write the test</text><text x="114.0" y="98" class="learning-node-subtitle">Reach and hold /</text><text x="114.0" y="115" class="learning-node-subtitle">descend and stand</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Random-slope training" aria-controls="learn-8077310ef8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="126" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Random-slope</text><text x="450.0" y="94" class="learning-node-title">training</text><text x="450.0" y="118" class="learning-node-subtitle">Flat ground, uphill</text><text x="450.0" y="135" class="learning-node-subtitle">and downhill slopes</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Wedge verification" aria-controls="learn-8077310ef8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Wedge</text><text x="786.0" y="94" class="learning-node-title">verification</text><text x="786.0" y="118" class="learning-node-subtitle">Fixed verification</text><text x="786.0" y="135" class="learning-node-subtitle">layout, same test</text></g></svg></div><div class="learning-details" aria-label="Training distribution and a separate verification scene"><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-8077310ef8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Write the test</h3><p>Fix the criteria before training. Record reaching, holding and falls separately, and report uphill and downhill separately.</p></article><article id="learn-8077310ef8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Random-slope training</h3><p>Parallel environments sample random slopes and the terrain curriculum adapts the difficulty; the flat samples keep flat walking in practice.</p></article><article id="learn-8077310ef8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Wedge verification</h3><p>The complete wedge layout is not in the random training terrain; old and new policies are compared on the same wedge with the same test. A stricter independent test would also keep seeds and layouts out of tuning.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Keeping the training distribution and the verification scene apart shows whether what was learned carries over to a new layout.</figcaption></figure><p>Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>) to continue training for 1000 iterations with 256 environments; <code class="docutils literal notranslate"><span class="pre">--show</span></code> opens Isaac Sim so you can watch the ducks practise on different tiles at once.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
@@ -554,7 +558,7 @@
 <ul class="simple">
 <li><p><strong>Only ±5°, five environments per direction.</strong> It describes the conditions tested, not a general success rate, and it is not an independent held-out test. Steeper slopes need their own measurements; change <code class="docutils literal notranslate"><span class="pre">--slope</span></code> to ±10 and ±15 in turn (<code class="docutils literal notranslate"><span class="pre">--headless</span></code> runs faster without a window). See the <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">evaluation summary ↗</a> for per-environment results on this wedge.</p></li>
 <li><p><strong>Standing uses the course's head hold.</strong> With a zero velocity command (the 2 s before starting and after arrival) this policy lowers its head a long way. Only in those two periods does the check script replace the targets of the 4 head servos with the standing-pose angles (pitch raised by a further 0.2 rad); leg actions always come from the policy. “Held after arrival” is therefore achieved by the policy together with this head hold.</p></li>
-<li><p><strong>For this section only.</strong> Section 2.1 and Part 4 keep using the original walking policy. A model you train must report flat ground, uphill and downhill under the same conditions; a gain on slopes that loses flat walking is not a qualified replacement.</p></li>
+<li><p><strong>For this section only.</strong> Section 2.1 and Parts 4 and 5 keep using the original walking policy. A model you train must report flat ground, uphill and downhill under the same conditions; a gain on slopes that loses flat walking is not a qualified replacement.</p></li>
 </ul>
 <details class="enrichment"><summary>Window speed and recording</summary><div class="enrichment-body"><p>The verification window draws at 960×540 and refreshes every 2 control steps so the motion is close to real time; physics still runs at 200 steps per second and the policy at 50 per second. On a DGX Spark, the 20-second test with 5 environments takes about 20 seconds overall. For a sharper picture, prefix the command with <code class="docutils literal notranslate"><span class="pre">MICRODUCK_VIEWPORT_RESOLUTION=1920x1080</span></code> (slower); <code class="docutils literal notranslate"><span class="pre">--record</span></code> (one environment only) records frame by frame on simulation time at the same quality as the window.</p>
 </div></details><div class="quiz"><h3>Check your understanding</h3><p>The training terrain already contains many slopes. Why verify separately on the wedge?</p>

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work." name="description" />
 
-  <title>1.3 Set up the environment and get the code - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>1.2 Set up the environment and get the code - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="2.1 Meet Microduck: play football first" href="01-play.html" />
-    <link rel="prev" title="1.2 How to take this course" href="how-to-learn.html" />
+    <link rel="prev" title="1.1 Teach Microduck to score a goal" href="index.html" />
 
 
 
@@ -145,11 +145,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -322,8 +322,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -337,18 +336,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -383,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">1.3 Set up the environment and get the code</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">1.2 Set up the environment and get the code</span></li>
   </ul>
 </nav>
 </div>
@@ -402,7 +406,7 @@
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 <section class="tex2jax_ignore mathjax_ignore" id="set-up-the-environment-and-get-the-code">
-<h1>1.3 Set up the environment and get the code<a class="headerlink" href="#set-up-the-environment-and-get-the-code" title="Link to this heading">#</a></h1>
+<h1>1.2 Set up the environment and get the code<a class="headerlink" href="#set-up-the-environment-and-get-the-code" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.</p>
 </div><div class="lesson-meta">Hands-on · Ubuntu 24.04 / DGX Spark · Docker</div></div></div><section id="requirements">
 <h2>What you need<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
@@ -441,7 +445,7 @@
 <td><p>Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Learning</p></td>
-<td><p>RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 4)</p></td>
+<td><p>RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 5)</p></td>
 </tr>
 </tbody>
 </table>
@@ -459,8 +463,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 </div>
 <p>The fixed course models (<code class="docutils literal notranslate"><span class="pre">models/</span></code> under 60 MB) and the pretrained results and training logs used in Part 3 (<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> about 50 MB) come with the repository; your own runs go to <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>, kept separate from them.</p>
-<p><strong>GR00T course data package (Section 4.3 only).</strong> The GR00T walking shot in Section 4.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 4.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> folder under <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> in the repository root; if you keep it elsewhere, set <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> to the absolute path of the folder that contains <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> before starting the container. The container starts without the package.</p>
-<p><strong>Optional: precomputed feature cache for the RTX 5090.</strong> To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> folder next to <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code>, and training does not need to recompute the features (see Section 4.3). DGX Spark does not need it.</p>
+<p><strong>GR00T course data package (Section 5.3 only).</strong> The GR00T walking shot in Section 5.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 5.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> folder under <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> in the repository root; if you keep it elsewhere, set <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> to the absolute path of the folder that contains <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> before starting the container. The container starts without the package.</p>
+<p><strong>Optional: precomputed feature cache for the RTX 5090.</strong> To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> folder next to <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code>, and training does not need to recompute the features (see Section 5.3). DGX Spark does not need it.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
@@ -469,7 +473,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 ├── scripts/       # lab entry points (same)
 ├── models/        # fixed course models (read-only in the container)
 ├── datasets/      # sample data and pretrained PPO results (read-only)
-├── course-data/   # GR00T course data package (read-only, Section 4.3)
+├── course-data/   # GR00T course data package (read-only, Section 5.3)
 └── outputs/       # your runs (writable in the container)
 </pre></div>
 </div>
@@ -502,7 +506,7 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <p><strong>Every later lab command runs in this container shell</strong>, and the pages label those blocks “inside the container”. Ctrl+C stops only the command that is running; the container keeps running and you can type the next command.</p>
 <div class="note admonition">
 <p class="admonition-title">Return to the same container</p>
-<p>If you closed the terminal, or need a second shell (for example to watch logs while training in Section 4.3), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> again from the repository root; data, outputs and caches live on the host. When you have finished all labs, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> stops and removes the container.</p>
+<p>If you closed the terminal, or need a second shell (for example to watch logs while training in Section 5.3), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> again from the repository root; data, outputs and caches live on the host. When you have finished all labs, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> stops and removes the container.</p>
 </div>
 <p>A relative path in a command (for example <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> and <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code>, so the second start is much faster.</p>
 <div class="note admonition">
@@ -547,12 +551,12 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="how-to-learn.html"
+       href="index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">1.2 How to take this course</p>
+        <p class="prev-next-title">1.1 Teach Microduck to score a goal</p>
       </div>
     </a>
     <a class="right-next"

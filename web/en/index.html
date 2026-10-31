@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Experience Microduck's motion, train skills with reinforcement learning, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments." name="description" />
+<meta content="Experience Microduck's motion, train skills with reinforcement learning, see how an onboard policy scores with sensors and hand-designed stages, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments." name="description" />
 
-  <title>1.1 Teach Microduck to score a goal - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>1.1 Teach Microduck to score a goal - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,14 +56,14 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1.2 How to take this course" href="how-to-learn.html" />
+    <link rel="next" title="1.2 Set up the environment and get the code" href="setup.html" />
 
 
 
@@ -144,11 +144,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -254,11 +254,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -321,8 +321,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -336,18 +335,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -378,8 +382,10 @@
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 <section class="tex2jax_ignore mathjax_ignore" id="teach-microduck-to-score-a-goal">
 <h1>1.1 Teach Microduck to score a goal<a class="headerlink" href="#teach-microduck-to-score-a-goal" title="Link to this heading">#</a></h1>
-<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>Experience Microduck's motion, train skills with reinforcement learning, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments.</p>
-</div><div class="lesson-meta">5 parts · 16 sections · Simulation and frontier methods</div></div><figure class="hero-image hero-animation" data-hero-animation data-still="../assets/media/football-success-hero-still.webp" data-animation="../assets/media/football-success-hero.webp"><img class="dark-light" fetchpriority="high" src="../assets/media/football-success-hero.webp" alt="In Isaac Sim, Microduck walks up to the ball on the green pitch and kicks it into the goal." width="1200" height="584" style="aspect-ratio: 1200 / 584"><button type="button" class="hero-animation-toggle" hidden data-pause="Pause animation" data-play="Play animation" aria-label="Pause animation" title="Pause animation" aria-pressed="false"></button></figure></div><div class="toctree-wrapper compound">
+<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>Experience Microduck's motion, train skills with reinforcement learning, see how an onboard policy scores with sensors and hand-designed stages, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments.</p>
+</div><div class="lesson-meta">6 parts · 17 sections · Simulation and frontier methods</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/football-success-hero.webp" alt="In Isaac Sim, Microduck walks up to the ball on the green pitch and kicks it into the goal." width="1200" height="584" style="aspect-ratio: 1200 / 584"></figure></div><div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
@@ -391,11 +397,12 @@
 </div>
 <section id="outcome">
 <h2>What you will build<a class="headerlink" href="#outcome" title="Link to this heading">#</a></h2>
-<p>The whole course follows one Microduck, one green football pitch, one ball and one goal: meet the robot and try its motion skills, train walking and slope adaptation with reinforcement learning and domain randomization, then adapt GR00T with demonstrations, evaluate its walking shot in simulation and consider how to adapt to more environments. Every lab runs in the same course container.</p>
+<p>The whole course follows one Microduck, one green football pitch, one ball and one goal: meet the robot and try its motion skills, train walking and slope adaptation with reinforcement learning and domain randomization, see how an onboard policy completes the shot with sensors and hand-designed stages, then adapt GR00T with demonstrations, evaluate its walking shot in simulation and consider how to adapt to more environments. Every lab runs in the same course container.</p>
 <ol class="arabic simple pipeline">
 <li><p>Overview and container setup</p></li>
 <li><p>Meet Microduck</p></li>
 <li><p>Train skills with reinforcement learning</p></li>
+<li><p>Complete the shooting task with an onboard policy</p></li>
 <li><p>Train GR00T to complete tasks</p></li>
 <li><p>Reference and help</p></li>
 </ol>
@@ -405,7 +412,7 @@
 <ul class="simple">
 <li><p>Explain mechanisms, actuators, observations, actions and rewards.</p></li>
 <li><p>Run fixed policies, PPO training and domain-randomization experiments with Isaac Lab, Newton and Isaac Sim in the course container.</p></li>
-<li><p>Distinguish what an onboard policy and VLA action prediction are each responsible for.</p></li>
+<li><p>Explain how an onboard policy completes the shot with RGB detection, ToF ranging and hand-designed stages, and what it and VLA action prediction are each responsible for.</p></li>
 <li><p>Explain GR00T's 8-D high-level request interface, demonstration data design and action-head training, and validate a trained checkpoint.</p></li>
 <li><p>Design environment variation and held-out evaluation; tell apart a working pipeline, better model metrics and complete task success.</p></li>
 </ul>
@@ -420,7 +427,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td class="cell-short"><p>1 Overview</p></td>
-<td><p>1.1 Teach Microduck to score a goal · 1.2 How to take this course · 1.3 Set up the environment and get the code</p></td>
+<td><p>1.1 Teach Microduck to score a goal · 1.2 Set up the environment and get the code</p></td>
 </tr>
 <tr class="row-odd"><td><p>2 Meet Microduck</p></td>
 <td><p>2.1 Meet Microduck: play football first · 2.2 Mechanism and control timing</p></td>
@@ -428,11 +435,14 @@
 <tr class="row-even"><td><p>3 Teach Microduck skills with reinforcement learning</p></td>
 <td><p>3.1 Reinforcement learning and PPO · 3.2 Domain randomization: train and test a walking policy · 3.3 Reward design: walking steadily up and down slopes · 3.4 Community skills: from goal to reward</p></td>
 </tr>
-<tr class="row-odd"><td><p>4 Train GR00T to complete tasks autonomously</p></td>
-<td><p>4.1 Vision-language-action models and GR00T · 4.2 Walking shot: GR00T inputs, outputs and data · 4.3 Train and validate the GR00T walking shot · 4.4 From the pitch to more environments</p></td>
+<tr class="row-odd"><td><p>4 Complete the shooting task with an onboard policy</p></td>
+<td><p>4.1 Find the ball and goal: RGB detection and ToF ranging · 4.2 Hand-designed shooting stages</p></td>
 </tr>
-<tr class="row-even"><td><p>5 Reference and help</p></td>
-<td><p>5.1 Models and data · 5.2 Troubleshooting · 5.3 Further learning and references</p></td>
+<tr class="row-even"><td><p>5 Train GR00T to complete tasks autonomously</p></td>
+<td><p>5.1 Vision-language-action models and GR00T · 5.2 Walking shot: GR00T inputs, outputs and data · 5.3 Train and validate the GR00T walking shot · 5.4 From the pitch to more environments</p></td>
+</tr>
+<tr class="row-odd"><td><p>6 Reference and help</p></td>
+<td><p>6.1 Models and data · 6.2 Troubleshooting · 6.3 Further learning and references</p></td>
 </tr>
 </tbody>
 </table>
@@ -451,11 +461,11 @@
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="how-to-learn.html"
+       href="setup.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1.2 How to take this course</p>
+        <p class="prev-next-title">1.2 Set up the environment and get the code</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

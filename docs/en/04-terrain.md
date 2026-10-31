@@ -132,7 +132,7 @@ details:
 caption: Keeping the training distribution and the verification scene apart shows whether what was learned carries over to a new layout.
 ```
 
-Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>) to continue training for 1000 iterations with 256 environments; `--show` opens Isaac Sim so you can watch the ducks practise on different tiles at once.
+Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>) to continue training for 1000 iterations with 256 environments; `--show` opens Isaac Sim so you can watch the ducks practise on different tiles at once.
 
 ```{code-block} bash
 :caption: Terminal · inside the container
@@ -259,7 +259,7 @@ Keep three points in mind when reading this table:
 
 - **Only ±5°, five environments per direction.** It describes the conditions tested, not a general success rate, and it is not an independent held-out test. Steeper slopes need their own measurements; change `--slope` to ±10 and ±15 in turn (`--headless` runs faster without a window). See the [evaluation summary ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json) for per-environment results on this wedge.
 - **Standing uses the course's head hold.** With a zero velocity command (the 2 s before starting and after arrival) this policy lowers its head a long way. Only in those two periods does the check script replace the targets of the 4 head servos with the standing-pose angles (pitch raised by a further 0.2 rad); leg actions always come from the policy. “Held after arrival” is therefore achieved by the policy together with this head hold.
-- **For this section only.** Section 2.1 and Part 4 keep using the original walking policy. A model you train must report flat ground, uphill and downhill under the same conditions; a gain on slopes that loses flat walking is not a qualified replacement.
+- **For this section only.** Section 2.1 and Parts 4 and 5 keep using the original walking policy. A model you train must report flat ground, uphill and downhill under the same conditions; a gain on slopes that loses flat walking is not a qualified replacement.
 
 :::{enrichment} Window speed and recording
 The verification window draws at 960×540 and refreshes every 2 control steps so the motion is close to real time; physics still runs at 200 steps per second and the policy at 50 per second. On a DGX Spark, the 20-second test with 5 environments takes about 20 seconds overall. For a sharper picture, prefix the command with `MICRODUCK_VIEWPORT_RESOLUTION=1920x1080` (slower); `--record` (one environment only) records frame by frame on simulation time at the same quality as the window.

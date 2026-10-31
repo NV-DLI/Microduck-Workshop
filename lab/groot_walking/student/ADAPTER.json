@@ -1,22 +1,25 @@
 {
   "schema": "microduck.groot-walking-student-adapter.v1",
-  "purpose": "Course validation adapter. Same task, scene, controller, GR00T server and scoring as the evaluation of the course checkpoint, with these documented changes only.",
+  "purpose": "Course adapter of the evaluation executor with two routes. GR00T route: same task, scene, controller, GR00T server and scoring as the evaluation of the course checkpoint, with the documented changes. Onboard route (--course-onboard, entry lab/onboard_scene.py): the installed onboard controller unchanged, with the same course start-up.",
   "changes": [
-    "standing61 start-up: HOME joints locked by temporary joint limits on the measured grounded root (grounded-pose.json), free root, zero external wrench; released when the first real GR00T prediction has returned and before it is applied",
-    "scoring and task clock start at the brake release; nothing is scored while joints are locked; no release if no prediction arrives",
-    "Nav2 planner is not started (original GR00T episodes sent no planner query); a stand-in refuses any query",
-    "onboard YOLO detector session is not started (it is only queried when no walking policy server is set)",
+    "standing61 start-up (both routes): HOME joints locked by temporary joint limits on the measured grounded root (grounded-pose.json), free root, zero external wrench",
+    "GR00T route: brake released when the first real GR00T prediction has returned and before it is applied",
+    "GR00T route: scoring and task clock start at the brake release; nothing is scored while joints are locked; no release if no prediction arrives",
+    "GR00T route: Nav2 planner is not started (original GR00T episodes sent no planner query); a stand-in refuses any query",
+    "GR00T route: onboard YOLO detector session is not started (it is only queried when no walking policy server is set)",
+    "onboard route: installed detector session, Nav2 session, BallReacquisitionNavigator, K10 runtime and velstand actor (checked at start); no GR00T modules loaded",
+    "onboard route: HOME held with no network evaluation while locked; brake released after the first velstand output and before it is applied, once the locked robot has settled, has stayed stationary for the last 0.5 s (NoSupportStartup thresholds) and fresh RGB, ToF and BODY50 data are complete and finite; task clock, scoring, navigation and detection start at the release; not released by 10 s fails with joints locked; any nonzero actual external wrench fails",
     "optional Isaac Sim window (--visualizer kit, default for learners)",
     "inference server and trainer run through portable_launch.py, which rebinds the recorded base-model path to the pinned revision on the current machine"
   ],
-  "not_a_reproduction": "The development 2/5 of the course checkpoint used the original start-up; results with this adapter are new experiments.",
+  "not_a_reproduction": "The development 2/5 of the course checkpoint used the original start-up; results with this adapter are new experiments. Onboard-route results with this start-up are likewise new experiments, not reproductions of runs with the earlier support fixture.",
   "files": [
     {
       "file": "student/walking_student_executor.py",
       "based_on": "rollout/walking_history_head_executor.py",
       "based_on_sha256": "ebe114d1f0da51889103f47fbfcd0726839378ab69a3a02443a9da942588d170",
-      "sha256": "3a318845f9e44188ba795dc0d8cd3fcbeb4e25bfd9cf22291857e33c0c672e9b",
-      "changed_lines": 71
+      "sha256": "a0afee7109c64bed6e88071c0053b99db97e25058b7e75a883abb69a07244437",
+      "changed_lines": 256
     },
     {
       "file": "student/walking_student_scene.py",
@@ -29,13 +32,16 @@
       "file": "student/walking_student_rollout.py",
       "based_on": "rollout/walking_history_head_rollout.py",
       "based_on_sha256": "7b6570abc5a1599b50d53f489fc923ada722b184f788580719fe1c6dbc7ae18a",
-      "sha256": "5aa1b2716a2567469c9d278896e97eeaa7b5607401e7c964584c35a317a9d36a",
-      "changed_lines": 19
+      "sha256": "db814063bad0d083e6faa2a21ac7b2af6a122624f4d3780b8f24d4e8009b79b3",
+      "changed_lines": 88
     },
     {
       "file": "student/joint_brake.py",
-      "sha256": "e6096b73f182ad91c937df4cd3bd5d2193490c65760fd7a663ab25c42081b86d",
-      "origin": "standing61-takeover (verbatim)"
+      "sha256": "4b7816395b3fc384f4f70fff13ba26bd3ce6ea9ecb2c64114f97e5025de505cb",
+      "based_on": "standing61-takeover/joint_brake.py (course research output, not in this repository)",
+      "based_on_sha256": "e6096b73f182ad91c937df4cd3bd5d2193490c65760fd7a663ab25c42081b86d",
+      "changed_lines": 2,
+      "change": "metadata key restored_before_first_GR00T_action renamed restored_before_first_policy_action (shared by both routes)"
     },
     {
       "file": "student/grounded-pose.json",
@@ -46,6 +52,27 @@
       "file": "student/portable_launch.py",
       "sha256": "42c8ec771e3a9eda72a235677f0236cd62fb3d623433b453ea93872f109a9cb8",
       "origin": "new"
+    },
+    {
+      "file": "../../lab/onboard_scene.py",
+      "repository_path": "lab/onboard_scene.py",
+      "sha256": "7510b2cbb409e5342d7b944f1e8bcd2a262c7bb155250c2856804e604796a6d5",
+      "origin": "new: onboard route entry; scripts/run.py football (indoor) runs it"
+    },
+    {
+      "file": "../../lab/course_labs/onboard_startup.py",
+      "repository_path": "lab/course_labs/onboard_startup.py",
+      "sha256": "fd0e66b83d2749344bae9763afdd30d8dd2269a6733946bde931c26174f1540b",
+      "origin": "new: onboard start-up gate around NoSupportStartup"
     }
-  ]
+  ],
+  "metadata_refreshed": {
+    "at": "2026-10-31T11:38:56+08:00",
+    "note": "sha256/changed_lines recomputed from the current files; the previous values for these files did not match the committed sources. Episode interface records under outputs/ keep the hashes of their own run and were not changed.",
+    "previous_sha256": {
+      "student/walking_student_executor.py": "3a318845f9e44188ba795dc0d8cd3fcbeb4e25bfd9cf22291857e33c0c672e9b",
+      "student/walking_student_rollout.py": "5aa1b2716a2567469c9d278896e97eeaa7b5607401e7c964584c35a317a9d36a",
+      "student/joint_brake.py": "e6096b73f182ad91c937df4cd3bd5d2193490c65760fd7a663ab25c42081b86d"
+    }
+  }
 }

@@ -4,10 +4,10 @@ myst:
     description: 'In the course container, post-train the GR00T action head on the prepared walking-shot demonstrations and understand the training budget, sampling and time; then validate the provided checkpoint on the full shot in Isaac Lab and Newton.'
 ---
 
-# 4.3 Train and validate the GR00T walking shot
+# 5.3 Train and validate the GR00T walking shot
 
 :::{lesson-intro}
-:meta: Section 4.3 · Estimated learning time: 45 minutes (excluding about 1 hour for a full training run and the validation run)
+:meta: Section 5.3 · Estimated learning time: 45 minutes (excluding about 1 hour for a full training run and the validation run)
 
 In the course container, post-train the GR00T action head on the prepared walking-shot demonstrations and understand the training budget, sampling and time; then validate the provided checkpoint on the full shot in Isaac Lab and Newton.
 :::
@@ -32,9 +32,9 @@ E_pass:
 
 This section has two hands-on steps: first try the training, then validate a model that has already been trained. Both commands run inside the course container.
 
-- If you have not started the container yet, build and start it as described in [Section 1.3](setup.md), then open a terminal inside it.
+- If you have not started the container yet, build and start it as described in [Section 1.2](setup.md), then open a terminal inside it.
 - If the container is already running, return to the terminal you used to enter it; or open a new terminal on the host and run `docker exec -it microduck-workshop bash` to get back into the same container.
-- The training data, feature cache and course checkpoint come from the GR00T course data package (`course-data/groot-walking` in the container); get it from your instructor before this section and place it as described in Section 1.3. The package is mounted read-only when the container starts. Your training and validation results go to new folders under `outputs/` and never modify the provided data or models.
+- The training data, feature cache and course checkpoint come from the GR00T course data package (`course-data/groot-walking` in the container); get it from your instructor before this section and place it as described in Section 1.2. The package is mounted read-only when the container starts. Your training and validation results go to new folders under `outputs/` and never modify the provided data or models.
 
 - The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face. Request access on the [nvidia/Cosmos-Reason2-2B](https://huggingface.co/nvidia/Cosmos-Reason2-2B) page first, then log in once inside the container with `/workspace/groot-env/bin/hf auth login`; the download cache is kept in `~/.cache/huggingface` on the host.
 
@@ -56,7 +56,7 @@ caption: Training and validation are separate commands, so you can validate the 
 {#data}
 ## The prepared data
 
-The data follows the principles from Section 4.2: the onboard policy completed walking shots from different starts on the green pitch, only fully successful episodes were kept, and the training and validation sets were split by whole episode and start with no overlap.
+The data follows the principles from Section 5.2: the onboard policy completed walking shots from different starts on the green pitch, only fully successful episodes were kept, and the training and validation sets were split by whole episode and start with no overlap.
 
 {.table-center}
 | Dataset | Episodes | Samples (frames) | Rate | Size |
@@ -73,7 +73,7 @@ Training starts from the course’s initialization checkpoint: it has already be
 
 | Setting | Value | Notes |
 |---|---|---|
-| Trained part | Action head | The vision-language backbone is frozen; the state and action encoders, action decoder, action-sequence generator and visual-language feature layers are trained, for the reasons in <a href="08-groot-interface.html#action-head">Section 4.2</a> |
+| Trained part | Action head | The vision-language backbone is frozen; the state and action encoders, action decoder, action-sequence generator and visual-language feature layers are trained, for the reasons in <a href="08-groot-interface.html#action-head">Section 5.2</a> |
 | Training steps | 2000 | 2000 optimizer updates |
 | Batch size | 16 | 16 samples drawn per update |
 | Learning rate | 5 × 10⁻⁵ | Rises linearly from a very small value over the first 100 steps, then decays gradually to 0 |
@@ -89,7 +89,7 @@ Each update draws $\sym{B_batch}$ samples, so $\sym{S_steps}$ updates draw $\sym
 \sym{E_pass} = \frac{\sym{S_steps}\,\sym{B_batch}}{\sym{N_train}} = \frac{2000 \times 16}{13{,}431} \approx 2.38
 ```
 
-So the total number of draws is about 2.38 times the training set. That does not mean every sample is seen exactly 2.38 times: training uses the stage-weighted sampling described in <a href="08-groot-interface.html#data-design">Section 4.2</a>, so rare moments such as standing still, fine adjustment at the ball and the run-up to a kick are drawn more often and the many walking frames less often; sampling is also random, so a few samples may never be drawn.
+So the total number of draws is about 2.38 times the training set. That does not mean every sample is seen exactly 2.38 times: training uses the stage-weighted sampling described in <a href="08-groot-interface.html#data-design">Section 5.2</a>, so rare moments such as standing still, fine adjustment at the ball and the run-up to a kick are drawn more often and the many walking frames less often; sampling is also random, so a few samples may never be drawn.
 
 {#time}
 ## How long does it take?
@@ -163,12 +163,14 @@ python3 scripts/groot_walking.py validate --output outputs/groot-walking-validat
 ::::
 
 :::{course-image} media/isaac-ui-groot-validate.png
-:alt: The complete Isaac Sim window during GR00T walking-shot validation: Microduck at one end of the green pitch, the ball in the centre circle and the goal at the other end, RTX real-time rendering in the toolbar.
+:alt: The complete Isaac Sim GR00T validation window, with head RGB and 8×8 ToF beside the pitch; ToF is labeled as not a GR00T input.
 
-The window when the course ran the command above in the container, captured shortly after GR00T took over in the first episode. It shows what the validation scene looks like and does not mean this episode scored; each episode's result is in the records in the output folder.
+The validation window in the container, just after GR00T takes control. The right panel shows head RGB and ToF for observation; the screenshot does not establish a successful shot. Check the episode records for the outcome.
 :::
 
-The simulation pauses while waiting for each GR00T request, so brief pauses in the window are expected (see <a href="08-groot-interface.html#timing">Section 4.2</a> for the full timing); these pauses do not establish real-robot timing. Together with the head camera's 15 frames per second, each rendered with RTX and saved, validation on DGX Spark runs at about 0.24 times real speed.
+The window also shows the head RGB image and the 8×8 ToF panel, synchronized: the RGB image is GR00T's input source, while ToF is shown for observation only and is not an input to this course's GR00T.
+
+The simulation pauses while waiting for each GR00T request, so brief pauses in the window are expected (see <a href="08-groot-interface.html#timing">Section 5.2</a> for the full timing); these pauses do not establish real-robot timing. Together with the head camera's 15 frames per second, each rendered with RTX and saved, validation on DGX Spark runs at about 0.24 times real speed.
 
 After the run, first read the `Complete walking shots` summary and the one-line result per episode printed in the terminal. Per-episode records are in `attempts.json` in the output folder (for example `outputs/groot-walking-validate/attempts.json`): in each record’s `score`, `passed` means full success, `contact` records ball contact, `goal` a goal, `fall` a fall, and `terminal` the reason the episode ended. Distinguish the outcomes:
 

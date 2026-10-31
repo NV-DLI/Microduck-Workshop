@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="The onboard policy finds the ball and goal with Microduck's own sensors: the RGB camera recognizes targets, ToF gives the floor and nearby distances, and unreliable information is rejected." name="description" />
+
+  <title>4.1 Find the ball and goal: RGB detection and ToF ranging - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '06-perception';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4.2 Hand-designed shooting stages" href="06-onboard.html" />
+    <link rel="prev" title="3.4 Community skills: from goal to reward" href="05-skills.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="06-perception">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/06-perception.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/06-perception.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/06-perception.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/06-perception.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.1 Find the ball and goal: RGB detection and ToF ranging</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="find-the-ball-and-goal-rgb-detection-and-tof-ranging">
+<h1>4.1 Find the ball and goal: RGB detection and ToF ranging<a class="headerlink" href="#find-the-ball-and-goal-rgb-detection-and-tof-ranging" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>The onboard policy finds the ball and goal using only Microduck's own sensors.</p>
+</div><div class="lesson-meta">Section 4.1 · Estimated learning time: 20 minutes</div></div></div><section id="sensors">
+<h2>What the robot sees<a class="headerlink" href="#sensors" title="Link to this heading">#</a></h2>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/sensors-onboard-recorded.jpg" aria-label="One simulated shot with the onboard policy: the third-person view on the left, the head RGB image with detector boxes at the top right, the 8×8 ToF distances at the bottom right and the task stages over time at the bottom."><source src="../assets/media/sensors-onboard-recorded.mp4" type="video/mp4"></video><figcaption><p>One simulated shot with the onboard policy: the third-person view, the head RGB image with detector boxes and the 8×8 ToF distances are synchronized to the same capture time; NR marks a zone without a valid return. This recorded attempt scores and returns to standing.</p>
+</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Sensor</p></th>
+<th class="head"><p>Each capture gives</p></th>
+<th class="head cell-short"><p>Answers</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>RGB camera</p></td>
+<td><p>A 960 × 540 color image, 15 per second</p></td>
+<td><p>In which direction the ball and goal are</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>ToF ranging</p></td>
+<td><p>Distances of 8 × 8 zones, in meters</p></td>
+<td><p>Where the floor is, and whether something is too close to the feet</p></td>
+</tr>
+<tr class="row-even"><td><p>Joint encoders and IMU</p></td>
+<td><p>Joint angles, gravity direction and angular velocity</p></td>
+<td><p>Where the camera and ToF point right now</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ToF only gives distances and cannot tell whether a reading belongs to the ball or the floor; recognizing what something is relies on the camera.</p>
+</section>
+<section id="steps">
+<h2>From sensors to positions<a class="headerlink" href="#steps" title="Link to this heading">#</a></h2>
+<figure class="concept-figure sensor-figure" data-diagram="onboard-sensors"><div class="diagram-scroll" tabindex="0" role="region" aria-label="The RGB image and 8×8 ToF distances from one capture, and how the onboard policy uses each"><svg viewBox="0 0 760 542" class="sensor-svg" style="min-width:560px" role="img" aria-labelledby="sensors-onboard-title sensors-onboard-desc"><title id="sensors-onboard-title">The RGB image and 8×8 ToF distances from one capture, and how the onboard policy uses each</title><desc id="sensors-onboard-desc">The first row is a line drawing of the camera view; green boxes are the ball (confidence 0.95) and goal (0.95) found by the detector, used to recognize targets. The second row is the 64 ToF zone distances from the same instant, in meters; dashed cells have no valid return; they are used to find the floor and check near range. The third row is the joint encoders and IMU, used to compute the camera and ToF orientation. The three lanes combine into ball and goal positions relative to the robot.</desc><defs><marker id="sensors-onboard-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4"/></marker></defs><text x="24" y="28" font-size="13" text-anchor="start" font-weight="600">RGB camera · 960 × 540 pixels</text><rect x="24" y="40" width="288" height="162" rx="3" fill="none" stroke="var(--nve-sys-text-muted-color)"/><circle cx="176.8" cy="154.0" r="18.4" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.6"/><rect x="156.9" y="133.6" width="39.9" height="40.8" fill="none" stroke="var(--nve-sys-support-success-color)" stroke-width="2"/><text x="158.9" y="187.4" font-size="11" text-anchor="start">ball 0.95</text><path d="M134.8 116.4V77.5H203.9V116.4" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.6"/><rect x="132.6" y="75.7" width="73.5" height="46.2" fill="none" stroke="var(--nve-sys-support-success-color)" stroke-width="2"/><text x="134.6" y="71.7" font-size="11" text-anchor="start">goal 0.95</text><path d="M316 121.0H348" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4" fill="none" marker-end="url(#sensors-onboard-arrow)"/><rect x="352" y="71.0" width="196" height="100" rx="6" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="450" y="98" font-size="14" text-anchor="middle" font-weight="600">Recognize targets</text><text x="450" y="122" font-size="12" text-anchor="middle" opacity="0.85">Detector boxes</text><text x="450" y="138" font-size="12" text-anchor="middle" opacity="0.85">for ball and goal</text><text x="450" y="154" font-size="12" text-anchor="middle" opacity="0.85">Units: pixels</text><text x="24" y="234" font-size="13" text-anchor="start" font-weight="600">ToF ranging · 8 × 8 zones · meters</text><rect x="24.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="42" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="60.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="78" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="96.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="114" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="132.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="150" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="168.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="186" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="204.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="222" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="240.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="258" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="276.0" y="246.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="294" y="260" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="24.0" y="266.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="42" y="280" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="60.0" y="266.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="78" y="280" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="96.0" y="266.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.21" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="280" font-size="11" text-anchor="middle">1.15</text><rect x="132.0" y="266.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.21" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="280" font-size="11" text-anchor="middle">1.15</text><rect x="168.0" y="266.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.21" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="280" font-size="11" text-anchor="middle">1.15</text><rect x="204.0" y="266.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="222" y="280" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="240.0" y="266.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="258" y="280" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="276.0" y="266.0" width="36.0" height="20" fill="none" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6" stroke-dasharray="2 3"/><text x="294" y="280" font-size="11" text-anchor="middle" opacity="0.6">–</text><rect x="24.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.04" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="42" y="300" font-size="11" text-anchor="middle">2.34</text><rect x="60.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.04" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="78" y="300" font-size="11" text-anchor="middle">2.32</text><rect x="96.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.15" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="300" font-size="11" text-anchor="middle">1.30</text><rect x="132.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.15" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="300" font-size="11" text-anchor="middle">1.30</text><rect x="168.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.18" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="300" font-size="11" text-anchor="middle">1.23</text><rect x="204.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.18" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="222" y="300" font-size="11" text-anchor="middle">1.23</text><rect x="240.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.04" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="258" y="300" font-size="11" text-anchor="middle">2.51</text><rect x="276.0" y="286.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.04" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="294" y="300" font-size="11" text-anchor="middle">2.61</text><rect x="24.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.16" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="42" y="320" font-size="11" text-anchor="middle">1.27</text><rect x="60.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.16" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="78" y="320" font-size="11" text-anchor="middle">1.26</text><rect x="96.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.17" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="320" font-size="11" text-anchor="middle">1.25</text><rect x="132.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.17" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="320" font-size="11" text-anchor="middle">1.25</text><rect x="168.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.16" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="320" font-size="11" text-anchor="middle">1.26</text><rect x="204.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.19" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="222" y="320" font-size="11" text-anchor="middle">1.20</text><rect x="240.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.14" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="258" y="320" font-size="11" text-anchor="middle">1.31</text><rect x="276.0" y="306.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.13" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="294" y="320" font-size="11" text-anchor="middle">1.35</text><rect x="24.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.40" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="42" y="340" font-size="11" text-anchor="middle">0.80</text><rect x="60.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.41" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="78" y="340" font-size="11" text-anchor="middle">0.79</text><rect x="96.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.41" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="340" font-size="11" text-anchor="middle">0.78</text><rect x="132.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.36" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="340" font-size="11" text-anchor="middle">0.86</text><rect x="168.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.59" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="340" font-size="11" text-anchor="middle">0.50</text><rect x="204.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.59" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="222" y="340" font-size="11" text-anchor="middle">0.50</text><rect x="240.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.39" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="258" y="340" font-size="11" text-anchor="middle">0.81</text><rect x="276.0" y="326.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.38" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="294" y="340" font-size="11" text-anchor="middle">0.83</text><rect x="24.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.51" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="42" y="360" font-size="11" text-anchor="middle">0.63</text><rect x="60.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.51" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="78" y="360" font-size="11" text-anchor="middle">0.62</text><rect x="96.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.52" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="360" font-size="11" text-anchor="middle">0.61</text><rect x="132.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.52" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="360" font-size="11" text-anchor="middle">0.61</text><rect x="168.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.61" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="360" font-size="11" text-anchor="middle">0.48</text><rect x="204.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.61" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="222" y="360" font-size="11" text-anchor="middle">0.48</text><rect x="240.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.51" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="258" y="360" font-size="11" text-anchor="middle">0.63</text><rect x="276.0" y="346.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.49" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="294" y="360" font-size="11" text-anchor="middle">0.65</text><rect x="24.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.59" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="42" y="380" font-size="11" text-anchor="middle">0.50</text><rect x="60.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.60" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="78" y="380" font-size="11" text-anchor="middle">0.49</text><rect x="96.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.61" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="380" font-size="11" text-anchor="middle">0.48</text><rect x="132.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.59" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="380" font-size="11" text-anchor="middle">0.51</text><rect x="168.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.60" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="380" font-size="11" text-anchor="middle">0.49</text><rect x="204.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.60" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="222" y="380" font-size="11" text-anchor="middle">0.49</text><rect x="240.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.59" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="258" y="380" font-size="11" text-anchor="middle">0.50</text><rect x="276.0" y="366.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.59" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="294" y="380" font-size="11" text-anchor="middle">0.51</text><rect x="24.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.65" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="42" y="400" font-size="11" text-anchor="middle">0.42</text><rect x="60.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.66" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="78" y="400" font-size="11" text-anchor="middle">0.41</text><rect x="96.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.64" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="114" y="400" font-size="11" text-anchor="middle">0.43</text><rect x="132.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.65" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="150" y="400" font-size="11" text-anchor="middle">0.42</text><rect x="168.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.65" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="186" y="400" font-size="11" text-anchor="middle">0.42</text><rect x="204.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.64" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="222" y="400" font-size="11" text-anchor="middle">0.43</text><rect x="240.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.65" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="258" y="400" font-size="11" text-anchor="middle">0.42</text><rect x="276.0" y="386.0" width="36.0" height="20" fill="var(--nve-sys-support-success-color)" fill-opacity="0.64" stroke="var(--nve-sys-text-muted-color)" stroke-width="0.6"/><text x="294" y="400" font-size="11" text-anchor="middle">0.43</text><path d="M316 326.0H348" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4" fill="none" marker-end="url(#sensors-onboard-arrow)"/><rect x="352" y="276.0" width="196" height="100" rx="6" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="450" y="303" font-size="14" text-anchor="middle" font-weight="600">Floor and near range</text><text x="450" y="327" font-size="12" text-anchor="middle" opacity="0.85">Fit a floor plane</text><text x="450" y="343" font-size="12" text-anchor="middle" opacity="0.85">Stop if something is</text><text x="450" y="359" font-size="12" text-anchor="middle" opacity="0.85">too close to the feet</text><rect x="24" y="434.0" width="288" height="84" rx="6" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="168" y="461" font-size="14" text-anchor="middle" font-weight="600">Joint encoders + IMU</text><text x="168" y="485" font-size="12" text-anchor="middle" opacity="0.85">Joint angles, gravity</text><text x="168" y="501" font-size="12" text-anchor="middle" opacity="0.85">direction and angular velocity</text><path d="M316 476.0H348" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4" fill="none" marker-end="url(#sensors-onboard-arrow)"/><rect x="352" y="434.0" width="196" height="84" rx="6" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="450" y="461" font-size="14" text-anchor="middle" font-weight="600">Sensor orientation</text><text x="450" y="485" font-size="12" text-anchor="middle" opacity="0.85">From same-time</text><text x="450" y="501" font-size="12" text-anchor="middle" opacity="0.85">joint angles</text><rect x="588" y="12" width="148" height="506.0" rx="6" fill="var(--nve-sys-layer-container-accent-background)" stroke="var(--nve-sys-text-muted-color)"/><text x="662" y="217" font-size="14" text-anchor="middle" font-weight="600">Ball and goal</text><text x="662" y="235" font-size="14" text-anchor="middle" font-weight="600">positions</text><text x="662" y="259" font-size="12" text-anchor="middle" opacity="0.85">Ball position</text><text x="662" y="275" font-size="12" text-anchor="middle" opacity="0.85">on the floor</text><text x="662" y="291" font-size="12" text-anchor="middle" opacity="0.85">Robot position and</text><text x="662" y="307" font-size="12" text-anchor="middle" opacity="0.85">heading relative</text><text x="662" y="323" font-size="12" text-anchor="middle" opacity="0.85">to the goal</text><path d="M552 121.0H584" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4" fill="none" marker-end="url(#sensors-onboard-arrow)"/><path d="M552 326.0H584" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4" fill="none" marker-end="url(#sensors-onboard-arrow)"/><path d="M552 476.0H584" stroke="var(--nve-sys-text-muted-color)" stroke-width="1.4" fill="none" marker-end="url(#sensors-onboard-arrow)"/></svg></div><figcaption class="diagram-caption">The sensor panels come from the same capture as the start of the recording above. The camera panel is a line drawing placed by the detector boxes; the ToF numbers are recorded ranges, darker means nearer, and dashed cells have no valid return. The cells of about 0.5 m below the middle face the ball.</figcaption></figure><p>After each capture, the onboard policy does three things:</p>
+<ol class="arabic simple">
+<li><p><strong>Recognize targets.</strong> The detector boxes the ball and goal in the RGB image. A box is only a pixel position, not yet a place the robot can walk to.</p></li>
+<li><p><strong>Work out the floor and distances.</strong> ToF fits the floor plane and joint angles give the camera orientation. The known ball size helps estimate the ball's position; the bases of the two goalposts and their known spacing give the robot's position and heading relative to the goal.</p></li>
+<li><p><strong>Reject unreliable information.</strong> If an observation is too old, a target is only partly visible, successive results disagree or the floor cannot be found, the policy does not use that result and stops to look again; it also stops moving when something is too close to its feet. A zone without a valid return only means unknown; it does not mean the way ahead is clear.</p></li>
+</ol>
+</section>
+<section id="truth">
+<h2>Sensors and scoring<a class="headerlink" href="#truth" title="Link to this heading">#</a></h2>
+<p>The onboard policy reads only these sensors, never the true ball or goal coordinates from the simulator. Whether a shot scored is judged separately by the evaluator using simulator truth. Everything runs in simulation and has not been tested on a real robot.</p>
+<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Detector.</strong> <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code> names the weights <code class="docutils literal notranslate"><span class="pre">detector.pt</span></code> and the classes <code class="docutils literal notranslate"><span class="pre">ball</span></code> and <code class="docutils literal notranslate"><span class="pre">goal</span></code>; the scene loads it through its <code class="docutils literal notranslate"><span class="pre">--detector-deployment</span></code> parameter.</p></li>
+<li><p><strong>Perception and geometry.</strong> <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/football/perception.py</span></code> handles detector boxes and sensor orientation; <code class="docutils literal notranslate"><span class="pre">football/ground_plane.py</span></code> fits the floor from ToF.</p></li>
+<li><p><strong>Sensor settings.</strong> <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/sensors/reports/sensor-profile.json</span></code> records the simulated camera and ToF settings.</p></li>
+</ul>
+</div></details><div class="quiz"><h3>Check your understanding</h3><p>The detector boxes the ball, and a few ToF zones in the middle read nearer. Why does the onboard policy combine the two?</p>
+<details><summary>Show explanation</summary><p>The box only says which pixels contain the ball, and ToF only gives distances without knowing what the object is. Combining them with the camera orientation at that instant and the floor fitted from ToF gives how far the ball is on the floor.</p>
+</details></div></section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+<ul class="references simple">
+<li><p><a class="reference external" href="https://docs.ultralytics.com/" rel="noreferer noopener" target="_blank">Ultralytics YOLO documentation ↗</a></p></li>
+<li><p><a class="reference external" href="https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html" rel="noreferer noopener" target="_blank">VL53L8CX 8×8 multizone ToF sensor ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/pollen-robotics/microduck" rel="noreferer noopener" target="_blank">Microduck open-source project ↗</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="05-skills.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">3.4 Community skills: from goal to reward</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="06-onboard.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4.2 Hand-designed shooting stages</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sensors">What the robot sees</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steps">From sensors to positions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#truth">Sensors and scoring</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

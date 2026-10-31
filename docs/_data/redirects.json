@@ -2,10 +2,11 @@
   "01-anatomy": "02-anatomy",
   "02-simulation": "01-play",
   "04-skills": "05-skills",
-  "05-perception": "07-groot",
-  "06-navigation": "07-groot",
-  "07-football": "07-groot",
-  "06-autonomy": "07-groot",
+  "05-perception": "06-perception",
+  "06-navigation": "06-onboard",
+  "07-football": "06-onboard",
+  "06-autonomy": "06-onboard",
   "08-aspire": "index",
-  "08-next-steps": "09-worlds"
+  "08-next-steps": "09-worlds",
+  "how-to-learn": "setup"
 }

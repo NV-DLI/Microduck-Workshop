@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task." name="description" />
 
-  <title>3.4 Community skills: from goal to reward - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>3.4 Community skills: from goal to reward - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,14 +56,14 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '05-skills';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4.1 Vision-language-action models and GR00T" href="07-groot.html" />
+    <link rel="next" title="4.1 Find the ball and goal: RGB detection and ToF ranging" href="06-perception.html" />
     <link rel="prev" title="3.3 Reward design: walking steadily up and down slopes" href="04-terrain.html" />
 
 
@@ -145,11 +145,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -322,8 +322,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -337,18 +336,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -454,7 +458,7 @@
 </section>
 <section id="flamingo">
 <h2>Flamingo cycle: gates set the order of movements<a class="headerlink" href="#flamingo" title="Link to this heading">#</a></h2>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-flamingo-hd.jpg" aria-label="Author preview of the community flamingo cycle: Microduck stands on both feet, shifts its weight onto one foot, lifts and holds the other, puts it down, then stands on the other foot."><source src="../assets/media/community-flamingo-hd.mp4" type="video/mp4"></video><figcaption><p>Author preview of the community flamingo cycle: the author ran the exported ONNX policy in MuJoCo with a preset sequence of commands, standing on one foot, putting it down, then standing on the other; the recording ends during the second one-foot stance. This is the author's original simulation environment, not a Newton run of this course. Watch the weight move onto the stance foot before the other foot lifts, and the reverse order when it comes down.</p>
+<figure class="media media-solo" style="--media-w: 640; --media-h: 480"><video controls playsinline preload="metadata" poster="../assets/media/community-flamingo-hd.jpg" aria-label="Author preview of the community flamingo cycle: Microduck stands on both feet, shifts its weight onto one foot, lifts and holds the other, puts it down, then stands on the other foot."><source src="../assets/media/community-flamingo-hd.mp4" type="video/mp4"></video><figcaption><p>Author preview of the community flamingo cycle: the author ran the exported ONNX policy in MuJoCo with a preset sequence of commands, standing on one foot, putting it down, then standing on the other; the recording ends during the second one-foot stance. This is the author's original simulation environment, not a Newton run of this course. Watch the weight move onto the stance foot before the other foot lifts, and the reverse order when it comes down.</p>
 </figcaption></figure><p><strong>Goal.</strong> The <a class="reference external" href="https://huggingface.co/RemiFabre/microduck-flamingo-cycle" rel="noreferer noopener" target="_blank">flamingo cycle ↗</a> switches on command between standing on two feet and standing on one: in the command <code class="docutils literal notranslate"><span class="pre">[flag,</span> <span class="pre">side,</span> <span class="pre">0]</span></code>, <code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">1</span></code> shifts the weight onto the stance foot chosen by <code class="docutils literal notranslate"><span class="pre">side</span></code>, lifts the other foot about 9 cm and holds; <code class="docutils literal notranslate"><span class="pre">flag</span> <span class="pre">=</span> <span class="pre">0</span></code> lowers it and stands on both feet. Each transition takes about 1.5 s and can be interrupted at any time. The author's simulation preview from the model card is above, so you can watch the motion first.</p>
 <p><strong>Observable quantities.</strong> The whole-robot centre of mass (the author deliberately uses the whole-body centre of mass rather than that of the single body part: the head is about 38% of the mass, and with a lifted leg the two differ by centimetres), the positions and contacts of both feet, the gravity direction in the body frame, joint angles and velocities. The reward also uses an internal quantity, the blend <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span>, which moves from 0 to 1 (or back) over 1.5 s after a command change; the policy observes only the command.</p>
 <p><strong>Formula.</strong> Instead of scripting “shift the weight, then lift the foot” as a timetable, the author lets each term switch on or off with <span class="math notranslate nohighlight">\(\htmlData{sym=alpha_f}{\alpha}\)</span>:</p>
@@ -516,7 +520,7 @@
 </section>
 <section id="basketball">
 <h2>Basketball balance: the reward sees the ball, the policy does not<a class="headerlink" href="#basketball" title="Link to this heading">#</a></h2>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="Community basketball-balance demo. Watch how the robot keeps adjusting its posture as the support surface rolls under it."><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption><p>Community basketball-balance demo (recording of an earlier version). Watch how the robot keeps adjusting its posture as the support surface rolls under it. The analysis below covers the author's latest release, b11.</p>
+<figure class="media media-solo" style="--media-w: 720; --media-h: 720"><video controls playsinline preload="metadata" poster="../assets/media/community-balance-hd.jpg" aria-label="Community basketball-balance demo. Watch how the robot keeps adjusting its posture as the support surface rolls under it."><source src="../assets/media/community-balance-hd.mp4" type="video/mp4"></video><figcaption><p>Community basketball-balance demo (recording of an earlier version). Watch how the robot keeps adjusting its posture as the support surface rolls under it. The analysis below covers the author's latest release, b11.</p>
 </figcaption></figure><p><strong>Goal.</strong> In <a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">basketball balance ↗</a> the robot balances on a free-rolling size-7 basketball (0.24 m diameter, 0.62 kg) and moves according to velocity commands; <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0]</span></code> means balance in place. Each episode starts with the robot placed on the apex of the ball; it does not climb onto the ball or get up from the floor.</p>
 <p><strong>Observable quantities.</strong> The reward reads the ball centre and ball speed, the body position, the sole reference points of both feet and the gravity direction in the body frame. The key point: <strong>the deployed policy cannot see the ball</strong>. In the author's latest release, b11, the policy uses only proprioception and velocity commands, passed through one LSTM layer of memory, and infers the ball under its feet from how its own state changes; the value network (critic) can read the ball state during training, but it is not part of the exported ONNX. The reward is computed in simulation, so it can use the ball position directly.</p>
 <div class="formula"><div class="formula-label">Standing on the ball: over the centre, feet on the ball (weights 2 and 1)</div><div class="formula-body">\[\htmlData{sym=r_center}{r_{\mathrm{center}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=p_ball}{p_{\mathrm{ball}}}-\htmlData{sym=p_root}{p_{\mathrm{root}}}\|_{xy}^2}{0.04^2}\right),\qquad \htmlData{sym=r_feet}{r_{\mathrm{feet}}}=\frac{1}{2}\sum_{\mathrm{L,R}}\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\|\htmlData{sym=p_foot}{p_{\mathrm{foot}}}-\htmlData{sym=p_ball}{p_{\mathrm{ball}}}\|-(\htmlData{sym=R_ball}{R}+0.012)}{0.02}\right)^2\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{center}}\)</dt><dd>Body-over-ball-centre term (weight 2).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(p_{\mathrm{ball}}\)</dt><dd>Position of the basketball centre (m), read directly from the simulation state; the deployed policy cannot see it.</dd></div><div><dt>\(p_{\mathrm{root}}\)</dt><dd>Position of the robot root (body) (m).</dd></div><div><dt>\(r_{\mathrm{feet}}\)</dt><dd>Feet-resting-on-the-ball term (weight 1), averaged over both feet.</dd></div><div><dt>\(p_{\mathrm{foot}}\)</dt><dd>Position of one foot&#x27;s sole reference point (m).</dd></div><div><dt>\(R\)</dt><dd>Basketball radius, 0.12 m (size 7).</dd></div></dl></details></div><div class="formula"><div class="formula-label">Standing on the ball: height and upright (weights 1 and 1)</div><div class="formula-body">\[\htmlData{sym=r_height}{r_{\mathrm{height}}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=z_root}{z_{\mathrm{root}}}-\htmlData{sym=z_ball}{z_{\mathrm{ball}}}-(\htmlData{sym=R_ball}{R}+0.125)}{0.03}\right)^2\right],\qquad \htmlData{sym=r_up}{r_{\mathrm{up}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\htmlData{sym=g_x}{g_x}^2+\htmlData{sym=g_y}{g_y}^2}{0.3^2}\right)\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{height}}\)</dt><dd>Standing-height-on-the-apex term (weight 1).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(z_{\mathrm{root}}\)</dt><dd>Height of the robot root (m).</dd></div><div><dt>\(z_{\mathrm{ball}}\)</dt><dd>Height of the ball centre (m).</dd></div><div><dt>\(R\)</dt><dd>Basketball radius, 0.12 m (size 7).</dd></div><div><dt>\(r_{\mathrm{up}}\)</dt><dd>Upright-body term (weight 1).</dd></div><div><dt>\(g_x\)</dt><dd>Forward/backward component of the gravity direction in the body frame (dimensionless); 0 when upright.</dd></div><div><dt>\(g_y\)</dt><dd>Left/right component of the gravity direction in the body frame (dimensionless); 0 when upright.</dd></div></dl></details></div><div class="formula"><div class="formula-label">Ball-speed penalty (weight −0.05)</div><div class="formula-body">\[\htmlData{sym=r_ball}{r_{\mathrm{ball}}}=\|\htmlData{sym=v_ball}{v_{\mathrm{ball}}}\|^2\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{ball}}\)</dt><dd>Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays.</dd></div><div><dt>\(v_{\mathrm{ball}}\)</dt><dd>Horizontal velocity of the basketball (m/s), simulation state.</dd></div></dl></details></div><p>The scales all carry length units: with the body 4 cm off the ball centre, a sole 2 cm off the ball surface or a 3 cm height error, the corresponding term drops to <span class="math notranslate nohighlight">\(e^{-1}\approx 0.37\)</span>. <span class="math notranslate nohighlight">\(\htmlData{sym=r_ball}{r_{\mathrm{ball}}}\)</span> has a small weight: it keeps the ball quiet at zero command, but when a command asks for rolling, velocity tracking still pays more. The termination reads the ball too: the body too low relative to the ball centre (below <span class="math notranslate nohighlight">\(\htmlData{sym=R_ball}{R}\)</span> + 0.05 m), more than 0.16 m off horizontally, or tilted beyond 55° counts as falling off the ball.</p>
@@ -652,7 +656,7 @@
 <section id="kick-example">
 <h2>A skill’s start and end matter equally<a class="headerlink" href="#kick-example" title="Link to this heading">#</a></h2>
 <p>Walking continuously accepts velocity commands, while a kick is a short skill with a clear start and end. To add a kick to an autonomous task, besides the motion itself you must define when it may start, which state it ends in, and how it stops on failure.</p>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task."><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task.</p>
+<figure class="media media-solo" style="--media-w: 1920; --media-h: 1080"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task."><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task.</p>
 </figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>Phase</p></th>
@@ -681,7 +685,7 @@
 </details></div></section>
 <section id="eyes">
 <h2>Executing a skill is not completing a task<a class="headerlink" href="#eyes" title="Link to this heading">#</a></h2>
-<p>So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.</p>
+<p>So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 first has people write these decisions into an onboard policy; Part 5 then trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -719,11 +723,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="07-groot.html"
+       href="06-perception.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">4.1 Vision-language-action models and GR00T</p>
+        <p class="prev-next-title">4.1 Find the ball and goal: RGB detection and ToF ranging</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

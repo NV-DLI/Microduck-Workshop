@@ -142,9 +142,11 @@ def learning_flow(d, lang):
     """A complete flow diagram with one full-width explanation panel below it.
 
     Layout and interaction follow the SO-101 Newton workshop's interactive
-    diagrams: select (or hover/focus to preview) a numbered module and the panel
-    under the figure shows its explanation; Close or Escape clears it. Node
-    cards keep the course's numbered c-fx style. Script: web/assets/teaching.js.
+    diagrams: the panel under the figure takes no space until a numbered module
+    is hovered or focused (preview) or selected (pinned); it then opens with that
+    module's explanation, and Close or Escape collapses it again. Without
+    JavaScript every explanation is listed in the panel. Node cards keep the
+    course's numbered c-fx style. Script: web/assets/teaching.js.
     """
     nodes = d["nodes"]
     details = d.get("details", [text for _, text in nodes])
@@ -225,14 +227,13 @@ def learning_flow(d, lang):
         texts += "".join(f'<text x="{mid}" y="{first+j*17}" class="learning-node-subtitle">{e(t)}</text>' for j, t in enumerate(body_lines))
         cards.append(f'<g class="learning-node" data-node="{i}" role="button" tabindex="0" aria-label="{i+1}. {e(title)}" aria-controls="{uid}-detail-{i}" aria-expanded="false"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6"/>{texts}</g>')
     zh = lang == "zh"
-    empty = "选择一个模块，说明会显示在这里。" if zh else "Select a module; its explanation appears here."
     scroll_hint = "左右滑动查看完整图示" if zh else "Swipe horizontally to see the full diagram"
     reset = "关闭说明" if zh else "Close explanation"
     articles = "".join(f'<article id="{uid}-detail-{i}" data-node-detail="{i}" class="learning-definition"><h3><span>{i+1}</span>{e(nodes[i][0])}</h3><p>{inline_md(detail)}</p></article>' for i, detail in enumerate(details))
     return (f'<figure class="learning-figure" data-learning-flow="{uid}"><p class="learning-help learning-scroll-hint">{scroll_hint}</p>'
             f'<div class="diagram-scroll" tabindex="0" role="region" aria-label="{e(d["label"])}"><svg class="learning-svg" viewBox="0 0 {width} {height}" role="group" aria-labelledby="{uid}-title"><title id="{uid}-title">{e(d["label"])}</title>'
             f'<defs><marker id="{uid}-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs>{"".join(paths)}{"".join(cards)}</svg></div>'
-            f'<div class="learning-details" aria-label="{e(d["label"])}"><p class="learning-empty">{empty}</p><button type="button" class="learning-reset" aria-label="{reset}" title="{reset}" hidden>×</button>{articles}</div>'
+            f'<div class="learning-details" aria-label="{e(d["label"])}"><button type="button" class="learning-reset" aria-label="{reset}" title="{reset}" hidden>×</button>{articles}</div>'
             f'<span class="sr-only learning-status" role="status"></span>{f'<figcaption>{inline_md(d["caption"])}</figcaption>' if d.get("caption") else ""}</figure>')
 
 
@@ -245,6 +246,10 @@ def concept_diagram(d, lang):
     caption = inline_md(d.get("caption", ""))
     if name in ("navigation-stance", "navigation-costmap"):
         return navigation_diagram(name, lang, caption)
+    if name == "onboard-sensors":
+        from .sensor_diagrams import onboard_sensors
+
+        return onboard_sensors(d, lang)
     controls = ""
     start = (
         '<svg viewBox="0 0 640 320" role="img" aria-label="' + e(d["label"])
@@ -323,7 +328,7 @@ def network_figure_open(lang):
 
 
 def vla_joint_figure_open(lang):
-    """Direct-joint VLA figure (Section 4.4): node columns and bands like the walking-actor
+    """Direct-joint VLA figure (Section 5.4): node columns and bands like the walking-actor
     network; each output group lists its actual joints of the walking interface."""
     zh = lang == "zh"
     data = yaml.safe_load((Path(__file__).resolve().parents[2] / "_data" / "network-interface.yaml").read_text(encoding="utf-8"))

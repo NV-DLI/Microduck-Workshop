@@ -27,12 +27,10 @@ logger = logging.getLogger(__name__)
 
 UI = {
     "zh": dict(check="检查理解", answer="查看解析", zoom="放大图片", comparison=("上：官方策略", "下：坡地策略"),
-               demo_columns=("前进请求", "转向请求", "视线俯仰（rad）", "视线权重（0–1）"),
-               hero_pause="暂停动画", hero_play="播放动画"),
+               demo_columns=("前进请求", "转向请求", "视线俯仰（rad）", "视线权重（0–1）")),
     "en": dict(check="Check your understanding", answer="Show explanation", zoom="Enlarge image",
                comparison=("Top: official policy", "Bottom: terrain policy"),
-               demo_columns=("Forward request", "Yaw request", "Gaze pitch (rad)", "Gaze weight (0–1)"),
-               hero_pause="Pause animation", hero_play="Play animation"),
+               demo_columns=("Forward request", "Yaw request", "Gaze pitch (rad)", "Gaze weight (0–1)")),
 }
 
 
@@ -131,11 +129,12 @@ class CourseDirective(SphinxDirective):
 class LessonIntro(CourseDirective):
     """Lead paragraph, lesson metadata and the optional home hero image.
 
-    ``hero`` is a still; with ``hero-animation`` it becomes a transparent animation that plays
-    and loops on load (also with reduced motion; the course asks for this) and shows the still
-    while paused with its own button. ``hero-size`` (``WxH``, default ``1200x500``) gives the
-    intrinsic size; with ``hero-optional`` a hero whose files are not there yet is left out
-    instead of failing the build.
+    ``hero`` is a still; with ``hero-animation`` the page shows only the transparent animated
+    image, which autoplays and loops from its own file (also with reduced motion; the course
+    asks for this) with no control and no script. The still is then only checked, not emitted.
+    ``hero-size`` (``WxH``, default ``1200x500``) gives the intrinsic size; with
+    ``hero-optional`` a hero whose files are not there yet is left out instead of failing the
+    build.
     """
 
     has_content = True
@@ -154,11 +153,8 @@ class LessonIntro(CourseDirective):
         size = f'width="{width}" height="{height}" style="aspect-ratio: {width} / {height}"'
         if not animation:
             return f'<figure class="hero-image"><img fetchpriority="high" src="{e(still)}" alt="{e(alt)}" {size}></figure>'
-        pause, play = self.ui["hero_pause"], self.ui["hero_play"]
-        return (f'<figure class="hero-image hero-animation" data-hero-animation data-still="{e(still)}" data-animation="{e(anim)}">'
-                f'<img class="dark-light" fetchpriority="high" src="{e(anim)}" alt="{e(alt)}" {size}>'
-                f'<button type="button" class="hero-animation-toggle" hidden data-pause="{e(pause)}" data-play="{e(play)}"'
-                f' aria-label="{e(pause)}" title="{e(pause)}" aria-pressed="false"></button></figure>')
+        return (f'<figure class="hero-image hero-animation">'
+                f'<img class="dark-light" fetchpriority="high" src="{e(anim)}" alt="{e(alt)}" {size}></figure>')
 
     def run(self):
         hero = self.options.get("hero")
@@ -239,8 +235,28 @@ class Symbols(CourseDirective):
 # ---------------------------------------------------------------- media
 
 
+def jpeg_size(path: Path) -> tuple[int, int] | None:
+    """(width, height) from a JPEG's start-of-frame marker, or None."""
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return None
+    i = 2
+    while i + 9 < len(data) and data[i] == 0xFF:
+        marker, length = data[i + 1], int.from_bytes(data[i + 2:i + 4], "big")
+        if 0xC0 <= marker <= 0xCF and marker not in (0xC4, 0xC8, 0xCC):
+            return int.from_bytes(data[i + 7:i + 9], "big"), int.from_bytes(data[i + 5:i + 7], "big")
+        i += 2 + length
+    return None
+
+
 class CourseVideo(CourseDirective):
-    """Seekable MP4 with poster; optional stage captions and comparison labels."""
+    """Seekable MP4 with poster; optional stage captions and comparison labels.
+
+    A solitary clip (no stages or comparison) no wider than 16:9 gets ``media-solo`` and its
+    poster's size, so CSS can inset it from the column edges at its own ratio. Wider clips,
+    such as multi-panel sensor recordings, keep the full column width.
+    """
 
     has_content = True
     required_arguments = 1
@@ -251,6 +267,10 @@ class CourseVideo(CourseDirective):
         stages = self.asset(self.options["stages"]) if self.options.get("stages") else None
         comparison = self.ui["comparison"] if "comparison" in self.options else None
         html = widgets.video_open(self.asset(base + ".mp4"), self.asset(base + ".jpg"), self.options.get("alt", ""), stages, comparison)
+        size = jpeg_size(Path(self.config.course_assets_dir) / (base.strip() + ".jpg"))
+        if not stages and not comparison and size and size[0] * 9 <= size[1] * 16:
+            html = html.replace('<figure class="media">',
+                                f'<figure class="media media-solo" style="--media-w: {size[0]}; --media-h: {size[1]}">', 1)
         return [self.wrap(html, "</figcaption></figure>")]
 
 
@@ -328,7 +348,7 @@ class NetworkDiagram(CourseDirective):
 
 
 class VlaJointDiagram(CourseDirective):
-    """A VLA that outputs the 14 servo targets directly (concept figure, Section 4.4)."""
+    """A VLA that outputs the 14 servo targets directly (concept figure, Section 5.4)."""
 
     has_content = True
 

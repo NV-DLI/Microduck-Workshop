@@ -128,7 +128,7 @@ The excerpt comes from the Microduck task configuration of the pinned Isaac Lab.
 {#train}
 ## Start a full training and watch it in parallel
 
-Run the command below in the course container shell from Section 1.3 (to reopen it, see <a href="setup.html#start">Section 1.3</a>). It trains from a random initialization and reads no weights from any existing model; `--show` opens the Isaac Sim window so you see a thousand ducks practising at once, each in its own randomized environment. Use a new folder for `--output`.
+Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>). It trains from a random initialization and reads no weights from any existing model; `--show` opens the Isaac Sim window so you see a thousand ducks practising at once, each in its own randomized environment. Use a new folder for `--output`.
 
 ```{code-block} bash
 :caption: Terminal · inside the container

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="认识视觉-语言-动作模型与 GR00T N1.7：它怎样把图像、语言和身体状态变成动作，预训练和后训练各自提供什么，以及泛化能力从哪里来、需要怎样验证。" name="description" />
 
-  <title>4.1 视觉-语言-动作模型与 GR00T - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <title>5.1 视觉-语言-动作模型与 GR00T - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,15 +57,15 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '07-groot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="4.2 步行射门：GR00T 的输入、输出与数据" href="08-groot-interface.html" />
-    <link rel="prev" title="3.4 社区技能：从目标到奖励" href="05-skills.html" />
+    <link rel="next" title="5.2 步行射门：GR00T 的输入、输出与数据" href="08-groot-interface.html" />
+    <link rel="prev" title="4.2 手工设计的射门阶段" href="06-onboard.html" />
 
 
 
@@ -146,11 +146,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a></div>
     
@@ -256,11 +256,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a>
 
@@ -323,8 +323,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 准备环境与获取代码</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -338,18 +337,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 手工设计的射门阶段</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -384,7 +388,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.1 视觉-语言-动作模型与 GR00T</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 视觉-语言-动作模型与 GR00T</span></li>
   </ul>
 </nav>
 </div>
@@ -402,13 +406,13 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gr00t">
-<h1>4.1 视觉-语言-动作模型与 GR00T<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
+<h1>5.1 视觉-语言-动作模型与 GR00T<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>认识视觉-语言-动作模型与 GR00T N1.7：它怎样把图像、语言和身体状态变成动作，预训练和后训练各自提供什么，以及泛化能力从哪里来、需要怎样验证。</p>
-</div><div class="lesson-meta">第 4.1 节 · 预计学习时长 40 分钟</div></div></div><section id="idea">
+</div><div class="lesson-meta">第 5.1 节 · 预计学习时长 40 分钟</div></div></div><section id="idea">
 <h2>从“写步骤”到“给目标与示范”<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
-<p>前面几章中，我们用现成策略体验了行走、轮滑和踢球，也尝试训练了行走与坡地策略。要让机器人自己判断何时使用这些技能，在球场上完成“走到球前、把球踢进球门”这样的完整任务，常见的做法是写一套模块化流程：检测足球，估计它与球门的位置，规划站位，再在合适的时刻调用踢球技能。这样由检测、几何估计和任务状态组成、能部署在机器人上的控制方案，本课称为机载策略（Onboard）。它每一步都可以解释；不过场景和任务增多时，显式规则和各个模块的维护成本可能随之增加。</p>
+<p>第 4 部分的板载策略用传感器找到球和球门，再按人设计的阶段完成射门。它每一步都可以解释，但阶段和条件都是为射门写的：换一个任务就要重新设计，场景和任务越多，维护成本越高。</p>
 <p>视觉-语言-动作模型（Vision-Language-Action，VLA）换了一种思路：给模型一句描述目标的话，再给它足够多“当时看到了什么、身体处于什么状态、接着做了什么”的示范，让它自己学习从观察到动作的映射。语言说明要完成什么，示范说明这台机器人怎样完成。</p>
-<p>两种思路并不互相排斥。机载策略依然需要可靠的感知与控制；VLA 也离不开传感器、标定和底层的执行控制（本课还让它调用已训练好的行走与踢球技能，这是本课的设计选择，并非所有 VLA 的要求），它的可靠表现仍取决于示范覆盖了什么：预训练可以帮助迁移，但示范没有覆盖的动作和失衡后的恢复，不能假定模型已经学会。</p>
+<p>两种思路并不互相排斥。板载策略依然需要可靠的感知与控制；VLA 也离不开传感器、标定和底层的执行控制（本课还让它调用已训练好的行走与踢球技能，这是本课的设计选择，并非所有 VLA 的要求），它的可靠表现仍取决于示范覆盖了什么：预训练可以帮助迁移，但示范没有覆盖的动作和失衡后的恢复，不能假定模型已经学会。</p>
 </section>
 <section id="vla">
 <h2>VLA 读什么、输出什么<a class="headerlink" href="#vla" title="Link to this heading">#</a></h2>
@@ -437,19 +441,19 @@
 </table>
 </div>
 <figure class="media"><a class="still-link" href="../assets/media/vla-architecture-official.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/vla-architecture-official.png" alt="以 GR00T 为例的 VLA 简图：桌面图像和语言指令分别转换成传感器 token 与文本 token，经视觉语言模型（System 2）和扩散 Transformer 模型（System 1）生成动作 token，驱动人形机器人。"></a><figcaption><p>以 GR00T 为例的 VLA 简图：图像与语言引导动作生成；机器人状态从哪里进入，见下一节的架构图。不同 VLA 的具体结构各不相同。图片来源：<a class="reference external" href="https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html" rel="noreferer noopener" target="_blank">NVIDIA SO-101 Sim-to-Real 课程 ↗</a>。</p>
-</figcaption></figure><p>输出是一小段未来动作。动作的含义由你决定：可以是关节目标角度，可以是末端执行器位姿，也可以是交给已有技能执行的速度、视线和技能请求。选择哪一种，决定了要准备什么样的示范标签，也决定了谁来负责平衡与接触这些需要快速反应的细节。4.2 节会说明 Microduck 步行射门为什么选择高层请求。</p>
+</figcaption></figure><p>输出是一小段未来动作。动作的含义由你决定：可以是关节目标角度，可以是末端执行器位姿，也可以是交给已有技能执行的速度、视线和技能请求。选择哪一种，决定了要准备什么样的示范标签，也决定了谁来负责平衡与接触这些需要快速反应的细节。5.2 节会说明 Microduck 步行射门为什么选择高层请求。</p>
 </section>
 <section id="architecture">
 <h2>GR00T N1.7 怎样把观察变成动作<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
-<p>GR00T N1.7 是 NVIDIA 发布的通用机器人基础模型，约 30 亿参数。视觉语言骨干 Cosmos-Reason2-2B 提取图像与指令的特征；基于 flow matching 的动作头结合这些特征与机器人状态，生成一段连续动作。论文用“System 2”（较慢、偏理解）和“System 1”（较快、偏动作）描述这两部分的作用，这只是概念上的称呼：模型不会输出人类可读的计划，也不意味着已经实现了实时、异步的控制。本课仿真中的每次推理都是同步完成的（见 <a href="08-groot-interface.html#timing">4.2 节</a>）。</p>
+<p>GR00T N1.7 是 NVIDIA 发布的通用机器人基础模型，约 30 亿参数。视觉语言骨干 Cosmos-Reason2-2B 提取图像与指令的特征；基于 flow matching 的动作头结合这些特征与机器人状态，生成一段连续动作。论文用“System 2”（较慢、偏理解）和“System 1”（较快、偏动作）描述这两部分的作用，这只是概念上的称呼：模型不会输出人类可读的计划，也不意味着已经实现了实时、异步的控制。本课仿真中的每次推理都是同步完成的（见 <a href="08-groot-interface.html#timing">5.2 节</a>）。</p>
 <figure class="media"><a class="still-link" href="../assets/media/groot-n1.7-architecture-official.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/groot-n1.7-architecture-official.png" alt="GR00T N1.7 架构图：图像观测与语言指令被编码为图像 token 和文本 token，送入视觉语言模型（System 2）；机器人状态单独编码，与视觉语言特征一起进入扩散 Transformer（System 1），经去噪生成动作 token，输出电机动作。"></a><figcaption><p>GR00T N1.7 架构：机器人状态单独编码，与视觉语言特征一起进入扩散 Transformer（System 1，即 flow matching 动作头）。图片来源：<a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">NVIDIA Isaac GR00T（Apache 2.0）↗</a>，同一架构图也见于 <a class="reference external" href="https://developer.nvidia.com/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t/" rel="noreferer noopener" target="_blank">NVIDIA 技术博客 ↗</a>。</p>
 </figcaption></figure><p>下面的交互图把同一结构放到 Microduck 的步行射门里：</p>
-<figure class="learning-figure" data-learning-flow="learn-781ec1f503"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="图像与语言提供情境，机器人状态共同参与动作生成"><svg class="learning-svg" viewBox="0 0 900 346" role="group" aria-labelledby="learn-781ec1f503-title"><title id="learn-781ec1f503-title">图像与语言提供情境，机器人状态共同参与动作生成</title><defs><marker id="learn-781ec1f503-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H244.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 68.5H468.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 68.5H692.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 117V237.5H656.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="4" data-to="2" d="M562.0 189V117" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="3" data-to="5" d="M826.0 117V322H114.0V286" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M114.0 189V117" marker-end="url(#learn-781ec1f503-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 图像与任务指令" aria-controls="learn-781ec1f503-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">图像与任务指令</text><text x="114.0" y="98" class="learning-node-subtitle">看见足球，理解射门目标</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. System 2" aria-controls="learn-781ec1f503-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="89" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">System 2</text><text x="338.0" y="98" class="learning-node-subtitle">Cosmos-Reason2-2B</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. System 1" aria-controls="learn-781ec1f503-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="89" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">System 1</text><text x="562.0" y="98" class="learning-node-subtitle">Flow-matching 动作头</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 动作执行" aria-controls="learn-781ec1f503-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">动作执行</text><text x="786.0" y="98" class="learning-node-subtitle">控制器 + Microduck</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. 机器人状态" aria-controls="learn-781ec1f503-detail-4" aria-expanded="false"><rect x="472.0" y="193" width="180" height="89" rx="6"/><text x="562.0" y="217" class="learning-node-index">05</text><text x="562.0" y="243" class="learning-node-title">机器人状态</text><text x="562.0" y="267" class="learning-node-subtitle">关节、机身姿态与运动</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. 再次观察" aria-controls="learn-781ec1f503-detail-5" aria-expanded="false"><rect x="24.0" y="193" width="180" height="89" rx="6"/><text x="114.0" y="217" class="learning-node-index">06</text><text x="114.0" y="243" class="learning-node-title">再次观察</text><text x="114.0" y="267" class="learning-node-subtitle">动作改变了看到的场景</text></g></svg></div><div class="learning-details" aria-label="图像与语言提供情境，机器人状态共同参与动作生成"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-781ec1f503-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>图像与任务指令</h3><p>图像说明机器人当前看到了什么，任务指令说明希望它完成什么。指令以文本形式与图像一同编码，不需要事先手算目标坐标。</p></article><article id="learn-781ec1f503-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>System 2</h3><p>视觉语言骨干提取与任务相关的特征，例如球门方向和足球所在区域。System 2 是对这部分感知与推理作用的概念称呼，它的输出是供动作头使用的特征。</p></article><article id="learn-781ec1f503-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>System 1</h3><p>动作头结合视觉语言特征与机器人状态，通过 flow matching 生成一段动作：从初始噪声出发，逐步修正成符合当前任务的连续动作序列。</p></article><article id="learn-781ec1f503-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>动作执行</h3><p>执行端解释模型输出，负责单位换算、限幅和动作时序。对 Microduck，GR00T 输出移动、视线和踢球请求，已有的运动策略继续维持平衡并驱动关节。</p></article><article id="learn-781ec1f503-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>机器人状态</h3><p>状态让模型知道“身体现在怎样”。相同的球画面，在身体倾斜、转动或正在踢球时可能需要不同动作。状态走向动作头的支路，表示它与视觉语言特征共同决定动作。</p></article><article id="learn-781ec1f503-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>再次观察</h3><p>执行一小段动作后，读取新图像与状态，再预测下一段。这个反馈闭环改变输入；普通推理过程中，模型权重保持不变。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>这里的 Cosmos-Reason2 是 GR00T N1.7 内部的视觉语言骨干，只负责为动作预测提供特征。4.4 节介绍的 Cosmos 3 是另一类模型，用于理解与生成世界相关的视频和数据。</p>
+<figure class="learning-figure" data-learning-flow="learn-781ec1f503"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="图像与语言提供情境，机器人状态共同参与动作生成"><svg class="learning-svg" viewBox="0 0 900 346" role="group" aria-labelledby="learn-781ec1f503-title"><title id="learn-781ec1f503-title">图像与语言提供情境，机器人状态共同参与动作生成</title><defs><marker id="learn-781ec1f503-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H244.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 68.5H468.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 68.5H692.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 117V237.5H656.0" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="4" data-to="2" d="M562.0 189V117" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="3" data-to="5" d="M826.0 117V322H114.0V286" marker-end="url(#learn-781ec1f503-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M114.0 189V117" marker-end="url(#learn-781ec1f503-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 图像与任务指令" aria-controls="learn-781ec1f503-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">图像与任务指令</text><text x="114.0" y="98" class="learning-node-subtitle">看见足球，理解射门目标</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. System 2" aria-controls="learn-781ec1f503-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="89" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">System 2</text><text x="338.0" y="98" class="learning-node-subtitle">Cosmos-Reason2-2B</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. System 1" aria-controls="learn-781ec1f503-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="89" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">System 1</text><text x="562.0" y="98" class="learning-node-subtitle">Flow-matching 动作头</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 动作执行" aria-controls="learn-781ec1f503-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">动作执行</text><text x="786.0" y="98" class="learning-node-subtitle">控制器 + Microduck</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. 机器人状态" aria-controls="learn-781ec1f503-detail-4" aria-expanded="false"><rect x="472.0" y="193" width="180" height="89" rx="6"/><text x="562.0" y="217" class="learning-node-index">05</text><text x="562.0" y="243" class="learning-node-title">机器人状态</text><text x="562.0" y="267" class="learning-node-subtitle">关节、机身姿态与运动</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. 再次观察" aria-controls="learn-781ec1f503-detail-5" aria-expanded="false"><rect x="24.0" y="193" width="180" height="89" rx="6"/><text x="114.0" y="217" class="learning-node-index">06</text><text x="114.0" y="243" class="learning-node-title">再次观察</text><text x="114.0" y="267" class="learning-node-subtitle">动作改变了看到的场景</text></g></svg></div><div class="learning-details" aria-label="图像与语言提供情境，机器人状态共同参与动作生成"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-781ec1f503-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>图像与任务指令</h3><p>图像说明机器人当前看到了什么，任务指令说明希望它完成什么。指令以文本形式与图像一同编码，不需要事先手算目标坐标。</p></article><article id="learn-781ec1f503-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>System 2</h3><p>视觉语言骨干提取与任务相关的特征，例如球门方向和足球所在区域。System 2 是对这部分感知与推理作用的概念称呼，它的输出是供动作头使用的特征。</p></article><article id="learn-781ec1f503-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>System 1</h3><p>动作头结合视觉语言特征与机器人状态，通过 flow matching 生成一段动作：从初始噪声出发，逐步修正成符合当前任务的连续动作序列。</p></article><article id="learn-781ec1f503-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>动作执行</h3><p>执行端解释模型输出，负责单位换算、限幅和动作时序。对 Microduck，GR00T 输出移动、视线和踢球请求，已有的运动策略继续维持平衡并驱动关节。</p></article><article id="learn-781ec1f503-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>机器人状态</h3><p>状态让模型知道“身体现在怎样”。相同的球画面，在身体倾斜、转动或正在踢球时可能需要不同动作。状态走向动作头的支路，表示它与视觉语言特征共同决定动作。</p></article><article id="learn-781ec1f503-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>再次观察</h3><p>执行一小段动作后，读取新图像与状态，再预测下一段。这个反馈闭环改变输入；普通推理过程中，模型权重保持不变。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>这里的 Cosmos-Reason2 是 GR00T N1.7 内部的视觉语言骨干，只负责为动作预测提供特征。5.4 节介绍的 Cosmos 3 是另一类模型，用于理解与生成世界相关的视频和数据。</p>
 </section>
 <section id="action-chunks">
 <h2>一次预测一段动作<a class="headerlink" href="#action-chunks" title="Link to this heading">#</a></h2>
 <p>GR00T 每次不只预测下一步，而是预测未来若干步组成的动作块（action chunk）。执行端通常只执行其中前几步，然后用新的观察重新预测。这样做有两个好处：相邻动作出自同一次预测，衔接更平滑；模型不必每一步都运行一次，减少了推理次数。</p>
-<p>执行多长是一种权衡。执行得太长，球和身体已经变化，机器人还在沿用旧动作；执行得太短，就更依赖推理速度和通信稳定性。4.2 节会用 Microduck 的实际数字说明这一点：每次预测多少步、执行多少步、两次推理之间底层控制器运行了多少次。</p>
+<p>执行多长是一种权衡。执行得太长，球和身体已经变化，机器人还在沿用旧动作；执行得太短，就更依赖推理速度和通信稳定性。5.2 节会用 Microduck 的实际数字说明这一点：每次预测多少步、执行多少步、两次推理之间底层控制器运行了多少次。</p>
 </section>
 <section id="training">
 <h2>预训练、后训练与推理<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
@@ -482,7 +486,7 @@
 <section id="data-pyramid">
 <h2>数据从哪里来<a class="headerlink" href="#data-pyramid" title="Link to this heading">#</a></h2>
 <p>机器人基础模型的数据常被画成一座金字塔：最底层是数量最大的网络图像、文本和人类视频，它们提供通用的视觉与语言知识；中间是仿真和合成数据，可以大量生成、精确标注；顶层是真实机器人数据，最贴近部署，但采集成本最高。这些层次描述的是不同数据的作用，不是固定的配比，也不是唯一的训练顺序。</p>
-<p>本课的后训练数据全部来自仿真：在 Isaac Lab 与 Newton 中让机载策略完成射门，记录它看到的画面、身体状态和发出的请求。4.2 节讲这些数据怎样设计，4.3 节用它们训练和验证模型。</p>
+<p>本课的后训练数据全部来自仿真：在 Isaac Lab 与 Newton 中让板载策略完成射门，记录它看到的画面、身体状态和发出的请求。5.2 节讲这些数据怎样设计，5.3 节用它们训练和验证模型。</p>
 </section>
 <section id="generalization">
 <h2>泛化潜力从哪里来<a class="headerlink" href="#generalization" title="Link to this heading">#</a></h2>
@@ -515,11 +519,11 @@
 </table>
 </div>
 <p>预训练带来的通用视觉与语言知识，让模型有可能在外观变化或说法变化时仍认出“这是一个球、那是球门”。这正是大模型的潜力所在。但潜力不等于已经具备的能力：动作层面的可靠表现主要取决于示范覆盖了什么。如果示范只覆盖一种球场、一条指令、一类起点，能够确认的也只有这一种情况；其他情况即使可能迁移成功，也要单独测试才能知道。</p>
-<p>所以判断一个 VLA 是否真的泛化，要把测试条件留在训练之外，并且看完整任务是否成功，而不是看训练损失或少数几次顺利的录像。本课的 GR00T 只在一个绿色球场、一条射门指令上训练，4.3 节的验证回合数量也很少；它展示的是方法，不是已经证明的泛化能力。4.4 节讨论怎样逐步扩展到更多环境。</p>
+<p>所以判断一个 VLA 是否真的泛化，要把测试条件留在训练之外，并且看完整任务是否成功，而不是看训练损失或少数几次顺利的录像。本课的 GR00T 只在一个绿色球场、一条射门指令上训练，5.3 节的验证回合数量也很少；它展示的是方法，不是已经证明的泛化能力。5.4 节讨论怎样逐步扩展到更多环境。</p>
 </section>
 <section id="compare">
-<h2>GR00T 一定比机载策略好吗<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
-<p>不一定。同一任务可以用机载策略、小型视觉策略或 GR00T 实现，比较时要使用相同的测试起点、相同的成功标准和相同的底层技能。值得关注的不只是成功率，还有推理延迟、训练成本（包括特征缓存与显存）、所需示范数量，以及能否用同一个模型接受多种指令。如果一个小模型在固定任务上更快、更准，这本身就是有价值的结论；GR00T 的额外能力，要在需要多任务、多场景时才更有机会体现出来。</p>
+<h2>GR00T 一定比板载策略好吗<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
+<p>不一定。同一任务可以用板载策略、小型视觉策略或 GR00T 实现，比较时要使用相同的测试起点、相同的成功标准和相同的底层技能。值得关注的不只是成功率，还有推理延迟、训练成本（包括特征缓存与显存）、所需示范数量，以及能否用同一个模型接受多种指令。如果一个小模型在固定任务上更快、更准，这本身就是有价值的结论；GR00T 的额外能力，要在需要多任务、多场景时才更有机会体现出来。</p>
 <div class="quiz"><h3>检查理解</h3><p>训练损失已经很低，为什么还不能说 GR00T 学会了射门？</p>
 <details><summary>查看解析</summary><p>训练损失只说明模型拟合了示范中的动作。模型自己控制机器人时，输入会随它的动作而改变，可能进入示范里没有的状态；能否完成任务，要在未参与训练的起点上做闭环测试，并以完整进球、不摔倒、恢复站立为标准。</p>
 </details></div><div class="quiz"><h3>检查理解</h3><p>把同一条指令换个说法后模型还能完成任务，这说明它能完成“走到球旁但不要碰球”吗？</p>
@@ -547,12 +551,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="05-skills.html"
+       href="06-onboard.html"
        title="上一页">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">上一页</p>
-        <p class="prev-next-title">3.4 社区技能：从目标到奖励</p>
+        <p class="prev-next-title">4.2 手工设计的射门阶段</p>
       </div>
     </a>
     <a class="right-next"
@@ -560,7 +564,7 @@
        title="下一页">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">下一页</p>
-        <p class="prev-next-title">4.2 步行射门：GR00T 的输入、输出与数据</p>
+        <p class="prev-next-title">5.2 步行射门：GR00T 的输入、输出与数据</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -592,7 +596,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">预训练、后训练与推理</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pyramid">数据从哪里来</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generalization">泛化潜力从哪里来</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">GR00T 一定比机载策略好吗</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">GR00T 一定比板载策略好吗</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
 </ul>
   </nav></div>

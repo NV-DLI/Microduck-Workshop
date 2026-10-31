@@ -4,10 +4,10 @@ myst:
     description: 'What GR00T reads in the walking shot, which eight high-level requests it outputs and who executes them; why only the action head is post-trained instead of predicting joint angles; how the demonstrations are designed; and why a real robot would run inference on a workstation.'
 ---
 
-# 4.2 Walking shot: GR00T inputs, outputs and data
+# 5.2 Walking shot: GR00T inputs, outputs and data
 
 :::{lesson-intro}
-:meta: Section 4.2 · Estimated learning time: 60 minutes
+:meta: Section 5.2 · Estimated learning time: 60 minutes
 
 What GR00T reads in the walking shot, which eight high-level requests it outputs and who executes them; why only the action head is post-trained instead of predicting joint angles; how the demonstrations are designed; and why a real robot would run inference on a workstation.
 :::
@@ -80,6 +80,51 @@ A few points are easy to misread:
 - At the start of an episode, before enough history exists, past images and states are filled with the first observation of the episode.
 - The 127 values contain no simulated coordinates of the ball or goal. The kick-skill busy flag and progress come from the executor itself and can be maintained on a real robot.
 
+{#sensors}
+## Which sensors GR00T uses
+
+The onboard policy in Section 4.1 uses the RGB camera, ToF, joint encoders and IMU together; GR00T reads only some of them.
+
+:::{course-video} media/sensors-groot-recorded
+:alt: One simulated GR00T validation episode: the third-person view on the left, the head RGB image that GR00T reads at the top right, the observation-only 8×8 ToF distances at the bottom right and GR00T's requests and stages at the bottom.
+
+One simulated GR00T validation episode, with all views synchronized to the same capture time. The RGB image at the top right is GR00T's input source; ToF is shown for observation only and does not reach GR00T. In this episode the robot touches the ball but does not score, and it does not fall.
+:::
+
+```{concept-diagram}
+kind: onboard-sensors
+label: The RGB view and body state that GR00T reads, and the ToF distances shown for observation only
+description: The first row is a line drawing of the camera view; GR00T reads the downscaled raw image, with no detector boxes. The second row is the 64 ToF zone distances from the same instant, greyed as observation only, with no connection to GR00T. The third row is the joint encoders and IMU, which enter the 127-value state. Images, state and the task instruction go into GR00T, which predicts 8-D high-level requests.
+rgb:
+  title: RGB camera · 960 × 540 pixels
+  size: [960, 540]
+  detections: false
+  boxes:
+  - [ball, 0.954, [443, 312, 576, 448]]
+  - [goal, 0.946, [362, 119, 607, 273]]
+tof:
+  title: ToF ranging · 8 × 8 zones · observation only
+  used: false
+  grid:
+  - [null, null, null, null, null, null, null, null]
+  - [null, null, 1.15, 1.15, 1.15, null, null, null]
+  - [2.34, 2.32, 1.30, 1.30, 1.23, 1.23, 2.51, 2.61]
+  - [1.27, 1.26, 1.25, 1.25, 1.26, 1.20, 1.31, 1.35]
+  - [0.80, 0.79, 0.78, 0.86, 0.50, 0.50, 0.81, 0.83]
+  - [0.63, 0.62, 0.61, 0.61, 0.48, 0.48, 0.63, 0.65]
+  - [0.50, 0.49, 0.48, 0.51, 0.49, 0.49, 0.50, 0.51]
+  - [0.42, 0.41, 0.43, 0.42, 0.42, 0.43, 0.42, 0.43]
+proprio: [Joint encoders + IMU, "Joint angles, gravity direction and angular velocity"]
+steps:
+- [Camera history, "Current frame and 3 past frames\nDownscaled to 270 × 480\nNo detector boxes"]
+- [Observation only, "The simulation still produces ToF\nGR00T does not read it"]
+- [127-value state, "Joints, body angular velocity and gravity, previous request and kick progress"]
+result: [GR00T, "Images, state and task instruction\nPredicts 8-D high-level requests"]
+caption: The same capture as the figure in Section 4.1, used to compare what the two methods read. GR00T has no detector boxes and must recognize the ball and goal in the image itself; there is no connection between ToF and GR00T.
+```
+
+The two methods do not see the same information: the onboard policy relies on ToF for the floor and the distance in front of its feet, while GR00T can only learn the corresponding behavior from images, body state and demonstrations. Keep this in mind when comparing them.
+
 {#outputs}
 ## The eight high-level requests: what, which units, who executes
 
@@ -101,7 +146,7 @@ The first three values go straight into the official walking policy’s command 
 {#why-high-level}
 ## Why not let GR00T output joint angles directly?
 
-Microduck’s walking policy updates the actions of its 14 joints from body feedback every 20 ms (50 Hz) to stay balanced while stepping. One new GR00T inference took a median of about 0.33 s of server computation in the course’s simulation logs, more than 16 low-level control ticks. If GR00T output joint angles directly, it would either fall behind the rhythm balance needs, or it would have to learn balance and contact details as well, which needs far more demonstrations and is hard to learn from them.
+Microduck’s walking policy updates its 14 joint actions from body feedback every 20 ms (50 Hz). GR00T inference took a median of about 0.33 s of server computation. A predicted action chunk can run at the control frequency, but corrections based on new observations are still limited by inference latency. Direct joint control must also learn balance and contact, requiring more varied demonstrations and careful timing validation.
 
 With a hierarchy, each part does what it is good at:
 
@@ -225,7 +270,7 @@ Do not assume that the GR00T N1.7 base weights understand this course’s 127-D 
 
 That is more than replacing the last output layer, and it differs from LoRA, which trains only small added matrices. GR00T’s internal action representation is wider than eight values; the extra dimensions are masked so the training loss covers only the real eight.
 
-Freezing the backbone has a practical benefit too: the features computed from the same image and instruction never change, so they can be computed once and cached before training, after which each update runs only the action head. Section 4.3 uses the supplied cache by default: the log first shows the cache checks, then the optimizer updates; full feature-generation progress appears only when you choose to recompute the features. The cache is valid only while the backbone stays frozen and image preprocessing is fixed; it cannot be reused after changing image augmentation or unfreezing the backbone.
+Freezing the backbone has a practical benefit too: the features computed from the same image and instruction never change, so they can be computed once and cached before training, after which each update runs only the action head. Section 5.3 uses the supplied cache by default: the log first shows the cache checks, then the optimizer updates; full feature-generation progress appears only when you choose to recompute the features. The cache is valid only while the backbone stays frozen and image preprocessing is fixed; it cannot be reused after changing image augmentation or unfreezing the backbone.
 
 {#data-design}
 ## How the demonstrations are designed
@@ -255,7 +300,7 @@ A few design principles:
 - **Coverage matters more than count.** Dozens of nearly identical smooth runs teach less than demonstrations that cover approaching, adjusting heading, looking down to check, preparing to kick and recovering.
 - **Watch for imbalance.** Most of an episode is walking, and the frames just before a kick are few. Training can adjust sampling probabilities by stage: this course’s training set is divided into 7 stage groups based on the onboard policy’s recorded behavior, so standing still, fine adjustment at the ball and the moments just before a kick are drawn more often, and frames during the kick skill less often. Stage labels are used only for offline sampling and never enter the model’s inputs.
 
-The course has already prepared training and validation sets by these principles; Section 4.3 uses them directly, so you do not need to collect data.
+The course has already prepared training and validation sets by these principles; Section 5.3 uses them directly, so you do not need to collect data.
 
 {#improve-data}
 ## When the model drifts: the idea of corrective data

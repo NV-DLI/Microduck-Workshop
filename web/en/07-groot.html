@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it." name="description" />
 
-  <title>4.1 Vision-language-action models and GR00T - Simulate and train Microduck with NVIDIA Isaac</title>
+  <title>5.1 Vision-language-action models and GR00T - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,15 +56,15 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '07-groot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="4.2 Walking shot: GR00T inputs, outputs and data" href="08-groot-interface.html" />
-    <link rel="prev" title="3.4 Community skills: from goal to reward" href="05-skills.html" />
+    <link rel="next" title="5.2 Walking shot: GR00T inputs, outputs and data" href="08-groot-interface.html" />
+    <link rel="prev" title="4.2 Hand-designed shooting stages" href="06-onboard.html" />
 
 
 
@@ -145,11 +145,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a></div>
     
@@ -255,11 +255,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Simulate and train Microduck with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
   
   
-    <p class="title logo__title">Simulate and train Microduck with NVIDIA Isaac</p>
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
   
 </a>
 
@@ -322,8 +322,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 How to take this course</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 Set up the environment and get the code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -337,18 +336,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Train GR00T to complete tasks autonomously</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 From the pitch to more environments</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Reference and help</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 Models and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -383,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.1 Vision-language-action models and GR00T</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 Vision-language-action models and GR00T</span></li>
   </ul>
 </nav>
 </div>
@@ -401,11 +405,11 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="vision-language-action-models-and-gr00t">
-<h1>4.1 Vision-language-action models and GR00T<a class="headerlink" href="#vision-language-action-models-and-gr00t" title="Link to this heading">#</a></h1>
+<h1>5.1 Vision-language-action models and GR00T<a class="headerlink" href="#vision-language-action-models-and-gr00t" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.</p>
-</div><div class="lesson-meta">Section 4.1 · Estimated learning time: 40 minutes</div></div></div><section id="idea">
+</div><div class="lesson-meta">Section 5.1 · Estimated learning time: 40 minutes</div></div></div><section id="idea">
 <h2>From writing steps to providing goals and examples<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
-<p>In the earlier chapters we tried walking, skating and kicking with pretrained policies and trained walking and slope policies. For the robot to decide by itself when to use these skills and complete a whole task on the pitch, such as “walk up to the ball and kick it into the goal”, a common approach is a modular pipeline: detect the ball, estimate where it and the goal are, plan a stance, then call the kick skill at the right moment. In this course, a controller built from detection, geometric estimation and task state that can be deployed on the robot is called the onboard policy. Every step is explainable, although as scenes and tasks multiply, the cost of maintaining explicit rules and modules can grow.</p>
+<p>The onboard policy in Part 4 finds the ball and goal with its sensors, then completes the shot through human-designed stages. Every step is explainable, but the stages and conditions were written for shooting: a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.</p>
 <p>A vision-language-action model (VLA) takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.</p>
 <p>The two approaches are not exclusive. The onboard policy still needs reliable perception and control; a VLA also depends on sensors, calibration and low-level execution and control (this course also has it call pretrained walking and kicking skills, which is a design choice of this course rather than a requirement of every VLA), and its reliable performance still depends on what the demonstrations cover: pretraining can help transfer, but actions and recovery from imbalance that the demonstrations never covered cannot be assumed to be learned.</p>
 </section>
@@ -436,19 +440,19 @@
 </table>
 </div>
 <figure class="media"><a class="still-link" href="../assets/media/vla-architecture-official.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/vla-architecture-official.png" alt="A VLA illustrated with GR00T: a tabletop image and a language instruction become sensor tokens and text tokens, pass through a vision-language model (System 2) and a diffusion transformer model (System 1), and come out as action tokens that drive a humanoid robot."></a><figcaption><p>A VLA illustrated with GR00T: images and language guide action generation; the next figure shows where robot state enters. The exact structure differs between VLAs. Image source: <a class="reference external" href="https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html" rel="noreferer noopener" target="_blank">NVIDIA SO-101 Sim-to-Real course ↗</a>.</p>
-</figcaption></figure><p>The output is a short sequence of future actions. You decide what an action means: joint target angles, an end-effector pose, or velocity, gaze and skill requests handed to existing skills. That choice determines which demonstration labels you need and who is responsible for fast details such as balance and contact. Section 4.2 explains why the Microduck walking shot uses high-level requests.</p>
+</figcaption></figure><p>The output is a short sequence of future actions. You decide what an action means: joint target angles, an end-effector pose, or velocity, gaze and skill requests handed to existing skills. That choice determines which demonstration labels you need and who is responsible for fast details such as balance and contact. Section 5.2 explains why the Microduck walking shot uses high-level requests.</p>
 </section>
 <section id="architecture">
 <h2>How GR00T N1.7 turns observations into actions<a class="headerlink" href="#architecture" title="Link to this heading">#</a></h2>
-<p>GR00T N1.7 is a general-purpose robot foundation model from NVIDIA with about three billion parameters. Its vision-language backbone, Cosmos-Reason2-2B, extracts features from the images and the instruction; a flow-matching action head combines them with the robot state to generate a continuous action sequence. The paper calls these roles “System 2” (slower, interpretive) and “System 1” (faster, action-oriented). These are conceptual names: the model does not output a human-readable plan, and they do not mean real-time asynchronous control is already implemented. In this course’s simulation every inference is synchronous (see <a href="08-groot-interface.html#timing">Section 4.2</a>).</p>
+<p>GR00T N1.7 is a general-purpose robot foundation model from NVIDIA with about three billion parameters. Its vision-language backbone, Cosmos-Reason2-2B, extracts features from the images and the instruction; a flow-matching action head combines them with the robot state to generate a continuous action sequence. The paper calls these roles “System 2” (slower, interpretive) and “System 1” (faster, action-oriented). These are conceptual names: the model does not output a human-readable plan, and they do not mean real-time asynchronous control is already implemented. In this course’s simulation every inference is synchronous (see <a href="08-groot-interface.html#timing">Section 5.2</a>).</p>
 <figure class="media"><a class="still-link" href="../assets/media/groot-n1.7-architecture-official.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/groot-n1.7-architecture-official.png" alt="The GR00T N1.7 architecture: the image observation and the language instruction are encoded into image and text tokens for the vision-language model (System 2); the robot state is encoded separately and enters the diffusion transformer (System 1) with the vision-language features, which denoises action tokens into motor actions."></a><figcaption><p>The GR00T N1.7 architecture: robot state is encoded separately and joins the vision-language features in the diffusion transformer (System 1, the flow-matching action head). Image source: <a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T" rel="noreferer noopener" target="_blank">NVIDIA Isaac GR00T (Apache 2.0) ↗</a>; the same figure appears in the <a class="reference external" href="https://developer.nvidia.com/blog/develop-humanoid-robot-policies-end-to-end-with-nvidia-isaac-gr00t/" rel="noreferer noopener" target="_blank">NVIDIA technical blog ↗</a>.</p>
 </figcaption></figure><p>The interactive figure below maps the same structure onto the Microduck walking shot:</p>
-<figure class="learning-figure" data-learning-flow="learn-dac53336fd"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Images and language provide context; robot state also conditions actions"><svg class="learning-svg" viewBox="0 0 900 420" role="group" aria-labelledby="learn-dac53336fd-title"><title id="learn-dac53336fd-title">Images and language provide context; robot state also conditions actions</title><defs><marker id="learn-dac53336fd-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H244.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 87.0H468.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 87.0H692.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 154V293.0H656.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="4" data-to="2" d="M562.0 226V154" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="3" data-to="5" d="M826.0 154V396H114.0V360" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M114.0 226V154" marker-end="url(#learn-dac53336fd-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Images + instruction" aria-controls="learn-dac53336fd-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Images +</text><text x="114.0" y="94" class="learning-node-title">instruction</text><text x="114.0" y="118" class="learning-node-subtitle">See the ball</text><text x="114.0" y="135" class="learning-node-subtitle">and the goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. System 2" aria-controls="learn-dac53336fd-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="126" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">System 2</text><text x="338.0" y="98" class="learning-node-subtitle">Cosmos-Reason2-2B</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. System 1" aria-controls="learn-dac53336fd-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="126" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">System 1</text><text x="562.0" y="98" class="learning-node-subtitle">Flow-matching</text><text x="562.0" y="115" class="learning-node-subtitle">action head</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Execute actions" aria-controls="learn-dac53336fd-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Execute actions</text><text x="786.0" y="98" class="learning-node-subtitle">Controller + Microduck</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. Robot state" aria-controls="learn-dac53336fd-detail-4" aria-expanded="false"><rect x="472.0" y="230" width="180" height="126" rx="6"/><text x="562.0" y="254" class="learning-node-index">05</text><text x="562.0" y="280" class="learning-node-title">Robot state</text><text x="562.0" y="304" class="learning-node-subtitle">Joints,</text><text x="562.0" y="321" class="learning-node-subtitle">attitude, motion</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. Observe again" aria-controls="learn-dac53336fd-detail-5" aria-expanded="false"><rect x="24.0" y="230" width="180" height="126" rx="6"/><text x="114.0" y="254" class="learning-node-index">06</text><text x="114.0" y="280" class="learning-node-title">Observe again</text><text x="114.0" y="304" class="learning-node-subtitle">The scene changes</text><text x="114.0" y="321" class="learning-node-subtitle">as we act</text></g></svg></div><div class="learning-details" aria-label="Images and language provide context; robot state also conditions actions"><p class="learning-empty">Select a module; its explanation appears here.</p><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-dac53336fd-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Images + instruction</h3><p>Images describe what the robot sees; the instruction specifies the desired outcome. The text is encoded together with the images, so no hand-calculated target coordinates are needed.</p></article><article id="learn-dac53336fd-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>System 2</h3><p>The vision-language backbone extracts task-relevant features, such as goal direction and the ball’s region. System 2 names this perception/reasoning role; its output is features for the action head.</p></article><article id="learn-dac53336fd-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>System 1</h3><p>Conditioned on visual-language features and robot state, the flow-matching head starts from initial noise and refines it step by step into a continuous action sequence for the current task.</p></article><article id="learn-dac53336fd-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Execute actions</h3><p>The executor handles units, limits and timing. For Microduck, GR00T outputs movement, gaze and kick requests while the existing motion policies keep balance and drive the joints.</p></article><article id="learn-dac53336fd-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>Robot state</h3><p>State describes the current body. Similar images can require different actions while leaning, turning or kicking. The state branch jointly conditions the action head with visual-language features.</p></article><article id="learn-dac53336fd-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>Observe again</h3><p>After a short execution, fresh images and state inform the next prediction. This feedback changes inputs; ordinary inference keeps model weights fixed.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>Cosmos-Reason2 here is the vision-language backbone inside GR00T N1.7; it only supplies features for action prediction. Cosmos 3, introduced in Section 4.4, is a different kind of model used to understand and generate world-related video and data.</p>
+<figure class="learning-figure" data-learning-flow="learn-dac53336fd"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Images and language provide context; robot state also conditions actions"><svg class="learning-svg" viewBox="0 0 900 420" role="group" aria-labelledby="learn-dac53336fd-title"><title id="learn-dac53336fd-title">Images and language provide context; robot state also conditions actions</title><defs><marker id="learn-dac53336fd-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H244.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 87.0H468.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 87.0H692.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 154V293.0H656.0" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="4" data-to="2" d="M562.0 226V154" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="3" data-to="5" d="M826.0 154V396H114.0V360" marker-end="url(#learn-dac53336fd-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M114.0 226V154" marker-end="url(#learn-dac53336fd-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Images + instruction" aria-controls="learn-dac53336fd-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Images +</text><text x="114.0" y="94" class="learning-node-title">instruction</text><text x="114.0" y="118" class="learning-node-subtitle">See the ball</text><text x="114.0" y="135" class="learning-node-subtitle">and the goal</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. System 2" aria-controls="learn-dac53336fd-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="126" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">System 2</text><text x="338.0" y="98" class="learning-node-subtitle">Cosmos-Reason2-2B</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. System 1" aria-controls="learn-dac53336fd-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="126" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">System 1</text><text x="562.0" y="98" class="learning-node-subtitle">Flow-matching</text><text x="562.0" y="115" class="learning-node-subtitle">action head</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Execute actions" aria-controls="learn-dac53336fd-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Execute actions</text><text x="786.0" y="98" class="learning-node-subtitle">Controller + Microduck</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. Robot state" aria-controls="learn-dac53336fd-detail-4" aria-expanded="false"><rect x="472.0" y="230" width="180" height="126" rx="6"/><text x="562.0" y="254" class="learning-node-index">05</text><text x="562.0" y="280" class="learning-node-title">Robot state</text><text x="562.0" y="304" class="learning-node-subtitle">Joints,</text><text x="562.0" y="321" class="learning-node-subtitle">attitude, motion</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. Observe again" aria-controls="learn-dac53336fd-detail-5" aria-expanded="false"><rect x="24.0" y="230" width="180" height="126" rx="6"/><text x="114.0" y="254" class="learning-node-index">06</text><text x="114.0" y="280" class="learning-node-title">Observe again</text><text x="114.0" y="304" class="learning-node-subtitle">The scene changes</text><text x="114.0" y="321" class="learning-node-subtitle">as we act</text></g></svg></div><div class="learning-details" aria-label="Images and language provide context; robot state also conditions actions"><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-dac53336fd-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Images + instruction</h3><p>Images describe what the robot sees; the instruction specifies the desired outcome. The text is encoded together with the images, so no hand-calculated target coordinates are needed.</p></article><article id="learn-dac53336fd-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>System 2</h3><p>The vision-language backbone extracts task-relevant features, such as goal direction and the ball’s region. System 2 names this perception/reasoning role; its output is features for the action head.</p></article><article id="learn-dac53336fd-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>System 1</h3><p>Conditioned on visual-language features and robot state, the flow-matching head starts from initial noise and refines it step by step into a continuous action sequence for the current task.</p></article><article id="learn-dac53336fd-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Execute actions</h3><p>The executor handles units, limits and timing. For Microduck, GR00T outputs movement, gaze and kick requests while the existing motion policies keep balance and drive the joints.</p></article><article id="learn-dac53336fd-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>Robot state</h3><p>State describes the current body. Similar images can require different actions while leaning, turning or kicking. The state branch jointly conditions the action head with visual-language features.</p></article><article id="learn-dac53336fd-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>Observe again</h3><p>After a short execution, fresh images and state inform the next prediction. This feedback changes inputs; ordinary inference keeps model weights fixed.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>Cosmos-Reason2 here is the vision-language backbone inside GR00T N1.7; it only supplies features for action prediction. Cosmos 3, introduced in Section 5.4, is a different kind of model used to understand and generate world-related video and data.</p>
 </section>
 <section id="action-chunks">
 <h2>Predict a chunk of actions at once<a class="headerlink" href="#action-chunks" title="Link to this heading">#</a></h2>
 <p>GR00T does not predict only the next step; it predicts an action chunk covering several future steps. The executor usually runs only the first few, then predicts again from a fresh observation. This has two benefits: neighboring actions come from the same prediction and join smoothly, and the model does not have to run at every step, which reduces the number of inferences.</p>
-<p>How much to execute is a trade-off. Execute too much and the ball and body have changed while the robot still follows old actions; execute too little and you depend more on inference speed and communication. Section 4.2 shows this with Microduck’s real numbers: how many steps are predicted, how many are executed, and how many times the low-level controller runs between two inferences.</p>
+<p>How much to execute is a trade-off. Execute too much and the ball and body have changed while the robot still follows old actions; execute too little and you depend more on inference speed and communication. Section 5.2 shows this with Microduck’s real numbers: how many steps are predicted, how many are executed, and how many times the low-level controller runs between two inferences.</p>
 </section>
 <section id="training">
 <h2>Pretraining, post-training and inference<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
@@ -481,7 +485,7 @@
 <section id="data-pyramid">
 <h2>Where the data comes from<a class="headerlink" href="#data-pyramid" title="Link to this heading">#</a></h2>
 <p>Data for robot foundation models is often drawn as a pyramid. The wide base is web images, text and human video, which supply general visual and language knowledge. The middle is simulated and synthetic data, which can be generated at scale with exact labels. The top is real-robot data: closest to deployment but the most expensive to collect. The layers describe the roles of different data, not fixed proportions or a single training order.</p>
-<p>All post-training data in this course comes from simulation: the onboard policy completes the shot in Isaac Lab and Newton while we record the images it saw, its body state and the requests it issued. Section 4.2 explains how this data is designed, and Section 4.3 uses it to train and validate a model.</p>
+<p>All post-training data in this course comes from simulation: the onboard policy completes the shot in Isaac Lab and Newton while we record the images it saw, its body state and the requests it issued. Section 5.2 explains how this data is designed, and Section 5.3 uses it to train and validate a model.</p>
 </section>
 <section id="generalization">
 <h2>Where generalization potential comes from<a class="headerlink" href="#generalization" title="Link to this heading">#</a></h2>
@@ -514,7 +518,7 @@
 </table>
 </div>
 <p>General visual and language knowledge from pretraining makes it possible for a model to still recognize “this is a ball, that is the goal” when the appearance or wording changes. That is the promise of large models. But potential is not established capability: reliable performance at the action level depends mainly on what the demonstrations cover. If the demonstrations cover one pitch, one instruction and one kind of start, only that situation can be confirmed; other situations may transfer, but you only know by testing them separately.</p>
-<p>So to judge whether a VLA really generalizes, keep the test conditions outside training and look at full-task success, not at training loss or a few smooth videos. The GR00T in this course is trained on one green pitch with one shooting instruction, and the validation in Section 4.3 uses only a few episodes; it demonstrates the method, not proven generalization. Section 4.4 discusses how to expand step by step to more environments.</p>
+<p>So to judge whether a VLA really generalizes, keep the test conditions outside training and look at full-task success, not at training loss or a few smooth videos. The GR00T in this course is trained on one green pitch with one shooting instruction, and the validation in Section 5.3 uses only a few episodes; it demonstrates the method, not proven generalization. Section 5.4 discusses how to expand step by step to more environments.</p>
 </section>
 <section id="compare">
 <h2>Is GR00T always better than the onboard policy?<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
@@ -546,12 +550,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="05-skills.html"
+       href="06-onboard.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">3.4 Community skills: from goal to reward</p>
+        <p class="prev-next-title">4.2 Hand-designed shooting stages</p>
       </div>
     </a>
     <a class="right-next"
@@ -559,7 +563,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">4.2 Walking shot: GR00T inputs, outputs and data</p>
+        <p class="prev-next-title">5.2 Walking shot: GR00T inputs, outputs and data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

@@ -183,7 +183,16 @@ def arguments():
     )
     add_launcher_args(p)
     p.add_argument("--walking-policy-server", default=None)
+    p.add_argument(
+        "--course-onboard",
+        action="store_true",
+        help="Onboard route (YOLO detector, Nav2, original task controller) with the course joint-brake start-up",
+    )
     a = p.parse_args()
+    if bool(a.walking_policy_server) == a.course_onboard:
+        p.error("Select exactly one route: --walking-policy-server or --course-onboard")
+    if a.course_onboard and a.detector_deployment is None:
+        p.error("The onboard route requires the trained detector deployment")
     a.enable_cameras = True
     if a.device is None:
         a.device = "cuda:0"
@@ -251,7 +260,8 @@ def arguments():
         # The opt-in VLA entry loads this newer executor beside the installed
         # frozen runtime. This check still binds the preserved recovery helper;
         # it is not approval or qualification of the new learned controller.
-        recovery_dir = M / "evaluation/football" if a.walking_policy_server else ENTRY_DIR
+        # Both course routes run from this student folder, so both bind the installed one.
+        recovery_dir = M / "evaluation/football"
         a.recovery_approval_verified = verify_approval(
             a.recovery_approval, parameters_dir=recovery_dir, allow_test_only=False
         )
@@ -936,6 +946,27 @@ def run(a, cfg, fixture):
         support = StartupSupport(
             fixture["root_pose_xyzw"], float(array(robot.data.body_mass).sum())
         )
+        onboard = None
+        if a.course_onboard:
+            from onboard_startup import OnboardBrakeStartup
+
+            # Same brake and stationary check as the GR00T route; the onboard actor's
+            # first output additionally waits for delivered RGB, ToF and BODY50 data.
+            support = onboard = OnboardBrakeStartup(support)
+            pose_file = Path(__file__).parent / "grounded-pose.json"
+            report["initialization_reference"] = dict(
+                file=str(pose_file),
+                sha256=sha(pose_file),
+                case=rest["case"],
+                recorded_root_xyz=rest["root"],
+                applied_root_z=rest["root"][2],
+                applied_quaternion_xyzw=rest["quat"],
+                fixture_root_xy=fixture["root_pose_xyzw"][:2],
+                fixture_minus_recorded_xy_m=[
+                    fixture["root_pose_xyzw"][i] - rest["root"][i] for i in range(2)
+                ],
+                ground="flat football pitch; the recorded grounded height is valid only on this plane",
+            )
         support_adapter = NewtonSupportAdapter(robot)
         report["startup_support"] = support.metadata()
         eye = np.array([1.3, -1.7, 1.4])
@@ -970,7 +1001,27 @@ def run(a, cfg, fixture):
         from kick_runtime import NativeKickRuntime
 
         k10 = NativeKickRuntime(K10_DEPLOYMENT)
-        report["kick_head_action_mapping"] = k10.verify_action_mapping(env.action_manager.get_term("joint_pos"))
+        if a.walking_policy_server:
+            report["kick_head_action_mapping"] = k10.verify_action_mapping(env.action_manager.get_term("joint_pos"))
+        else:
+            # Onboard route: the installed K10, navigator and Nav2 session, never GR00T variants.
+            import kick_runtime
+            from nav2_bridge import Nav2Session as onboard_nav2
+
+            route = dict(
+                kick_runtime=str(Path(kick_runtime.__file__).resolve()),
+                navigator=BetaNavigator.__name__,
+                nav2_session=onboard_nav2.__name__,
+                walking_actor=str(a.model.resolve()),
+            )
+            if (
+                route["kick_runtime"] != str((M / "evaluation/football/kick_runtime.py").resolve())
+                or route["navigator"] != "BallReacquisitionNavigator"
+                or route["nav2_session"] != "BoundedLifetimeSession"
+                or a.model.resolve() != (M / "models/reference/velstand.onnx").resolve()
+            ):
+                raise RuntimeError("Onboard route must use the installed controller: " + json.dumps(route))
+            report["onboard_route"] = route
         walking_policy = None
         if a.walking_policy_server:
             from learning.walking_runtime import WalkingPolicy
@@ -1027,7 +1078,12 @@ def run(a, cfg, fixture):
         # GR00T route: motion requests come from the GR00T server, so the onboard
         # Nav2 planner (an external service container) is never started here. A
         # stand-in refuses any planning call loudly instead of faking a plan.
-        nav = Nav2Unused()
+        # The onboard route starts the original planner session.
+        nav = (
+            Nav2Unused()
+            if a.walking_policy_server
+            else Nav2Session(output / "nav2", max_wall_s=max(1800.0, a.seconds * 60))
+        )
         controller = BetaNavigator(
             nav,
             camera=rig.profile,
@@ -1423,6 +1479,7 @@ def run(a, cfg, fixture):
                             initialization_brake.release(t)
                             report["initialization_brake"] = dict(
                                 initialization_brake.metadata(),
+                                first_policy_source="GR00T",
                                 first_gr00t_prediction_s=t,
                                 navigation_enabled_at_s=support.task_started_at,
                                 locked_after_navigation_enabled_s=t - support.task_started_at,
@@ -1448,6 +1505,19 @@ def run(a, cfg, fixture):
                             head_return_complete=kick_requested,
                             request_source="GR00T", truth_used=False,
                         )
+                    # Onboard route: while the joints are locked, HOME is held and no network
+                    # runs. The first actor output is computed once the locked robot has
+                    # settled and RGB, ToF and BODY50 data are ready; the brake is released
+                    # after that output exists and before it is applied.
+                    release_now = (
+                        onboard is not None
+                        and initialization_brake.active
+                        and not kick_requested
+                        and onboard.ready(t, last_body_imu)
+                    )
+                    hold_home = (
+                        onboard is not None and initialization_brake.active and not release_now
+                    )
                     commands.is_standing_env[:] = False
                     commands.vel_command_b[:] = torch.tensor(
                         [velocity], device=env.device
@@ -1459,7 +1529,7 @@ def run(a, cfg, fixture):
                     # The gait consumes the official BODY control IMU. Head FIFO
                     # transport is retained only as an explicit historical A/B.
                     # Until the selected actual sensor is ready, hold home.
-                    if last_body_imu is None:
+                    if last_body_imu is None or hold_home:
                         last_action = torch.zeros(
                             (1, 14), device=env.device, dtype=torch.float32
                         )
@@ -1503,6 +1573,35 @@ def run(a, cfg, fixture):
                             last_action = model(policy_obs)
                     if not torch.isfinite(last_action).all():
                         raise RuntimeError("Policy produced nonfinite action")
+                    if release_now:
+                        if not torch.isfinite(policy_obs).all():
+                            raise RuntimeError("Nonfinite first onboard observation")
+                        # Restores and checks every original joint limit and physical field;
+                        # the task clock starts only after that succeeds.
+                        initialization_brake.release(t)
+                        onboard.mark_released(t)
+                        report["initialization_brake"] = dict(
+                            initialization_brake.metadata(),
+                            first_policy_source="onboard walking actor",
+                            first_policy_output_s=t,
+                            settled_at_s=onboard.settled_at,
+                            locked_after_settled_s=t - onboard.settled_at,
+                            ready_check=onboard.last_check,
+                            capture_check=onboard.capture,
+                            release_command=dict(
+                                velocity_body_xyw=list(velocity), head_offsets_rad=list(actual_head)
+                            ),
+                            task_clock_starts_at_release=True,
+                        )
+                        print(
+                            "COURSE_POLICY_TAKEOVER "
+                            + json.dumps(dict(t=t, source="onboard walking actor")),
+                            flush=True,
+                        )
+                        frame_pitch("after takeover")
+                        (output / "initialization-brake.json").write_text(
+                            json.dumps(report["initialization_brake"], indent=2)
+                        )
                     raw_action = last_action.clone()
                     previous_raw_action = raw_action.clone()
                     bound_trace = None
@@ -1566,8 +1665,12 @@ def run(a, cfg, fixture):
                                     if a.policy_imu == "body50"
                                     else "delivered Beta head FIFO + same-time encoder FK prediction"
                                 )
-                                if last_body_imu
-                                else "initial hold; no network execution"
+                                if last_body_imu and not hold_home
+                                else (
+                                    "initialization joint brake; HOME held; no network execution"
+                                    if hold_home
+                                    else "initial hold; no network execution"
+                                )
                             ),
                             "velocity_mapping": "identity-development",
                             "kick_enabled": True,
@@ -1588,6 +1691,8 @@ def run(a, cfg, fixture):
                 support_row["actual_external_wrench_peak"] = (
                     support_adapter.check_after_write(support_row)
                 )
+                if onboard is not None:
+                    onboard.check_wrench(support_row["actual_external_wrench_peak"])
                 log("startup-support", support_row)
                 sim.step(render=False)
                 env.scene.update(0.005)
@@ -1842,6 +1947,8 @@ def run(a, cfg, fixture):
                     rgb = capture["rgb_raw"]
                     if walking_policy is not None:
                         walking_policy.capture(rgb, t)
+                    if onboard is not None:
+                        onboard.note_capture(t, rgb, capture["tof"])
                     q_effective, qd_effective = encoders()
                     sample = imu_predictor.latest_head_sample
                     body_imu = (
@@ -1925,7 +2032,11 @@ def run(a, cfg, fixture):
                                 "state": support_row["phase"],
                                 "velocity_body_xyw": [0.0, 0.0, 0.0],
                                 "kick_request": False,
-                                "reason": "Measured IMU valid; zero-command policy with explicitly fading physical startup support",
+                                "reason": (
+                                    "Joint brake at HOME; no network runs before the first walking-actor output"
+                                    if onboard is not None
+                                    else "Measured IMU valid; zero-command policy with explicitly fading physical startup support"
+                                ),
                                 "gaze_body_yaw_pitch_rad": [0.0, 0.0],
                             }
                         elif walking_policy is not None:
@@ -2523,11 +2634,16 @@ def run(a, cfg, fixture):
         )
         if support is not None:
             report["startup_support"] = support.metadata()
-        if "initialization_brake" not in report:
-            # No GR00T prediction arrived: the joints were never released and no
-            # part of this episode counts as model control.
+        if "initialization_brake" not in report and "initialization_brake" in locals():
+            # No GR00T prediction (or onboard first output) arrived: the joints were never
+            # released and no part of this episode counts as model control.
             report["initialization_brake"] = dict(
-                initialization_brake.metadata(), first_gr00t_prediction_s=None
+                initialization_brake.metadata(),
+                **(
+                    dict(first_gr00t_prediction_s=None)
+                    if a.walking_policy_server
+                    else dict(first_policy_source="onboard walking actor", first_policy_output_s=None)
+                ),
             )
         for log_file in logs.values():
             log_file.close()

@@ -1,6 +1,6 @@
 {
   "schema": "microduck.groot-walking-port.v1",
-  "purpose": "Course copy of the exact sources that trained (trainer/) and physically evaluated (rollout/) the 8D high-level walking-shot GR00T checkpoint. Only hard-coded checkout paths were replaced by paths relative to this repository; control, data and model logic are unchanged.",
+  "purpose": "Course sources of the 8D high-level walking-shot GR00T checkpoint and its runtime adapters. Training and model/control logic are unchanged; repository-relative paths and the runtime adaptations below support course execution.",
   "training_entry": "trainer/learning/train_walking_history.py",
   "evaluation_entry": "rollout/walking_history_head_rollout.py rollout",
   "checkpoint_sha256_identity": "cbf617a85579c358b697674214d687a8003e7cf988f8afaa438a28e5c094be4a",
@@ -82,13 +82,17 @@
       "file": "rollout/walking_history_server.py",
       "origin": "walking-decision-cadence-proposal/walking_history_server.py",
       "origin_sha256": "dea2a8ede5448ca0a289af66b0b416f6e0c470f7a6723688e69f7bfe36fc5cd0",
-      "sha256": "cf2e7a052b93b958f7a06db6f6e3e5c359ffdbf2c5830d0b5853807e52384f24",
+      "sha256": "d88775668e67aeec10a66115ad61d2a99f70ed2ca803d3983a5157eb7fd7da9e",
       "frozen_in_data50_plan": "dea2a8ede5448ca0a289af66b0b416f6e0c470f7a6723688e69f7bfe36fc5cd0",
       "changed_lines": [
         "-sys.path[:0]=[str(Path(__file__).resolve().parent), \"/home/yuki/Documents/course/Microduck-Workshop/lab\"]",
         "+sys.path[:0]=[str(Path(__file__).resolve().parent), str(Path(__file__).resolve().parents[2])]"
       ],
-      "origin_matches_data50_plan": true
+      "origin_matches_data50_plan": true,
+      "ported_sha256_before_cache_hint": "cf2e7a052b93b958f7a06db6f6e3e5c359ffdbf2c5830d0b5853807e52384f24",
+      "runtime_adaptations": [
+        "Best-effort release_after_hash on the same read-only descriptor after SHA-256; only large safetensors files. Identity construction, loader, precision and control logic unchanged."
+      ]
     },
     {
       "file": "rollout/walking_visual_history.py",
@@ -343,6 +347,11 @@
         "file": "trainer/learning/local_cache_manifest.py",
         "sha256": "ebd233e18d30c862126102eb33073c9695ad3748fae364dfad7cfce245856453",
         "role": "records a feature cache recomputed on this machine so later runs reuse it under the unchanged cache checks"
+      },
+      {
+        "file": "weight_page_cache.py",
+        "sha256": "1740035dfa577a6c25c22a28a0daf3584eab97a20186af2b1599c8fe3090c7d3",
+        "role": "Optional per-file POSIX cache advice after checksum reads, with platform fallback and no weight mutation."
       }
     ]
   }

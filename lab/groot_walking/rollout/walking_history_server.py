@@ -15,7 +15,9 @@ from pathlib import Path
 import time
 import sys
 sys.path[:0]=[str(Path(__file__).resolve().parent), str(Path(__file__).resolve().parents[2])]
+sys.path.append(str(Path(__file__).resolve().parents[1]))
 from walking_history_packet import decode_observation
+from weight_page_cache import release_after_hash
 
 import numpy as np
 from PIL import Image
@@ -58,6 +60,7 @@ def main():
         if artifact.suffix in (".json", ".safetensors"):
             with artifact.open("rb") as stream:
                 digest = hashlib.file_digest(stream, "sha256").hexdigest()
+                release_after_hash(stream)
             identity.update((artifact.name + ":" + digest + "\n").encode())
     checkpoint_sha256 = identity.hexdigest()
     contract = json.loads((a.checkpoint / "control-contract.json").read_text())

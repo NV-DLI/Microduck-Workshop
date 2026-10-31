@@ -180,29 +180,6 @@
   }
 })();
 
-// Home hero animation: a transparent loop that plays on load for every visitor, including
-// reduced-motion settings (the course asks for this); the button pauses on the still frame
-// and resumes the loop.
-(() => {
-  for (const figure of document.querySelectorAll("[data-hero-animation]")) {
-    const img = figure.querySelector("img");
-    const button = figure.querySelector(".hero-animation-toggle");
-    const { still, animation } = figure.dataset;
-    const show = (playing) => {
-      const src = playing ? animation : still;
-      if (img.getAttribute("src") !== src) img.src = src;
-      const label = playing ? button.dataset.pause : button.dataset.play;
-      button.setAttribute("aria-label", label);
-      button.title = label;
-      button.setAttribute("aria-pressed", String(!playing));
-      figure.dataset.state = playing ? "playing" : "paused";
-    };
-    button.addEventListener("click", () => show(figure.dataset.state !== "playing"));
-    button.hidden = false;
-    show(true);
-  }
-})();
-
 // Briefly tint the title text of the section an in-page link, the initial hash or back/forward
 // leads to. Replays when the same contents entry is clicked again; a newer target cancels the
 // previous tint. Scrolling, history and focus stay native.

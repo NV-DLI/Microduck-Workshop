@@ -129,6 +129,44 @@ html[data-theme] {
     padding-right: 0;
   }
 }
+/* Below the theme's lg breakpoint the logo is hidden and the course title sits
+   between the drawer toggles; the theme keeps it on one unshrinkable line,
+   which widened the page. The title wraps instead (two lines fit the header
+   height), and in the drawer it wraps centered. The drawer's narrowed padding
+   no longer leaves room for the nav's -1rem margin, so that margin is reset as
+   on desktop. */
+@media (max-width: 959.98px) {
+  .bd-header .navbar-header-items__start,
+  .bd-header .navbar-header-items__start .navbar-item,
+  .bd-header .navbar-brand,
+  .bd-header .navbar-brand .logo__title {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  .bd-header .navbar-header-items__start {
+    flex-basis: auto;
+  }
+  .bd-header .navbar-brand,
+  .bd-sidebar-primary .navbar-brand {
+    white-space: normal;
+  }
+  .bd-header .navbar-brand .logo__title {
+    line-height: 1.2;
+  }
+  .bd-sidebar-primary nav.bd-links {
+    margin-right: 0;
+  }
+  .bd-sidebar-primary .navbar-brand .logo__title {
+    max-width: 100%;
+    text-align: center;
+  }
+}
+@media (max-width: 575.98px) {
+  .bd-header .navbar-brand .logo__title {
+    font-size: 0.875rem;
+    line-height: 1.125;
+  }
+}
 @media (min-width: 1200px) {
   .bd-main .bd-content .bd-article-container .bd-article {
     padding-left: 1rem;
@@ -493,8 +531,8 @@ summary {
 .network-table td {
   padding: 0.3rem 0.5rem;
   border-bottom: 1px solid var(--line);
-  text-align: left;
-  vertical-align: top;
+  text-align: center;
+  vertical-align: middle;
 }
 .network-table th {
   color: var(--muted);
@@ -1187,6 +1225,15 @@ html[data-theme="dark"] .seq-timing {
   background: var(--surface);
   border-top: 1px solid var(--line);
 }
+/* Every flow's explanation panel takes no space until a module is hovered, focused or
+   selected (teaching.js toggles its hidden attribute). Until the deferred script has
+   enhanced the figure, the panel stays out of view so the full list never flashes; with
+   scripting disabled it lists every explanation. */
+@media (scripting: enabled) {
+  .learning-figure:not(.is-enhanced) .learning-details {
+    display: none;
+  }
+}
 .bd-article .learning-definition h3 {
   display: flex;
   align-items: center;
@@ -1209,12 +1256,6 @@ html[data-theme="dark"] .seq-timing {
 }
 .learning-definition p {
   max-width: 60em;
-}
-.learning-empty {
-  color: var(--muted);
-}
-.learning-definition p,
-.learning-empty {
   margin: 0;
 }
 .learning-definition + .learning-definition {
@@ -2170,8 +2211,11 @@ html[data-theme="dark"] .seq-timing {
 .bd-article table.table.table-labels :is(td, th):first-child {
   white-space: nowrap;
 }
-/* Opt-in ({.table-center} before a table): every cell centered in both directions. */
-.bd-article table.table.table-center :is(td, th) {
+/* Every table cell in a lesson (Markdown tables, interface, chart-data and demonstration
+   tables) is centered in both directions; widths, nowrap cells and code wrapping above are
+   unchanged. {.table-center} is kept as a no-op alias. Captions stay left-aligned; code
+   line-number tables are excluded. */
+.bd-article table:not(.highlighttable) :is(td, th) {
   text-align: center;
   vertical-align: middle;
 }
@@ -2301,10 +2345,10 @@ html[data-theme="dark"] .seq-timing {
     grid-template-columns: 1fr;
   }
 }
-/* Home hero animation: transparent loop across the article width, at most 1200 px wide; the
-   intrinsic aspect ratio comes from the image's own width/height attributes. */
+/* Home hero animation: transparent animated WebP that autoplays and loops from the file itself,
+   with no control, across the article width (at most 1200 px wide); the intrinsic aspect ratio
+   comes from the image's own width/height attributes. */
 .hero-image.hero-animation {
-  position: relative;
   max-width: 1200px;
   background: transparent;
   border-radius: 0;
@@ -2325,46 +2369,33 @@ html[data-theme="dark"] .seq-timing {
     margin: 1.25rem 0 0;
   }
 }
-.hero-animation-toggle {
-  position: absolute;
-  right: 0.5rem;
-  bottom: 0.5rem;
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  border: 1px solid var(--pst-color-border);
-  border-radius: 50%;
-  background: var(--pst-color-background);
-  color: var(--pst-color-text-muted);
-  opacity: 0.85;
-  cursor: pointer;
-}
-.hero-animation-toggle:hover,
-.hero-animation-toggle:focus-visible {
-  opacity: 1;
-  color: var(--pst-color-text-base);
-}
-.hero-animation-toggle::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 0.6rem;
-  height: 0.7rem;
-  border-left: 0.2rem solid currentColor;
-  border-right: 0.2rem solid currentColor;
-  box-sizing: border-box;
-}
-.hero-animation[data-state="paused"] .hero-animation-toggle::before {
-  width: 0;
-  height: 0;
-  margin: auto auto auto calc(50% - 0.2rem);
-  border-top: 0.4rem solid transparent;
-  border-bottom: 0.4rem solid transparent;
-  border-left: 0.65rem solid currentColor;
-  border-right: 0;
-}
 
+/* Solitary full-row clips (the home hero, `media-solo` videos) keep 100 px of space on each side
+   of the article column at desktop widths (column >= ~730 px, i.e. a 1366 px window) and less
+   on narrower columns. They keep their own aspect ratio: no crop and no dark pillarbox. Side-by-
+   side panels, comparisons, screenshots and charts keep the full width. */
+.bd-article {
+  --solo-inset: 100px;
+}
+@supports (width: 1cqi) {
+  .bd-article {
+    --solo-inset: clamp(0px, 20cqi - 46px, 100px);
+  }
+}
+.lesson-heading .hero-image.hero-animation {
+  margin-left: var(--solo-inset);
+  margin-right: var(--solo-inset);
+}
+.media.media-solo > video {
+  /* The poster's own size gives the ratio before the video loads; tall clips shrink in width
+     instead of being boxed when the viewport height limits them. */
+  width: min(100% - 2 * var(--solo-inset),
+             (100vh - var(--header) - 8rem) * var(--media-w) / var(--media-h));
+  max-height: none;
+  aspect-ratio: var(--media-w) / var(--media-h);
+  margin-inline: auto;
+  background: transparent;
+}
 /* Section headings reached through the page contents (or a link, the initial
    hash, back/forward) briefly tint their title text NVIDIA green instead of
    keeping the theme's permanent full-line target background. Footnotes and

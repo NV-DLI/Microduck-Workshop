@@ -526,7 +526,7 @@ No. Observe again and confirm the entry conditions. Proximity alone does not gua
 {#eyes}
 ## Executing a skill is not completing a task
 
-So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.
+So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 first has people write these decisions into an onboard policy; Part 5 then trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.
 
 {#references}
 ## References

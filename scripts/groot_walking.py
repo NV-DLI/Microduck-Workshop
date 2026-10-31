@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Train and validate the 8D high-level walking-shot GR00T policy (Sections 4.2–4.3).
+"""Train and validate the 8D high-level walking-shot GR00T policy (Sections 5.2–5.3).
 
 Run inside the course container. The defaults reproduce the recipe and the
 closed-loop check of the course checkpoint in course-data/groot-walking:
@@ -28,6 +28,8 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(str(ROOT / "lab/groot_walking"))
+from weight_page_cache import release_after_hash
 DATA = ROOT / "course-data/groot-walking"
 TRAINER = ROOT / "lab/groot_walking/trainer/learning/train_walking_history.py"
 LOW_MEMORY_TRAINER = ROOT / "lab/groot_walking/trainer/learning/train_walking_history_lowmem.py"
@@ -79,6 +81,7 @@ def check_package(full=False):
             with path.open("rb") as stream:
                 for block in iter(lambda: stream.read(1 << 24), b""):
                     digest.update(block)
+                release_after_hash(stream)
             if digest.hexdigest() != item["sha256"]:
                 problems.append(item["path"])
     if problems:

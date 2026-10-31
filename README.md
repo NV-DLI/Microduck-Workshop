@@ -1,8 +1,8 @@
-# Simulate and train Microduck with NVIDIA Isaac
+# Train Microduck in Simulation with NVIDIA Isaac
 
-使用 NVIDIA Isaac 仿真并训练 Microduck.
+使用 NVIDIA Isaac 在仿真环境训练 Microduck.
 
-A self-paced course: drive the open-source Microduck biped in Isaac Sim, train walking and slope skills with reinforcement learning in Isaac Lab and Newton, then post-train GR00T on walking-shot demonstrations and plan how to carry it to more environments.
+A self-paced course: drive the open-source Microduck biped in Isaac Sim, train walking and slope skills with reinforcement learning in Isaac Lab and Newton, see how an onboard policy scores with its own sensors and hand-designed stages, then post-train GR00T on walking-shot demonstrations and plan how to carry it to more environments.
 
 **[中文课程](https://nv-dli.github.io/Microduck-Workshop/zh/index.html) · [English course](https://nv-dli.github.io/Microduck-Workshop/en/index.html)**
 
@@ -10,11 +10,12 @@ This repository holds the course site, the lab code, the container and the fixed
 
 ## Course structure
 
-1. **Overview**: how to take the course, set up the course container.
+1. **Overview**: the course goal and setting up the course container.
 2. **Meet Microduck**: keyboard football, mechanism and the control loop.
 3. **Teach Microduck skills with reinforcement learning**: PPO, domain randomization, reward design on a slope, community skills.
-4. **Train GR00T to complete tasks autonomously**: vision-language-action models, the 8-D walking-shot interface and data, training and validation, environment variation and Cosmos 3.
-5. **Reference and help**: models and data, troubleshooting, references.
+4. **Complete the shooting task with an onboard policy**: finding the ball and goal with RGB detection and 8×8 ToF ranging, hand-designed shooting stages.
+5. **Train GR00T to complete tasks autonomously**: vision-language-action models, the 8-D walking-shot interface and data, training and validation, environment variation and Cosmos 3.
+6. **Reference and help**: models and data, troubleshooting, references.
 
 Reading, figures, search and the interactive 3D duck work in a browser without Isaac Sim.
 
@@ -27,7 +28,7 @@ Reading, figures, search and the interactive 3D duck work in a browser without I
 
 The RTX 5090 checks covered two PPO iterations and three GR00T updates, including checkpoint saving and reloading; a complete training run was not measured on that machine.
 
-The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, Isaac Lab at a fixed commit, the Newton physics backend, RSL-RL 5.5.1 and LeRobot + GR00T N1.7. Details are in Section 1.3 of the course.
+The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, Isaac Lab at a fixed commit, the Newton physics backend, RSL-RL 5.5.1 and LeRobot + GR00T N1.7, and includes the CPU-only ROS 2 Jazzy Nav2 planner used by the onboard football route. Details are in Section 1.2 of the course.
 
 ## Quick start
 
@@ -69,7 +70,7 @@ All commands below run on the **host** from the repository root unless marked as
 
    On DGX Spark with a desktop session, start the keyboard football lab with `python3 scripts/run.py manual --seconds 600 --output outputs/manual-football-01`.
 
-   `scripts/run.py` is the lab entry point (`python3 scripts/run.py --help` lists the commands, `python3 scripts/run.py <command> --help` their parameters); the GR00T lab in Section 4.3 uses `scripts/groot_walking.py`.
+   `scripts/run.py` is the lab entry point (`python3 scripts/run.py --help` lists the commands, `python3 scripts/run.py <command> --help` their parameters); the GR00T lab in Section 5.3 uses `scripts/groot_walking.py`.
 
 ## Data and models
 
@@ -77,7 +78,7 @@ All commands below run on the **host** from the repository root unless marked as
 |---|---|---|
 | Fixed course models | `models/` (under 60 MB), checked against `models/manifest.json` | In the repository |
 | Pretrained PPO results and training logs for Part 3 | `datasets/` (about 50 MB) | In the repository |
-| GR00T walking-shot data package (demonstrations, training start, trained checkpoint, feature cache) | `course-data/groot-walking/` (about 62 GB) | From your course instructor, needed only for Section 4.3 |
+| GR00T walking-shot data package (demonstrations, training start, trained checkpoint, feature cache) | `course-data/groot-walking/` (about 62 GB) | From your course instructor, needed only for Section 5.3 |
 | Optional RTX 5090 feature cache | `course-data/groot-walking-feature-caches/` (about 32 GB) | From your course instructor; DGX Spark does not need it |
 
 Put the GR00T package under `course-data/` in the repository root, or set `MICRODUCK_COURSE_DATA` to the absolute path of the folder that contains `groot-walking/` before `docker compose ... up -d`. The container starts without it, and `prepare_host.sh` reports whether its `manifest.json` is present. GR00T also downloads its base model and the `nvidia/Cosmos-Reason2-2B` processor from Hugging Face: request access on the [model page](https://huggingface.co/nvidia/Cosmos-Reason2-2B), then run `/workspace/groot-env/bin/hf auth login` once inside the container.
@@ -124,6 +125,18 @@ After building the site, export both Open edX editions with the same docs enviro
 ```
 
 `microduck_zh.tar.gz` opens in Chinese with an English switch. `microduck_en.tar.gz` contains English only. Both use white pages without site navigation and preserve the lesson interactions. Shared media are deduplicated; unused assets, model weights and training datasets stay outside these packages. The manifest controls course identity, page order and language editions. The exporter validates OLX bindings and local assets; browser review is still needed for interactions and the target LMS. See `scripts/export_lms.py --help` for validation and preview commands.
+
+Optionally, make smaller packages in two steps: first copy only the files the export uses into a new staging directory and recompress its PNG, JPEG and WebP images in their own format and size, then export from that copy:
+
+```bash
+.local/docs-venv/bin/python scripts/prepare_lms_media.py stage \
+  --site web --manifest docs/lms/microduck.json --out dist/lms-stage/site
+.local/docs-venv/bin/python scripts/export_lms.py export \
+  --site dist/lms-stage/site --manifest docs/lms/microduck.json --out dist/lms \
+  --strict --report dist/lms/export-report.json
+```
+
+The image step runs in a separate Python with Pillow, WebP animation and libimagequant (`--image-python`, default `/usr/bin/python3`; on Ubuntu 24.04 `sudo apt install python3-pil`). It keeps every image's dimensions, transparency and animation timing, keeps the original file when a smaller copy fails the quality checks, and never changes `web/`. The staging directory must not exist yet. The report `dist/lms-stage/site.report.md` lists every file before and after. Videos, 3D models, fonts and scripts are copied unchanged.
 
 ## 来源与许可 / Attribution and licenses
 

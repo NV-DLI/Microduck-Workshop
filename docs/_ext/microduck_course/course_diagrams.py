@@ -261,7 +261,7 @@ def adaptive_flow_svg(b, compact=False):
 
 
 def vla_joint_svg(lang):
-    """A VLA that outputs the 14 servo targets directly (Section 4.4), drawn like the
+    """A VLA that outputs the 14 servo targets directly (Section 5.4), drawn like the
     walking-actor network: columns of nodes joined by bands of connections.
 
     RGB images and the instruction enter the vision-language model (VLM); its features

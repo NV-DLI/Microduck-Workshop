@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="在课程容器中用已准备好的步行射门示范后训练 GR00T 的动作头，理解训练量、抽样与耗时；再用课程提供的检查点在 Isaac Lab 与 Newton 中验证完整射门。" name="description" />
 
-  <title>4.3 训练与验证 GR00T 步行射门 - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <title>5.3 训练与验证 GR00T 步行射门 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,15 +57,15 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-lab';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="4.4 从球场走向更多环境" href="09-worlds.html" />
-    <link rel="prev" title="4.2 步行射门：GR00T 的输入、输出与数据" href="08-groot-interface.html" />
+    <link rel="next" title="5.4 从球场走向更多环境" href="09-worlds.html" />
+    <link rel="prev" title="5.2 步行射门：GR00T 的输入、输出与数据" href="08-groot-interface.html" />
 
 
 
@@ -146,11 +146,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a></div>
     
@@ -256,11 +256,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a>
 
@@ -323,8 +323,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 准备环境与获取代码</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -338,18 +337,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 手工设计的射门阶段</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -384,7 +388,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.3 训练与验证 GR00T 步行射门</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.3 训练与验证 GR00T 步行射门</span></li>
   </ul>
 </nav>
 </div>
@@ -402,22 +406,22 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gr00t">
-<h1>4.3 训练与验证 GR00T 步行射门<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
+<h1>5.3 训练与验证 GR00T 步行射门<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>在课程容器中用已准备好的步行射门示范后训练 GR00T 的动作头，理解训练量、抽样与耗时；再用课程提供的检查点在 Isaac Lab 与 Newton 中验证完整射门。</p>
-</div><div class="lesson-meta">第 4.3 节 · 预计学习时长 45 分钟（不含完整训练约 1 小时与验证运行的等待）</div></div></div><script type="application/json" class="course-symbols">{"S_steps": {"tex": "S", "text": "优化器更新次数（训练步数）；本节为 2000。"}, "B_batch": {"tex": "B", "text": "每次更新抽取的训练样本数（批量大小）；本节为 16。"}, "N_train": {"tex": "N", "text": "训练集中的样本（帧）总数；本节为 13,431。"}, "E_pass": {"tex": "E", "text": "等效数据遍历次数：总抽样数相当于把训练集完整看了几遍。"}}</script><section id="before">
+</div><div class="lesson-meta">第 5.3 节 · 预计学习时长 45 分钟（不含完整训练约 1 小时与验证运行的等待）</div></div></div><script type="application/json" class="course-symbols">{"S_steps": {"tex": "S", "text": "优化器更新次数（训练步数）；本节为 2000。"}, "B_batch": {"tex": "B", "text": "每次更新抽取的训练样本数（批量大小）；本节为 16。"}, "N_train": {"tex": "N", "text": "训练集中的样本（帧）总数；本节为 13,431。"}, "E_pass": {"tex": "E", "text": "等效数据遍历次数：总抽样数相当于把训练集完整看了几遍。"}}</script><section id="before">
 <h2>开始之前<a class="headerlink" href="#before" title="Link to this heading">#</a></h2>
 <p>本节有两个动手操作：先体验训练，再验证一个已经训练好的模型。两条命令都在课程容器内运行。</p>
 <ul class="simple">
-<li><p>如果你还没有启动容器，先按 <a class="reference internal" href="setup.html"><span class="std std-doc">1.3 节</span></a> 构建并启动它，再打开容器内的终端。</p></li>
+<li><p>如果你还没有启动容器，先按 <a class="reference internal" href="setup.html"><span class="std std-doc">1.2 节</span></a> 构建并启动它，再打开容器内的终端。</p></li>
 <li><p>如果容器已经在运行，回到之前进入容器的那个终端即可；也可以在宿主机新开一个终端，用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> 回到同一个容器。</p></li>
-<li><p>训练数据、特征缓存与课程检查点来自 GR00T 课程资料包（容器内路径 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code>），开始本节前请向授课教师领取，并按 1.3 节放好。容器启动时资料包以只读方式挂载；你的训练和验证结果写入 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下的新目录，不会改动课程提供的数据和模型。</p></li>
+<li><p>训练数据、特征缓存与课程检查点来自 GR00T 课程资料包（容器内路径 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code>），开始本节前请向授课教师领取，并按 1.2 节放好。容器启动时资料包以只读方式挂载；你的训练和验证结果写入 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下的新目录，不会改动课程提供的数据和模型。</p></li>
 <li><p>GR00T 的基础模型和 Cosmos-Reason2-2B 处理器从 Hugging Face 下载。先在 <a class="reference external" href="https://huggingface.co/nvidia/Cosmos-Reason2-2B" rel="noreferer noopener" target="_blank">nvidia/Cosmos-Reason2-2B</a> 页面按提示申请访问，再在容器内运行一次 <code class="docutils literal notranslate"><span class="pre">/workspace/groot-env/bin/hf</span> <span class="pre">auth</span> <span class="pre">login</span></code> 登录；下载缓存保存在宿主机的 <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code>。</p></li>
 </ul>
 <p>GR00T 训练和带窗口的仿真都会占用大量 GPU 显存，请一次只运行一个。</p>
-<figure class="learning-figure" data-learning-flow="learn-9317df55d8"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="本节的两个动手操作"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-9317df55d8-title"><title id="learn-9317df55d8-title">本节的两个动手操作</title><defs><marker id="learn-9317df55d8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-9317df55d8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-9317df55d8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 课程资料包" aria-controls="learn-9317df55d8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">课程资料包</text><text x="114.0" y="98" class="learning-node-subtitle">示范数据、训练</text><text x="114.0" y="115" class="learning-node-subtitle">起点与特征缓存</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 动作头训练" aria-controls="learn-9317df55d8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">动作头训练</text><text x="450.0" y="98" class="learning-node-subtitle">2000 次优化器更</text><text x="450.0" y="115" class="learning-node-subtitle">新（可中途停止）</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 闭环验证" aria-controls="learn-9317df55d8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">闭环验证</text><text x="786.0" y="98" class="learning-node-subtitle">GR00T 服务 +</text><text x="786.0" y="115" class="learning-node-subtitle">Isaac Lab 仿真</text></g></svg></div><div class="learning-details" aria-label="本节的两个动手操作"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-9317df55d8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>课程资料包</h3><p>训练集与验证集、训练起点检查点和冻结骨干的特征缓存都来自 GR00T 课程资料包，以只读方式挂载，训练不会改动它们。</p></article><article id="learn-9317df55d8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>动作头训练</h3><p>训练命令核对缓存后，只更新动作头；输出写入你指定的新目录。体验几分钟后可以 Ctrl+C 停止。</p></article><article id="learn-9317df55d8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>闭环验证</h3><p>验证命令启动 GR00T 推理服务，再在 Isaac Lab 与 Newton 中运行步行射门；默认使用课程提供的检查点，完整训练完成后才换成你自己的。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>训练与验证是两个独立的命令：不完成训练，也可以直接验证课程提供的检查点。</figcaption></figure></section>
+<figure class="learning-figure" data-learning-flow="learn-9317df55d8"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="本节的两个动手操作"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-9317df55d8-title"><title id="learn-9317df55d8-title">本节的两个动手操作</title><defs><marker id="learn-9317df55d8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-9317df55d8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-9317df55d8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 课程资料包" aria-controls="learn-9317df55d8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">课程资料包</text><text x="114.0" y="98" class="learning-node-subtitle">示范数据、训练</text><text x="114.0" y="115" class="learning-node-subtitle">起点与特征缓存</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 动作头训练" aria-controls="learn-9317df55d8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">动作头训练</text><text x="450.0" y="98" class="learning-node-subtitle">2000 次优化器更</text><text x="450.0" y="115" class="learning-node-subtitle">新（可中途停止）</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 闭环验证" aria-controls="learn-9317df55d8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">闭环验证</text><text x="786.0" y="98" class="learning-node-subtitle">GR00T 服务 +</text><text x="786.0" y="115" class="learning-node-subtitle">Isaac Lab 仿真</text></g></svg></div><div class="learning-details" aria-label="本节的两个动手操作"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-9317df55d8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>课程资料包</h3><p>训练集与验证集、训练起点检查点和冻结骨干的特征缓存都来自 GR00T 课程资料包，以只读方式挂载，训练不会改动它们。</p></article><article id="learn-9317df55d8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>动作头训练</h3><p>训练命令核对缓存后，只更新动作头；输出写入你指定的新目录。体验几分钟后可以 Ctrl+C 停止。</p></article><article id="learn-9317df55d8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>闭环验证</h3><p>验证命令启动 GR00T 推理服务，再在 Isaac Lab 与 Newton 中运行步行射门；默认使用课程提供的检查点，完整训练完成后才换成你自己的。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>训练与验证是两个独立的命令：不完成训练，也可以直接验证课程提供的检查点。</figcaption></figure></section>
 <section id="data">
 <h2>已经准备好的数据<a class="headerlink" href="#data" title="Link to this heading">#</a></h2>
-<p>数据按 4.2 节的原则准备：机载策略（Onboard）在绿色球场上从不同起点完成步行射门，只保留完整成功的回合，并按完整回合与起点划分训练集和验证集，两者没有重叠。</p>
+<p>数据按 5.2 节的原则准备：板载策略（Onboard）在绿色球场上从不同起点完成步行射门，只保留完整成功的回合，并按完整回合与起点划分训练集和验证集，两者没有重叠。</p>
 <div class="pst-scrollable-table-container"><table class="table-center table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>数据集</p></th>
@@ -458,7 +462,7 @@
 <tbody>
 <tr class="row-even"><td class="cell-short"><p>训练范围</p></td>
 <td class="cell-short"><p>动作头</p></td>
-<td><p>视觉语言骨干冻结；状态与动作编码器、动作解码器、动作序列生成网络和视觉语言特征处理层参与训练，原因见 <a href="08-groot-interface.html#action-head">4.2 节</a></p></td>
+<td><p>视觉语言骨干冻结；状态与动作编码器、动作解码器、动作序列生成网络和视觉语言特征处理层参与训练，原因见 <a href="08-groot-interface.html#action-head">5.2 节</a></p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>训练步数</p></td>
 <td class="cell-short"><p>2000</p></td>
@@ -487,7 +491,7 @@
 <section id="budget">
 <h2>2000 步大约看了多少数据<a class="headerlink" href="#budget" title="Link to this heading">#</a></h2>
 <p>一次更新抽取 <span class="math notranslate nohighlight">\(\htmlData{sym=B_batch}{B}\)</span> 个样本，<span class="math notranslate nohighlight">\(\htmlData{sym=S_steps}{S}\)</span> 次更新一共抽取 <span class="math notranslate nohighlight">\(\htmlData{sym=S_steps}{S}\htmlData{sym=B_batch}{B}\)</span> 个。拿它和训练集大小 <span class="math notranslate nohighlight">\(\htmlData{sym=N_train}{N}\)</span> 相比，就得到一个简单的估算：</p>
-<div class="formula"><div class="formula-label">等效数据遍历次数</div><div class="formula-body">\[\htmlData{sym=E_pass}{E} = \frac{\htmlData{sym=S_steps}{S}\,\htmlData{sym=B_batch}{B}}{\htmlData{sym=N_train}{N}} = \frac{2000 \times 16}{13{,}431} \approx 2.38\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(E\)</dt><dd>等效数据遍历次数：总抽样数相当于把训练集完整看了几遍。</dd></div><div><dt>\(S\)</dt><dd>优化器更新次数（训练步数）；本节为 2000。</dd></div><div><dt>\(B\)</dt><dd>每次更新抽取的训练样本数（批量大小）；本节为 16。</dd></div><div><dt>\(N\)</dt><dd>训练集中的样本（帧）总数；本节为 13,431。</dd></div></dl></details></div><p>也就是说，总抽样量大约相当于把训练集看了 2.38 遍。但这不等于每个样本都恰好被看了 2.38 遍：训练按 <a href="08-groot-interface.html#data-design">4.2 节</a>介绍的阶段加权抽样，原地站立、球前细调和即将出脚这些少见的时刻被抽到的次数更多，大量走路的帧更少；抽样又是随机的，个别样本可能一次也没有被抽到。</p>
+<div class="formula"><div class="formula-label">等效数据遍历次数</div><div class="formula-body">\[\htmlData{sym=E_pass}{E} = \frac{\htmlData{sym=S_steps}{S}\,\htmlData{sym=B_batch}{B}}{\htmlData{sym=N_train}{N}} = \frac{2000 \times 16}{13{,}431} \approx 2.38\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(E\)</dt><dd>等效数据遍历次数：总抽样数相当于把训练集完整看了几遍。</dd></div><div><dt>\(S\)</dt><dd>优化器更新次数（训练步数）；本节为 2000。</dd></div><div><dt>\(B\)</dt><dd>每次更新抽取的训练样本数（批量大小）；本节为 16。</dd></div><div><dt>\(N\)</dt><dd>训练集中的样本（帧）总数；本节为 13,431。</dd></div></dl></details></div><p>也就是说，总抽样量大约相当于把训练集看了 2.38 遍。但这不等于每个样本都恰好被看了 2.38 遍：训练按 <a href="08-groot-interface.html#data-design">5.2 节</a>介绍的阶段加权抽样，原地站立、球前细调和即将出脚这些少见的时刻被抽到的次数更多，大量走路的帧更少；抽样又是随机的，个别样本可能一次也没有被抽到。</p>
 </section>
 <section id="time">
 <h2>要等多久<a class="headerlink" href="#time" title="Link to this heading">#</a></h2>
@@ -565,8 +569,9 @@
 <li><p><strong>机器人模型。</strong> <code class="docutils literal notranslate"><span class="pre">--robot-usd</span></code> 的默认值 <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/visuals/assets/microduck_white_orange.usda</span></code>，来自仓库 <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/visuals/assets/</span></code>。</p></li>
 <li><p><strong>输出。</strong> 这些场景参数都由 <code class="docutils literal notranslate"><span class="pre">groot_walking.py</span> <span class="pre">validate</span></code> 自动填写；每个回合的结果写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的新目录。</p></li>
 </ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-groot-validate.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-groot-validate.png" alt="GR00T 步行射门验证时的 Isaac Sim 完整界面：绿色球场一端是 Microduck，中圈有足球，另一端是球门，顶部显示 RTX 实时渲染。"></a><figcaption><p>课程在容器中运行上面这条命令时的窗口，截于第 1 个回合开始、GR00T 接管后不久。它只展示验证场景的样子，不代表这一回合射门成功；每个回合的结果以输出目录里的记录为准。</p>
-</figcaption></figure><p>每次推理时仿真都会暂停，等 GR00T 返回请求，所以窗口里出现短暂停顿是预期现象（完整时序见 <a href="08-groot-interface.html#timing">4.2 节</a>）；这些停顿不能用来判断真机上的实时表现。加上头部相机每秒 15 帧都要用 RTX 渲染并保存，在 DGX Spark 上验证的速度约为真实速度的 0.24 倍。</p>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-groot-validate.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-groot-validate.png" alt="GR00T 步行射门验证的 Isaac Sim 完整界面：球场旁同步显示头部 RGB 与 8×8 ToF；ToF 标注为非 GR00T 输入。"></a><figcaption><p>容器中的验证窗口，截于 GR00T 接管后。右侧 RGB 来自头部相机，ToF 仅供观察；截图不代表射门成功，结局以回合记录为准。</p>
+</figcaption></figure><p>窗口还会同步显示头部 RGB 图像和 8×8 ToF 面板：RGB 图像是 GR00T 的输入来源，ToF 只作观察，不是本课程 GR00T 的输入。</p>
+<p>每次推理时仿真都会暂停，等 GR00T 返回请求，所以窗口里出现短暂停顿是预期现象（完整时序见 <a href="08-groot-interface.html#timing">5.2 节</a>）；这些停顿不能用来判断真机上的实时表现。加上头部相机每秒 15 帧都要用 RTX 渲染并保存，在 DGX Spark 上验证的速度约为真实速度的 0.24 倍。</p>
 <p>运行结束后，先看终端打印的 <code class="docutils literal notranslate"><span class="pre">Complete</span> <span class="pre">walking</span> <span class="pre">shots</span></code> 汇总和每个回合的一行结果。逐回合记录保存在输出目录的 <code class="docutils literal notranslate"><span class="pre">attempts.json</span></code> 中（例如 <code class="docutils literal notranslate"><span class="pre">outputs/groot-walking-validate/attempts.json</span></code>）：每条记录的 <code class="docutils literal notranslate"><span class="pre">score</span></code> 里，<code class="docutils literal notranslate"><span class="pre">passed</span></code> 表示完整成功，<code class="docutils literal notranslate"><span class="pre">contact</span></code> 表示触球，<code class="docutils literal notranslate"><span class="pre">goal</span></code> 表示进球，<code class="docutils literal notranslate"><span class="pre">fall</span></code> 表示跌倒，<code class="docutils literal notranslate"><span class="pre">terminal</span></code> 记录回合结束的原因。阅读时分清几种结局：</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -622,7 +627,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">上一页</p>
-        <p class="prev-next-title">4.2 步行射门：GR00T 的输入、输出与数据</p>
+        <p class="prev-next-title">5.2 步行射门：GR00T 的输入、输出与数据</p>
       </div>
     </a>
     <a class="right-next"
@@ -630,7 +635,7 @@
        title="下一页">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">下一页</p>
-        <p class="prev-next-title">4.4 从球场走向更多环境</p>
+        <p class="prev-next-title">5.4 从球场走向更多环境</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

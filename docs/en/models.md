@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 5.1 Models and data
+# 6.1 Models and data
 
 :::{lesson-intro}
 :meta: Quick reference · No retraining required
@@ -19,15 +19,15 @@ Every main-path lab uses explicitly named fixed files. Download once and reuse t
 
 | File (host `models/`, container `/workspace/Microduck-Workshop/models/`) | Purpose | Course commands that read it |
 |---|---|---|
-| `walk.onnx` | Fixed walking policy | Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 `walk --model models/walk.onnx`; the low-level walking policy in the Section 4.3 validation scene uses a copy of the same model |
+| `walk.onnx` | Fixed walking policy | Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 `walk --model models/walk.onnx`; the low-level walking policy of the Section 4.2 onboard shot and of the Section 5.3 validation scene uses a copy of the same model |
 | `terrain-walk.onnx` | Section 3.3 fixed terrain walking actor, about 0.79 MB | Section 3.3 `terrain --model models/terrain-walk.onnx` |
-| `kick-teacher.onnx` | Base kicking action | Section 2.1 keyboard football (Space, read automatically) |
-| `kick-residual.onnx` | Residual kick adjustment | Retained; not read directly by this course's hands-on commands |
+| `kick-teacher.onnx` | Base kicking action | Section 2.1 keyboard football (Space, read automatically); the kick skill of the Section 4.2 onboard shot uses a copy of the same model |
+| `kick-residual.onnx` | Residual kick adjustment | The kick skill of the Section 4.2 onboard shot uses a copy of the same model; not read directly by this course's hands-on commands |
 | `kick-checkpoint.pt` | Retained kick training checkpoint | Retained; not read directly by this course's hands-on commands |
 | `detector.pt` | Fixed visual detector | Retained; not read directly by this course's hands-on commands |
 | `detector.onnx` | ONNX detector export | Retained; not read directly by this course's hands-on commands |
 | `indoor-detector/detector.pt` / `indoor-detector/detector.onnx` | Another indoor detector, for a scene with a 7 cm ball; not used on the course pitch | Retained; not read directly by this course's hands-on commands |
-| `scene-detector/detector.pt` / `scene-detector/detector.onnx` | Official 10 cm ball and four-surface detector; current default | The onboard policy's visual detector; not read directly by this course's hands-on commands |
+| `scene-detector/detector.pt` / `scene-detector/detector.onnx` | Official 10 cm ball and four-surface detector; current default | The visual detector of the Section 4.1 onboard policy; not read directly by this course's hands-on commands |
 | `official-browser/rollers.onnx` | Official four-passive-wheel actor, 14 servo actions | Section 2.1 roller mode after M (read automatically); `--model` of Section 3.3 `terrain --locomotion rollers` and `train-terrain --locomotion rollers` |
 | `official-browser/walking.onnx` / `sitstand.onnx` | Browser-version checks and standing tests; the complete walking task uses `walk.onnx` | Retained; not read directly by this course's hands-on commands |
 
@@ -44,7 +44,7 @@ These files ship with the Git repository, so cloning it is enough; no Git LFS or
 
 **In the repository.** The weights for Parts 2–3 and the onboard policy; the pretrained PPO walking result of Section 3.2 and the slope-training logs are in `datasets/walking-ppo` and `datasets/terrain-ppo` (`/workspace/Microduck-Workshop/datasets/` in the container, read-only). `datasets/terrain-rollers-ppo-experiment` is the record of a roller slope training run that did not learn to climb; it is kept as a counterexample for reward design, not as a usable slope model.
 
-**Separate data package.** The GR00T walking-shot data, feature cache and trained checkpoint of Section 4.3 come from the separate GR00T course data package (`course-data/groot-walking` in the container; check it with `python3 scripts/groot_walking.py verify`). The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face under their access and license terms.
+**Separate data package.** The GR00T walking-shot data, feature cache and trained checkpoint of Section 5.3 come from the separate GR00T course data package (`course-data/groot-walking` in the container; check it with `python3 scripts/groot_walking.py verify`). The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face under their access and license terms.
 
 {#practice-data}
 ## Practice data and your outputs

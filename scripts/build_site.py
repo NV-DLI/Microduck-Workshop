@@ -53,7 +53,7 @@ def main():
             raise SystemExit(f"Sphinx build failed for {lang}")
     (out / "index.html").write_text(
         '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=zh/index.html">'
-        '<title>Simulate and train Microduck with NVIDIA Isaac</title></head><body><a href="zh/index.html">使用 NVIDIA Isaac 仿真并训练 Microduck</a> · <a href="en/index.html">Simulate and train Microduck with NVIDIA Isaac</a></body></html>'
+        '<title>Train Microduck in Simulation with NVIDIA Isaac</title></head><body><a href="zh/index.html">使用 NVIDIA Isaac 在仿真环境训练 Microduck</a> · <a href="en/index.html">Train Microduck in Simulation with NVIDIA Isaac</a></body></html>'
     )
     (out / ".nojekyll").touch()
     print(f"Built {sum(1 for lang in LANGS for _ in (DOCS / lang).glob('*.md'))} lesson pages into {out}")

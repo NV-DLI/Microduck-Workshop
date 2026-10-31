@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 1.3 Set up the environment and get the code
+# 1.2 Set up the environment and get the code
 
 :::{lesson-intro}
 :meta: Hands-on · Ubuntu 24.04 / DGX Spark · Docker
@@ -30,7 +30,7 @@ The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, 
 |---|---|
 | Container base | CUDA 13, Ubuntu 24.04, Python 3.12 |
 | Simulation | Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend |
-| Learning | RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 4) |
+| Learning | RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 5) |
 
 {#get-code}
 ## Get the course code
@@ -48,9 +48,9 @@ cd Microduck-Workshop
 
 The fixed course models (`models/` under 60 MB) and the pretrained results and training logs used in Part 3 (`datasets/` about 50 MB) come with the repository; your own runs go to `outputs/`, kept separate from them.
 
-**GR00T course data package (Section 4.3 only).** The GR00T walking shot in Section 4.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 4.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its `groot-walking/` folder under `course-data/` in the repository root; if you keep it elsewhere, set `MICRODUCK_COURSE_DATA` to the absolute path of the folder that contains `groot-walking/` before starting the container. The container starts without the package.
+**GR00T course data package (Section 5.3 only).** The GR00T walking shot in Section 5.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 5.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its `groot-walking/` folder under `course-data/` in the repository root; if you keep it elsewhere, set `MICRODUCK_COURSE_DATA` to the absolute path of the folder that contains `groot-walking/` before starting the container. The container starts without the package.
 
-**Optional: precomputed feature cache for the RTX 5090.** To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its `groot-walking-feature-caches/` folder next to `groot-walking/`, and training does not need to recompute the features (see Section 4.3). DGX Spark does not need it.
+**Optional: precomputed feature cache for the RTX 5090.** To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its `groot-walking-feature-caches/` folder next to `groot-walking/`, and training does not need to recompute the features (see Section 5.3). DGX Spark does not need it.
 
 ```{code-block} text
 :caption: Workspace
@@ -62,7 +62,7 @@ Microduck-Workshop/
 ├── scripts/       # lab entry points (same)
 ├── models/        # fixed course models (read-only in the container)
 ├── datasets/      # sample data and pretrained PPO results (read-only)
-├── course-data/   # GR00T course data package (read-only, Section 4.3)
+├── course-data/   # GR00T course data package (read-only, Section 5.3)
 └── outputs/       # your runs (writable in the container)
 ```
 
@@ -102,7 +102,7 @@ docker exec -it microduck-workshop bash
 :::{admonition} Return to the same container
 :class: note
 
-If you closed the terminal, or need a second shell (for example to watch logs while training in Section 4.3), run `docker exec -it microduck-workshop bash` on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run `docker compose -f docker/compose.yaml up -d` again from the repository root; data, outputs and caches live on the host. When you have finished all labs, `docker compose -f docker/compose.yaml down` stops and removes the container.
+If you closed the terminal, or need a second shell (for example to watch logs while training in Section 5.3), run `docker exec -it microduck-workshop bash` on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run `docker compose -f docker/compose.yaml up -d` again from the repository root; data, outputs and caches live on the host. When you have finished all labs, `docker compose -f docker/compose.yaml down` stops and removes the container.
 :::
 
 A relative path in a command (for example `models/walk.onnx`) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under `~/.cache/huggingface` and `~/.cache/microduck/`, so the second start is much faster.

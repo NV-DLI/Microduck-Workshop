@@ -1,6 +1,6 @@
 # Microduck course
 
-The course is **Simulate and train Microduck with NVIDIA Isaac** / **使用 NVIDIA Isaac 仿真并训练 Microduck**. The repository name stays Microduck-Workshop.
+The course is **Train Microduck in Simulation with NVIDIA Isaac** / **使用 NVIDIA Isaac 在仿真环境训练 Microduck**. The repository name stays Microduck-Workshop.
 
 Read `.agents/skills/microduck-course/SKILL.md` before changing lessons. MyST Markdown in `docs/zh/` and `docs/en/` is authoritative; `content/course.json` is a read-only archive. Never regenerate lessons from that archive. Both languages share page names, section anchors, commands and model references.
 
@@ -8,15 +8,16 @@ Read `.agents/skills/microduck-course/SKILL.md` before changing lessons. MyST Ma
 
 Write for students: core concepts, motivation, steps, observations and interpretation. Keep paragraphs concise. Show only the current version; development history, old experiments, production notes and internal machine paths belong outside the public lessons. Preserve historical evidence separately rather than overwriting it. Avoid irrelevant seeds and recording settings in prose. Do not use U+2014; use normal punctuation or an ASCII hyphen.
 
-The course has five parts and sixteen pages:
+The course has six parts and seventeen pages:
 
-1. Overview: `index`, `how-to-learn`, `setup`.
+1. Overview: `index`, `setup` (the removed `how-to-learn` URL redirects to `setup`).
 2. Meet Microduck: `01-play`, `02-anatomy`.
 3. Reinforcement learning: `03-learning`, `03-walk-training`, `04-terrain`, `05-skills`.
-4. GR00T: `07-groot`, `08-groot-interface`, `08-groot-lab`, `09-worlds`.
-5. Help: `models`, `troubleshooting`, `references`.
+4. Onboard policy (板载策略完成射门任务): `06-perception` (4.1 RGB detection and ToF ranging), `06-onboard` (4.2 hand-designed stages).
+5. GR00T: `07-groot`, `08-groot-interface`, `08-groot-lab`, `09-worlds`.
+6. Help: `models`, `troubleshooting`, `references`.
 
-Use ordinary descriptive headings, without “动手” or “Hands-on” prefixes. Removed autonomy/ASPIRE pages remain redirects only. The community section currently has three examples: one-leg standing, basketball balance and backward rolling.
+Use ordinary descriptive headings, without “动手” or “Hands-on” prefixes. Chinese lessons say 板载策略 for the onboard policy. Part 4 covers walking onboard shooting only (no roller shooting); it explains the actual detector, ToF floor/near-range logic and stages concisely, without heavy equations. The old `06-autonomy` URL redirects to `06-onboard`; the ASPIRE page remains a redirect only. The community section currently has three examples: one-leg standing, basketball balance and backward rolling.
 
 ## Labs and evidence
 
@@ -38,9 +39,9 @@ The normal site uses the native NVIDIA/PyData Sphinx shell, grouped left navigat
 
 Code explanations and code chunks share one grid row: explanation left, code right (1:1.25 on desktop), equal height, vertically centered content. Use inline explanation titles when helpful. Soft-wrap code, with no clipping or internal scrolling, and preserve copied source bytes. Source excerpts and recorded runs have no copy button; executable commands do. Recorded output is collapsed by default.
 
-Diagrams appear above their explanations/controls. Four flow modules fit one desktop row; three modules spread evenly across the same width. Match fonts and card styling. Mark mathematical variables with the course symbol directives and preserve accessible tooltips and collapsed definitions.
+Diagrams appear above their explanations/controls. Flow explanations initially take no space and have no placeholder prompt; hovering or focusing a module reveals its explanation, clicking pins it, and Close or Escape collapses the panel. Keep explanations readable without JavaScript. Four flow modules fit one desktop row; three modules spread evenly across the same width. Match fonts and card styling. Mark mathematical variables with the course symbol directives and preserve accessible tooltips and collapsed definitions.
 
-Use the transparent NPR robot explorer with actual CAD and joint mappings. Before loading it, show no stale image or visible placeholder; preserve accessible status and failure retry. The homepage uses the current transparent antialiased animated WebP of the football replay: autoplay and loop, with a pause control, no caption or divider. Do not restore superseded decorative animation variants.
+Use the transparent NPR robot explorer with actual CAD and joint mappings. Before loading it, show no stale image or visible placeholder; preserve accessible status and failure retry. The homepage uses the current transparent antialiased animated WebP of the football replay: autoplay and loop, no pause control, caption or divider. Do not restore superseded decorative animation variants.
 
 The control-cycle figure uses recorded event arrays, three consecutive rounds, onboard mode first, playback from zero and collapsed “详解 / Details”. Keep measured host computation separate from simulation time; do not invent asynchronous execution or infer timing from configuration alone.
 

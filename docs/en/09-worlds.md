@@ -4,10 +4,10 @@ myst:
     description: 'After a task has been made reliable on the green pitch, how environment domain randomization and Cosmos 3 data augmentation can prepare a model for the different floors, lighting and layouts of real homes; which changes keep the original action labels and which require new simulation.'
 ---
 
-# 4.4 From the pitch to more environments
+# 5.4 From the pitch to more environments
 
 :::{lesson-intro}
-:meta: Section 4.4 · Estimated learning time: 35 minutes
+:meta: Section 5.4 · Estimated learning time: 35 minutes
 
 After a task has been made reliable on the green pitch, how environment domain randomization and Cosmos 3 data augmentation can prepare a model for the different floors, lighting and layouts of real homes; which changes keep the original action labels and which require new simulation.
 :::
@@ -15,9 +15,9 @@ After a task has been made reliable on the green pitch, how environment domain r
 {#first}
 ## Make one scene reliable first
 
-The shooting exercises of this course (keyboard football in Section 2.1 and the GR00T walking shot in Part 4) all use the same green football pitch: the same field, goal, ball and lighting. That is deliberate. Only when a task is stable in one fixed scene are failures easy to explain; if the original scene cannot be completed reliably, adding ten rooms only makes problems harder to locate.
+The shooting exercises of this course (keyboard football in Section 2.1, the onboard policy in Part 4 and the GR00T walking shot in Part 5) all use the same green football pitch: the same field, goal, ball and lighting. That is deliberate. Only when a task is stable in one fixed scene are failures easy to explain; if the original scene cannot be completed reliably, adding ten rooms only makes problems harder to locate.
 
-A real robot will not stay on a green pitch, though. Floors at home may be wooden boards, tiles or carpet; light differs between day and night; the background holds sofas, table legs and clutter. The checkpoint in Section 4.3 has not yet scored in its five validation episodes, so the immediate next step is to analyse the failures on the fixed pitch, improve the data and control, and evaluate again. This section looks ahead to a later question: once shooting is reliable, how should the environment be expanded step by step? It covers ideas and principles only; there is no hands-on exercise.
+A real robot will not stay on a green pitch, though. Floors at home may be wooden boards, tiles or carpet; light differs between day and night; the background holds sofas, table legs and clutter. The checkpoint in Section 5.3 has not yet scored in its five validation episodes, so the immediate next step is to analyse the failures on the fixed pitch, improve the data and control, and evaluate again. This section looks ahead to a later question: once shooting is reliable, how should the environment be expanded step by step? It covers ideas and principles only; there is no hands-on exercise.
 
 {#why-variation}
 ## Why a real robot needs environment variation
@@ -67,20 +67,29 @@ Appearance randomization changes “what it looks like”; physics randomization
 {#direct-joints}
 ## Another option: GR00T outputs the 14 servo actions directly
 
-In this course GR00T outputs 8D high-level requests, and the low-level action policy trained with reinforcement learning turns them into targets for the 14 servos (Section 4.2). One could also remove that middle layer and let a VLA output the 14 servo joint targets directly: the inputs stay RGB images, a language instruction and the robot state, and the output becomes 14 joint target angles at every step.
+In this course GR00T outputs 8D high-level requests, and the low-level walking policy turns them into targets for the 14 servos (Section 5.2). One could also remove that middle layer and let GR00T output joint targets directly:
 
-```{vla-joint-diagram}
-This illustrates a possible direct-joint design. Intermediate nodes and connections are schematic, and the number of dots is not the number of neurons; each output step contains 14 servo targets. The course has not trained or validated this controller.
+```{learning-flow}
+label: "Idea: GR00T outputs the 14 joint targets directly"
+nodes:
+- [Observation and instruction, "RGB images, task instruction and body state"]
+- [GR00T, Predicts a chunk of actions]
+- [Joint target sequence, "Ordered in time, 14 target angles per step"]
+- [Joint controller, "Servo position control, limits and safety protection"]
+details:
+- The input types remain camera images, the task instruction and body state; the state encoding and action labels must be redesigned for the 14-joint interface.
+- The model predicts the actions for a short stretch of time ahead.
+- Every step gives the 14 servo target angles directly, without the walking policy.
+- The servos still need position control, and targets still need clamping and rate limits; when inference times out or the output is abnormal, the robot should enter a controlled stop.
+layout: learning
+loop: true
+caption: This is only a design idea; the course has not trained or validated this kind of control.
 ```
 
-The potential benefit is that the model is no longer limited to what the low-level skills can express: in principle it could learn new combinations of movement, such as adjusting the kicking pose while walking, and one model might learn a wider range of tasks and bring the visual and language knowledge from pretraining to new scenes. These are possibilities, not a guarantee of better generalization. To turn them into a reliable ability, at least these requirements have to be met:
+The potential benefit is flexibility: movements are no longer limited by the low-level skills, and one model might learn a wider range of tasks. The price is much stricter requirements:
 
-- **Data**: a large and varied set of demonstrations covering different tasks, observations and actions, including recovery after losing balance. With 8D requests the low-level policy supplies balance; with direct joint output all of that has to be learned from demonstrations.
-- **Control**: the servos' own position control, joint limits and safety protection are still needed. Joint targets from the VLA have to be clamped and rate-limited; when inference times out or the output is abnormal, the robot has to enter a controlled stop or a stable stance instead of executing stale actions.
-- **Inference and timing**: the course's low-level policy updates the joint actions at 50 Hz (every 20 ms) to keep balance, while one GR00T inference took a median of about 0.33 s in the course logs. When controlling joints directly, every step of an action chunk must be accurate enough. Inference can overlap asynchronously with execution of the current chunk, but the next chunk must still arrive before the usable action buffer runs out, aligned to its observation time and the steps already executed; smooth transitions neither remove inference latency nor by themselves guarantee balance. On a real robot, network transfer adds to the delay (Section 4.2). The trade-off between inference delay, chunk length and executed length becomes much stricter.
-- **Embodiment**: 14D joint actions are tied to one robot design; change the leg length, servos or gear ratios and the model usually needs adapting to the new body, whereas high-level requests are easier to reuse across different low-level controllers.
-
-The course does not implement this approach; it is offered here as a design trade-off to think about.
+- **Data**: many more and more varied demonstrations, including recovery after losing balance, because no low-level policy keeps the robot balanced any more.
+- **Latency and balance**: action chunks can run step by step, but the model still needs timely corrections from fresh observations. Continuous execution, expired actions and recovery from imbalance must be handled; remote inference also adds network delay.
 
 {#cosmos}
 ## Cosmos 3: add visual variation to the same actions

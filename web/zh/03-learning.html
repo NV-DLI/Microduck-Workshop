@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="强化学习怎样从试错中学会行走，PPO 为什么要约束每次策略更新，以及这些公式在 Isaac Lab 训练代码中的对应位置。" name="description" />
 
-  <title>3.1 强化学习与 PPO - 使用 NVIDIA Isaac 仿真并训练 Microduck</title>
+  <title>3.1 强化学习与 PPO - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=80c05784" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-learning';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=d1a136c9"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=4ad83015"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -146,11 +146,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a></div>
     
@@ -256,11 +256,11 @@
     
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 仿真并训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="使用 NVIDIA Isaac 在仿真环境训练 Microduck - Home"/>
   
   
-    <p class="title logo__title">使用 NVIDIA Isaac 仿真并训练 Microduck</p>
+    <p class="title logo__title">使用 NVIDIA Isaac 在仿真环境训练 Microduck</p>
   
 </a>
 
@@ -323,8 +323,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 概览</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">1.1 让 Microduck 学会自主射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-learn.html">1.2 如何学习本课程</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup.html">1.3 准备环境与获取代码</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 准备环境与获取代码</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 认识 Microduck</span></p>
 <ul class="nav bd-sidenav">
@@ -338,18 +337,23 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 训练 GR00T 自主完成任务</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">4.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">4.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">4.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">4.4 从球场走向更多环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 手工设计的射门阶段</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 参考与帮助</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">5.1 模型与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">5.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">5.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -410,7 +414,7 @@
 <p>2.1 和 2.2 节只运行了官方训练好的固定策略。现在换个问题：从随机初始化出发，策略怎样通过仿真中的反复尝试学会行走？本节把学习目标、奖励、优势估计和 PPO 更新对应到 Isaac Lab 与 RSL-RL 的实际代码；3.2 节再启动训练，并测试课程预先训练好的策略。</p>
 <p>我们希望机器人接收前进、横移和转向指令后，自己协调 14 个关节：迈步时保持平衡，支撑脚尽量不打滑，动作平顺连贯。给每个关节手写固定的周期轨迹，很难同时适应不同的速度、受力和初始状态。</p>
 <p>强化学习通过“尝试动作 → 得到反馈 → 调整策略”学习控制，不需要“每个状态对应哪个关节角度”的示例数据：Newton 生成状态转移，Isaac Lab 的奖励管理器描述期望的行为。</p>
-<figure class="learning-figure" data-learning-flow="learn-eb50ed750e"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="强化学习的在线交互与更新"><svg class="learning-svg" viewBox="0 0 900 340" role="group" aria-labelledby="learn-eb50ed750e-title"><title id="learn-eb50ed750e-title">强化学习的在线交互与更新</title><defs><marker id="learn-eb50ed750e-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 134V206" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="4" data-to="5" d="M692.0 263.0H656.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M468.0 263.0H114.0V134" marker-end="url(#learn-eb50ed750e-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 并行仿真环境" aria-controls="learn-eb50ed750e-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">并行仿真环境</text><text x="114.0" y="98" class="learning-node-subtitle">根据当前状态构造观测</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 当前策略 πθ" aria-controls="learn-eb50ed750e-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">当前策略 πθ</text><text x="338.0" y="98" class="learning-node-subtitle">采样关节动作 aₜ</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 执行与评价" aria-controls="learn-eb50ed750e-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">执行与评价</text><text x="562.0" y="98" class="learning-node-subtitle">得到奖励 rₜ 和下一状态</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 保存一批交互" aria-controls="learn-eb50ed750e-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">保存一批交互</text><text x="786.0" y="98" class="learning-node-subtitle">观测、动作、奖</text><text x="786.0" y="115" class="learning-node-subtitle">励、终止标记</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. PPO 更新" aria-controls="learn-eb50ed750e-detail-4" aria-expanded="false"><rect x="696.0" y="210" width="180" height="106" rx="6"/><text x="786.0" y="234" class="learning-node-index">05</text><text x="786.0" y="260" class="learning-node-title">PPO 更新</text><text x="786.0" y="284" class="learning-node-subtitle">估计优势，优化</text><text x="786.0" y="301" class="learning-node-subtitle">策略与价值网络</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. 继续采样" aria-controls="learn-eb50ed750e-detail-5" aria-expanded="false"><rect x="472.0" y="210" width="180" height="106" rx="6"/><text x="562.0" y="234" class="learning-node-index">06</text><text x="562.0" y="260" class="learning-node-title">继续采样</text><text x="562.0" y="284" class="learning-node-subtitle">用更新后的策</text><text x="562.0" y="301" class="learning-node-subtitle">略收集新数据</text></g></svg></div><div class="learning-details" aria-label="强化学习的在线交互与更新"><p class="learning-empty">选择一个模块，说明会显示在这里。</p><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-eb50ed750e-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>并行仿真环境</h3><p>多个环境同时产生观测。某个副本跌倒或超时后单独重置，其他副本继续执行。</p></article><article id="learn-eb50ed750e-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>当前策略 πθ</h3><p>根据当前观测采样动作。训练时的随机探索让策略见到不同动作的后果；部署时按选定的推理方式输出动作。</p></article><article id="learn-eb50ed750e-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>执行与评价</h3><p>把动作送入物理环境，再计算速度跟踪、姿态与能耗等奖励。奖励只评价行为好坏，具体的关节动作由策略自己摸索。</p></article><article id="learn-eb50ed750e-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>保存一批交互</h3><p>保存一段交互中的观测、动作、奖励和终止信息。按时间顺序排列的记录用于计算回报和优势。</p></article><article id="learn-eb50ed750e-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>PPO 更新</h3><p>用收集的样本更新策略与价值网络。裁剪目标限制单次更新的幅度，避免策略突变。</p></article><article id="learn-eb50ed750e-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>继续采样</h3><p>更新后的策略会产生新的动作和状态分布，因此要重新采样。交互与更新反复交替，就是强化学习训练。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Isaac Lab 在 GPU 上把多个环境组织成批量状态，观测、动作、奖励和终止标记都按环境索引存放。策略一变，数据分布也随之改变，所以 PPO 每次只用一批新采集的数据做有限次更新，然后重新与环境交互。</figcaption></figure><div class="formula"><div class="formula-label">学习目标：提高长期折扣回报</div><div class="formula-body">\[\htmlData{sym=J}{J(\htmlData{sym=theta}{\theta})}=\htmlData{sym=E_traj}{\mathbb E_{\htmlData{sym=tau}{\tau}\sim\htmlData{sym=pi_theta}{\pi_\theta}}}\!\left[\sum_{\htmlData{sym=t_idx}{t}=0}^{\htmlData{sym=T_horizon}{T}-1}\htmlData{sym=gamma}{\gamma}^{\htmlData{sym=t_idx}{t}} \htmlData{sym=r_t}{r_t}\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(J(\theta)\)</dt><dd>学习目标：按当前策略采样时的期望折扣回报；训练就是调整策略参数让它增大。</dd></div><div><dt>\(\theta\)</dt><dd>策略网络的参数（权重），训练时更新。</dd></div><div><dt>\(\mathbb E_{\tau\sim\pi_\theta}\)</dt><dd>期望：对按当前策略采样得到的许多条轨迹取平均。</dd></div><div><dt>\(\tau\)</dt><dd>一段交互轨迹：一个回合中依次出现的观测、动作和奖励。</dd></div><div><dt>\(\pi_\theta\)</dt><dd>策略：由网络参数决定的神经网络，根据观测给出动作的概率分布。</dd></div><div><dt>\(t\)</dt><dd>控制步的序号。</dd></div><div><dt>\(T\)</dt><dd>这段轨迹中计入回报的控制步数；与后面每轮采样的步数是两个不同的量。</dd></div><div><dt>\(\gamma\)</dt><dd>折扣因子：越接近 1，越重视远期奖励；课程训练取 0.99。</dd></div><div><dt>\(r_t\)</dt><dd>当前控制步的即时奖励：各奖励项加权求和后的值。</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=theta}{\theta}\)</span> 是策略参数，<span class="math notranslate nohighlight">\(\htmlData{sym=tau}{\tau}\)</span> 是一段交互轨迹，<span class="math notranslate nohighlight">\(\htmlData{sym=r_t}{r_t}\)</span> 是即时奖励，<span class="math notranslate nohighlight">\(\htmlData{sym=gamma}{\gamma}\)</span> 是折扣因子。优化长期回报意味着：某一步动作是否有价值，要结合后续能否站稳来判断，不能只看当前帧的奖励。</p>
+<figure class="learning-figure" data-learning-flow="learn-eb50ed750e"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="强化学习的在线交互与更新"><svg class="learning-svg" viewBox="0 0 900 340" role="group" aria-labelledby="learn-eb50ed750e-title"><title id="learn-eb50ed750e-title">强化学习的在线交互与更新</title><defs><marker id="learn-eb50ed750e-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="3" data-to="4" d="M786.0 134V206" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="4" data-to="5" d="M692.0 263.0H656.0" marker-end="url(#learn-eb50ed750e-arrow)"/><path class="learning-edge" data-from="5" data-to="0" d="M468.0 263.0H114.0V134" marker-end="url(#learn-eb50ed750e-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 并行仿真环境" aria-controls="learn-eb50ed750e-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">并行仿真环境</text><text x="114.0" y="98" class="learning-node-subtitle">根据当前状态构造观测</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 当前策略 πθ" aria-controls="learn-eb50ed750e-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">当前策略 πθ</text><text x="338.0" y="98" class="learning-node-subtitle">采样关节动作 aₜ</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 执行与评价" aria-controls="learn-eb50ed750e-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">执行与评价</text><text x="562.0" y="98" class="learning-node-subtitle">得到奖励 rₜ 和下一状态</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 保存一批交互" aria-controls="learn-eb50ed750e-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">保存一批交互</text><text x="786.0" y="98" class="learning-node-subtitle">观测、动作、奖</text><text x="786.0" y="115" class="learning-node-subtitle">励、终止标记</text></g><g class="learning-node" data-node="4" role="button" tabindex="0" aria-label="5. PPO 更新" aria-controls="learn-eb50ed750e-detail-4" aria-expanded="false"><rect x="696.0" y="210" width="180" height="106" rx="6"/><text x="786.0" y="234" class="learning-node-index">05</text><text x="786.0" y="260" class="learning-node-title">PPO 更新</text><text x="786.0" y="284" class="learning-node-subtitle">估计优势，优化</text><text x="786.0" y="301" class="learning-node-subtitle">策略与价值网络</text></g><g class="learning-node" data-node="5" role="button" tabindex="0" aria-label="6. 继续采样" aria-controls="learn-eb50ed750e-detail-5" aria-expanded="false"><rect x="472.0" y="210" width="180" height="106" rx="6"/><text x="562.0" y="234" class="learning-node-index">06</text><text x="562.0" y="260" class="learning-node-title">继续采样</text><text x="562.0" y="284" class="learning-node-subtitle">用更新后的策</text><text x="562.0" y="301" class="learning-node-subtitle">略收集新数据</text></g></svg></div><div class="learning-details" aria-label="强化学习的在线交互与更新"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-eb50ed750e-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>并行仿真环境</h3><p>多个环境同时产生观测。某个副本跌倒或超时后单独重置，其他副本继续执行。</p></article><article id="learn-eb50ed750e-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>当前策略 πθ</h3><p>根据当前观测采样动作。训练时的随机探索让策略见到不同动作的后果；部署时按选定的推理方式输出动作。</p></article><article id="learn-eb50ed750e-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>执行与评价</h3><p>把动作送入物理环境，再计算速度跟踪、姿态与能耗等奖励。奖励只评价行为好坏，具体的关节动作由策略自己摸索。</p></article><article id="learn-eb50ed750e-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>保存一批交互</h3><p>保存一段交互中的观测、动作、奖励和终止信息。按时间顺序排列的记录用于计算回报和优势。</p></article><article id="learn-eb50ed750e-detail-4" data-node-detail="4" class="learning-definition"><h3><span>5</span>PPO 更新</h3><p>用收集的样本更新策略与价值网络。裁剪目标限制单次更新的幅度，避免策略突变。</p></article><article id="learn-eb50ed750e-detail-5" data-node-detail="5" class="learning-definition"><h3><span>6</span>继续采样</h3><p>更新后的策略会产生新的动作和状态分布，因此要重新采样。交互与更新反复交替，就是强化学习训练。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Isaac Lab 在 GPU 上把多个环境组织成批量状态，观测、动作、奖励和终止标记都按环境索引存放。策略一变，数据分布也随之改变，所以 PPO 每次只用一批新采集的数据做有限次更新，然后重新与环境交互。</figcaption></figure><div class="formula"><div class="formula-label">学习目标：提高长期折扣回报</div><div class="formula-body">\[\htmlData{sym=J}{J(\htmlData{sym=theta}{\theta})}=\htmlData{sym=E_traj}{\mathbb E_{\htmlData{sym=tau}{\tau}\sim\htmlData{sym=pi_theta}{\pi_\theta}}}\!\left[\sum_{\htmlData{sym=t_idx}{t}=0}^{\htmlData{sym=T_horizon}{T}-1}\htmlData{sym=gamma}{\gamma}^{\htmlData{sym=t_idx}{t}} \htmlData{sym=r_t}{r_t}\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(J(\theta)\)</dt><dd>学习目标：按当前策略采样时的期望折扣回报；训练就是调整策略参数让它增大。</dd></div><div><dt>\(\theta\)</dt><dd>策略网络的参数（权重），训练时更新。</dd></div><div><dt>\(\mathbb E_{\tau\sim\pi_\theta}\)</dt><dd>期望：对按当前策略采样得到的许多条轨迹取平均。</dd></div><div><dt>\(\tau\)</dt><dd>一段交互轨迹：一个回合中依次出现的观测、动作和奖励。</dd></div><div><dt>\(\pi_\theta\)</dt><dd>策略：由网络参数决定的神经网络，根据观测给出动作的概率分布。</dd></div><div><dt>\(t\)</dt><dd>控制步的序号。</dd></div><div><dt>\(T\)</dt><dd>这段轨迹中计入回报的控制步数；与后面每轮采样的步数是两个不同的量。</dd></div><div><dt>\(\gamma\)</dt><dd>折扣因子：越接近 1，越重视远期奖励；课程训练取 0.99。</dd></div><div><dt>\(r_t\)</dt><dd>当前控制步的即时奖励：各奖励项加权求和后的值。</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=theta}{\theta}\)</span> 是策略参数，<span class="math notranslate nohighlight">\(\htmlData{sym=tau}{\tau}\)</span> 是一段交互轨迹，<span class="math notranslate nohighlight">\(\htmlData{sym=r_t}{r_t}\)</span> 是即时奖励，<span class="math notranslate nohighlight">\(\htmlData{sym=gamma}{\gamma}\)</span> 是折扣因子。优化长期回报意味着：某一步动作是否有价值，要结合后续能否站稳来判断，不能只看当前帧的奖励。</p>
 <p>训练时，策略网络根据 61 维可部署观测选择动作；价值网络还可以读取额外的仿真信息来估计回报。部署时只导出读取这 61 维观测的策略网络；价值网络额外用到的仿真信息（例如机身线速度、足部接触力）只在训练时使用。</p>
 </section>
 <section id="reward-design">

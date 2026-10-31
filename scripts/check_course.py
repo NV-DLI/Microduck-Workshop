@@ -22,18 +22,19 @@ R = Path(__file__).resolve().parents[1]
 W = R / "web"
 D = R / "docs"
 LANGS = ("zh", "en")
-# Course structure: page -> section number, grouped into five numbered parts.
+# Course structure: page -> section number, grouped into six numbered parts.
 STRUCTURE = [
-    ("1", ["index", "how-to-learn", "setup"]),
+    ("1", ["index", "setup"]),
     ("2", ["01-play", "02-anatomy"]),
     ("3", ["03-learning", "03-walk-training", "04-terrain", "05-skills"]),
-    ("4", ["07-groot", "08-groot-interface", "08-groot-lab", "09-worlds"]),
-    ("5", ["models", "troubleshooting", "references"]),
+    ("4", ["06-perception", "06-onboard"]),
+    ("5", ["07-groot", "08-groot-interface", "08-groot-lab", "09-worlds"]),
+    ("6", ["models", "troubleshooting", "references"]),
 ]
 NUMBERS = {page: f"{part}.{i + 1}" for part, pages in STRUCTURE for i, page in enumerate(pages)}
 LESSONS = ["01-play", "02-anatomy", "03-learning", "03-walk-training", "04-terrain", "05-skills",
-           "07-groot", "08-groot-interface", "08-groot-lab", "09-worlds"]
-REMOVED = ["06-autonomy", "08-aspire"]  # removed from the course; old URLs redirect
+           "06-onboard", "06-perception", "07-groot", "08-groot-interface", "08-groot-lab", "09-worlds"]
+REMOVED = ["06-autonomy", "08-aspire", "how-to-learn"]  # removed from the course; old URLs redirect
 VISUALS = ("course-video", "robot-anatomy", "course-image", "learning-flow", "concept-diagram", "network-diagram",
            "platform-diagram", "scene-cards", "demonstration", "training-chart", "benchmark-chart", "control-timing", "{.pipeline}")
 INTERNAL = ["/home/yuki/", "@COURSE@", "@REPO@", "localhost:8018", "mark-complete", "local-progress",
@@ -74,7 +75,7 @@ def check_source(errors):
             errors.append(f"{lang} navigation order differs: {order}")
         captions = re.findall(r"^:caption: (\d) ", index, re.M)
         if captions != [part for part, _ in STRUCTURE]:
-            errors.append(f"{lang} navigation parts are not numbered 1–5: {captions}")
+            errors.append(f"{lang} navigation parts are not numbered 1–{len(STRUCTURE)}: {captions}")
     commands = 0
     for lang in LANGS:
         for name in pages[lang]:

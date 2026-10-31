@@ -94,6 +94,14 @@ RUN mkdir -p /usr/share/glvnd/egl_vendor.d /etc/vulkan/icd.d \
     && printf '{\n    "file_format_version" : "1.0.0",\n    "ICD" : {\n        "library_path" : "libGLX_nvidia.so.0",\n        "api_version" : "1.3.194"\n    }\n}\n' \
         > /etc/vulkan/icd.d/nvidia_icd.json
 
+# ROS 2 Jazzy Navfn planner (CPU only) for the onboard football route. The course
+# container runs it as a child process (lab/course_labs/nav2_local.py) instead of a
+# separate Docker container. Same steps on arm64 and amd64; the install record is
+# written to /usr/local/share/microduck-nav2/.
+COPY docker/nav2 /tmp/nav2
+COPY lab/nav2/image-lock.json /tmp/nav2/image-lock.json
+RUN NAV2_LOCK=/tmp/nav2/image-lock.json sh /tmp/nav2/install.sh && rm -rf /tmp/nav2
+
 COPY --from=builder /usr/local/bin/uv /usr/local/bin/uv
 COPY --from=builder /workspace /workspace
 
@@ -107,6 +115,7 @@ ENV NVIDIA_VISIBLE_DEVICES=all \
     ISAACLAB_PATH=/workspace/IsaacLab \
     MICRODUCK_STATE=/workspace/state \
     MICRODUCK_GROOT_PYTHON=/workspace/groot-env/bin/python \
+    MICRODUCK_NAV2_BACKEND=local \
     PYTHONPYCACHEPREFIX=/tmp/pycache
 
 WORKDIR /workspace/Microduck-Workshop
