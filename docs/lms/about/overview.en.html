@@ -1,23 +1,15 @@
 <section class="about">
 <p>Use NVIDIA Isaac Sim and Isaac Lab to teach the open-source Microduck biped new skills in simulation. Train walking and slope traversal with PPO and reward design, then explore a hand-designed shooting workflow. Finally, post-train NVIDIA Isaac GR00T on demonstrations and evaluate its walking shot in simulation.</p>
-<p><strong>Free course · about 6 hours of study</strong> (excluding full training waits; you can stop training at any time, and validation uses checkpoints provided by the course by default).</p>
 </section>
 
 <section class="tools">
-<ul>
-  <li><strong>NVIDIA Isaac Sim:</strong> scene, robot and RGB/ToF sensor simulation.</li>
-  <li><strong>NVIDIA Isaac Lab and Newton:</strong> parallel reinforcement learning, physics simulation and policy evaluation.</li>
-  <li><strong>NVIDIA Isaac GR00T and LeRobot:</strong> demonstrations, vision-language-action models and action-head post-training.</li>
-  <li><strong>PPO, RSL-RL, PyTorch and TensorBoard:</strong> policy optimization, training and learning-curve analysis.</li>
-  <li><strong>ROS 2 and Nav2:</strong> path planning for the onboard policy.</li>
-  <li><strong>Python, Docker and the NVIDIA Container Toolkit:</strong> course code and GPU containers.</li>
-</ul>
+<p>Isaac Sim, Isaac Lab, GR00T</p>
 </section>
 
 <section class="prerequisites">
 <ul>
   <li>Basic Python experience and familiarity with the Ubuntu command line.</li>
-  <li>Ubuntu and an NVIDIA GPU for the labs. See "1.2 Set up the environment and get the code" for supported hardware.</li>
+  <li>Ubuntu and an NVIDIA GPU for the labs.</li>
 </ul>
 </section>
 
@@ -34,50 +26,75 @@
 </section>
 
 <section class="outline">
-<style>
-.microduck-course-outline {
-  width: 100%;
-  border-collapse: collapse;
-}
-.microduck-course-outline th,
-.microduck-course-outline td {
-  text-align: center;
-  vertical-align: middle;
-  padding: .6em 1em;
-  border: 1px solid #d9d9d9;
-}
-</style>
-<table class="microduck-course-outline">
-  <thead>
-    <tr>
-      <th scope="col">Part</th>
-      <th scope="col">Main topics</th>
-    </tr>
-  </thead>
+<p>The table below lists the main topics of the course's six parts, which you can work through at your own pace.</p>
+
+<table>
   <tbody>
     <tr>
-      <th scope="row">1 Overview</th>
-      <td>Course route; build and enter the course container, confirm Isaac Sim and the GPU work</td>
+      <td style="width: 25% !important;"><strong>1. Overview</strong></td>
+      <td style="width: 70% !important;">
+        <ul>
+          <li>Learn the course route and objectives</li>
+          <li>Build and enter the course container</li>
+          <li>Confirm that Isaac Sim and the GPU work</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">2 Meet Microduck</th>
-      <td>Walk and kick with the keyboard in Isaac Sim; joints, actuators, sensors and the control cycle</td>
+      <td><strong>2. Meet Microduck</strong></td>
+      <td>
+        <ul>
+          <li>Walk and kick with Microduck from the keyboard in Isaac Sim</li>
+          <li>Explore the robot's structure, joints, actuators and sensors</li>
+          <li>Understand the policy's control cycle</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">3 Reinforcement learning</th>
-      <td>Reinforcement learning and PPO; train and test a walking policy with Isaac Lab and Newton; domain randomization and reward design for slopes; reward code of community skills</td>
+      <td><strong>3. Train skills with reinforcement learning</strong></td>
+      <td>
+        <ul>
+          <li>Understand the basics of reinforcement learning and PPO</li>
+          <li>Train and test a walking policy with Isaac Lab and Newton, and see what domain randomization contributes</li>
+          <li>Design rewards that keep Microduck steady on slopes</li>
+          <li>Read the reward code of community skills: one-leg standing, basketball balance and backward rolling</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">4 Onboard policy</th>
-      <td>RGB detection and ToF ranging; hand-designed shooting stages</td>
+      <td><strong>4. Shoot with an onboard policy</strong></td>
+      <td>
+        <ul>
+          <li>Find the ball and goal with RGB detection, and understand how ToF distinguishes the floor from nearby objects</li>
+          <li>Understand the hand-designed shooting stages, and why a new task needs a new design</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">5 GR00T</th>
-      <td>Vision-language-action models and GR00T; the 8-D high-level request interface and demonstration data; action-head post-training and checkpoint validation; toward more environments</td>
+      <td><strong>5. Train GR00T to complete tasks</strong></td>
+      <td>
+        <ul>
+          <li>Understand vision-language-action models and GR00T</li>
+          <li>Learn the 8-D high-level request interface and demonstration data for the walking shot</li>
+          <li>Try action-head post-training, and validate the walking shot with the checkpoint provided by the course</li>
+          <li>Discuss how environment randomization can help a model adapt to new environments</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">6 Reference and help</th>
-      <td>Models and data; troubleshooting; further learning and references</td>
+      <td><strong>6. Reference and help</strong></td>
+      <td>
+        <ul>
+          <li>Look up the course models and data</li>
+          <li>Troubleshoot common problems</li>
+          <li>Find references for further learning</li>
+        </ul>
+      </td>
     </tr>
   </tbody>
 </table>

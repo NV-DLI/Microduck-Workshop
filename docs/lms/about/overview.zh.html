@@ -1,23 +1,15 @@
 <section class="about">
 <p>本课程带你使用 NVIDIA Isaac Sim 与 Isaac Lab，在仿真中让开源双足机器人 Microduck 学会技能。你将用 PPO 和奖励设计训练行走与上下坡，再了解手工设计的射门流程。最后，使用示范数据对 NVIDIA Isaac GR00T 进行后训练，在仿真中评测步行射门表现。</p>
-<p><strong>免费课程 · 预计学习时间约 6 小时</strong>（不含完整训练的等待时间；训练可以随时停止，验证默认使用课程提供的检查点）。</p>
 </section>
 
 <section class="tools">
-<ul>
-  <li><strong>NVIDIA Isaac Sim：</strong>场景、机器人与 RGB/ToF 传感器仿真。</li>
-  <li><strong>NVIDIA Isaac Lab 与 Newton：</strong>并行强化学习训练、物理仿真与策略评测。</li>
-  <li><strong>NVIDIA Isaac GR00T 与 LeRobot：</strong>示范数据、视觉-语言-动作模型与动作头后训练。</li>
-  <li><strong>PPO、RSL-RL、PyTorch 与 TensorBoard：</strong>策略优化、训练实现与曲线分析。</li>
-  <li><strong>ROS 2 与 Nav2：</strong>板载策略的路径规划。</li>
-  <li><strong>Python、Docker 与 NVIDIA Container Toolkit：</strong>运行课程代码与 GPU 容器。</li>
-</ul>
+<p>Isaac Sim, Isaac Lab, GR00T</p>
 </section>
 
 <section class="prerequisites">
 <ul>
   <li>具备基础 Python 经验，熟悉 Ubuntu 命令行。</li>
-  <li>运行实验需要 Ubuntu 与 NVIDIA GPU，具体设备要求见课程“1.2 准备环境与获取代码”。</li>
+  <li>运行实验需要 Ubuntu 与 NVIDIA GPU。</li>
 </ul>
 </section>
 
@@ -34,50 +26,75 @@
 </section>
 
 <section class="outline">
-<style>
-.microduck-course-outline {
-  width: 100%;
-  border-collapse: collapse;
-}
-.microduck-course-outline th,
-.microduck-course-outline td {
-  text-align: center;
-  vertical-align: middle;
-  padding: .6em 1em;
-  border: 1px solid #d9d9d9;
-}
-</style>
-<table class="microduck-course-outline">
-  <thead>
-    <tr>
-      <th scope="col">部分</th>
-      <th scope="col">主要内容</th>
-    </tr>
-  </thead>
+<p>下表按课程的六个部分列出主要内容，你可以按自己的节奏依次学习。</p>
+
+<table>
   <tbody>
     <tr>
-      <th scope="row">1 概览</th>
-      <td>课程路线；构建并进入课程容器，确认 Isaac Sim 与 GPU 可用</td>
+      <td style="width: 25% !important;"><strong>1. 概览</strong></td>
+      <td style="width: 70% !important;">
+        <ul>
+          <li>了解课程路线与学习目标</li>
+          <li>构建并进入课程容器</li>
+          <li>确认 Isaac Sim 与 GPU 可用</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">2 认识 Microduck</th>
-      <td>在 Isaac Sim 中用键盘指挥行走与踢球；拆解关节、执行器、传感器与控制周期</td>
+      <td><strong>2. 认识 Microduck</strong></td>
+      <td>
+        <ul>
+          <li>在 Isaac Sim 中用键盘指挥 Microduck 行走与踢球</li>
+          <li>认识机械结构、关节、执行器与传感器</li>
+          <li>理解策略的控制周期</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">3 强化学习</th>
-      <td>强化学习与 PPO；用 Isaac Lab 与 Newton 训练并测试行走策略；域随机化与上下坡奖励设计；社区技能的奖励代码</td>
+      <td><strong>3. 用强化学习训练技能</strong></td>
+      <td>
+        <ul>
+          <li>理解强化学习与 PPO 的基本原理</li>
+          <li>用 Isaac Lab 与 Newton 训练并测试行走策略，理解域随机化的作用</li>
+          <li>设计奖励，让 Microduck 走稳上下坡</li>
+          <li>阅读社区技能的奖励代码：单脚站立、篮球平衡与倒滑</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">4 板载策略</th>
-      <td>RGB 检测与 ToF 测距；手工设计的射门阶段</td>
+      <td><strong>4. 板载策略完成射门</strong></td>
+      <td>
+        <ul>
+          <li>用 RGB 检测识别足球与球门，理解 ToF 如何区分地面与近处物体</li>
+          <li>理解手工设计的射门阶段，以及换一个任务为什么需要重新设计</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">5 GR00T</th>
-      <td>视觉-语言-动作模型与 GR00T；8 维高层请求接口与示范数据；动作头后训练与检查点验证；走向更多环境</td>
+      <td><strong>5. 训练 GR00T 完成任务</strong></td>
+      <td>
+        <ul>
+          <li>理解视觉-语言-动作模型与 GR00T</li>
+          <li>了解步行射门的 8 维高层请求接口与示范数据</li>
+          <li>体验动作头后训练，并用课程提供的检查点验证步行射门</li>
+          <li>讨论环境随机化怎样帮助模型走向更多环境</li>
+        </ul>
+      </td>
     </tr>
+
     <tr>
-      <th scope="row">6 参考与帮助</th>
-      <td>模型与数据；故障排查；继续学习与参考资料</td>
+      <td><strong>6. 参考与帮助</strong></td>
+      <td>
+        <ul>
+          <li>查阅课程模型与数据</li>
+          <li>排查常见问题</li>
+          <li>继续学习的参考资料</li>
+        </ul>
+      </td>
     </tr>
   </tbody>
 </table>
