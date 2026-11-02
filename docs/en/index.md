@@ -12,7 +12,7 @@ myst:
 :meta: 6 parts · 17 sections · Simulation and frontier methods
 :hero: media/isaac-football-hero-still.webp
 :hero-animation: media/isaac-football-hero.webp
-:hero-size: 1600x872
+:hero-size: 1600x1000
 :hero-alt: A recording of the full Isaac window, played on the simulation clock: the onboard policy controls Microduck as it scores on the green pitch, alongside synchronized head RGB and ToF sensor views.
 
 Experience Microduck's motion, train skills with reinforcement learning, see how an onboard policy scores with sensors and hand-designed stages, then adapt GR00T with demonstrations, evaluate the walking-shot task in simulation and consider how to carry it to more environments.
