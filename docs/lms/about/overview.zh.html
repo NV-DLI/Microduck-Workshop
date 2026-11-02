@@ -1,0 +1,84 @@
+<section class="about">
+<p>本课程带你使用 NVIDIA Isaac Sim 与 Isaac Lab，在仿真中让开源双足机器人 Microduck 学会技能。你将用 PPO 和奖励设计训练行走与上下坡，再了解手工设计的射门流程。最后，使用示范数据对 NVIDIA Isaac GR00T 进行后训练，在仿真中评测步行射门表现。</p>
+<p><strong>免费课程 · 预计学习时间约 6 小时</strong>（不含完整训练的等待时间；训练可以随时停止，验证默认使用课程提供的检查点）。</p>
+</section>
+
+<section class="tools">
+<ul>
+  <li><strong>NVIDIA Isaac Sim：</strong>场景、机器人与 RGB/ToF 传感器仿真。</li>
+  <li><strong>NVIDIA Isaac Lab 与 Newton：</strong>并行强化学习训练、物理仿真与策略评测。</li>
+  <li><strong>NVIDIA Isaac GR00T 与 LeRobot：</strong>示范数据、视觉-语言-动作模型与动作头后训练。</li>
+  <li><strong>PPO、RSL-RL、PyTorch 与 TensorBoard：</strong>策略优化、训练实现与曲线分析。</li>
+  <li><strong>ROS 2 与 Nav2：</strong>板载策略的路径规划。</li>
+  <li><strong>Python、Docker 与 NVIDIA Container Toolkit：</strong>运行课程代码与 GPU 容器。</li>
+</ul>
+</section>
+
+<section class="prerequisites">
+<ul>
+  <li>具备基础 Python 经验，熟悉 Ubuntu 命令行。</li>
+  <li>运行实验需要 Ubuntu 与 NVIDIA GPU，具体设备要求见课程“1.2 准备环境与获取代码”。</li>
+</ul>
+</section>
+
+<section class="objectives">
+<p>完成本课程后，你将能够：</p>
+<ul>
+  <li>在 Isaac Sim 中运行 Microduck 仿真，查看策略的观测、动作和控制周期。</li>
+  <li>解释 PPO 的基本原理，用 Isaac Lab 与 Newton 运行行走策略的训练与验证。</li>
+  <li>设计奖励和域随机化，结合 TensorBoard 曲线与独立评测结果判断训练效果。</li>
+  <li>说明板载策略怎样用 RGB 检测、ToF 测距和手工设计的阶段完成射门。</li>
+  <li>使用课程提供的示范数据体验 GR00T 动作头后训练，并在仿真中评测提供的检查点。</li>
+  <li>解释模型走向新环境时面临的泛化挑战，以及环境随机化可以怎样帮助模型适应这些变化。</li>
+</ul>
+</section>
+
+<section class="outline">
+<style>
+.microduck-course-outline {
+  width: 100%;
+  border-collapse: collapse;
+}
+.microduck-course-outline th,
+.microduck-course-outline td {
+  text-align: center;
+  vertical-align: middle;
+  padding: .6em 1em;
+  border: 1px solid #d9d9d9;
+}
+</style>
+<table class="microduck-course-outline">
+  <thead>
+    <tr>
+      <th scope="col">部分</th>
+      <th scope="col">主要内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1 概览</th>
+      <td>课程路线；构建并进入课程容器，确认 Isaac Sim 与 GPU 可用</td>
+    </tr>
+    <tr>
+      <th scope="row">2 认识 Microduck</th>
+      <td>在 Isaac Sim 中用键盘指挥行走与踢球；拆解关节、执行器、传感器与控制周期</td>
+    </tr>
+    <tr>
+      <th scope="row">3 强化学习</th>
+      <td>强化学习与 PPO；用 Isaac Lab 与 Newton 训练并测试行走策略；域随机化与上下坡奖励设计；社区技能的奖励代码</td>
+    </tr>
+    <tr>
+      <th scope="row">4 板载策略</th>
+      <td>RGB 检测与 ToF 测距；手工设计的射门阶段</td>
+    </tr>
+    <tr>
+      <th scope="row">5 GR00T</th>
+      <td>视觉-语言-动作模型与 GR00T；8 维高层请求接口与示范数据；动作头后训练与检查点验证；走向更多环境</td>
+    </tr>
+    <tr>
+      <th scope="row">6 参考与帮助</th>
+      <td>模型与数据；故障排查；继续学习与参考资料</td>
+    </tr>
+  </tbody>
+</table>
+</section>

@@ -1,0 +1,84 @@
+<section class="about">
+<p>Use NVIDIA Isaac Sim and Isaac Lab to teach the open-source Microduck biped new skills in simulation. Train walking and slope traversal with PPO and reward design, then explore a hand-designed shooting workflow. Finally, post-train NVIDIA Isaac GR00T on demonstrations and evaluate its walking shot in simulation.</p>
+<p><strong>Free course · about 6 hours of study</strong> (excluding full training waits; you can stop training at any time, and validation uses checkpoints provided by the course by default).</p>
+</section>
+
+<section class="tools">
+<ul>
+  <li><strong>NVIDIA Isaac Sim:</strong> scene, robot and RGB/ToF sensor simulation.</li>
+  <li><strong>NVIDIA Isaac Lab and Newton:</strong> parallel reinforcement learning, physics simulation and policy evaluation.</li>
+  <li><strong>NVIDIA Isaac GR00T and LeRobot:</strong> demonstrations, vision-language-action models and action-head post-training.</li>
+  <li><strong>PPO, RSL-RL, PyTorch and TensorBoard:</strong> policy optimization, training and learning-curve analysis.</li>
+  <li><strong>ROS 2 and Nav2:</strong> path planning for the onboard policy.</li>
+  <li><strong>Python, Docker and the NVIDIA Container Toolkit:</strong> course code and GPU containers.</li>
+</ul>
+</section>
+
+<section class="prerequisites">
+<ul>
+  <li>Basic Python experience and familiarity with the Ubuntu command line.</li>
+  <li>Ubuntu and an NVIDIA GPU for the labs. See "1.2 Set up the environment and get the code" for supported hardware.</li>
+</ul>
+</section>
+
+<section class="objectives">
+<p>After completing this course, you will be able to:</p>
+<ul>
+  <li>Run Microduck simulations in Isaac Sim and inspect a policy's observations, actions and control cycle.</li>
+  <li>Explain the basics of PPO and run training and validation of a walking policy with Isaac Lab and Newton.</li>
+  <li>Design rewards and domain randomization, and judge training results from TensorBoard curves and separate task evaluations.</li>
+  <li>Explain how an onboard policy uses RGB detection, ToF ranging and hand-designed stages to take a shot.</li>
+  <li>Use the provided demonstrations to try GR00T action-head post-training, and evaluate the provided checkpoint in simulation.</li>
+  <li>Explain the generalization challenges a model faces in new environments, and how environment randomization can help it adapt to those changes.</li>
+</ul>
+</section>
+
+<section class="outline">
+<style>
+.microduck-course-outline {
+  width: 100%;
+  border-collapse: collapse;
+}
+.microduck-course-outline th,
+.microduck-course-outline td {
+  text-align: center;
+  vertical-align: middle;
+  padding: .6em 1em;
+  border: 1px solid #d9d9d9;
+}
+</style>
+<table class="microduck-course-outline">
+  <thead>
+    <tr>
+      <th scope="col">Part</th>
+      <th scope="col">Main topics</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1 Overview</th>
+      <td>Course route; build and enter the course container, confirm Isaac Sim and the GPU work</td>
+    </tr>
+    <tr>
+      <th scope="row">2 Meet Microduck</th>
+      <td>Walk and kick with the keyboard in Isaac Sim; joints, actuators, sensors and the control cycle</td>
+    </tr>
+    <tr>
+      <th scope="row">3 Reinforcement learning</th>
+      <td>Reinforcement learning and PPO; train and test a walking policy with Isaac Lab and Newton; domain randomization and reward design for slopes; reward code of community skills</td>
+    </tr>
+    <tr>
+      <th scope="row">4 Onboard policy</th>
+      <td>RGB detection and ToF ranging; hand-designed shooting stages</td>
+    </tr>
+    <tr>
+      <th scope="row">5 GR00T</th>
+      <td>Vision-language-action models and GR00T; the 8-D high-level request interface and demonstration data; action-head post-training and checkpoint validation; toward more environments</td>
+    </tr>
+    <tr>
+      <th scope="row">6 Reference and help</th>
+      <td>Models and data; troubleshooting; further learning and references</td>
+    </tr>
+  </tbody>
+</table>
+</section>
