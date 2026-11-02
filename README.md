@@ -13,7 +13,7 @@ This repository holds the course site, the lab code, the container and the fixed
 1. **Overview**: the course goal and setting up the course container.
 2. **Meet Microduck**: keyboard football, mechanism and the control loop.
 3. **Teach Microduck skills with reinforcement learning**: PPO, domain randomization, reward design on a slope, community skills.
-4. **Complete the shooting task with an onboard policy**: finding the ball and goal with RGB detection and 8×8 ToF ranging, hand-designed shooting stages.
+4. **Complete the shooting task with an onboard policy**: RGB and ToF sensors, compact YOLO detection, Nav2 path planning and hand-designed shooting stages; repeat the task and interpret successes and failures.
 5. **Train GR00T to complete tasks autonomously**: vision-language-action models, the 8-D walking-shot interface and data, training and validation, environment variation and Cosmos 3.
 6. **Reference and help**: models and data, troubleshooting, references.
 

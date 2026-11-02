@@ -15,7 +15,9 @@ Meet vision-language-action models and GR00T N1.7: how images, language and body
 {#idea}
 ## From writing steps to providing goals and examples
 
-The onboard policy in Part 4 finds the ball and goal with its sensors, then completes the shot through human-designed stages. Every step is explainable, but the stages and conditions were written for shooting: a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.
+The onboard policy in Part 4 was designed around the robot's limited onboard compute: a nano detector, a classic path planner, compact motion skills and stages that people wrote for shooting. Every step is explainable, but a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.
+
+If the decision-making model can run off the robot, a much larger model becomes possible. In this course GR00T runs on a local GPU workstation, while local motion skills handle fast control; a cloud server could also play that role, with more network delay. <a href="08-groot-interface.html#deployment">Section 5.2</a> explains the details.
 
 A vision-language-action model (VLA) takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.
 

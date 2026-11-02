@@ -10,10 +10,10 @@ myst:
 
 :::{lesson-intro}
 :meta: 6 个部分 · 17 节 · 仿真实践与前沿方法
-:hero: media/football-success-hero-still.webp
-:hero-animation: media/football-success-hero.webp
-:hero-size: 1200x584
-:hero-alt: Isaac Sim 仿真中的 Microduck 在绿色球场上走到足球前，把球踢进球门。
+:hero: media/isaac-football-hero-still.webp
+:hero-animation: media/isaac-football-hero.webp
+:hero-size: 1600x872
+:hero-alt: Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。
 
 先体验 Microduck 的运动，再用强化学习训练技能，看板载策略怎样用传感器和手工设计的阶段完成射门，然后通过示范后训练 GR00T、在仿真中验证步行射门表现，并讨论怎样把它带到更多环境。
 :::

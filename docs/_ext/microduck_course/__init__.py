@@ -129,7 +129,7 @@ class CourseDirective(SphinxDirective):
 class LessonIntro(CourseDirective):
     """Lead paragraph, lesson metadata and the optional home hero image.
 
-    ``hero`` is a still; with ``hero-animation`` the page shows only the transparent animated
+    ``hero`` is a still; with ``hero-animation`` the page shows only the animated
     image, which autoplays and loops from its own file (also with reduced motion; the course
     asks for this) with no control and no script. The still is then only checked, not emitted.
     ``hero-size`` (``WxH``, default ``1200x500``) gives the intrinsic size; with

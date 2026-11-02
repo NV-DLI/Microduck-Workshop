@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: 板载策略只靠 Microduck 自己的传感器找到足球和球门：RGB 相机认出目标，ToF 给出地面与近处距离，再拒绝不可靠的信息。
+    description: 板载策略只靠 Microduck 自己的传感器找到足球和球门：小型 YOLO 检测器在 RGB 图像中认出目标，ToF 测出地面与近处距离，关节角给出传感器朝向。
 ---
 
 # 4.1 识别球与球门：RGB 检测与 ToF 测距
@@ -9,7 +9,7 @@ myst:
 :::{lesson-intro}
 :meta: 第 4.1 节 · 预计学习时长 20 分钟
 
-板载策略只靠 Microduck 自己的传感器找到足球和球门。
+板载策略只靠 Microduck 自己的传感器找到足球和球门：相机认出“是什么”，ToF 测出“有多远”，关节角说明传感器“朝哪看”。
 :::
 
 {#sensors}
@@ -21,13 +21,40 @@ myst:
 板载策略的一次仿真射门记录：第三人称画面、头部 RGB 图像与检测框、8×8 ToF 距离按同一采集时刻同步，NR 表示该区域没有有效回波。本次记录完成进球并恢复站立。
 :::
 
-| 传感器 | 每次给出 | 用来回答 |
-|---|---|---|
-| RGB 相机 | 960 × 540 彩色图像，每秒 15 张 | 球和球门在哪个方向 |
-| ToF 测距 | 8 × 8 个区域的距离，单位米 | 地面在哪里，脚前是否过近 |
-| 关节编码器与 IMU | 关节角、重力方向与角速度 | 相机和 ToF 此刻朝向哪里 |
+射门需要回答三个问题：球在哪里、球门在哪里、它们离机器人多远。每种传感器回答其中一部分。
 
-ToF 只给出距离，分不清一个读数属于球还是地面；认出“是什么”要靠相机。
+| 传感器 | 每次给出 | 在足球任务中的用途 |
+|---|---|---|
+| RGB 相机 | 960 × 540 彩色图像，每秒 15 张 | 只是像素；要靠检测器判断哪些像素是球、哪些是球门 |
+| ToF 测距 | 8 × 8 个区域的距离，单位米 | 地面和近处物体有多远；分不清读数来自球还是地面 |
+| 关节编码器与 IMU | 关节角、重力方向与角速度 | 头部此刻朝向哪里，也就是相机和 ToF 朝向哪里 |
+
+相机回答“是什么”，ToF 回答“有多远”，编码器与 IMU 回答“朝哪看”。表中的帧率和分辨率是课程仿真的设定，不是真机实测值。
+
+{#detector}
+## 用 YOLO 认出球与球门
+
+检测器是 **YOLO26n**，即 Ultralytics YOLO26 系列中最小的 nano 版本，约 250 万个参数。YOLO 是 “You Only Look Once” 的缩写：网络对整张图像只做一次前向计算，就同时给出所有方框。
+
+```{learning-flow}
+label: YOLO 检测器怎样把一张 RGB 图像变成带类别的方框
+nodes:
+- [输入图像, 960 × 540 缩放到 640 × 640]
+- [主干网络, 从边缘和形状提取特征]
+- [颈部网络, 融合大小不同的尺度]
+- [检测头, 类别、置信度和方框]
+details:
+- 头部相机图像经缩放和补边，变成 640 × 640 的网络输入。检测器只读取这台机器人自己的相机图像，不读取外部相机或仿真中的物体列表。
+- 多层卷积把像素变成特征：先是边缘和色块，再到圆形的球、球门框架这样的形状。
+- 把不同尺度的特征组合起来，远处较小的球门和近处较大的足球都能被找到。
+- 检测头输出类别（球或球门）、置信度和方框。筛选后的方框换算回原始 960 × 540 图像坐标，再交给板载策略。
+layout: learning
+loop: false
+```
+
+方框仍然只是像素位置，下一步才把它变成地面上的位置。
+
+Microduck 自身的计算机很小（<a href="06-onboard.html#why">4.2 节</a>会说明这为什么重要）。Ultralytics 支持导出到机器人 RK3566 的 NPU，因此小型 YOLO 可作为板载部署的候选；实际速度和精度仍需上板测试。本课程的检测器**没有**导出到 RK3566，也没有在上面测试过：课程仿真中它在工作站 GPU 上运行，那里的速度不能说明它在机器人上的速度。
 
 {#steps}
 ## 从传感器到位置
@@ -64,8 +91,8 @@ caption: 传感器面板取自上面录像开始时的同一次采集。相机�
 
 每次采集后，板载策略做三件事：
 
-1. **认出目标。** 检测器在 RGB 图像中框出足球和球门。方框只是像素位置，还不是机器人能走过去的地方。
-2. **算出地面与距离。** ToF 拟合地面，关节角确定相机朝向；结合足球大小估计球的位置，再用两根门柱的底点和已知间距估计机器人相对球门的位置与朝向。
+1. **认出目标。** 检测器在 RGB 图像中框出足球和球门。
+2. **算出地面与距离。** ToF 拟合地面，关节角确定相机朝向；再结合足球的已知大小确定球在地面上的位置，用两根门柱的底点和已知间距估计机器人相对球门的位置与朝向。
 3. **拒绝不可靠的信息。** 观测过旧、目标显示不全、几次结果互相矛盾或地面无法确定时，策略不用这次结果，停下来重新观察；脚前距离过近时停止前进。没有有效回波的区域只表示未知，不代表前方没有障碍。
 
 {#truth}
@@ -74,7 +101,7 @@ caption: 传感器面板取自上面录像开始时的同一次采集。相机�
 板载策略只读取这些传感器，不读取仿真中球和球门的真实坐标。是否进球由单独的评测程序用仿真真值判断。整个过程都在仿真中运行，没有在真机上测试过。
 
 :::{enrichment} 代码关键参数
-- **检测器。** `models/scene-detector/deployment.json` 指定权重 `detector.pt` 和类别 `ball`、`goal`，经场景的 `--detector-deployment` 参数加载。
+- **检测器。** `models/scene-detector/deployment.json` 指定 YOLO26n 权重 `detector.pt`、类别 `ball` 与 `goal`，以及 640 像素的网络输入，经场景的 `--detector-deployment` 参数加载。其中的 `deployment_scope` 记录了该模型既没有导出到 RK3566，也没有在 RK3566 上测试。
 - **感知与几何。** `lab/runtime/simulation/core/football/perception.py` 处理检测框与传感器朝向，`football/ground_plane.py` 用 ToF 拟合地面。
 - **传感器设定。** `lab/runtime/simulation/core/sensors/reports/sensor-profile.json` 记录仿真相机与 ToF 的设定。
 :::
@@ -91,6 +118,8 @@ caption: 传感器面板取自上面录像开始时的同一次采集。相机�
 ## 参考资料
 
 {.references}
-- [Ultralytics YOLO 文档 ↗](https://docs.ultralytics.com/)
+- [Microduck 开源项目（官方 README）↗](https://github.com/pollen-robotics/microduck)
+- [Microduck：RK3566 的 NPU 与其上的检测器 ↗](https://github.com/pollen-robotics/microduck/blob/main/docs/project/npu-bringup.md)
+- [Ultralytics YOLO26 ↗](https://docs.ultralytics.com/models/yolo26/)
+- [Ultralytics：导出到 Rockchip RKNN ↗](https://docs.ultralytics.com/integrations/rockchip-rknn/)
 - [VL53L8CX 8×8 多区 ToF 传感器 ↗](https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html)
-- [Microduck 开源项目 ↗](https://github.com/pollen-robotics/microduck)

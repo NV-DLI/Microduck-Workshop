@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=d2c57114" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=ae9b8311" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -410,7 +410,8 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>认识视觉-语言-动作模型与 GR00T N1.7：它怎样把图像、语言和身体状态变成动作，预训练和后训练各自提供什么，以及泛化能力从哪里来、需要怎样验证。</p>
 </div><div class="lesson-meta">第 5.1 节 · 预计学习时长 40 分钟</div></div></div><section id="idea">
 <h2>从“写步骤”到“给目标与示范”<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
-<p>第 4 部分的板载策略用传感器找到球和球门，再按人设计的阶段完成射门。它每一步都可以解释，但阶段和条件都是为射门写的：换一个任务就要重新设计，场景和任务越多，维护成本越高。</p>
+<p>第 4 部分的板载策略以有限的机载算力为设计目标：nano 检测器、经典路径规划器、小型运动技能，加上人为射门编写的阶段。它每一步都可以解释，但换一个任务就要重新设计，场景和任务越多，维护成本越高。</p>
+<p>如果做决策的模型可以不在机器人上运行，就能使用大得多的模型。本课程在本地 GPU 工作站上运行 GR00T，本地的动作技能负责快速控制；云端服务器也可以承担这个角色，但网络延迟更大。细节见 <a href="08-groot-interface.html#deployment">5.2 节</a>。</p>
 <p>视觉-语言-动作模型（Vision-Language-Action，VLA）换了一种思路：给模型一句描述目标的话，再给它足够多“当时看到了什么、身体处于什么状态、接着做了什么”的示范，让它自己学习从观察到动作的映射。语言说明要完成什么，示范说明这台机器人怎样完成。</p>
 <p>两种思路并不互相排斥。板载策略依然需要可靠的感知与控制；VLA 也离不开传感器、标定和底层的执行控制（本课还让它调用已训练好的行走与踢球技能，这是本课的设计选择，并非所有 VLA 的要求），它的可靠表现仍取决于示范覆盖了什么：预训练可以帮助迁移，但示范没有覆盖的动作和失衡后的恢复，不能假定模型已经学会。</p>
 </section>

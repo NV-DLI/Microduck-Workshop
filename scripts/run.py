@@ -184,9 +184,22 @@ def main():
     fb.add_argument("--seconds", type=float, default=180)
     fb.add_argument("--output", type=Path, required=True)
     fb.add_argument("--headless", action="store_true")
+    fb.add_argument(
+        "--repeat",
+        type=int,
+        metavar="N",
+        help="walking route: run N shots in OUTPUT/episode-001, ... (0 = until Ctrl+C); "
+        "Isaac Sim relaunches for every shot and shot k uses seed+k-1",
+    )
     report = sub.add_parser("report")
     report.add_argument("--run", type=Path, required=True)
     a = ap.parse_args()
+    if a.command == "football" and a.repeat is not None:
+        if a.repeat < 0:
+            ap.error("--repeat needs a positive count, or 0 to repeat until Ctrl+C")
+        if a.locomotion != "walking" or a.scene != "indoor":
+            # Only this route has the grounded HOME joint-brake start-up.
+            ap.error("--repeat runs the walking onboard route on the indoor scene")
     if a.command == "verify-models":
         verify()
         return 0
@@ -569,88 +582,129 @@ def main():
                 ],
                 c,
             )
-        cmd = [
-            py,
-            m / "evaluation/football/execute_media.py",
-            "--model",
-            m / "models/reference/velstand.onnx",
-            "--output",
-            out,
-            "--development",
-            "--seconds",
-            a.seconds,
-            "--seed",
-            a.seed,
-            "--body-fusion-tau-s",
-            "2",
-            "--body-added-delay-s",
-            "0",
-            "--policy-imu",
-            "body50",
-            "--detector-deployment",
-            m.parents[1]
-            / "configuration/core/beta-detector/football_detector/deployment.json",
-            "--detector-backend",
-            "torch",
-            "--detector-device",
-            "cuda:0",
-            "--shared-imu-readback",
-            "--packed-physics-readback",
-            "--root-x",
-            "-0.66",
-            "--recovery-approval",
-            m / "evaluation/football/recovery-approval.json",
-        ]
-        if a.scene == "indoor":
-            manifest = ROOT / "models/scene-detector/deployment.json"
-            deployment = json.loads(manifest.read_text())
-            for key in ("weights", "onnx"):
-                artifact = manifest.parent / deployment[key]
-                if (
-                    hashlib.sha256(artifact.read_bytes()).hexdigest()
-                    != deployment[key + "_sha256"]
-                ):
-                    raise ValueError("Indoor detector artifact changed")
-                deployment[key] = str(artifact)
-            local_deployment = LOCAL / "scene-detector-deployment.json"
-            local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
-            # Same scene and controller as lab/football_scene.py, with the course
-            # joint-brake start-up (released at the walking actor's first output).
-            cmd[1] = ROOT / "lab/onboard_scene.py"
-            cmd += [
-                "--runtime",
-                m,
-                "--style",
-                a.style,
-                "--render-subframes",
-                "4",
-                "--root-y",
-                a.root_y if a.root_y is not None else 0.04,
-                "--ball-xy",
-                *(a.ball_xy if a.ball_xy is not None else [0.02, 0.0]),
-            ]
-            cmd[cmd.index("--root-x") + 1] = "-0.55"
-            cmd[cmd.index("--detector-deployment") + 1] = local_deployment
-            if a.record_hd:
-                cmd += ["--record-hd"]
-        if not a.headless:
-            cmd += ["--visualizer", "kit"]
-        result = run(cmd, c)
+        if a.repeat is not None:
+            import repeat_episodes
+
+            def episode(index, output):
+                seed = a.seed + index - 1
+                return dict(seed=seed, commands=list(walking_football(a, fresh(output), seed, py, m)))
+
+            return repeat_episodes.repeat(
+                out, a.repeat, episode, football_outcome, cwd=ROOT, env=environment(c)
+            )
+        physics, evaluation = walking_football(a, out, a.seed, py, m)
+        result = run(physics, c)
         if result:
             return result
-        return run(
-            [
-                py,
-                ROOT / "lab/evaluate_task.py",
-                "--runtime",
-                m,
-                "--run",
-                out,
-                *(["--scene-contract"] if a.scene == "indoor" else []),
-            ],
-            c,
-        )
+        return run(evaluation, c)
     return 0
+
+
+def football_outcome(out):
+    """Evaluated task outcome of one walking football run, or None if it was not evaluated."""
+    path = out / "result.json"
+    if not path.is_file():
+        return None
+    data = json.loads(path.read_text())
+    evaluation = data.get("course_evaluation")
+    if data.get("status") != "completed" or not evaluation:
+        return None
+    score = data["scorer"]
+    manifest = out / "manifest.json"
+    return dict(
+        passed=bool(evaluation["passed"]),
+        recovered=evaluation.get("recovered"),
+        real_foot_ball_contact=score.get("real_foot_ball_contact"),
+        whole_ball_crossed_inside_goal=score.get("whole_ball_crossed_inside_goal"),
+        fell=score.get("fell"),
+        goal_time_s=score.get("goal_time_s"),
+        task_seconds=data.get("task_seconds"),
+        terminal_reason=(
+            json.loads(manifest.read_text()).get("terminal_reason")
+            if manifest.is_file()
+            else None
+        ),
+    )
+
+
+def walking_football(a, out, seed, py, m):
+    """Physics and evaluation commands of one walking onboard shot in the output folder out."""
+    cmd = [
+        py,
+        m / "evaluation/football/execute_media.py",
+        "--model",
+        m / "models/reference/velstand.onnx",
+        "--output",
+        out,
+        "--development",
+        "--seconds",
+        a.seconds,
+        "--seed",
+        seed,
+        "--body-fusion-tau-s",
+        "2",
+        "--body-added-delay-s",
+        "0",
+        "--policy-imu",
+        "body50",
+        "--detector-deployment",
+        m.parents[1]
+        / "configuration/core/beta-detector/football_detector/deployment.json",
+        "--detector-backend",
+        "torch",
+        "--detector-device",
+        "cuda:0",
+        "--shared-imu-readback",
+        "--packed-physics-readback",
+        "--root-x",
+        "-0.66",
+        "--recovery-approval",
+        m / "evaluation/football/recovery-approval.json",
+    ]
+    if a.scene == "indoor":
+        manifest = ROOT / "models/scene-detector/deployment.json"
+        deployment = json.loads(manifest.read_text())
+        for key in ("weights", "onnx"):
+            artifact = manifest.parent / deployment[key]
+            if (
+                hashlib.sha256(artifact.read_bytes()).hexdigest()
+                != deployment[key + "_sha256"]
+            ):
+                raise ValueError("Indoor detector artifact changed")
+            deployment[key] = str(artifact)
+        local_deployment = LOCAL / "scene-detector-deployment.json"
+        local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
+        # Same scene and controller as lab/football_scene.py, with the course
+        # joint-brake start-up (released at the walking actor's first output).
+        cmd[1] = ROOT / "lab/onboard_scene.py"
+        cmd += [
+            "--runtime",
+            m,
+            "--style",
+            a.style,
+            "--render-subframes",
+            "4",
+            "--root-y",
+            a.root_y if a.root_y is not None else 0.04,
+            "--ball-xy",
+            *(a.ball_xy if a.ball_xy is not None else [0.02, 0.0]),
+        ]
+        cmd[cmd.index("--root-x") + 1] = "-0.55"
+        cmd[cmd.index("--detector-deployment") + 1] = local_deployment
+        if a.record_hd:
+            cmd += ["--record-hd"]
+    if not a.headless:
+        cmd += ["--visualizer", "kit"]
+    evaluation = [
+        py,
+        ROOT / "lab/evaluate_task.py",
+        "--runtime",
+        m,
+        "--run",
+        out,
+        *(["--scene-contract"] if a.scene == "indoor" else []),
+    ]
+    return cmd, evaluation
 
 
 def cli():

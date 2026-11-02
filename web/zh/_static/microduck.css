@@ -2345,7 +2345,7 @@ html[data-theme="dark"] .seq-timing {
     grid-template-columns: 1fr;
   }
 }
-/* Home hero animation: transparent animated WebP that autoplays and loops from the file itself,
+/* Home hero animation: animated WebP that autoplays and loops from the file itself,
    with no control, across the article width (at most 1200 px wide); the intrinsic aspect ratio
    comes from the image's own width/height attributes. */
 .hero-image.hero-animation {
