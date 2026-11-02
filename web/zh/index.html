@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="先体验 Microduck 的运动，再用强化学习训练技能，看板载策略怎样用传感器和手工设计的阶段完成射门，然后通过示范后训练 GR00T、在仿真中验证步行射门表现，并讨论怎样把它带到更多环境。" name="description" />
+<meta content="先体验 Microduck 的运动，再用强化学习训练技能，看板载策略怎样用传感器和人工设计的阶段完成射门，然后通过示范后训练 GR00T、在仿真中验证步行射门表现，并讨论怎样把它带到更多环境。" name="description" />
 
   <title>1.1 让 Microduck 学会自主射门 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
@@ -339,7 +339,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 手工设计的射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 人工设计射门阶段</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
 <ul class="nav bd-sidenav">
@@ -383,7 +383,7 @@
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 <section class="tex2jax_ignore mathjax_ignore" id="microduck">
 <h1>1.1 让 Microduck 学会自主射门<a class="headerlink" href="#microduck" title="Link to this heading">#</a></h1>
-<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>先体验 Microduck 的运动，再用强化学习训练技能，看板载策略怎样用传感器和手工设计的阶段完成射门，然后通过示范后训练 GR00T、在仿真中验证步行射门表现，并讨论怎样把它带到更多环境。</p>
+<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>先体验 Microduck 的运动，再用强化学习训练技能，看板载策略怎样用传感器和人工设计的阶段完成射门，然后通过示范后训练 GR00T、在仿真中验证步行射门表现，并讨论怎样把它带到更多环境。</p>
 </div><div class="lesson-meta">6 个部分 · 17 节 · 仿真实践与前沿方法</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。" width="1600" height="1000" style="aspect-ratio: 1600 / 1000"></figure></div><div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -398,7 +398,7 @@
 </div>
 <section id="outcome">
 <h2>学习目标<a class="headerlink" href="#outcome" title="Link to this heading">#</a></h2>
-<p>整门课围绕一台 Microduck、一块绿色足球场、一个足球和一个球门展开：先认识机器人并体验运动技能，再用强化学习与域随机化训练行走、坡地适应等技能，然后看板载策略怎样用传感器和手工设计的阶段完成射门，最后用示范后训练 GR00T，在仿真中验证它的步行射门表现，并讨论如何适应更多环境。所有实验都在同一个课程容器里运行。</p>
+<p>整门课围绕一台 Microduck、一块绿色足球场、一个足球和一个球门展开：先认识机器人并体验运动技能，再用强化学习与域随机化训练行走、坡地适应等技能，然后看板载策略怎样用传感器和人工设计的阶段完成射门，最后用示范后训练 GR00T，在仿真中验证它的步行射门表现，并讨论如何适应更多环境。所有实验都在同一个课程容器里运行。</p>
 <ol class="arabic simple pipeline">
 <li><p>课程概览与容器环境准备</p></li>
 <li><p>认识 Microduck</p></li>
@@ -413,7 +413,7 @@
 <ul class="simple">
 <li><p>解释机构、执行器、观测、动作与奖励的关系。</p></li>
 <li><p>在课程容器中使用 Isaac Lab、Newton 与 Isaac Sim 运行固定策略，完成 PPO 训练与域随机化实验。</p></li>
-<li><p>说明板载策略怎样用 RGB 检测、ToF 测距和手工设计的阶段完成射门，以及它与 VLA 动作预测各自负责的工作。</p></li>
+<li><p>说明板载策略怎样用 RGB 检测、ToF 测距和人工设计的阶段完成射门，以及它与 VLA 动作预测各自负责的工作。</p></li>
 <li><p>说明 GR00T 的 8 维高层请求接口、示范数据设计与动作头训练，并验证训练好的检查点。</p></li>
 <li><p>设计环境变化与独立评测，分清“流程能跑通”“模型指标改善”与“完整任务成功”。</p></li>
 </ul>
@@ -437,7 +437,7 @@
 <td><p>3.1 强化学习与 PPO · 3.2 域随机化：训练并测试行走策略 · 3.3 奖励设计：走稳上下坡 · 3.4 社区技能：从目标到奖励</p></td>
 </tr>
 <tr class="row-odd"><td><p>4 板载策略完成射门任务</p></td>
-<td><p>4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 手工设计的射门阶段</p></td>
+<td><p>4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 人工设计射门阶段</p></td>
 </tr>
 <tr class="row-even"><td><p>5 训练 GR00T 自主完成任务</p></td>
 <td><p>5.1 视觉-语言-动作模型与 GR00T · 5.2 步行射门：GR00T 的输入、输出与数据 · 5.3 训练与验证 GR00T 步行射门 · 5.4 从球场走向更多环境</p></td>

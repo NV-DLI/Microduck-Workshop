@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "Why Microduck's shot uses an onboard policy, how sensor estimates, Nav2 path planning and trained motion skills are connected by hand-designed stages, and how to repeat the shot automatically in Isaac Sim."
+    description: "How a hand-designed onboard policy reuses sensor estimates to shoot: why the shot runs onboard, how Nav2 path planning and trained motion skills are connected by hand-designed stages, and how to repeat the shot automatically in Isaac Sim."
 ---
 
 # 4.2 Hand-designed shooting stages
@@ -9,7 +9,7 @@ myst:
 :::{lesson-intro}
 :meta: Section 4.2 · Estimated learning time: 25 minutes
 
-Why the shot runs as an onboard policy, how sensor estimates, path planning and motion skills are connected by hand-designed stages, and how to repeat the shot automatically in Isaac Sim.
+[Section 4.1](06-perception.md) turned sensor readings into ball and goal positions. This section shows how a hand-designed onboard policy uses those positions to connect navigation, walking and kicking, and lets you watch it shoot repeatedly in Isaac Sim.
 :::
 
 {#why}
@@ -22,7 +22,7 @@ This course runs that design in simulation on a workstation. It shows the logic 
 {#pipeline}
 ## From sensors to motion: Isaac Lab + Nav2
 
-Two separate tools work together. **Isaac Lab** (on Isaac Sim, with Newton physics) simulates the robot, its sensors and the pitch, and runs the learned policies. **Nav2** is the navigation framework of ROS 2; the course uses only its path planner, as a CPU process inside the same container. Course code passes Nav2 the robot's position, estimated from its sensors on a known map of the pitch, and a target, and gets path points back. The map is given; the robot does not map an unknown environment from its 8 × 8 ToF.
+Two separate tools work together. **Isaac Lab** (on Isaac Sim, with Newton physics) simulates the robot, its sensors and the pitch, and runs the learned policies. **Nav2** is the navigation framework of ROS 2; the course uses only its path planner, as a CPU process inside the same container. Course code passes Nav2 the robot's position, estimated from its sensors on a known map of the pitch, and a target, and gets path points back. The pitch map is surveyed in advance and the current ToF only adds nearby observations; the robot does not map an unknown environment from its 8 × 8 ToF.
 
 | Part | What it does |
 |---|---|
@@ -38,6 +38,10 @@ Nav2 returns points on the floor, never joint angles. A short hand-written follo
 {#stages}
 ## Six stages of the shot
 
+To design the stages, work backward from success. The kick skill works only in a small range: the ball must be in front of the right foot, the body must face the goal, and the robot must be standing still. Meeting these preconditions requires walking to a stance behind the ball and then adjusting position and heading precisely; all of that first requires knowing where the ball and goal are.
+
+Then account for sensor uncertainty. While walking the camera sways, so positions measured up close are inaccurate; the robot therefore walks a little, settles and looks again. The kick must start from a still pose and be confirmed with the latest observation, so it gets its own handover stage.
+
 ```{learning-flow}
 label: Walking-shot stages of the onboard policy
 nodes:
@@ -48,17 +52,51 @@ nodes:
 - [Hand over to the kick, Stop; head back to center; body still]
 - [Kick and recover, Kick skill strikes; back to standing]
 details:
-- The robot turns its head to find the goal and ball and works out its position relative to the goal. If the information is too old or inconsistent, it stops and looks again.
-- The ball and goal positions give a shooting direction; a stance is chosen behind the ball along it, offset for the right foot. Nav2 plans a path to the stance and the follower walks it in segments, confirming the goal again along the way.
-- Closer to the ball the robot switches to short steps or turns on the spot. After each segment it settles and looks at the ball again, because while walking the camera sways and measured positions are less accurate.
-- It checks that the ball is in front of the right foot and that the body faces the goal. If not, it returns to refining.
-- Walking stops, the head returns to its kicking pose, and only when the body is still and the goal information is fresh does control pass to the kick skill.
-- The kick and recovery skills run, then the robot returns to standing. Whether it scored is judged by the evaluator with simulator truth.
+- Turn the head in place, locate the robot relative to the goal and find the ball.
+- Nav2 plans a path to the stance behind the ball; the follower walks it.
+- Up close, short steps and turns on the spot, looking again after each settle.
+- Check that the ball is in front of the right foot and the body faces the goal.
+- Stop, center the head, confirm stillness and a fresh observation, then hand over.
+- The kick skill strikes and the robot returns to standing; the evaluator judges the goal.
 layout: learning
 loop: false
 ```
 
-Stages do not switch on a timer but on conditions: when a condition fails, the policy stops, looks again or goes back a stage, so refining often repeats several times in one shot.
+{#stage-find}
+### Find the targets
+
+The robot turns its head in place, finds the bases of the two goalposts with the method of Section 4.1, works out its own position and heading relative to the goal, and places the ball it sees on the same map. The position is accepted only after several consistent observations. If the goal goes unseen for too long later, or the ball information becomes too old, the policy comes back here to look again.
+
+{#stage-approach}
+### Plan the approach
+
+The aim is to walk from afar to a preparation stance behind the ball. The stance lies behind the ball along the ball-to-goal direction, offset to one side so that the ball ends up in front of the right foot. From afar the robot only needs to get roughly close and position errors matter less, so it can walk continuously and replan often; precise alignment is left to the close-range stages.
+
+Nav2 only plans the path: the start is the estimated robot position and the goal is this stance. The map comes from the surveyed pitch and the current ToF. Inside the pitch is free and its boundary is an obstacle; valid ToF returns add free cells along each ray and objects ahead, while zones without a valid return add no new evidence of free space; cells that are neither inside the known pitch nor validly observed stay unknown. NavFn searches this map with A*, never through unknown cells, keeps a margin of the robot radius from obstacles, and returns a list of XY points on the floor.
+
+A hand-written follower takes a point a little further along the path and converts it into forward, sideways and turning velocities, and the trained walking policy turns those into joint motion. While walking, the robot replans repeatedly and periodically confirms the goal. Close enough to the ball, it moves on to refining up close; if the path is rejected or the information is too old, it stops and waits for new observations. The course has not validated dynamic obstacle avoidance.
+
+{#stage-refine}
+### Refine up close
+
+Very close to the ball, the error from camera sway while walking is as large as the precision needed. This stage no longer calls Nav2: hand-written close-range logic decides when to step, stop and look again, while the trained walking policy still performs every step. After each brief forward step or turn the robot settles and measures the ball from a new image; if the ball is not completely in view, the body stays still and only the head turns to find it.
+
+{#stage-align}
+### Align for the kick
+
+Using the latest observation after settling, the policy checks two things: whether the ball lies in the small range in front of the right foot that the kick skill was trained for, and whether the body faces the goal. Only when both hold does it move on to the handover; otherwise it returns to refining.
+
+{#stage-handover}
+### Hand over to the kick
+
+Walking stops and the head returns to its kicking pose. Once the body is still, the policy confirms that the ball is still in kicking range and the goal information is still fresh, and only then passes control to the kick skill. If the conditions are not met, the kick is refused; where recovery is allowed, the robot steps back and looks again, otherwise this attempt stops.
+
+{#stage-kick}
+### Kick and recover
+
+The kick skill runs once: the frozen kick teacher plus the trained residual correction strikes the ball, and the robot returns to standing. The onboard policy does not judge whether it scored; a separate evaluator decides that with simulator truth.
+
+Stages switch mainly on observations and body state: when a condition fails, the policy stops, looks again or goes back a stage, so refining often repeats several times. Waiting for stillness and each stage's time limit keep every attempt bounded.
 
 {#training}
 ## What was trained, and what was not
@@ -87,6 +125,19 @@ python3 scripts/run.py football --repeat 5 --seconds 45 --no-record-hd --output 
 | `--no-record-hd` | Skip the extra 1080p third-person archive video; the sensor panels, task logs and scoring are kept |
 | `--output` | A new folder; each shot writes its own `episode-001`, `episode-002`, ... inside it |
 
+:::{enrichment} Key code parameters
+This explains the implementation behind the `python3 scripts/run.py football` command just above. The table lists the parameters you can change; loading parameters such as `--model` and `--detector-deployment` are passed to the scene automatically by `run.py` after it checks the files, so you do not supply them.
+
+- **Repeating.** `scripts/repeat_episodes.py` launches each shot in its own process group and writes `summary.json` in the `--output` folder. The first shot uses the default `--seed` and each later shot adds one, which changes the simulated sensor noise; the start pose stays the same. `--root-y` moves the robot's sideways start (default 0.04 m). Without `--repeat`, `run.py football` runs one shot.
+- **Start-up.** Every shot holds the joints at HOME with the body free on the ground, waits for the sensors and the walking policy's first output, then releases the joints before that output is applied.
+- **Scene.** `lab/onboard_scene.py` creates the green pitch with this start-up; `--scene indoor` and `--style A` are the defaults of `run.py football`.
+- **Walking policy.** The repository's `models/walk.onnx` is copied to `/workspace/state/student-course/simulation/core/models/reference/velstand.onnx` in the container, and `run.py` loads it automatically through `--model`.
+- **Detector.** `run.py` first checks the SHA-256 of the weights listed in `models/scene-detector/deployment.json`, then writes `/workspace/state/scene-detector-deployment.json` and loads it automatically through `--detector-deployment`.
+- **Nav2.** `lab/scene_nav2/nav2.yaml` configures only the NavFn planner (A*, no planning through unknown space) and a cost map with 2.5 cm resolution, with a margin based on the robot radius; `lab/scene_nav2/map_contract.py` builds the map from the surveyed pitch and current ToF and checks the path; `lab/runtime/simulation/core/football/controller.py` turns the returned path into velocity requests.
+- **Close-range stages.** `ball_reacquisition.py`, `final_approach.py` and `head_handoff.py` in `lab/runtime/simulation/core/evaluation/football/` implement finding the ball again, stop-and-look refining and the handover up close.
+- **Kick and recovery.** The executor loads them from the fixed path `/workspace/state/student-course/configuration/core/kick_policy/export/deployment.json`, which binds the two networks copied from `models/kick-teacher.onnx` and `models/kick-residual.onnx`.
+:::
+
 Isaac Sim closes after each shot and opens again for the next one, so every shot restarts from the same start pose. Watch the RGB and ToF panels while the robot walks, stops and looks.
 
 After each shot the terminal prints success or the reason for failure, and the final line counts successes and failures; failed shots are counted, never skipped. **Ctrl+C** stops the current shot and starts no new one. A technical error, such as a crash or a failed independent check, also stops the loop; that shot's files are kept, but it is not counted as a success or failure. The window usually runs slower than real time because the workstation renders the scene and sensors; this speed says nothing about the robot's own computer.
@@ -95,16 +146,6 @@ After each shot the terminal prints success or the reason for failure, and the f
 :alt: The complete Isaac Sim window for onboard shooting, with the green pitch, head RGB image and 8×8 ToF distances.
 
 Watch the robot on the left alongside its current image and distance readings on the right. NR means no return; it does not establish that the space ahead is clear.
-:::
-
-:::{enrichment} Key code parameters
-- **Repeating.** `scripts/repeat_episodes.py` launches each shot in its own process group and writes `summary.json` in the `--output` folder. The first shot uses the default `--seed` and each later shot adds one, which changes the simulated sensor noise; the start pose stays the same. `--root-y` moves the robot's sideways start (default 0.04 m). Without `--repeat`, `run.py football` runs one shot as before.
-- **Start-up.** Every shot holds the joints at HOME with the body free on the ground, waits for the sensors and the walking policy's first output, then releases the joints before that output is applied.
-- **Scene.** `lab/onboard_scene.py` creates the green pitch with this start-up; `--scene indoor` and `--style A` are the defaults of `run.py football`.
-- **Walking policy.** The repository's `models/walk.onnx` is copied to `/workspace/state/student-course/simulation/core/models/reference/velstand.onnx` in the container and loaded with `--model`.
-- **Detector.** `run.py` first checks the SHA-256 of the weights listed in `models/scene-detector/deployment.json`, then writes `/workspace/state/scene-detector-deployment.json` and loads it with `--detector-deployment`.
-- **Nav2.** `lab/scene_nav2/nav2.yaml` configures the NavFn planner with A* on a 2.5 cm cost map with an inflated robot radius; `lab/runtime/simulation/core/football/controller.py` turns the returned path into velocity requests.
-- **Kick and recovery.** The executor loads them from the fixed path `/workspace/state/student-course/configuration/core/kick_policy/export/deployment.json`, which binds the two networks copied from `models/kick-teacher.onnx` and `models/kick-residual.onnx`.
 :::
 
 {#results}
@@ -133,11 +174,11 @@ The success rate in this check was **3/5 (60%)**: all three scored and returned 
 If one of your shots fails, also check for **no admissible path** (Nav2 finds no safe path to the stance) and **balance during the kick**. `summary.json` lists each shot's outcome; the `terminal_reason` in a shot's `manifest.json` names the stage that ended it.
 
 {#design}
-## Where these stages come from
+## Limits of hand design
 
-Every stage and transition comes from our understanding of the shooting task: the kick skill needs the ball in front of the right foot and the body facing the goal, so there is a stance and an alignment stage; positions measured while walking are inaccurate, so the robot alternates walking, stopping and looking; the kick must start from a still pose, so there is a separate handover.
+Every stage, transition and threshold of this onboard policy was written by people around one task: shooting at this goal. It is clear and easy to debug, but it fits only this task. For "dribble the ball to the center circle and stop" or "walk up to the ball without touching it", most of the perception can be reused, but the stages, conditions and thresholds must be redesigned and retuned.
 
-Such a pipeline is clear and easy to debug, but it fits only this task. For "dribble the ball to the center circle and stop" or "walk up to the ball without touching it", most stages, conditions and thresholds must be redesigned. If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 takes this route with GR00T on a local workstation, using demonstrations recorded with this onboard policy.
+If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 takes this route with GR00T on a local workstation, using demonstrations recorded with this onboard policy.
 
 ::::{quiz}
 Which parts of the onboard shot were learned from data, and which were written or configured by people?

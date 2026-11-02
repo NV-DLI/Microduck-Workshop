@@ -100,8 +100,10 @@ After each capture, the onboard policy does three things:
 
 The onboard policy reads only these sensors, never the true ball or goal coordinates from the simulator. Whether a shot scored is judged separately by the evaluator using simulator truth. Everything runs in simulation and has not been tested on a real robot.
 
-:::{enrichment} Key code parameters
-- **Detector.** `models/scene-detector/deployment.json` names the YOLO26n weights `detector.pt`, the classes `ball` and `goal`, and the 640-pixel network input; the scene loads it through its `--detector-deployment` parameter. Its `deployment_scope` records that the model was neither exported to nor tested on the RK3566.
+:::{enrichment} Perception implementation and model paths
+These are the perception implementation and model paths used by the shooting scene in the <a href="06-onboard.html#run">Section 4.2 lab</a>.
+
+- **Detector.** `models/scene-detector/deployment.json` names the YOLO26n weights `detector.pt`, the classes `ball` and `goal`, and the 640-pixel network input; `run.py` loads it automatically through the scene's `--detector-deployment` parameter. Its `deployment_scope` records that the model was neither exported to nor tested on the RK3566.
 - **Perception and geometry.** `lab/runtime/simulation/core/football/perception.py` handles detector boxes and sensor orientation; `football/ground_plane.py` fits the floor from ToF.
 - **Sensor settings.** `lab/runtime/simulation/core/sensors/reports/sensor-profile.json` records the simulated camera and ToF settings.
 :::
@@ -113,6 +115,8 @@ The detector boxes the ball, and a few ToF zones in the middle read nearer. Why 
 The box only says which pixels contain the ball, and ToF only gives distances without knowing what the object is. Combining them with the camera orientation at that instant and the floor fitted from ToF gives how far the ball is on the floor.
 :::
 ::::
+
+The robot now knows where the ball and goal are, but it still has to decide where to walk, when to stop and when to kick. [The next section](06-onboard.md) shows how a hand-designed onboard policy turns these positions into step-by-step actions.
 
 {#references}
 ## References

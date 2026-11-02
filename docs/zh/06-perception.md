@@ -100,8 +100,10 @@ caption: 传感器面板取自上面录像开始时的同一次采集。相机�
 
 板载策略只读取这些传感器，不读取仿真中球和球门的真实坐标。是否进球由单独的评测程序用仿真真值判断。整个过程都在仿真中运行，没有在真机上测试过。
 
-:::{enrichment} 代码关键参数
-- **检测器。** `models/scene-detector/deployment.json` 指定 YOLO26n 权重 `detector.pt`、类别 `ball` 与 `goal`，以及 640 像素的网络输入，经场景的 `--detector-deployment` 参数加载。其中的 `deployment_scope` 记录了该模型既没有导出到 RK3566，也没有在 RK3566 上测试。
+:::{enrichment} 感知实现与模型路径
+下面是 <a href="06-onboard.html#run">4.2 节实验</a>中射门场景所用的感知实现和模型路径。
+
+- **检测器。** `models/scene-detector/deployment.json` 指定 YOLO26n 权重 `detector.pt`、类别 `ball` 与 `goal`，以及 640 像素的网络输入，由 `run.py` 经场景的 `--detector-deployment` 参数自动加载。其中的 `deployment_scope` 记录了该模型既没有导出到 RK3566，也没有在 RK3566 上测试。
 - **感知与几何。** `lab/runtime/simulation/core/football/perception.py` 处理检测框与传感器朝向，`football/ground_plane.py` 用 ToF 拟合地面。
 - **传感器设定。** `lab/runtime/simulation/core/sensors/reports/sensor-profile.json` 记录仿真相机与 ToF 的设定。
 :::
@@ -113,6 +115,8 @@ caption: 传感器面板取自上面录像开始时的同一次采集。相机�
 方框只说明球在图像的哪些像素里，ToF 只给出距离、分不清物体是什么。结合同一时刻的相机朝向和 ToF 拟合出的地面，才能得到球在地面上离机器人多远。
 :::
 ::::
+
+现在机器人知道了球和球门在哪里，但还要决定走到哪里、何时停下、何时出脚。[下一节](06-onboard.md)介绍人工设计的板载策略怎样把这些位置变成一步步的动作。
 
 {#references}
 ## 参考资料
