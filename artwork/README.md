@@ -30,6 +30,20 @@ Outputs include GLB, editable Blender scene, bilingual component metadata, and a
 
 The GLB is Y-up. Each root mesh carries bilingual names, descriptions, a group, and an `explode` translation. For expansion fraction `t` from 0 to 1, set position to initial position plus `t × explode`.
 
+## 网页压缩模型 / Compressed web model
+
+3D 小鸭加载的是 `web/assets/robot/microduck-meshopt.glb`，它由未改动的 `microduck.glb` 生成（KHR_meshopt_compression）。零件、层级、变换、`extras`、材质以及顶点和三角形数量都与原文件相同；只压缩顶点数据：位置保留 float32，按网格取 18 位尾数（若有三角形因此面积变为零或朝向翻转，则改用 20 位，再不行就保留该网格的原值），法线 10 位。位置的单坐标误差小于 0.5 微米，空间距离误差小于 0.6 微米，法线角度误差小于 0.1 度。浏览器用随附的 meshoptimizer 解码器解压。
+
+The 3D explorer loads `web/assets/robot/microduck-meshopt.glb`, generated from the unchanged `microduck.glb` with KHR_meshopt_compression. Parts, hierarchy, transforms, `extras`, materials and vertex and triangle counts match the source. Only vertex data is compressed: positions stay float32 with 18 mantissa bits per mesh (20 bits, or the exact values, where rounding would make any triangle zero-area or flip it), normals use 10 bits. Position error stays below 0.5 micrometres per coordinate and 0.6 micrometres in Euclidean distance; normal error stays below 0.1 degree. The browser decodes it with the vendored meshoptimizer decoder.
+
+```bash
+npm ci --prefix artwork/meshopt            # meshoptimizer 1.3.0 encoder (package-lock.json)
+node artwork/meshopt/compress.mjs          # GLB, provenance JSON and web/assets/vendor/meshopt_decoder-1.3.0-<hash>.js
+node artwork/meshopt/check.mjs             # decodes with the shipped decoder and Three.js; exits non-zero if an invariant or precision check fails
+```
+
+The scripts need Node.js 24 or newer (`check.mjs` uses `module.registerHooks`). `check.mjs` requires identical parts, transforms, extras and topology, positions within 1 micrometre and normals within 0.25 degree, and no zero-area or flipped triangles. `compress.mjs --lossless --output FILE` writes a copy whose decoded buffers equal the source byte for byte (larger, about 7.3 MB). `--meshoptimizer DIR` uses an encoder installed elsewhere. The output is deterministic; the provenance file lists the source hash and the precision chosen for each mesh. If the decoder's content hash changes, update its import in `web/assets/robot-explorer.js`.
+
 ## 来源 / Source
 
 几何来自 [Pollen Robotics microduck_rl](https://github.com/pollen-robotics/microduck_rl/tree/2b581c641406a48346e696212930ea881c222c52/src/mjlab_microduck/robot/microduck)，保留原始装配变换和 STAND 姿态。只有 42 个零面积三角面被移除；没有简化或编造零件。电子器件外形对应这份 CAD 的 Raspberry Pi Zero 2 W、Robot HAT 和 NP-F970，不是其他硬件版本的工程图。

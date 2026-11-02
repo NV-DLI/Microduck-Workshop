@@ -1,11 +1,14 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "./vendor/meshopt_decoder-1.3.0-4c575dea10ca.js";
 
 // "Inside the little duck": an illustrated, cel-shaded explorer of the Microduck CAD.
 // Three views -- the whole duck, an exploded view in functional groups, and how the
 // servos drive the joints (9 motions: head, neck and the left leg; the right leg mirrors it). Groups, offsets, palette, joint and servo data come from
-// robot/explorer-layout.json; the rest pose is the unchanged CAD STAND pose in robot/microduck.glb.
+// robot/explorer-layout.json; the rest pose is the unchanged CAD STAND pose in robot/microduck.glb,
+// loaded as its meshopt-compressed copy robot/microduck-meshopt.glb (same parts and transforms;
+// see artwork/meshopt).
 //
 // Look: a toon material with three flat tones per part, then a screen-space pass that inks
 // part boundaries, silhouettes and sharp creases from a part-ID/normal/depth buffer (no mesh
@@ -394,12 +397,13 @@ async function mount(root, lang, onProgress, undo) {
         return r.json();
       });
   const [{ scene: model }, meta, layout] = await Promise.all([
-    new GLTFLoader().loadAsync(url("./robot/microduck.glb", root.dataset.dxModelVersion), (event) => {
+    new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(url("./robot/microduck-meshopt.glb", root.dataset.dxModelVersion), (event) => {
       if (event.lengthComputable) onProgress?.(event.loaded / event.total);
     }),
     json("./robot/components.json"),
     json("./robot/explorer-layout.json"),
   ]);
+  onProgress?.(1); // downloaded and decoded (also when the size was never known); now setting up
   stage.prepend(renderer.domElement);
   renderer.domElement.classList.add("dx-canvas");
   renderer.domElement.setAttribute("aria-hidden", "true");

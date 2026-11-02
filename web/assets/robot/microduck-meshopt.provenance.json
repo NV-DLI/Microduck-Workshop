@@ -1,0 +1,602 @@
+{
+  "description": "Meshopt-compressed web copy of microduck.glb for the 3D explorer; geometry adaptations CC BY-NC-SA 4.0 (Pollen Robotics).",
+  "source": {
+    "file": "web/assets/robot/microduck.glb",
+    "bytes": 11893404,
+    "sha256": "eea0931fefde8b2d352eaaa73b5e380f2790f63fb716a8c1a2ce219ffe58c1ac"
+  },
+  "output": {
+    "file": "web/assets/robot/microduck-meshopt.glb",
+    "bytes": 3565156,
+    "sha256": "b3945b38cd66a4a2ef63f34d2d755c50e53bad1b616597e1f8bacd163c789557"
+  },
+  "decoder": {
+    "file": "web/assets/vendor/meshopt_decoder-1.3.0-4c575dea10ca.js",
+    "bytes": 30190,
+    "sha256": "4c575dea10ca5b062048ea94f4cc1fdf044345bd5e48c3c96c4371c4fa1f7028"
+  },
+  "tool": {
+    "meshoptimizer": "1.3.0",
+    "node": "v24.21.0",
+    "command": "node artwork/meshopt/compress.mjs"
+  },
+  "settings": {
+    "reorder": true,
+    "indexMode": "TRIANGLES",
+    "positionBits": [
+      18,
+      20
+    ],
+    "positionMode": "SharedComponent",
+    "normalBits": 10,
+    "normalMode": "SharedVector"
+  },
+  "meshes": [
+    {
+      "mesh": "MESH_seeed_bearing__configuration__22x16x4",
+      "vertices": 31067,
+      "triangles": 20970,
+      "index_bytes": 21278,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 154529,
+      "normal_bytes": 117564
+    },
+    {
+      "mesh": "MESH_right_shell",
+      "vertices": 19216,
+      "triangles": 20970,
+      "index_bytes": 22667,
+      "damaged_at_18_bits": {
+        "zero_area": 1,
+        "flipped": 7
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 1
+      },
+      "position_bits": "exact",
+      "position_bytes": 136831,
+      "normal_bytes": 55547
+    },
+    {
+      "mesh": "MESH_banana_pcb_locker",
+      "vertices": 1400,
+      "triangles": 1388,
+      "index_bytes": 1438,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 5699,
+      "normal_bytes": 1422
+    },
+    {
+      "mesh": "MESH_trunk_base",
+      "vertices": 3620,
+      "triangles": 3698,
+      "index_bytes": 3927,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 14519,
+      "normal_bytes": 3640
+    },
+    {
+      "mesh": "MESH_xl330",
+      "vertices": 4137,
+      "triangles": 4126,
+      "index_bytes": 4293,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 17160,
+      "normal_bytes": 6744
+    },
+    {
+      "mesh": "MESH_power_support",
+      "vertices": 12889,
+      "triangles": 12830,
+      "index_bytes": 13495,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 6
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 1
+      },
+      "position_bits": "exact",
+      "position_bytes": 83007,
+      "normal_bytes": 15254
+    },
+    {
+      "mesh": "MESH_np_f970",
+      "vertices": 24462,
+      "triangles": 20970,
+      "index_bytes": 22314,
+      "damaged_at_18_bits": {
+        "zero_area": 20,
+        "flipped": 70
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 3
+      },
+      "position_bits": "exact",
+      "position_bytes": 167733,
+      "normal_bytes": 88726
+    },
+    {
+      "mesh": "MESH_left_shell",
+      "vertices": 19054,
+      "triangles": 20970,
+      "index_bytes": 22801,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 4
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 98250,
+      "normal_bytes": 55185
+    },
+    {
+      "mesh": "MESH_yaw2roll",
+      "vertices": 9382,
+      "triangles": 12404,
+      "index_bytes": 13361,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 48415,
+      "normal_bytes": 18417
+    },
+    {
+      "mesh": "MESH_bearing_roll",
+      "vertices": 2378,
+      "triangles": 2420,
+      "index_bytes": 2565,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 9480,
+      "normal_bytes": 2627
+    },
+    {
+      "mesh": "MESH_hip_l",
+      "vertices": 18047,
+      "triangles": 20970,
+      "index_bytes": 22581,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 82311,
+      "normal_bytes": 49931
+    },
+    {
+      "mesh": "MESH_upper_leg_left",
+      "vertices": 9443,
+      "triangles": 12250,
+      "index_bytes": 12975,
+      "damaged_at_18_bits": {
+        "zero_area": 2,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 45460,
+      "normal_bytes": 17902
+    },
+    {
+      "mesh": "MESH_upper_leg_rigidity_plate",
+      "vertices": 3504,
+      "triangles": 3600,
+      "index_bytes": 3829,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 13062,
+      "normal_bytes": 3753
+    },
+    {
+      "mesh": "MESH_leg",
+      "vertices": 12039,
+      "triangles": 14776,
+      "index_bytes": 16030,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 55863,
+      "normal_bytes": 22790
+    },
+    {
+      "mesh": "MESH_sole_left",
+      "vertices": 8720,
+      "triangles": 15788,
+      "index_bytes": 17753,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 8
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 1,
+        "flipped": 5
+      },
+      "position_bits": "exact",
+      "position_bytes": 65787,
+      "normal_bytes": 23740
+    },
+    {
+      "mesh": "MESH_foot_left",
+      "vertices": 14746,
+      "triangles": 19902,
+      "index_bytes": 21923,
+      "damaged_at_18_bits": {
+        "zero_area": 20,
+        "flipped": 12
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 9,
+        "flipped": 6
+      },
+      "position_bits": "exact",
+      "position_bytes": 97739,
+      "normal_bytes": 34442
+    },
+    {
+      "mesh": "MESH_seeed_bearing__configuration_default",
+      "vertices": 31013,
+      "triangles": 20970,
+      "index_bytes": 21244,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 172049,
+      "normal_bytes": 118328
+    },
+    {
+      "mesh": "MESH_ankle_left",
+      "vertices": 5028,
+      "triangles": 4978,
+      "index_bytes": 5149,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 24179,
+      "normal_bytes": 6977
+    },
+    {
+      "mesh": "MESH_neck",
+      "vertices": 1456,
+      "triangles": 1468,
+      "index_bytes": 1540,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 4822,
+      "normal_bytes": 1608
+    },
+    {
+      "mesh": "MESH_neck_pitch",
+      "vertices": 7082,
+      "triangles": 7120,
+      "index_bytes": 7352,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 30876,
+      "normal_bytes": 10457
+    },
+    {
+      "mesh": "MESH_yaw_roll_motion",
+      "vertices": 5846,
+      "triangles": 5814,
+      "index_bytes": 6015,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 25282,
+      "normal_bytes": 7484
+    },
+    {
+      "mesh": "MESH_lens",
+      "vertices": 1442,
+      "triangles": 1872,
+      "index_bytes": 1992,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 6815,
+      "normal_bytes": 2566
+    },
+    {
+      "mesh": "MESH_face_part",
+      "vertices": 11349,
+      "triangles": 11412,
+      "index_bytes": 11817,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 43439,
+      "normal_bytes": 15796
+    },
+    {
+      "mesh": "MESH_jaw_soft",
+      "vertices": 3710,
+      "triangles": 6726,
+      "index_bytes": 7446,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 18630,
+      "normal_bytes": 10191
+    },
+    {
+      "mesh": "MESH_motor_support",
+      "vertices": 3736,
+      "triangles": 3616,
+      "index_bytes": 3710,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 17189,
+      "normal_bytes": 5639
+    },
+    {
+      "mesh": "MESH_top_head_shell",
+      "vertices": 11076,
+      "triangles": 16120,
+      "index_bytes": 17849,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 62819,
+      "normal_bytes": 26331
+    },
+    {
+      "mesh": "MESH_elec_rpi_robot_hat_pcb",
+      "vertices": 18358,
+      "triangles": 18856,
+      "index_bytes": 20068,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 61242,
+      "normal_bytes": 18852
+    },
+    {
+      "mesh": "MESH_soft_mouth_top",
+      "vertices": 4209,
+      "triangles": 7870,
+      "index_bytes": 8969,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 3
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 3
+      },
+      "position_bits": "exact",
+      "position_bytes": 28804,
+      "normal_bytes": 11796
+    },
+    {
+      "mesh": "MESH_noenoeil",
+      "vertices": 1008,
+      "triangles": 984,
+      "index_bytes": 1033,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 5176,
+      "normal_bytes": 1858
+    },
+    {
+      "mesh": "MESH_jaw",
+      "vertices": 7367,
+      "triangles": 9918,
+      "index_bytes": 10807,
+      "damaged_at_18_bits": {
+        "zero_area": 69,
+        "flipped": 0
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 38618,
+      "normal_bytes": 14711
+    },
+    {
+      "mesh": "MESH_bottom_head_shell",
+      "vertices": 17561,
+      "triangles": 20970,
+      "index_bytes": 22952,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 1
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 100505,
+      "normal_bytes": 42913
+    },
+    {
+      "mesh": "MESH_m12_lens_holder",
+      "vertices": 6488,
+      "triangles": 10992,
+      "index_bytes": 12072,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 26254,
+      "normal_bytes": 15800
+    },
+    {
+      "mesh": "MESH_pcb__raspberry_pi_zero_2_w",
+      "vertices": 15586,
+      "triangles": 20970,
+      "index_bytes": 24030,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 70320,
+      "normal_bytes": 28634
+    },
+    {
+      "mesh": "MESH_speaker",
+      "vertices": 24,
+      "triangles": 12,
+      "index_bytes": 29,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 143,
+      "normal_bytes": 63
+    },
+    {
+      "mesh": "MESH_upper_leg_right",
+      "vertices": 9443,
+      "triangles": 12250,
+      "index_bytes": 13170,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 2
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 20,
+      "position_bytes": 45720,
+      "normal_bytes": 17692
+    },
+    {
+      "mesh": "MESH_ankle_right",
+      "vertices": 5026,
+      "triangles": 4976,
+      "index_bytes": 5140,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 0
+      },
+      "position_bits": 18,
+      "position_bytes": 20767,
+      "normal_bytes": 7126
+    },
+    {
+      "mesh": "MESH_sole_right",
+      "vertices": 8676,
+      "triangles": 15902,
+      "index_bytes": 17832,
+      "damaged_at_18_bits": {
+        "zero_area": 0,
+        "flipped": 6
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 0,
+        "flipped": 4
+      },
+      "position_bits": "exact",
+      "position_bytes": 65602,
+      "normal_bytes": 23949
+    },
+    {
+      "mesh": "MESH_foot_right",
+      "vertices": 14769,
+      "triangles": 19932,
+      "index_bytes": 22019,
+      "damaged_at_18_bits": {
+        "zero_area": 5,
+        "flipped": 42
+      },
+      "damaged_at_20_bits": {
+        "zero_area": 5,
+        "flipped": 9
+      },
+      "position_bits": "exact",
+      "position_bytes": 97438,
+      "normal_bytes": 34391
+    }
+  ]
+}

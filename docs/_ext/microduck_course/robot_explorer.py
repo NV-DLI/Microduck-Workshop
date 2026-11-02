@@ -7,15 +7,18 @@ figure and independent of the archived ``robot-anatomy`` viewer: its own markup 
 (``web/assets/robot-explorer.js``). Both assets are added only to pages that use it.
 
 Browsers may keep an earlier module or layout file while the page itself is new, so the page
-names exact versions: one content fingerprint over the module, its two data files, the stylesheet
-and the loader (``data-dx-version``), and a separate one for the large model (``data-dx-model-version``)
-so that it is downloaded again only when it changes. The loader imports the module with that
-version and the module adds it to every file it fetches.
+names exact versions: one content fingerprint over the module, its two data files, the meshopt
+decoder it imports, the stylesheet and the loader (``data-dx-version``), and a separate one for the
+large model (``data-dx-model-version``) so that it is downloaded again only when it changes. The
+loader imports the module with that version and the module adds it to every file it fetches. The
+decoder's file name carries its own content hash, since a static import keeps no query string.
+The model is the meshopt-compressed copy of ``robot/microduck.glb`` (see ``artwork/meshopt``).
 """
 
 from __future__ import annotations
 
 import hashlib
+import re
 from html import escape as e
 from pathlib import Path
 
@@ -27,6 +30,7 @@ TEXT = {
         chapters=("整只小鸭", "拆解图", "电机怎样驱动关节"),
         views="选择观察方式", reset="从头看", back="返回",
         retry="重新加载", loading="正在加载 3D 小鸭",
+        preparing="正在准备 3D 视图", downloading="正在下载 3D 模型", finishing="正在准备模型",
         regions="选择部位", joints="选择动作", angle="关节角", controls="关节控制",
         legend=("转动舵机", "跟随部分", "驱动方向"),
         error="3D 小鸭未能加载，请检查网络后重试；下方说明仍可阅读。",
@@ -36,6 +40,7 @@ TEXT = {
         chapters=("The whole duck", "Exploded view", "How motors drive joints"),
         views="Choose a view", reset="Start over", back="Back",
         retry="Try again", loading="Loading the 3D duck",
+        preparing="Preparing 3D view", downloading="Downloading 3D model", finishing="Preparing the model",
         regions="Choose a part", joints="Choose a motion", angle="Joint angle", controls="Joint controls",
         legend=("Rotating servo", "Following parts", "Drive direction"),
         error="The 3D duck did not load. Check the connection and try again; the notes below remain available.",
@@ -60,7 +65,8 @@ STATIC = Path(__file__).resolve().parents[2] / "_static"
 # Everything the module and its stylesheet must agree on; versioned together.
 BUNDLE = ("robot-explorer.js", "robot/explorer-layout.json", "robot/components.json")
 STYLE = (STATIC / "robot-explorer.css", STATIC / "robot-explorer-loader.js")
-MODEL = "robot/microduck.glb"
+MODEL = "robot/microduck-meshopt.glb"
+DECODER = re.compile(r'from "\./(vendor/meshopt_decoder-[^"]+\.js)"')
 
 _digests: dict[tuple, str] = {}
 
@@ -97,11 +103,16 @@ def explorer_html(lang: str, assets_url: str, version: str, model_version: str) 
         '<div class="dx-callouts"></div>'
         '<div class="dx-handle" role="slider" tabindex="0" aria-orientation="horizontal" hidden></div>'
         f'<button type="button" class="dx-back" hidden>{e(t["back"])}</button>'
-        # The stage stays empty and transparent until the 3D duck is ready: the loader starts at
-        # once, and loading is only announced off screen. After a failure, the status message and
-        # one "try again" button appear; no still image stands in for the model.
+        # Until the 3D duck is ready the stage shows only a small progress bar: an indeterminate
+        # "preparing" bar, the real download percentage once the model's size is known, then
+        # "preparing the model" while it is decoded and set up. It is hidden without JavaScript.
+        # After a failure, the status message and one "try again" button appear; no still image
+        # stands in for the model.
         '<div class="dx-launch" hidden>'
         f'<button type="button" class="dx-open">{DUCK_ICON}<span class="dx-open-label">{e(t["retry"])}</span></button></div>'
+        f'<div class="dx-progress" hidden data-preparing="{e(t["preparing"])}" data-downloading="{e(t["downloading"])}" '
+        f'data-finishing="{e(t["finishing"])}"><p class="dx-progress-label" aria-hidden="true"></p>'
+        '<div class="dx-progress-track" role="progressbar"><div class="dx-progress-fill"></div></div></div>'
         f'<p class="dx-status" role="status" aria-live="polite" data-loading="{e(t["loading"])}…" data-error="{e(t["error"])}"></p>'
         f'<noscript><p class="dx-status">{e(t["nojs"])}</p></noscript></div>'
         '<div class="dx-panel" hidden><div class="dx-card" aria-live="polite">'
@@ -127,7 +138,8 @@ class RobotExplorer(SphinxDirective):
         lang = self.config.course_lang
         root = Path(self.config.course_assets_dir) / "robot"
         assets = root.parent
-        bundle = [assets / p for p in BUNDLE] + list(STYLE)
+        decoder = DECODER.search((assets / BUNDLE[0]).read_text()).group(1)
+        bundle = [assets / p for p in BUNDLE] + [assets / decoder] + list(STYLE)
         # Re-read this page whenever any versioned input, or this renderer, changes.
         for p in [*bundle, assets / MODEL, Path(__file__).resolve()]:
             self.env.note_dependency(str(p))

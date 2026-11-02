@@ -330,8 +330,75 @@ html[data-theme="dark"] .duck-explorer {
   display: none;
 }
 
-/* ---- loading and errors: nothing visible until the 3D duck is ready; after a failure, a short
-   message and one "try again" button ---- */
+/* ---- loading: a small progress bar in the middle of the transparent stage, removed once the 3D
+   duck is ready. Indeterminate while preparing; the fill follows the real download percentage.
+   Drawn like the stage labels: paper track with a fine ink outline and a flat offset edge, filled
+   with the model's amber tone (explorer-layout.json palette "amber"). ---- */
+.dx-progress {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: min(15rem, 70%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+.dx-progress[hidden] {
+  display: none;
+}
+.dx-progress-label {
+  margin: 0 0 0.45rem;
+  color: var(--dx-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dx-progress-track {
+  position: relative;
+  height: 0.6rem;
+  overflow: hidden;
+  border: 1.5px solid var(--dx-ink);
+  border-radius: 999px;
+  background: var(--dx-surface);
+  box-shadow: 1.5px 1.5px 0 var(--dx-ink);
+}
+.dx-progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--dx-progress, 30%);
+  border-radius: inherit;
+  background: #eda840;
+  box-shadow: inset -1.5px 0 0 var(--dx-ink);
+  transition: width 0.2s linear;
+}
+html[data-theme="dark"] .dx-progress-fill {
+  background: #cc8a2c;
+}
+.dx-progress:not([data-phase="downloading"]) .dx-progress-fill {
+  box-shadow: inset 1.5px 0 0 var(--dx-ink), inset -1.5px 0 0 var(--dx-ink);
+  animation: dx-progress-slide 1.4s ease-in-out infinite;
+}
+@keyframes dx-progress-slide {
+  from {
+    left: -30%;
+  }
+  to {
+    left: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dx-progress:not([data-phase="downloading"]) .dx-progress-fill {
+    left: 35%;
+    animation: none;
+  }
+  .dx-progress-fill {
+    transition: none;
+  }
+}
+
+/* ---- errors: after a failure, a short message and one "try again" button ---- */
 .dx-launch {
   position: absolute;
   inset: 0;
