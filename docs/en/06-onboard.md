@@ -1,7 +1,7 @@
 ---
 myst:
   html_meta:
-    description: "How a hand-designed onboard policy reuses sensor estimates to shoot: why the shot runs onboard, how Nav2 path planning and trained motion skills are connected by hand-designed stages, and how to repeat the shot automatically in Isaac Sim."
+    description: "How a hand-designed onboard policy reuses sensor estimates to shoot: why the shot runs onboard, how Nav2 path planning and trained motion skills are connected by hand-designed stages, and how to press R in Isaac Sim to reset and shoot again."
 ---
 
 # 4.2 Hand-designed shooting stages
@@ -94,7 +94,7 @@ Walking stops and the head returns to its kicking pose. Once the body is still, 
 {#stage-kick}
 ### Kick and recover
 
-The kick skill runs once: the frozen kick teacher plus the trained residual correction strikes the ball, and the robot returns to standing. The onboard policy does not judge whether it scored; a separate evaluator decides that with simulator truth.
+The skill runs once: the official right-foot kick policy strikes the ball, then smoothly hands over to the official standing policy. This onboard lab does not load a kick residual network. The onboard policy does not judge whether it scored; a separate evaluator decides that with simulator truth.
 
 Stages switch mainly on observations and body state: when a condition fails, the policy stops, looks again or goes back a stage, so refining often repeats several times. Waiting for stillness and each stage's time limit keep every attempt bounded.
 
@@ -103,44 +103,45 @@ Stages switch mainly on observations and body state: when a condition fails, the
 
 - **Detector.** The YOLO26n model was fine-tuned on images rendered in Isaac Sim. The box labels were generated automatically from the known scene geometry; 512 images trained it, 128 chose the checkpoint and 128 held-out images tested it (mAP50 0.978). That is an image detection score, not a shooting success rate.
 - **Walking.** The walking policy was trained with PPO, the method of Part 3.
-- **Kick.** The supplied Pollen Robotics kick and walking policies stay frozen as the teacher; a small residual network, trained with PPO in Isaac Lab, adds a bounded correction on top.
+- **Kick and recovery.** The pretrained Pollen Robotics right-foot kick and standing policies remain frozen. Their transition timing is programmed.
 - **Not trained.** The Nav2 planner, the geometry, the path follower and the stage logic are configured or programmed. The whole shot is never trained end to end.
 
 {#run}
-## Repeat onboard shots automatically
+## Repeat shots in the same window
 
-Prepare the course container as described in [Section 1.2](setup.md), then return to the container terminal; if the container is already running, enter it from the host with `docker exec -it microduck-workshop bash`. Then run:
+Prepare the course container as described in [Section 1.2](setup.md), then return to its terminal. If it is already running, enter it from the host with `docker exec -it microduck-workshop bash`. Run:
 
 ```{code-block} bash
-:caption: Terminal · inside the container
+:caption: Terminal · Inside the container
 :class: terminal
 
-python3 scripts/run.py football --repeat 5 --seconds 45 --no-record-hd --output outputs/onboard-football-repeat
+python3 scripts/run.py football --seconds 60 --output outputs/onboard-football
 ```
+
+The robot automatically observes, approaches the ball and attempts a shot. Switch to an English keyboard layout, click the Isaac Sim window and press **R** to restart. The window stays open. Each round starts from the standing initialization, with at most 1.5 cm of forward/backward offset and 1 cm of lateral offset. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.
+
+Let each round finish before pressing R to compare complete attempts. Pressing R during a task records an interruption separately, outside the complete-task success rate. Close the Isaac window to check the completed episodes and print the results.
 
 | Parameter | Meaning |
 |---|---|
-| `--repeat 5` | Run five shots one after another; `--repeat 0` keeps going until you press **Ctrl+C** |
-| `--seconds 45` | Time limit of each shot, in simulation seconds |
-| `--no-record-hd` | Skip the extra 1080p third-person archive video; the sensor panels, task logs and scoring are kept |
-| `--output` | A new folder; each shot writes its own `episode-001`, `episode-002`, ... inside it |
+| `--seconds 60` | Per-round task limit in simulation seconds, excluding standing initialization; completion or failure ends it earlier |
+| `--output` | A new folder; rounds are kept in separate `episode-001`, `episode-002`, etc. folders |
+| `--single-run` | Run one round, close the window and evaluate it |
+| `--headless` | Run and evaluate one round without opening a window |
 
 :::{enrichment} Key code parameters
-This explains the implementation behind the `python3 scripts/run.py football` command just above. The table lists the parameters you can change; loading parameters such as `--model` and `--detector-deployment` are passed to the scene automatically by `run.py` after it checks the files, so you do not supply them.
-
-- **Repeating.** `scripts/repeat_episodes.py` launches each shot in its own process group and writes `summary.json` in the `--output` folder. The first shot uses the default `--seed` and each later shot adds one, which changes the simulated sensor noise; the start pose stays the same. `--root-y` moves the robot's sideways start (default 0.04 m). Without `--repeat`, `run.py football` runs one shot.
-- **Start-up.** Every shot holds the joints at HOME with the body free on the ground, waits for the sensors and the walking policy's first output, then releases the joints before that output is applied.
-- **Scene.** `lab/onboard_scene.py` creates the green pitch with this start-up; `--scene indoor` and `--style A` are the defaults of `run.py football`.
-- **Walking policy.** The repository's `models/walk.onnx` is copied to `/workspace/state/student-course/simulation/core/models/reference/velstand.onnx` in the container, and `run.py` loads it automatically through `--model`.
-- **Detector.** `run.py` first checks the SHA-256 of the weights listed in `models/scene-detector/deployment.json`, then writes `/workspace/state/scene-detector-deployment.json` and loads it automatically through `--detector-deployment`.
-- **Nav2.** `lab/scene_nav2/nav2.yaml` configures only the NavFn planner (A*, no planning through unknown space) and a cost map with 2.5 cm resolution, with a margin based on the robot radius; `lab/scene_nav2/map_contract.py` builds the map from the surveyed pitch and current ToF and checks the path; `lab/runtime/simulation/core/football/controller.py` turns the returned path into velocity requests.
-- **Close-range stages.** `ball_reacquisition.py`, `final_approach.py` and `head_handoff.py` in `lab/runtime/simulation/core/evaluation/football/` implement finding the ball again, stop-and-look refining and the handover up close.
-- **Kick and recovery.** The executor loads them from the fixed path `/workspace/state/student-course/configuration/core/kick_policy/export/deployment.json`, which binds the two networks copied from `models/kick-teacher.onnx` and `models/kick-residual.onnx`.
+- **Reset.** `lab/onboard/session.py` handles R and rebuilds each environment inside the same Isaac Sim process. Sensors, localization, action history and scoring start fresh; previous results are retained.
+- **Initialization.** Temporary joint limits hold HOME while the free body settles on the ground. Once sensors and the first real policy output are ready, the limits are released before applying that output.
+- **Rates.** `lab/onboard/executor.py` uses Newton physics at 100 Hz, joint policies at 50 Hz and RGB/ToF at 15 Hz. Each action spans two 10 ms physics steps; actuator delay remains 20 ms.
+- **Display.** Each sensor capture uses one render subframe, and the panel displays the same RGB/ToF data supplied to the policy. No additional 1080p archive camera is created by default; `--record-hd` enables it.
+- **Scene.** `lab/onboard_scene.py` creates the green pitch, reduced net mesh and standing initialization. `--scene indoor` and `--style A` are the defaults.
+- **Walking and kicking.** Walking and recovery use `velstand.onnx`, the runtime copy of official `models/walk.onnx`; kicking uses `ball_kick_right.onnx`, copied from `models/kick-teacher.onnx`. `lab/onboard/official_kick_runtime.py` uses the kick policy exclusively for 0.14 seconds, updating its output every 20 ms, then blends to standing over 0.12 seconds, within a 4-second kick-and-recovery observation window.
+- **Detection and localization.** `run.py` verifies `models/scene-detector/deployment.json` before launching the detector. `lab/scene_goal_points.py` finds post endpoints inside the box, accounting for perspective and metal reflections. A detection box is not yet an accepted position: consistency across frames and observation freshness must also pass.
+- **Nav2.** `lab/scene_nav2/nav2.yaml` configures NavFn (A*, no unknown-space traversal) and a 2.5 cm costmap. `map_contract.py` builds the map from the measured pitch and current ToF, and checks the returned path. The follower converts path points into velocity requests.
+- **Handover.** The near-field stage aligns the right foot, stops and returns the head to neutral. The final point estimate must be 7–11 cm ahead and 1.5–5.5 cm to the right, with heading error at most 10° and goal observations at most 0.5 seconds old. These limits belong to this local course skill, not a guarantee for physical hardware.
 :::
 
-Isaac Sim closes after each shot and opens again for the next one, so every shot restarts from the same start pose. Watch the RGB and ToF panels while the robot walks, stops and looks.
-
-After each shot the terminal prints success or the reason for failure, and the final line counts successes and failures; failed shots are counted, never skipped. **Ctrl+C** stops the current shot and starts no new one. A technical error, such as a crash or a failed independent check, also stops the loop; that shot's files are kept, but it is not counted as a success or failure. The window usually runs slower than real time because the workstation renders the scene and sensors; this speed says nothing about the robot's own computer.
+Compare the motion with the RGB and ToF panels. Physics frequency describes simulation time; wall-clock display speed also depends on rendering and computation. A 100 Hz setting does not by itself guarantee real-time playback.
 
 :::{course-image} media/isaac-ui-onboard-sensors.png
 :alt: The complete Isaac Sim window for onboard shooting, with the green pitch, head RGB image and 8×8 ToF distances.
@@ -151,40 +152,38 @@ Watch the robot on the left alongside its current image and distance readings on
 {#results}
 ## Recorded results
 
-To see how the pipeline responds to the start position, the course ran a check fixed in advance: five sideways starts of the robot relative to the ball, one attempt each, without a window and with `--no-record-hd`. Your `--repeat` run keeps one start, so expect your own counts rather than these numbers.
+On DGX Spark, the window configuration above ran for 20 consecutive rounds, pressing R between rounds and varying the start by at most ±1.5 cm forward/backward and ±1 cm sideways. Full success requires foot contact, the whole ball inside the goal, no fall and a return to standing. Completed attempts that do not score remain in the denominator.
 
 ```{benchmark-chart}
-title: Five sideways starts, one onboard shot each
-caption: Each row is one start position relative to the ball, with one attempt. Full success means foot contact, the whole ball in the goal and a return to standing. Five attempts on one pitch are a small check, not a general success rate.
+title: Twenty shots in one window
+caption: Rounds are grouped in sets of five in execution order. All use one pitch and the same configuration. This is a small sample with very small start-position variation, not a general success rate.
 ```
 
-| Sideways start | Full success | Fall | How it ended |
-|---|---|---|---|
-| −4 cm | 1 / 1 | 0 / 1 | Scored at 31.5 s, back to standing |
-| 0 cm | 1 / 1 | 0 / 1 | Scored at 14.5 s, back to standing |
-| +4 cm (lab default) | 0 / 1 | 0 / 1 | Stayed re-observing up close until that stage's time limit |
-| +8 cm | 0 / 1 | 0 / 1 | Kick refused; stopped after a failed safety check |
-| +12 cm | 1 / 1 | 0 / 1 | Scored at 28.1 s, back to standing |
+| Rounds | Full success | Fall |
+|---|---|---|
+| 1–5 | 5 / 5 | 0 / 5 |
+| 6–10 | 4 / 5 | 0 / 5 |
+| 11–15 | 4 / 5 | 0 / 5 |
+| 16–20 | 4 / 5 | 0 / 5 |
 
-The success rate in this check was **3/5 (60%)**: all three scored and returned to standing, and none fell. Both failures ended before the foot touched the ball, one in each category below. The records show the sequence of events; they do not establish the root cause:
+The measured result was **17/20 (85%)**, with **0/20** falls and no technical errors. Failed rounds were retained. <a href="_static/data/onboard-reset-evaluation.json">View every round</a>. Keep your own counts: a small sample around one start cannot guarantee every shot.
 
-- **Position not confirmed up close.** After approaching, the robot could not keep getting a position estimate reliable enough for alignment, so it stayed in re-observation until that stage's time limit. The detector still boxed the ball during this time; the position built from the box was what kept being rejected.
-- **Kick conditions not met.** The ball ended outside the range the kick skill was trained for, so the kick was refused. While stepping back to adjust, the perception safety check did not pass, and the robot stopped trying.
+The main loop ran at a median of about **0.48 times real time**, ranging from 0.42 to 0.52. A 20-second simulated action would take about 41 seconds of wall time. This excludes loading, resets and post-run evaluation; website demonstrations play on the simulation clock.
 
-If one of your shots fails, also check for **no admissible path** (Nav2 finds no safe path to the stance) and **balance during the kick**. `summary.json` lists each shot's outcome; the `terminal_reason` in a shot's `manifest.json` names the stage that ended it.
+For a failed attempt, first identify the stage where it stopped. `summary.json` lists the outcomes; each round’s `manifest.json` records its `terminal_reason` and failure details. A visible detection box does not guarantee an accepted geometric position. Without a sufficiently fresh position up close, the policy may stop to observe again or end the attempt. Also check path feasibility, kick conditions and balance after contact.
 
 {#design}
 ## Limits of hand design
 
 Every stage, transition and threshold of this onboard policy was written by people around one task: shooting at this goal. It is clear and easy to debug, but it fits only this task. For "dribble the ball to the center circle and stop" or "walk up to the ball without touching it", most of the perception can be reused, but the stages, conditions and thresholds must be redesigned and retuned.
 
-If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 takes this route with GR00T on a local workstation, using demonstrations recorded with this onboard policy.
+If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 takes this route with GR00T on a local workstation, using the supplied shooting demonstrations generated by hand-designed stages.
 
 ::::{quiz}
 Which parts of the onboard shot were learned from data, and which were written or configured by people?
 
 :::{answer}
-The detector, the walking policy and the kick residual were trained. The geometry, Nav2 path planning, the path follower and the stage logic were configured or programmed, and the shot as a whole was never trained end to end.
+The detector and the official walking and kicking policies were trained. The geometry, Nav2 path planning, the path follower and the stage logic were configured or programmed, and the shot as a whole was never trained end to end.
 :::
 ::::
 

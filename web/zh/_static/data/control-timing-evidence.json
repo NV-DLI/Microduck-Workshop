@@ -190,28 +190,29 @@
   ]
  },
  "onboard": {
-  "run": "Onboard closed-loop timing run, seed 8670101, approach-the-ball state",
+  "run": "Interactive onboard football on DGX Spark, first completed round",
   "excerpt_sim_s": [
-   2.2,
-   2.4
+   3.4,
+   3.6
   ],
-  "selection": "Three consecutive NAV2_APPROACH decisions after its first decision; start-up support excluded",
+  "selection": "First 200 ms-aligned capture after the first NAV2_APPROACH decision; next three consecutive decisions, excluding initial planner startup.",
+  "physics_hz": 100,
   "rgb_capture_ms": [
    0,
    70,
-   135,
+   140,
    200
   ],
   "tof_capture_ms": [
    0,
    70,
-   135,
+   140,
    200
   ],
   "decision_source_capture_ms": [
    0,
    70,
-   135,
+   140,
    200
   ],
   "actor_ms": [
@@ -244,47 +245,53 @@
    3
   ],
   "decision_compute_ms": [
-   110.418338,
-   266.223269,
-   148.434121
+   39.815,
+   69.494,
+   42.485
   ],
   "detector_ms": [
-   40.214468,
-   36.874673,
-   58.136762
+   7.677,
+   8.649,
+   7.835
   ],
   "navigation_and_gaze_ms": [
-   70.1371660688892,
-   229.20526703819633,
-   90.22252692375332
+   32.136,
+   60.843,
+   34.648
   ],
   "decisions": [
    {
-    "timestamp_s": 2.2,
-    "capture_index": 32,
+    "timestamp_s": 3.4,
     "state": "NAV2_APPROACH",
-    "decision_ms": 110.418338,
-    "detector_ms": 40.214468,
-    "navigation_and_gaze_ms": 70.1371660688892
+    "decision": 39.81505800038576,
+    "detector": 7.676924113184214,
+    "navigation": 32.13621396571398,
+    "scope": "capture ready to command ready; excludes rendering, archive and actor; synchronous host time"
    },
    {
-    "timestamp_s": 2.27,
-    "capture_index": 33,
+    "timestamp_s": 3.47,
     "state": "NAV2_APPROACH",
-    "decision_ms": 266.223269,
-    "detector_ms": 36.874673,
-    "navigation_and_gaze_ms": 229.20526703819633
+    "decision": 69.49400994926691,
+    "detector": 8.649264927953482,
+    "navigation": 60.842824866995215,
+    "scope": "capture ready to command ready; excludes rendering, archive and actor; synchronous host time"
    },
    {
-    "timestamp_s": 2.335,
-    "capture_index": 34,
+    "timestamp_s": 3.54,
     "state": "NAV2_APPROACH",
-    "decision_ms": 148.434121,
-    "detector_ms": 58.136762,
-    "navigation_and_gaze_ms": 90.22252692375332
+    "decision": 42.485201032832265,
+    "detector": 7.83490901812911,
+    "navigation": 34.64849991723895,
+    "scope": "capture ready to command ready; excludes rendering, archive and actor; synchronous host time"
    }
   ],
-  "measurement_scope": "Host elapsed from sensor packet ready / archive submission through detection, geometry, navigation, gaze and guards to command ready; excludes sensor capture, motor policy inference and final control trace write. DGX Spark under concurrent GR00T feature-cache load. Not a robot-board measurement or isolated-hardware benchmark. Simulation time does not advance during this synchronous processing."
+  "source_sha256": {
+   "control.jsonl": "9b7664cbef2a3c7a432f0126bb33de52e447317aa7d81c49d89ec2c556d9fbd7",
+   "policy-trace.jsonl": "da487d05ebd0e0f6bcbf4fec53b958daf51ca7c1faabad9fdb578106e7e4d8ac",
+   "sensor-inputs.jsonl": "12bb263136aceb76533244f76e71568eb039800b728934a23cd9a4697f6099a2",
+   "manifest.json": "2500c850bf7dc285e0a3f250cb2dd22d4bbbd0bc64e1dcfb594092de5b96f78d"
+  },
+  "measurement_scope": "Synchronous host elapsed from capture/archive submission complete through detection, geometry, navigation, gaze and guards to command ready. Excludes rendering, archive submission, motor policy inference and final trace write. DGX Spark workstation, not RK3566. Simulation time does not advance during this processing."
  },
  "statistics": {
   "new_predictions": 899,

@@ -22,7 +22,7 @@ Every main-path lab uses explicitly named fixed files. Download once and reuse t
 | `walk.onnx` | Fixed walking policy | Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 `walk --model models/walk.onnx`; the low-level walking policy of the Section 4.2 onboard shot and of the Section 5.3 validation scene uses a copy of the same model |
 | `terrain-walk.onnx` | Section 3.3 fixed terrain walking actor, about 0.79 MB | Section 3.3 `terrain --model models/terrain-walk.onnx` |
 | `kick-teacher.onnx` | Base kicking action | Section 2.1 keyboard football (Space, read automatically); the kick skill of the Section 4.2 onboard shot uses a copy of the same model |
-| `kick-residual.onnx` | Residual kick adjustment | The kick skill of the Section 4.2 onboard shot uses a copy of the same model; not read directly by this course's hands-on commands |
+| `kick-residual.onnx` | Residual kick adjustment | Retained by the GR00T execution layer; not loaded by the Section 4.2 onboard shot |
 | `kick-checkpoint.pt` | Retained kick training checkpoint | Retained; not read directly by this course's hands-on commands |
 | `detector.pt` | Fixed visual detector | Retained; not read directly by this course's hands-on commands |
 | `detector.onnx` | ONNX detector export | Retained; not read directly by this course's hands-on commands |

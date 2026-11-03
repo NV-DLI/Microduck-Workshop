@@ -424,10 +424,6 @@
 <td><p>Ubuntu 24.04 桌面</p></td>
 <td><p>完整课程，包括 Isaac Sim 窗口、相机与录像</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>RTX 5090</p></td>
-<td><p>Windows 11 + WSL 2 中的 Ubuntu</p></td>
-<td><p>不开窗口的命令，例如 PPO 与 GR00T 训练；当前驱动不支持 Isaac Sim 窗口、相机和录像</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -465,7 +461,6 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 <p>固定的课程模型（<code class="docutils literal notranslate"><span class="pre">models/</span></code> 不到 60 MB）和第 3 部分用到的预训练结果与训练日志（<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> 约 50 MB）都随仓库下载；你自己运行得到的结果写在 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>，与它们分开保存。</p>
 <p><strong>GR00T 课程资料包（只有 5.3 节需要）。</strong> 5.3 节的 GR00T 步行射门另外需要一个约 62 GB 的资料包：示范数据、训练起点、训练好的检查点和预先算好的特征缓存。它由授课方单独发放：开始 5.3 节前，请向授课教师领取；还没有拿到时，可以先完成第 1–3 部分和第 4 部分的阅读。把其中的 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 文件夹放到仓库根目录的 <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> 下；放在别处时，启动容器前把 <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> 设为包含 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 的文件夹的绝对路径。没有资料包也可以启动容器。</p>
-<p><strong>可选：RTX 5090 的预计算特征缓存。</strong> 在 RTX 5090（计算能力 12.0）上训练 GR00T 时，可以向授课教师另外领取一份约 32 GB、在这种 GPU 上算好的特征缓存，把其中的 <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> 文件夹放在 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 旁边，训练时就不必重算（见 5.3 节）。DGX Spark 不需要它。</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
@@ -510,10 +505,6 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <p>关闭了终端，或者需要第二个终端（例如 5.3 节一边训练一边看日志）时，在宿主机运行 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>，就会回到同一个容器，之前的输出都还在。容器停止后（例如重启了电脑），在仓库根目录再运行一次 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> 即可；数据、输出和缓存都保存在宿主机上。全部练习结束后，用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> 停止并移除容器。</p>
 </div>
 <p>命令里的相对路径（例如 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>）就是宿主机仓库里的同名文件。下载、着色器和编译缓存保存在宿主机的 <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> 与 <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code> 下，第二次启动会快很多。</p>
-<div class="note admonition">
-<p class="admonition-title">在 WSL 2 中启动</p>
-<p>在 Windows 11 的 WSL 2 Ubuntu 中，<code class="docutils literal notranslate"><span class="pre">prepare_host.sh</span></code> 会提示改用下面的启动命令，它额外加载 WSLg 的显示设置：<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">-f</span> <span class="pre">docker/compose.wslg.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code>。这种环境只用于不开窗口的命令，需要 Isaac Sim 窗口或相机的实验请在 DGX Spark 上进行。</p>
-</div>
 </section>
 <section id="check">
 <h2>确认可以开始<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>

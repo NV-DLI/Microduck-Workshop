@@ -386,8 +386,8 @@ class JointBrakeRestore(unittest.TestCase):
             JointBrake(FakeRobot(floating=False))
 
 
-def _run_function():
-    tree = ast.parse(EXECUTOR.read_text())
+def _run_function(path=EXECUTOR):
+    tree = ast.parse(path.read_text())
     return next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == "run")
 
 
@@ -517,6 +517,15 @@ class ExecutorRoute(unittest.TestCase):
         self.assertIn("trained detector", self.parse_error(["--development-contour", "--course-onboard"]))
 
 
+class CurrentOnboardProtocolOrder(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.run_fn = _run_function(ROOT / "lab/onboard/executor.py")
+
+    test_release_after_first_output_and_before_apply = ExecutorProtocolOrder.test_release_after_first_output_and_before_apply
+    test_home_is_held_while_braked = ExecutorProtocolOrder.test_home_is_held_while_braked
+
+
 class OnboardEntry(unittest.TestCase):
     ARGV = ["--model", "velstand.onnx", "--output", "/tmp/x", "--detector-deployment", "d.json"]
 
@@ -541,14 +550,17 @@ class OnboardEntry(unittest.TestCase):
         football_scene = self.scene.football_scene
         original = football_scene.load
         seen = []
-        football_scene.load = lambda name, path: seen.append((name, Path(path)))
+        def fake_load(name, path):
+            seen.append((name, Path(path)))
+            return SimpleNamespace(build=lambda a: (None, None), contract={"controller": "one native K10 kick"})
+        football_scene.load = fake_load
         try:
             self.scene.install_executor()
             football_scene.load("isaac_execute", Path("/runtime/evaluation/football/executor.py"))
             football_scene.load("scene_preserved_controller", Path("/runtime/evaluation/football/execute.py"))
         finally:
             football_scene.load = original
-        self.assertEqual(seen[0], ("isaac_execute", EXECUTOR))
+        self.assertEqual(seen[0], ("isaac_execute", ROOT / "lab/onboard/executor.py"))
         self.assertEqual(seen[1][1], Path("/runtime/evaluation/football/execute.py"))
 
     def test_refuses_preloaded_gr00t_modules(self):

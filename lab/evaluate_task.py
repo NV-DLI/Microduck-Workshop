@@ -10,6 +10,12 @@ p.add_argument("--run", type=Path, required=True)
 p.add_argument("--evaluation-output", type=Path)
 p.add_argument("--scene-contract", action="store_true")
 a = p.parse_args()
+if (a.run / "session.json").is_file():
+    from evaluate_onboard_session import evaluate
+    raise SystemExit(evaluate(a.runtime, a.run))
+_manifest = json.loads((a.run / "manifest.json").read_text())
+if _manifest.get("physics_hz") == 100 and _manifest.get("onboard_route", {}).get("kick_composition") == "official_teacher_only_no_residual":
+    raise SystemExit(subprocess.call([sys.executable, str(Path(__file__).parent / "onboard/evaluate.py"), *sys.argv[1:]]))
 A = a.runtime / "evaluation"
 
 

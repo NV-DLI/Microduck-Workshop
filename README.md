@@ -24,9 +24,7 @@ Reading, figures, search and the interactive 3D duck work in a browser without I
 | Device | System | What you can use |
 |---|---|---|
 | DGX Spark (aarch64) | Ubuntu 24.04 desktop | The complete course, including Isaac Sim windows, cameras and recordings |
-| RTX 5090 | Ubuntu in Windows 11 + WSL 2 | Commands without a window only (for example PPO and GR00T training); Isaac Sim windows, cameras and recordings did not work with the tested driver |
 
-The RTX 5090 checks covered two PPO iterations and three GR00T updates, including checkpoint saving and reloading; a complete training run was not measured on that machine.
 
 The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, Isaac Lab at a fixed commit, the Newton physics backend, RSL-RL 5.5.1 and LeRobot + GR00T N1.7, and includes the CPU-only ROS 2 Jazzy Nav2 planner used by the onboard football route. Details are in Section 1.2 of the course.
 
@@ -57,9 +55,9 @@ All commands below run on the **host** from the repository root unless marked as
    docker exec -it microduck-workshop bash
    ```
 
-   The prompt changes to `(microduck)` in `/workspace/Microduck-Workshop`. Under WSL 2, start with `docker compose -f docker/compose.yaml -f docker/compose.wslg.yaml up -d` instead and use only commands without a window.
+   The prompt changes to `(microduck)` in `/workspace/Microduck-Workshop`.
 
-4. **Return to the same container** at any time with `docker exec -it microduck-workshop bash`. Ctrl+C stops only the running command. After a reboot, repeat the same compose start command, including both compose files on WSL 2. `docker compose -f docker/compose.yaml down` removes the container when you are done. Outputs and caches stay on the host.
+4. **Return to the same container** at any time with `docker exec -it microduck-workshop bash`. Ctrl+C stops only the running command. After a reboot, repeat the same compose start command. `docker compose -f docker/compose.yaml down` removes the container when you are done. Outputs and caches stay on the host.
 
 5. **Check the setup** inside the container:
 
@@ -79,7 +77,6 @@ All commands below run on the **host** from the repository root unless marked as
 | Fixed course models | `models/` (under 60 MB), checked against `models/manifest.json` | In the repository |
 | Pretrained PPO results and training logs for Part 3 | `datasets/` (about 50 MB) | In the repository |
 | GR00T walking-shot data package (demonstrations, training start, trained checkpoint, feature cache) | `course-data/groot-walking/` (about 62 GB) | From your course instructor, needed only for Section 5.3 |
-| Optional RTX 5090 feature cache | `course-data/groot-walking-feature-caches/` (about 32 GB) | From your course instructor; DGX Spark does not need it |
 
 Put the GR00T package under `course-data/` in the repository root, or set `MICRODUCK_COURSE_DATA` to the absolute path of the folder that contains `groot-walking/` before `docker compose ... up -d`. The container starts without it, and `prepare_host.sh` reports whether its `manifest.json` is present. GR00T also downloads its base model and the `nvidia/Cosmos-Reason2-2B` processor from Hugging Face: request access on the [model page](https://huggingface.co/nvidia/Cosmos-Reason2-2B), then run `/workspace/groot-env/bin/hf auth login` once inside the container.
 

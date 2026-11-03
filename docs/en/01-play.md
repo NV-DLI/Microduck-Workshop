@@ -135,7 +135,7 @@ Keyboard football and the autonomous shots in Parts 4 and 5 use the same 1 × 1.
 - **Floor.** A rigid plane without foam compression or raised edges; the friction of the mat against a real floor has not been calibrated.
 :::
 
-The robot uses official Microduck CAD, base mass and joint parameters, and a full-body collision model with backlash. The course pins the XL330 BAM actuator fit, 200 Hz physics and a 50 Hz policy period. The walking policy controls 14 of the 15 physical servos; it does not drive the mouth. Full-body collisions let the head, legs and battery rest on the ground after a fall instead of sinking through it.
+The robot uses official Microduck CAD, base mass and joint parameters, and a full-body collision model with backlash. This keyboard lab uses the pinned XL330 BAM actuator fit, 200 Hz physics and a 50 Hz policy period. Section 4.2 uses 100 Hz physics with the same 50 Hz policy period. The walking policy controls 14 of the 15 physical servos; it does not drive the mouth. Full-body collisions let the head, legs and battery rest on the ground after a fall instead of sinking through it.
 
 This simulation configuration still differs from the real robot. The camera corresponds to GC2093, but simulation samples at 960 × 540 and 15 Hz with an uncalibrated 70° horizontal field of view; ToF and body IMU models are also approximate. It therefore cannot establish parity with the latest firmware, every hardware error or full deployment on RK3566. Before transfer, check the real hardware revision, voltage, joint offsets, lens parameters and end-to-end delay.
 

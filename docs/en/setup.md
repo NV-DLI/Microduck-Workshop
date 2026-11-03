@@ -22,7 +22,6 @@ Every lab in this course runs in one course container. The image holds Isaac Sim
 | Device | System | What you can use |
 |---|---|---|
 | DGX Spark (aarch64) | Ubuntu 24.04 desktop | The complete course, including Isaac Sim windows, cameras and recordings |
-| RTX 5090 | Ubuntu in Windows 11 + WSL 2 | Commands without a window, such as PPO and GR00T training; the current driver does not support Isaac Sim windows, cameras or recordings |
 
 The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, and a desktop session that can show windows. The image pins these versions:
 
@@ -50,7 +49,6 @@ The fixed course models (`models/` under 60 MB) and the pretrained results and t
 
 **GR00T course data package (Section 5.3 only).** The GR00T walking shot in Section 5.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 5.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its `groot-walking/` folder under `course-data/` in the repository root; if you keep it elsewhere, set `MICRODUCK_COURSE_DATA` to the absolute path of the folder that contains `groot-walking/` before starting the container. The container starts without the package.
 
-**Optional: precomputed feature cache for the RTX 5090.** To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its `groot-walking-feature-caches/` folder next to `groot-walking/`, and training does not need to recompute the features (see Section 5.3). DGX Spark does not need it.
 
 ```{code-block} text
 :caption: Workspace
@@ -107,11 +105,7 @@ If you closed the terminal, or need a second shell (for example to watch logs wh
 
 A relative path in a command (for example `models/walk.onnx`) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under `~/.cache/huggingface` and `~/.cache/microduck/`, so the second start is much faster.
 
-:::{admonition} Starting in WSL 2
-:class: note
 
-In Ubuntu on Windows 11 WSL 2, `prepare_host.sh` tells you to start with the command below, which adds the WSLg display settings: `docker compose -f docker/compose.yaml -f docker/compose.wslg.yaml up -d`. Use this environment only for commands without a window; do the labs that need an Isaac Sim window or a camera on DGX Spark.
-:::
 
 {#check}
 ## Check that you can start

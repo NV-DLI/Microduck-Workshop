@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="How a hand-designed onboard policy reuses sensor estimates to shoot: why the shot runs onboard, how Nav2 path planning and trained motion skills are connected by hand-designed stages, and how to repeat the shot automatically in Isaac Sim." name="description" />
+<meta content="How a hand-designed onboard policy reuses sensor estimates to shoot: why the shot runs onboard, how Nav2 path planning and trained motion skills are connected by hand-designed stages, and how to press R in Isaac Sim to reset and shoot again." name="description" />
 
   <title>4.2 Hand-designed shooting stages - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
@@ -473,7 +473,7 @@
 </section>
 <section id="stage-kick">
 <h3>Kick and recover<a class="headerlink" href="#stage-kick" title="Link to this heading">#</a></h3>
-<p>The kick skill runs once: the frozen kick teacher plus the trained residual correction strikes the ball, and the robot returns to standing. The onboard policy does not judge whether it scored; a separate evaluator decides that with simulator truth.</p>
+<p>The skill runs once: the official right-foot kick policy strikes the ball, then smoothly hands over to the official standing policy. This onboard lab does not load a kick residual network. The onboard policy does not judge whether it scored; a separate evaluator decides that with simulator truth.</p>
 <p>Stages switch mainly on observations and body state: when a condition fails, the policy stops, looks again or goes back a stage, so refining often repeats several times. Waiting for stillness and each stage's time limit keep every attempt bounded.</p>
 </section>
 </section>
@@ -482,19 +482,21 @@
 <ul class="simple">
 <li><p><strong>Detector.</strong> The YOLO26n model was fine-tuned on images rendered in Isaac Sim. The box labels were generated automatically from the known scene geometry; 512 images trained it, 128 chose the checkpoint and 128 held-out images tested it (mAP50 0.978). That is an image detection score, not a shooting success rate.</p></li>
 <li><p><strong>Walking.</strong> The walking policy was trained with PPO, the method of Part 3.</p></li>
-<li><p><strong>Kick.</strong> The supplied Pollen Robotics kick and walking policies stay frozen as the teacher; a small residual network, trained with PPO in Isaac Lab, adds a bounded correction on top.</p></li>
+<li><p><strong>Kick and recovery.</strong> The pretrained Pollen Robotics right-foot kick and standing policies remain frozen. Their transition timing is programmed.</p></li>
 <li><p><strong>Not trained.</strong> The Nav2 planner, the geometry, the path follower and the stage logic are configured or programmed. The whole shot is never trained end to end.</p></li>
 </ul>
 </section>
 <section id="run">
-<h2>Repeat onboard shots automatically<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
-<p>Prepare the course container as described in <a class="reference internal" href="setup.html"><span class="std std-doc">Section 1.2</span></a>, then return to the container terminal; if the container is already running, enter it from the host with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>. Then run:</p>
+<h2>Repeat shots in the same window<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
+<p>Prepare the course container as described in <a class="reference internal" href="setup.html"><span class="std std-doc">Section 1.2</span></a>, then return to its terminal. If it is already running, enter it from the host with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>. Run:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
-<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>football<span class="w"> </span>--repeat<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">45</span><span class="w"> </span>--no-record-hd<span class="w"> </span>--output<span class="w"> </span>outputs/onboard-football-repeat
+<div class="code-block-caption"><span class="caption-text">Terminal · Inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>football<span class="w"> </span>--seconds<span class="w"> </span><span class="m">60</span><span class="w"> </span>--output<span class="w"> </span>outputs/onboard-football
 </pre></div>
 </div>
 </div>
+<p>The robot automatically observes, approaches the ball and attempts a shot. Switch to an English keyboard layout, click the Isaac Sim window and press <strong>R</strong> to restart. The window stays open. Each round starts from the standing initialization, with at most 1.5 cm of forward/backward offset and 1 cm of lateral offset. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.</p>
+<p>Let each round finish before pressing R to compare complete attempts. Pressing R during a task records an interruption separately, outside the complete-task success rate. Close the Isaac window to check the completed episodes and print the results.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>Parameter</p></th>
@@ -502,89 +504,75 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--repeat</span> <span class="pre">5</span></code></p></td>
-<td><p>Run five shots one after another; <code class="docutils literal notranslate"><span class="pre">--repeat</span> <span class="pre">0</span></code> keeps going until you press <strong>Ctrl+C</strong></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">45</span></code></p></td>
-<td><p>Time limit of each shot, in simulation seconds</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--no-record-hd</span></code></p></td>
-<td><p>Skip the extra 1080p third-person archive video; the sensor panels, task logs and scoring are kept</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">60</span></code></p></td>
+<td><p>Per-round task limit in simulation seconds, excluding standing initialization; completion or failure ends it earlier</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--output</span></code></p></td>
-<td><p>A new folder; each shot writes its own <code class="docutils literal notranslate"><span class="pre">episode-001</span></code>, <code class="docutils literal notranslate"><span class="pre">episode-002</span></code>, ... inside it</p></td>
+<td><p>A new folder; rounds are kept in separate <code class="docutils literal notranslate"><span class="pre">episode-001</span></code>, <code class="docutils literal notranslate"><span class="pre">episode-002</span></code>, etc. folders</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--single-run</span></code></p></td>
+<td><p>Run one round, close the window and evaluate it</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--headless</span></code></p></td>
+<td><p>Run and evaluate one round without opening a window</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><p>This explains the implementation behind the <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/run.py</span> <span class="pre">football</span></code> command just above. The table lists the parameters you can change; loading parameters such as <code class="docutils literal notranslate"><span class="pre">--model</span></code> and <code class="docutils literal notranslate"><span class="pre">--detector-deployment</span></code> are passed to the scene automatically by <code class="docutils literal notranslate"><span class="pre">run.py</span></code> after it checks the files, so you do not supply them.</p>
-<ul class="simple">
-<li><p><strong>Repeating.</strong> <code class="docutils literal notranslate"><span class="pre">scripts/repeat_episodes.py</span></code> launches each shot in its own process group and writes <code class="docutils literal notranslate"><span class="pre">summary.json</span></code> in the <code class="docutils literal notranslate"><span class="pre">--output</span></code> folder. The first shot uses the default <code class="docutils literal notranslate"><span class="pre">--seed</span></code> and each later shot adds one, which changes the simulated sensor noise; the start pose stays the same. <code class="docutils literal notranslate"><span class="pre">--root-y</span></code> moves the robot's sideways start (default 0.04 m). Without <code class="docutils literal notranslate"><span class="pre">--repeat</span></code>, <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">football</span></code> runs one shot.</p></li>
-<li><p><strong>Start-up.</strong> Every shot holds the joints at HOME with the body free on the ground, waits for the sensors and the walking policy's first output, then releases the joints before that output is applied.</p></li>
-<li><p><strong>Scene.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard_scene.py</span></code> creates the green pitch with this start-up; <code class="docutils literal notranslate"><span class="pre">--scene</span> <span class="pre">indoor</span></code> and <code class="docutils literal notranslate"><span class="pre">--style</span> <span class="pre">A</span></code> are the defaults of <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">football</span></code>.</p></li>
-<li><p><strong>Walking policy.</strong> The repository's <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code> is copied to <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/simulation/core/models/reference/velstand.onnx</span></code> in the container, and <code class="docutils literal notranslate"><span class="pre">run.py</span></code> loads it automatically through <code class="docutils literal notranslate"><span class="pre">--model</span></code>.</p></li>
-<li><p><strong>Detector.</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span></code> first checks the SHA-256 of the weights listed in <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>, then writes <code class="docutils literal notranslate"><span class="pre">/workspace/state/scene-detector-deployment.json</span></code> and loads it automatically through <code class="docutils literal notranslate"><span class="pre">--detector-deployment</span></code>.</p></li>
-<li><p><strong>Nav2.</strong> <code class="docutils literal notranslate"><span class="pre">lab/scene_nav2/nav2.yaml</span></code> configures only the NavFn planner (A*, no planning through unknown space) and a cost map with 2.5 cm resolution, with a margin based on the robot radius; <code class="docutils literal notranslate"><span class="pre">lab/scene_nav2/map_contract.py</span></code> builds the map from the surveyed pitch and current ToF and checks the path; <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/football/controller.py</span></code> turns the returned path into velocity requests.</p></li>
-<li><p><strong>Close-range stages.</strong> <code class="docutils literal notranslate"><span class="pre">ball_reacquisition.py</span></code>, <code class="docutils literal notranslate"><span class="pre">final_approach.py</span></code> and <code class="docutils literal notranslate"><span class="pre">head_handoff.py</span></code> in <code class="docutils literal notranslate"><span class="pre">lab/runtime/simulation/core/evaluation/football/</span></code> implement finding the ball again, stop-and-look refining and the handover up close.</p></li>
-<li><p><strong>Kick and recovery.</strong> The executor loads them from the fixed path <code class="docutils literal notranslate"><span class="pre">/workspace/state/student-course/configuration/core/kick_policy/export/deployment.json</span></code>, which binds the two networks copied from <code class="docutils literal notranslate"><span class="pre">models/kick-teacher.onnx</span></code> and <code class="docutils literal notranslate"><span class="pre">models/kick-residual.onnx</span></code>.</p></li>
+<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>Reset.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard/session.py</span></code> handles R and rebuilds each environment inside the same Isaac Sim process. Sensors, localization, action history and scoring start fresh; previous results are retained.</p></li>
+<li><p><strong>Initialization.</strong> Temporary joint limits hold HOME while the free body settles on the ground. Once sensors and the first real policy output are ready, the limits are released before applying that output.</p></li>
+<li><p><strong>Rates.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard/executor.py</span></code> uses Newton physics at 100 Hz, joint policies at 50 Hz and RGB/ToF at 15 Hz. Each action spans two 10 ms physics steps; actuator delay remains 20 ms.</p></li>
+<li><p><strong>Display.</strong> Each sensor capture uses one render subframe, and the panel displays the same RGB/ToF data supplied to the policy. No additional 1080p archive camera is created by default; <code class="docutils literal notranslate"><span class="pre">--record-hd</span></code> enables it.</p></li>
+<li><p><strong>Scene.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard_scene.py</span></code> creates the green pitch, reduced net mesh and standing initialization. <code class="docutils literal notranslate"><span class="pre">--scene</span> <span class="pre">indoor</span></code> and <code class="docutils literal notranslate"><span class="pre">--style</span> <span class="pre">A</span></code> are the defaults.</p></li>
+<li><p><strong>Walking and kicking.</strong> Walking and recovery use <code class="docutils literal notranslate"><span class="pre">velstand.onnx</span></code>, the runtime copy of official <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>; kicking uses <code class="docutils literal notranslate"><span class="pre">ball_kick_right.onnx</span></code>, copied from <code class="docutils literal notranslate"><span class="pre">models/kick-teacher.onnx</span></code>. <code class="docutils literal notranslate"><span class="pre">lab/onboard/official_kick_runtime.py</span></code> uses the kick policy exclusively for 0.14 seconds, updating its output every 20 ms, then blends to standing over 0.12 seconds, within a 4-second kick-and-recovery observation window.</p></li>
+<li><p><strong>Detection and localization.</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span></code> verifies <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code> before launching the detector. <code class="docutils literal notranslate"><span class="pre">lab/scene_goal_points.py</span></code> finds post endpoints inside the box, accounting for perspective and metal reflections. A detection box is not yet an accepted position: consistency across frames and observation freshness must also pass.</p></li>
+<li><p><strong>Nav2.</strong> <code class="docutils literal notranslate"><span class="pre">lab/scene_nav2/nav2.yaml</span></code> configures NavFn (A*, no unknown-space traversal) and a 2.5 cm costmap. <code class="docutils literal notranslate"><span class="pre">map_contract.py</span></code> builds the map from the measured pitch and current ToF, and checks the returned path. The follower converts path points into velocity requests.</p></li>
+<li><p><strong>Handover.</strong> The near-field stage aligns the right foot, stops and returns the head to neutral. The final point estimate must be 7–11 cm ahead and 1.5–5.5 cm to the right, with heading error at most 10° and goal observations at most 0.5 seconds old. These limits belong to this local course skill, not a guarantee for physical hardware.</p></li>
 </ul>
-</div></details><p>Isaac Sim closes after each shot and opens again for the next one, so every shot restarts from the same start pose. Watch the RGB and ToF panels while the robot walks, stops and looks.</p>
-<p>After each shot the terminal prints success or the reason for failure, and the final line counts successes and failures; failed shots are counted, never skipped. <strong>Ctrl+C</strong> stops the current shot and starts no new one. A technical error, such as a crash or a failed independent check, also stops the loop; that shot's files are kept, but it is not counted as a success or failure. The window usually runs slower than real time because the workstation renders the scene and sensors; this speed says nothing about the robot's own computer.</p>
+</div></details><p>Compare the motion with the RGB and ToF panels. Physics frequency describes simulation time; wall-clock display speed also depends on rendering and computation. A 100 Hz setting does not by itself guarantee real-time playback.</p>
 <figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="The complete Isaac Sim window for onboard shooting, with the green pitch, head RGB image and 8×8 ToF distances."></a><figcaption><p>Watch the robot on the left alongside its current image and distance readings on the right. NR means no return; it does not establish that the space ahead is clear.</p>
 </figcaption></figure></section>
 <section id="results">
 <h2>Recorded results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
-<p>To see how the pipeline responds to the start position, the course ran a check fixed in advance: five sideways starts of the robot relative to the ball, one attempt each, without a window and with <code class="docutils literal notranslate"><span class="pre">--no-record-hd</span></code>. Your <code class="docutils literal notranslate"><span class="pre">--repeat</span></code> run keeps one start, so expect your own counts rather than these numbers.</p>
-<figure class="course-chart"><div class="chart-header"><h3>Five sideways starts, one onboard shot each</h3></div><div class="chart-legend"><span><i class="chart-swatch chart-swatch-bar secondary" aria-hidden="true"></i>Full success</span><span><i class="chart-swatch chart-swatch-bar" aria-hidden="true"></i>Fall</span></div><div class="benchmark-row"><strong>−4 cm</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 1/1"><div class="benchmark-bar secondary" style="width:100.00%"></div></div><span class="benchmark-value" aria-hidden="true">1/1</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/1"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div></div></div><div class="benchmark-row"><strong>0 cm</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 1/1"><div class="benchmark-bar secondary" style="width:100.00%"></div></div><span class="benchmark-value" aria-hidden="true">1/1</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/1"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div></div></div><div class="benchmark-row"><strong>+4 cm (lab default)</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 0/1"><div class="benchmark-bar secondary" style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/1"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div></div></div><div class="benchmark-row"><strong>+8 cm</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 0/1"><div class="benchmark-bar secondary" style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/1"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div></div></div><div class="benchmark-row"><strong>+12 cm</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 1/1"><div class="benchmark-bar secondary" style="width:100.00%"></div></div><span class="benchmark-value" aria-hidden="true">1/1</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/1"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/1</span></div></div></div><figcaption>Each row is one start position relative to the ball, with one attempt. Full success means foot contact, the whole ball in the goal and a return to standing. Five attempts on one pitch are a small check, not a general success rate.</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
+<p>On DGX Spark, the window configuration above ran for 20 consecutive rounds, pressing R between rounds and varying the start by at most ±1.5 cm forward/backward and ±1 cm sideways. Full success requires foot contact, the whole ball inside the goal, no fall and a return to standing. Completed attempts that do not score remain in the denominator.</p>
+<figure class="course-chart"><div class="chart-header"><h3>Twenty shots in one window</h3></div><div class="chart-legend"><span><i class="chart-swatch chart-swatch-bar secondary" aria-hidden="true"></i>Full success</span><span><i class="chart-swatch chart-swatch-bar" aria-hidden="true"></i>Fall</span></div><div class="benchmark-row"><strong>1–5</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 5/5"><div class="benchmark-bar secondary" style="width:100.00%"></div></div><span class="benchmark-value" aria-hidden="true">5/5</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/5"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/5</span></div></div></div><div class="benchmark-row"><strong>6–10</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 4/5"><div class="benchmark-bar secondary" style="width:80.00%"></div></div><span class="benchmark-value" aria-hidden="true">4/5</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/5"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/5</span></div></div></div><div class="benchmark-row"><strong>11–15</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 4/5"><div class="benchmark-bar secondary" style="width:80.00%"></div></div><span class="benchmark-value" aria-hidden="true">4/5</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/5"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/5</span></div></div></div><div class="benchmark-row"><strong>16–20</strong><div class="benchmark-bars"><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Full success: 4/5"><div class="benchmark-bar secondary" style="width:80.00%"></div></div><span class="benchmark-value" aria-hidden="true">4/5</span></div><div class="benchmark-series"><div class="benchmark-track" role="img" aria-label="Fall: 0/5"><div class="benchmark-bar " style="width:0.00%"></div></div><span class="benchmark-value" aria-hidden="true">0/5</span></div></div></div><figcaption>Rounds are grouped in sets of five in execution order. All use one pitch and the same configuration. This is a small sample with very small start-position variation, not a general success rate.</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head cell-short"><p>Sideways start</p></th>
+<tr class="row-odd"><th class="head cell-short"><p>Rounds</p></th>
 <th class="head cell-short"><p>Full success</p></th>
 <th class="head cell-short"><p>Fall</p></th>
-<th class="head cell-short"><p>How it ended</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="cell-short"><p>−4 cm</p></td>
-<td class="cell-short"><p>1 / 1</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td><p>Scored at 31.5 s, back to standing</p></td>
+<tr class="row-even"><td class="cell-short"><p>1–5</p></td>
+<td class="cell-short"><p>5 / 5</p></td>
+<td class="cell-short"><p>0 / 5</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>0 cm</p></td>
-<td class="cell-short"><p>1 / 1</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td><p>Scored at 14.5 s, back to standing</p></td>
+<tr class="row-odd"><td class="cell-short"><p>6–10</p></td>
+<td class="cell-short"><p>4 / 5</p></td>
+<td class="cell-short"><p>0 / 5</p></td>
 </tr>
-<tr class="row-even"><td><p>+4 cm (lab default)</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td><p>Stayed re-observing up close until that stage's time limit</p></td>
+<tr class="row-even"><td class="cell-short"><p>11–15</p></td>
+<td class="cell-short"><p>4 / 5</p></td>
+<td class="cell-short"><p>0 / 5</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>+8 cm</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td><p>Kick refused; stopped after a failed safety check</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>+12 cm</p></td>
-<td class="cell-short"><p>1 / 1</p></td>
-<td class="cell-short"><p>0 / 1</p></td>
-<td><p>Scored at 28.1 s, back to standing</p></td>
+<tr class="row-odd"><td class="cell-short"><p>16–20</p></td>
+<td class="cell-short"><p>4 / 5</p></td>
+<td class="cell-short"><p>0 / 5</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The success rate in this check was <strong>3/5 (60%)</strong>: all three scored and returned to standing, and none fell. Both failures ended before the foot touched the ball, one in each category below. The records show the sequence of events; they do not establish the root cause:</p>
-<ul class="simple">
-<li><p><strong>Position not confirmed up close.</strong> After approaching, the robot could not keep getting a position estimate reliable enough for alignment, so it stayed in re-observation until that stage's time limit. The detector still boxed the ball during this time; the position built from the box was what kept being rejected.</p></li>
-<li><p><strong>Kick conditions not met.</strong> The ball ended outside the range the kick skill was trained for, so the kick was refused. While stepping back to adjust, the perception safety check did not pass, and the robot stopped trying.</p></li>
-</ul>
-<p>If one of your shots fails, also check for <strong>no admissible path</strong> (Nav2 finds no safe path to the stance) and <strong>balance during the kick</strong>. <code class="docutils literal notranslate"><span class="pre">summary.json</span></code> lists each shot's outcome; the <code class="docutils literal notranslate"><span class="pre">terminal_reason</span></code> in a shot's <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> names the stage that ended it.</p>
+<p>The measured result was <strong>17/20 (85%)</strong>, with <strong>0/20</strong> falls and no technical errors. Failed rounds were retained. <a href="_static/data/onboard-reset-evaluation.json">View every round</a>. Keep your own counts: a small sample around one start cannot guarantee every shot.</p>
+<p>The main loop ran at a median of about <strong>0.48 times real time</strong>, ranging from 0.42 to 0.52. A 20-second simulated action would take about 41 seconds of wall time. This excludes loading, resets and post-run evaluation; website demonstrations play on the simulation clock.</p>
+<p>For a failed attempt, first identify the stage where it stopped. <code class="docutils literal notranslate"><span class="pre">summary.json</span></code> lists the outcomes; each round’s <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> records its <code class="docutils literal notranslate"><span class="pre">terminal_reason</span></code> and failure details. A visible detection box does not guarantee an accepted geometric position. Without a sufficiently fresh position up close, the policy may stop to observe again or end the attempt. Also check path feasibility, kick conditions and balance after contact.</p>
 </section>
 <section id="design">
 <h2>Limits of hand design<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
 <p>Every stage, transition and threshold of this onboard policy was written by people around one task: shooting at this goal. It is clear and easy to debug, but it fits only this task. For &quot;dribble the ball to the center circle and stop&quot; or &quot;walk up to the ball without touching it&quot;, most of the perception can be reused, but the stages, conditions and thresholds must be redesigned and retuned.</p>
-<p>If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 takes this route with GR00T on a local workstation, using demonstrations recorded with this onboard policy.</p>
+<p>If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 takes this route with GR00T on a local workstation, using the supplied shooting demonstrations generated by hand-designed stages.</p>
 <div class="quiz"><h3>Check your understanding</h3><p>Which parts of the onboard shot were learned from data, and which were written or configured by people?</p>
-<details><summary>Show explanation</summary><p>The detector, the walking policy and the kick residual were trained. The geometry, Nav2 path planning, the path follower and the stage logic were configured or programmed, and the shot as a whole was never trained end to end.</p>
+<details><summary>Show explanation</summary><p>The detector and the official walking and kicking policies were trained. The geometry, Nav2 path planning, the path follower and the stage logic were configured or programmed, and the shot as a whole was never trained end to end.</p>
 </details></div><div class="quiz"><h3>Check your understanding</h3><p>To make Microduck dribble the ball to the center circle and stop, can the existing onboard policy be reused directly?</p>
 <details><summary>Show explanation</summary><p>Most of the perception can be reused, but the stance, stage order, transitions and handover were designed for shooting and must be redesigned and retuned. Rewriting the pipeline by hand for every new task is why Part 5 turns to learning from demonstrations.</p>
 </details></div></section>
@@ -660,7 +648,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">What was trained, and what was not</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">Repeat onboard shots automatically</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">Repeat shots in the same window</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Recorded results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design">Limits of hand design</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>

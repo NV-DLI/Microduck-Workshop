@@ -174,14 +174,16 @@ def main():
     plan.add_argument("--lateral", type=float, default=0.035)
     plan.add_argument("--output", type=Path, required=True)
     fb = sub.add_parser("football")
-    fb.add_argument("--seed", type=int, default=983102)
+    fb.add_argument("--seed", type=int, default=983402)
     fb.add_argument("--locomotion", choices=["walking", "rollers"], default="walking")
     fb.add_argument("--scene", choices=["legacy", "indoor"], default="indoor")
     fb.add_argument("--style", choices=list("ABCD"), default="A")
-    fb.add_argument("--record-hd", action=argparse.BooleanOptionalAction, default=True)
+    fb.add_argument("--record-hd", action=argparse.BooleanOptionalAction, default=False)
+    fb.add_argument("--single-run", action="store_true", help="Finish after one shot instead of waiting for R")
+    fb.add_argument("--session-episodes", type=int, default=0, help=argparse.SUPPRESS)
     fb.add_argument("--root-y", type=float)
     fb.add_argument("--ball-xy", type=float, nargs=2)
-    fb.add_argument("--seconds", type=float, default=180)
+    fb.add_argument("--seconds", type=float, default=60)
     fb.add_argument("--output", type=Path, required=True)
     fb.add_argument("--headless", action="store_true")
     fb.add_argument(
@@ -249,6 +251,8 @@ def main():
         return 0
     if a.command == "report":
         for path in [
+            a.run / "summary.json",
+            a.run / "session.json",
             a.run / "result.json",
             a.run / "independent-result.json",
             a.run / "manifest.json",
@@ -262,6 +266,8 @@ def main():
                         {
                             k: data[k]
                             for k in [
+                                "completed", "successes", "failures", "technical_errors",
+                                "interrupted", "audit_errors", "success_rate", "episode",
                                 "status",
                                 "state",
                                 "seed",
@@ -595,6 +601,8 @@ def main():
         physics, evaluation = walking_football(a, out, a.seed, py, m)
         result = run(physics, c)
         if result:
+            if (out / "session.json").exists():
+                run(evaluation, c)
             return result
         return run(evaluation, c)
     return 0
@@ -683,9 +691,9 @@ def walking_football(a, out, seed, py, m):
             "--style",
             a.style,
             "--render-subframes",
-            "4",
+            "1",
             "--root-y",
-            a.root_y if a.root_y is not None else 0.04,
+            a.root_y if a.root_y is not None else 0.12,
             "--ball-xy",
             *(a.ball_xy if a.ball_xy is not None else [0.02, 0.0]),
         ]
@@ -695,6 +703,8 @@ def walking_football(a, out, seed, py, m):
             cmd += ["--record-hd"]
     if not a.headless:
         cmd += ["--visualizer", "kit"]
+        if a.scene == "indoor" and not getattr(a, "single_run", False) and getattr(a, "repeat", None) is None:
+            cmd += ["--interactive-reset", "--session-episodes", getattr(a, "session_episodes", 0)]
     evaluation = [
         py,
         ROOT / "lab/evaluate_task.py",

@@ -479,7 +479,7 @@
 <li><p>New observation</p></li>
 </ol>
 <p>The policy outputs actions, and the action interface turns them into joint targets. Actuators produce torque from the difference between target and measured state; the resulting motion also depends on contact, gravity, inertia and friction.</p>
-<p>The policy runs at 50 Hz and physics at 200 Hz, so each action spans four physics steps. The backlash model represents transmission play with passive joints; the physics engine computes them, and they are not policy outputs.</p>
+<p>In this walking example, the policy runs at 50 Hz and physics at 200 Hz, so each action spans four physics steps. The Section 4.2 onboard shot uses 100 Hz physics: two physics steps per action, still a 20 ms policy period. The backlash model represents transmission play with passive joints; the physics engine computes them, and they are not policy outputs.</p>
 </section>
 <section id="frames">
 <h2>Describe motion with frames<a class="headerlink" href="#frames" title="Link to this heading">#</a></h2>

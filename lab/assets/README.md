@@ -36,7 +36,8 @@ No retailer photo is redistributed. No community mesh was reused.
 - Goal: outer width 0.40, depth 0.20, height 0.25; front plane x=0.68. Side panels are trapezoidal: rear top x=0.060 and rear bottom x=0.194 relative to the goal plane. These depths are inferred from the photo, not measured. Diamond wires replace the old rectangular grid.
 - Assumed frame diameter 0.006; front post centres y=±0.197.
 - Clear opening width 0.388, height 0.244.
-- Assumed wire diameter 0.0008 and spacing 0.012. Frame and wires have static
+- Assumed wire diameter 0.0008 and nominal spacing 0.024, with 84 diamond-weave
+  wires and 11 frame rods. Frame and wires have static
   collision geometry. The goal represents a secured installation.
 - Mat print is 0.00005 above the rigid Newton contact plane. Its 0.004 visual
   backing extends below that plane. Raised edges and compression are not modeled.

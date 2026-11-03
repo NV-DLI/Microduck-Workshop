@@ -249,14 +249,14 @@ def main():
                 break
             reqpath = a.exchange / "request.json"
             if not reqpath.exists():
-                time.sleep(0.02)
+                time.sleep(0.002)
                 continue
             if reqpath.stat().st_size > 1_048_576:
                 raise ValueError("Bounded request file exceeded1MiB")
             request = read(reqpath)
             request_hash = digest(request)
             if request_hash == seen:
-                time.sleep(0.02)
+                time.sleep(0.002)
                 continue
             seen = request_hash
             began = time.monotonic()

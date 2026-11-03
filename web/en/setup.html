@@ -423,10 +423,6 @@
 <td><p>Ubuntu 24.04 desktop</p></td>
 <td><p>The complete course, including Isaac Sim windows, cameras and recordings</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>RTX 5090</p></td>
-<td><p>Ubuntu in Windows 11 + WSL 2</p></td>
-<td><p>Commands without a window, such as PPO and GR00T training; the current driver does not support Isaac Sim windows, cameras or recordings</p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -464,7 +460,6 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 <p>The fixed course models (<code class="docutils literal notranslate"><span class="pre">models/</span></code> under 60 MB) and the pretrained results and training logs used in Part 3 (<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> about 50 MB) come with the repository; your own runs go to <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>, kept separate from them.</p>
 <p><strong>GR00T course data package (Section 5.3 only).</strong> The GR00T walking shot in Section 5.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 5.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> folder under <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> in the repository root; if you keep it elsewhere, set <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> to the absolute path of the folder that contains <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> before starting the container. The container starts without the package.</p>
-<p><strong>Optional: precomputed feature cache for the RTX 5090.</strong> To train GR00T on an RTX 5090 (compute capability 12.0), you can also get from your instructor a feature cache of about 32 GB computed on that GPU. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> folder next to <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code>, and training does not need to recompute the features (see Section 5.3). DGX Spark does not need it.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
@@ -509,10 +504,6 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <p>If you closed the terminal, or need a second shell (for example to watch logs while training in Section 5.3), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> again from the repository root; data, outputs and caches live on the host. When you have finished all labs, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> stops and removes the container.</p>
 </div>
 <p>A relative path in a command (for example <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> and <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code>, so the second start is much faster.</p>
-<div class="note admonition">
-<p class="admonition-title">Starting in WSL 2</p>
-<p>In Ubuntu on Windows 11 WSL 2, <code class="docutils literal notranslate"><span class="pre">prepare_host.sh</span></code> tells you to start with the command below, which adds the WSLg display settings: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">-f</span> <span class="pre">docker/compose.wslg.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code>. Use this environment only for commands without a window; do the labs that need an Isaac Sim window or a camera on DGX Spark.</p>
-</div>
 </section>
 <section id="check">
 <h2>Check that you can start<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>

@@ -360,7 +360,7 @@ class RunPyTest(unittest.TestCase):
         r = self.call("--repeat", "3", "--seconds", "45", "--no-record-hd", "--output", str(out))
         self.assertEqual(r.returncode, 0, r.stdout + r.stderr)
         s = json.loads((out / "summary.json").read_text())
-        self.assertEqual([e["seed"] for e in s["episodes"]], [983102, 983103, 983104])
+        self.assertEqual([e["seed"] for e in s["episodes"]], [983402, 983403, 983404])
         self.assertEqual([e["state"] for e in s["episodes"]], ["success", "failed", "success"])
         self.assertEqual(s["counts"]["failed"], 1)
         for i in (1, 2, 3):
@@ -405,7 +405,7 @@ class ArgumentTest(unittest.TestCase):
         self.assertEqual(r.returncode, 2)
         self.assertIn("indoor scene", r.stderr)
 
-    def test_single_run_command_line_is_unchanged(self):
+    def test_windowed_onboard_command_uses_reset_and_current_profile(self):
         state = Path(tempfile.mkdtemp())
         env = dict(os.environ, MICRODUCK_STATE=str(state))
         code = textwrap.dedent(
@@ -434,8 +434,8 @@ class ArgumentTest(unittest.TestCase):
              "--detector-backend", "torch", "--detector-device", "cuda:0", "--shared-imu-readback",
              "--packed-physics-readback", "--root-x", "-0.55", "--recovery-approval",
              m + "/evaluation/football/recovery-approval.json", "--runtime", m, "--style", "A",
-             "--render-subframes", "4", "--root-y", "0.04", "--ball-xy", "0.02", "0.0",
-             "--record-hd", "--visualizer", "kit"],
+             "--render-subframes", "1", "--root-y", "0.12", "--ball-xy", "0.02", "0.0",
+             "--record-hd", "--visualizer", "kit", "--interactive-reset", "--session-episodes", "0"],
         )
         self.assertEqual(
             evaluation,

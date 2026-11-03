@@ -186,11 +186,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.017040065821114978
+        double height = 0.06298910081444987
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.06319047619047619, -0.19103030303030305, 0.24119047619047618)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.07116666666666666, -0.1751111111111111, 0.22666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -199,11 +199,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.034880131642229945
+        double height = 0.12677820162889974
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.06638095238095239, -0.1850606060606061, 0.23538095238095236)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.08233333333333334, -0.15322222222222223, 0.2063333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -212,11 +212,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.05272019746334494
+        double height = 0.19056730244334963
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.06957142857142858, -0.1790909090909091, 0.22957142857142854)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.0935, -0.13133333333333336, 0.186)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -225,11 +225,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.0705602632844599
+        double height = 0.25435640325779946
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.07276190476190476, -0.17312121212121212, 0.22376190476190477)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.10466666666666667, -0.10944444444444446, 0.16566666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -238,11 +238,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.08840032910557487
+        double height = 0.31814550407224934
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.07595238095238095, -0.16715151515151516, 0.21795238095238095)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.11583333333333334, -0.08755555555555555, 0.14533333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -251,11 +251,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.10624039492668987
+        double height = 0.3819346048866992
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.07914285714285714, -0.16118181818181818, 0.21214285714285713)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.127, -0.06566666666666668, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -264,11 +264,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.12408046074780485
+        double height = 0.3819346048866992
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.08233333333333334, -0.15521212121212122, 0.2063333333333333)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.127, -0.021888888888888874, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -277,11 +277,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.14192052656891982
+        double height = 0.3819346048866992
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.08552380952380953, -0.14924242424242426, 0.20052380952380952)
+        quatf xformOp:orient = (0.90485287, -0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.127, 0.021888888888888874, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -290,11 +290,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.15976059239003482
+        double height = 0.3819346048866993
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.08871428571428572, -0.14327272727272727, 0.1947142857142857)
+        quatf xformOp:orient = (0.4257244, 0.8060253, 0.41119567, -0)
+        double3 xformOp:translate = (0.127, 0.06566666666666665, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -303,11 +303,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.1776006582111498
+        double height = 0.31814550407224934
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.0919047619047619, -0.13730303030303032, 0.1889047619047619)
+        quatf xformOp:orient = (0.4257244, 0.8060253, 0.41119567, -0)
+        double3 xformOp:translate = (0.13816666666666666, 0.08755555555555555, 0.10466666666666667)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -316,11 +316,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.1954407240322647
+        double height = 0.25435640325779946
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.0950952380952381, -0.13133333333333336, 0.1830952380952381)
+        quatf xformOp:orient = (0.4257244, 0.8060253, 0.41119567, -0)
+        double3 xformOp:translate = (0.14933333333333335, 0.10944444444444446, 0.08433333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -329,11 +329,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.21328078985337975
+        double height = 0.19056730244334966
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.09828571428571428, -0.12536363636363637, 0.17728571428571427)
+        quatf xformOp:orient = (0.4257244, 0.8060253, 0.41119567, -0)
+        double3 xformOp:translate = (0.1605, 0.13133333333333333, 0.064)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -342,11 +342,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2311208556744947
+        double height = 0.12677820162889974
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.10147619047619047, -0.1193939393939394, 0.17147619047619048)
+        quatf xformOp:orient = (0.4257244, 0.8060253, 0.41119567, -0)
+        double3 xformOp:translate = (0.1716666666666667, 0.15322222222222223, 0.043666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -355,11 +355,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2489609214956097
+        double height = 0.06298910081444989
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.10466666666666667, -0.11342424242424243, 0.16566666666666666)
+        quatf xformOp:orient = (0.4257244, 0.8060253, 0.41119567, -0)
+        double3 xformOp:translate = (0.18283333333333335, 0.1751111111111111, 0.023333333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -368,11 +368,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.26680098731672464
+        double height = 0.06298910081444987
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.10785714285714285, -0.10745454545454546, 0.15985714285714286)
+        quatf xformOp:orient = (0.4257244, -0.8060253, 0.41119567, 0)
+        double3 xformOp:translate = (0.18283333333333335, -0.1751111111111111, 0.023333333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -381,11 +381,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2846410531378396
+        double height = 0.12677820162889974
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.11104761904761905, -0.10148484848484848, 0.15404761904761904)
+        quatf xformOp:orient = (0.4257244, -0.8060253, 0.41119567, 0)
+        double3 xformOp:translate = (0.1716666666666667, -0.15322222222222223, 0.043666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -394,11 +394,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3024811189589545
+        double height = 0.19056730244334963
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.11423809523809524, -0.09551515151515153, 0.14823809523809522)
+        quatf xformOp:orient = (0.4257244, -0.8060253, 0.41119567, 0)
+        double3 xformOp:translate = (0.1605, -0.13133333333333336, 0.064)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -407,11 +407,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.32032118478006955
+        double height = 0.25435640325779946
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.11742857142857144, -0.08954545454545455, 0.14242857142857143)
+        quatf xformOp:orient = (0.4257244, -0.8060253, 0.41119567, 0)
+        double3 xformOp:translate = (0.14933333333333335, -0.10944444444444446, 0.08433333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -420,11 +420,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.33816125060118457
+        double height = 0.31814550407224934
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.12061904761904763, -0.08357575757575757, 0.1366190476190476)
+        quatf xformOp:orient = (0.4257244, -0.8060253, 0.41119567, 0)
+        double3 xformOp:translate = (0.13816666666666666, -0.08755555555555555, 0.10466666666666667)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -433,11 +433,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.35600131642229954
+        double height = 0.3819346048866992
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.12380952380952381, -0.07760606060606061, 0.13080952380952382)
+        quatf xformOp:orient = (0.4257244, -0.8060253, 0.41119567, 0)
+        double3 xformOp:translate = (0.127, -0.06566666666666668, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -446,11 +446,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.3819346048866992
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.07163636363636364, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.127, -0.021888888888888874, 0.12499999999999999)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -459,11 +459,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.3819346048866992
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.05969696969696972, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.127, 0.021888888888888874, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -472,11 +472,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3738413822434145
+        double height = 0.3819346048866993
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.04775757575757576, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.127, 0.06566666666666665, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -485,11 +485,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.31814550407224934
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.03581818181818183, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.11583333333333334, 0.08755555555555555, 0.14533333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -498,11 +498,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.25435640325779946
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.023878787878787867, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.10466666666666667, 0.10944444444444446, 0.16566666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -511,11 +511,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.19056730244334966
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.011939393939393944, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.0935, 0.13133333333333333, 0.186)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -524,11 +524,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.12677820162889974
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 2.7755575615628914e-17, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.08233333333333334, 0.15322222222222223, 0.2063333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -537,11 +537,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.06298910081444989
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.011939393939393944, 0.125)
+        quatf xformOp:orient = (0.90485287, 0.379227, -0.19346352, 0)
+        double3 xformOp:translate = (0.07116666666666666, 0.1751111111111111, 0.22666666666666668)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -550,11 +550,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.05227064939456173
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.023878787878787867, 0.125)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.045, -0.1751111111111111, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -563,11 +563,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.03581818181818183, 0.125)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, -0.15322222222222223, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -576,11 +576,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3738413822434145
+        double height = 0.10534129878912339
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.047757575757575776, 0.125)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, -0.10944444444444446, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -589,11 +589,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3738413822434145
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, -0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.0596969696969697, 0.125)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, -0.06566666666666668, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -602,11 +602,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.10534129878912346
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.127, 0.07163636363636364, 0.125)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, -0.021888888888888895, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -615,11 +615,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3560013164222995
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.1301904761904762, 0.07760606060606061, 0.11919047619047618)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, 0.021888888888888874, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -628,11 +628,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3381612506011845
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.13338095238095238, 0.08357575757575758, 0.11338095238095237)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, 0.06566666666666668, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -641,11 +641,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3203211847800695
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.13657142857142857, 0.08954545454545455, 0.10757142857142855)
+        quatf xformOp:orient = (0.70710677, -0.5832897, 0.3997163, 0)
+        double3 xformOp:translate = (0.03, 0.10944444444444443, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -654,11 +654,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3024811189589546
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.13976190476190475, 0.09551515151515153, 0.10176190476190478)
+        quatf xformOp:orient = (0.70710677, 0.5832897, -0.3997163, 0)
+        double3 xformOp:translate = (0.03, 0.15322222222222223, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -667,11 +667,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2846410531378396
+        double height = 0.05227064939456173
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.14295238095238094, 0.10148484848484848, 0.09595238095238096)
+        quatf xformOp:orient = (0.70710677, 0.5832897, -0.3997163, 0)
+        double3 xformOp:translate = (0.015, 0.1751111111111111, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -680,11 +680,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.26680098731672464
+        double height = 0.05227064939456173
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.14614285714285713, 0.10745454545454546, 0.09014285714285715)
+        quatf xformOp:orient = (0.70710677, -0.5832897, -0.3997163, 0)
+        double3 xformOp:translate = (0.015, -0.1751111111111111, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -693,11 +693,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.24896092149560964
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.14933333333333335, 0.11342424242424244, 0.08433333333333333)
+        quatf xformOp:orient = (0.70710677, -0.5832897, -0.3997163, 0)
+        double3 xformOp:translate = (0.03, -0.15322222222222223, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -706,11 +706,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2311208556744947
+        double height = 0.10534129878912339
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.15252380952380953, 0.1193939393939394, 0.07852380952380952)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, -0.10944444444444446, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -719,11 +719,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2132807898533797
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.15571428571428572, 0.12536363636363637, 0.0727142857142857)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, -0.06566666666666668, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -732,11 +732,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.19544072403226476
+        double height = 0.10534129878912346
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.1589047619047619, 0.13133333333333333, 0.0669047619047619)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, -0.021888888888888895, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -745,11 +745,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.17760065821114973
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.1620952380952381, 0.13730303030303032, 0.06109523809523809)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, 0.021888888888888874, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -758,11 +758,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.1597605923900348
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.16528571428571429, 0.14327272727272727, 0.05528571428571428)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, 0.06566666666666668, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -771,11 +771,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.14192052656891982
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.16847619047619047, 0.14924242424242426, 0.04947619047619048)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, 0.10944444444444443, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -784,11 +784,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.12408046074780484
+        double height = 0.10534129878912343
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.1716666666666667, 0.15521212121212122, 0.043666666666666666)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.03, 0.15322222222222223, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -797,11 +797,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.10624039492668984
+        double height = 0.05227064939456173
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.17485714285714285, 0.1611818181818182, 0.03785714285714285)
+        quatf xformOp:orient = (0.70710677, 0.5832897, 0.3997163, -0)
+        double3 xformOp:translate = (0.045, 0.1751111111111111, 0.247)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -810,11 +810,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.08840032910557487
+        double height = 0.04254487025909498
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.17804761904761907, 0.16715151515151516, 0.03204761904761905)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.0075, -0.197, 0.22666666666666668)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -823,11 +823,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.07056026328445991
+        double height = 0.08588974051819
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.18123809523809525, 0.17312121212121212, 0.026238095238095237)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.015, -0.197, 0.2063333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -836,11 +836,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.05272019746334491
+        double height = 0.129234610777285
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.18442857142857144, 0.1790909090909091, 0.020428571428571428)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.0225, -0.197, 0.186)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -849,11 +849,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.03488013164222992
+        double height = 0.17257948103638
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.18761904761904763, 0.1850606060606061, 0.014619047619047618)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.03, -0.197, 0.16566666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -862,11 +862,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.01704006582111496
+        double height = 0.18151626976828542
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, 0.8013797, 0.42829356, -0)
-        double3 xformOp:translate = (0.19080952380952382, 0.19103030303030305, 0.008809523809523809)
+        quatf xformOp:orient = (0.9726825, 0, 0.23213957, 0)
+        double3 xformOp:translate = (0.041166666666666664, -0.197, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -875,11 +875,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.01704006582111496
+        double height = 0.19263100980855047
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.19080952380952382, -0.19103030303030305, 0.008809523809523809)
+        quatf xformOp:orient = (0.959415, 0, 0.28199783, 0)
+        double3 xformOp:translate = (0.052333333333333336, -0.197, 0.08433333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -888,11 +888,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.03488013164222993
+        double height = 0.14427325735641286
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.18761904761904763, -0.1850606060606061, 0.014619047619047618)
+        quatf xformOp:orient = (0.28199783, -0, -0.959415, 0)
+        double3 xformOp:translate = (0.08775, -0.197, 0.064)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -901,11 +901,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.05272019746334491
+        double height = 0.09591550490427525
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.18442857142857144, -0.1790909090909091, 0.020428571428571428)
+        quatf xformOp:orient = (0.28199783, -0, -0.959415, 0)
+        double3 xformOp:translate = (0.12316666666666667, -0.197, 0.043666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -914,11 +914,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.07056026328445991
+        double height = 0.04755775245213762
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.18123809523809525, -0.17312121212121212, 0.026238095238095237)
+        quatf xformOp:orient = (0.28199783, -0, -0.959415, 0)
+        double3 xformOp:translate = (0.15858333333333335, -0.197, 0.023333333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -927,11 +927,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.08840032910557487
+        double height = 0.06249318903150463
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.17804761904761907, -0.16715151515151516, 0.03204761904761905)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.02425, -0.197, 0.023333333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -940,11 +940,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.10624039492668988
+        double height = 0.12578637806300927
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.17485714285714285, -0.16118181818181818, 0.03785714285714285)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.0485, -0.197, 0.043666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -953,11 +953,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.12408046074780484
+        double height = 0.1890795670945139
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.1716666666666667, -0.15521212121212122, 0.043666666666666666)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.07275000000000001, -0.197, 0.064)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -966,11 +966,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.14192052656891982
+        double height = 0.2523727561260185
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.16847619047619047, -0.14924242424242426, 0.04947619047619048)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.097, -0.197, 0.08433333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -979,11 +979,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.1597605923900348
+        double height = 0.23569500816907088
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.16528571428571429, -0.14327272727272727, 0.05528571428571428)
+        quatf xformOp:orient = (0.39508048, -0, 0.9186465, 0)
+        double3 xformOp:translate = (0.08583333333333334, -0.197, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -992,11 +992,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.17760065821114973
+        double height = 0.2200186787590418
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.1620952380952381, -0.13730303030303032, 0.06109523809523809)
+        quatf xformOp:orient = (0.36286867, -0, 0.9318403, 0)
+        double3 xformOp:translate = (0.07466666666666667, -0.197, 0.16566666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1005,11 +1005,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.1954407240322647
+        double height = 0.16481400906928134
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.1589047619047619, -0.13133333333333336, 0.0669047619047619)
+        quatf xformOp:orient = (0.9318403, 0, -0.36286867, 0)
+        double3 xformOp:translate = (0.07100000000000001, -0.197, 0.186)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1018,11 +1018,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2132807898533797
+        double height = 0.1096093393795209
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.15571428571428572, -0.12536363636363637, 0.0727142857142857)
+        quatf xformOp:orient = (0.9318403, 0, -0.36286867, 0)
+        double3 xformOp:translate = (0.06733333333333333, -0.197, 0.2063333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1031,11 +1031,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2311208556744947
+        double height = 0.05440466968976043
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.15252380952380953, -0.1193939393939394, 0.07852380952380952)
+        quatf xformOp:orient = (0.9318403, 0, -0.36286867, 0)
+        double3 xformOp:translate = (0.06366666666666666, -0.197, 0.22666666666666668)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1044,11 +1044,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.24896092149560967
+        double height = 0.04254487025909498
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.14933333333333335, -0.11342424242424243, 0.08433333333333333)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.0075, 0.197, 0.22666666666666668)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1057,11 +1057,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.26680098731672464
+        double height = 0.08588974051819
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.14614285714285713, -0.10745454545454546, 0.09014285714285715)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.015, 0.197, 0.2063333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1070,11 +1070,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.2846410531378396
+        double height = 0.129234610777285
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.14295238095238094, -0.10148484848484848, 0.09595238095238096)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.0225, 0.197, 0.186)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1083,11 +1083,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3024811189589546
+        double height = 0.17257948103638
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.13976190476190475, -0.09551515151515153, 0.10176190476190478)
+        quatf xformOp:orient = (0.98443174, 0, 0.17576724, 0)
+        double3 xformOp:translate = (0.03, 0.197, 0.16566666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1096,11 +1096,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3203211847800695
+        double height = 0.18151626976828542
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.13657142857142857, -0.08954545454545455, 0.10757142857142855)
+        quatf xformOp:orient = (0.9726825, 0, 0.23213957, 0)
+        double3 xformOp:translate = (0.041166666666666664, 0.197, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1109,11 +1109,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3381612506011845
+        double height = 0.19263100980855047
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.13338095238095238, -0.08357575757575757, 0.11338095238095237)
+        quatf xformOp:orient = (0.959415, 0, 0.28199783, 0)
+        double3 xformOp:translate = (0.052333333333333336, 0.197, 0.08433333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1122,11 +1122,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3560013164222995
+        double height = 0.14427325735641286
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.1301904761904762, -0.07760606060606061, 0.11919047619047618)
+        quatf xformOp:orient = (0.28199783, -0, -0.959415, 0)
+        double3 xformOp:translate = (0.08775, 0.197, 0.064)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1135,11 +1135,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.09591550490427525
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.41755867, -0.8013797, 0.42829356, 0)
-        double3 xformOp:translate = (0.127, -0.07163636363636364, 0.125)
+        quatf xformOp:orient = (0.28199783, -0, -0.959415, 0)
+        double3 xformOp:translate = (0.12316666666666667, 0.197, 0.043666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1148,11 +1148,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.04755775245213762
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.05969696969696972, 0.125)
+        quatf xformOp:orient = (0.28199783, -0, -0.959415, 0)
+        double3 xformOp:translate = (0.15858333333333335, 0.197, 0.023333333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1161,11 +1161,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3738413822434145
+        double height = 0.06249318903150463
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.04775757575757576, 0.125)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.02425, 0.197, 0.023333333333333334)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1174,11 +1174,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.12578637806300927
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.03581818181818183, 0.125)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.0485, 0.197, 0.043666666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1187,11 +1187,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.1890795670945139
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.023878787878787867, 0.125)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.07275000000000001, 0.197, 0.064)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1200,11 +1200,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.2523727561260185
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, -0.011939393939393944, 0.125)
+        quatf xformOp:orient = (0.42278096, -0, 0.9062319, 0)
+        double3 xformOp:translate = (0.097, 0.197, 0.08433333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1213,11 +1213,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.23569500816907088
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 2.7755575615628914e-17, 0.125)
+        quatf xformOp:orient = (0.39508048, -0, 0.9186465, 0)
+        double3 xformOp:translate = (0.08583333333333334, 0.197, 0.125)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1226,11 +1226,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.2200186787590418
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.011939393939393944, 0.125)
+        quatf xformOp:orient = (0.36286867, -0, 0.9318403, 0)
+        double3 xformOp:translate = (0.07466666666666667, 0.197, 0.16566666666666666)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1239,11 +1239,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.16481400906928134
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.023878787878787867, 0.125)
+        quatf xformOp:orient = (0.9318403, 0, -0.36286867, 0)
+        double3 xformOp:translate = (0.07100000000000001, 0.197, 0.186)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1252,11 +1252,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.37384138224341446
+        double height = 0.1096093393795209
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.03581818181818183, 0.125)
+        quatf xformOp:orient = (0.9318403, 0, -0.36286867, 0)
+        double3 xformOp:translate = (0.06733333333333333, 0.197, 0.2063333333333333)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 
@@ -1265,3131 +1265,11 @@ def Xform "Asset"
     )
     {
         uniform token axis = "Z"
-        double height = 0.3738413822434145
+        double height = 0.05440466968976043
         rel material:binding = </Asset/Materials/WovenSteel>
         double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.047757575757575776, 0.125)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_84" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.3738413822434145
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.0596969696969697, 0.125)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_85" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.37384138224341446
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.127, 0.07163636363636364, 0.125)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_86" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.35600131642229954
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.12380952380952381, 0.07760606060606061, 0.13080952380952382)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_87" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.3381612506011845
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.12061904761904763, 0.08357575757575758, 0.1366190476190476)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_88" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.32032118478006955
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.11742857142857144, 0.08954545454545455, 0.14242857142857143)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_89" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.3024811189589545
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.11423809523809524, 0.09551515151515153, 0.14823809523809522)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_90" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2846410531378396
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.11104761904761905, 0.10148484848484848, 0.15404761904761904)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_91" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.26680098731672464
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.10785714285714285, 0.10745454545454546, 0.15985714285714286)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_92" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.24896092149560967
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.10466666666666667, 0.11342424242424244, 0.16566666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_93" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2311208556744947
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.10147619047619047, 0.1193939393939394, 0.17147619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_94" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.21328078985337975
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.09828571428571428, 0.12536363636363637, 0.17728571428571427)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_95" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19544072403226476
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.0950952380952381, 0.13133333333333333, 0.1830952380952381)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_96" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1776006582111498
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.0919047619047619, 0.13730303030303032, 0.1889047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_97" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15976059239003482
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.08871428571428572, 0.14327272727272727, 0.1947142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_98" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.14192052656891982
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.08552380952380953, 0.14924242424242426, 0.20052380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_99" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12408046074780485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.08233333333333334, 0.15521212121212122, 0.2063333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_100" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.10624039492668982
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.07914285714285714, 0.1611818181818182, 0.21214285714285713)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_101" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08840032910557487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.07595238095238095, 0.16715151515151516, 0.21795238095238095)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_102" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0705602632844599
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.07276190476190476, 0.17312121212121212, 0.22376190476190477)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_103" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.05272019746334494
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.06957142857142858, 0.1790909090909091, 0.22957142857142854)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_104" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.034880131642229924
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.06638095238095237, 0.1850606060606061, 0.23538095238095236)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_105" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.017040065821114978
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.90865, 0.36826396, -0.19681692, 0)
-        double3 xformOp:translate = (0.06319047619047619, 0.19103030303030305, 0.24119047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_106" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.016127762038734953
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.054, -0.19103030303030305, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_107" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.03305552407746993
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.048, -0.1850606060606061, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_108" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0499832861162049
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.041999999999999996, -0.1790909090909091, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_109" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06691104815493991
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.036, -0.17312121212121212, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_110" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.16715151515151516, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_111" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0838388101936749
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.15521212121212122, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_112" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.14327272727272727, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_113" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.13133333333333336, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_114" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.11939393939393939, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_115" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.10745454545454547, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_116" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367483
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.09551515151515153, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_117" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.08357575757575758, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_118" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.07163636363636364, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_119" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.059696969696969686, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_120" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.04775757575757576, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_121" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.035818181818181825, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_122" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.023878787878787888, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_123" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.011939393939393944, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_124" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 2.0816681711721685e-17, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_125" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.011939393939393944, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_126" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.023878787878787888, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_127" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.035818181818181805, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_128" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.04775757575757576, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_129" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367484
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.05969696969696971, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_130" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.07163636363636364, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_131" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.08357575757575758, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_132" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0838388101936749
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.09551515151515153, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_133" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.10745454545454547, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_134" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.11939393939393939, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_135" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.13133333333333336, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_136" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0838388101936749
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.1432727272727273, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_137" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, 0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.15521212121212125, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_138" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.03, 0.16715151515151516, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_139" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06691104815493991
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.024, 0.17312121212121212, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_140" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0499832861162049
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.018, 0.1790909090909091, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_141" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.03305552407746991
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.012, 0.1850606060606061, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_142" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.016127762038734957
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.006, 0.19103030303030305, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_143" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.016127762038734957
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.006, -0.19103030303030305, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_144" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.03305552407746993
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.012, -0.1850606060606061, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_145" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0499832861162049
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.018, -0.1790909090909091, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_146" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06691104815493991
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.024, -0.17312121212121212, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_147" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, -0.49873257, -0.5012642, 0)
-        double3 xformOp:translate = (0.03, -0.16715151515151516, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_148" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0838388101936749
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.15521212121212122, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_149" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.030000000000000002, -0.14327272727272727, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_150" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.13133333333333336, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_151" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.11939393939393939, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_152" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.10745454545454547, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_153" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367483
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.09551515151515153, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_154" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.08357575757575758, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_155" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.07163636363636364, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_156" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.059696969696969686, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_157" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.04775757575757576, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_158" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.035818181818181825, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_159" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.023878787878787888, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_160" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, -0.011939393939393944, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_161" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 2.0816681711721685e-17, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_162" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.011939393939393944, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_163" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.023878787878787888, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_164" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.035818181818181805, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_165" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367488
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.04775757575757576, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_166" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367484
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.05969696969696971, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_167" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.07163636363636364, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_168" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.08357575757575758, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_169" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0838388101936749
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.09551515151515153, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_170" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.10745454545454547, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_171" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.11939393939393939, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_172" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367487
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.13133333333333336, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_173" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0838388101936749
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.1432727272727273, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_174" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.15521212121212125, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_175" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08383881019367485
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.03, 0.16715151515151516, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_176" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06691104815493991
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.036, 0.17312121212121212, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_177" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0499832861162049
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.041999999999999996, 0.1790909090909091, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_178" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.03305552407746991
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.048, 0.1850606060606061, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_179" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.016127762038734953
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.70710677, 0.49873257, 0.5012642, -0)
-        double3 xformOp:translate = (0.054, 0.19103030303030305, 0.247)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_180" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.011409208310684874
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.001875, -0.197, 0.24119047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_181" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.023618416621369726
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.00375, -0.197, 0.23538095238095236)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_182" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.035827624932054596
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.005625, -0.197, 0.22957142857142854)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_183" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.04803683324273939
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.0075, -0.197, 0.22376190476190477)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_184" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06024604155342427
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.009375, -0.197, 0.21795238095238095)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_185" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.07245524986410913
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.01125, -0.197, 0.21214285714285713)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_186" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.084664458174794
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.013125, -0.197, 0.2063333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_187" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.09687366648547885
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.015, -0.197, 0.20052380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_188" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.10908287479616373
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.016875, -0.197, 0.1947142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_189" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12129208310684858
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.01875, -0.197, 0.1889047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_190" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.13350129141753342
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.020624999999999998, -0.197, 0.1830952380952381)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_191" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.14571049972821828
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.0225, -0.197, 0.17728571428571427)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_192" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15791970803890312
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.024375, -0.197, 0.17147619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_193" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.170128916349588
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.02625, -0.197, 0.16566666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_194" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.18233812466027285
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.028124999999999997, -0.197, 0.15985714285714286)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_195" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1945473329709577
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.03, -0.197, 0.15404761904761904)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_196" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19660063661971425
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9853334, 0, 0.17064035, 0)
-        double3 xformOp:translate = (0.033190476190476194, -0.197, 0.1424285714285714)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_197" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19883685852929744
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9826532, 0, 0.18545265, 0)
-        double3 xformOp:translate = (0.03638095238095238, -0.197, 0.1308095238095238)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_198" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2012499253541087
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.97981966, 0, 0.19988348, 0)
-        double3 xformOp:translate = (0.03957142857142858, -0.197, 0.11919047619047617)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_199" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.20383358105240468
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.97685117, 0, 0.21392018, 0)
-        double3 xformOp:translate = (0.042761904761904765, -0.197, 0.10757142857142858)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_200" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.20658144989279342
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.97376555, 0, 0.22755359, 0)
-        double3 xformOp:translate = (0.04595238095238095, -0.197, 0.09595238095238096)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_201" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19362010927449383
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.05520535714285714, -0.197, 0.09014285714285715)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_202" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.18065876865619424
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.06445833333333334, -0.197, 0.08433333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_203" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.16769742803789467
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.07371130952380953, -0.197, 0.07852380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_204" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15473608741959505
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.08296428571428571, -0.197, 0.0727142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_205" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.14177474680129548
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.0922172619047619, -0.197, 0.0669047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_206" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12881340618299586
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.1014702380952381, -0.197, 0.06109523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_207" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.11585206556469628
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.11072321428571429, -0.197, 0.05528571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_208" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.10289072494639671
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.11997619047619047, -0.197, 0.04947619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_209" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08992938432809712
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.12922916666666667, -0.197, 0.043666666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_210" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.07696804370979751
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.13848214285714283, -0.197, 0.03785714285714285)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_211" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06400670309149795
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.14773511904761905, -0.197, 0.03204761904761905)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_212" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.05104536247319834
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.15698809523809526, -0.197, 0.026238095238095237)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_213" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.03808402185489876
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.16624107142857145, -0.197, 0.020428571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_214" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.02512268123659918
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.17549404761904763, -0.197, 0.014619047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_215" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.012161340618299588
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.18474702380952382, -0.197, 0.008809523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_216" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.015993388358925553
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0060625, -0.197, 0.008809523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_217" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0327867767178511
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.012125, -0.197, 0.014619047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_218" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.04958016507677664
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.018187500000000002, -0.197, 0.020428571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_219" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0663735534357022
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.02425, -0.197, 0.026238095238095237)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_220" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08316694179462775
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0303125, -0.197, 0.03204761904761905)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_221" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0999603301535533
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.036375000000000005, -0.197, 0.03785714285714285)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_222" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.11675371851247886
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0424375, -0.197, 0.043666666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_223" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.13354710687140442
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0485, -0.197, 0.04947619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_224" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15034049523032994
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0545625, -0.197, 0.05528571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_225" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1671338835892555
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.060625, -0.197, 0.06109523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_226" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.183927271948181
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0666875, -0.197, 0.0669047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_227" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.20072066030710659
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.07275000000000001, -0.197, 0.0727142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_228" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.21751404866603216
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.07881250000000001, -0.197, 0.07852380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_229" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2343074370249577
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.084875, -0.197, 0.08433333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_230" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.25110082538388323
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0909375, -0.197, 0.09014285714285715)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_231" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2678942137428088
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.097, -0.197, 0.09595238095238096)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_232" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.26332400028839614
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.3848025, -0, 0.92299896, 0)
-        double3 xformOp:translate = (0.09380952380952381, -0.197, 0.10757142857142858)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_233" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2588301747956101
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.37680444, -0, 0.92629284, 0)
-        double3 xformOp:translate = (0.09061904761904763, -0.197, 0.11919047619047617)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_234" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2544167723858083
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.36849758, -0, 0.92962873, 0)
-        double3 xformOp:translate = (0.08742857142857144, -0.197, 0.1308095238095238)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_235" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2500880372920076
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.35987014, -0, 0.9330024, 0)
-        double3 xformOp:translate = (0.08423809523809524, -0.197, 0.1424285714285714)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_236" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.24584842734551976
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.35091045, -0, 0.936409, 0)
-        double3 xformOp:translate = (0.08104761904761905, -0.197, 0.15404761904761904)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_237" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.23043290063642477
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07973214285714285, -0.197, 0.15985714285714286)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_238" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2150173739273298
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07841666666666668, -0.197, 0.16566666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_239" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1996018472182348
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07710119047619048, -0.197, 0.17147619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_240" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.18418632050913986
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07578571428571429, -0.197, 0.17728571428571427)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_241" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.16877079380004484
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07447023809523809, -0.197, 0.1830952380952381)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_242" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15335526709094988
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.0731547619047619, -0.197, 0.1889047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_243" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1379397403818549
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07183928571428572, -0.197, 0.1947142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_244" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12252421367275988
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07052380952380952, -0.197, 0.20052380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_245" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1071086869636649
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06920833333333334, -0.197, 0.2063333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_246" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0916931602545699
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06789285714285714, -0.197, 0.21214285714285713)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_247" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.07627763354547493
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06657738095238094, -0.197, 0.21795238095238095)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_248" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06086210683637992
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06526190476190477, -0.197, 0.22376190476190477)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_249" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.04544658012728499
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06394642857142857, -0.197, 0.22957142857142854)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_250" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.030031053418189985
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06263095238095238, -0.197, 0.23538095238095236)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_251" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.014615526709095009
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06131547619047619, -0.197, 0.24119047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_252" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.011409208310684874
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.001875, 0.197, 0.24119047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_253" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.023618416621369726
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.00375, 0.197, 0.23538095238095236)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_254" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.035827624932054596
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.005625, 0.197, 0.22957142857142854)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_255" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.04803683324273939
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.0075, 0.197, 0.22376190476190477)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_256" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06024604155342427
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.009375, 0.197, 0.21795238095238095)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_257" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.07245524986410913
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.01125, 0.197, 0.21214285714285713)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_258" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.084664458174794
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.013125, 0.197, 0.2063333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_259" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.09687366648547885
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.015, 0.197, 0.20052380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_260" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.10908287479616373
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.016875, 0.197, 0.1947142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_261" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12129208310684858
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.01875, 0.197, 0.1889047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_262" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.13350129141753342
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.020624999999999998, 0.197, 0.1830952380952381)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_263" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.14571049972821828
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.0225, 0.197, 0.17728571428571427)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_264" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15791970803890312
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.024375, 0.197, 0.17147619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_265" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.170128916349588
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.02625, 0.197, 0.16566666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_266" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.18233812466027285
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.028124999999999997, 0.197, 0.15985714285714286)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_267" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1945473329709577
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9878417, 0, 0.15546277, 0)
-        double3 xformOp:translate = (0.03, 0.197, 0.15404761904761904)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_268" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19660063661971425
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9853334, 0, 0.17064035, 0)
-        double3 xformOp:translate = (0.033190476190476194, 0.197, 0.1424285714285714)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_269" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19883685852929744
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.9826532, 0, 0.18545265, 0)
-        double3 xformOp:translate = (0.03638095238095238, 0.197, 0.1308095238095238)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_270" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2012499253541087
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.97981966, 0, 0.19988348, 0)
-        double3 xformOp:translate = (0.03957142857142858, 0.197, 0.11919047619047617)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_271" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.20383358105240468
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.97685117, 0, 0.21392018, 0)
-        double3 xformOp:translate = (0.042761904761904765, 0.197, 0.10757142857142858)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_272" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.20658144989279342
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.97376555, 0, 0.22755359, 0)
-        double3 xformOp:translate = (0.04595238095238095, 0.197, 0.09595238095238096)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_273" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.19362010927449383
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.05520535714285714, 0.197, 0.09014285714285715)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_274" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.18065876865619424
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.06445833333333334, 0.197, 0.08433333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_275" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.16769742803789467
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.07371130952380953, 0.197, 0.07852380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_276" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15473608741959505
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.08296428571428571, 0.197, 0.0727142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_277" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.14177474680129548
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.0922172619047619, 0.197, 0.0669047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_278" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12881340618299586
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.1014702380952381, 0.197, 0.06109523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_279" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.11585206556469628
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.11072321428571429, 0.197, 0.05528571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_280" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.10289072494639671
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.11997619047619047, 0.197, 0.04947619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_281" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08992938432809712
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.12922916666666667, 0.197, 0.043666666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_282" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.07696804370979751
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.13848214285714283, 0.197, 0.03785714285714285)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_283" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06400670309149795
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.14773511904761905, 0.197, 0.03204761904761905)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_284" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.05104536247319834
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.15698809523809526, 0.197, 0.026238095238095237)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_285" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.03808402185489876
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.16624107142857145, 0.197, 0.020428571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_286" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.02512268123659918
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.17549404761904763, 0.197, 0.014619047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_287" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.012161340618299588
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.22755359, -0, -0.97376555, 0)
-        double3 xformOp:translate = (0.18474702380952382, 0.197, 0.008809523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_288" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.015993388358925553
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0060625, 0.197, 0.008809523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_289" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0327867767178511
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.012125, 0.197, 0.014619047619047618)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_290" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.04958016507677664
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.018187500000000002, 0.197, 0.020428571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_291" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0663735534357022
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.02425, 0.197, 0.026238095238095237)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_292" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.08316694179462775
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0303125, 0.197, 0.03204761904761905)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_293" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0999603301535533
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.036375000000000005, 0.197, 0.03785714285714285)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_294" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.11675371851247886
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0424375, 0.197, 0.043666666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_295" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.13354710687140442
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0485, 0.197, 0.04947619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_296" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15034049523032994
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0545625, 0.197, 0.05528571428571428)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_297" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1671338835892555
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.060625, 0.197, 0.06109523809523809)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_298" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.183927271948181
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0666875, 0.197, 0.0669047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_299" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.20072066030710659
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.07275000000000001, 0.197, 0.0727142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_300" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.21751404866603216
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.07881250000000001, 0.197, 0.07852380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_301" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2343074370249577
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.084875, 0.197, 0.08433333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_302" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.25110082538388323
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.0909375, 0.197, 0.09014285714285715)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_303" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2678942137428088
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.39250332, -0, 0.9197506, 0)
-        double3 xformOp:translate = (0.097, 0.197, 0.09595238095238096)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_304" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.26332400028839614
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.3848025, -0, 0.92299896, 0)
-        double3 xformOp:translate = (0.09380952380952381, 0.197, 0.10757142857142858)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_305" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2588301747956101
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.37680444, -0, 0.92629284, 0)
-        double3 xformOp:translate = (0.09061904761904763, 0.197, 0.11919047619047617)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_306" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2544167723858083
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.36849758, -0, 0.92962873, 0)
-        double3 xformOp:translate = (0.08742857142857144, 0.197, 0.1308095238095238)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_307" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2500880372920076
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.35987014, -0, 0.9330024, 0)
-        double3 xformOp:translate = (0.08423809523809524, 0.197, 0.1424285714285714)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_308" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.24584842734551976
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.35091045, -0, 0.936409, 0)
-        double3 xformOp:translate = (0.08104761904761905, 0.197, 0.15404761904761904)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_309" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.23043290063642477
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07973214285714285, 0.197, 0.15985714285714286)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_310" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.2150173739273298
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07841666666666668, 0.197, 0.16566666666666666)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_311" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1996018472182348
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07710119047619048, 0.197, 0.17147619047619048)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_312" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.18418632050913986
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07578571428571429, 0.197, 0.17728571428571427)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_313" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.16877079380004484
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07447023809523809, 0.197, 0.1830952380952381)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_314" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.15335526709094988
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.0731547619047619, 0.197, 0.1889047619047619)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_315" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1379397403818549
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07183928571428572, 0.197, 0.1947142857142857)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_316" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.12252421367275988
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.07052380952380952, 0.197, 0.20052380952380952)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_317" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.1071086869636649
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06920833333333334, 0.197, 0.2063333333333333)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_318" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.0916931602545699
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06789285714285714, 0.197, 0.21214285714285713)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_319" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.07627763354547493
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06657738095238094, 0.197, 0.21795238095238095)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_320" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.06086210683637992
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06526190476190477, 0.197, 0.22376190476190477)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_321" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.04544658012728499
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06394642857142857, 0.197, 0.22957142857142854)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_322" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.030031053418189985
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06263095238095238, 0.197, 0.23538095238095236)
-        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
-    }
-
-    def Capsule "Net_323" (
-        prepend apiSchemas = ["MaterialBindingAPI", "PhysicsCollisionAPI"]
-    )
-    {
-        uniform token axis = "Z"
-        double height = 0.014615526709095009
-        rel material:binding = </Asset/Materials/WovenSteel>
-        double radius = 0.0004
-        quatf xformOp:orient = (0.936409, 0, -0.35091045, 0)
-        double3 xformOp:translate = (0.06131547619047619, 0.197, 0.24119047619047618)
+        quatf xformOp:orient = (0.9318403, 0, -0.36286867, 0)
+        double3 xformOp:translate = (0.06366666666666666, 0.197, 0.22666666666666668)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient"]
     }
 }

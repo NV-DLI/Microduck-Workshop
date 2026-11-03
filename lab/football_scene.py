@@ -120,6 +120,10 @@ def main():
     panel = {}
 
     def build(a):
+        scene_record.clear()
+        scene_record["nav2_backend"] = backend
+        recording.clear()
+        panel.clear()
         a.robot_usd = HERE / "assets/microduck_contact.usda"
         cfg, fixture = original_build(a)
         from scene_style import configure_football
@@ -219,7 +223,7 @@ def main():
         def sensor_with_panel(env, env_ids, width, height, hfov, seed):
             recorded_sensor(env, env_ids, width=width, height=height, hfov=hfov, seed=seed)
             # Display only: with an Isaac Sim window, show the frames rig.capture() returns.
-            attachment = None if panel else attach_sensor_panel(env, remaining)
+            attachment = None if panel else attach_sensor_panel(env, sys.argv[1:])
             if attachment is not None:
                 panel.update(attachment=attachment)
 
@@ -260,12 +264,16 @@ def main():
     original_run = wrapper.run
 
     def run_and_finalize(*args, **kwargs):
+        output = Path(args[0].output)
+        output.with_name(output.name + "-scene-launcher.json").write_text(
+            json.dumps(dict(source_sha256=hashes, argv=sys.argv[1:], style=extra.style), indent=2))
         try:
             return original_run(*args, **kwargs)
         finally:
             code = 0
             if panel:
                 scene_record["sensor_panel"] = panel["attachment"].close()
+                panel.clear()
             if recording:
                 proc = recording["process"]
                 proc.stdin.close()
@@ -281,6 +289,7 @@ def main():
                         indent=2,
                     )
                 )
+            recording.clear()
             if output.exists():
                 scene_record.update(
                     source_sha256=hashes,

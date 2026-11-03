@@ -22,7 +22,7 @@ myst:
 | `walk.onnx` | 固定行走策略 | 2.1 节键盘踢球（步行模式，自动读取）；2.2 节 `walk --model models/walk.onnx`；4.2 节的板载射门和 5.3 节的验证场景里，底层行走策略都使用同一模型的副本 |
 | `terrain-walk.onnx` | 3.3 节固定坡地行走策略，约 0.79 MB | 3.3 节 `terrain --model models/terrain-walk.onnx` |
 | `kick-teacher.onnx` | 踢球基础动作 | 2.1 节键盘踢球（空格键，自动读取）；4.2 节板载射门的踢球技能使用同一模型的副本 |
-| `kick-residual.onnx` | 踢球残差修正 | 4.2 节板载射门的踢球技能使用同一模型的副本；本课程的动手命令不直接读取 |
+| `kick-residual.onnx` | 踢球残差修正 | GR00T 执行层保留的模型；4.2 节板载射门不加载 |
 | `kick-checkpoint.pt` | 保留的踢球训练检查点 | 保留；本课程的动手命令不直接读取 |
 | `detector.pt` | 固定视觉检测器 | 保留；本课程的动手命令不直接读取 |
 | `detector.onnx` | 检测器 ONNX 导出 | 保留；本课程的动手命令不直接读取 |

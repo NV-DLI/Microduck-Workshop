@@ -22,7 +22,6 @@ myst:
 | 设备 | 系统 | 可用的课程内容 |
 |---|---|---|
 | DGX Spark（aarch64） | Ubuntu 24.04 桌面 | 完整课程，包括 Isaac Sim 窗口、相机与录像 |
-| RTX 5090 | Windows 11 + WSL 2 中的 Ubuntu | 不开窗口的命令，例如 PPO 与 GR00T 训练；当前驱动不支持 Isaac Sim 窗口、相机和录像 |
 
 宿主机需要 NVIDIA 驱动、Docker 与 NVIDIA Container Toolkit、Git，以及一个能显示窗口的桌面会话。镜像中的软件版本固定如下：
 
@@ -50,7 +49,6 @@ cd Microduck-Workshop
 
 **GR00T 课程资料包（只有 5.3 节需要）。** 5.3 节的 GR00T 步行射门另外需要一个约 62 GB 的资料包：示范数据、训练起点、训练好的检查点和预先算好的特征缓存。它由授课方单独发放：开始 5.3 节前，请向授课教师领取；还没有拿到时，可以先完成第 1–3 部分和第 4 部分的阅读。把其中的 `groot-walking/` 文件夹放到仓库根目录的 `course-data/` 下；放在别处时，启动容器前把 `MICRODUCK_COURSE_DATA` 设为包含 `groot-walking/` 的文件夹的绝对路径。没有资料包也可以启动容器。
 
-**可选：RTX 5090 的预计算特征缓存。** 在 RTX 5090（计算能力 12.0）上训练 GR00T 时，可以向授课教师另外领取一份约 32 GB、在这种 GPU 上算好的特征缓存，把其中的 `groot-walking-feature-caches/` 文件夹放在 `groot-walking/` 旁边，训练时就不必重算（见 5.3 节）。DGX Spark 不需要它。
 
 ```{code-block} text
 :caption: Workspace
@@ -107,11 +105,7 @@ docker exec -it microduck-workshop bash
 
 命令里的相对路径（例如 `models/walk.onnx`）就是宿主机仓库里的同名文件。下载、着色器和编译缓存保存在宿主机的 `~/.cache/huggingface` 与 `~/.cache/microduck/` 下，第二次启动会快很多。
 
-:::{admonition} 在 WSL 2 中启动
-:class: note
 
-在 Windows 11 的 WSL 2 Ubuntu 中，`prepare_host.sh` 会提示改用下面的启动命令，它额外加载 WSLg 的显示设置：`docker compose -f docker/compose.yaml -f docker/compose.wslg.yaml up -d`。这种环境只用于不开窗口的命令，需要 Isaac Sim 窗口或相机的实验请在 DGX Spark 上进行。
-:::
 
 {#check}
 ## 确认可以开始

@@ -124,12 +124,14 @@ def make_goal():
                 if len(unique) == 2:
                     wire(at(*unique[0]), at(*unique[1]))
 
+    # Approximately 48 mm grid intercepts retain the diamond weave with 84 rods.
+    # Net geometry is shared by rendering and collision; the frame is unchanged.
     diamond_panel(
-        (back, yl, 0.003), (back, yr, 0.003), (top, yr, z), (top, yl, z), 33, 21
+        (back, yl, 0.003), (back, yr, 0.003), (top, yr, z), (top, yl, z), 9, 6
     )
-    diamond_panel((0, yl, z), (0, yr, z), (top, yr, z), (top, yl, z), 33, 5)
+    diamond_panel((0, yl, z), (0, yr, z), (top, yr, z), (top, yl, z), 9, 2)
     for y in [yl, yr]:
-        diamond_panel((0, y, 0.003), (back, y, 0.003), (top, y, z), (0, y, z), 16, 21)
+        diamond_panel((0, y, 0.003), (back, y, 0.003), (top, y, z), (0, y, z), 4, 6)
     s.GetRootLayer().Save()
     return i
 

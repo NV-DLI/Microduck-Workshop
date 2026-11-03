@@ -136,7 +136,7 @@ def configure_football(cfg, *, style="A", goal_x=0.68, lighting="daylight"):
         "goal_side_profile": "trapezoid, sloping back; inferred from product photograph",
         "goal_frame_diameter_m": 0.006,
         "goal_wire_diameter_m": 0.0008,
-        "goal_wire_spacing_m": 0.012,
+        "goal_wire_spacing_m": 0.048,
         "goal_plane_x_m": goal_x,
         "goal_opening_width_m": 0.388,
         "goal_opening_height_m": 0.244,

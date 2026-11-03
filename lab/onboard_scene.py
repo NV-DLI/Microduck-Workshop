@@ -1,14 +1,13 @@
-"""Onboard football on the indoor pitch with the course joint-brake start-up.
+"""Onboard football with the grounded HOME start-up and official kick/standing policies.
 
-Same scene, detector, walking actor, navigator, Nav2 session and kick skill as
-football_scene.py; only the start-up differs. Instead of the temporary external
-support fixture, the robot starts at HOME on the measured grounded root of this
-pitch with every joint locked by a temporary joint-limit brake (root free, zero
-external wrench). The brake is released after the walking actor's first real output
-is computed and before it is applied; the task clock and scoring start there.
+The onboard executor runs Newton at 100 Hz, low-level policies at 50 Hz and
+RGB/ToF at 15 Hz. The shared scene supplies the pitch and sensor-only navigation.
+Temporary joint limits are restored before applying the first real walking output;
+the root is always free and receives no external support. Interactive sessions
+rebuild each episode in the same Isaac Sim application when R is pressed.
 
-The executor is the course student executor (also used by the GR00T route) with
---course-onboard: no GR00T policy, WalkingPolicy or kick-yaw patches are loaded.
+GR00T options are refused here. The separate GR00T executor keeps its checkpoint's
+own low-level composition and timing.
 """
 
 from pathlib import Path
@@ -20,7 +19,7 @@ if str(HERE) not in sys.path:  # already first when run as a script
     sys.path.insert(0, str(HERE))
 import football_scene  # noqa: E402
 
-EXECUTOR = STUDENT / "walking_student_executor.py"
+EXECUTOR = HERE / "onboard/executor.py"
 SOURCES = [
     Path(__file__).resolve(),
     EXECUTOR,
@@ -29,6 +28,7 @@ SOURCES = [
     HERE / "course_labs/onboard_startup.py",
     HERE / "course_labs/kit_settings.py",
     HERE / "course_labs/realtime_view.py",
+    *sorted((HERE / "onboard").glob("*.py")),
 ]
 REFUSED = ("--walking-policy-server", "--development-contour", "--calibration-command")
 
@@ -54,7 +54,18 @@ def install_executor():
     original_load = football_scene.load
 
     def load(name, path):
-        return original_load(name, EXECUTOR if name == "isaac_execute" else path)
+        module = original_load(name, EXECUTOR if name == "isaac_execute" else path)
+        if name == "scene_preserved_controller":
+            original_build = module.build
+            def build(a):
+                cfg, fixture = original_build(a)
+                module.contract["controller"] = module.contract["controller"].replace(
+                    "one native K10 kick", "official kick and standing teachers; no residual")
+                module.contract["official_only"] = dict(models=["ball_kick_right.onnx", "velstand.onnx"],
+                    residual=False, hold_s=.14, blend_s=.12)
+                return cfg, fixture
+            module.build = build
+        return module
 
     football_scene.load = load
     return original_load
@@ -79,11 +90,12 @@ def main():
                 ),
                 grounded_pose=dict(case=pose["case"], root=pose["root"], quat=pose["quat"]),
                 ground="flat Newton plane at z=0 shared by football styles A-D",
-                controller="installed detector, BallReacquisitionNavigator, Nav2 session and K10",
+                controller="detector, BallReacquisitionNavigator, Nav2 and official kick/standing policies",
             ),
             f,
             indent=2,
         )
+    sys.path.insert(0, str(HERE / "onboard"))
     install_executor()
     football_scene.main()
     if any(sha(p) != h for p, h in hashes.items()):

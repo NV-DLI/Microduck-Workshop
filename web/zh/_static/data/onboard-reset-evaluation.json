@@ -1,0 +1,444 @@
+{
+  "device": "DGX Spark",
+  "completed": 20,
+  "successes": 17,
+  "failures": 3,
+  "falls": 0,
+  "technical_errors": 0,
+  "audit_errors": 0,
+  "interrupted": 0,
+  "success_rate": 0.85,
+  "initial_root_xy_m": [
+    -0.55,
+    0.12
+  ],
+  "position_jitter_m": [
+    0.015,
+    0.01
+  ],
+  "ball_xy_m": [
+    0.02,
+    0
+  ],
+  "physics_hz": 100,
+  "control_hz": 50,
+  "sensor_hz": 15,
+  "render_subframes": 1,
+  "viewport": [
+    960,
+    540
+  ],
+  "goal_net_rods": 84,
+  "kick": "official right kick and standing policies; no residual network",
+  "same_window": true,
+  "real_R_events": 19,
+  "rtf": {
+    "median": 0.483483694228948,
+    "minimum": 0.42347264831314346,
+    "maximum": 0.5195157719653056,
+    "scope": "Main physics/control loop only; excludes application/model loading, scene reset, post-episode archive drain and evaluation"
+  },
+  "episodes": [
+    {
+      "episode": 1,
+      "root_xy_m": [
+        -0.55,
+        0.12
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 22.09,
+      "loop_wall_seconds": 48.30522458907217,
+      "rtf": 0.45730043050037494,
+      "audits": 11,
+      "manifest_sha256": "2500c850bf7dc285e0a3f250cb2dd22d4bbbd0bc64e1dcfb594092de5b96f78d",
+      "result_sha256": "cd0243c4ed9e88ca885546337f73d2f6a5c4b0b85fc0a061cb7c2b63df925d5e"
+    },
+    {
+      "episode": 2,
+      "root_xy_m": [
+        -0.5567167914029238,
+        0.11411268007900909
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 35.47,
+      "loop_wall_seconds": 76.25624339305796,
+      "rtf": 0.4651422417594339,
+      "audits": 11,
+      "manifest_sha256": "df48759dd7b38b4fe2be7cefdf8be75580a2d4579754aa1e6913ea55f97338d7",
+      "result_sha256": "c90db2cbf53440778029de9557a9fd10ea9671083b46306a45fc66457dc4697e"
+    },
+    {
+      "episode": 3,
+      "root_xy_m": [
+        -0.5392259979474128,
+        0.12824847737936754
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 17.13,
+      "loop_wall_seconds": 36.954277427867055,
+      "rtf": 0.4635457974638233,
+      "audits": 10,
+      "manifest_sha256": "3ffaf0fe76a3c134a0379f32fca7433b5d8ae9e014e287ba67802d6a688b2921",
+      "result_sha256": "459cd3daadc68009a4d0ce5d3875aaced302f1e0b74e6de6bb5fdc4efbbab20d"
+    },
+    {
+      "episode": 4,
+      "root_xy_m": [
+        -0.5422014083091904,
+        0.11740249918632857
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 32.95,
+      "loop_wall_seconds": 66.31250812788494,
+      "rtf": 0.4968896657694699,
+      "audits": 11,
+      "manifest_sha256": "e705d90ebf6181529e551e28721f5ad9154f1652a1d2a02b0d6182f1e536d8c7",
+      "result_sha256": "1d25e3b6d441a14eeab23558b5ccbc05686e156f5989859b419d57d5b393d6a2"
+    },
+    {
+      "episode": 5,
+      "root_xy_m": [
+        -0.5495184680644162,
+        0.12104317166982927
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 16.47,
+      "loop_wall_seconds": 35.45807421184145,
+      "rtf": 0.4644922310670707,
+      "audits": 10,
+      "manifest_sha256": "d7815ac8ea68fc0cb79171e3b10537b479a7b09a4ce6162b1873ee49da74cc9c",
+      "result_sha256": "64fed00aa790e032940255ac8d89793affbfdb5e74de2e9b6fe5e5d9b11f5276"
+    },
+    {
+      "episode": 6,
+      "root_xy_m": [
+        -0.5377087742289064,
+        0.11147508319966291
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 28.37,
+      "loop_wall_seconds": 62.32897212705575,
+      "rtf": 0.45516553589506664,
+      "audits": 11,
+      "manifest_sha256": "ae6e967675eb1ec3b94d8715853c5750f41d686b4d0a317a10596eee76597977",
+      "result_sha256": "ed4f47ceb06c7611ea6693ff2d6645c2d7ce006b6a4c1bacc8083839e1069ff4"
+    },
+    {
+      "episode": 7,
+      "root_xy_m": [
+        -0.5623333532487846,
+        0.11173751968112254
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 16.47,
+      "loop_wall_seconds": 32.771285481983796,
+      "rtf": 0.5025741211480543,
+      "audits": 10,
+      "manifest_sha256": "2cc7e1b498dcae015ddfba776706d13d19f56108fe6d720b2d05a976873ce912",
+      "result_sha256": "e2116216fe6748a435f1e928ee96b5f50f2e99c00291e57d3625f79e2e27adb4"
+    },
+    {
+      "episode": 8,
+      "root_xy_m": [
+        -0.547002308623014,
+        0.1281291160803524
+      ],
+      "success": false,
+      "fell": false,
+      "contact": false,
+      "whole_ball_goal": false,
+      "recovered": false,
+      "terminal_reason": "public_neutral_fine_step_failed",
+      "failure_detail": "neutral_step_fresh_goal_required",
+      "simulated_seconds": 19.29,
+      "loop_wall_seconds": 39.41581749008037,
+      "rtf": 0.4893974355562875,
+      "audits": 9,
+      "manifest_sha256": "dcc700e7165dbfb45634564f382e3f35a850204a5240bc5232a74ad6e41fb62b",
+      "result_sha256": "f2dc9fc6da6210f4d2f575f947e151a0c66818d1bb4693cb82c762cea6db125b"
+    },
+    {
+      "episode": 9,
+      "root_xy_m": [
+        -0.5576790084954766,
+        0.11182645750887432
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 17.11,
+      "loop_wall_seconds": 34.521439944859594,
+      "rtf": 0.49563401837610077,
+      "audits": 10,
+      "manifest_sha256": "23ea05a6f0b38908387507bd73ba9421422e41c0d2bb0cc0e217a691a8dbc806",
+      "result_sha256": "a8546f9424180ba58b4ad93f9b0bb6a303f51b25c828aaf03d1c4c33cf23cc3a"
+    },
+    {
+      "episode": 10,
+      "root_xy_m": [
+        -0.5370798797264827,
+        0.11432477266926903
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 16.53,
+      "loop_wall_seconds": 35.39752063713968,
+      "rtf": 0.46698185925079866,
+      "audits": 10,
+      "manifest_sha256": "ebb74d9e2674987b817229181e87d8bf6ec05bdd55dda9d4baad085b0244b8d1",
+      "result_sha256": "6cb4cdc4f5959322a33bbac312efa94008573da01af6ca63da27c0c142bee616"
+    },
+    {
+      "episode": 11,
+      "root_xy_m": [
+        -0.5511165648884684,
+        0.1262078707992009
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 39.59,
+      "loop_wall_seconds": 92.44055189704522,
+      "rtf": 0.4282752448740568,
+      "audits": 11,
+      "manifest_sha256": "55378d2f3171a5eeaa9ec52f3c06667b575d191c4a7595adacd9fc675cb34716",
+      "result_sha256": "57eff2c2e53a675455be757f1d1e118462fd0ce5a5ff9f86381ba984187400e9"
+    },
+    {
+      "episode": 12,
+      "root_xy_m": [
+        -0.5509131002218206,
+        0.11221436192014225
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 28.63,
+      "loop_wall_seconds": 60.11051221191883,
+      "rtf": 0.47628940340859693,
+      "audits": 11,
+      "manifest_sha256": "f17ae340fec22c9ef599b1026181fddc8a9e51aab3bba8c7a075bb45d14e482f",
+      "result_sha256": "136bfc625679abd817988ec7412aff39a680d6b9f5ba6e77bfcf1cd509e2982d"
+    },
+    {
+      "episode": 13,
+      "root_xy_m": [
+        -0.5600027354209097,
+        0.11379257118385178
+      ],
+      "success": false,
+      "fell": false,
+      "contact": false,
+      "whole_ball_goal": false,
+      "recovered": false,
+      "terminal_reason": "task_duration_limit",
+      "failure_detail": null,
+      "simulated_seconds": 63.0,
+      "loop_wall_seconds": 127.17533335485496,
+      "rtf": 0.4953790828620223,
+      "audits": 10,
+      "manifest_sha256": "74cd8e557b07f3e77c3aa6e132dee0273539d0a5ffaac99f6f282617046bfb74",
+      "result_sha256": "59a6f86b39d36a39b6ca7f276f34df2475e5cf297024e03eb9fb367227d7dcdc"
+    },
+    {
+      "episode": 14,
+      "root_xy_m": [
+        -0.5584627812159265,
+        0.12384757120926021
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 43.59,
+      "loop_wall_seconds": 102.93462912808172,
+      "rtf": 0.42347264831314346,
+      "audits": 11,
+      "manifest_sha256": "74ad438eb7c08e8204adbef553797df857f5fdbb3a48dd70217d2a70cd896dc2",
+      "result_sha256": "a46b6cf18e4a913c3c207800e4a239a3b2700ef89aebb49330e77de795dd0f52"
+    },
+    {
+      "episode": 15,
+      "root_xy_m": [
+        -0.5364198923000121,
+        0.12555151146738305
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 24.87,
+      "loop_wall_seconds": 51.72128548519686,
+      "rtf": 0.48084651738050943,
+      "audits": 11,
+      "manifest_sha256": "3fd86cdb94db1251f81c64da2972622e1ab96a720cb763cc1802e16e75a63324",
+      "result_sha256": "5764e3f4cc6cf1d8da5915e9255148fb45dd316741d9f63a396be95fb5c2171f"
+    },
+    {
+      "episode": 16,
+      "root_xy_m": [
+        -0.5375592935485486,
+        0.11177312621140774
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 16.79,
+      "loop_wall_seconds": 34.53873511496931,
+      "rtf": 0.4861208710773865,
+      "audits": 10,
+      "manifest_sha256": "2cce452841452e82de63845fb6fdf0bbaf04de560db169d6f176cd6b6a743ee2",
+      "result_sha256": "0c7d8c486ba221cbccd97de6e1b9c2a810ccb8a5c8b223cb265c6f115158ae40"
+    },
+    {
+      "episode": 17,
+      "root_xy_m": [
+        -0.5464618453901292,
+        0.11728271022028425
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 16.89,
+      "loop_wall_seconds": 32.51104376697913,
+      "rtf": 0.5195157719653056,
+      "audits": 10,
+      "manifest_sha256": "4682ef572e0cdb1e393e75bf0c478841c5cbf35017328686cd3772aac0925fdc",
+      "result_sha256": "d62c8018914d202cda1866d78f7bf5d2f8cf7fcb0774092dd870eacc2dbae734"
+    },
+    {
+      "episode": 18,
+      "root_xy_m": [
+        -0.5523504906483282,
+        0.1174570393252661
+      ],
+      "success": false,
+      "fell": false,
+      "contact": false,
+      "whole_ball_goal": false,
+      "recovered": false,
+      "terminal_reason": "public_handoff_failed",
+      "failure_detail": null,
+      "simulated_seconds": 14.6,
+      "loop_wall_seconds": 29.584765166975558,
+      "rtf": 0.4934972414889225,
+      "audits": 9,
+      "manifest_sha256": "81759678d64044e0d8fa61e7c4c340ce2607963fbad16de0b6e2168a14599828",
+      "result_sha256": "0b37350befe58e1ca9692660842b00eb1d8e57fa56a70a2fc7d63bc0d3247fae"
+    },
+    {
+      "episode": 19,
+      "root_xy_m": [
+        -0.5477137593970618,
+        0.11374967365134112
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 26.71,
+      "loop_wall_seconds": 52.51575403404422,
+      "rtf": 0.508609282896039,
+      "audits": 11,
+      "manifest_sha256": "b166e856b1cb1638e5a50d64a7c46f5c9d066b83b9816f18341e37e9725e4c7d",
+      "result_sha256": "f38b7eedb9263f10338a7ac9dbd8df47befe330b873f7df089f85080ca917bd7"
+    },
+    {
+      "episode": 20,
+      "root_xy_m": [
+        -0.5625274295767435,
+        0.12973104154386844
+      ],
+      "success": true,
+      "fell": false,
+      "contact": true,
+      "whole_ball_goal": true,
+      "recovered": true,
+      "terminal_reason": "development_kick_window_complete",
+      "failure_detail": null,
+      "simulated_seconds": 17.45,
+      "loop_wall_seconds": 35.72921958891675,
+      "rtf": 0.48839577804305057,
+      "audits": 10,
+      "manifest_sha256": "029e13f19ae8b95a74c6f2c265b6d98e1fee54c4b61bb356252736aff3de240e",
+      "result_sha256": "44901e548370c09de60e544e0c79e97b075caea45885ed7fe17038fab6d67622"
+    }
+  ],
+  "scope": "One pitch, very small starting-position variation, limited sample; not hardware deployment or general robustness"
+}

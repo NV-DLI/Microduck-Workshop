@@ -60,7 +60,7 @@ layout: learning
 loop: true
 ```
 
-With this split, skills from the earlier chapters remain the foundation of the task: the official walking policy is the same kind of reinforcement-learning policy you train in Section 3.2, and kicking and recovery are handled by the course’s local skill, which combines reference kick and standing policies, a course-trained residual correction and recovery logic. GR00T learns “when to walk where, where to look and when to kick”, not how to stay upright.
+With this split, skills from the earlier chapters remain the foundation of the task: the official walking policy is the same kind of reinforcement-learning policy you train in Section 3.2, and kicking and recovery are handled by the course’s local skill, which combines reference kick and standing policies, a course-trained residual correction and recovery logic. GR00T learns “when to walk where, where to look and when to kick”, not how to stay upright. This describes the execution layer paired with the GR00T checkpoint. The Section 4.2 onboard lab uses the official kick and standing policies without loading the residual network.
 
 {#inputs}
 ## What GR00T reads each time
@@ -218,12 +218,12 @@ groot:
   legend: ['Vertical line: one camera capture (bright = latest frame read by a new inference)', 'Short bar: one low-level motion-policy update', 'Hatching: simulation paused (new inference or cached command)', 'Color: owning round; grey: no longer used by the current step; dashed: not yet happened']
   note: The inference column and the narrow cached-command columns only show order; their widths are not to scale. Inside each command, positions follow simulation time. Simulation intervals exclude capture, communication and server waiting.
 onboard:
-  capture_ms: [0, 70, 135, 200]
+  capture_ms: [0, 70, 140, 200]
   actor_ms: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180]
   actor_round: [0, 0, 0, 0, 1, 1, 1, 2, 2, 2]
-  decision_ms: [110.418338, 266.223269, 148.434121]
-  detector_ms: [40.214468, 36.874673, 58.136762]
-  navigation_ms: [70.1371660688892, 229.20526703819633, 90.22252692375332]
+  decision_ms: [39.815, 69.494, 42.485]
+  detector_ms: [7.677, 8.649, 7.835]
+  navigation_ms: [32.136, 60.843, 34.648]
   lanes:
     sensors: {name: Sensor capture, rate: 'RGB + ToF · 15 Hz, about every 67 ms'}
     decision: {name: Onboard decision, rate: once after each capture ◆}
@@ -233,16 +233,16 @@ onboard:
   decision_label: Detect · decide
   decision_note: measured {ms} ms
   capture_title: RGB and ToF update in the same simulated capture with the same timestamp
-  decision_title: 'The onboard policy processes this capture: detector call {det} ms (including image encoding and local communication), geometry, navigation, gaze and safety guards {nav} ms, total {ms} ms (host-measured from sensor data ready to command ready, excluding sensor capture; simulation time does not advance meanwhile)'
+  decision_title: 'The onboard policy processes this capture: detector call {det} ms (including raw pixel transfer and local communication), geometry, navigation, gaze and safety guards {nav} ms, total {ms} ms (host-measured from sensor data ready to command ready, excluding sensor capture; simulation time does not advance meanwhile)'
   next_title: Sensor capture for the following round
   say: '{round}: the sensors capture RGB and ToF together → the simulation pauses while the onboard policy runs detection, geometry, navigation and gaze decisions, measured at {ms} ms → this round''s high-level command is kept until the next decision, while the low-level motion policy updates {n} times.'
   legend: ['Vertical line: one sensor capture', '◆ processing event: done while the simulation is paused; measured time below, not to axis scale', 'Short bar: one low-level motion-policy update', 'Color: owning round; grey: replaced by a newer round; dashed: not yet happened']
-  note: The horizontal axis is to scale in simulation time; processing time takes no axis width. The 15 Hz capture is rounded to the 5 ms physics step, so captures are 65 or 70 ms apart (70, 65, 65 ms here); the recorded run shows the low-level motion policy using the three rounds' commands 4, 3 and 3 times.
+  note: The horizontal axis is to scale in simulation time; processing time takes no axis width. The 15 Hz capture is rounded to the 10 ms physics step, so captures are 60 or 70 ms apart (70, 70, 60 ms here); the recorded run shows the low-level motion policy using the three rounds' commands 4, 3 and 3 times.
 facts:
 - modes: [onboard]
   text: In this course's simulation RGB and ToF update in the same capture with the same timestamp; this is a simulation setting, not a claim of hardware sensor synchronization. After each capture the onboard policy uses the images, depth and body state for object detection, geometry, navigation and gaze decisions, then applies safety guards, and outputs gaze, velocity and skill requests.
 - modes: [onboard]
-  text: 'Captures run at 15 Hz, about 67 ms of simulation time apart, yet the three decisions here took 110.4, 266.2 and 148.4 ms on the host. These do not conflict: evaluation is synchronous and simulation time does not advance until a decision finishes, so the times are written under ◆ instead of stretching the axis. Timing starts when the sensor data is ready and ends when the command is ready; it excludes sensor capture and low-level motion-policy inference. During the measurement DGX Spark was also computing a GR00T feature cache, so these numbers do not represent a robot''s onboard computer or dedicated hardware.'
+  text: 'Captures run at 15 Hz, about 67 ms of simulation time apart, yet the three decisions here took 39.8, 69.5 and 42.5 ms on the host. These do not conflict: evaluation is synchronous and simulation time does not advance until a decision finishes, so the times are written under ◆ instead of stretching the axis. Timing starts after sensor capture and archive submission and ends when the command is ready; it excludes rendering, archive submission and low-level motion-policy inference. This is a DGX Spark workstation measurement, not a measurement on the robot''s RK3566.'
 - modes: [onboard]
   text: The high-level command is kept until the next decision. While simulation advances, the low-level motion policy updates at 50 Hz; local state estimation, safety guards and head limits also run on this rhythm and may modify the command before it becomes joint actions.
 - modes: [groot]
@@ -251,7 +251,7 @@ facts:
   text: 'In synchronous evaluation every call, once per 80 ms, waits for the server before the simulation continues: 1 call in 4 is a new inference, the other 3 only take the next command from the cache. The three new inferences here took 326.5, 323.5 and 333.9 ms of server computation. Across the evaluation batch, 899 new inferences had a median of 332 ms (P95 351 ms) and 2,680 cached calls a median of 15 ms. These are server computation times only, excluding network transfer and image capture, and must not be added to simulation time as one cycle.'
 - modes: [groot]
   text: The camera captures at 15 Hz while the simulation advances and not while it is paused. A new inference reads only the latest frame plus three history frames from about 1.9, 3.8 and 5.8 s earlier; the frames in between are not fed to that inference directly.
-caption: 'Data from the course''s completed simulation logs: GR00T, 12 consecutive calls in one walking-shot evaluation (simulation 8.24–9.20 s, start-up warm-up skipped); onboard policy, three consecutive decisions after entering the approach-the-ball stage in one timing run (simulation 2.200–2.400 s). The excerpts show update order, not task success rates or end-to-end real-time performance. [View timing data](_static/data/control-timing-evidence.json)'
+caption: 'Data from the course''s completed simulation logs: GR00T, 12 consecutive calls in one walking-shot evaluation (simulation 8.24–9.20 s, start-up warm-up skipped); onboard policy, three consecutive decisions after entering the approach-the-ball stage in one timing run (simulation 3.400–3.600 s). The excerpts show update order, not task success rates or end-to-end real-time performance. [View timing data](_static/data/control-timing-evidence.json)'
 ```
 
 Synchronous evaluation stops the simulation whenever it waits for the server, so a live view shows pauses; a video exported at a fixed simulation frame rate hides those waits, so smooth video does not show that the robot can move continuously in real time. A real robot cannot pause physical time: the low-level motion policy needs its own continuously running control loop, and high-level inference has to run asynchronously with a command buffer that also handles expired commands and stale observations. This course's simulation evaluation is synchronous.

@@ -45,7 +45,7 @@ class BridgeClient:
                     request
                 ):
                     return validate_response(r, request, sim_query_s)
-            time.sleep(0.02)
+            time.sleep(0.002)
         raise TimeoutError(
             "No matching Nav2 response; old path must not authorize movement"
         )

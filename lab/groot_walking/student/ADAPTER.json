@@ -1,6 +1,6 @@
 {
   "schema": "microduck.groot-walking-student-adapter.v1",
-  "purpose": "Course adapter of the evaluation executor with two routes. GR00T route: same task, scene, controller, GR00T server and scoring as the evaluation of the course checkpoint, with the documented changes. Onboard route (--course-onboard, entry lab/onboard_scene.py): the installed onboard controller unchanged, with the same course start-up.",
+  "purpose": "GR00T course adapter with standing61 initialization. The current onboard football entry uses lab/onboard/executor.py with the same standing61 brake, official kick/standing policies and its separately recorded timing/configuration; the historical onboard branch in walking_student_executor.py is retained for provenance.",
   "changes": [
     "standing61 start-up (both routes): HOME joints locked by temporary joint limits on the measured grounded root (grounded-pose.json), free root, zero external wrench",
     "GR00T route: brake released when the first real GR00T prediction has returned and before it is applied",
@@ -56,8 +56,9 @@
     {
       "file": "../../lab/onboard_scene.py",
       "repository_path": "lab/onboard_scene.py",
-      "sha256": "7510b2cbb409e5342d7b944f1e8bcd2a262c7bb155250c2856804e604796a6d5",
-      "origin": "new: onboard route entry; scripts/run.py football (indoor) runs it"
+      "sha256": "b9ddbbb9d2824a0331bdf470debf87514413adeb5dd148a2bd1ae2a773f5d50d",
+      "origin": "new: onboard route entry; scripts/run.py football (indoor) runs it",
+      "change": "Onboard route now selects its own 100 Hz executor; GR00T executor and model artifacts unchanged."
     },
     {
       "file": "../../lab/course_labs/onboard_startup.py",

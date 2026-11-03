@@ -16,9 +16,9 @@ The onboard policy finds the ball and goal using only Microduck's own sensors: t
 ## What the robot sees
 
 :::{course-video} media/sensors-onboard-recorded
-:alt: One simulated shot with the onboard policy: the third-person view on the left, the head RGB image with detector boxes at the top right, the 8×8 ToF distances at the bottom right and the task stages over time at the bottom.
+:alt: A complete Isaac Sim window recording of one onboard shot: the third-person view on the left, the head RGB image at the top right and the 8×8 ToF distances at the bottom right.
 
-One simulated shot with the onboard policy: the third-person view, the head RGB image with detector boxes and the 8×8 ToF distances are synchronized to the same capture time; NR marks a zone without a valid return. This recorded attempt scores and returns to standing.
+One simulated shot with the onboard policy: the third-person view, the head RGB image and the 8×8 ToF distances are synchronized to the same capture time; NR marks a zone without a valid return. This recorded attempt scores and returns to standing, playing on the simulation clock.
 :::
 
 A shot needs three answers: where the ball is, where the goal is, and how far away they are. Each sensor answers a different part.
@@ -86,7 +86,7 @@ steps:
 - [Floor and near range, "Fit a floor plane\nStop if something is too close to the feet"]
 - [Sensor orientation, From same-time joint angles]
 result: [Ball and goal positions, "Ball position on the floor\nRobot position and heading relative to the goal"]
-caption: The sensor panels come from the same capture as the start of the recording above. The camera panel is a line drawing placed by the detector boxes; the ToF numbers are recorded ranges, darker means nearer, and dashed cells have no valid return. The cells of about 0.5 m below the middle face the ball.
+caption: The sensor panels show one recorded capture as an example. The camera panel is a line drawing placed by the detector boxes; the ToF numbers are recorded ranges, darker means nearer, and dashed cells have no valid return. The cells of about 0.5 m below the middle face the ball.
 ```
 
 After each capture, the onboard policy does three things:
@@ -94,6 +94,8 @@ After each capture, the onboard policy does three things:
 1. **Recognize targets.** The detector boxes the ball and goal in the RGB image.
 2. **Work out the floor and distances.** ToF fits the floor plane and joint angles give the camera orientation. The known ball size then places the ball on the floor; the bases of the two goalposts and their known spacing give the robot's position and heading relative to the goal.
 3. **Reject unreliable information.** If an observation is too old, a target is only partly visible, successive results disagree or the floor cannot be found, the policy does not use that result and stops to look again; it also stops moving when something is too close to its feet. A zone without a valid return only means unknown; it does not mean the way ahead is clear.
+
+A detection box narrows the search area; it does not directly provide a position for navigation. The goalpost endpoints must also pass ground-height checks and agree across three frames. A visible box therefore does not always produce a fresh, reliable position.
 
 {#truth}
 ## Sensors and scoring
@@ -104,7 +106,7 @@ The onboard policy reads only these sensors, never the true ball or goal coordin
 These are the perception implementation and model paths used by the shooting scene in the <a href="06-onboard.html#run">Section 4.2 lab</a>.
 
 - **Detector.** `models/scene-detector/deployment.json` names the YOLO26n weights `detector.pt`, the classes `ball` and `goal`, and the 640-pixel network input; `run.py` loads it automatically through the scene's `--detector-deployment` parameter. Its `deployment_scope` records that the model was neither exported to nor tested on the RK3566.
-- **Perception and geometry.** `lab/runtime/simulation/core/football/perception.py` handles detector boxes and sensor orientation; `football/ground_plane.py` fits the floor from ToF.
+- **Perception and geometry.** `lab/runtime/simulation/core/football/perception.py` handles detector boxes and sensor orientation; the onboard entry uses `lab/onboard/floor_fast.py` to fit the floor from ToF and cache sampling geometry that does not depend on the image. `lab/scene_goal_points.py` finds the two goalpost feet along their local perspective direction inside the detection box.
 - **Sensor settings.** `lab/runtime/simulation/core/sensors/reports/sensor-profile.json` records the simulated camera and ToF settings.
 :::
 

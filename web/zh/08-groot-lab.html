@@ -518,20 +518,18 @@
 </tbody>
 </table>
 </div>
-<p>在 DGX Spark 上，完整训练约为 56 分钟的更新，再加上开始时的核对和最后保存检查点的时间。在 32 GB 的 RTX 5090 上，按短时测得的更新间隔粗略估算，2000 次更新约需 100–170 分钟；课程没有在这种 GPU 上跑完完整训练。你不必等它结束：下面的验证默认使用课程提供的检查点。</p>
-<p><strong>硬件要求。</strong> 训练命令会读取 GPU 显存，自动选择计算做法，配方不变：</p>
+<p>在 DGX Spark 上，完整训练约为 56 分钟的更新，再加上开始时的核对和最后保存检查点的时间。你不必等它结束：下面的验证默认使用课程提供的检查点。</p>
+<p><strong>硬件要求。</strong> 本课程使用 DGX Spark；训练命令会读取可用 GPU 内存并检查资源：</p>
 <ul class="simple">
 <li><p><strong>显存约 56 GB 以上（例如 DGX Spark）：</strong> 按完整批量训练，更新阶段显存峰值约 47 GB。</p></li>
-<li><p><strong>显存约 30–56 GB（例如 32 GB 的 RTX 5090）：</strong> 自动改用低显存做法。计算顺序不同，结果不会与课程检查点逐位相同。</p></li>
 <li><p><strong>显存不足约 30 GB：</strong> 命令会停止并说明原因。</p></li>
 <li><p><strong>内存与磁盘：</strong> 训练进程的内存峰值约 8 GB；输出目录预留约 40 GB，在自己的 GPU 上重算特征缓存还要约 32 GB。</p></li>
 </ul>
 <details class="enrichment"><summary>资源与特征缓存</summary><div class="enrichment-body"><ul class="simple">
 <li><p><strong>特征缓存。</strong> 冻结骨干算出的特征已经随资料包提供（约 32 GB）。训练开始时，命令核对缓存、训练起点和训练集的 SHA-256，再在 GPU 上重算 4 个样本的特征与缓存比对；全部一致才跳过特征计算，否则停止，并在输出目录旁写出逐项差异记录。</p></li>
-<li><p><strong>其他 GPU 架构。</strong> 这份缓存在 DGX Spark 上算出；换一种 GPU 架构时，浮点计算的差异可能让比对不通过。为 RTX 5090（计算能力 12.0）准备的缓存可以向授课教师领取：把 <code class="docutils literal notranslate"><span class="pre">groot-walking-feature-caches/</span></code> 文件夹放在 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 旁边，命令会按 GPU 的计算能力自动选用。</p></li>
-<li><p><strong>重算特征。</strong> 加 <code class="docutils literal notranslate"><span class="pre">--recompute-features</span></code> 在自己的 GPU 上重算缓存：DGX Spark 约 88 分钟，RTX 5090 约 54 分钟。</p></li>
+<li><p><strong>缓存匹配。</strong> 这份缓存在 DGX Spark 上算出，必须与当前模型、训练集和计算配置匹配。</p></li>
+<li><p><strong>重算特征。</strong> 加 <code class="docutils literal notranslate"><span class="pre">--recompute-features</span></code> 在自己的 GPU 上重算缓存：DGX Spark 约 88 分钟。</p></li>
 <li><p><strong>计算做法。</strong> <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">full</span></code> 或 <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">low-memory</span></code> 可以指定做法。低显存做法把每批 16 个样本拆成 16 次计算、累加梯度后再更新一次参数，逐个参数更新优化器状态，并按需从磁盘读取特征缓存。</p></li>
-<li><p><strong>WSL 2。</strong> 文件写在 Windows 磁盘上的一个虚拟磁盘文件里，它随写入增长、不会自动缩小，要确认这个 Windows 盘有足够的剩余空间；保存和重新加载检查点时还会用到几 GB 交换空间。</p></li>
 </ul>
 </div></details></section>
 <section id="lab-train">
@@ -595,7 +593,7 @@
 </tbody>
 </table>
 </div>
-<p><strong>课程检查点的验证结果。</strong> 同一个检查点在这 5 个起点上的记录是：0 次进球，2 次触球未进，3 次在 60 秒内没有碰到球，没有摔倒。第 4、5 个回合在踢球观察时段结束时正常结束（任务时间约 16 秒和 27 秒）。这组记录的头部相机每帧渲染 4 遍；默认命令只渲染 1 遍，图像细节略有不同，结果可能不同。想按同样条件运行，在命令前加 <code class="docutils literal notranslate"><span class="pre">MICRODUCK_GROOT_RENDER_SUBFRAMES=4</span></code>。</p>
+<p><strong>课程检查点的验证结果。</strong> 同一个检查点在这 5 个起点上的记录是：0 次进球，2 次触球未进，3 次在 60 秒内没有碰到球，没有摔倒。第 4、5 个回合在踢球观察时段结束时正常结束（任务时间约 16 秒和 27 秒）。这份参考记录使用配套评测场景和每帧 4 个渲染子帧。当前场景使用简化的球网，默认每帧 1 个子帧，尚未在此配置下重测这 5 个起点，因此请记录自己的结果，不把参考数字当作当前命令的保证。<code class="docutils literal notranslate"><span class="pre">MICRODUCK_GROOT_RENDER_SUBFRAMES=4</span></code> 只改变渲染子帧数。</p>
 <p>流程能跑通，也能走到球前出脚，但这 5 次都没有完成射门。5 个回合太少，而且这些起点在训练和调试中用过，不能据此判断泛化。下一步应先分析失败，再用更多未参与训练和调参的起点评测，并保留所有失败。</p>
 <p>如果你完整训练了自己的模型，在上面的命令后加上 <code class="docutils literal notranslate"><span class="pre">--checkpoint</span> <span class="pre">outputs/groot-walking-train/checkpoints/002000/pretrained_model</span></code>，并换一个新的 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 目录，就能用同样的起点比较两个模型。</p>
 <div class="quiz"><h3>检查理解</h3><p>验证中 Microduck 每隔一会儿就停顿一下，这说明 GR00T 太慢、不能用吗？</p>

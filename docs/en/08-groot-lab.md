@@ -101,21 +101,19 @@ So the total number of draws is about 2.38 times the training set. That does not
 | Optimizer updates | About 56 minutes | 2000 updates, about 1.6 s each |
 | Saving the checkpoint | Extra | The model weights are about 12.6 GB |
 
-On DGX Spark a full training takes about 56 minutes of updates plus the checks at the start and saving the checkpoint at the end. On a 32 GB RTX 5090, a rough estimate from the update interval measured in a short run is 100–170 minutes for 2000 updates; the course has not run a full training on that GPU. You do not have to wait for it to finish: the validation below uses the course checkpoint by default.
+On DGX Spark a full training takes about 56 minutes of updates plus the checks at the start and saving the checkpoint at the end. You do not have to wait for it to finish: the validation below uses the course checkpoint by default.
 
 **Hardware.** The training command reads the GPU memory and chooses the way of computing automatically; the recipe stays the same:
 
 - **About 56 GB of GPU memory or more (for example DGX Spark):** trains with the full batch; the update phase peaks at about 47 GB.
-- **About 30–56 GB (for example a 32 GB RTX 5090):** switches to the low-memory way of computing. The order of computation differs, so results are not bit-identical to the course checkpoint.
 - **Less than about 30 GB:** the command stops and explains why.
 - **Memory and disk:** the training process peaks at about 8 GB of memory; reserve about 40 GB for the output folder, plus about 32 GB if you recompute the feature cache on your own GPU.
 
 :::{enrichment} Resources and the feature cache
 - **Feature cache.** The features computed by the frozen backbone come with the data package (about 32 GB). At the start of training the command checks the SHA-256 of the cache, the starting checkpoint and the training set, then recomputes the features of 4 samples on the GPU and compares them with the cache; only if everything matches does it skip feature computation, otherwise it stops and writes a field-by-field difference record next to the output folder.
-- **Other GPU architectures.** This cache was computed on DGX Spark; on another GPU architecture, floating-point differences can make the comparison fail. A cache prepared for the RTX 5090 (compute capability 12.0) is available from your instructor: put its `groot-walking-feature-caches/` folder next to `groot-walking/`, and the command picks the matching one by compute capability.
-- **Recomputing features.** Add `--recompute-features` to recompute the cache on your own GPU: about 88 minutes on DGX Spark and about 54 minutes on an RTX 5090.
+- **Cache matching.** This cache was computed on DGX Spark and must match the current models, training data and computation settings.
+- **Recomputing features.** Add `--recompute-features` to recompute the cache on your own GPU: about 88 minutes on DGX Spark.
 - **Way of computing.** `--profile full` or `--profile low-memory` chooses it explicitly. The low-memory way splits each batch of 16 samples into 16 computations and accumulates gradients before one parameter update, updates the optimizer state parameter by parameter, and reads the feature cache from disk as needed.
-- **WSL 2.** Files are written into a virtual disk file on the Windows drive, which grows with writes and does not shrink by itself, so make sure that Windows drive has enough free space; saving and reloading checkpoints also uses a few GB of swap.
 :::
 
 {#lab-train}
@@ -181,7 +179,7 @@ After the run, first read the `Complete walking shots` summary and the one-line 
 | No contact | The ball was not touched within the 60-second simulation limit |
 | Fall | A fall at any time is never a success |
 
-**Validation results of the course checkpoint.** The checkpoint's record from these five starts: 0 goals, 2 contacts without a goal, 3 episodes without touching the ball within 60 s, and no falls. Episodes 4 and 5 ended normally when the kick observation window closed (task times of about 16 s and 27 s). This record rendered each head-camera frame 4 times; the default command renders once, with slightly different image details, so results may differ. To run under the same condition, put `MICRODUCK_GROOT_RENDER_SUBFRAMES=4` before the command.
+**Validation results of the course checkpoint.** The checkpoint's record from these five starts: 0 goals, 2 contacts without a goal, 3 episodes without touching the ball within 60 s, and no falls. Episodes 4 and 5 ended normally when the kick observation window closed (task times of about 16 s and 27 s). This reference record used the checkpoint’s evaluation scene with 4 render subframes per capture. The current scene has a simplified goal net and defaults to 1 subframe. These five starts have not been retested in that configuration, so record your own outcomes; the reference counts are not a promise for the current command. `MICRODUCK_GROOT_RENDER_SUBFRAMES=4` changes only the render subframe count.
 
 The pipeline runs and the robot walks up to the ball and kicks, but none of these five trials completed the shot. Five episodes are too few, and these starts were used during training and tuning, so they cannot establish generalization. Analyse the failures first, then evaluate from more starts excluded from training and tuning, keeping every failure.
 
