@@ -398,7 +398,7 @@ class ArgumentTest(unittest.TestCase):
     def test_rollers_repeat_is_rejected(self):
         r = self.call("--repeat", "2", "--locomotion", "rollers")
         self.assertEqual(r.returncode, 2)
-        self.assertIn("walking onboard route", r.stderr)
+        self.assertIn("unrecognized arguments: --locomotion rollers", r.stderr)
 
     def test_legacy_scene_repeat_is_rejected(self):
         r = self.call("--repeat", "2", "--scene", "legacy")

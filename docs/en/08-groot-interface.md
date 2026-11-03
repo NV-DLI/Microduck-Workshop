@@ -1,95 +1,97 @@
 ---
 myst:
   html_meta:
-    description: 'What GR00T reads in the walking shot, which eight high-level requests it outputs and who executes them; why only the action head is post-trained instead of predicting joint angles; how the demonstrations are designed; and why a real robot would run inference on a workstation.'
+    description: 'How GR00T completes the walking shot: what it reads, which 8 high-level requests it outputs and who executes them, how often each module updates, and how demonstrations, action-head training and closed-loop validation work.'
 ---
 
-# 5.2 Walking shot: GR00T inputs, outputs and data
+# 5.2 Score autonomously with GR00T
 
 :::{lesson-intro}
-:meta: Section 5.2 · Estimated learning time: 60 minutes
+:meta: Section 5.2 · Estimated learning time: 30 minutes
 
-What GR00T reads in the walking shot, which eight high-level requests it outputs and who executes them; why only the action head is post-trained instead of predicting joint angles; how the demonstrations are designed; and why a real robot would run inference on a workstation.
+How GR00T completes the walking shot: what it reads, which 8 high-level requests it outputs and who executes them, how often each module updates, and how demonstrations, action-head training and closed-loop validation work. GR00T training and inference were done in advance by the course; nothing needs to be run in this section.
 :::
 
 ```{symbols}
 H:
   tex: H
-  text: Number of high-level request steps predicted at once; 16 in this section.
+  text: High-level request steps per prediction; 16 here.
 K:
   tex: K
-  text: Number of predicted request steps executed before predicting again; 4 in this section.
+  text: Request steps actually executed after each prediction; 4 here.
 T_exec:
   tex: T_{\mathrm{execute}}
-  text: 'Simulation time covered by the executed requests: 4 ÷ 12.5 Hz = 0.32 s, excluding inference and communication.'
+  text: Simulation time covered by one executed segment; 4 ÷ 12.5 Hz = 0.32 s here, excluding inference and communication time.
 f_action:
   tex: f_{\mathrm{action}}
-  text: Rate at which high-level requests are recorded and executed; 12.5 Hz in this section.
+  text: Rate at which high-level requests are recorded and executed; 12.5 Hz here.
 k_round:
   tex: k
-  text: 'Round index: for GR00T one round is a new prediction and its execution; for the onboard policy one round is one sensor capture and its decision. $k-1$ is the previous round and $k+1$ the next.'
+  text: 'Round index: for GR00T a round is one new prediction and its execution, for the onboard policy one sensor capture and its decision; $k-1$ is the previous round and $k+1$ the next.'
 ```
 
 {#task}
 ## One pitch, one gait, one instruction
 
-The GR00T in this chapter does one thing: on the course’s green football pitch, walk on its normal feet up to the ball, kick it into the goal with the right foot, then recover to standing. The pitch, goal, ball and lighting are exactly those used by the onboard policy, and the model only controls walking; it never switches to rollers.
-
-The model always receives the same instruction:
+GR00T here does one thing: on the course's green football pitch, walk up to the ball, kick it into the goal with the right foot, then recover to standing. The pitch, goal, ball and lighting are exactly those used by the onboard policy. The model always receives the same instruction:
 
 <q>Walk to the football, kick it into the goal with the right foot, and recover to standing.</q>
 
-The instruction does not say where the ball is or where to stand before kicking; the robot has to work that out from camera images and body state. Because every demonstration uses this one instruction, the model learns this one task, and nothing can be inferred about other instructions.
+The instruction does not say where the ball is or where to stand before kicking; the robot has to work that out from camera images and body state. Every demonstration uses this one instruction, so the model learns this one task, and nothing can be inferred about other instructions.
+
+:::{course-video} media/groot-walking-success-recorded
+:alt: Simulation recording of a walking shot controlled by GR00T: on the green pitch the robot walks to the ball, settles, kicks it into the goal with the right foot and then recovers to standing.
+
+A walking shot controlled by GR00T: watch how the robot walks up to the ball and settles, requests the kick, and recovers to standing after the ball enters the goal. GR00T only issues the 8 high-level requests for motion, gaze and the kick; stepping, balance and the kick's joint motions come from trained skills.
+:::
 
 {#reuse-skills}
-## Hierarchical control: GR00T decides what, existing skills decide how
+## Layered control: GR00T decides what, skills decide how
 
 ```{learning-flow}
-label: Learn how to use skills; skills execute movement
+label: The model learns to use skills; the skills carry out the motion
 nodes:
-- [Observe and set a goal, '4 images, 127-D state, instruction']
-- [GR00T, Predict 8-D high-level requests]
-- [Skill executor, Walk / gaze / kick and recover]
-- [Robot and feedback, 'Move joints, observe again']
+- [Observation and goal, '4 images, 127-D state, task instruction']
+- [GR00T, Predicts 8-D high-level requests]
+- [Skill execution layer, Walking / gaze / kick and recovery]
+- [Robot and feedback, 'Joints move, observe again']
 details:
-- Every 80 ms an observation is assembled from four history images from the same onboard camera, current and past body state, and the fixed instruction. It contains no simulated world coordinates of the ball or goal and no internal task stage of the onboard policy.
-- GR00T outputs a 16 × 8 block of requests. Each step has three movement requests (forward, lateral, turn), four gaze requests for the neck and head, and one right-foot kick request.
-- The official walking policy turns movement requests into joint actions and keeps balance; head requests pass through limits and rate limiting; once the kick request crosses its threshold, the executor checks that the robot has stopped and is stable, then runs the course’s local kick-and-recovery skill.
-- Low-level control keeps driving the joints at 50 Hz, and fresh images and body state feed the next prediction.
+- Every 80 ms an observation is assembled: 4 history frames from the same onboard camera, current and past body state, and the fixed task instruction. It contains no simulation coordinates of the ball or goal and none of the onboard policy's internal task stages.
+- GR00T outputs a 16 × 8 request segment: each step has 3 motion requests (forward, sideways, turn), 4 gaze requests for the neck and head, and 1 right-foot kick request.
+- The official walking policy turns motion requests into joint actions while keeping balance; head requests are clamped and rate-limited; when the kick request crosses its threshold the execution layer checks that the robot has settled and is posed correctly, then runs the local kick-and-recovery skill.
+- The low level keeps controlling the joints at 50 Hz, and the new images and body state feed the next prediction.
 layout: learning
 loop: true
 ```
 
-With this split, skills from the earlier chapters remain the foundation of the task: the official walking policy is the same kind of reinforcement-learning policy you train in Section 3.2, and kicking and recovery are handled by the course’s local skill, which combines reference kick and standing policies, a course-trained residual correction and recovery logic. GR00T learns “when to walk where, where to look and when to kick”, not how to stay upright. This describes the execution layer paired with the GR00T checkpoint. The Section 4.2 onboard lab uses the official kick and standing policies without loading the residual network.
+| Index | Request | Range | Executed by |
+|---|---|---|---|
+| 1–3 | Forward, sideways, turn | ±0.35, ±0.20, ±0.80, native command values of the walking policy | The official walking policy, which turns them into 14 joint actions using body feedback |
+| 4–7 | Neck pitch, head pitch, head yaw, head roll | Radians from neutral | The head adapter clamps and rate-limits them before the low level |
+| 8 | Right-foot kick | 0 to 1 | Above 0.5 the execution layer confirms that the robot has settled and the head is centered, then runs the roughly 4-second local kick-and-recovery skill |
+
+The first three numbers are the walking policy's native command values, not measured velocities; the kick value is only a “kick now” request, not a joint angle or a success probability. GR00T learns “when to walk where, where to look and when to kick”; balance, stepping and ball contact are left to skills already trained with reinforcement learning and running at 50 Hz. In this execution layer the kick and recovery combine the reference kick and standing policies, a course-trained residual correction and recovery logic, which differs from the official-only configuration of the onboard policy in Section 4.2.
+
+**Why not output joint angles directly?** One GR00T inference takes about 0.33 s of server compute, while the walking policy updates its joint actions from body feedback every 20 ms. Controlling joints directly, the model would also have to learn balance and contact, which needs richer demonstrations and strict timing validation. The price is that GR00T is limited by the skills below it: a motion the walking policy cannot perform cannot be requested either.
+
+GR00T predicts $\sym{H}$ = 16 request steps at a time; the execution side executes only the first $\sym{K}$ = 4 and then predicts again from a new observation:
+
+```{formula} Simulation time covered by one executed segment
+\sym{T_exec} = \sym{K} / \sym{f_action}
+```
+
+At $\sym{f_action}$ = 12.5 Hz, 4 steps cover 0.32 s of simulation time; each request holds for 80 ms, during which the walking policy updates 4 times.
 
 {#inputs}
-## What GR00T reads each time
+## What GR00T reads
 
-| Input | Structure | Description |
+| Input | Structure | Notes |
 |---|---|---|
-| Camera history | 4 RGB images, 270 × 480 each | The current frame from the onboard camera and frames from about 1.92, 3.84 and 5.76 seconds earlier (24, 48 and 72 samples apart at 12.5 Hz). |
-| Task instruction | Text | The fixed sentence above. |
-| Current state | 58 values | Body angular velocity and gravity direction 6; positions of the 14 joints relative to the default pose 14; joint velocities 14; previous motor action 14; previous 8-D high-level request 8; kick-skill busy flag and progress 2. |
-| Past-state summaries | 3 × 23 = 69 values | One group per past image: angular velocity and gravity 6, positions of the four head and neck joints 4, the previous high-level request at that time 8, age 1 and integral summaries 4. |
-| Full numeric state | 58 + 69 = 127 values | Encoded separately from images and text. |
+| Camera history | 4 RGB images, each 270 × 480 | The current frame of the same head camera plus frames from about 1.9, 3.8 and 5.8 s earlier |
+| Task instruction | Text | The fixed English instruction above |
+| Numeric state | 127 values | Body angular velocity and gravity direction, joint positions and velocities, the previous motor action and high-level request, kick-skill progress, and state summaries matching the three history images |
 
-A few points are easy to misread:
-
-- The integral summaries accumulate the measured vertical angular velocity and the request values. A request integral is “how far the robot was asked to go”, not a measured displacement or position.
-- The previous motor action and the previous high-level request differ. The first is the joint action actually sent by the low level; the second is what GR00T requested at the preceding 80 ms sample. A request may be delayed by stability conditions or head rate limits, so requesting something is not the same as completing it. Before the first decision the previous request is zero.
-- At the start of an episode, before enough history exists, past images and states are filled with the first observation of the episode.
-- The 127 values contain no simulated coordinates of the ball or goal. The kick-skill busy flag and progress come from the executor itself and can be maintained on a real robot.
-
-{#sensors}
-## Which sensors GR00T uses
-
-The onboard policy in Section 4.1 uses the RGB camera, ToF, joint encoders and IMU together; GR00T reads only some of them.
-
-:::{course-video} media/sensors-groot-recorded
-:alt: One simulated GR00T validation episode: the third-person view on the left, the head RGB image that GR00T reads at the top right, the observation-only 8×8 ToF distances at the bottom right and GR00T's requests and stages at the bottom.
-
-One simulated GR00T validation episode, with all views synchronized to the same capture time. The RGB image at the top right is GR00T's input source; ToF is shown for observation only and does not reach GR00T. In this episode the robot touches the ball but does not score, and it does not fall.
-:::
+The onboard policy of Section 4.1 uses the RGB camera, ToF, joint encoders and IMU together; GR00T reads only part of them:
 
 ```{concept-diagram}
 kind: onboard-sensors
@@ -123,51 +125,12 @@ result: [GR00T, "Images, state and task instruction\nPredicts 8-D high-level req
 caption: The same capture as the figure in Section 4.1, used to compare what the two methods read. GR00T has no detector boxes and must recognize the ball and goal in the image itself; there is no connection between ToF and GR00T.
 ```
 
-The two methods do not see the same information: the onboard policy relies on ToF for the floor and the distance in front of its feet, while GR00T can only learn the corresponding behavior from images, body state and demonstrations. Keep this in mind when comparing them.
-
-{#outputs}
-## The eight high-level requests: what, which units, who executes
-
-Each predicted step outputs eight values in a fixed order. The executor first clips each value to the range below, then passes it to the corresponding module.
-
-| # | Request | Range | Unit | Executed by |
-|---|---|---|---|---|
-| 1 | Forward | −0.35 to 0.35 | Native walking-policy command value | The official walking policy, which combines it with body feedback to produce 14 joint actions |
-| 2 | Lateral | −0.20 to 0.20 | Native walking-policy command value | Same |
-| 3 | Turn | −0.80 to 0.80 | Native walking-policy command value | Same |
-| 4 | Neck pitch | −1.10 to 1.10 | Radians from neutral | The head adapter limits it and its rate of change, then passes it to the low level |
-| 5 | Head pitch | −1.10 to 1.10 | Radians from neutral | Same |
-| 6 | Head yaw | −1.40 to 1.40 | Radians from neutral | Same |
-| 7 | Head roll | −0.31 to 0.31 | Radians from neutral | Same |
-| 8 | Right-foot kick | 0 to 1 | Trigger request | Above 0.5 the executor first confirms the robot has stopped and the head is neutral, then runs the roughly 4-second local kick-and-recovery skill |
-
-The first three values go straight into the official walking policy’s command input. They are the policy’s own native values, not measured speeds: how fast the robot actually moves also depends on the gait, the floor and the body state, so do not read them as m/s or rad/s. The kick value is not a foot joint angle or a success probability either; it is only a “kick now” signal. Whether the kick skill is running, and how far along it is, is fed back to the model through the busy flag and progress in the state.
-
-{#why-high-level}
-## Why not let GR00T output joint angles directly?
-
-Microduck’s walking policy updates its 14 joint actions from body feedback every 20 ms (50 Hz). GR00T inference took a median of about 0.33 s of server computation. A predicted action chunk can run at the control frequency, but corrections based on new observations are still limited by inference latency. Direct joint control must also learn balance and contact, requiring more varied demonstrations and careful timing validation.
-
-With a hierarchy, each part does what it is good at:
-
-- the walking and kick skills, already trained with reinforcement learning and running at 50 Hz, keep handling balance, stepping and contact;
-- GR00T handles what requires understanding the scene: which direction the ball is in, how far it is, whether to look down to check, and when a kick fits;
-- high-level requests have intuitive meanings and few dimensions, so demonstrations are easier to record and easier to check.
-
-The cost is that GR00T is limited by the skills beneath it: a request cannot ask for a motion the walking policy cannot perform.
-
-Action chunks connect this division of labor in time. Each GR00T prediction covers $\sym{H}$ = 16 request steps, the executor runs only the first $\sym{K}$ = 4, then predicts again from a fresh observation:
-
-```{formula} Simulation time covered by one executed chunk
-\sym{T_exec} = \sym{K} / \sym{f_action}
-```
-
-At $\sym{f_action}$ = 12.5 Hz, four steps cover 0.32 s of simulation time. Each request is held for 80 ms, during which the low-level walking policy updates 4 times. The 0.32 s is simulation time only and excludes waiting for inference and communication.
+The onboard policy uses ToF to judge the floor and the distance ahead of its feet, while GR00T can learn the corresponding behavior only from images, body state and demonstrations. Keep this in mind when comparing the two approaches.
 
 {#timing}
-## Control cycle: how often each module updates
+## Control timing: how often each module updates
 
-The figure below comes from the course's completed walking-shot simulation logs. It shows three consecutive rounds (previous, current and next) and compares in what order, and how often, each module updates with the onboard policy and with GR00T. While it plays, follow the colors to see where each round's inputs come from and which round produced each command.
+The figure below comes from a completed walking-shot simulation record. It shows the previous, current and next rounds in a row and compares the order and update rates of the modules in the onboard policy and in GR00T.
 
 ```{control-timing}
 title: 'Control cycle: from observation to action'
@@ -242,7 +205,7 @@ facts:
 - modes: [onboard]
   text: In this course's simulation RGB and ToF update in the same capture with the same timestamp; this is a simulation setting, not a claim of hardware sensor synchronization. After each capture the onboard policy uses the images, depth and body state for object detection, geometry, navigation and gaze decisions, then applies safety guards, and outputs gaze, velocity and skill requests.
 - modes: [onboard]
-  text: 'Captures run at 15 Hz, about 67 ms of simulation time apart, yet the three decisions here took 39.8, 69.5 and 42.5 ms on the host. These do not conflict: evaluation is synchronous and simulation time does not advance until a decision finishes, so the times are written under ◆ instead of stretching the axis. Timing starts after sensor capture and archive submission and ends when the command is ready; it excludes rendering, archive submission and low-level motion-policy inference. This is a DGX Spark workstation measurement, not a measurement on the robot''s RK3566.'
+  text: 'Captures run at 15 Hz, about 67 ms of simulation time apart, yet the three decisions here took 39.8, 69.5 and 42.5 ms on the host. These do not conflict: evaluation is synchronous and simulation time does not advance until a decision finishes, so the times are written under ◆ instead of stretching the axis. Timing starts after sensor capture and archive submission and ends when the command is ready; it excludes rendering, archive submission and low-level motion-policy inference. This is a DGX Spark workstation measurement, not a measurement on the robot''s controller board.'
 - modes: [onboard]
   text: The high-level command is kept until the next decision. While simulation advances, the low-level motion policy updates at 50 Hz; local state estimation, safety guards and head limits also run on this rhythm and may modify the command before it becomes joint actions.
 - modes: [groot]
@@ -254,98 +217,25 @@ facts:
 caption: 'Data from the course''s completed simulation logs: GR00T, 12 consecutive calls in one walking-shot evaluation (simulation 8.24–9.20 s, start-up warm-up skipped); onboard policy, three consecutive decisions after entering the approach-the-ball stage in one timing run (simulation 3.400–3.600 s). The excerpts show update order, not task success rates or end-to-end real-time performance. [View timing data](_static/data/control-timing-evidence.json)'
 ```
 
-Synchronous evaluation stops the simulation whenever it waits for the server, so a live view shows pauses; a video exported at a fixed simulation frame rate hides those waits, so smooth video does not show that the robot can move continuously in real time. A real robot cannot pause physical time: the low-level motion policy needs its own continuously running control loop, and high-level inference has to run asynchronously with a command buffer that also handles expired commands and stale observations. This course's simulation evaluation is synchronous.
+The simulation evaluation is synchronous: simulation stops while waiting for the server, so live viewing shows pauses, while a video exported on simulation time hides these waits. A real robot cannot pause physical time: the low-level motion policy needs a control loop that keeps running, high-level inference must run asynchronously with a command buffer, and stale commands and observations must be handled.
 
-{#action-head}
-## Why post-train only the action head?
+{#data-train}
+## Demonstrations, training and validation
 
-Do not assume that the GR00T N1.7 base weights understand this course’s 127-D state and 8-D high-level requests: the course defines this interface itself, and post-training teaches the interface and the shooting task. The vision-language backbone is already good at recognizing objects and directions in images, but the action head still has to learn what this robot’s state looks like and what it should output. So the course freezes the vision-language backbone and trains only the action head:
+The course pairs camera images, body state and 8-D requests from successful onboard-policy demonstrations, then divides the data by whole episode, with no repeated episode across training and validation. Training freezes the vision-language backbone and updates only the action head, teaching the model when to move, look and kick.
 
-| Part | Trained? | Why |
-|---|---|---|
-| Vision encoder and language model (Cosmos-Reason2-2B) | Frozen | Keeps pretrained visual and language knowledge; with only dozens of demonstration episodes, unfreezing risks overfitting and needs far more memory |
-| State encoder, action encoder and action decoder | Trained | Connect the 127-D state and 8-D requests, the interface unique to Microduck |
-| Action-sequence generator (the flow-matching transformer) | Trained | Learns to generate sensible request sequences from noise for this task |
-| Layers in the action head that process visual-language features | Trained | Let visual features enter action generation in a way suited to this task |
-
-That is more than replacing the last output layer, and it differs from LoRA, which trains only small added matrices. GR00T’s internal action representation is wider than eight values; the extra dimensions are masked so the training loss covers only the real eight.
-
-Freezing the backbone has a practical benefit too: the features computed from the same image and instruction never change, so they can be computed once and cached before training, after which each update runs only the action head. Section 5.3 uses the supplied cache by default: the log first shows the cache checks, then the optimizer updates; full feature-generation progress appears only when you choose to recompute the features. The cache is valid only while the backbone stays frozen and image preprocessing is fixed; it cannot be reused after changing image augmentation or unfreezing the backbone.
-
-{#data-design}
-## How the demonstrations are designed
-
-The demonstrations come from the onboard policy, which decides using only the onboard camera, IMU, joint encoders and ToF ranging, without simulated ground truth for the ball or goal. In simulation it completes the shot from different starts while we record the inputs GR00T will later see and the 8-D requests the onboard policy actually issued.
-
-```{learning-flow}
-label: Reliable demonstrations before scale
-nodes:
-- [Fix the task, 'One pitch, walking, one instruction']
-- [Record demonstrations, Observations paired with issued requests]
-- [Filter and split, 'Keep full successes, group by episode']
-- [Train and test, 'Fit requests, then test in closed loop']
-details:
-- The pitch, goal, ball and lighting stay fixed; only the robot and ball starts change. Teach one situation well before widening the scope.
-- The onboard policy decides at its own pace; the recording is resampled at 12.5 Hz into GR00T inputs and outputs, pairing each sample with the images and state available at that moment and the requests issued afterwards. Future frames and the exact positions used for scoring are excluded from inputs.
-- Only episodes that score a goal, never fall and end standing quietly become labels; failed episodes are kept separately for analysis. Training and validation sets are split by whole episode and start seed, so neighboring frames of one episode never land on both sides.
-- Falling training loss only shows the demonstrations are fitted. When the model controls the robot, check full-task success from starts that were not used in training.
-layout: learning
-loop: false
-```
-
-A few design principles:
-
-- **Inputs must be things the robot can really obtain.** Putting the ball’s simulated coordinates or the onboard policy’s internal stage number into the inputs would make training easy, but a real robot could not supply them.
-- **A reliable teacher, clean demonstrations.** If the onboard policy hesitates and readjusts, the model learns that too; only fully successful episodes enter training.
-- **Coverage matters more than count.** Dozens of nearly identical smooth runs teach less than demonstrations that cover approaching, adjusting heading, looking down to check, preparing to kick and recovering.
-- **Watch for imbalance.** Most of an episode is walking, and the frames just before a kick are few. Training can adjust sampling probabilities by stage: this course’s training set is divided into 7 stage groups based on the onboard policy’s recorded behavior, so standing still, fine adjustment at the ball and the moments just before a kick are drawn more often, and frames during the kick skill less often. Stage labels are used only for offline sampling and never enter the model’s inputs.
-
-The course has already prepared training and validation sets by these principles; Section 5.3 uses them directly, so you do not need to collect data.
-
-{#improve-data}
-## When the model drifts: the idea of corrective data
-
-A model trained only on successful runs has a common weakness: once it drifts, the images may no longer resemble any demonstration, and it does not know how to get back to the task. The remedy is to let the learning model drive first and then add correct actions in the states it actually reaches:
-
-- **Human-gated takeover (HG-DAgger):** an observer takes over when the model is about to go wrong and provides corrective actions, and those segments are added to the training data.
-- **Automated expert correction (DAgger-style):** a controller takes over automatically and supplies the actions. This requires the expert to be just as reliable in the drifted states the learner creates: an onboard policy that shoots well from standard starts may not recover from a skewed posture, so it must first be checked on those states.
-
-Both require recording who is in control and when a takeover starts, using only verified correct actions as labels, and finally turning takeover off to measure the model’s own success rate.
+After training, GR00T controls the simulated robot itself in closed-loop tests, judged by a full goal, no fall and recovery to standing. A lower training loss only shows a better fit to the demonstrations; the video above shows one successful episode, while reliability needs repeated independent tests. This section requires observation and understanding, with no training or inference to run.
 
 {#deployment}
 ## On a real robot: infer on a workstation, connect over the network
 
-Microduck’s onboard computing hardware is not suited to running a model of about three billion parameters such as GR00T. For real deployment, Microduck can share a network with a workstation that has a suitable GPU: the robot sends images and state to the workstation, the workstation runs GR00T, and the requests return to the robot, while small networks such as the walking policy keep running locally on the robot. Choose the workstation by model, precision and measured latency.
-
-```{learning-flow}
-label: Remote model inference; local continuous control and feedback
-nodes:
-- [Microduck sensors, Images + state + timestamps]
-- [GPU workstation, 'GR00T inference, return requests']
-- [Microduck executor, 'Check freshness, keep balance']
-details:
-- Send camera and robot state with sample times and sequence numbers, and pair each state causally with the latest image that is not older than the allowed age; keep each intentional history frame with its own timestamp, and never mix in stale or mislabelled data.
-- The workstation generates a request chunk from the latest valid observation. Network transfer, image encoding and model computation all count toward end-to-end latency; even when the server replies quickly, the image it used may already be stale.
-- The robot accepts only requests that match the agreed format and are still valid. The walking policy keeps running locally; on a timeout or lost connection it should stop under control or stand steady instead of continuing an expired forward request.
-layout: learning
-loop: true
-```
-
-In this course’s simulation the GR00T server and the simulator run on the same DGX Spark, and the simulator waits for every inference before continuing, so the network delays and expired commands of a real robot do not occur. Completing the task in simulation does not show that the same model would run in real time over a real network; that needs asynchronous inference, a command buffer, timeout protection and measurement on the real robot.
+Microduck's onboard controller board is not suited to a model of about three billion parameters such as GR00T. For real deployment, the robot can send images and state to a GPU workstation that runs GR00T and returns requests; small networks such as the walking policy keep running locally on the robot. Network transfer, image encoding and model compute all add to end-to-end latency; on a timeout or lost connection the robot should enter a controlled stop or stable standing and must not keep executing a stale forward request.
 
 ::::{quiz}
-GR00T outputs a forward request of 0.3. Can you say the robot is moving forward at 0.3 m/s?
+GR00T outputs a forward request of 0.3. Is the robot moving forward at 0.3 m/s?
 
 :::{answer}
-No. The forward request is a native command value written into the walking policy; the actual speed depends on the gait, the floor and the body state and must be read from the measured motion.
-:::
-::::
-
-::::{quiz}
-Why does the input contain the request actually issued last time instead of the request to be predicted now?
-
-:::{answer}
-The previous request already happened at decision time and is available on a real robot; the current request is the answer being predicted, and putting it in the input would leak the label.
+No. The forward request is a native command value for the walking policy; the actual speed depends on gait, ground and body state and must be read from the measured motion.
 :::
 ::::
 
@@ -355,5 +245,3 @@ The previous request already happened at decision time and is available on a rea
 {.references}
 - [GR00T N1.7 model card ↗](https://huggingface.co/nvidia/GR00T-N1.7-3B)
 - [Isaac GR00T: post-training and inference ↗](https://github.com/NVIDIA/Isaac-GR00T)
-- [HG-DAgger: human takeover and corrective data ↗](https://arxiv.org/abs/1810.02890)
-- [DAgger: expert labels on policy-visited states ↗](https://arxiv.org/abs/1011.0686)

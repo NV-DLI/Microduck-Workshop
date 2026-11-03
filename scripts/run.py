@@ -59,13 +59,12 @@ def verify():
         f = ROOT / "models" / item["file"]
         if not f.is_file() or sha(f) != item["sha256"]:
             raise ValueError("Model identity mismatch: " + item["file"])
-        print("OK", item["file"], item["bytes"], "bytes")
     extra = json.loads((ROOT / "models/indoor-detector/deployment.json").read_text())
     for key in ("weights", "onnx"):
         f = ROOT / "models/indoor-detector" / extra[key]
         if not f.is_file() or sha(f) != extra[key + "_sha256"]:
             raise ValueError("Indoor model identity mismatch: " + f.name)
-        print("OK", "indoor-detector/" + f.name, f.stat().st_size, "bytes")
+    print("Fixed model identities verified.")
     return d
 
 
@@ -114,9 +113,6 @@ def main():
     manual = sub.add_parser("manual")
     manual.add_argument("--seconds", type=float, default=600)
     manual.add_argument("--style", choices=list("ABCD"), default="A")
-    manual.add_argument(
-        "--locomotion", choices=["walking", "rollers"], default="walking"
-    )
     manual.add_argument("--output", type=Path, required=True)
     terrain = sub.add_parser("terrain")
     terrain.add_argument("--model", type=Path, required=True)
@@ -127,15 +123,8 @@ def main():
     terrain.add_argument("--output", type=Path, required=True)
     terrain.add_argument("--headless", action="store_true")
     terrain.add_argument("--record", action="store_true")
-    terrain.add_argument(
-        "--locomotion", choices=["walking", "rollers"], default="walking"
-    )
     slope_train = sub.add_parser("train-terrain")
     slope_train.add_argument("--yaw-precision", action="store_true")
-    slope_train.add_argument(
-        "--locomotion", choices=["walking", "rollers"], default="walking",
-        help="rollers trains the official passive-wheel actor on the same slopes",
-    )
     slope_train.add_argument("--resume", type=Path)
     slope_train.add_argument("--refine-heading", action="store_true")
     slope_train.add_argument("--model", type=Path, required=True)
@@ -175,7 +164,6 @@ def main():
     plan.add_argument("--output", type=Path, required=True)
     fb = sub.add_parser("football")
     fb.add_argument("--seed", type=int, default=983402)
-    fb.add_argument("--locomotion", choices=["walking", "rollers"], default="walking")
     fb.add_argument("--scene", choices=["legacy", "indoor"], default="indoor")
     fb.add_argument("--style", choices=list("ABCD"), default="A")
     fb.add_argument("--record-hd", action=argparse.BooleanOptionalAction, default=False)
@@ -199,7 +187,7 @@ def main():
     if a.command == "football" and a.repeat is not None:
         if a.repeat < 0:
             ap.error("--repeat needs a positive count, or 0 to repeat until Ctrl+C")
-        if a.locomotion != "walking" or a.scene != "indoor":
+        if a.scene != "indoor":
             # Only this route has the grounded HOME joint-brake start-up.
             ap.error("--repeat runs the walking onboard route on the indoor scene")
     if a.command == "verify-models":
@@ -395,7 +383,7 @@ def main():
                 py,
                 ROOT / "lab/manual.py",
                 "--locomotion",
-                a.locomotion,
+                "walking",
                 "--style",
                 a.style,
                 "--runtime",
@@ -406,8 +394,7 @@ def main():
                 fresh(a.output),
                 "--seconds",
                 a.seconds,
-                # One Isaac Sim window: M switches walking feet <-> roller feet.
-                "--mode-switch",
+                "--grounded-start",
             ],
             c,
         )
@@ -417,7 +404,7 @@ def main():
             # Course check entry: lab/terrain.py plus the standing61 start-up protocol.
             ROOT / "lab/course_labs/terrain_check.py",
             "--locomotion",
-            a.locomotion,
+            "walking",
             "--runtime",
             m,
             "--model",
@@ -441,29 +428,6 @@ def main():
     if a.command == "train-terrain":
         if a.num_envs < 1 or a.iterations < 1:
             ap.error("Use positive training counts")
-        if a.locomotion == "rollers":
-            if a.resume or a.refine_heading or a.yaw_precision:
-                ap.error("Roller slope training has no continuation stages")
-            return run(
-                [
-                    py,
-                    *viewer(a.show),
-                    ROOT / "lab/course_labs/train_terrain_rollers.py",
-                    "--runtime",
-                    m,
-                    "--model",
-                    a.model.resolve(),
-                    "--num-envs",
-                    a.num_envs,
-                    "--iterations",
-                    a.iterations,
-                    "--seed",
-                    a.seed,
-                    "--output",
-                    fresh(a.output),
-                ],
-                c,
-            )
         cmd = [
             py,
             *viewer(a.show),
@@ -536,58 +500,6 @@ def main():
     if a.command == "football":
         verify()
         out = fresh(a.output)
-        if a.locomotion == "rollers":
-            if a.scene != "indoor":
-                ap.error("Roller shooting requires the indoor scene")
-            cmd = [
-                py,
-                ROOT / "lab/manual.py",
-                "--runtime",
-                m,
-                "--models",
-                ROOT / "models",
-                "--output",
-                out,
-                "--locomotion",
-                "rollers",
-                "--autonomous",
-                "--detector-deployment",
-                ROOT / "models/scene-detector/deployment.json",
-                "--seconds",
-                a.seconds,
-                "--seed",
-                a.seed,
-                "--style",
-                a.style,
-                "--root-x",
-                -0.30,
-                "--root-y",
-                a.root_y if a.root_y is not None else 0.045,
-                "--ball-x",
-                (a.ball_xy or [0.0, 0.0])[0],
-                "--ball-y",
-                (a.ball_xy or [0.0, 0.0])[1],
-                "--shot-push-seconds",
-                2.1,
-            ]
-            if a.headless:
-                cmd += ["--headless-check"]
-            if a.record_hd:
-                cmd += ["--record"]
-            result = run(cmd, c)
-            if result:
-                return result
-            return run(
-                [
-                    py,
-                    ROOT / "lab/evaluate_rollers.py",
-                    "--run",
-                    out,
-                    "--output",
-                    out / "independent-result.json",
-                ],
-                c,
-            )
         if a.repeat is not None:
             import repeat_episodes
 

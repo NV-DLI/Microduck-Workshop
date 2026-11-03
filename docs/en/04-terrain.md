@@ -1,17 +1,17 @@
 ---
 myst:
   html_meta:
-    description: "Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking and roller policies on random slopes and verify them on the same wedge ramp."
+    description: "Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking on random slopes and verify it on a wedge ramp."
 ---
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.3 Reward design: walking steadily up and down slopes
+# 3.4 Extension: walking steadily up and down slopes
 
 :::{lesson-intro}
-:meta: Section 3.3 · Method and hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough)
+:meta: Section 3.4 · Method and hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough)
 
-Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking and roller policies on random slopes and verify them on the same wedge ramp.
+Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking on random slopes and verify it on a wedge ramp.
 :::
 
 ```{symbols}
@@ -66,12 +66,12 @@ This section takes only the simplest task: walk up a wooden wedge, stay upright 
 {#reward}
 ## Task and reward design
 
-A **reward** provides feedback at each training step; PPO uses accumulated reward to update the policy (see <a href="03-learning.html#reward-design">Section 3.1</a>). A **success criterion** determines whether evaluation passes. One guides learning; the other checks the result.
+A **reward** provides feedback at each training step; PPO uses accumulated reward to update the policy (see <a href="03-microduck-rl.html#reward-design">Section 3.2</a>). A **success criterion** determines whether evaluation passes. One guides learning; the other checks the result.
 
 Rewarding only success may give too little feedback; rewarding only uprightness may encourage standing still. Reward design breaks the task into learnable signals and uses weights to balance progress, stability and smoothness.
 
 {#method}
-The six steps below do not depend on the robot; Section 3.4 uses them again to read community skills:
+The six steps below do not depend on the robot; Section 3.5 uses them again to read community skills:
 
 1. **Write the acceptance test first.** State the goal, time limit and failure conditions, and fix how you will evaluate.
 2. **List usable quantities.** Note frame, units and source; the reward may read simulation truth, but policy inputs must be available on deployment.
@@ -99,7 +99,7 @@ Real code varies, but it can usually be split into what is read, how it is norma
 - **Uphill**: start on the floor in front of the slope. The robot has arrived when its body is 0.15 m past the top of the ramp and both feet are on the platform (at least 0.06 m from the edge); it passes only if it then stays upright on the platform for at least 2 s and until the episode ends, without falling or dropping off an edge.
 - **Downhill**: start on the platform. The robot has arrived when its body is 0.25 m past the foot of the ramp and both feet are on the floor beyond it; it passes only if it then stays upright on the floor for at least 2 s and until the episode ends.
 
-The forward command stops on arrival, so “walking on as commanded and dropping off the far side of the platform” does not count as a policy failure. As in Section 3.2, each duck first settles with locked joints at its start, and the lock is released after the policy's first output.
+The forward command stops on arrival, so “walking on as commanded and dropping off the far side of the platform” does not count as a policy failure. As in Section 3.3, each duck first settles with locked joints at its start, and the lock is released after the policy's first output.
 
 {#scene}
 The check command first creates a flat white floor, then adds a wood-grain wedge with collision, keeping the original friction settings. Uphill runs start in front of the ramp foot; downhill runs start on the platform, facing the ramp foot.
@@ -113,7 +113,7 @@ A slope changes the relative height of foot and ground, the component of gravity
 {#train}
 ## Training on random slopes: practice inside the training distribution
 
-The domain randomization of Section 3.2 varies physical parameters such as friction, mass and delay; terrain randomization adds the shape of the ground to the random draw. The training terrain mixes flat ground with uphill and downhill slopes of many gradients. Isaac Lab's terrain curriculum adjusts the gradient step by step according to performance: environments that walk well move to steeper slopes and those that struggle move back to gentler ones; `Curriculum/terrain_levels` in TensorBoard records the average level.
+The domain randomization of Section 3.3 varies physical parameters such as friction, mass and delay; terrain randomization adds the shape of the ground to the random draw. The training terrain mixes flat ground with uphill and downhill slopes of many gradients. Isaac Lab's terrain curriculum adjusts the gradient step by step according to performance: environments that walk well move to steeper slopes and those that struggle move back to gentler ones; `Curriculum/terrain_levels` in TensorBoard records the average level.
 
 These random slopes are the **training distribution**: the policy practises climbing, descending and keeping its balance on slopes there. The complete layout of the fixed wedge used later (a ramp leading to a platform) does not appear in the training terrain, so results on the wedge test these skills in a separate verification scene rather than scoring the policy inside its training scene.
 
@@ -163,9 +163,9 @@ TensorBoard record of the three training stages of the fixed terrain model (logs
 :::
 
 ::::{enrichment} Key code parameters
-- **`--model`.** Which file a program loads is decided only by `--model`. `train-terrain --model models/walk.onnx` starts training from the official walking policy; `terrain --model models/terrain-walk.onnx` runs that file at every control step during verification. Roller commands also add `--locomotion rollers`, which swaps the robot in the scene for the roller-foot version.
+- **`--model`.** Which file a program loads is decided only by `--model`. `train-terrain --model models/walk.onnx` starts training from the official walking policy; `terrain --model models/terrain-walk.onnx` runs that file at every control step during verification.
 - **`--output`.** Must be a folder under `outputs/` that does not exist yet; existing folders and paths under `models/` are refused. A policy you train must be named explicitly with `--model` for verification.
-- **`datasets/`.** `terrain-ppo/` holds the configurations and TensorBoard logs of the three training stages of the fixed terrain model, and `terrain-rollers-ppo-experiment/` holds the roller training record of this page.
+- **`datasets/`.** `terrain-ppo/` holds the configurations and TensorBoard logs of the three training stages of the fixed terrain model.
 - **Scenes.** The training terrain is generated by the terrain configuration in `lab/train_terrain.py` and the verification wedge from the `terrain` command's arguments (such as `--slope`); neither is read from a scene file.
 ::::
 
@@ -245,7 +245,7 @@ python3 scripts/run.py terrain \
 :::{course-image} media/isaac-ui-terrain-test.png
 :alt: The complete Isaac Sim window during the wedge test: a wood-textured wedge on a white floor; a Microduck has walked onto the platform and stands there, head facing forward; RTX real-time rendering and Newton MJWarp physics in the toolbar.
 
-The Isaac Sim window when the course ran this command in the container: the duck has walked onto the platform and stopped at the target.
+The wedge test window: the duck has walked onto the platform and stopped at the target. Watch whether it stays upright after arriving and does not drop off the platform edge.
 :::
 
 The terminal prints `passed`, `fell`, `reached_goal`, `held_seconds` and the velocity RMS error for each environment, and the full result goes to `report.json` in the output folder. For downhill, change `--slope` to `-5` and use a new output folder. The course measured these two commands, with times counted from when the policy takes over (the first 2 s are standing):
@@ -273,111 +273,15 @@ The random slopes are the training distribution and the complete wedge layout do
 :::
 ::::
 
-{#rollers}
-## Rollers: a rising reward does not complete the task
-
-The purpose of this part is not to provide a working slope roller model but to show a counter-example: the training return rises sharply and the acceptance test still fails. The course currently has **no** slope roller model that passes the wedge verification.
-
-Four wheels change support and resistance: climbing needs continuous propulsion from leg motion, and descending can still accelerate with the command released. The acceptance test keeps the same wedge and the same reach-and-hold criteria; with a push of 0 the rollers still glide, so after arrival a course brake regulator gives a small reverse push from the forward speed, shared by all roller models.
-
-The walking reward contains terms such as foot height and air time that would judge the roller blocks as if they were soles; a roller command means a push amount rather than metres per second, so velocity tracking makes no sense either. Roller training therefore keeps only the general terms (upright posture, smooth actions, joint limits and body angular velocity), adds three roller-specific terms and reuses the turning term above (weight 1.0):
-
-| Specific term | Shape | Effect | Weight |
-|---|---|---|---|
-| Push | Gated clipped progress | Rewards forward body speed in proportion to the push amount, with no extra credit above 0.5 m/s | +3 |
-| Coast | Squared penalty, active only when the push is 0 | Penalizes forward and backward sliding without a push | −1 |
-| Drift | Squared penalty | Penalizes sideways body speed | −2 |
-
-The complete reward code is in [`lab/course_labs/train_terrain_rollers.py` ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/course_labs/train_terrain_rollers.py). The command below starts from the official roller model and continues PPO with these rewards on the same random slopes; the value network trains from scratch.
-
-```{code-block} bash
-:caption: Terminal · inside the container
-:class: terminal
-
-python3 scripts/run.py train-terrain \
-  --locomotion rollers \
-  --model models/official-browser/rollers.onnx \
-  --num-envs 256 --iterations 1000 --seed 47001 \
-  --show \
-  --output outputs/terrain-rollers-training-01
-```
-
-:::{course-image} media/isaac-ui-roller-terrain-training.png
-:alt: The complete Isaac Sim window of roller slope training with --show: a few Microducks on roller feet spread over rolling, wood-textured training terrain, RTX real-time rendering and Newton MJWarp physics in the toolbar.
-
-The roller slope-training window opened by `--show`, at the start of training; the picture shows random training terrain, not the verification wedge.
-:::
-
-Watch for a while and stop with Ctrl+C; after all 1000 iterations the exported policy is at `outputs/terrain-rollers-training-01/exported/policy.onnx`. The verification command below tests the official roller model by default, that is, the baseline:
-
-```{code-block} bash
-:caption: Terminal · inside the container
-:class: terminal
-
-python3 scripts/run.py terrain \
-  --locomotion rollers \
-  --model models/official-browser/rollers.onnx \
-  --slope 5 --seconds 20 --num-envs 5 \
-  --seed 55011 \
-  --output outputs/rollers-slope-01
-```
-
-:::{course-image} media/isaac-ui-roller-slope-test.png
-:alt: The complete Isaac Sim window during the roller wedge test: a wood-textured wedge on a white floor; a Microduck on roller feet has fallen off the right edge of the wedge onto the floor.
-
-**Official roller model (baseline)**: the window when the course ran this command in the container. The duck veers right while climbing and drops off the right edge of the wedge.
-:::
-
-To test a trained policy, change `--model` to `datasets/terrain-rollers-ppo-experiment/exported/policy.onnx` (the training the course completed) or to your own `exported/policy.onnx`, with a new output folder.
-
-{#rollers-result}
-**The counter-example after training.** The course ran the training command above for all 1000 iterations on a DGX Spark without a window (about 8.8 minutes, recorded in `datasets/terrain-rollers-ppo-experiment/`).
-
-```{training-chart}
-data: terrain-rollers-experiment-scalars.json
-title: Trained roller policy (counter-example) · 256 environments · 1000 iterations
-badge: Training phase 525.8 s
-metrics:
-- key: Train/mean_reward
-  label: Mean episode return
-- key: Curriculum/terrain_levels
-  label: Mean terrain level
-ticks: [1, 250, 500, 750, 1000]
-x_label: Training iteration
-iteration_label: Iteration
-caption: One recorded value every 10 iterations. The mean episode return rises from about −0.18 to 47.6, while the terrain level falls from 1.46 to 0.02.
-```
-
-| +5° wedge, 5 environments | Passed | Fell | What happened |
-|---|---|---|---|
-| Official roller model (baseline, the test window above) | 0/5 | 5/5 | Four veer right and drop off a side of the wedge; one briefly reaches the platform goal at 5.0 s and then falls too |
-| Trained roller policy (counter-example, the curves above) | 0/5 | 1/5 | Four never climb and end about 0.5–1.1 m behind their start; one climbs the wedge at an angle and drops off a side |
-
-See the [evaluation summary ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json) for per-environment results on this wedge.
-
-Return rises and falls become less frequent, but the result is still 0/5. The terrain level drops almost to zero, so late training mainly uses nearly flat tiles. Four evaluation trials never climb; fewer falls alone do not show task improvement.
-
-Possible loopholes: standing still may earn enough reward, while the push reward does not check progress toward the platform. Change one term at a time with equal budgets and paired seeds, then evaluate against the wedge's success criterion.
-
-This is a negative reward-design example: it only shows that this reward set did not learn to climb in this training run. It does not prove that rollers are generally harder, nor that rollers cannot learn to climb.
-
-::::{quiz}
-One training run's mean return rises from near 0 to 47, and the episode length approaches its limit. Can you say it learned to climb on rollers?
-
-:::{answer}
-No. The return only shows that the policy got better at collecting the scores of this reward set; that is exactly what happened with the roller training on this page: the return rose sharply, yet the +5° wedge verification was 0/5, with most robots stopping behind their start. Evaluate with an acceptance test fixed before training (ideally with seeds and scenes kept out of tuning), and check indicators such as the terrain level that show what training actually practised.
-:::
-::::
-
 {#next}
 ## Summary
 
 - The reward is the training signal, the success criterion is the acceptance test; write them separately and write the test first.
 - Random slopes are the training distribution and the fixed wedge is a separate verification scene; conclusions come from the latter and apply only to the conditions tested.
 - The fixed terrain model passed 5/5 each way on the ±5° wedge (five environments per direction). The turning reward constrains turning speed and does not correct accumulated heading; without a comparison experiment, the pass cannot be credited to it or to any other single change.
-- The roller return rose sharply and the acceptance test was still 0/5: a reward curve cannot replace the acceptance test.
+- A reward curve cannot replace the acceptance test: a rising training return only means the policy has become better at collecting this reward.
 
-Section 3.4 reads the reward code community authors wrote for the one-leg stand, basketball balance and backward glide, and uses the same six steps to judge their goals, implementation and limits.
+Section 3.5 reads the reward code community authors wrote for the one-leg stand and basketball balance, and uses the same six steps to judge their goals, implementation and limits.
 
 {#references}
 ## References

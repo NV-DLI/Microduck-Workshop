@@ -26,15 +26,19 @@ LANGS = ("zh", "en")
 STRUCTURE = [
     ("1", ["index", "setup"]),
     ("2", ["01-play", "02-anatomy"]),
-    ("3", ["03-learning", "03-walk-training", "04-terrain", "05-skills"]),
+    ("3", ["03-learning", "03-microduck-rl", "03-walk-training", "04-terrain", "05-skills"]),
     ("4", ["06-perception", "06-onboard"]),
-    ("5", ["07-groot", "08-groot-interface", "08-groot-lab", "09-worlds"]),
+    ("5", ["07-groot", "08-groot-interface", "09-worlds"]),
     ("6", ["models", "troubleshooting", "references"]),
 ]
 NUMBERS = {page: f"{part}.{i + 1}" for part, pages in STRUCTURE for i, page in enumerate(pages)}
-LESSONS = ["01-play", "02-anatomy", "03-learning", "03-walk-training", "04-terrain", "05-skills",
-           "06-onboard", "06-perception", "07-groot", "08-groot-interface", "08-groot-lab", "09-worlds"]
-REMOVED = ["06-autonomy", "08-aspire", "how-to-learn"]  # removed from the course; old URLs redirect
+LESSONS = ["01-play", "02-anatomy", "03-learning", "03-microduck-rl", "03-walk-training", "04-terrain", "05-skills",
+           "06-onboard", "06-perception", "07-groot", "08-groot-interface", "09-worlds"]
+REMOVED = ["06-autonomy", "08-aspire", "how-to-learn", "08-groot-lab"]  # removed from the course; old URLs redirect
+# Code stories whose source is this repository must quote the current file verbatim.
+REPO_SOURCE = "https://github.com/NV-DLI/Microduck-Workshop/blob/main/"
+# Walking-only course: these phrases may not appear in learner pages (old material stays in the repository).
+RETIRED_TERMS = {"zh": r"轮滑|倒滑|RTX 5090|\bWSL\b", "en": r"(?i)\brollers?\b|\broller-|\bmoonwalk|RTX 5090|\bWSL\b"}
 VISUALS = ("course-video", "robot-anatomy", "course-image", "learning-flow", "concept-diagram", "network-diagram",
            "platform-diagram", "scene-cards", "demonstration", "training-chart", "benchmark-chart", "control-timing", "{.pipeline}")
 INTERNAL = ["/home/yuki/", "@COURSE@", "@REPO@", "localhost:8018", "mark-complete", "local-progress",
@@ -76,7 +80,7 @@ def check_source(errors):
         captions = re.findall(r"^:caption: (\d) ", index, re.M)
         if captions != [part for part, _ in STRUCTURE]:
             errors.append(f"{lang} navigation parts are not numbered 1–{len(STRUCTURE)}: {captions}")
-    commands = 0
+    commands = stories = 0
     for lang in LANGS:
         for name in pages[lang]:
             text = (D / lang / f"{name}.md").read_text()
@@ -104,9 +108,48 @@ def check_source(errors):
                         errors.append(f"Missing command {script} in {lang}/{name}.md")
             if "\u2014" in text:
                 errors.append(f"Em dash in lesson source {lang}/{name}.md (use a colon, comma or ASCII hyphen)")
+            for term in sorted(set(re.findall(RETIRED_TERMS[lang], text))):
+                errors.append(f"Retired topic {term!r} in learner page {lang}/{name}.md")
+            stories += check_code_stories(errors, f"{lang}/{name}.md", text)
             if "workshop.py" in text:
                 errors.append(f"Lesson {lang}/{name}.md names scripts/workshop.py; the lab entry is scripts/run.py")
-    return dict(pages=len(pages["zh"]) * 2, chapters=len(chapters), terminal_blocks=commands)
+    return dict(pages=len(pages["zh"]) * 2, chapters=len(chapters), terminal_blocks=commands, repo_code_stories=stories)
+
+
+def check_code_stories(errors, where, text):
+    """Every code story covers its lines once; repository excerpts match the current file verbatim.
+
+    The excerpt is located by content, not by line number, so moving code in the file is fine,
+    but any change to the quoted lines (or their relative indentation) fails the check.
+    """
+    import textwrap
+    import yaml
+
+    checked = 0
+    for block in re.findall(r"^(`{3,})\{code-story\}\n(.*?)^\1$", text, re.S | re.M):
+        story = yaml.safe_load(block[1])
+        lines = story["code"].rstrip("\n").split("\n")
+        covered = sorted(i for step in story["steps"] for i in range(*step["lines"]))
+        if covered != list(range(len(lines))):
+            errors.append(f"Code story {story['label']!r} in {where}: steps do not cover each line exactly once")
+        source = story.get("source", "")
+        if not source.startswith(REPO_SOURCE):
+            continue
+        path = R / unquote(urlsplit(source).path.split("/blob/main/", 1)[1])
+        if not path.is_file():
+            errors.append(f"Code story source missing: {path.relative_to(R)} ({where})")
+            continue
+        original = path.read_text().split("\n")
+        found = False
+        for start in range(len(original) - len(lines) + 1):
+            window = original[start:start + len(lines)]
+            if textwrap.dedent("\n".join(window)).split("\n") == lines:
+                found = True
+                break
+        if not found:
+            errors.append(f"Code story in {where} is not a verbatim excerpt of {path.relative_to(R)}")
+        checked += 1
+    return checked
 
 
 def pending_assets():

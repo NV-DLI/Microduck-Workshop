@@ -43,6 +43,8 @@ def main():
         action="store_true",
         help="Press M to switch walking and roller feet without leaving Isaac Sim",
     )
+    p.add_argument("--grounded-start", action="store_true",
+                   help="Settle in the HOME pose before the first policy action")
     a = p.parse_args()
     if a.mode_switch and (a.learning_config or a.autonomous or a.headless_check):
         p.error("Mode switching is for the visible keyboard session")
@@ -518,7 +520,7 @@ def main():
                 # Course keyboard sessions use the standing61 start-up: settle on the
                 # ground with temporarily locked joints, release before the first action.
                 start_brake = None
-                if a.mode_switch:
+                if a.mode_switch or a.grounded_start:
                     sys.path.insert(0, str(Path(__file__).parent / "course_labs"))
                     from grounded_start import settle as _settle, StartupNotSettled
 
@@ -545,6 +547,10 @@ def main():
                     if flags["reset"]:
                         if learner is not None:
                             break
+                        # R can arrive while settle() is rendering the locked start-up.
+                        # Restore those limits before the next brake snapshots them.
+                        if start_brake is not None and start_brake.active:
+                            start_brake.release(step * 0.02)
                         env.reset()
                         if imu is not None:
                             imu = IdealTrunkImu(
@@ -558,7 +564,7 @@ def main():
                         fallen = False
                         scored = False
                         resets += 1
-                        if a.mode_switch:
+                        if a.mode_switch or a.grounded_start:
                             start_brake, startup = settle(env, render=True)
                             events.append({"startup": startup, "at": time.monotonic()})
                     if a.headless_check:

@@ -17,7 +17,7 @@ Build the course container, mount data and models, open a shell in the same cont
 {#requirements}
 ## What you need
 
-Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the pinned Isaac Lab and Newton, and the GR00T learning environment. The host only builds and starts the container, shows the simulation windows, and stores data and results.
+Every lab in this course runs in one course container. The image holds Isaac Sim 6.2 and the pinned Isaac Lab and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.
 
 | Device | System | What you can use |
 |---|---|---|
@@ -29,7 +29,7 @@ The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, 
 |---|---|
 | Container base | CUDA 13, Ubuntu 24.04, Python 3.12 |
 | Simulation | Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend |
-| Learning | RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 5) |
+| Learning | RSL-RL 5.5.1 (PPO) |
 
 {#get-code}
 ## Get the course code
@@ -47,9 +47,6 @@ cd Microduck-Workshop
 
 The fixed course models (`models/` under 60 MB) and the pretrained results and training logs used in Part 3 (`datasets/` about 50 MB) come with the repository; your own runs go to `outputs/`, kept separate from them.
 
-**GR00T course data package (Section 5.3 only).** The GR00T walking shot in Section 5.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 5.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its `groot-walking/` folder under `course-data/` in the repository root; if you keep it elsewhere, set `MICRODUCK_COURSE_DATA` to the absolute path of the folder that contains `groot-walking/` before starting the container. The container starts without the package.
-
-
 ```{code-block} text
 :caption: Workspace
 :class: workspace-tree
@@ -60,14 +57,13 @@ Microduck-Workshop/
 ├── scripts/       # lab entry points (same)
 ├── models/        # fixed course models (read-only in the container)
 ├── datasets/      # sample data and pretrained PPO results (read-only)
-├── course-data/   # GR00T course data package (read-only, Section 5.3)
 └── outputs/       # your runs (writable in the container)
 ```
 
 {#build}
 ## Build the course container
 
-Run this from the repository root. The first build downloads Isaac Sim, the Isaac Lab dependencies and the GR00T learning environment; how long it takes depends on your network, and the image is large, so leave enough disk space.
+Run this from the repository root. The first build downloads Isaac Sim, the Isaac Lab dependencies and more; how long it takes depends on your network, and the image is large, so leave enough disk space.
 
 ```{code-block} bash
 :caption: Terminal · host
@@ -100,12 +96,10 @@ docker exec -it microduck-workshop bash
 :::{admonition} Return to the same container
 :class: note
 
-If you closed the terminal, or need a second shell (for example to watch logs while training in Section 5.3), run `docker exec -it microduck-workshop bash` on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run `docker compose -f docker/compose.yaml up -d` again from the repository root; data, outputs and caches live on the host. When you have finished all labs, `docker compose -f docker/compose.yaml down` stops and removes the container.
+If you closed the terminal, or need a second shell (for example to watch TensorBoard while training in Section 3.3), run `docker exec -it microduck-workshop bash` on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run `docker compose -f docker/compose.yaml up -d` again from the repository root; data, outputs and caches live on the host. When you have finished all labs, `docker compose -f docker/compose.yaml down` stops and removes the container.
 :::
 
-A relative path in a command (for example `models/walk.onnx`) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under `~/.cache/huggingface` and `~/.cache/microduck/`, so the second start is much faster.
-
-
+A relative path in a command (for example `models/walk.onnx`) is the file of the same name in the host repository. Shader and compilation caches stay on the host under `~/.cache/microduck/`, so the second start is much faster.
 
 {#check}
 ## Check that you can start

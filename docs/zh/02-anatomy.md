@@ -109,7 +109,7 @@ Microduck 是一台小型双足机器人：双腿负责支撑与移动，颈部�
 :::{admonition} 硬件版本与仿真关节
 :class: note
 
-Microduck 的 15 个舵机中，仿真策略控制 14 个关节，喙部在仿真模型中固定，所以 3D 小鸭里的喙不能转动。图中的主控板沿用 CAD 里的 Raspberry Pi Zero 2 W 外形，当前 Beta 版的电子配置则基于 RK3566。摄像头、ToF 测距和 IMU 用于观察任务：4.1 节的板载策略用它们识别球与球门，第 5 部分的 GR00T 读取摄像头画面和身体状态。
+Microduck 的 15 个舵机中，仿真策略控制 14 个关节，喙部在仿真模型中固定，所以 3D 小鸭里的喙不能转动。图中的主控板沿用 CAD 里的 Raspberry Pi Zero 2 W 外形；当前 Beta 版改用基于 Rockchip RK3566 的定制主控板，两者是不同代次的硬件。摄像头、ToF 测距和 IMU 用于观察任务：4.1 节的板载策略用它们识别球与球门，第 5 部分的 GR00T 读取摄像头画面和身体状态。
 :::
 
 ::::{quiz}
@@ -202,7 +202,7 @@ caption: 目标角度与实际角度并不总是相同。惯性、接触和执�
 
 先在装配状态下沿脚踝、小腿、膝部、大腿和髋部向上追踪。脚掌着地后，支撑力会沿这条路径传到机身。随后展开模型，点击关节附近的舵机，辨认相邻连杆的连接方式。
 
-舵机内部除了电机，还有减速齿轮、位置反馈和控制电路。收到目标角度后，舵机需要一定时间跟踪，并受到可用扭矩、速度、摩擦和齿隙的限制。本节先观察目标与实际角度之间的这种差别，3.2 节再介绍怎样在训练中随机化执行器特性，让策略适应它。
+舵机内部除了电机，还有减速齿轮、位置反馈和控制电路。收到目标角度后，舵机需要一定时间跟踪，并受到可用扭矩、速度、摩擦和齿隙的限制。本节先观察目标与实际角度之间的这种差别，3.3 节再介绍怎样在训练中随机化执行器特性，让策略适应它。
 
 {#policy-interface}
 ## 策略收到什么，又输出什么
@@ -261,30 +261,34 @@ label: Python · 核心代码节选
 source: https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py
 language: python
 code: |
+  # One observation and action every 20 ms (50 Hz).
   action = policy(
       env.observation_manager.compute(update_history=True)["policy"]
   )
   env.action_manager.process_action(action)
+
+  # Hold that action through four 5 ms Newton steps (200 Hz).
   for tick in range(4):
+      env._sim_step_counter += 1
       env.action_manager.apply_action()
       env.scene.write_data_to_sim()
       env.sim.step(render=not a.headless and tick == 3)
       env.scene.update(0.005)
 steps:
-- lines: [0, 3]
+- lines: [0, 4]
   title: 组装观察，再运行策略
-  body: 更新观察历史，把 policy 观察送入运动策略。
-- lines: [3, 4]
+  body: 每 20 ms 更新一次观察历史，把 policy 观察送入运动策略。
+- lines: [4, 6]
   title: 处理策略动作
   body: 动作管理器接收本次策略输出，准备驱动仿真。
-- lines: [4, 9]
+- lines: [6, 13]
   title: 推进 4 个物理步
-  body: 策略动作跨越 4 × 5 ms；每步写入动作并更新场景，形成 50 Hz 控制与 200 Hz 物理的关系。
+  body: 策略动作跨越 4 × 5 ms；每步累加仿真步计数、写入动作并更新场景，形成 50 Hz 控制与 200 Hz 物理的关系。
 ```
 
 这段节选对应图中的闭环：Isaac Lab 的观测管理器生成策略输入，动作管理器处理动作并驱动执行器，Newton 随后执行四个 5 ms 物理步。完整程序还会更新计数器并检查是否跌倒。
 
-下面是课程在容器中用这段程序实际运行过的一次记录，不需要你再运行。机器人先锁住关节在地面上落稳（3.2 节会解释这种启动方式）；之后程序先发送约 2 秒的零速度指令，再持续发送 0.25 m/s 的前进指令，共 12 秒仿真时间。开头的静止并不是策略没有响应。
+下面是课程在容器中用这段程序实际运行过的一次记录，不需要你再运行。机器人先锁住关节在地面上落稳（3.3 节的测试也采用这种启动方式）；之后程序先发送约 2 秒的零速度指令，再持续发送 0.25 m/s 的前进指令，共 12 秒仿真时间。开头的静止并不是策略没有响应。
 
 ```{recorded-run}
 where: 课程容器 · Isaac Sim 窗口

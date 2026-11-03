@@ -4,10 +4,10 @@ myst:
     description: 'After a task has been made reliable on the green pitch, how environment domain randomization and Cosmos 3 data augmentation can prepare a model for the different floors, lighting and layouts of real homes; which changes keep the original action labels and which require new simulation.'
 ---
 
-# 5.4 From the pitch to more environments
+# 5.3 From the pitch to more environments
 
 :::{lesson-intro}
-:meta: Section 5.4 · Estimated learning time: 35 minutes
+:meta: Section 5.3 · Estimated learning time: 35 minutes
 
 After a task has been made reliable on the green pitch, how environment domain randomization and Cosmos 3 data augmentation can prepare a model for the different floors, lighting and layouts of real homes; which changes keep the original action labels and which require new simulation.
 :::
@@ -15,9 +15,9 @@ After a task has been made reliable on the green pitch, how environment domain r
 {#first}
 ## Make one scene reliable first
 
-The shooting exercises of this course (keyboard football in Section 2.1, the onboard policy in Part 4 and the GR00T walking shot in Part 5) all use the same green football pitch: the same field, goal, ball and lighting. That is deliberate. Only when a task is stable in one fixed scene are failures easy to explain; if the original scene cannot be completed reliably, adding ten rooms only makes problems harder to locate.
+The shots in this course (keyboard football in Section 2.1, the onboard policy in Part 4 and the GR00T walking shot in Section 5.2) all use the same green football pitch: the same field, goal, ball and lighting. That is deliberate. Only when a task is stable in one fixed scene are failures easy to explain; if the original scene cannot be completed reliably, adding ten rooms only makes problems harder to locate.
 
-A real robot will not stay on a green pitch, though. Floors at home may be wooden boards, tiles or carpet; light differs between day and night; the background holds sofas, table legs and clutter. The checkpoint in Section 5.3 has not yet scored in its five validation episodes, so the immediate next step is to analyse the failures on the fixed pitch, improve the data and control, and evaluate again. This section looks ahead to a later question: once shooting is reliable, how should the environment be expanded step by step? It covers ideas and principles only; there is no hands-on exercise.
+A real robot will not stay on a green pitch, though. Floors at home may be wooden boards, tiles or carpet; light differs between day and night; the background holds sofas, table legs and clutter. Once shooting is reliable on the fixed pitch, the next question is how to expand the environment step by step. This section covers ideas and principles only.
 
 {#why-variation}
 ## Why a real robot needs environment variation
@@ -29,7 +29,7 @@ There are other gaps between simulation and reality: real cameras have exposure 
 {#domain-randomization}
 ## Environment domain randomization
 
-Sections 3.2 and 3.3 already used domain randomization to vary servo characteristics, friction and terrain: rather than matching one real environment exactly, selected conditions vary randomly within a range, ideally with the real environment inside it. GR00T, which reads images, also needs visual variation such as lighting, materials and backgrounds. Choose ranges for the intended setting and evaluate unseen combinations and boundary conditions.
+Sections 3.3 and 3.4 already used domain randomization to vary servo characteristics, friction and terrain: rather than matching one real environment exactly, selected conditions vary randomly within a range, ideally with the real environment inside it. GR00T, which reads images, also needs visual variation such as lighting, materials and backgrounds. Choose ranges for the intended setting and evaluate unseen combinations and boundary conditions.
 
 | Category | Conditions that can vary | Effect on the shooting task |
 |---|---|---|

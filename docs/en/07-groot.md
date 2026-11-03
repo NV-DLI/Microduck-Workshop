@@ -75,7 +75,7 @@ layout: groot
 loop: false
 ```
 
-Cosmos-Reason2 here is the vision-language backbone inside GR00T N1.7; it only supplies features for action prediction. Cosmos 3, introduced in Section 5.4, is a different kind of model used to understand and generate world-related video and data.
+Cosmos-Reason2 here is the vision-language backbone inside GR00T N1.7; it only supplies features for action prediction. Cosmos 3, introduced in Section 5.3, is a different kind of model used to understand and generate world-related video and data.
 
 {#action-chunks}
 ## Predict a chunk of actions at once
@@ -102,7 +102,7 @@ Post-training can freeze some parameters. Frozen modules still compute, but they
 
 Data for robot foundation models is often drawn as a pyramid. The wide base is web images, text and human video, which supply general visual and language knowledge. The middle is simulated and synthetic data, which can be generated at scale with exact labels. The top is real-robot data: closest to deployment but the most expensive to collect. The layers describe the roles of different data, not fixed proportions or a single training order.
 
-All post-training data in this course comes from simulation: the onboard policy completes the shot in Isaac Lab and Newton while we record the images it saw, its body state and the requests it issued. Section 5.2 explains how this data is designed, and Section 5.3 uses it to train and validate a model.
+All post-training data in this course comes from simulation: the onboard policy completes the shot in Isaac Lab and Newton while we record the images it saw, its body state and the requests it issued. Section 5.2 explains how this data is designed and how the model is trained and validated with it.
 
 {#generalization}
 ## Where generalization potential comes from
@@ -118,7 +118,7 @@ Generalization means completing the task in situations the model did not see in 
 
 General visual and language knowledge from pretraining makes it possible for a model to still recognize “this is a ball, that is the goal” when the appearance or wording changes. That is the promise of large models. But potential is not established capability: reliable performance at the action level depends mainly on what the demonstrations cover. If the demonstrations cover one pitch, one instruction and one kind of start, only that situation can be confirmed; other situations may transfer, but you only know by testing them separately.
 
-So to judge whether a VLA really generalizes, keep the test conditions outside training and look at full-task success, not at training loss or a few smooth videos. The GR00T in this course is trained on one green pitch with one shooting instruction, and the validation in Section 5.3 uses only a few episodes; it demonstrates the method, not proven generalization. Section 5.4 discusses how to expand step by step to more environments.
+So to judge whether a VLA really generalizes, keep the test conditions outside training and look at full-task success, not at training loss or a few smooth videos. The GR00T in this course is trained on one green pitch with one shooting instruction; it demonstrates the method, not proven generalization. Section 5.3 discusses how to expand step by step to more environments.
 
 {#compare}
 ## Is GR00T always better than the onboard policy?

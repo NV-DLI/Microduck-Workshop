@@ -109,7 +109,7 @@ The panel's $\sym{q_joint}$ is the joint's angle in the simulation model. Code s
 :::{admonition} Hardware revision and simulation joints
 :class: note
 
-Of the 15 servos, the simulated policy drives 14 joints; the beak is fixed in the simulation model, so it cannot turn in the 3D duck. The controller board keeps the Raspberry Pi Zero 2 W shape from the CAD, while the current Beta electronics are based on RK3566. The camera, ToF sensor and IMU observe the task: the onboard policy in Section 4.1 uses them to find the ball and goal, and GR00T in Part 5 reads the camera images and body state.
+Of the 15 servos, the simulated policy drives 14 joints; the beak is fixed in the simulation model, so it cannot turn in the 3D duck. The controller board shown keeps the Raspberry Pi Zero 2 W shape from the CAD; the current Beta version instead uses a custom onboard controller board based on a Rockchip RK3566, a different hardware generation. The camera, ToF sensor and IMU observe the task: the onboard policy in Section 4.1 uses them to find the ball and goal, and GR00T in Part 5 reads the camera images and body state.
 :::
 
 ::::{quiz}
@@ -202,7 +202,7 @@ No. Body pitch and roll move the neck and camera. Image stability depends on cam
 
 Start with the assembled model and trace upward from the ankle through the shin, knee, thigh and hip. When the foot is on the ground, support reaches the body along this path. Then separate the model and click the servos near a joint to see how adjacent links connect.
 
-Besides a motor, a servo contains reduction gears, position feedback and control electronics. After receiving a target angle it needs time to track it, limited by available torque, speed, friction and backlash. This section observes that gap between target and actual angle; Section 3.2 shows how training with randomized actuator properties helps a policy cope with it.
+Besides a motor, a servo contains reduction gears, position feedback and control electronics. After receiving a target angle it needs time to track it, limited by available torque, speed, friction and backlash. This section observes that gap between target and actual angle; Section 3.3 shows how training with randomized actuator properties helps a policy cope with it.
 
 {#policy-interface}
 ## What the policy receives and produces
@@ -261,30 +261,34 @@ label: Python · core excerpt
 source: https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py
 language: python
 code: |
+  # One observation and action every 20 ms (50 Hz).
   action = policy(
       env.observation_manager.compute(update_history=True)["policy"]
   )
   env.action_manager.process_action(action)
+
+  # Hold that action through four 5 ms Newton steps (200 Hz).
   for tick in range(4):
+      env._sim_step_counter += 1
       env.action_manager.apply_action()
       env.scene.write_data_to_sim()
       env.sim.step(render=not a.headless and tick == 3)
       env.scene.update(0.005)
 steps:
-- lines: [0, 3]
+- lines: [0, 4]
   title: Build the observation, then run the policy
-  body: Update the observation history and feed the policy observation to the locomotion policy.
-- lines: [3, 4]
+  body: Every 20 ms, update the observation history and feed the policy observation to the locomotion policy.
+- lines: [4, 6]
   title: Process the policy action
   body: The action manager receives this policy output and prepares it for simulation.
-- lines: [4, 9]
+- lines: [6, 13]
   title: Advance four physics steps
-  body: One policy action spans 4 × 5 ms; each step writes the action and updates the scene, giving 50 Hz control over 200 Hz physics.
+  body: One policy action spans 4 × 5 ms; each step advances the simulation step counter, writes the action and updates the scene, giving 50 Hz control over 200 Hz physics.
 ```
 
 This excerpt is the loop in the figure: the Isaac Lab observation manager builds the policy input, the action manager processes the action and drives the actuators, and Newton then runs four 5 ms physics steps. The full program also advances counters and checks for falls.
 
-Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked (Section 3.2 explains this start-up); the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. The stillness at the start is not an unresponsive policy.
+Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked (the test in Section 3.3 uses the same start-up); the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. The stillness at the start is not an unresponsive policy.
 
 ```{recorded-run}
 where: Course container · Isaac Sim window

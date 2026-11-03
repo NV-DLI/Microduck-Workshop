@@ -1,23 +1,23 @@
 ---
 myst:
   html_meta:
-    description: "Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task."
+    description: "Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task."
 ---
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.4 Community skills: from goal to reward
+# 3.5 Community skills: from goal to reward
 
 :::{lesson-intro}
-:meta: Section 3.4 · Reading and analysis · Estimated learning time: 45 minutes
+:meta: Section 3.5 · Reading and analysis · Estimated learning time: 45 minutes
 
-Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task.
+Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task.
 :::
 
 ```{symbols}
 dt:
   tex: \Delta t
-  text: 'Control step: the time between two policy outputs. All three skills here use 0.02 s (50 Hz).'
+  text: 'Control step: the time between two policy outputs. Both skills here use 0.02 s (50 Hz).'
 alpha_f:
   tex: \alpha
   text: 'Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself.'
@@ -111,36 +111,6 @@ r_up:
 r_ball:
   tex: r_{\mathrm{ball}}
   text: 'Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays.'
-v_cmd:
-  tex: v^{*}_{xy}
-  text: Horizontal velocity command (m/s). In the moonwalk training the forward component is −0.25 to −0.08 m/s, i.e. backward.
-v_xy:
-  tex: v_{xy}
-  text: Horizontal velocity in the body frame (m/s).
-v_z:
-  tex: v_z
-  text: Vertical velocity in the body frame (m/s); 0 for ideal translation.
-omega_cmd:
-  tex: \omega^{*}_z
-  text: Turn-rate command (rad/s).
-sigma_v:
-  tex: \sigma_v
-  text: Velocity-tracking scale, $\sigma_v^2 = 0.1\ (\mathrm{m/s})^2$.
-r_lin:
-  tex: r_{\mathrm{lin}}
-  text: Linear-velocity tracking term (weight 2 in the base walking recipe).
-v_foot:
-  tex: v_{\mathrm{foot}}
-  text: Horizontal velocity of one foot in the world frame (m/s).
-k_foot:
-  tex: k_{\mathrm{foot}}
-  text: Whether this foot touches the ground (1 contact).
-r_slip:
-  tex: r_{\mathrm{slip}}
-  text: 'Foot-slip cost: counts feet that still move horizontally while in contact; negative weight.'
-one:
-  tex: \mathbf{1}
-  text: 'Indicator: 1 when the condition in brackets holds, otherwise 0.'
 exp:
   tex: \exp
   text: 'Exponential: turns a squared error into a smooth reward between 0 and 1.'
@@ -149,17 +119,17 @@ exp:
 {#community}
 ## What else can the same robot learn?
 
-Section 3.3 used six steps to design rewards for slopes. Community authors have trained many other skills on the same Microduck, and several have published their policies, training code and evaluation records. Start from these two entry points:
+Section 3.4 used six steps to design rewards for slopes. Community authors have trained many other skills on the same Microduck, and several have published their policies, training code and evaluation records. Start from these two entry points:
 
-- [Official Microduck web simulator ↗](https://huggingface.co/spaces/pollen-robotics/microduck-simulator): a browser simulator published by Pollen Robotics where you can switch between and try the official walking, roller and other policies without installing anything.
+- [Official Microduck web simulator ↗](https://huggingface.co/spaces/pollen-robotics/microduck-simulator): a browser simulator published by Pollen Robotics where you can try the official policies without installing anything.
 - [Microduck models on Hugging Face ↗](https://huggingface.co/models?search=microduck): searching for “microduck” lists policies uploaded by the community; each model card describes its command format, training method and known limits.
 
-This section reads three of them closely: the flamingo (one-leg) cycle uses gates to order its movements, basketball balance separates privileged information in the reward from what the deployed policy observes, and the backward glide shows that a written goal is not a verified capability. The hardware is the same; the goals, rewards, initial states and termination conditions change. All three were trained and evaluated in their authors' own MuJoCo / mjlab environments; the results below are the authors' simulation reports and have not been retested in the course's Newton scene or on the robot.
+This section reads two of them closely: the flamingo (one-leg) cycle uses gates to order its movements, and basketball balance separates privileged information in the reward from what the deployed policy observes. The hardware is the same; the goals, rewards, initial states and termination conditions change. Both were trained and evaluated in their authors' own MuJoCo / mjlab environments; the results below are the authors' simulation reports and have not been retested in the course's Newton scene or on the robot.
 
-These three models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.
+These two models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.
 
 {#how-to-read}
-## Read three skills with one table
+## Read community skills with one table
 
 Read every skill in the same order:
 
@@ -396,82 +366,24 @@ The walking recipe's velocity tracking, pose, upright, smoothness and joint-limi
 
 **Success checks and limits.** The author ran 3 seeds × 1024 environments, 3072 trials of 60 seconds, with the first fall counted as failure: b11 survived 20 s in 98.86% and 60 s in 97.01% of trials; the reference version that sees the ball reached 99.67% and 99.12%. Its turn-tracking error of 1.26 rad/s is clearly worse than the reference's 0.76 rad/s, and its actions are less smooth; these tracking metrics count only samples before a fall. The exported ONNX needs extra LSTM-state inputs and outputs, so a plain feed-forward loader cannot run it. Onboard real-time timing and real-robot behaviour are untested.
 
-{#moonwalk}
-## Moonwalk: in the prompt, not in the reward
-
-**Goal.** [Moonwalk backward ↗](https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af) was generated by an automated tool from a text prompt: “a moonwalk-style backward gliding gait, alternating feet, creating the visual illusion of sliding rather than ordinary backward walking, upper body stable and upright, avoiding jumps or large vertical motion, balanced throughout, finishing in a stable standing pose after a few seconds.”
-
-**What was actually trained.** The tool chose the walking velocity-tracking recipe from its existing recipes and made only three changes: the forward velocity command became backward, −0.25 to −0.08 m/s (with only small sideways and turning ranges); the foot-slip penalty was weakened from −0.1 to −0.015; and left–right symmetry augmentation was enabled.
-
-```{formula} Two terms inherited from the walking recipe (mjlab 1.3.0)
-\sym{r_lin}=\sym{exp}\!\left(-\frac{\|\sym{v_cmd}-\sym{v_xy}\|^2+\sym{v_z}^2}{\sym{sigma_v}^2}\right),\qquad \sym{r_slip}=\sym{one}\!\left[\|\sym{v_cmd}\|+|\sym{omega_cmd}|>0.01\right]\sum_{\mathrm{L,R}}\sym{k_foot}\,\|\sym{v_foot}\|^2
-```
-
-```{code-story}
-label: Python · Automatically generated task configuration (complete)
-source: https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af/blob/951073cb7791a898e3e5ecb242c5bcccf40aa72f/compiled_motion.json
-language: python
-code: |
-  from copy import deepcopy
-  from mjlab_microduck.tasks.microduck_velocity_env_cfg import make_microduck_velocity_env_cfg, MicroduckRlCfg
-  from mjlab_microduck.tasks.symmetry import SYMMETRY_CFG
-
-  def make_generated_env_cfg(play: bool = False, rough: bool = False):
-      cfg = make_microduck_velocity_env_cfg(play=play, rough=rough)
-      command = cfg.commands["twist"]
-      command.ranges.lin_vel_x = (-0.25, -0.08)
-      command.ranges.lin_vel_y = (-0.03, 0.03)
-      command.ranges.ang_vel_z = (-0.15, 0.15)
-      command.rel_standing_envs = 0.08
-      command.rel_turn_in_place_envs = 0.0
-      cfg.rewards['foot_slip'].weight = -0.015
-      return cfg
-
-  GeneratedRlCfg = deepcopy(MicroduckRlCfg)
-  GeneratedRlCfg.experiment_name = 'motionlab_moonwalk_backward'
-  GeneratedRlCfg.run_name = 'moonwalk_backward'
-  GeneratedRlCfg.algorithm.symmetry_cfg = SYMMETRY_CFG
-steps:
-- lines: [0, 6]
-  title: Start from the walking recipe
-  body: Observations, actuators, domain randomization, terminations and every reward term come from the official walking recipe (pinned revision `d424a0c`). This code is stored in `compiled_motion.json` on the model card.
-- lines: [6, 12]
-  title: 'The only “moonwalk” information: a backward velocity command'
-  body: Forward velocity is sampled only between −0.25 and −0.08 m/s, and 8% of environments practise standing. The velocity-tracking reward therefore asks the robot to move backward.
-- lines: [12, 14]
-  title: Relax the foot-slip penalty
-  body: The weight changes from −0.1 to −0.015, allowing more sliding while a foot touches the ground. It merely objects less to sliding; it does not reward “looking like a glide”.
-- lines: [14, 19]
-  title: Enable symmetry augmentation
-  body: Training uses left–right mirrored data to keep the legs' motions symmetric.
-```
-
-Compare with the goal item by item: moving backward and an upright upper body have matching reward terms (velocity tracking and the inherited upright term); “alternating feet” can come only from the walking recipe's existing gait terms; “finish standing” relies on switching the command back to 0 at deployment and on the recipe's existing zero-command standing practice; and “the visual illusion of sliding” is described by no reward term or check at all. The tool's generated notes also say that vertical motion is suppressed by a body-pose reward, but in this base recipe the body-pose tracking term has weight 0.
-
-**Success checks and limits.** The model card records that the export check and an ONNX rehearsal in CPU MuJoCo passed (61 inputs, 14 outputs); in a 5-second preview (`preview.mp4` on the model card) the maximum horizontal displacement was 0.33 m and the largest joint change 14.7°; when you watch it, check the goal item by item. But the automatic motion-quality gate says “needs review”, and the card explicitly marks the semantic match as unverified. The file loads, the interface is correct and the robot moves, but there is no evidence that it learned a moonwalk. The lesson: an effect that is wanted in the prompt, but written into neither a reward nor an acceptance test, cannot be expected to emerge from training.
-
-:::{enrichment} Going further: if you wanted to really test a “moonwalk”
-What follows is a direction proposed by the course, not the author's implementation, and it has not been trained or validated. Write the acceptance test first: for example, over a fixed duration the body really moves backward; within each gait cycle the foot in contact slides backward relative to the ground while the lifted foot moves forward; the vertical motion of the centre of mass stays below a threshold; the robot ends in its standing pose. Then ask: can these quantities be read from the simulation? Should each become a tracking term, a penalty or only a final check? Which are suitable as rewards, and which are better kept as independent evaluation metrics?
-:::
-
 {#compare}
-## The three skills side by side
+## The two skills side by side
 
-| | Flamingo cycle | Basketball balance | Moonwalk |
-|---|---|---|---|
-| Type of goal | Switching between two postures on command | Continuous balance while following velocity | Stylized continuous gait |
-| Key technique | Gate every term with the blend | Use the true ball state in rewards and termination | Change only the command range and one weight |
-| Privileged information | Whole-body centre of mass, contacts | Ball position and speed (invisible to the policy) | Same as the walking recipe |
-| Termination | Inherited fall termination | Falling off the ball | Inherited from the walking recipe |
-| Author's check | 10 scenarios + 24 random pushes | 3 seeds × 1024 environments × 60 s | Export and interface pass; semantics unverified |
-| Not verified by any | Real robot | Real robot and onboard timing | Whether the motion matches the prompt |
+| | Flamingo cycle | Basketball balance |
+|---|---|---|
+| Type of goal | Switching between two postures on command | Continuous balance while following velocity |
+| Key technique | Gate every term with the blend | Use the true ball state in rewards and termination |
+| Privileged information | Whole-body centre of mass, contacts | Ball position and speed (invisible to the policy) |
+| Termination | Inherited fall termination | Falling off the ball |
+| Author's check | 10 scenarios + 24 random pushes | 3 seeds × 1024 environments × 60 s |
+| Not verified by any | Real robot | Real robot and onboard timing |
 
 Check four things: whether the goal has matching rewards or acceptance criteria; whether high scores are possible without success; whether privileged reward inputs are separated from deployed observations; and whether an independent test judges the result.
 
 {#new-task}
 ## Design a reward for a new task
 
-Pick a task outside these three, for example “turn once on the spot and stop facing the original direction” or “sit down and stand up again”, and work through the six steps of Section 3.3 on paper:
+Pick a task outside these two, for example “turn once on the spot and stop facing the original direction” or “sit down and stand up again”, and work through the six steps of Section 3.4 on paper:
 
 1. Write the success and failure criteria in measurable quantities and fix them before writing any reward.
 2. List the quantities you need, with units, frames, and whether the policy will have them at deployment.
@@ -484,49 +396,21 @@ Pick a task outside these three, for example “turn once on the spot and stop f
 The reward curve of a new task keeps rising, and the exported ONNX passes the 61-input, 14-output interface check. Does that show the task is done?
 
 :::{answer}
-No. A rising reward only shows that the policy got better at collecting this reward set; an interface check only shows that the controller can call the file. The moonwalk meets both, yet its semantic match is unverified; the roller training in Section 3.3 raised its reward sharply while the ramp verification gave 0/5. Judge with acceptance criteria fixed before training, independent seeds and actual observation.
+No. A rising reward only shows that the policy got better at collecting this reward set; an interface check only shows that the controller can call the file. Judge with acceptance criteria fixed before training, independent seeds and actual observation; an effect that is wanted but written into neither a reward nor an acceptance test cannot be expected to emerge from training.
 :::
 ::::
 
 {#compatible}
 ## Same interface, different conventions
 
-ONNX is a model file format: it stores the network structure and weights but does not define how a robot skill is called. The flamingo cycle and the moonwalk both use the shared 61-input, 14-output interface, yet neither can replace the other: the flamingo cycle uses the first two velocity-command slots for “lift a foot” and “which side”, and only the moonwalk uses them as a real velocity command. The basketball policy additionally needs its LSTM memory state passed in and back out alongside the same 61 observations. The official walking and kicking models both take 61 inputs and output 14 numbers, but their command semantics and training tasks differ, so they cannot be freely interchanged.
+ONNX is a model file format: it stores the network structure and weights but does not define how a robot skill is called. The flamingo cycle and the official walking policy both use the shared 61-input, 14-output interface, yet neither can replace the other: the flamingo cycle uses the first two velocity-command slots for “lift a foot” and “which side”, while the walking policy treats them as velocities. The basketball policy additionally needs its LSTM memory state passed in and back out alongside the same 61 observations. The official walking and kicking models are similar: both take 61 inputs and output 14 numbers, but their training tasks differ, so they cannot be freely interchanged.
 
 A file that loads is only readable. For the robot to perform the motion, the meaning of every command slot, the units, joint order, action scaling and termination conditions must all match the controller. The [models page](models.md) lists the fixed course weights and their roles. Handovers between skills also need their own design: after the kick in the Section 2.1 keyboard game, a 0.12 s smooth blend returns to the walking policy's standing pose, and that blend is not part of the kick model.
-
-{#kick-example}
-## A skill’s start and end matter equally
-
-Walking continuously accepts velocity commands, while a kick is a short skill with a clear start and end. To add a kick to an autonomous task, besides the motion itself you must define when it may start, which state it ends in, and how it stops on failure.
-
-:::{course-video} media/kick-contact-hd
-:alt: Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task.
-
-Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task.
-:::
-
-| Phase | What to check |
-|---|---|
-| Prepare | Ball in the kickable zone, suitable body heading, observations still fresh |
-| Contact | The ball moves only through physical foot contact; the simulation never overwrites its state |
-| Retract | End the swing promptly and return to support |
-| Recover | The robot stays stable, without falling or exceeding joint limits |
-
-A shot requires the ball in a useful right-foot position, the body facing the goal, stable support and fresh target information. Section 4.2 calls the official kick policy and then smoothly switches to the official standing policy. After touching the ball, the robot must recover stable standing before the skill ends. This is a local motion skill: starting it far from the ball will not make the robot search for the ball. When watching the clip, use the physical contact record to confirm that the foot, not another body part, touches the ball, then check that the centre of mass returns over the support area and body tilt settles.
-
-::::{quiz}
-The robot is beside the ball, but its remembered position has expired. Should the kick start immediately?
-
-:::{answer}
-No. Observe again and confirm the entry conditions. Proximity alone does not guarantee valid inputs.
-:::
-::::
 
 {#eyes}
 ## Executing a skill is not completing a task
 
-So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 first has people write these decisions into an onboard policy; Part 5 then trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.
+So far we have told the robot when to walk, lift a foot or balance on a ball. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 first has people write these decisions into an onboard policy; Part 5 then trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.
 
 {#references}
 ## References
@@ -540,4 +424,3 @@ So far we have told the robot when to walk, lift a foot or glide backward. The p
 - [Community flamingo cycle: training source (pinned revision) ↗](https://github.com/pollen-robotics/microduck_rl/tree/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks)
 - [Community basketball balance: model card and evaluation ↗](https://huggingface.co/HannesVonEssen/microduck-basketball)
 - [Community basketball balance: training source ↗](https://github.com/Vottivott/microduck-playground/tree/main/experiments/basketball)
-- [Community moonwalk backward ↗](https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af)

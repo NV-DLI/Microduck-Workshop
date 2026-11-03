@@ -1,17 +1,17 @@
 ---
 myst:
   html_meta:
-    description: 先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行与轮滑，并在同一个楔形坡台上验证。
+    description: 先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行，并在一个楔形坡台上验证。
 ---
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.3 奖励设计：走稳上下坡
+# 3.4 延伸：走稳上下坡
 
 :::{lesson-intro}
-:meta: 第 3.3 节 · 方法与操作实验 · 预计学习时长 45 分钟（训练观察几分钟即可）
+:meta: 第 3.4 节 · 方法与操作实验 · 预计学习时长 45 分钟（训练观察几分钟即可）
 
-先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行与轮滑，并在同一个楔形坡台上验证。
+先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行，并在一个楔形坡台上验证。
 :::
 
 ```{symbols}
@@ -66,12 +66,12 @@ NVIDIA 技术博客中的 Microduck 障碍场地。图片来源：[NVIDIA 技术
 {#reward}
 ## 任务与奖励设计
 
-**奖励**是每一步的训练反馈，PPO 用累计奖励调整策略（见 <a href="03-learning.html#reward-design">3.1 节</a>）；**成功判据**则在评测时判断任务是否完成。前者引导学习，后者检验结果。
+**奖励**是每一步的训练反馈，PPO 用累计奖励调整策略（见 <a href="03-microduck-rl.html#reward-design">3.2 节</a>）；**成功判据**则在评测时判断任务是否完成。前者引导学习，后者检验结果。
 
 只在成功时给分，反馈可能太稀疏；只奖励站直，策略又可能停着不走。设计奖励，就是把任务拆成可学习的信号，并用权重平衡前进、稳定和平滑。
 
 {#method}
-下面六步不依赖具体机器人，3.4 节读社区技能时也会用到：
+下面六步不依赖具体机器人，3.5 节读社区技能时也会用到：
 
 1. **先写验收。** 明确目标、时限和失败条件，并固定评测方法。
 2. **列出可用量。** 注明坐标系、单位和来源；奖励可读仿真真值，策略输入必须能在部署时获取。
@@ -99,7 +99,7 @@ NVIDIA 技术博客中的 Microduck 障碍场地。图片来源：[NVIDIA 技术
 - **上坡**：从坡脚前的地面出发。机身越过坡顶 0.15 m、两只脚都踏上平台（离坡顶边缘至少 0.06 m）时算到达；之后留在平台上保持直立至少 2 秒并持续到回合结束，不跌倒、不从边缘掉下，才算通过。
 - **下坡**：从平台上出发。机身越过坡脚 0.25 m、两只脚都踏上坡脚之外的地面时算到达；之后在地面上保持直立至少 2 秒并持续到回合结束，才算通过。
 
-到达后前进指令随即停止，这样“按指令继续往前走、从平台另一侧掉下去”不会被算成策略的失败。和 3.2 节一样，每只小鸭子先锁住关节在出发位置落稳，策略第一次输出后再松开。
+到达后前进指令随即停止，这样“按指令继续往前走、从平台另一侧掉下去”不会被算成策略的失败。和 3.3 节一样，每只小鸭子先锁住关节在出发位置落稳，策略第一次输出后再松开。
 
 {#scene}
 验证命令会先创建白色平地，再添加带碰撞的木纹楔形坡台，摩擦设置沿用原配置。上坡时从坡脚前出发，下坡时从平台朝坡脚出发。
@@ -113,7 +113,7 @@ NVIDIA 技术博客中的 Microduck 障碍场地。图片来源：[NVIDIA 技术
 {#train}
 ## 随机坡面训练：在训练分布中练习
 
-3.2 节的域随机化改变摩擦、质量和延迟等物理参数；地形随机化把“地面形状”也加入随机抽样。训练地形混合了平地和各种坡度的上坡、下坡。Isaac Lab 的地形课程（curriculum）按表现逐步调整坡度：走得好的环境移到更陡的坡面，走不好的退回较缓处，TensorBoard 中的 `Curriculum/terrain_levels` 记录平均难度等级。
+3.3 节的域随机化改变摩擦、质量和延迟等物理参数；地形随机化把“地面形状”也加入随机抽样。训练地形混合了平地和各种坡度的上坡、下坡。Isaac Lab 的地形课程（curriculum）按表现逐步调整坡度：走得好的环境移到更陡的坡面，走不好的退回较缓处，TensorBoard 中的 `Curriculum/terrain_levels` 记录平均难度等级。
 
 这些随机坡面是**训练分布**：策略在其中练习上坡、下坡和在坡面上保持平衡。后面验证用的固定楔形坡台（一段斜坡接一块平台）这一完整布局没有出现在训练地形中，所以坡台上的结果是在单独的验证场景中检验这些能力，而不是在训练场景里打分。
 
@@ -163,9 +163,9 @@ python3 scripts/run.py train-terrain \
 :::
 
 ::::{enrichment} 代码关键参数
-- **`--model`。** 程序加载哪个文件只由 `--model` 决定。`train-terrain --model models/walk.onnx` 以官方行走策略为训练起点；`terrain --model models/terrain-walk.onnx` 在验证时每个控制步用它推理。轮滑命令同时加 `--locomotion rollers`，把场景中的机器人换成轮滑脚。
+- **`--model`。** 程序加载哪个文件只由 `--model` 决定。`train-terrain --model models/walk.onnx` 以官方行走策略为训练起点；`terrain --model models/terrain-walk.onnx` 在验证时每个控制步用它推理。
 - **`--output`。** 必须是 `outputs/` 下尚不存在的目录；已存在的目录或 `models/` 下的路径会被拒绝。训练出的策略要在验证时用 `--model` 显式指定。
-- **`datasets/`。** `terrain-ppo/` 是固定坡地模型三个训练阶段的配置与 TensorBoard 日志，`terrain-rollers-ppo-experiment/` 是本页轮滑训练的记录。
+- **`datasets/`。** `terrain-ppo/` 是固定坡地模型三个训练阶段的配置与 TensorBoard 日志。
 - **场景。** 训练地形由 `lab/train_terrain.py` 中的地形配置生成，验证坡台由 `terrain` 命令的参数（如 `--slope`）即时生成，都不从场景文件读取。
 ::::
 
@@ -245,7 +245,7 @@ python3 scripts/run.py terrain \
 :::{course-image} media/isaac-ui-terrain-test.png
 :alt: 坡台测试运行时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只 Microduck 已经走上平台并站稳，头朝前方，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。
 
-课程在容器中运行这条命令时的 Isaac Sim 窗口：小鸭子已经走上平台、在目标位置停住。
+坡台测试窗口：小鸭子已经走上平台、在目标位置停住。观察它到达后是否保持直立，有没有从平台边缘掉下。
 :::
 
 终端会打印每个环境的 `passed`、`fell`、`reached_goal`、`held_seconds` 和速度均方根误差，完整结果写在输出目录的 `report.json`。下坡把 `--slope` 改成 `-5`、换一个输出目录即可。课程按这两条命令实测，时间从策略接管算起（前 2 秒站立）：
@@ -273,111 +273,15 @@ python3 scripts/run.py terrain \
 :::
 ::::
 
-{#rollers}
-## 轮滑：奖励上升不等于完成任务
-
-这一部分的目的不是给出一个能用的坡地轮滑模型，而是展示一个反例：训练回报大幅上升，验收却没有通过。课程目前**没有**通过坡台验证的坡地轮滑模型。
-
-四个轮子改变了支撑与阻力：上坡要靠腿部动作持续推进，下坡松开指令仍可能加速。验收沿用同一个坡台和同样的到达与保持判据；轮滑推进量为 0 时仍会滑行，所以到达之后由课程的一个制动调节器根据前向速度给出小的反向推进量，所有轮滑模型共用它。
-
-步行奖励里有抬脚高度、腾空时间等项，会把轮架当成脚底来评价；轮滑指令表示“推进量”而不是米每秒，速度跟踪项也没有意义。所以轮滑训练只保留站直、动作平滑、关节限位和机身角速度这些通用项，再加入三项专用项，并沿用上面的转向项（权重 1.0）：
-
-| 专用项 | 形状 | 作用 | 权重 |
-|---|---|---|---|
-| 推进 | 带门控的截断进展 | 按推进量奖励机身前向速度，超过 0.5 m/s 不再加分 | +3 |
-| 滑行 | 平方惩罚，只在推进量为 0 时生效 | 惩罚不推进时的前后滑动 | −1 |
-| 侧滑 | 平方惩罚 | 惩罚机身侧向速度 | −2 |
-
-完整的奖励代码见 [`lab/course_labs/train_terrain_rollers.py` ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/course_labs/train_terrain_rollers.py)。下面的命令从官方轮滑模型出发，在同一组随机坡面上用这些奖励继续 PPO；价值网络从零开始训练。
-
-```{code-block} bash
-:caption: Terminal · 容器内
-:class: terminal
-
-python3 scripts/run.py train-terrain \
-  --locomotion rollers \
-  --model models/official-browser/rollers.onnx \
-  --num-envs 256 --iterations 1000 --seed 47001 \
-  --show \
-  --output outputs/terrain-rollers-training-01
-```
-
-:::{course-image} media/isaac-ui-roller-terrain-training.png
-:alt: 轮滑坡地训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只装着轮滑脚的 Microduck，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。
-
-`--show` 打开的轮滑坡地训练窗口，展示训练刚开始的样子；画面里是随机训练地形，不是验证用的楔形坡台。
-:::
-
-观察一会儿后可以 Ctrl+C 停止；跑完 1000 轮后，导出的策略在 `outputs/terrain-rollers-training-01/exported/policy.onnx`。下面的验证命令默认测试官方轮滑模型，也就是基线：
-
-```{code-block} bash
-:caption: Terminal · 容器内
-:class: terminal
-
-python3 scripts/run.py terrain \
-  --locomotion rollers \
-  --model models/official-browser/rollers.onnx \
-  --slope 5 --seconds 20 --num-envs 5 \
-  --seed 55011 \
-  --output outputs/rollers-slope-01
-```
-
-:::{course-image} media/isaac-ui-roller-slope-test.png
-:alt: 轮滑坡台测试时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只装着轮滑脚的 Microduck 从坡台右侧边缘掉下，倒在地面上。
-
-**官方轮滑模型（基线）**：课程在容器中运行这条命令时的窗口。小鸭子一边上坡一边向右偏，从坡台右侧边缘掉了下去。
-:::
-
-想测试训练后的策略，把 `--model` 换成 `datasets/terrain-rollers-ppo-experiment/exported/policy.onnx`（课程跑完的那次训练）或你自己的 `exported/policy.onnx`，并换一个输出目录。
-
-{#rollers-result}
-**训练后的反例。** 课程用上面的训练命令在 DGX Spark 上不开窗口跑完了 1000 轮（约 8.8 分钟，记录在 `datasets/terrain-rollers-ppo-experiment/`）。
-
-```{training-chart}
-data: terrain-rollers-experiment-scalars.json
-title: 训练后的轮滑策略（反例）· 256 个环境 · 1000 轮
-badge: 训练阶段 525.8 秒
-metrics:
-- key: Train/mean_reward
-  label: 平均回合回报
-- key: Curriculum/terrain_levels
-  label: 平均地形难度等级
-ticks: [1, 250, 500, 750, 1000]
-x_label: 训练迭代次数
-iteration_label: 迭代
-caption: 每 10 轮取一个记录值。平均回合回报从约 −0.18 升到 47.6，地形难度等级却从 1.46 降到 0.02。
-```
-
-| +5° 坡台，5 个环境 | 通过 | 跌倒 | 发生了什么 |
-|---|---|---|---|
-| 官方轮滑模型（基线，即上面的测试窗口） | 0/5 | 5/5 | 4 只向右偏，从坡台侧面掉下；1 只在 5.0 秒短暂到达平台目标，之后也跌倒 |
-| 训练后的轮滑策略（反例，即上方曲线） | 0/5 | 1/5 | 4 只没有上坡，停在出发点后方约 0.5–1.1 m；1 只斜着上了坡台，从侧面掉下 |
-
-每个环境的结果见[评测摘要 ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json)。
-
-回报上升、跌倒减少，验收仍是 0/5。地形难度等级降到接近 0，说明训练后期主要在近乎平地的地块上练习；4 次验证没有上坡，也就谈不上任务改善。
-
-可能的漏洞是：站着少动就能拿分，而推进奖励没有检查是否朝向平台。下一步应一次只改一处，用相同预算和种子对照，再按坡台的成功判据验证。
-
-这是一个奖励设计的反例：它只说明这一套奖励在这次训练中没有学会上坡，不能证明轮滑普遍更难，也不意味着轮滑学不会上坡。
-
-::::{quiz}
-一次训练的平均回报从接近 0 升到 47，回合长度也接近上限。能据此说它学会了上坡轮滑吗？
-
-:::{answer}
-不能。回报只说明策略更会拿到这组奖励给出的分数；本页的轮滑训练正是这样，回报大幅上升，+5° 坡台验证却是 0/5，大多停在出发点后方。要用训练前固定的验收判据来评测（最好另留没有参与调参的种子和场景），并检查地形难度等级这类能说明“训练实际在练什么”的指标。
-:::
-::::
-
 {#next}
 ## 小结
 
 - 奖励是训练信号，成功判据是验收；两者分开写，先写验收。
 - 随机坡面是训练分布，固定楔形坡台是单独的验证场景；结论来自后者，而且只适用于测过的条件。
 - 固定坡地模型在 ±5° 坡台上各 5/5 通过（每个方向 5 个环境）。转向奖励约束转向速度，不纠正已累积的航向；没有对照实验，不能把通过归功于它或其他某项调整。
-- 轮滑的回报大幅上升，验收仍是 0/5：回报曲线不能代替验收。
+- 回报曲线不能代替验收：训练回报上升，只说明策略更会拿这组奖励的分数。
 
-3.4 节阅读社区作者为单脚站立、篮球平衡和倒滑写的奖励代码，用同样的六步判断它们的目标、写法和局限。
+3.5 节阅读社区作者为单脚站立和篮球平衡写的奖励代码，用同样的六步判断它们的目标、写法和局限。
 
 {#references}
 ## 参考资料

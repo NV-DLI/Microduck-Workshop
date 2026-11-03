@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -332,21 +332,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -410,7 +410,7 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.</p>
 </div><div class="lesson-meta">Hands-on · Ubuntu 24.04 / DGX Spark · Docker</div></div></div><section id="requirements">
 <h2>What you need<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
-<p>Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the pinned Isaac Lab and Newton, and the GR00T learning environment. The host only builds and starts the container, shows the simulation windows, and stores data and results.</p>
+<p>Every lab in this course runs in one course container. The image holds Isaac Sim 6.2 and the pinned Isaac Lab and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>Device</p></th>
@@ -441,7 +441,7 @@
 <td><p>Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Learning</p></td>
-<td><p>RSL-RL 5.5.1 (PPO), LeRobot + GR00T N1.7 (Part 5)</p></td>
+<td><p>RSL-RL 5.5.1 (PPO)</p></td>
 </tr>
 </tbody>
 </table>
@@ -459,7 +459,6 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 </div>
 <p>The fixed course models (<code class="docutils literal notranslate"><span class="pre">models/</span></code> under 60 MB) and the pretrained results and training logs used in Part 3 (<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> about 50 MB) come with the repository; your own runs go to <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>, kept separate from them.</p>
-<p><strong>GR00T course data package (Section 5.3 only).</strong> The GR00T walking shot in Section 5.3 also needs a data package of about 62 GB: demonstrations, the training start point, the trained checkpoint and a precomputed feature cache. It is distributed separately by the instructors: before Section 5.3, get it from your instructor; until you have it, you can complete Parts 1–3 and read Part 4. Put its <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> folder under <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> in the repository root; if you keep it elsewhere, set <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> to the absolute path of the folder that contains <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> before starting the container. The container starts without the package.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
@@ -468,7 +467,6 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 ├── scripts/       # lab entry points (same)
 ├── models/        # fixed course models (read-only in the container)
 ├── datasets/      # sample data and pretrained PPO results (read-only)
-├── course-data/   # GR00T course data package (read-only, Section 5.3)
 └── outputs/       # your runs (writable in the container)
 </pre></div>
 </div>
@@ -476,7 +474,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </section>
 <section id="build">
 <h2>Build the course container<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
-<p>Run this from the repository root. The first build downloads Isaac Sim, the Isaac Lab dependencies and the GR00T learning environment; how long it takes depends on your network, and the image is large, so leave enough disk space.</p>
+<p>Run this from the repository root. The first build downloads Isaac Sim, the Isaac Lab dependencies and more; how long it takes depends on your network, and the image is large, so leave enough disk space.</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build
@@ -501,9 +499,9 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <p><strong>Every later lab command runs in this container shell</strong>, and the pages label those blocks “inside the container”. Ctrl+C stops only the command that is running; the container keeps running and you can type the next command.</p>
 <div class="note admonition">
 <p class="admonition-title">Return to the same container</p>
-<p>If you closed the terminal, or need a second shell (for example to watch logs while training in Section 5.3), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> again from the repository root; data, outputs and caches live on the host. When you have finished all labs, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> stops and removes the container.</p>
+<p>If you closed the terminal, or need a second shell (for example to watch TensorBoard while training in Section 3.3), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host. You are back in the same container and earlier outputs are still there. If the container has stopped (for example after a reboot), run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> again from the repository root; data, outputs and caches live on the host. When you have finished all labs, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> stops and removes the container.</p>
 </div>
-<p>A relative path in a command (for example <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>) is the file of the same name in the host repository. Download, shader and compilation caches stay on the host under <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> and <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code>, so the second start is much faster.</p>
+<p>A relative path in a command (for example <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>) is the file of the same name in the host repository. Shader and compilation caches stay on the host under <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code>, so the second start is much faster.</p>
 </section>
 <section id="check">
 <h2>Check that you can start<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>

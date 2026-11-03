@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task." name="description" />
+<meta content="Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task." name="description" />
 
-  <title>3.4 Community skills: from goal to reward - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>3.5 Community skills: from goal to reward - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '05-skills';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="4.1 Find the ball and goal: RGB detection and ToF ranging" href="06-perception.html" />
-    <link rel="prev" title="3.3 Reward design: walking steadily up and down slopes" href="04-terrain.html" />
+    <link rel="prev" title="3.4 Extension: walking steadily up and down slopes" href="04-terrain.html" />
 
 
 
@@ -332,21 +332,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.5 Community skills: from goal to reward</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 Community skills: from goal to reward</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.5 Community skills: from goal to reward</span></li>
   </ul>
 </nav>
 </div>
@@ -406,20 +406,20 @@
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 <section class="tex2jax_ignore mathjax_ignore" id="community-skills-from-goal-to-reward">
-<h1>3.4 Community skills: from goal to reward<a class="headerlink" href="#community-skills-from-goal-to-reward" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Read the real reward code of three community skills (flamingo cycle, basketball balance and moonwalk): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task.</p>
-</div><div class="lesson-meta">Section 3.4 · Reading and analysis · Estimated learning time: 45 minutes</div></div></div><script type="application/json" class="course-symbols">{"dt": {"tex": "\\Delta t", "text": "Control step: the time between two policy outputs. All three skills here use 0.02 s (50 Hz)."}, "alpha_f": {"tex": "\\alpha", "text": "Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself."}, "p_target": {"tex": "p^{*}_{xy}", "text": "Target horizontal position of the centre of mass (m): moves from the midpoint of the feet to above the stance foot."}, "p_mid": {"tex": "p_{\\mathrm{mid}}", "text": "Midpoint between the two feet (horizontal position, m)."}, "p_stance": {"tex": "p_{\\mathrm{stance}}", "text": "Horizontal position of the stance foot (m)."}, "c_com": {"tex": "c_{xy}", "text": "Horizontal position of the whole-robot centre of mass (m), computed by the simulator over all parts."}, "sigma_c": {"tex": "\\sigma_c", "text": "Centre-of-mass error scale: 0.03 m, tightened to 0.02 m after training iteration 700."}, "r_com": {"tex": "r_{\\mathrm{com}}", "text": "Centre-of-mass target term (weight 3)."}, "S": {"tex": "S", "text": "Smoothstep: rises smoothly from 0 to 1 while the blend is inside $[a,b]$; 0 before, 1 after."}, "tau": {"tex": "\\tau", "text": "Normalized progress inside the smoothstep, clamped to between 0 and 1."}, "a_lo": {"tex": "a", "text": "Where the smoothstep starts to rise."}, "b_hi": {"tex": "b", "text": "Where the smoothstep reaches 1."}, "clip": {"tex": "\\operatorname{clip}", "text": "Clamp: limits a value to a given interval."}, "k_swing": {"tex": "k_{\\mathrm{swing}}", "text": "Whether the foot to be lifted touches the ground right now (1 contact, 0 airborne)."}, "k_stance": {"tex": "k_{\\mathrm{stance}}", "text": "Whether the stance foot touches the ground right now (1 contact)."}, "z_swing": {"tex": "z_{\\mathrm{swing}}", "text": "Height of the foot to be lifted above the ground (m)."}, "r_contact": {"tex": "r_{\\mathrm{contact}}", "text": "Swing-foot contact term (weight 0.5): rewards contact while standing is due, penalizes it once the lift is due."}, "r_clear": {"tex": "r_{\\mathrm{clear}}", "text": "Swing-foot height term (weight 1.5): target 0.10 m, scale 0.06 m."}, "p_ball": {"tex": "p_{\\mathrm{ball}}", "text": "Position of the basketball centre (m), read directly from the simulation state; the deployed policy cannot see it."}, "p_root": {"tex": "p_{\\mathrm{root}}", "text": "Position of the robot root (body) (m)."}, "p_foot": {"tex": "p_{\\mathrm{foot}}", "text": "Position of one foot's sole reference point (m)."}, "z_root": {"tex": "z_{\\mathrm{root}}", "text": "Height of the robot root (m)."}, "z_ball": {"tex": "z_{\\mathrm{ball}}", "text": "Height of the ball centre (m)."}, "R_ball": {"tex": "R", "text": "Basketball radius, 0.12 m (size 7)."}, "g_x": {"tex": "g_x", "text": "Forward/backward component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "g_y": {"tex": "g_y", "text": "Left/right component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "v_ball": {"tex": "v_{\\mathrm{ball}}", "text": "Horizontal velocity of the basketball (m/s), simulation state."}, "r_center": {"tex": "r_{\\mathrm{center}}", "text": "Body-over-ball-centre term (weight 2)."}, "r_feet": {"tex": "r_{\\mathrm{feet}}", "text": "Feet-resting-on-the-ball term (weight 1), averaged over both feet."}, "r_height": {"tex": "r_{\\mathrm{height}}", "text": "Standing-height-on-the-apex term (weight 1)."}, "r_up": {"tex": "r_{\\mathrm{up}}", "text": "Upright-body term (weight 1)."}, "r_ball": {"tex": "r_{\\mathrm{ball}}", "text": "Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays."}, "v_cmd": {"tex": "v^{*}_{xy}", "text": "Horizontal velocity command (m/s). In the moonwalk training the forward component is −0.25 to −0.08 m/s, i.e. backward."}, "v_xy": {"tex": "v_{xy}", "text": "Horizontal velocity in the body frame (m/s)."}, "v_z": {"tex": "v_z", "text": "Vertical velocity in the body frame (m/s); 0 for ideal translation."}, "omega_cmd": {"tex": "\\omega^{*}_z", "text": "Turn-rate command (rad/s)."}, "sigma_v": {"tex": "\\sigma_v", "text": "Velocity-tracking scale, $\\sigma_v^2 = 0.1\\ (\\mathrm{m/s})^2$."}, "r_lin": {"tex": "r_{\\mathrm{lin}}", "text": "Linear-velocity tracking term (weight 2 in the base walking recipe)."}, "v_foot": {"tex": "v_{\\mathrm{foot}}", "text": "Horizontal velocity of one foot in the world frame (m/s)."}, "k_foot": {"tex": "k_{\\mathrm{foot}}", "text": "Whether this foot touches the ground (1 contact)."}, "r_slip": {"tex": "r_{\\mathrm{slip}}", "text": "Foot-slip cost: counts feet that still move horizontally while in contact; negative weight."}, "one": {"tex": "\\mathbf{1}", "text": "Indicator: 1 when the condition in brackets holds, otherwise 0."}, "exp": {"tex": "\\exp", "text": "Exponential: turns a squared error into a smooth reward between 0 and 1."}}</script><section id="community">
+<h1>3.5 Community skills: from goal to reward<a class="headerlink" href="#community-skills-from-goal-to-reward" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task.</p>
+</div><div class="lesson-meta">Section 3.5 · Reading and analysis · Estimated learning time: 45 minutes</div></div></div><script type="application/json" class="course-symbols">{"dt": {"tex": "\\Delta t", "text": "Control step: the time between two policy outputs. Both skills here use 0.02 s (50 Hz)."}, "alpha_f": {"tex": "\\alpha", "text": "Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself."}, "p_target": {"tex": "p^{*}_{xy}", "text": "Target horizontal position of the centre of mass (m): moves from the midpoint of the feet to above the stance foot."}, "p_mid": {"tex": "p_{\\mathrm{mid}}", "text": "Midpoint between the two feet (horizontal position, m)."}, "p_stance": {"tex": "p_{\\mathrm{stance}}", "text": "Horizontal position of the stance foot (m)."}, "c_com": {"tex": "c_{xy}", "text": "Horizontal position of the whole-robot centre of mass (m), computed by the simulator over all parts."}, "sigma_c": {"tex": "\\sigma_c", "text": "Centre-of-mass error scale: 0.03 m, tightened to 0.02 m after training iteration 700."}, "r_com": {"tex": "r_{\\mathrm{com}}", "text": "Centre-of-mass target term (weight 3)."}, "S": {"tex": "S", "text": "Smoothstep: rises smoothly from 0 to 1 while the blend is inside $[a,b]$; 0 before, 1 after."}, "tau": {"tex": "\\tau", "text": "Normalized progress inside the smoothstep, clamped to between 0 and 1."}, "a_lo": {"tex": "a", "text": "Where the smoothstep starts to rise."}, "b_hi": {"tex": "b", "text": "Where the smoothstep reaches 1."}, "clip": {"tex": "\\operatorname{clip}", "text": "Clamp: limits a value to a given interval."}, "k_swing": {"tex": "k_{\\mathrm{swing}}", "text": "Whether the foot to be lifted touches the ground right now (1 contact, 0 airborne)."}, "k_stance": {"tex": "k_{\\mathrm{stance}}", "text": "Whether the stance foot touches the ground right now (1 contact)."}, "z_swing": {"tex": "z_{\\mathrm{swing}}", "text": "Height of the foot to be lifted above the ground (m)."}, "r_contact": {"tex": "r_{\\mathrm{contact}}", "text": "Swing-foot contact term (weight 0.5): rewards contact while standing is due, penalizes it once the lift is due."}, "r_clear": {"tex": "r_{\\mathrm{clear}}", "text": "Swing-foot height term (weight 1.5): target 0.10 m, scale 0.06 m."}, "p_ball": {"tex": "p_{\\mathrm{ball}}", "text": "Position of the basketball centre (m), read directly from the simulation state; the deployed policy cannot see it."}, "p_root": {"tex": "p_{\\mathrm{root}}", "text": "Position of the robot root (body) (m)."}, "p_foot": {"tex": "p_{\\mathrm{foot}}", "text": "Position of one foot's sole reference point (m)."}, "z_root": {"tex": "z_{\\mathrm{root}}", "text": "Height of the robot root (m)."}, "z_ball": {"tex": "z_{\\mathrm{ball}}", "text": "Height of the ball centre (m)."}, "R_ball": {"tex": "R", "text": "Basketball radius, 0.12 m (size 7)."}, "g_x": {"tex": "g_x", "text": "Forward/backward component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "g_y": {"tex": "g_y", "text": "Left/right component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "v_ball": {"tex": "v_{\\mathrm{ball}}", "text": "Horizontal velocity of the basketball (m/s), simulation state."}, "r_center": {"tex": "r_{\\mathrm{center}}", "text": "Body-over-ball-centre term (weight 2)."}, "r_feet": {"tex": "r_{\\mathrm{feet}}", "text": "Feet-resting-on-the-ball term (weight 1), averaged over both feet."}, "r_height": {"tex": "r_{\\mathrm{height}}", "text": "Standing-height-on-the-apex term (weight 1)."}, "r_up": {"tex": "r_{\\mathrm{up}}", "text": "Upright-body term (weight 1)."}, "r_ball": {"tex": "r_{\\mathrm{ball}}", "text": "Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays."}, "exp": {"tex": "\\exp", "text": "Exponential: turns a squared error into a smooth reward between 0 and 1."}}</script><section id="community">
 <h2>What else can the same robot learn?<a class="headerlink" href="#community" title="Link to this heading">#</a></h2>
-<p>Section 3.3 used six steps to design rewards for slopes. Community authors have trained many other skills on the same Microduck, and several have published their policies, training code and evaluation records. Start from these two entry points:</p>
+<p>Section 3.4 used six steps to design rewards for slopes. Community authors have trained many other skills on the same Microduck, and several have published their policies, training code and evaluation records. Start from these two entry points:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" rel="noreferer noopener" target="_blank">Official Microduck web simulator ↗</a>: a browser simulator published by Pollen Robotics where you can switch between and try the official walking, roller and other policies without installing anything.</p></li>
+<li><p><a class="reference external" href="https://huggingface.co/spaces/pollen-robotics/microduck-simulator" rel="noreferer noopener" target="_blank">Official Microduck web simulator ↗</a>: a browser simulator published by Pollen Robotics where you can try the official policies without installing anything.</p></li>
 <li><p><a class="reference external" href="https://huggingface.co/models?search=microduck" rel="noreferer noopener" target="_blank">Microduck models on Hugging Face ↗</a>: searching for “microduck” lists policies uploaded by the community; each model card describes its command format, training method and known limits.</p></li>
 </ul>
-<p>This section reads three of them closely: the flamingo (one-leg) cycle uses gates to order its movements, basketball balance separates privileged information in the reward from what the deployed policy observes, and the backward glide shows that a written goal is not a verified capability. The hardware is the same; the goals, rewards, initial states and termination conditions change. All three were trained and evaluated in their authors' own MuJoCo / mjlab environments; the results below are the authors' simulation reports and have not been retested in the course's Newton scene or on the robot.</p>
-<p>These three models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.</p>
+<p>This section reads two of them closely: the flamingo (one-leg) cycle uses gates to order its movements, and basketball balance separates privileged information in the reward from what the deployed policy observes. The hardware is the same; the goals, rewards, initial states and termination conditions change. Both were trained and evaluated in their authors' own MuJoCo / mjlab environments; the results below are the authors' simulation reports and have not been retested in the course's Newton scene or on the robot.</p>
+<p>These two models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.</p>
 </section>
 <section id="how-to-read">
-<h2>Read three skills with one table<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
+<h2>Read community skills with one table<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
 <p>Read every skill in the same order:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -566,68 +566,39 @@
 <p><strong>Failures and fixes recorded by the author.</strong> According to the author's <a class="reference external" href="https://github.com/Vottivott/microduck-playground/blob/aa5bd7909873a807fb9f4045f491519c443142e7/experiments/basketball/TRAINING.md" rel="noreferer noopener" target="_blank">training record ↗</a>, removing direct observation of the ball made balancing harder; LSTM memory improved it, while a teacher–student distillation attempt failed to preserve balance. With <strong>the reward unchanged</strong>, adjusting only the learning rate and the frequency of push practice improved it further. The reward is only one lever: what the policy can see, remember and has practised also decides the result.</p>
 <p><strong>Success checks and limits.</strong> The author ran 3 seeds × 1024 environments, 3072 trials of 60 seconds, with the first fall counted as failure: b11 survived 20 s in 98.86% and 60 s in 97.01% of trials; the reference version that sees the ball reached 99.67% and 99.12%. Its turn-tracking error of 1.26 rad/s is clearly worse than the reference's 0.76 rad/s, and its actions are less smooth; these tracking metrics count only samples before a fall. The exported ONNX needs extra LSTM-state inputs and outputs, so a plain feed-forward loader cannot run it. Onboard real-time timing and real-robot behaviour are untested.</p>
 </section>
-<section id="moonwalk">
-<h2>Moonwalk: in the prompt, not in the reward<a class="headerlink" href="#moonwalk" title="Link to this heading">#</a></h2>
-<p><strong>Goal.</strong> <a class="reference external" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af" rel="noreferer noopener" target="_blank">Moonwalk backward ↗</a> was generated by an automated tool from a text prompt: “a moonwalk-style backward gliding gait, alternating feet, creating the visual illusion of sliding rather than ordinary backward walking, upper body stable and upright, avoiding jumps or large vertical motion, balanced throughout, finishing in a stable standing pose after a few seconds.”</p>
-<p><strong>What was actually trained.</strong> The tool chose the walking velocity-tracking recipe from its existing recipes and made only three changes: the forward velocity command became backward, −0.25 to −0.08 m/s (with only small sideways and turning ranges); the foot-slip penalty was weakened from −0.1 to −0.015; and left–right symmetry augmentation was enabled.</p>
-<div class="formula"><div class="formula-label">Two terms inherited from the walking recipe (mjlab 1.3.0)</div><div class="formula-body">\[\htmlData{sym=r_lin}{r_{\mathrm{lin}}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=v_cmd}{v^{*}_{xy}}-\htmlData{sym=v_xy}{v_{xy}}\|^2+\htmlData{sym=v_z}{v_z}^2}{\htmlData{sym=sigma_v}{\sigma_v}^2}\right),\qquad \htmlData{sym=r_slip}{r_{\mathrm{slip}}}=\htmlData{sym=one}{\mathbf{1}}\!\left[\|\htmlData{sym=v_cmd}{v^{*}_{xy}}\|+|\htmlData{sym=omega_cmd}{\omega^{*}_z}|&gt;0.01\right]\sum_{\mathrm{L,R}}\htmlData{sym=k_foot}{k_{\mathrm{foot}}}\,\|\htmlData{sym=v_foot}{v_{\mathrm{foot}}}\|^2\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\mathrm{lin}}\)</dt><dd>Linear-velocity tracking term (weight 2 in the base walking recipe).</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: turns a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(v^{*}_{xy}\)</dt><dd>Horizontal velocity command (m/s). In the moonwalk training the forward component is −0.25 to −0.08 m/s, i.e. backward.</dd></div><div><dt>\(v_{xy}\)</dt><dd>Horizontal velocity in the body frame (m/s).</dd></div><div><dt>\(v_z\)</dt><dd>Vertical velocity in the body frame (m/s); 0 for ideal translation.</dd></div><div><dt>\(\sigma_v\)</dt><dd>Velocity-tracking scale, \(\sigma_v^2 = 0.1\ (\mathrm{m/s})^2\).</dd></div><div><dt>\(r_{\mathrm{slip}}\)</dt><dd>Foot-slip cost: counts feet that still move horizontally while in contact; negative weight.</dd></div><div><dt>\(\mathbf{1}\)</dt><dd>Indicator: 1 when the condition in brackets holds, otherwise 0.</dd></div><div><dt>\(\omega^{*}_z\)</dt><dd>Turn-rate command (rad/s).</dd></div><div><dt>\(k_{\mathrm{foot}}\)</dt><dd>Whether this foot touches the ground (1 contact).</dd></div><div><dt>\(v_{\mathrm{foot}}\)</dt><dd>Horizontal velocity of one foot in the world frame (m/s).</dd></div></dl></details></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Automatically generated task configuration (complete)</span><a class="source-link" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af/blob/951073cb7791a898e3e5ecb242c5bcccf40aa72f/compiled_motion.json" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Start from the walking recipe</h4> <p>Observations, actuators, domain randomization, terminations and every reward term come from the official walking recipe (pinned revision <code>d424a0c</code>). This code is stored in <code>compiled_motion.json</code> on the model card.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab_microduck.tasks.microduck_velocity_env_cfg</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_microduck_velocity_env_cfg</span><span class="p">,</span> <span class="n">MicroduckRlCfg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">mjlab_microduck.tasks.symmetry</span><span class="w"> </span><span class="kn">import</span> <span class="n">SYMMETRY_CFG</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">make_generated_env_cfg</span><span class="p">(</span><span class="n">play</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">rough</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="n">cfg</span> <span class="o">=</span> <span class="n">make_microduck_velocity_env_cfg</span><span class="p">(</span><span class="n">play</span><span class="o">=</span><span class="n">play</span><span class="p">,</span> <span class="n">rough</span><span class="o">=</span><span class="n">rough</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>The only “moonwalk” information: a backward velocity command</h4> <p>Forward velocity is sampled only between −0.25 and −0.08 m/s, and 8% of environments practise standing. The velocity-tracking reward therefore asks the robot to move backward.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">command</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">commands</span><span class="p">[</span><span class="s2">"twist"</span><span class="p">]</span>
-    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">lin_vel_x</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.08</span><span class="p">)</span>
-    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">lin_vel_y</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">)</span>
-    <span class="n">command</span><span class="o">.</span><span class="n">ranges</span><span class="o">.</span><span class="n">ang_vel_z</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.15</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">)</span>
-    <span class="n">command</span><span class="o">.</span><span class="n">rel_standing_envs</span> <span class="o">=</span> <span class="mf">0.08</span>
-    <span class="n">command</span><span class="o">.</span><span class="n">rel_turn_in_place_envs</span> <span class="o">=</span> <span class="mf">0.0</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Relax the foot-slip penalty</h4> <p>The weight changes from −0.1 to −0.015, allowing more sliding while a foot touches the ground. It merely objects less to sliding; it does not reward “looking like a glide”.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="p">[</span><span class="s1">'foot_slip'</span><span class="p">]</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.015</span>
-    <span class="k">return</span> <span class="n">cfg</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Enable symmetry augmentation</h4> <p>Training uses left–right mirrored data to keep the legs&#x27; motions symmetric.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="n">GeneratedRlCfg</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">MicroduckRlCfg</span><span class="p">)</span>
-<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">experiment_name</span> <span class="o">=</span> <span class="s1">'motionlab_moonwalk_backward'</span>
-<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">run_name</span> <span class="o">=</span> <span class="s1">'moonwalk_backward'</span>
-<span class="n">GeneratedRlCfg</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">symmetry_cfg</span> <span class="o">=</span> <span class="n">SYMMETRY_CFG</span></code></pre></div></div></div><p>Compare with the goal item by item: moving backward and an upright upper body have matching reward terms (velocity tracking and the inherited upright term); “alternating feet” can come only from the walking recipe's existing gait terms; “finish standing” relies on switching the command back to 0 at deployment and on the recipe's existing zero-command standing practice; and “the visual illusion of sliding” is described by no reward term or check at all. The tool's generated notes also say that vertical motion is suppressed by a body-pose reward, but in this base recipe the body-pose tracking term has weight 0.</p>
-<p><strong>Success checks and limits.</strong> The model card records that the export check and an ONNX rehearsal in CPU MuJoCo passed (61 inputs, 14 outputs); in a 5-second preview (<code class="docutils literal notranslate"><span class="pre">preview.mp4</span></code> on the model card) the maximum horizontal displacement was 0.33 m and the largest joint change 14.7°; when you watch it, check the goal item by item. But the automatic motion-quality gate says “needs review”, and the card explicitly marks the semantic match as unverified. The file loads, the interface is correct and the robot moves, but there is no evidence that it learned a moonwalk. The lesson: an effect that is wanted in the prompt, but written into neither a reward nor an acceptance test, cannot be expected to emerge from training.</p>
-<details class="enrichment"><summary>Going further: if you wanted to really test a “moonwalk”</summary><div class="enrichment-body"><p>What follows is a direction proposed by the course, not the author's implementation, and it has not been trained or validated. Write the acceptance test first: for example, over a fixed duration the body really moves backward; within each gait cycle the foot in contact slides backward relative to the ground while the lifted foot moves forward; the vertical motion of the centre of mass stays below a threshold; the robot ends in its standing pose. Then ask: can these quantities be read from the simulation? Should each become a tracking term, a penalty or only a final check? Which are suitable as rewards, and which are better kept as independent evaluation metrics?</p>
-</div></details></section>
 <section id="compare">
-<h2>The three skills side by side<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
+<h2>The two skills side by side<a class="headerlink" href="#compare" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p></p></th>
 <th class="head cell-short"><p>Flamingo cycle</p></th>
 <th class="head"><p>Basketball balance</p></th>
-<th class="head cell-short"><p>Moonwalk</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td class="cell-short"><p>Type of goal</p></td>
 <td><p>Switching between two postures on command</p></td>
 <td><p>Continuous balance while following velocity</p></td>
-<td><p>Stylized continuous gait</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>Key technique</p></td>
 <td><p>Gate every term with the blend</p></td>
 <td><p>Use the true ball state in rewards and termination</p></td>
-<td><p>Change only the command range and one weight</p></td>
 </tr>
 <tr class="row-even"><td><p>Privileged information</p></td>
 <td><p>Whole-body centre of mass, contacts</p></td>
 <td><p>Ball position and speed (invisible to the policy)</p></td>
-<td><p>Same as the walking recipe</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>Termination</p></td>
 <td><p>Inherited fall termination</p></td>
 <td><p>Falling off the ball</p></td>
-<td><p>Inherited from the walking recipe</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Author's check</p></td>
 <td><p>10 scenarios + 24 random pushes</p></td>
 <td><p>3 seeds × 1024 environments × 60 s</p></td>
-<td><p>Export and interface pass; semantics unverified</p></td>
 </tr>
 <tr class="row-odd"><td><p>Not verified by any</p></td>
 <td class="cell-short"><p>Real robot</p></td>
 <td><p>Real robot and onboard timing</p></td>
-<td><p>Whether the motion matches the prompt</p></td>
 </tr>
 </tbody>
 </table>
@@ -636,7 +607,7 @@
 </section>
 <section id="new-task">
 <h2>Design a reward for a new task<a class="headerlink" href="#new-task" title="Link to this heading">#</a></h2>
-<p>Pick a task outside these three, for example “turn once on the spot and stop facing the original direction” or “sit down and stand up again”, and work through the six steps of Section 3.3 on paper:</p>
+<p>Pick a task outside these two, for example “turn once on the spot and stop facing the original direction” or “sit down and stand up again”, and work through the six steps of Section 3.4 on paper:</p>
 <ol class="arabic simple">
 <li><p>Write the success and failure criteria in measurable quantities and fix them before writing any reward.</p></li>
 <li><p>List the quantities you need, with units, frames, and whether the policy will have them at deployment.</p></li>
@@ -646,46 +617,16 @@
 <li><p>Plan the independent evaluation and the ablation: which seeds, how many trials, which metrics, and the same training budget.</p></li>
 </ol>
 <div class="quiz"><h3>Check your understanding</h3><p>The reward curve of a new task keeps rising, and the exported ONNX passes the 61-input, 14-output interface check. Does that show the task is done?</p>
-<details><summary>Show explanation</summary><p>No. A rising reward only shows that the policy got better at collecting this reward set; an interface check only shows that the controller can call the file. The moonwalk meets both, yet its semantic match is unverified; the roller training in Section 3.3 raised its reward sharply while the ramp verification gave 0/5. Judge with acceptance criteria fixed before training, independent seeds and actual observation.</p>
+<details><summary>Show explanation</summary><p>No. A rising reward only shows that the policy got better at collecting this reward set; an interface check only shows that the controller can call the file. Judge with acceptance criteria fixed before training, independent seeds and actual observation; an effect that is wanted but written into neither a reward nor an acceptance test cannot be expected to emerge from training.</p>
 </details></div></section>
 <section id="compatible">
 <h2>Same interface, different conventions<a class="headerlink" href="#compatible" title="Link to this heading">#</a></h2>
-<p>ONNX is a model file format: it stores the network structure and weights but does not define how a robot skill is called. The flamingo cycle and the moonwalk both use the shared 61-input, 14-output interface, yet neither can replace the other: the flamingo cycle uses the first two velocity-command slots for “lift a foot” and “which side”, and only the moonwalk uses them as a real velocity command. The basketball policy additionally needs its LSTM memory state passed in and back out alongside the same 61 observations. The official walking and kicking models both take 61 inputs and output 14 numbers, but their command semantics and training tasks differ, so they cannot be freely interchanged.</p>
+<p>ONNX is a model file format: it stores the network structure and weights but does not define how a robot skill is called. The flamingo cycle and the official walking policy both use the shared 61-input, 14-output interface, yet neither can replace the other: the flamingo cycle uses the first two velocity-command slots for “lift a foot” and “which side”, while the walking policy treats them as velocities. The basketball policy additionally needs its LSTM memory state passed in and back out alongside the same 61 observations. The official walking and kicking models are similar: both take 61 inputs and output 14 numbers, but their training tasks differ, so they cannot be freely interchanged.</p>
 <p>A file that loads is only readable. For the robot to perform the motion, the meaning of every command slot, the units, joint order, action scaling and termination conditions must all match the controller. The <a class="reference internal" href="models.html"><span class="std std-doc">models page</span></a> lists the fixed course weights and their roles. Handovers between skills also need their own design: after the kick in the Section 2.1 keyboard game, a 0.12 s smooth blend returns to the walking policy's standing pose, and that blend is not part of the kick model.</p>
 </section>
-<section id="kick-example">
-<h2>A skill’s start and end matter equally<a class="headerlink" href="#kick-example" title="Link to this heading">#</a></h2>
-<p>Walking continuously accepts velocity commands, while a kick is a short skill with a clear start and end. To add a kick to an autonomous task, besides the motion itself you must define when it may start, which state it ends in, and how it stops on failure.</p>
-<figure class="media media-solo" style="--media-w: 1920; --media-h: 1080"><video controls playsinline preload="metadata" poster="../assets/media/kick-contact-hd.jpg" aria-label="Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task."><source src="../assets/media/kick-contact-hd.mp4" type="video/mp4"></video><figcaption><p>Close-up of the swing, ball contact and return to standing. The clip uses the combined kicking policy from the complete football task.</p>
-</figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>Phase</p></th>
-<th class="head cell-short"><p>What to check</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="cell-short"><p>Prepare</p></td>
-<td><p>Ball in the kickable zone, suitable body heading, observations still fresh</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>Contact</p></td>
-<td><p>The ball moves only through physical foot contact; the simulation never overwrites its state</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>Retract</p></td>
-<td><p>End the swing promptly and return to support</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>Recover</p></td>
-<td><p>The robot stays stable, without falling or exceeding joint limits</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>A shot requires the ball in a useful right-foot position, the body facing the goal, stable support and fresh target information. Section 4.2 calls the official kick policy and then smoothly switches to the official standing policy. After touching the ball, the robot must recover stable standing before the skill ends. This is a local motion skill: starting it far from the ball will not make the robot search for the ball. When watching the clip, use the physical contact record to confirm that the foot, not another body part, touches the ball, then check that the centre of mass returns over the support area and body tilt settles.</p>
-<div class="quiz"><h3>Check your understanding</h3><p>The robot is beside the ball, but its remembered position has expired. Should the kick start immediately?</p>
-<details><summary>Show explanation</summary><p>No. Observe again and confirm the entry conditions. Proximity alone does not guarantee valid inputs.</p>
-</details></div></section>
 <section id="eyes">
 <h2>Executing a skill is not completing a task<a class="headerlink" href="#eyes" title="Link to this heading">#</a></h2>
-<p>So far we have told the robot when to walk, lift a foot or glide backward. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 first has people write these decisions into an onboard policy; Part 5 then trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.</p>
+<p>So far we have told the robot when to walk, lift a foot or balance on a ball. The policy uses joint and IMU feedback to balance, but where the ball is and which route to take must be decided by other modules. Part 4 first has people write these decisions into an onboard policy; Part 5 then trains GR00T to issue skill requests from camera images, instructions and body state, handing these decisions to a learned model.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -698,7 +639,6 @@
 <li><p><a class="reference external" href="https://github.com/pollen-robotics/microduck_rl/tree/0bf989701f14d4008c866ffd6f09067870f99379/src/mjlab_microduck/tasks" rel="noreferer noopener" target="_blank">Community flamingo cycle: training source (pinned revision) ↗</a></p></li>
 <li><p><a class="reference external" href="https://huggingface.co/HannesVonEssen/microduck-basketball" rel="noreferer noopener" target="_blank">Community basketball balance: model card and evaluation ↗</a></p></li>
 <li><p><a class="reference external" href="https://github.com/Vottivott/microduck-playground/tree/main/experiments/basketball" rel="noreferer noopener" target="_blank">Community basketball balance: training source ↗</a></p></li>
-<li><p><a class="reference external" href="https://huggingface.co/fffiloni/microduck-moonwalk-backward-55e6af" rel="noreferer noopener" target="_blank">Community moonwalk backward ↗</a></p></li>
 </ul>
 </section>
 </section>
@@ -719,7 +659,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">3.3 Reward design: walking steadily up and down slopes</p>
+        <p class="prev-next-title">3.4 Extension: walking steadily up and down slopes</p>
       </div>
     </a>
     <a class="right-next"
@@ -753,14 +693,12 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community">What else can the same robot learn?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">Read three skills with one table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">Read community skills with one table</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flamingo">Flamingo cycle: gates set the order of movements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basketball">Basketball balance: the reward sees the ball, the policy does not</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#moonwalk">Moonwalk: in the prompt, not in the reward</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">The three skills side by side</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">The two skills side by side</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#new-task">Design a reward for a new task</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compatible">Same interface, different conventions</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kick-example">A skill’s start and end matter equally</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eyes">Executing a skill is not completing a task</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>

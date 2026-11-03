@@ -17,7 +17,7 @@ myst:
 {#requirements}
 ## 需要什么
 
-课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、锁定版本的 Isaac Lab 与 Newton，以及 GR00T 学习环境都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。
+课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、锁定版本的 Isaac Lab 与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。
 
 | 设备 | 系统 | 可用的课程内容 |
 |---|---|---|
@@ -29,7 +29,7 @@ myst:
 |---|---|
 | 容器基础 | CUDA 13、Ubuntu 24.04、Python 3.12 |
 | 仿真 | Isaac Sim 6.2，Isaac Lab 固定提交，Newton 物理后端 |
-| 学习 | RSL-RL 5.5.1（PPO），LeRobot + GR00T N1.7（第 5 部分） |
+| 学习 | RSL-RL 5.5.1（PPO） |
 
 {#get-code}
 ## 下载课程代码
@@ -47,9 +47,6 @@ cd Microduck-Workshop
 
 固定的课程模型（`models/` 不到 60 MB）和第 3 部分用到的预训练结果与训练日志（`datasets/` 约 50 MB）都随仓库下载；你自己运行得到的结果写在 `outputs/`，与它们分开保存。
 
-**GR00T 课程资料包（只有 5.3 节需要）。** 5.3 节的 GR00T 步行射门另外需要一个约 62 GB 的资料包：示范数据、训练起点、训练好的检查点和预先算好的特征缓存。它由授课方单独发放：开始 5.3 节前，请向授课教师领取；还没有拿到时，可以先完成第 1–3 部分和第 4 部分的阅读。把其中的 `groot-walking/` 文件夹放到仓库根目录的 `course-data/` 下；放在别处时，启动容器前把 `MICRODUCK_COURSE_DATA` 设为包含 `groot-walking/` 的文件夹的绝对路径。没有资料包也可以启动容器。
-
-
 ```{code-block} text
 :caption: Workspace
 :class: workspace-tree
@@ -60,14 +57,13 @@ Microduck-Workshop/
 ├── scripts/       # 实验入口（同上）
 ├── models/        # 固定课程模型（容器内只读）
 ├── datasets/      # 示例数据与预训练 PPO 结果（容器内只读）
-├── course-data/   # GR00T 课程资料包（容器内只读，第 5.3 节）
 └── outputs/       # 你的运行结果（容器内可写）
 ```
 
 {#build}
 ## 构建课程容器
 
-在仓库根目录运行。首次构建要下载 Isaac Sim、Isaac Lab 依赖和 GR00T 学习环境，耗时取决于网络，镜像也较大，请预留足够磁盘空间。
+在仓库根目录运行。首次构建要下载 Isaac Sim、Isaac Lab 等依赖，耗时取决于网络，镜像也较大，请预留足够磁盘空间。
 
 ```{code-block} bash
 :caption: Terminal · 宿主机
@@ -100,10 +96,10 @@ docker exec -it microduck-workshop bash
 :::{admonition} 回到同一个容器
 :class: note
 
-关闭了终端，或者需要第二个终端（例如 5.3 节一边训练一边看日志）时，在宿主机运行 `docker exec -it microduck-workshop bash`，就会回到同一个容器，之前的输出都还在。容器停止后（例如重启了电脑），在仓库根目录再运行一次 `docker compose -f docker/compose.yaml up -d` 即可；数据、输出和缓存都保存在宿主机上。全部练习结束后，用 `docker compose -f docker/compose.yaml down` 停止并移除容器。
+关闭了终端，或者需要第二个终端（例如 3.3 节一边训练一边看 TensorBoard）时，在宿主机运行 `docker exec -it microduck-workshop bash`，就会回到同一个容器，之前的输出都还在。容器停止后（例如重启了电脑），在仓库根目录再运行一次 `docker compose -f docker/compose.yaml up -d` 即可；数据、输出和缓存都保存在宿主机上。全部练习结束后，用 `docker compose -f docker/compose.yaml down` 停止并移除容器。
 :::
 
-命令里的相对路径（例如 `models/walk.onnx`）就是宿主机仓库里的同名文件。下载、着色器和编译缓存保存在宿主机的 `~/.cache/huggingface` 与 `~/.cache/microduck/` 下，第二次启动会快很多。
+命令里的相对路径（例如 `models/walk.onnx`）就是宿主机仓库里的同名文件。着色器和编译缓存保存在宿主机的 `~/.cache/microduck/` 下，第二次启动会快很多。
 
 
 

@@ -12,12 +12,14 @@ The course has six parts and seventeen pages:
 
 1. Overview: `index`, `setup` (the removed `how-to-learn` URL redirects to `setup`).
 2. Meet Microduck: `01-play`, `02-anatomy`.
-3. Reinforcement learning: `03-learning`, `03-walk-training`, `04-terrain`, `05-skills`.
+3. Reinforcement learning: `03-learning` (3.1 general RL/PPO intuition, formulas collapsed), `03-microduck-rl` (3.2 concept mapping to Microduck walking, no code), `03-walk-training` (3.3 domain randomization, reward/PPO/training code, lab), `04-terrain` (3.4 extension: slopes), `05-skills` (3.5 community skills).
 4. Onboard policy (板载策略完成射门任务): `06-perception` (4.1 RGB detection and ToF ranging), `06-onboard` (4.2 hand-designed stages).
-5. GR00T: `07-groot`, `08-groot-interface`, `08-groot-lab`, `09-worlds`.
+5. (Extension) GR00T: `07-groot` (5.1 VLA theory), `08-groot-interface` (5.2 Score autonomously with GR00T), `09-worlds` (5.3 environment variation). The removed `08-groot-lab` URL redirects to `08-groot-interface`.
 6. Help: `models`, `troubleshooting`, `references`.
 
-Use ordinary descriptive headings, without “动手” or “Hands-on” prefixes. Chinese lessons say 板载策略 for the onboard policy. Part 4 covers walking onboard shooting only (no roller shooting); it explains the actual detector, ToF floor/near-range logic and stages concisely, without heavy equations. The old `06-autonomy` URL redirects to `06-onboard`; the ASPIRE page remains a redirect only. The community section currently has three examples: one-leg standing, basketball balance and backward rolling.
+Use ordinary descriptive headings, without “动手” or “Hands-on” prefixes. Chinese lessons say 板载策略 for the onboard policy. Part 4 covers walking onboard shooting only (no roller shooting); it explains the actual detector, ToF floor/near-range logic and stages concisely, without heavy equations. The old `06-autonomy` URL redirects to `06-onboard`; the ASPIRE page remains a redirect only. The community section has two examples: one-leg standing and basketball balance.
+
+The course is walking-only: student pages, README, setup, model and reference pages, LMS overview and command examples do not mention roller skates; old roller assets, models and records stay in the repository. Keyboard football (2.1) and the onboard policy (4.2) are the only student-run shooting labs. GR00T training and inference are not student activities: Part 5 has no student commands, data-package downloads, authentication or cache setup. Refer to the robot computer as the onboard controller board based on Rockchip RK3566; do not equate the CAD Raspberry Pi form with the current Beta board. YOLO boxes are called 识别框 / detection boxes.
 
 ## Labs and evidence
 
@@ -27,7 +29,7 @@ Keep the fixed models unchanged. Training writes a new output directory and neve
 
 Use one green football pitch. The course GR00T task uses walking and an 8-D high-level interface; direct 14-joint output and Cosmos environment variation are theoretical extensions. Distinguish onboard control, low-level skills and workstation GR00T inference. Do not claim an onboard hardware test from a simulation result.
 
-Slope training uses randomized terrain; evaluation uses a separate small wooden wedge on a plain white floor. Reward is a training signal, success is an evaluation criterion. The current walking tests pass 5/5 each at +5 and -5 degrees; the roller example passes 0/5 despite increased return. These are limited conditions, not a general success rate or proof of one reward term's contribution. Use the current evaluation summary, not older files with different geometry. Do not turn failure examples into claims that a task cannot be learned.
+Slope training uses randomized terrain; evaluation uses a separate small wooden wedge on a plain white floor. Reward is a training signal, success is an evaluation criterion. The current walking tests pass 5/5 each at +5 and -5 degrees. These are limited conditions, not a general success rate or proof of one reward term's contribution. Use the current evaluation summary, not older files with different geometry. Do not turn failure examples into claims that a task cannot be learned.
 
 Use recorded logs and actual source code for formulas, timing and metrics. Never fabricate results, screenshots or trajectories. TensorBoard figures mark the relevant metrics and explain them. Simulation videos retain their actual source; offline trajectory replay is not a fresh physics result. New onboard media may raise only the third-person viewport resolution; preserve the student sensor, physics and policy configuration. Simulation-clock playback is not evidence of wall-clock real-time performance. Never start a new training or GPU job merely to refresh the course site.
 

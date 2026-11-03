@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -65,7 +65,7 @@
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="6.2 故障排查" href="troubleshooting.html" />
-    <link rel="prev" title="5.4 从球场走向更多环境" href="09-worlds.html" />
+    <link rel="prev" title="5.3 从球场走向更多环境" href="09-worlds.html" />
 
 
 
@@ -333,21 +333,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Microduck 的强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 延伸：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 社区技能：从目标到奖励</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 人工设计射门阶段</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="current nav bd-sidenav">
@@ -421,11 +421,11 @@
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
 <td class="cell-short"><p>固定行走策略</p></td>
-<td><p>2.1 节键盘踢球（步行模式，自动读取）；2.2 节 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>；4.2 节的板载射门和 5.3 节的验证场景里，底层行走策略都使用同一模型的副本</p></td>
+<td><p>2.1 节键盘踢球（自动读取）；2.2 节 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>；4.2 节的板载射门和 5.2 节的 GR00T 执行层里，底层行走策略都使用同一模型的副本</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
-<td><p>3.3 节固定坡地行走策略，约 0.79 MB</p></td>
-<td><p>3.3 节 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
+<td><p>3.4 节固定坡地行走策略，约 0.79 MB</p></td>
+<td><p>3.4 节 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
 <td class="cell-short"><p>踢球基础动作</p></td>
@@ -433,7 +433,7 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
 <td class="cell-short"><p>踢球残差修正</p></td>
-<td><p>GR00T 执行层保留的模型；4.2 节板载射门不加载</p></td>
+<td><p>5.2 节 GR00T 执行层使用；4.2 节板载射门不加载</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
 <td><p>保留的踢球训练检查点</p></td>
@@ -453,13 +453,9 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
 <td><p>官网 10 cm 球与四种地面检测器；当前默认</p></td>
-<td><p>4.1 节板载策略的视觉检测器；本课程的动手命令不直接读取</p></td>
+<td><p>4.2 节 <code class="docutils literal notranslate"><span class="pre">football</span></code> 命令自动核对并加载，用作板载策略的视觉检测器</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code></p></td>
-<td><p>官方四被动轮策略；14 个舵机动作</p></td>
-<td><p>2.1 节按 M 后的轮滑模式（自动读取）；3.3 节 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code> 与 <code class="docutils literal notranslate"><span class="pre">train-terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code> 的 <code class="docutils literal notranslate"><span class="pre">--model</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
 <td><p>用于官网版本核对与站立试验；完整步行任务使用 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
 <td><p>保留；本课程的动手命令不直接读取</p></td>
 </tr>
@@ -474,8 +470,8 @@
 </div>
 </div>
 <p>这些文件随 Git 仓库一同提供，克隆仓库即可使用，无需 Git LFS 或额外的模型账户。<code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。当前默认检测器的相对路径与 SHA-256 记录在 <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>。</p>
-<p><strong>仓库自带。</strong> 第 2–3 部分实验和板载策略（Onboard）所用的权重；3.2 节预先训练好的 PPO 行走结果与坡地训练日志在 <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code>（容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code>，只读）。<code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment</span></code> 是一次没有学会上坡的轮滑坡地训练记录，作为奖励设计的反例保留，不是可用的坡地模型。</p>
-<p><strong>单独的资料包。</strong> 5.3 节的 GR00T 步行射门数据、特征缓存与训练好的检查点来自单独的 GR00T 课程资料包（容器内 <code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code>，用 <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/groot_walking.py</span> <span class="pre">verify</span></code> 核对）。GR00T 基础模型与 Cosmos-Reason2-2B 处理器按其授权与访问条件从 Hugging Face 下载。</p>
+<p><strong>仓库自带。</strong> 第 2–4 部分实验所用的权重；3.3 节预先训练好的 PPO 行走结果与 3.4 节的坡地训练日志在 <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code>（容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code>，只读）。</p>
+<p><strong>GR00T。</strong> 5.2 节介绍的 GR00T 示范数据与检查点由课程方单独保存，学习本课程不需要下载。</p>
 </section>
 <section id="practice-data">
 <h2>练习数据与自己的输出<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
@@ -503,7 +499,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">上一页</p>
-        <p class="prev-next-title">5.4 从球场走向更多环境</p>
+        <p class="prev-next-title">5.3 从球场走向更多环境</p>
       </div>
     </a>
     <a class="right-next"

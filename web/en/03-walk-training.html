@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Understand why domain randomization helps a policy cope with real-world differences, then start a walking training in Isaac Lab, watch the parallel environments and test a trained policy." name="description" />
+<meta content="Understand what domain randomization does, its categories and the configuration this training actually uses, read the core reward and PPO code, start walking training in Isaac Lab, watch the parallel environments and test a trained policy." name="description" />
 
-  <title>3.2 Domain randomization: train and test a walking policy - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>3.3 Train and test a walking policy - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -56,15 +56,15 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-walk-training';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3.3 Reward design: walking steadily up and down slopes" href="04-terrain.html" />
-    <link rel="prev" title="3.1 Reinforcement learning and PPO" href="03-learning.html" />
+    <link rel="next" title="3.4 Extension: walking steadily up and down slopes" href="04-terrain.html" />
+    <link rel="prev" title="3.2 Reinforcement learning for Microduck" href="03-microduck-rl.html" />
 
 
 
@@ -332,21 +332,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.2 Domain randomization: train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.3 Train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.2 Domain randomization: train and test a walking policy</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.3 Train and test a walking policy</span></li>
   </ul>
 </nav>
 </div>
@@ -404,82 +404,137 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="domain-randomization-train-and-test-a-walking-policy">
-<h1>3.2 Domain randomization: train and test a walking policy<a class="headerlink" href="#domain-randomization-train-and-test-a-walking-policy" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Understand why domain randomization helps a policy cope with real-world differences, then start a walking training in Isaac Lab, watch the parallel environments and test a trained policy.</p>
-</div><div class="lesson-meta">Section 3.2 · Hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough; a full run takes about 2 hours and is optional)</div></div></div><script type="application/json" class="course-symbols">{"J_dr": {"tex": "J(\\theta)", "text": "Learning objective under domain randomization: the expected discounted return averaged over many sets of random physical parameters."}, "theta": {"tex": "\\theta", "text": "Parameters (weights) of the policy network, updated during training."}, "E_xi": {"tex": "\\mathbb E_{\\xi\\sim p(\\xi)}", "text": "Average over randomly drawn sets of physical parameters."}, "xi": {"tex": "\\xi", "text": "One set of simulation parameters, such as foot friction, trunk mass, joint friction and servo delay."}, "p_xi": {"tex": "p(\\xi)", "text": "Parameter distribution: each parameter is sampled within its configured range."}, "E_traj": {"tex": "\\mathbb E_{\\tau\\sim\\pi_\\theta,\\,\\xi}", "text": "Average over trajectories sampled with the current policy in a simulation with parameters $\\xi$."}, "pi_theta": {"tex": "\\pi_\\theta", "text": "Policy: the neural network that maps an observation to an action distribution."}, "gamma": {"tex": "\\gamma", "text": "Discount factor; 0.99 in the course training."}, "t_idx": {"tex": "t", "text": "Index of a control step."}, "T_horizon": {"tex": "T", "text": "Number of control steps counted in an episode's return."}, "r_t": {"tex": "r_t", "text": "Immediate reward of the current control step."}}</script><section id="reality-gap">
-<h2>Why domain randomization<a class="headerlink" href="#reality-gap" title="Link to this heading">#</a></h2>
-<p>The reinforcement learning of Section 3.1 happens entirely in simulation, where every parameter is one exact number: foot friction, trunk mass, joint friction, the delay before a servo starts moving… Real Microducks differ: servos from different batches have different friction, battery charge changes servo output, encoder zeros are slightly off, and floors are harder or softer. A policy that practises only with one “perfect” set of parameters can learn to rely on its details and lose balance on another robot or another floor. This gap between simulation and reality is often called the sim-to-real gap.</p>
-<p>Domain randomization takes a direct approach: since we do not know the exact real parameters, each parallel environment draws its own set of parameters during training. The policy faces a thousand “slightly different robots” at once and earns a high return overall only if its actions work across those differences.</p>
-<div class="formula"><div class="formula-label">Learning objective under domain randomization</div><div class="formula-body">\[\htmlData{sym=J_dr}{J(\htmlData{sym=theta}{\theta})}=\htmlData{sym=E_xi}{\mathbb E_{\xi\sim p(\xi)}}\,\htmlData{sym=E_traj}{\mathbb E_{\tau\sim\pi_\theta,\,\xi}}\!\left[\sum_{\htmlData{sym=t_idx}{t}=0}^{\htmlData{sym=T_horizon}{T}-1}\htmlData{sym=gamma}{\gamma}^{\htmlData{sym=t_idx}{t}}\htmlData{sym=r_t}{r_t}\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(J(\theta)\)</dt><dd>Learning objective under domain randomization: the expected discounted return averaged over many sets of random physical parameters.</dd></div><div><dt>\(\theta\)</dt><dd>Parameters (weights) of the policy network, updated during training.</dd></div><div><dt>\(\mathbb E_{\xi\sim p(\xi)}\)</dt><dd>Average over randomly drawn sets of physical parameters.</dd></div><div><dt>\(\mathbb E_{\tau\sim\pi_\theta,\,\xi}\)</dt><dd>Average over trajectories sampled with the current policy in a simulation with parameters \(\xi\).</dd></div><div><dt>\(t\)</dt><dd>Index of a control step.</dd></div><div><dt>\(T\)</dt><dd>Number of control steps counted in an episode&#x27;s return.</dd></div><div><dt>\(\gamma\)</dt><dd>Discount factor; 0.99 in the course training.</dd></div><div><dt>\(r_t\)</dt><dd>Immediate reward of the current control step.</dd></div></dl></details></div><p>Compared with the objective in Section 3.1 there is one more average: first draw a set of physical parameters <span class="math notranslate nohighlight">\(\htmlData{sym=xi}{\xi}\)</span> from the distribution <span class="math notranslate nohighlight">\(\htmlData{sym=p_xi}{p(\xi)}\)</span>, then sample trajectories with the policy <span class="math notranslate nohighlight">\(\htmlData{sym=pi_theta}{\pi_\theta}\)</span> under those parameters and compute the discounted return. PPO updates the same way; what changes is the data, because one batch mixes many physical conditions.</p>
-<p>Choosing ranges is a trade-off. Too narrow, and the policy still fits only a few cases; too wide, and the task can become too hard, so the policy learns cautious, sluggish motion or nothing at all. Ranges are best grounded in measurements or hardware specifications, such as measured servo delays or the battery's operating voltage. Domain randomization improves robustness but does not replace testing on the robot: it covers only the differences you thought of and wrote into the configuration.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="train-and-test-a-walking-policy">
+<h1>3.3 Train and test a walking policy<a class="headerlink" href="#train-and-test-a-walking-policy" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>First understand domain randomization: what it is, its categories, why walking needs it and what this training actually randomizes. Then read the core reward and PPO code, start walking training in Isaac Lab, watch thousands of parallel environments, and finally test a trained policy.</p>
+</div><div class="lesson-meta">Section 3.3 · Hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough; a full run takes about 2 hours and is optional)</div></div></div><script type="application/json" class="course-symbols">{"J_dr": {"tex": "J(\\theta)", "text": "Learning objective under domain randomization: the expected discounted return averaged over many random sets of simulation parameters."}, "theta": {"tex": "\\theta", "text": "Policy network parameters (weights), updated during training."}, "E_xi": {"tex": "\\mathbb E_{\\xi\\sim p(\\xi)}", "text": "Average over randomly drawn parameter sets."}, "xi": {"tex": "\\xi", "text": "One set of simulation parameters, such as foot friction, torso mass, joint friction and servo delay."}, "p_xi": {"tex": "p(\\xi)", "text": "Parameter distribution: each parameter is sampled within its range."}, "E_traj": {"tex": "\\mathbb E_{\\tau\\sim\\pi_\\theta,\\,\\xi}", "text": "Average over trajectories sampled with the current policy in the simulation defined by $\\xi$."}, "pi_theta": {"tex": "\\pi_\\theta", "text": "Policy: the neural network giving an action distribution for an observation."}, "gamma": {"tex": "\\gamma", "text": "Discount factor; 0.99 in the course training."}, "t_idx": {"tex": "t", "text": "Control-step index."}, "T_horizon": {"tex": "T", "text": "Number of control steps of an episode that count toward the return."}, "r_t": {"tex": "r_t", "text": "Immediate reward at the current control step: the weighted sum of the reward terms."}, "r_v": {"tex": "r_t^{v}", "text": "Linear-velocity tracking reward at the current control step, between 0 and 1."}, "exp": {"tex": "\\exp", "text": "Exponential: 1 at zero error, approaching 0 as the error grows."}, "v_cmd": {"tex": "\\mathbf v_{xy}^{\\mathrm{cmd}}", "text": "Horizontal components of the velocity command (m/s)."}, "v_xy": {"tex": "\\mathbf v_{xy}", "text": "Actual horizontal body velocity (m/s)."}, "v_z": {"tex": "v_z", "text": "Vertical body velocity (m/s); its square also counts as error, discouraging bouncing."}, "sigma_v": {"tex": "\\sigma_v", "text": "Tolerance scale of the velocity error, `std` in the code."}, "dt": {"tex": "\\Delta t", "text": "Duration of one control step, 0.02 s: reward terms are accumulated per time step."}, "i": {"tex": "i", "text": "Index of a reward term."}, "w_i": {"tex": "w_i", "text": "Weight of a reward term."}, "r_it": {"tex": "r_{i,t}", "text": "Value of a reward term at the current control step."}, "N_batch": {"tex": "N_{\\mathrm{batch}}", "text": "Samples collected per training iteration."}, "N_env": {"tex": "N_{\\mathrm{env}}", "text": "Number of parallel environments; 1024 in this section's full training."}, "T_rollout": {"tex": "T_{\\mathrm{rollout}}", "text": "Control steps each environment collects per iteration, 24. This differs from the episode length."}, "N_total": {"tex": "N_{\\mathrm{total}}", "text": "Total samples collected over 2500 iterations."}}</script><section id="concept">
+<h2>What domain randomization is<a class="headerlink" href="#concept" title="Link to this heading">#</a></h2>
+<p>Every simulation parameter is one definite number: foot friction, torso mass, the delay between a servo receiving a target and starting to move… Real robots all differ. Domain randomization takes a simple approach: since we do not know the real values, each parallel environment draws its own set of parameters during training. The policy faces thousands of “slightly different robots” at once and earns a high overall return only by learning actions that work for all of them.</p>
+<div class="formula"><div class="formula-label">Learning objective under domain randomization</div><div class="formula-body">\[\htmlData{sym=J_dr}{J(\htmlData{sym=theta}{\theta})}=\htmlData{sym=E_xi}{\mathbb E_{\xi\sim p(\xi)}}\,\htmlData{sym=E_traj}{\mathbb E_{\tau\sim\pi_\theta,\,\xi}}\!\left[\sum_{\htmlData{sym=t_idx}{t}=0}^{\htmlData{sym=T_horizon}{T}-1}\htmlData{sym=gamma}{\gamma}^{\htmlData{sym=t_idx}{t}}\htmlData{sym=r_t}{r_t}\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(J(\theta)\)</dt><dd>Learning objective under domain randomization: the expected discounted return averaged over many random sets of simulation parameters.</dd></div><div><dt>\(\theta\)</dt><dd>Policy network parameters (weights), updated during training.</dd></div><div><dt>\(\mathbb E_{\xi\sim p(\xi)}\)</dt><dd>Average over randomly drawn parameter sets.</dd></div><div><dt>\(\mathbb E_{\tau\sim\pi_\theta,\,\xi}\)</dt><dd>Average over trajectories sampled with the current policy in the simulation defined by \(\xi\).</dd></div><div><dt>\(t\)</dt><dd>Control-step index.</dd></div><div><dt>\(T\)</dt><dd>Number of control steps of an episode that count toward the return.</dd></div><div><dt>\(\gamma\)</dt><dd>Discount factor; 0.99 in the course training.</dd></div><div><dt>\(r_t\)</dt><dd>Immediate reward at the current control step: the weighted sum of the reward terms.</dd></div></dl></details></div><p>Compared with Section 3.1 there is one more average: first draw a parameter set <span class="math notranslate nohighlight">\(\htmlData{sym=xi}{\xi}\)</span> from the distribution <span class="math notranslate nohighlight">\(\htmlData{sym=p_xi}{p(\xi)}\)</span>, then sample trajectories with policy <span class="math notranslate nohighlight">\(\htmlData{sym=pi_theta}{\pi_\theta}\)</span> under those parameters. The PPO update is unchanged; what changes is the data, since one batch mixes many conditions.</p>
 </section>
-<section id="what-varies">
-<h2>What the course training actually varies<a class="headerlink" href="#what-varies" title="Link to this heading">#</a></h2>
-<p>Isaac Lab implements randomization with its event manager. Each event has a trigger: <code class="docutils literal notranslate"><span class="pre">startup</span></code> samples once when the environment is created and then keeps the value; <code class="docutils literal notranslate"><span class="pre">reset</span></code> samples again whenever that environment resets; <code class="docutils literal notranslate"><span class="pre">interval</span></code> fires at time intervals during an episode. The table comes from the <code class="docutils literal notranslate"><span class="pre">env.yaml</span></code> saved by the full training; these are the values that were in effect.</p>
+<section id="categories">
+<h2>What can be randomized<a class="headerlink" href="#categories" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Randomized item</p></th>
+<tr class="row-odd"><th class="head cell-short"><p>Category</p></th>
+<th class="head cell-short"><p>Examples</p></th>
+<th class="head"><p>This walking training</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Dynamics</p></td>
+<td><p>Friction, mass and centre of mass, joint friction and inertia, servo delay and voltage, external pushes</p></td>
+<td class="cell-short"><p>On</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Observation</p></td>
+<td><p>Sensor noise, encoder zero offsets</p></td>
+<td class="cell-short"><p>On</p></td>
+</tr>
+<tr class="row-even"><td><p>Initial state and command</p></td>
+<td><p>Start position and heading, size and timing of velocity commands</p></td>
+<td class="cell-short"><p>On</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Terrain</p></td>
+<td><p>Slopes, steps, roughness</p></td>
+<td><p>Off (flat ground); used by the slope training in Section 3.4</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Visual</p></td>
+<td><p>Lighting, materials, background, camera parameters</p></td>
+<td><p>Off: the walking policy reads no images; discussed in Section 5.3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="why">
+<h2>Why walking needs it<a class="headerlink" href="#why" title="Link to this heading">#</a></h2>
+<p>Walking depends entirely on foot-ground contact and servo response, which are exactly what simulation finds hardest to get right: servo friction differs between batches, battery charge changes servo output, encoder zeros are slightly off, and floors are soft or hard. A policy trained only on one “perfect” parameter set may rely on its details and lose balance on another robot or floor. This gap between simulation and reality is often called the sim-to-real gap.</p>
+<p>Choosing ranges is a trade-off. Too narrow, and the policy still fits only a few cases; too wide, and the task may become too hard, so the policy learns conservative, sluggish motions or nothing at all. Ranges are best based on measurements or hardware specifications, such as measured servo delays or the battery's operating voltage. Domain randomization covers only the differences you thought of and wrote into the configuration; it does not replace testing on hardware.</p>
+</section>
+<section id="what-varies">
+<h2>Which randomizations this training uses, and how they are configured<a class="headerlink" href="#what-varies" title="Link to this heading">#</a></h2>
+<p>Isaac Lab implements randomization with its event manager. Each event has a trigger: <code class="docutils literal notranslate"><span class="pre">startup</span></code> samples once when the environment is created and then keeps the value; <code class="docutils literal notranslate"><span class="pre">reset</span></code> samples again whenever that environment resets; <code class="docutils literal notranslate"><span class="pre">interval</span></code> fires at time intervals during an episode. The table comes from the <code class="docutils literal notranslate"><span class="pre">env.yaml</span></code> saved by the full training. Note that it stores both initial values and curriculum settings: some ranges widen as training progresses, so the initial fields alone are not the whole story.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Category</p></th>
+<th class="head"><p>Randomized item</p></th>
 <th class="head cell-short"><p>Range</p></th>
 <th class="head cell-short"><p>Trigger</p></th>
 <th class="head"><p>Real-world difference it imitates</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Static and dynamic foot friction</p></td>
+<tr class="row-even"><td class="cell-short"><p>Dynamics</p></td>
+<td><p>Static and dynamic foot friction</p></td>
 <td class="cell-short"><p>0.7–1.3</p></td>
 <td class="cell-short"><p>startup</p></td>
 <td><p>Different floors and sole materials</p></td>
 </tr>
-<tr class="row-odd"><td><p>Encoder zero offset</p></td>
-<td class="cell-short"><p>±0.015 rad</p></td>
-<td class="cell-short"><p>startup</p></td>
-<td><p>Assembly and calibration error</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>Trunk mass</p></td>
+<tr class="row-odd"><td class="cell-short"><p>Dynamics</p></td>
+<td class="cell-short"><p>Trunk mass</p></td>
 <td><p>nominal × 0.95–1.05</p></td>
 <td class="cell-short"><p>startup</p></td>
 <td><p>Battery, cable and shell differences</p></td>
 </tr>
-<tr class="row-odd"><td><p>Trunk and head centre of mass</p></td>
-<td class="cell-short"><p>±3 mm per axis</p></td>
+<tr class="row-even"><td class="cell-short"><p>Dynamics</p></td>
+<td><p>Trunk and head centre of mass</p></td>
+<td><p>initially ±3 mm per axis, widened during training: trunk up to ±15 mm, head up to ±10 mm</p></td>
 <td class="cell-short"><p>reset</p></td>
 <td><p>Uneven mass distribution</p></td>
 </tr>
-<tr class="row-even"><td class="cell-short"><p>Joint friction</p></td>
+<tr class="row-odd"><td class="cell-short"><p>Dynamics</p></td>
+<td class="cell-short"><p>Joint friction</p></td>
 <td><p>nominal × 0.9–1.1</p></td>
 <td class="cell-short"><p>reset</p></td>
 <td><p>Servo variation and wear</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>Joint armature</p></td>
+<tr class="row-even"><td class="cell-short"><p>Dynamics</p></td>
+<td class="cell-short"><p>Joint armature</p></td>
 <td><p>nominal × 0.9–1.1</p></td>
 <td class="cell-short"><p>reset</p></td>
 <td><p>Gear and motor differences</p></td>
 </tr>
-<tr class="row-even"><td class="cell-short"><p>External push</p></td>
+<tr class="row-odd"><td class="cell-short"><p>Dynamics</p></td>
+<td class="cell-short"><p>External push</p></td>
 <td><p>every 3–6 s, horizontal velocity change up to ±0.3 m/s</p></td>
 <td class="cell-short"><p>interval</p></td>
 <td><p>Bumps, being pushed</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>Servo delay</p></td>
+<tr class="row-even"><td class="cell-short"><p>Dynamics</p></td>
+<td class="cell-short"><p>Servo delay</p></td>
 <td><p>3–6 physics steps (15–30 ms)</p></td>
 <td class="cell-short"><p>actuator model</p></td>
 <td><p>Communication and control delay</p></td>
 </tr>
-<tr class="row-even"><td><p>Servo supply voltage</p></td>
+<tr class="row-odd"><td class="cell-short"><p>Dynamics</p></td>
+<td><p>Servo supply voltage</p></td>
 <td><p>6.5–8.2 V, plus load-dependent voltage drop</p></td>
 <td class="cell-short"><p>actuator model</p></td>
 <td class="cell-short"><p>Battery charge</p></td>
 </tr>
-<tr class="row-odd"><td><p>Observation noise</p></td>
+<tr class="row-even"><td class="cell-short"><p>Observation</p></td>
+<td><p>Encoder zero offset</p></td>
+<td class="cell-short"><p>±0.015 rad</p></td>
+<td class="cell-short"><p>startup</p></td>
+<td><p>Assembly and calibration error</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Observation</p></td>
+<td><p>Observation noise</p></td>
 <td class="cell-short"><p>on</p></td>
 <td class="cell-short"><p>every step</p></td>
 <td class="cell-short"><p>Sensor noise</p></td>
 </tr>
-<tr class="row-even"><td><p>Start position and heading</p></td>
+<tr class="row-even"><td><p>Initial state and command</p></td>
+<td><p>Start position and heading</p></td>
 <td><p>±0.5 m, any heading</p></td>
 <td class="cell-short"><p>reset</p></td>
 <td><p>Walking off from different places</p></td>
+</tr>
+<tr class="row-odd"><td><p>Initial state and command</p></td>
+<td><p>Velocity command</p></td>
+<td><p>resampled every 3–8 s; environments practicing standing rise from 2% to 25%</p></td>
+<td><p>command manager</p></td>
+<td><p>Commands change at any time</p></td>
 </tr>
 </tbody>
 </table>
@@ -501,8 +556,53 @@
     <span class="n">mode</span><span class="o">=</span><span class="s2">"interval"</span><span class="p">,</span>
     <span class="n">interval_range_s</span><span class="o">=</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">),</span>
     <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"velocity_range"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">),</span> <span class="s2">"y"</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)}},</span>
-<span class="p">)</span></code></pre></div></div></div><p>The excerpt comes from the Microduck task configuration of the pinned Isaac Lab. Note that the tests and demonstrations in this section turn pushes and parameter randomization off to compare policies under nominal conditions; randomization is used only in training.</p>
+<span class="p">)</span></code></pre></div></div></div><p>The excerpt comes from the Microduck task configuration of the pinned Isaac Lab. Servo delay and supply voltage are not events but part of the actuator model; observation noise is part of the observation configuration. The test later in this section turns pushes and parameter randomization off to compare policies under nominal conditions.</p>
 </section>
+<section id="implementation">
+<h2>Core implementation of the reward and PPO<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h2>
+<p>Section 3.2 described which terms make up the reward. Take the linear-velocity tracking term as an example of how it is written in code:</p>
+<div class="formula"><div class="formula-label">Linear-velocity tracking reward and total reward</div><div class="formula-body">\[\htmlData{sym=r_v}{r_t^{v}}=\htmlData{sym=exp}{\exp}\!\left(-\frac{\|\htmlData{sym=v_cmd}{\mathbf v_{xy}^{\mathrm{cmd}}}-\htmlData{sym=v_xy}{\mathbf v_{xy}}\|_2^2+\htmlData{sym=v_z}{v_z}^2}{\htmlData{sym=sigma_v}{\sigma_v}^2}\right),\qquad \htmlData{sym=r_t}{r_t}=\htmlData{sym=dt}{\Delta t}\sum_{\htmlData{sym=i}{i}}\htmlData{sym=w_i}{w_i}\htmlData{sym=r_it}{r_{i,t}}\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_t^{v}\)</dt><dd>Linear-velocity tracking reward at the current control step, between 0 and 1.</dd></div><div><dt>\(\exp\)</dt><dd>Exponential: 1 at zero error, approaching 0 as the error grows.</dd></div><div><dt>\(\mathbf v_{xy}^{\mathrm{cmd}}\)</dt><dd>Horizontal components of the velocity command (m/s).</dd></div><div><dt>\(\mathbf v_{xy}\)</dt><dd>Actual horizontal body velocity (m/s).</dd></div><div><dt>\(v_z\)</dt><dd>Vertical body velocity (m/s); its square also counts as error, discouraging bouncing.</dd></div><div><dt>\(\sigma_v\)</dt><dd>Tolerance scale of the velocity error, `std` in the code.</dd></div><div><dt>\(r_t\)</dt><dd>Immediate reward at the current control step: the weighted sum of the reward terms.</dd></div><div><dt>\(\Delta t\)</dt><dd>Duration of one control step, 0.02 s: reward terms are accumulated per time step.</dd></div><div><dt>\(i\)</dt><dd>Index of a reward term.</dd></div><div><dt>\(w_i\)</dt><dd>Weight of a reward term.</dd></div><div><dt>\(r_{i,t}\)</dt><dd>Value of a reward term at the current control step.</dd></div></dl></details></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core code excerpt</span><a class="source-link" href="https://github.com/isaac-sim/IsaacLab/blob/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck/mdp/rewards.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Compute the velocity error</h4> <p>For each environment, <code>xy_error</code> is the squared difference between target and actual horizontal velocity; <code>z_error</code> is the squared vertical velocity, whose target is 0.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">xy_error</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">command</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">actual</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">z_error</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">actual</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Turn it into a reward between 0 and 1</h4> <p>The summed error is divided by <code>std</code> squared and passed through a negative exponential, so zero error gives 1; <code>zero_non_finite</code> sets numerically invalid results to 0. The reward manager then multiplies each term by its weight and accumulates over the control step \(\htmlData{sym=dt}{\Delta t}\).</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">return</span> <span class="n">zero_non_finite</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">xy_error</span> <span class="o">+</span> <span class="n">z_error</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></code></pre></div></div></div><p>PPO uses the RSL-RL 5.5.1 implementation. This is the clipped objective of Section 3.1:</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core code excerpt</span><a class="source-link" href="https://github.com/leggedrobotics/rsl_rl/blob/v5.5.1/rsl_rl/algorithms/ppo.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Ratio of new to old policy</h4> <p>Subtracting log probabilities and exponentiating gives the ratio for the same action under the new and old policy. The old log probability is stored at sampling time.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">ratio</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+    <span class="n">actions_log_prob</span> <span class="o">-</span> <span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">old_actions_log_prob</span><span class="p">)</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Clip</h4> <p>Advantage times ratio gives the surrogate objective; <code>clip_param</code> is the clipping threshold 0.2.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">surrogate</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">advantages</span><span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span>
+<span class="n">surrogate_clipped</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">advantages</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span>
+    <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_param</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_param</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Aggregate the loss</h4> <p>The optimizer minimizes, so the code negates the objective and takes the larger term, equivalent to “maximize the smaller term”.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="n">surrogate_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">surrogate</span><span class="p">,</span> <span class="n">surrogate_clipped</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></code></pre></div></div></div><div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>PPO setting</p></th>
+<th class="head cell-short"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Discount factor, GAE parameter</p></td>
+<td class="cell-short"><p>0.99, 0.95</p></td>
+</tr>
+<tr class="row-odd"><td><p>Clipping threshold</p></td>
+<td class="cell-short"><p>0.2</p></td>
+</tr>
+<tr class="row-even"><td><p>Steps per environment per iteration</p></td>
+<td class="cell-short"><p>24</p></td>
+</tr>
+<tr class="row-odd"><td><p>Epochs per batch, mini-batches</p></td>
+<td class="cell-short"><p>5, 4</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>Learning rate</p></td>
+<td><p>0.001, adapted by KL divergence</p></td>
+</tr>
+<tr class="row-odd"><td><p>Value-loss coefficient, entropy coefficient</p></td>
+<td class="cell-short"><p>1.0, 0.01</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The command below trains 1024 environments for 2500 iterations, which samples:</p>
+<div class="formula"><div class="formula-label">Samples per iteration and in total</div><div class="formula-body">\[\htmlData{sym=N_batch}{N_{\mathrm{batch}}}=\htmlData{sym=N_env}{N_{\mathrm{env}}}\times \htmlData{sym=T_rollout}{T_{\mathrm{rollout}}}=1024\times24=24{,}576,\qquad \htmlData{sym=N_total}{N_{\mathrm{total}}}=2500\times24{,}576=61{,}440{,}000\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(N_{\mathrm{batch}}\)</dt><dd>Samples collected per training iteration.</dd></div><div><dt>\(N_{\mathrm{env}}\)</dt><dd>Number of parallel environments; 1024 in this section&#x27;s full training.</dd></div><div><dt>\(T_{\mathrm{rollout}}\)</dt><dd>Control steps each environment collects per iteration, 24. This differs from the episode length.</dd></div><div><dt>\(N_{\mathrm{total}}\)</dt><dd>Total samples collected over 2500 iterations.</dd></div></dl></details></div><p>At 50 Hz, about 61.44 million interactions amount to roughly 341 hours of practice in simulation; parallel environments collect them in about 2 hours. The training entry point connects these parts:</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core code excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/gait/student_train.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Create the training environments</h4> <p>Builds the parallel environments from the Isaac Lab task configuration and wraps them as a vectorized environment RSL-RL can read.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">base</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="n">cfg</span><span class="p">)</span><span class="o">.</span><span class="n">unwrapped</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">RslRlVecEnvWrapper</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">clip_actions</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">clip_actions</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Save the actual configuration</h4> <p>Writes the environment configuration used (observations, rewards, randomization and curriculum) and the algorithm configuration to the output folder, so each item can be checked later.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">dump_yaml</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="o">/</span> <span class="s2">"env.yaml"</span><span class="p">),</span> <span class="n">cfg</span><span class="p">)</span>
+<span class="n">dump_yaml</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="o">/</span> <span class="s2">"agent.yaml"</span><span class="p">),</span> <span class="n">agent</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Connect the PPO trainer</h4> <p><code>OnPolicyRunner</code> repeatedly samples and updates; <code>runner.learn</code> then trains for the given number of iterations.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="n">runner</span> <span class="o">=</span> <span class="n">OnPolicyRunner</span><span class="p">(</span>
+    <span class="n">env</span><span class="p">,</span> <span class="n">to_dict</span><span class="p">(</span><span class="n">agent</span><span class="p">),</span> <span class="n">log_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">),</span> <span class="n">device</span><span class="o">=</span><span class="s2">"cuda:0"</span>
+<span class="p">)</span></code></pre></div></div></div></section>
 <section id="train">
 <h2>Start a full training and watch it in parallel<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
 <p>Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>). It trains from a random initialization and reads no weights from any existing model; <code class="docutils literal notranslate"><span class="pre">--show</span></code> opens the Isaac Sim window so you see a thousand ducks practising at once, each in its own randomized environment. Use a new folder for <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p>
@@ -527,7 +627,7 @@
 <td><p>Environments running on the GPU at the same time; each has its own random parameters</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">2500</span></code></p></td>
-<td><p>PPO sampling-and-update loops; Section 3.1 computed the matching sample count</p></td>
+<td><p>PPO sampling-and-update loops; the matching sample count is computed above</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--show</span></code></p></td>
 <td><p>Opens Isaac Sim to display the parallel environments; rendering uses GPU memory and slows every iteration</p></td>
@@ -546,7 +646,7 @@
 </div></details><p><strong>How long does a full training take?</strong> The course's pretrained result was trained on a DGX Spark without a window: 1024 environments × 2500 iterations, a training phase of 7246 seconds (about 2 hours), roughly 4.8 minutes per 100 iterations, with other jobs on the GPU at the time. That run used the original official collision model, while the command above uses the full-body collision model, and <code class="docutils literal notranslate"><span class="pre">--show</span></code> adds rendering on top, so your time will differ.</p>
 <p><strong>You do not need to wait for it to finish.</strong> Once the window appears and the terminal prints reward and episode length for each iteration, watch for a few minutes: in the first tens of iterations most ducks fall quickly and are reset one by one, and as iterations go by more and more stay up.</p>
 <p>When you have seen enough, press Ctrl+C; the container keeps running. Checkpoints already saved (one every 250 iterations) remain, but <code class="docutils literal notranslate"><span class="pre">exported/policy.onnx</span></code> is exported only when training finishes. The test below uses the course's pretrained policy by default; to let your own training finish, you can drop <code class="docutils literal notranslate"><span class="pre">--show</span></code> to speed it up, then select your own model explicitly.</p>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-training.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-ppo-training.png" alt="The complete Isaac Sim window of a training run with --show: many Microduck copies on a white floor at different points of their gait, some standing, some stepping, some tipping over; RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The training window opened by <code class="docutils literal notranslate"><span class="pre">--show</span></code>, from a real training run; it only shows what training looks like at the start. Your command uses 1024 environments, so the window shows more, denser ducks.</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-training.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-ppo-training.png" alt="The complete Isaac Sim window of a training run with --show: many Microduck copies on a white floor at different points of their gait, some standing, some stepping, some tipping over; RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The training window opened by <code class="docutils literal notranslate"><span class="pre">--show</span></code>, at the start of training: the copies are in different gait phases, and fallen copies are reset individually. Your command uses 1024 environments, so the window shows more, denser ducks.</p>
 </figcaption></figure></section>
 <section id="watch">
 <h2>Training time and how to judge the result<a class="headerlink" href="#watch" title="Link to this heading">#</a></h2>
@@ -614,6 +714,12 @@
 <p>A very short run makes the gap even clearer: after only a few tens of iterations the reward is already rising, yet the exported policy usually falls within a second. A workflow that runs is not a policy that has learned the skill.</p>
 <details class="enrichment"><summary>Appendix: open TensorBoard yourself</summary><div class="enrichment-body"><p>TensorBoard reads the event files in a training output folder. In a second container shell (<code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> on the host), run <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/run.py</span> <span class="pre">tensorboard</span> <span class="pre">--logdir</span> <span class="pre">datasets/walking-ppo</span> <span class="pre">--port</span> <span class="pre">6006</span></code>, then open the printed address in a browser on the host; the container uses the host network. Change <code class="docutils literal notranslate"><span class="pre">--logdir</span></code> to <code class="docutils literal notranslate"><span class="pre">outputs/walking-training-01</span></code> to see the curves your own run has recorded so far, including an interrupted one. Typing <code class="docutils literal notranslate"><span class="pre">Train/mean_(reward|episode_length)$|error_vel_(xy|yaw)</span></code> in the search box filters the four charts above.</p>
 </div></details></section>
+<section id="outputs">
+<h2>Files a training run writes<a class="headerlink" href="#outputs" title="Link to this heading">#</a></h2>
+<p>Training writes several kinds of files to its output folder, each for a different purpose: <code class="docutils literal notranslate"><span class="pre">model_*.pt</span></code> are training checkpoints saved every 250 iterations, <code class="docutils literal notranslate"><span class="pre">env.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">agent.yaml</span></code> record the environment and algorithm configuration actually used, and <code class="docutils literal notranslate"><span class="pre">exported/policy.onnx</span></code> is an inference file containing only the Actor. A checkpoint holds training state such as the optimizer; ONNX keeps only the computation graph needed for inference, so neither replaces the other.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>If only the ONNX file is kept, can training be resumed exactly from it?</p>
+<details><summary>Show explanation</summary><p>No. ONNX contains only the Actor's inference graph; resuming also needs the Critic, optimizer state, normalization state and the same configuration, so keep the full checkpoint and training configuration.</p>
+</details></div></section>
 <section id="test">
 <h2>Test the trained policy<a class="headerlink" href="#test" title="Link to this heading">#</a></h2>
 <p>The command below puts the course's pretrained policy (the ONNX exported by the full training above) into the same scene as Section 2.2. <code class="docutils literal notranslate"><span class="pre">--model</span></code> names the file to test explicitly; course commands without it still use the official model.</p>
@@ -635,7 +741,7 @@
 <li><p><strong>Start.</strong> The joints are first locked in the default standing pose and the robot settles on the ground (nothing supports the body); the lock is released after the policy computes its first action and before that action is applied, so no drop from the air adds extra wobble.</p></li>
 <li><p><strong>Output.</strong> <code class="docutils literal notranslate"><span class="pre">report.json</span></code> and <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code>, with one position every 0.1 s, go to the folder given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p></li>
 </ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-walk-test.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-ppo-walk-test.png" alt="The complete Isaac Sim window while the command above tests the pretrained PPO policy: one Microduck stepping on flat ground, RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The Isaac Sim window when the course ran the command above in the container.</p>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-walk-test.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-ppo-walk-test.png" alt="The complete Isaac Sim window while the command above tests the pretrained PPO policy: one Microduck stepping on flat ground, RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The test window: watch whether the robot stays upright after starting and walks straight along the command or gradually drifts to one side.</p>
 </figcaption></figure><p>The settings match the recorded run in Section 2.2, so the results compare directly: first check for falls, then compare distance and direction in <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code>. In the course's run the robot did not fall in 12 seconds and covered about 1.11 m during the forward command (about 0.11 m/s on average), but drifted right, about 26° overall and about 37° in the last 2 seconds; the official model in Section 2.2 moved at a similar speed but drifted left, about 8° (about 15° in the last 2 seconds). Both walk, but neither tracks the command closely. Change <code class="docutils literal notranslate"><span class="pre">--velocity</span></code> to <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span> <span class="pre">0.4</span></code> to test turning and see whether it walks but does not turn.</p>
 <p><strong>Testing your own policy.</strong> Only when your training has run to completion and <code class="docutils literal notranslate"><span class="pre">outputs/walking-training-01/exported/policy.onnx</span></code> exists, change <code class="docutils literal notranslate"><span class="pre">--model</span></code> in the command to that path by hand and use a new <code class="docutils literal notranslate"><span class="pre">--output</span></code> folder. One successful run is one sample; to draw conclusions, repeat with several commands and from different starts, and keep the failures.</p>
 <div class="quiz"><h3>Check your understanding</h3><p>Why turn off the random pushes and parameter randomization of training when testing?</p>
@@ -643,7 +749,7 @@
 </details></div></section>
 <section id="next">
 <h2>Next: from flat ground to slopes<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
-<p>Domain randomization exposes the policy to varying parameters, but the ground is still flat. Even a policy that walks well on flat ground may not lift its feet high enough, place them right or shift its weight correctly on a slope. Section 3.3 first discusses how rewards should be designed, then extends randomization to terrain so the robot walks steadily up and down slopes.</p>
+<p>Domain randomization exposes the policy to varying parameters, but the ground is still flat. Even a policy that walks well on flat ground may not lift its feet high enough, place them right or shift its weight correctly on a slope. Section 3.4 first discusses how rewards should be designed, then extends randomization to terrain so the robot walks steadily up and down slopes.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -666,12 +772,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="03-learning.html"
+       href="03-microduck-rl.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">3.1 Reinforcement learning and PPO</p>
+        <p class="prev-next-title">3.2 Reinforcement learning for Microduck</p>
       </div>
     </a>
     <a class="right-next"
@@ -679,7 +785,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">3.3 Reward design: walking steadily up and down slopes</p>
+        <p class="prev-next-title">3.4 Extension: walking steadily up and down slopes</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -704,10 +810,14 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reality-gap">Why domain randomization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-varies">What the course training actually varies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concept">What domain randomization is</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#categories">What can be randomized</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why">Why walking needs it</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-varies">Which randomizations this training uses, and how they are configured</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Core implementation of the reward and PPO</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">Start a full training and watch it in parallel</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#watch">Training time and how to judge the result</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs">Files a training run writes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test">Test the trained policy</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Next: from flat ground to slopes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>

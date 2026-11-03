@@ -36,11 +36,10 @@ When something fails, note the first error; it explains more than repeatedly lau
 |---|---|
 | No GUI window | Open the terminal in the GPU machine's desktop session and check DISPLAY and the graphics driver; a text-only remote shell cannot show windows. |
 | The first window is slow, or the desktop says “Isaac Lab” is not responding | The first window compiles RTX shaders and loads assets, so the program cannot answer the desktop for a while (about 1 minute on DGX Spark). Choose **Wait**, not Force Quit, and do not start another instance while the log is progressing. The host cache is `~/.cache/microduck/kit-cache`, so later windows usually open in a few seconds; deleting the cache, updating drivers or software, or opening a scene with new content can trigger compilation again. |
-| The terminal prints `Actuator groups cover 14 joints; expected 28` (32 with roller feet) | Expected; nothing to fix. Microduck has 14 servo-driven joints. The model also has 14 passive hinges that represent gear backlash, each free within about ±1°, and the roller feet add 4 freely spinning wheels. None of these has a motor, and Isaac Lab's check counts them as joints without an actuator. |
-| The status bar shows `RenderDelegate : Warning /rtx/hydra/readTransformsFromFabricInRenderDelegate and geometry streaming are enabled together …` | This warns about rendered pose updates, not joint configuration. Continue if objects display and move with the simulation. If objects are missing, frozen or clearly misplaced, stop, note the Isaac Sim / Isaac Lab versions and keep the full log. GR00T's head camera also reads the rendered images. |
-| Video decoder warning | If a TorchCodec loading error is followed by Falling back to 'pyav' and reading or training continues to progress, an alternative video decoder is active; keep waiting. If the process exits or videos still cannot be read, retain the full error and check the Section 5.3 GR00T learning environment. |
+| The terminal prints `Actuator groups cover 14 joints; expected 28` | Expected; nothing to fix. Microduck has 14 servo-driven joints. The model also has 14 passive hinges that represent gear backlash, each free within about ±1°. None of these has a motor, and Isaac Lab's check counts them as joints without an actuator. |
+| The status bar shows `RenderDelegate : Warning /rtx/hydra/readTransformsFromFabricInRenderDelegate and geometry streaming are enabled together …` | This warns about rendered pose updates, not joint configuration. Continue if objects display and move with the simulation. If objects are missing, frozen or clearly misplaced, stop, note the Isaac Sim / Isaac Lab versions and keep the full log. The onboard policy's head camera also reads the rendered images. |
 | Output directory exists | Choose a new directory name; the previous result stays intact. |
-| Out of memory | Reduce the number of parallel training environments and run one simulation or training at a time; GR00T training can use `--profile low-memory` (Section 5.3). |
+| Out of memory | Reduce the number of parallel training environments and run one simulation or training at a time. |
 | Model hash mismatch | Restore the repository model and check for accidental overwrites. |
 | Practice policy walks poorly | A short run teaches the workflow; the policy is usually not yet well trained. Compare reward, episode length and held-out evaluation; later chapters continue with the fixed models. |
 | Robot stops or does not score | Inspect the task report and observation validity. When observations are insufficient, stopping can be a sensible safeguard, but only a goal recorded in the task result counts as a successful shot. |
@@ -48,7 +47,7 @@ When something fails, note the first error; it explains more than repeatedly lau
 {#report}
 ## Inspect a run
 
-Replace `outputs/ppo-walk-test-01` (the Section 3.2 test) with the output directory of a run you have actually performed. The command reads the result files in that directory and prints key fields such as status, seed and task result; if the run has not finished writing results yet, it asks you to check the run log first.
+Replace `outputs/ppo-walk-test-01` (the Section 3.3 test) with the output directory of a run you have actually performed. The command reads the result files in that directory and prints key fields such as status, seed and task result; if the run has not finished writing results yet, it asks you to check the run log first.
 
 ```{code-block} bash
 :caption: Terminal · inside the container

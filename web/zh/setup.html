@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -333,21 +333,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 使用强化学习让 Microduck 学会技能</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 强化学习与 PPO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 域随机化：训练并测试行走策略</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 奖励设计：走稳上下坡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 社区技能：从目标到奖励</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Microduck 的强化学习</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 训练并测试行走策略</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 延伸：走稳上下坡</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 社区技能：从目标到奖励</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 人工设计射门阶段</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 训练 GR00T 自主完成任务</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 步行射门：GR00T 的输入、输出与数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 训练与验证 GR00T 步行射门</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 从球场走向更多环境</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="nav bd-sidenav">
@@ -411,7 +411,7 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>构建课程容器、挂载数据与模型、进入同一个容器终端，并确认 Isaac Sim 与 GPU 可用。</p>
 </div><div class="lesson-meta">操作实验 · Ubuntu 24.04 / DGX Spark · Docker</div></div></div><section id="requirements">
 <h2>需要什么<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
-<p>课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、锁定版本的 Isaac Lab 与 Newton，以及 GR00T 学习环境都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。</p>
+<p>课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、锁定版本的 Isaac Lab 与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>设备</p></th>
@@ -442,7 +442,7 @@
 <td><p>Isaac Sim 6.2，Isaac Lab 固定提交，Newton 物理后端</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>学习</p></td>
-<td><p>RSL-RL 5.5.1（PPO），LeRobot + GR00T N1.7（第 5 部分）</p></td>
+<td><p>RSL-RL 5.5.1（PPO）</p></td>
 </tr>
 </tbody>
 </table>
@@ -460,7 +460,6 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 </div>
 <p>固定的课程模型（<code class="docutils literal notranslate"><span class="pre">models/</span></code> 不到 60 MB）和第 3 部分用到的预训练结果与训练日志（<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> 约 50 MB）都随仓库下载；你自己运行得到的结果写在 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>，与它们分开保存。</p>
-<p><strong>GR00T 课程资料包（只有 5.3 节需要）。</strong> 5.3 节的 GR00T 步行射门另外需要一个约 62 GB 的资料包：示范数据、训练起点、训练好的检查点和预先算好的特征缓存。它由授课方单独发放：开始 5.3 节前，请向授课教师领取；还没有拿到时，可以先完成第 1–3 部分和第 4 部分的阅读。把其中的 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 文件夹放到仓库根目录的 <code class="docutils literal notranslate"><span class="pre">course-data/</span></code> 下；放在别处时，启动容器前把 <code class="docutils literal notranslate"><span class="pre">MICRODUCK_COURSE_DATA</span></code> 设为包含 <code class="docutils literal notranslate"><span class="pre">groot-walking/</span></code> 的文件夹的绝对路径。没有资料包也可以启动容器。</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
@@ -469,7 +468,6 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 ├── scripts/       # 实验入口（同上）
 ├── models/        # 固定课程模型（容器内只读）
 ├── datasets/      # 示例数据与预训练 PPO 结果（容器内只读）
-├── course-data/   # GR00T 课程资料包（容器内只读，第 5.3 节）
 └── outputs/       # 你的运行结果（容器内可写）
 </pre></div>
 </div>
@@ -477,7 +475,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </section>
 <section id="build">
 <h2>构建课程容器<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
-<p>在仓库根目录运行。首次构建要下载 Isaac Sim、Isaac Lab 依赖和 GR00T 学习环境，耗时取决于网络，镜像也较大，请预留足够磁盘空间。</p>
+<p>在仓库根目录运行。首次构建要下载 Isaac Sim、Isaac Lab 等依赖，耗时取决于网络，镜像也较大，请预留足够磁盘空间。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build
@@ -502,9 +500,9 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <p><strong>之后所有实验命令都在这个容器终端里运行</strong>，页面上会标注“容器内”。用 Ctrl+C 停止某个实验，只会结束这一条命令，容器仍在运行，可以接着输入下一条。</p>
 <div class="note admonition">
 <p class="admonition-title">回到同一个容器</p>
-<p>关闭了终端，或者需要第二个终端（例如 5.3 节一边训练一边看日志）时，在宿主机运行 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>，就会回到同一个容器，之前的输出都还在。容器停止后（例如重启了电脑），在仓库根目录再运行一次 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> 即可；数据、输出和缓存都保存在宿主机上。全部练习结束后，用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> 停止并移除容器。</p>
+<p>关闭了终端，或者需要第二个终端（例如 3.3 节一边训练一边看 TensorBoard）时，在宿主机运行 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>，就会回到同一个容器，之前的输出都还在。容器停止后（例如重启了电脑），在仓库根目录再运行一次 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">up</span> <span class="pre">-d</span></code> 即可；数据、输出和缓存都保存在宿主机上。全部练习结束后，用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">-f</span> <span class="pre">docker/compose.yaml</span> <span class="pre">down</span></code> 停止并移除容器。</p>
 </div>
-<p>命令里的相对路径（例如 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>）就是宿主机仓库里的同名文件。下载、着色器和编译缓存保存在宿主机的 <code class="docutils literal notranslate"><span class="pre">~/.cache/huggingface</span></code> 与 <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code> 下，第二次启动会快很多。</p>
+<p>命令里的相对路径（例如 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>）就是宿主机仓库里的同名文件。着色器和编译缓存保存在宿主机的 <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/</span></code> 下，第二次启动会快很多。</p>
 </section>
 <section id="check">
 <h2>确认可以开始<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>

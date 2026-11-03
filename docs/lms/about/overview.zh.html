@@ -1,5 +1,5 @@
 <section class="about">
-<p>本课程带你使用 NVIDIA Isaac Sim 与 Isaac Lab，在仿真中让开源双足机器人 Microduck 学会技能。你将用 PPO 和奖励设计训练行走与上下坡，再了解手工设计的射门流程。最后，使用示范数据对 NVIDIA Isaac GR00T 进行后训练，在仿真中评测步行射门表现。</p>
+<p>本课程带你使用 NVIDIA Isaac Sim 与 Isaac Lab，在仿真中让开源双足机器人 Microduck 学会技能。你将用 PPO、域随机化和奖励设计训练行走与上下坡，再运行人工设计的板载策略完成步行射门。最后，了解 NVIDIA Isaac GR00T 怎样从示范中学会步行射门。</p>
 </section>
 
 <section class="tools">
@@ -9,7 +9,7 @@
 <section class="prerequisites">
 <ul>
   <li>具备基础 Python 经验，熟悉 Ubuntu 命令行。</li>
-  <li>运行实验需要 Ubuntu 与 NVIDIA GPU。</li>
+  <li>运行实验需要 NVIDIA DGX Spark 与 Ubuntu。</li>
 </ul>
 </section>
 
@@ -20,7 +20,7 @@
   <li>解释 PPO 的基本原理，用 Isaac Lab 与 Newton 运行行走策略的训练与验证。</li>
   <li>设计奖励和域随机化，结合 TensorBoard 曲线与独立评测结果判断训练效果。</li>
   <li>说明板载策略怎样串联 YOLO 识别、ToF 测距、Nav2 规划与动作技能，并分析射门结果。</li>
-  <li>使用课程提供的示范数据体验 GR00T 动作头后训练，并在仿真中评测提供的检查点。</li>
+  <li>说明 GR00T 怎样用 8 维高层请求与已训练的底层技能分工完成射门，以及示范数据、动作头训练和闭环验证的思路。</li>
   <li>解释模型走向新环境时面临的泛化挑战，以及环境随机化可以怎样帮助模型适应这些变化。</li>
 </ul>
 </section>
@@ -57,9 +57,10 @@
       <td>
         <ul>
           <li>理解强化学习与 PPO 的基本原理</li>
+          <li>把观测、动作、奖励与 Actor/Critic 对应到 Microduck 行走</li>
           <li>用 Isaac Lab 与 Newton 训练并测试行走策略，理解域随机化的作用</li>
-          <li>设计奖励，让 Microduck 走稳上下坡</li>
-          <li>阅读社区技能的奖励代码：单脚站立、篮球平衡与倒滑</li>
+          <li>延伸：设计奖励，让 Microduck 走稳上下坡</li>
+          <li>阅读社区技能的奖励代码：单脚站立与篮球平衡</li>
         </ul>
       </td>
     </tr>
@@ -75,12 +76,12 @@
     </tr>
 
     <tr>
-      <td><strong>5. 训练 GR00T 完成任务</strong></td>
+      <td><strong>5. （拓展）使用 GR00T 自主完成射门</strong></td>
       <td>
         <ul>
           <li>理解视觉-语言-动作模型与 GR00T</li>
-          <li>了解步行射门的 8 维高层请求接口与示范数据</li>
-          <li>体验动作头后训练，并用课程提供的检查点验证步行射门</li>
+          <li>了解 GR00T 怎样用 8 维高层请求与已训练技能完成步行射门</li>
+          <li>理解背后的示范数据、动作头训练与闭环验证</li>
           <li>讨论环境随机化怎样帮助模型走向更多环境</li>
         </ul>
       </td>

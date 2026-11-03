@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'troubleshooting';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -332,21 +332,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="current nav bd-sidenav">
@@ -435,28 +435,25 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>verify-mode
 <tr class="row-odd"><td><p>The first window is slow, or the desktop says “Isaac Lab” is not responding</p></td>
 <td><p>The first window compiles RTX shaders and loads assets, so the program cannot answer the desktop for a while (about 1 minute on DGX Spark). Choose <strong>Wait</strong>, not Force Quit, and do not start another instance while the log is progressing. The host cache is <code class="docutils literal notranslate"><span class="pre">~/.cache/microduck/kit-cache</span></code>, so later windows usually open in a few seconds; deleting the cache, updating drivers or software, or opening a scene with new content can trigger compilation again.</p></td>
 </tr>
-<tr class="row-even"><td><p>The terminal prints <code class="docutils literal notranslate"><span class="pre">Actuator</span> <span class="pre">groups</span> <span class="pre">cover</span> <span class="pre">14</span> <span class="pre">joints;</span> <span class="pre">expected</span> <span class="pre">28</span></code> (32 with roller feet)</p></td>
-<td><p>Expected; nothing to fix. Microduck has 14 servo-driven joints. The model also has 14 passive hinges that represent gear backlash, each free within about ±1°, and the roller feet add 4 freely spinning wheels. None of these has a motor, and Isaac Lab's check counts them as joints without an actuator.</p></td>
+<tr class="row-even"><td><p>The terminal prints <code class="docutils literal notranslate"><span class="pre">Actuator</span> <span class="pre">groups</span> <span class="pre">cover</span> <span class="pre">14</span> <span class="pre">joints;</span> <span class="pre">expected</span> <span class="pre">28</span></code></p></td>
+<td><p>Expected; nothing to fix. Microduck has 14 servo-driven joints. The model also has 14 passive hinges that represent gear backlash, each free within about ±1°. None of these has a motor, and Isaac Lab's check counts them as joints without an actuator.</p></td>
 </tr>
 <tr class="row-odd"><td><p>The status bar shows <code class="docutils literal notranslate"><span class="pre">RenderDelegate</span> <span class="pre">:</span> <span class="pre">Warning</span> <span class="pre">/rtx/hydra/readTransformsFromFabricInRenderDelegate</span> <span class="pre">and</span> <span class="pre">geometry</span> <span class="pre">streaming</span> <span class="pre">are</span> <span class="pre">enabled</span> <span class="pre">together</span> <span class="pre">…</span></code></p></td>
-<td><p>This warns about rendered pose updates, not joint configuration. Continue if objects display and move with the simulation. If objects are missing, frozen or clearly misplaced, stop, note the Isaac Sim / Isaac Lab versions and keep the full log. GR00T's head camera also reads the rendered images.</p></td>
+<td><p>This warns about rendered pose updates, not joint configuration. Continue if objects display and move with the simulation. If objects are missing, frozen or clearly misplaced, stop, note the Isaac Sim / Isaac Lab versions and keep the full log. The onboard policy's head camera also reads the rendered images.</p></td>
 </tr>
-<tr class="row-even"><td><p>Video decoder warning</p></td>
-<td><p>If a TorchCodec loading error is followed by Falling back to 'pyav' and reading or training continues to progress, an alternative video decoder is active; keep waiting. If the process exits or videos still cannot be read, retain the full error and check the Section 5.3 GR00T learning environment.</p></td>
-</tr>
-<tr class="row-odd"><td><p>Output directory exists</p></td>
+<tr class="row-even"><td><p>Output directory exists</p></td>
 <td><p>Choose a new directory name; the previous result stays intact.</p></td>
 </tr>
-<tr class="row-even"><td class="cell-short"><p>Out of memory</p></td>
-<td><p>Reduce the number of parallel training environments and run one simulation or training at a time; GR00T training can use <code class="docutils literal notranslate"><span class="pre">--profile</span> <span class="pre">low-memory</span></code> (Section 5.3).</p></td>
+<tr class="row-odd"><td class="cell-short"><p>Out of memory</p></td>
+<td><p>Reduce the number of parallel training environments and run one simulation or training at a time.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Model hash mismatch</p></td>
+<tr class="row-even"><td><p>Model hash mismatch</p></td>
 <td><p>Restore the repository model and check for accidental overwrites.</p></td>
 </tr>
-<tr class="row-even"><td><p>Practice policy walks poorly</p></td>
+<tr class="row-odd"><td><p>Practice policy walks poorly</p></td>
 <td><p>A short run teaches the workflow; the policy is usually not yet well trained. Compare reward, episode length and held-out evaluation; later chapters continue with the fixed models.</p></td>
 </tr>
-<tr class="row-odd"><td><p>Robot stops or does not score</p></td>
+<tr class="row-even"><td><p>Robot stops or does not score</p></td>
 <td><p>Inspect the task report and observation validity. When observations are insufficient, stopping can be a sensible safeguard, but only a goal recorded in the task result counts as a successful shot.</p></td>
 </tr>
 </tbody>
@@ -465,7 +462,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>verify-mode
 </section>
 <section id="report">
 <h2>Inspect a run<a class="headerlink" href="#report" title="Link to this heading">#</a></h2>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">outputs/ppo-walk-test-01</span></code> (the Section 3.2 test) with the output directory of a run you have actually performed. The command reads the result files in that directory and prints key fields such as status, seed and task result; if the run has not finished writing results yet, it asks you to check the run log first.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">outputs/ppo-walk-test-01</span></code> (the Section 3.3 test) with the output directory of a run you have actually performed. The command reads the result files in that directory and prints key fields such as status, seed and task result; if the run has not finished writing results yet, it asks you to check the run log first.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>report<span class="w"> </span>--run<span class="w"> </span>outputs/ppo-walk-test-01

@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=9ef6f55d"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="6.2 Troubleshooting" href="troubleshooting.html" />
-    <link rel="prev" title="5.4 From the pitch to more environments" href="09-worlds.html" />
+    <link rel="prev" title="5.3 From the pitch to more environments" href="09-worlds.html" />
 
 
 
@@ -332,21 +332,21 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.2 Domain randomization: train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.3 Reward design: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.4 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 Train GR00T to complete tasks autonomously</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Walking shot: GR00T inputs, outputs and data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-lab.html">5.3 Train and validate the GR00T walking shot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.4 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="current nav bd-sidenav">
@@ -420,11 +420,11 @@
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
 <td><p>Fixed walking policy</p></td>
-<td><p>Section 2.1 keyboard football (walking mode, read automatically); Section 2.2 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>; the low-level walking policy of the Section 4.2 onboard shot and of the Section 5.3 validation scene uses a copy of the same model</p></td>
+<td><p>Section 2.1 keyboard football (read automatically); Section 2.2 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>; the low-level walking policy of the Section 4.2 onboard shot and of the Section 5.2 GR00T execution layer uses a copy of the same model</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
-<td><p>Section 3.3 fixed terrain walking actor, about 0.79 MB</p></td>
-<td><p>Section 3.3 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
+<td><p>Section 3.4 fixed terrain walking actor, about 0.79 MB</p></td>
+<td><p>Section 3.4 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
 <td><p>Base kicking action</p></td>
@@ -432,7 +432,7 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
 <td><p>Residual kick adjustment</p></td>
-<td><p>Retained by the GR00T execution layer; not loaded by the Section 4.2 onboard shot</p></td>
+<td><p>Used by the Section 5.2 GR00T execution layer; not loaded by the Section 4.2 onboard shot</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
 <td><p>Retained kick training checkpoint</p></td>
@@ -452,13 +452,9 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
 <td><p>Official 10 cm ball and four-surface detector; current default</p></td>
-<td><p>The visual detector of the Section 4.1 onboard policy; not read directly by this course's hands-on commands</p></td>
+<td><p>Checked and loaded automatically by the Section 4.2 <code class="docutils literal notranslate"><span class="pre">football</span></code> command as the onboard policy's visual detector</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/rollers.onnx</span></code></p></td>
-<td><p>Official four-passive-wheel actor, 14 servo actions</p></td>
-<td><p>Section 2.1 roller mode after M (read automatically); <code class="docutils literal notranslate"><span class="pre">--model</span></code> of Section 3.3 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code> and <code class="docutils literal notranslate"><span class="pre">train-terrain</span> <span class="pre">--locomotion</span> <span class="pre">rollers</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
 <td><p>Browser-version checks and standing tests; the complete walking task uses <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
 <td><p>Retained; not read directly by this course's hands-on commands</p></td>
 </tr>
@@ -473,8 +469,8 @@
 </div>
 </div>
 <p>These files ship with the Git repository, so cloning it is enough; no Git LFS or separate model account is needed. <code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> records sizes, sources, and SHA-256 identities, and each lab checks model identity before running to guard against same-name replacements. The relative paths and SHA-256 of the current default detector are recorded in <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>.</p>
-<p><strong>In the repository.</strong> The weights for Parts 2–3 and the onboard policy; the pretrained PPO walking result of Section 3.2 and the slope-training logs are in <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> and <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code> (<code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code> in the container, read-only). <code class="docutils literal notranslate"><span class="pre">datasets/terrain-rollers-ppo-experiment</span></code> is the record of a roller slope training run that did not learn to climb; it is kept as a counterexample for reward design, not as a usable slope model.</p>
-<p><strong>Separate data package.</strong> The GR00T walking-shot data, feature cache and trained checkpoint of Section 5.3 come from the separate GR00T course data package (<code class="docutils literal notranslate"><span class="pre">course-data/groot-walking</span></code> in the container; check it with <code class="docutils literal notranslate"><span class="pre">python3</span> <span class="pre">scripts/groot_walking.py</span> <span class="pre">verify</span></code>). The GR00T base model and the Cosmos-Reason2-2B processor are downloaded from Hugging Face under their access and license terms.</p>
+<p><strong>In the repository.</strong> The weights for the labs of Parts 2–4; the pretrained PPO walking result of Section 3.3 and the slope-training logs of Section 3.4 are in <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> and <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code> (<code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code> in the container, read-only).</p>
+<p><strong>GR00T.</strong> The GR00T demonstrations and checkpoint described in Section 5.2 are kept separately by the course; you do not need to download them for this course.</p>
 </section>
 <section id="practice-data">
 <h2>Practice data and your outputs<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
@@ -502,7 +498,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">5.4 From the pitch to more environments</p>
+        <p class="prev-next-title">5.3 From the pitch to more environments</p>
       </div>
     </a>
     <a class="right-next"
