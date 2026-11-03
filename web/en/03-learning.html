@@ -335,16 +335,16 @@
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extension) Community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
@@ -419,8 +419,8 @@
 <p>A reward is only a training signal, not task success. If the reward is poorly written, the agent may find a way to score high without completing the task, so trained results are checked against a separate success criterion.</p>
 </section>
 <section id="actor-critic">
-<h2>Actor-Critic: one acts, one evaluates<a class="headerlink" href="#actor-critic" title="Link to this heading">#</a></h2>
-<p>Adjusting the policy directly from returns is very noisy: the same action sometimes earns a high return because of later luck, and sometimes the opposite. Actor-Critic methods split the work between two networks:</p>
+<h2>Actor-Critic: during training, one acts and one evaluates<a class="headerlink" href="#actor-critic" title="Link to this heading">#</a></h2>
+<p>Adjusting the policy directly from returns is very noisy: the same action sometimes earns a high return because of later luck, and sometimes the opposite. Actor-Critic is a training paradigm that splits the work between two networks during training:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>Network</p></th>
@@ -431,7 +431,7 @@
 <tbody>
 <tr class="row-even"><td class="cell-short"><p>Actor (policy)</p></td>
 <td class="cell-short"><p>Action</p></td>
-<td><p>Decides what to do; this is what is deployed</p></td>
+<td><p>Decides what to do; this is what is deployed after training</p></td>
 </tr>
 <tr class="row-odd"><td><p>Critic (value function)</p></td>
 <td><p>One number: the expected return</p></td>
@@ -440,7 +440,7 @@
 </tbody>
 </table>
 </div>
-<p>With the Critic's expectation, we can tell whether an action did better than expected. That difference is the <strong>advantage</strong>. With a positive advantage the Actor makes the action more likely; with a negative one, less likely. The Critic is trained too: its prediction should match the return actually obtained.</p>
+<p>With the Critic's expectation, we can tell whether an action did better than expected. That difference is the <strong>advantage</strong>. With a positive advantage the Actor makes the action more likely; with a negative one, less likely. The Critic is trained too: its prediction should match the return actually obtained. After training only the Actor is kept; the Critic's job is done.</p>
 </section>
 <section id="ppo">
 <h2>PPO: change a little at a time<a class="headerlink" href="#ppo" title="Link to this heading">#</a></h2>
@@ -455,7 +455,7 @@
 </details></div></section>
 <section id="next">
 <h2>Next<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
-<p>These ideas are independent of any particular robot. Section 3.2 maps them onto Microduck: what the observation and action are, how the reward is written, and what the Actor and Critic each read.</p>
+<p>Section 3.2 maps these ideas onto Microduck's walking task: what the observation and action are, how the reward is written, and what the Actor and Critic each read and how they work together during training.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -518,7 +518,7 @@
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loop">Learning from trial and error</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#return">Goals, rewards and returns</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actor-critic">Actor-Critic: one acts, one evaluates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actor-critic">Actor-Critic: during training, one acts and one evaluates</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ppo">PPO: change a little at a time</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Next</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>

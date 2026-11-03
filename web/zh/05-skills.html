@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="阅读两个社区技能（单脚站立循环、篮球平衡）的真实奖励代码：目标是什么、读取哪些量、公式怎样写、可能怎样失败、作者怎样检验，再用同样的步骤构思新任务。" name="description" />
 
-  <title>3.5 社区技能：从目标到奖励 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
+  <title>3.5 （拓展）社区技能：奖励设计 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -336,16 +336,16 @@
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Microduck 的强化学习</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 训练并测试行走策略</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 延伸：走稳上下坡</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.5 社区技能：从目标到奖励</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.5 （拓展）社区技能：奖励设计</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 人工设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
@@ -388,7 +388,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.5 社区技能：从目标到奖励</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.5 （拓展）社区技能：奖励设计</span></li>
   </ul>
 </nav>
 </div>
@@ -407,7 +407,7 @@
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 <section class="tex2jax_ignore mathjax_ignore" id="id1">
-<h1>3.5 社区技能：从目标到奖励<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1>3.5 （拓展）社区技能：奖励设计<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>阅读两个社区技能（单脚站立循环、篮球平衡）的真实奖励代码：目标是什么、读取哪些量、公式怎样写、可能怎样失败、作者怎样检验，再用同样的步骤构思新任务。</p>
 </div><div class="lesson-meta">第 3.5 节 · 阅读与分析 · 预计学习时长 45 分钟</div></div></div><script type="application/json" class="course-symbols">{"dt": {"tex": "\\Delta t", "text": "控制步长：两次策略输出之间的时间。本节两个技能都是 0.02 s（50 Hz）。"}, "alpha_f": {"tex": "\\alpha", "text": "姿势混合进度：0 表示双脚站立，1 表示单脚站立。指令切换后，它以 1.5 s 从一端平滑走到另一端。它只在奖励中使用，策略观测里只有指令本身。"}, "p_target": {"tex": "p^{*}_{xy}", "text": "质心的目标水平位置（m）：从两脚中点逐渐移到支撑脚上方。"}, "p_mid": {"tex": "p_{\\mathrm{mid}}", "text": "两只脚的中点（水平位置，m）。"}, "p_stance": {"tex": "p_{\\mathrm{stance}}", "text": "支撑脚的水平位置（m）。"}, "c_com": {"tex": "c_{xy}", "text": "整机质心的水平位置（m），由仿真对全身所有部件计算。"}, "sigma_c": {"tex": "\\sigma_c", "text": "质心误差尺度：0.03 m，训练第 700 轮后收紧到 0.02 m。"}, "r_com": {"tex": "r_{\\mathrm{com}}", "text": "质心目标项（权重 3）。"}, "S": {"tex": "S", "text": "平滑阶跃（smoothstep）：混合进度在区间 $[a,b]$ 内时从 0 平滑升到 1，之前为 0，之后为 1。"}, "tau": {"tex": "\\tau", "text": "平滑阶跃内部的归一化进度，截断在 0 到 1 之间。"}, "a_lo": {"tex": "a", "text": "平滑阶跃开始上升的位置。"}, "b_hi": {"tex": "b", "text": "平滑阶跃升到 1 的位置。"}, "clip": {"tex": "\\operatorname{clip}", "text": "截断：把数值限制在给定区间内。"}, "k_swing": {"tex": "k_{\\mathrm{swing}}", "text": "要抬起的那只脚此刻是否接触地面（1 为接触，0 为离地）。"}, "k_stance": {"tex": "k_{\\mathrm{stance}}", "text": "支撑脚此刻是否接触地面（1 为接触）。"}, "z_swing": {"tex": "z_{\\mathrm{swing}}", "text": "要抬起的那只脚离地面的高度（m）。"}, "r_contact": {"tex": "r_{\\mathrm{contact}}", "text": "抬起脚的接触项（权重 0.5）：该站立时奖励接触，该抬脚时惩罚接触。"}, "r_clear": {"tex": "r_{\\mathrm{clear}}", "text": "抬脚高度项（权重 1.5）：目标 0.10 m，尺度 0.06 m。"}, "p_ball": {"tex": "p_{\\mathrm{ball}}", "text": "篮球球心位置（m），直接从仿真状态读取；部署的策略看不到它。"}, "p_root": {"tex": "p_{\\mathrm{root}}", "text": "机器人根部（机身）位置（m）。"}, "p_foot": {"tex": "p_{\\mathrm{foot}}", "text": "某只脚的足底参考点位置（m）。"}, "z_root": {"tex": "z_{\\mathrm{root}}", "text": "机身根部高度（m）。"}, "z_ball": {"tex": "z_{\\mathrm{ball}}", "text": "球心高度（m）。"}, "R_ball": {"tex": "R", "text": "篮球半径，0.12 m（7 号球）。"}, "g_x": {"tex": "g_x", "text": "重力方向在机身坐标系中的前后分量（无单位）；站直时为 0。"}, "g_y": {"tex": "g_y", "text": "重力方向在机身坐标系中的左右分量（无单位）；站直时为 0。"}, "v_ball": {"tex": "v_{\\mathrm{ball}}", "text": "篮球的水平速度（m/s），仿真状态。"}, "r_center": {"tex": "r_{\\mathrm{center}}", "text": "机身对准球心项（权重 2）。"}, "r_feet": {"tex": "r_{\\mathrm{feet}}", "text": "双脚贴在球面上项（权重 1），两只脚取平均。"}, "r_height": {"tex": "r_{\\mathrm{height}}", "text": "站在球顶的高度项（权重 1）。"}, "r_up": {"tex": "r_{\\mathrm{up}}", "text": "机身直立项（权重 1）。"}, "r_ball": {"tex": "r_{\\mathrm{ball}}", "text": "球速平方（权重 −0.05）：零指令时让球保持安静，权重小，指令要求滚动时仍然划算。"}, "exp": {"tex": "\\exp", "text": "指数函数：把平方误差变成 0 到 1 之间的平滑奖励。"}}</script><section id="community">
 <h2>同一机器人，可以学什么<a class="headerlink" href="#community" title="Link to this heading">#</a></h2>
@@ -420,7 +420,7 @@
 <p>这两个模型和它们的训练代码都不在课程仓库和容器中，课程命令也不会加载它们；代码节选来自作者公开的固定版本，只用于阅读，链接指向那个版本的完整文件。演示视频是课程网页保存的录像副本。</p>
 </section>
 <section id="how-to-read">
-<h2>用同一张表读社区技能<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
+<h2>遵循这样的思路分析技能<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
 <p>每个技能都按同样的顺序读：</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -694,7 +694,7 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community">同一机器人，可以学什么</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">用同一张表读社区技能</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">遵循这样的思路分析技能</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flamingo">单脚站立循环：用门控安排动作的先后</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basketball">篮球平衡：奖励能看见球，策略看不见</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">两个技能放在一起比较</a></li>

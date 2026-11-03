@@ -1,6 +1,6 @@
 """Course start-up protocol for policy verification runs (standing61).
 
-The robot starts in a named joint pose with every joint temporarily locked by a
+The robot starts in the HOME joint pose with every joint temporarily locked by a
 joint-limit brake; the root is free and no external force supports it. Physics
 runs until every body has settled on its actual ground contact (so the grounded
 height comes from the scene being simulated, flat or sloped). If it does not
@@ -32,23 +32,19 @@ def _t(x):
 
 
 def settle(env, *, pose="home", render=False, max_s=3.0, stable_s=0.5, physics_dt=0.005):
-    """Lock joints in `pose`, let the free root settle, and return (brake, record).
+    """Lock joints in HOME, let the free root settle, and return (brake, record).
 
-    pose="home" writes the task's default (HOME) joint pose explicitly;
-    pose="roller-rest" keeps the stance written by the roller reset event
-    (assets/rollers/rest_pose.json). The brake is still active on return; call
-    brake.release(t) after the first policy output and before applying it.
+    The task's default HOME joint pose is written explicitly. The brake is still
+    active on return; call brake.release(t) after the first policy output and
+    before applying it.
     Raises StartupNotSettled (with the record) if the bodies do not settle.
     """
     import torch
 
     robot = env.scene["robot"]
-    if pose == "home":
-        q = _t(robot.data.default_joint_pos).clone()
-    elif pose == "roller-rest":
-        q = _t(robot.data.joint_pos).clone()
-    else:
-        raise ValueError("pose must be 'home' or 'roller-rest'")
+    if pose != "home":
+        raise ValueError("pose must be 'home'")
+    q = _t(robot.data.default_joint_pos).clone()
     robot.write_joint_state_to_sim(q, torch.zeros_like(q))
     env.scene.write_data_to_sim()
     brake = JointBrake(robot)
@@ -76,7 +72,7 @@ def settle(env, *, pose="home", render=False, max_s=3.0, stable_s=0.5, physics_d
     settled = stable_since is not None and t - stable_since >= stable_s
     origins = _t(env.scene.env_origins)
     record = dict(
-        protocol="standing61: named joint pose locked by temporary joint limits, free root, no external support",
+        protocol="standing61: HOME joint pose locked by temporary joint limits, free root, no external support",
         pose=pose,
         joint_pose_rad=[[float(v) for v in row] for row in q.cpu()],
         locked_joint_axes=int(q.shape[1]),

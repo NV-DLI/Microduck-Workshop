@@ -336,16 +336,16 @@
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Microduck 的强化学习</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 训练并测试行走策略</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 延伸：走稳上下坡</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 社区技能：从目标到奖励</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 （拓展）社区技能：奖励设计</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 板载策略完成射门任务</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 人工设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型与 GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
@@ -424,14 +424,9 @@
 </pre></div>
 </div>
 </div>
-<p>把输入法切换到英文，用鼠标点击仿真窗口，就可以用下表的按键操作；按键没有反应时，通常是中文输入法拦截了按键。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。</p>
-<details class="enrichment"><summary>代码关键参数</summary><div class="enrichment-body"><ul class="simple">
-<li><p><strong>模型。</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span> <span class="pre">manual</span></code> 不需要模型参数：它读取容器内的 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models</span></code>（即宿主机仓库的 <code class="docutils literal notranslate"><span class="pre">models/</span></code>，只读）中的 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code> 和 <code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code>。</p></li>
-<li><p><strong>场景资产。</strong> 球场、足球、球门和机器人来自仓库的 <code class="docutils literal notranslate"><span class="pre">lab/assets/</span></code>：<code class="docutils literal notranslate"><span class="pre">pitch_A.usda</span></code>、<code class="docutils literal notranslate"><span class="pre">official_ball.usda</span></code>、<code class="docutils literal notranslate"><span class="pre">steel_goal.usda</span></code>、<code class="docutils literal notranslate"><span class="pre">microduck_contact.usda</span></code>。</p></li>
-<li><p><strong>起步。</strong> 小鸭子先锁住关节在球场上落稳，策略开始控制时再松开；按 R 重置时同样如此。</p></li>
-<li><p><strong>输出。</strong> 记录直接写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的 <code class="docutils literal notranslate"><span class="pre">outputs/manual-football-01</span></code>，也就是宿主机仓库的 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下。<code class="docutils literal notranslate"><span class="pre">--seconds</span></code> 是窗口最长运行的仿真时间。</p></li>
-</ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-walking.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-walking.png" alt="键盘踢球的 Isaac Sim 完整界面：绿色球场上的 Microduck、足球和球门，右侧标签页列出按键说明。"></a><figcaption><p>键盘踢球窗口：左侧是球场，右侧标签页列出按键。先观察机器人、足球和球门的相对位置，再决定往哪走。</p>
+<p>命令不需要指定模型：它读取 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 里的官方行走模型 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code> 和右脚踢球模型 <code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code>。<code class="docutils literal notranslate"><span class="pre">--seconds</span></code> 是窗口最长运行的仿真时间，记录写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的目录。</p>
+<p>用鼠标点击仿真窗口，就可以用下表的按键操作。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-walking.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-walking.png" alt="键盘踢球的 Isaac Sim 完整界面：绿色球场上的 Microduck、足球和球门，右侧标签页列出按键说明。"></a><figcaption><p>键盘踢球窗口：左侧是球场，右侧标签页列出按键。先观察机器人、足球和球门的相对位置，再决定往哪走。</p>
 </figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>按键</p></th>

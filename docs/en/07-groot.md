@@ -1,15 +1,15 @@
 ---
 myst:
   html_meta:
-    description: 'Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.'
+    description: 'Meet vision-language-action (VLA) models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.'
 ---
 
-# 5.1 Vision-language-action models and GR00T
+# 5.1 Vision-language-action (VLA) models and GR00T
 
 :::{lesson-intro}
 :meta: Section 5.1 · Estimated learning time: 40 minutes
 
-Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.
+Meet VLAs and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.
 :::
 
 {#idea}
@@ -19,7 +19,7 @@ The onboard policy in Part 4 was designed around the robot's limited onboard com
 
 If the decision-making model can run off the robot, a much larger model becomes possible. In this course GR00T runs on a local GPU workstation, while local motion skills handle fast control; a cloud server could also play that role, with more network delay. <a href="08-groot-interface.html#deployment">Section 5.2</a> explains the details.
 
-A vision-language-action model (VLA) takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.
+A VLA takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.
 
 The two approaches are not exclusive. The onboard policy still needs reliable perception and control; a VLA also depends on sensors, calibration and low-level execution and control (this course also has it call pretrained walking and kicking skills, which is a design choice of this course rather than a requirement of every VLA), and its reliable performance still depends on what the demonstrations cover: pretraining can help transfer, but actions and recovery from imbalance that the demonstrations never covered cannot be assumed to be learned.
 

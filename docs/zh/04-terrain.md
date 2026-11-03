@@ -132,7 +132,7 @@ details:
 caption: 训练分布与验证场景分开，才能看出学到的能力能否用到新的布局上。
 ```
 
-在 1.2 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.2 节</a>），用 256 个环境继续训练 1000 轮；`--show` 打开 Isaac Sim，可以看到小鸭子分布在不同地块上同时练习。
+在 1.2 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.2 节</a>），以 `--model` 指定的官方行走策略为起点，用 256 个环境继续训练 1000 轮；`--show` 打开 Isaac Sim，可以看到小鸭子分布在不同地块上同时练习。`--output` 请使用 `outputs/` 下尚不存在的新目录。
 
 ```{code-block} bash
 :caption: Terminal · 容器内
@@ -161,13 +161,6 @@ python3 scripts/run.py train-terrain \
 
 固定坡地模型三个训练阶段的 TensorBoard 记录（日志在 `datasets/terrain-ppo/`），横轴是累计迭代次数，绿框与编号为课程标注。① 地形难度等级在第一阶段从约 0.6 升到 2.0 左右，课程机制把表现好的环境移到了更陡的地块；② 每次续训开始时奖励设置改变，回报随之跳变，不同阶段的回报数值不能直接比较；③ 第三阶段加入转向奖励后，转向误差降到 0.25–0.35 rad/s 附近，波动较大。
 :::
-
-::::{enrichment} 代码关键参数
-- **`--model`。** 程序加载哪个文件只由 `--model` 决定。`train-terrain --model models/walk.onnx` 以官方行走策略为训练起点；`terrain --model models/terrain-walk.onnx` 在验证时每个控制步用它推理。
-- **`--output`。** 必须是 `outputs/` 下尚不存在的目录；已存在的目录或 `models/` 下的路径会被拒绝。训练出的策略要在验证时用 `--model` 显式指定。
-- **`datasets/`。** `terrain-ppo/` 是固定坡地模型三个训练阶段的配置与 TensorBoard 日志。
-- **场景。** 训练地形由 `lab/train_terrain.py` 中的地形配置生成，验证坡台由 `terrain` 命令的参数（如 `--slope`）即时生成，都不从场景文件读取。
-::::
 
 {#direction}
 ## 用转向奖励减少走偏
@@ -257,13 +250,9 @@ python3 scripts/run.py terrain \
 
 读这张表时注意三点：
 
-- **只是 ±5°、每个方向 5 个环境。** 它描述的是测过的这组条件，不是一般的成功率，也不是独立的留出测试。更陡的坡度要单独测量，可以依次把 `--slope` 改成 ±10、±15（加 `--headless` 不开窗口更快）。每个环境的结果见[评测摘要 ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json)。
+- **只是 ±5°、每个方向 5 个环境。** 它描述的是测过的这组条件，不是一般的成功率，也不是独立的留出测试。更陡的坡度要单独测量，可以依次把 `--slope` 改成 ±10、±15。每个环境的结果见[评测摘要 ↗](https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json)。
 - **站立时有课程的头部保持。** 这个策略在速度指令为 0 时（出发前 2 秒与到达之后）会把头压得很低。验证脚本只在这两段时间把 4 个头部舵机的目标换成站姿角度（俯仰再抬高 0.2 rad），腿部动作始终来自策略。所以“到达后保持”是策略和这个头部保持一起做到的。
 - **只用于本节。** 2.1 节和第 4、5 部分仍使用原行走策略。自己训练的模型要在相同条件下同时报告平地、上坡和下坡，坡地改善却丢失平地能力不算合格替代。
-
-:::{enrichment} 窗口速度与录像
-验证窗口按 960×540 绘制、每 2 个控制步刷新一次，让动作接近真实速度；物理仍为每秒 200 步，策略每秒 50 次。在 DGX Spark 上，5 个环境的 20 秒测试整段约用 20 秒。需要更清楚的画面时，在命令前加 `MICRODUCK_VIEWPORT_RESOLUTION=1920x1080`，运行会变慢；加 `--record`（只能 1 个环境）按仿真时间逐帧录像，画质与窗口相同。
-:::
 
 ::::{quiz}
 训练地形里已经有很多坡，为什么还要在楔形坡台上单独验证？

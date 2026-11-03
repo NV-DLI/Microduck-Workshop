@@ -69,11 +69,6 @@ services:
       - <<: *bind
         source: ../outputs
         target: /workspace/Microduck-Workshop/outputs
-      # GR00T walking-shot course data (unpacked course data package, read-only)
-      - <<: *bind
-        source: ${MICRODUCK_COURSE_DATA:-../course-data}
-        target: /workspace/Microduck-Workshop/course-data
-        read_only: true
       # Download, shader and compilation caches persist between starts
       - <<: *bind
         source: ${HOME}/.cache/huggingface

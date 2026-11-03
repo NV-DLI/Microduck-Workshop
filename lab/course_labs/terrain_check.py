@@ -1,10 +1,9 @@
-"""Course slope check: walk (or skate) up onto, or down from, a finite wedge.
+"""Course slope check: walk up onto, or down from, a finite wedge.
 
-Derived from lab/terrain.py, with three differences: the terrain is a finite wedge with
-a raised platform on a flat floor (ramp_mesh below) instead of an endless step-up ramp;
-the test is reach-then-hold (the forward request stops at the goal and the robot must
-stay there); and every robot first settles at its start with joints temporarily locked
-(course_labs/grounded_start.py), released right before the first policy action.
+The terrain has a raised platform on a flat floor (ramp_mesh below). The forward
+request stops at the goal and the robot must stay there. Every robot first settles
+with joints temporarily locked (course_labs/grounded_start.py), then releases them
+right before the first policy action.
 """
 
 from pathlib import Path
@@ -27,8 +26,8 @@ import numpy as np
 WEDGE = dict(foot_x=0.35, ramp_length=0.5, platform_length=0.6, half_width=0.3)
 # Goal margins: the root must be 0.15 m onto the platform (uphill) or 0.25 m in front of
 # the ramp foot (downhill) and within 0.15 m of the centre line; both ankle bodies must be
-# 0.06 m inside the goal side of the edge (soles reach ~0.02 m, roller wheels ~0.055 m
-# behind the ankle), so the whole feet stand on the goal surface.
+# 0.06 m inside the goal side of the edge (soles reach ~0.02 m behind the ankle),
+# so the whole feet stand on the goal surface.
 GOAL = dict(up_margin=0.15, down_margin=0.25, side_margin=0.15, foot_clearance=0.06)
 
 
@@ -258,7 +257,6 @@ def main():
     p.add_argument("--record", action="store_true")
     p.add_argument("--seed", type=int, default=42001)
     p.add_argument("--headless", action="store_true")
-    p.add_argument("--locomotion", choices=["walking", "rollers"], default="walking")
     a = p.parse_args()
     if (
         not -20 <= a.slope <= 20
@@ -284,9 +282,8 @@ def main():
         slope_deg=a.slope,
         seed=a.seed,
         num_envs=a.num_envs,
-        command_m_s=0.25 if a.locomotion == "walking" else None,
-        locomotion=a.locomotion,
-        roller_push_request=0.6 if a.locomotion == "rollers" else None,
+        command_m_s=0.25,
+        locomotion="walking",
         automatic_resets=False,
         support_surface_bounds_relative_m=[-50.0, 50.0, -50.0, 50.0],
         geometry=dict(
@@ -372,10 +369,6 @@ def main():
                         func=camera_prestartup, mode="prestartup",
                         params=dict(width=RECORD_SIZE[0], height=RECORD_SIZE[1]),
                     )
-                if a.locomotion == "rollers":
-                    from roller_config import configure_rollers
-
-                    report["roller_configuration"] = configure_rollers(cfg)
                 if a.slope < 0:
                     # Downhill: start in the middle of the high platform, facing the ramp (-x).
                     x, y, z = cfg.scene.robot.init_state.pos
@@ -453,7 +446,7 @@ def main():
                 try:
                     brake, report["startup"] = settle(
                         env,
-                        pose="roller-rest" if a.locomotion == "rollers" else "home",
+                        pose="home",
                         render=not a.headless,
                     )
                 except StartupNotSettled as error:
@@ -465,18 +458,12 @@ def main():
                     return getattr(x, "torch", x)
 
                 origin = T(env.scene.env_origins).clone()
-                if a.locomotion == "rollers":
-                    report["initial_body_names"] = list(robot.body_names)
-                    report["initial_body_position_relative_m"] = (
-                        (T(robot.data.body_pos_w)[0] - origin[0]).cpu().tolist()
-                    )
                 fallen = torch.zeros(a.num_envs, dtype=torch.bool, device="cuda:0")
                 reached = fallen.clone()
                 reached_time = torch.full((a.num_envs,), float("nan"), device="cuda:0")
                 left_goal = torch.zeros_like(fallen)
                 fell_off_platform = torch.zeros_like(fallen)
                 hold_seconds_required = 2.0
-                brake_integral = torch.zeros(a.num_envs, device="cuda:0")
                 h = wedge_height(a.slope)
                 foot = WEDGE["foot_x"]
                 top = foot + WEDGE["ramp_length"]
@@ -594,18 +581,8 @@ def main():
                         cmd.is_standing_env[:] = False
                         cmd.vel_command_b[:] = 0
                         if step >= 100:
-                            forward = 0.6 if a.locomotion == "rollers" else 0.25
+                            forward = 0.25
                             cmd.vel_command_b[:, 0] = torch.where(reached, 0.0, forward)
-                            if a.locomotion == "rollers":
-                                # After the goal: hold still with the course roller brake
-                                # (lab/roller_imu.RollerBrake, vectorised; zero would coast).
-                                vx = T(robot.data.root_lin_vel_b)[:, 0]
-                                candidate = (brake_integral + vx * 0.02).clamp(-0.15, 0.15)
-                                requested = -3.0 * vx - 4.0 * candidate
-                                keep = (requested >= -0.5) & (requested <= 0.35) & reached
-                                brake_integral = torch.where(keep, candidate, brake_integral)
-                                hold = (-3.0 * vx - 4.0 * brake_integral).clamp(-0.5, 0.35)
-                                cmd.vel_command_b[:, 0] = torch.where(reached, hold, forward)
                         env.command_manager.get_term("head_pose").command[:] = torch.tensor(head_command, device=env.device)
                         env.command_manager.get_term("body_pose").command[:] = 0
                         action = policy(
@@ -785,31 +762,23 @@ def main():
                     fell_off_platform=fell_off_platform.cpu().tolist() if a.slope >= 0 else None,
                     hold_command=(
                         "walking: zero velocity request after arrival (the walking policy stands)"
-                        if a.locomotion == "walking"
-                        else "rollers: after arrival an external course brake controller (lab/roller_imu.RollerBrake, "
-                        "vectorised) sets the push request from body speed; the same controller is used for every "
-                        "roller model, so holding reflects policy + this controller, not the policy alone"
                     ),
-                    velocity_reference_m_s=0.25 if a.locomotion == "walking" else None,
+                    velocity_reference_m_s=0.25,
                     velocity_rmse=(
                         (error / moving_samples.clamp(min=1)).sqrt().cpu().tolist()
-                        if a.locomotion == "walking"
-                        else None
                     ),
                     upright_velocity_rmse=(
                         (upright_error / upright_samples.clamp(min=1))
                         .sqrt()
                         .cpu()
                         .tolist()
-                        if a.locomotion == "walking"
-                        else None
                     ),
                     upright_velocity_samples=upright_samples.cpu().tolist(),
                     final_position=pos.cpu().tolist(),
                     criterion=(
                         "Wedge v3 (ramp 0.5 m, platform 0.6 m, width 0.6 m). Uphill: reach the platform (supported by "
                         "it, root at least 0.15 m and both ankle bodies at least 0.06 m past the ramp top, "
-                        "|y| < 0.15 m); the forward request then stops (walking 0, rollers course brake) and the robot "
+                        "|y| < 0.15 m); the forward velocity request becomes zero and the robot "
                         "must stay on the platform continuously, upright, for at least 2 s and until the end. "
                         "Downhill: start verified standing on the platform facing the ramp; reach the floor at least "
                         "0.25 m (both ankle bodies 0.06 m) beyond the ramp foot (|y| < 0.15 m); stop; stay on the floor in front of the ramp "

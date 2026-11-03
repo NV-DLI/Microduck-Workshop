@@ -128,16 +128,16 @@ The closer the discount factor $\sym{gamma}$ is to 1, the more distant results c
 A reward is only a training signal, not task success. If the reward is poorly written, the agent may find a way to score high without completing the task, so trained results are checked against a separate success criterion.
 
 {#actor-critic}
-## Actor-Critic: one acts, one evaluates
+## Actor-Critic: during training, one acts and one evaluates
 
-Adjusting the policy directly from returns is very noisy: the same action sometimes earns a high return because of later luck, and sometimes the opposite. Actor-Critic methods split the work between two networks:
+Adjusting the policy directly from returns is very noisy: the same action sometimes earns a high return because of later luck, and sometimes the opposite. Actor-Critic is a training paradigm that splits the work between two networks during training:
 
 | Network | Output | Role |
 |---|---|---|
-| Actor (policy) | Action | Decides what to do; this is what is deployed |
+| Actor (policy) | Action | Decides what to do; this is what is deployed after training |
 | Critic (value function) | One number: the expected return | Judges “how good is the current situation”; used only during training |
 
-With the Critic's expectation, we can tell whether an action did better than expected. That difference is the **advantage**. With a positive advantage the Actor makes the action more likely; with a negative one, less likely. The Critic is trained too: its prediction should match the return actually obtained.
+With the Critic's expectation, we can tell whether an action did better than expected. That difference is the **advantage**. With a positive advantage the Actor makes the action more likely; with a negative one, less likely. The Critic is trained too: its prediction should match the return actually obtained. After training only the Actor is kept; the Critic's job is done.
 
 {#ppo}
 ## PPO: change a little at a time
@@ -185,7 +185,7 @@ Return only measures how much reward the policy collected, and reward is not tas
 {#next}
 ## Next
 
-These ideas are independent of any particular robot. Section 3.2 maps them onto Microduck: what the observation and action are, how the reward is written, and what the Actor and Critic each read.
+Section 3.2 maps these ideas onto Microduck's walking task: what the observation and action are, how the reward is written, and what the Actor and Critic each read and how they work together during training.
 
 {#references}
 ## References

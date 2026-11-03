@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="How the hand-designed onboard policy reuses the sensor estimates to shoot: why an onboard policy, how hand-designed stages connect Nav2 path planning with trained motion skills, the core code of each stage, and how to repeat shots in Isaac Sim." name="description" />
 
-  <title>4.2 Hand-designed shooting stages - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>4.2 Designing the shooting stages - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -63,7 +63,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="5.1 Vision-language-action models and GR00T" href="07-groot.html" />
+    <link rel="next" title="5.1 Vision-language-action (VLA) models and GR00T" href="07-groot.html" />
     <link rel="prev" title="4.1 Find the ball and goal: RGB detection and ToF ranging" href="06-perception.html" />
 
 
@@ -335,16 +335,16 @@
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extension) Community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.2 Hand-designed shooting stages</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.2 Designing the shooting stages</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.2 Hand-designed shooting stages</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.2 Designing the shooting stages</span></li>
   </ul>
 </nav>
 </div>
@@ -404,12 +404,12 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="hand-designed-shooting-stages">
-<h1>4.2 Hand-designed shooting stages<a class="headerlink" href="#hand-designed-shooting-stages" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="designing-the-shooting-stages">
+<h1>4.2 Designing the shooting stages<a class="headerlink" href="#designing-the-shooting-stages" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p><a class="reference internal" href="06-perception.html"><span class="std std-doc">Section 4.1</span></a> turned sensor readings into ball and goal positions. This section shows how the hand-designed onboard policy uses those positions to connect navigation, walking and kicking, reads the core code of each stage, and runs it in Isaac Sim for repeated shots.</p>
 </div><div class="lesson-meta">Section 4.2 · Estimated learning time: 35 minutes</div></div></div><section id="why">
 <h2>Why an onboard policy<a class="headerlink" href="#why" title="Link to this heading">#</a></h2>
-<p>Microduck uses an onboard controller board based on a Rockchip RK3566, whose small neural accelerator (NPU) delivers 0.8 TOPS on one INT8 core; the motion policy runs in a 50 Hz loop (<a class="reference external" href="https://github.com/pollen-robotics/microduck" rel="noreferer noopener" target="_blank">official README ↗</a>, <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/main/docs/project/npu-bringup.md" rel="noreferer noopener" target="_blank">NPU notes ↗</a>). That compute can hardly support low-latency inference of a vision-language-action model such as GR00T, with about three billion parameters. The onboard policy therefore uses a small detector, combined with geometry, path planning and the trained walking and kicking skills.</p>
+<p>Microduck uses an onboard controller board based on a Rockchip RK3566, whose small neural accelerator (NPU) delivers 0.8 TOPS on one INT8 core; the motion policy runs in a 50 Hz loop (<a class="reference external" href="https://github.com/pollen-robotics/microduck" rel="noreferer noopener" target="_blank">official README ↗</a>, <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/main/docs/project/npu-bringup.md" rel="noreferer noopener" target="_blank">NPU notes ↗</a>). That compute can hardly support low-latency inference of a vision-language-action model (VLA) such as GR00T, with about three billion parameters. The onboard policy therefore uses a small detector, combined with geometry, path planning and the trained walking and kicking skills.</p>
 </section>
 <section id="pipeline">
 <h2>From sensors to motion: Isaac Lab + Nav2<a class="headerlink" href="#pipeline" title="Link to this heading">#</a></h2>
@@ -530,14 +530,14 @@
 <section id="training">
 <h2>What was trained and what was not<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Detector.</strong> Its goal is to find two classes, ball and goal, in 960 × 540 head-camera images. The course started from a YOLO26n detector and trained it further on pitch images rendered in Isaac Sim, covering several floors (including the course's green pitch), different camera poses and ball positions. Detection-box labels were generated automatically by projecting the known scene geometry into the camera image, with rendered depth removing occluded parts. 512 images were used for training, 128 to select the checkpoint and another 128 held out for testing, with an mAP50 of 0.978 on the test set. This is an image-detection metric, not a shooting success rate.</p></li>
+<li><p><strong>Detector.</strong> Its goal is to find two classes, ball and goal, in 960 × 540 head-camera images. The course started from a YOLO26n detector and trained it further on pitch images rendered in Isaac Sim, covering several floors (including the course's green pitch), different camera poses and ball positions. Detection-box labels were generated automatically by projecting the known scene geometry into the camera image, with rendered depth removing occluded parts. 512 images were used for training, 128 to select the checkpoint and another 128 held out for testing.</p></li>
 <li><p><strong>Walking.</strong> The official walking policy was trained by Pollen Robotics with reinforcement learning, the method of Part 3; the course uses it with unchanged weights.</p></li>
-<li><p><strong>Kick and recovery.</strong> The official right-foot kick policy is also a local skill trained with reinforcement learning, with unchanged weights; the switch timing between it and standing is programmed.</p></li>
+<li><p><strong>Kick and recovery.</strong> The official right-foot kick policy is also a local skill trained with reinforcement learning, with unchanged weights; the timing logic for switching between it and standing is implemented here.</p></li>
 <li><p><strong>Not trained.</strong> The Nav2 planner, geometry, path following and stage logic were configured or programmed.</p></li>
 </ul>
 </section>
 <section id="run">
-<h2>Repeat shots in the same window<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
+<h2>Shoot!<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
 <p>Prepare the course container as described in <a class="reference internal" href="setup.html"><span class="std std-doc">Section 1.2</span></a>, then return to its terminal. If it is already running, enter it from the host with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>. Run:</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Terminal · Inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
@@ -545,16 +545,6 @@
 </pre></div>
 </div>
 </div>
-<p>The robot automatically observes, approaches the ball and attempts a shot. Switch to an English keyboard layout, click the Isaac Sim window and press <strong>R</strong> to restart. The window stays open. Each round starts from the standing initialization, with at most 1.5 cm of forward/backward offset and 1 cm of lateral offset. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.</p>
-<p>Let each round finish before pressing R to compare complete attempts. Pressing R during a task records an interruption separately, outside the complete-task success rate. Close the Isaac window to check the completed episodes and print the results.</p>
-<p>The simulation renders several views at once, the third-person viewport, the head RGB camera and ToF, so its speed depends on your hardware and the motion in the window may look jerky; the task advances on simulation time. To check only that the pipeline runs, you can skip the window:</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Terminal · Inside the container</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>football<span class="w"> </span>--headless<span class="w"> </span>--seconds<span class="w"> </span><span class="m">60</span><span class="w"> </span>--output<span class="w"> </span>outputs/onboard-football-headless
-</pre></div>
-</div>
-</div>
-<p>Without a window it runs one round, then evaluates it and prints the result.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>Parameter</p></th>
@@ -566,65 +556,21 @@
 <td><p>Per-round task limit in simulation seconds, excluding standing initialization; completion or failure ends it earlier</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--output</span></code></p></td>
-<td><p>A new folder; in window mode rounds are kept in separate <code class="docutils literal notranslate"><span class="pre">episode-001</span></code>, <code class="docutils literal notranslate"><span class="pre">episode-002</span></code>, etc. folders</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--headless</span></code></p></td>
-<td><p>Run and evaluate one round without opening a window</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--single-run</span></code></p></td>
-<td><p>Open the window but run one round, then close it and evaluate</p></td>
+<td><p>A new folder; rounds are kept in separate <code class="docutils literal notranslate"><span class="pre">episode-001</span></code>, <code class="docutils literal notranslate"><span class="pre">episode-002</span></code>, etc. folders</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<details class="enrichment"><summary>Key code parameters</summary><div class="enrichment-body"><ul class="simple">
-<li><p><strong>Reset.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard/session.py</span></code> handles R and rebuilds each environment inside the same Isaac Sim process. Sensors, localization, action history and scoring start fresh; previous results are retained.</p></li>
-<li><p><strong>Initialization.</strong> Temporary joint limits hold HOME while the free body settles on the ground. Once sensors and the first real policy output are ready, the limits are released before applying that output.</p></li>
-<li><p><strong>Rates.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard/executor.py</span></code> uses Newton physics at 100 Hz, joint policies at 50 Hz and RGB/ToF at 15 Hz. Each action spans two 10 ms physics steps.</p></li>
-<li><p><strong>Scene.</strong> <code class="docutils literal notranslate"><span class="pre">lab/onboard_scene.py</span></code> creates the green pitch, the goal and the initialization above.</p></li>
-<li><p><strong>Walking and kicking.</strong> Walking and recovery use <code class="docutils literal notranslate"><span class="pre">velstand.onnx</span></code>, the runtime copy of official <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>; kicking uses <code class="docutils literal notranslate"><span class="pre">ball_kick_right.onnx</span></code>, copied from <code class="docutils literal notranslate"><span class="pre">models/kick-teacher.onnx</span></code>.</p></li>
-<li><p><strong>Detection and localization.</strong> <code class="docutils literal notranslate"><span class="pre">run.py</span></code> checks the hashes in <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code> before passing the detector to the onboard policy; <code class="docutils literal notranslate"><span class="pre">lab/scene_goal_points.py</span></code> finds the goalpost bases inside the detection box.</p></li>
-<li><p><strong>Nav2.</strong> <code class="docutils literal notranslate"><span class="pre">lab/scene_nav2/nav2.yaml</span></code> configures NavFn (A*, no traversal of unknown space) and a 2.5 cm cost map; <code class="docutils literal notranslate"><span class="pre">map_contract.py</span></code> builds the map from the surveyed pitch and current ToF and checks the path.</p></li>
-</ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="The complete Isaac Sim window of the onboard shot, showing the green pitch, the head RGB image and the 8×8 ToF ranges."></a><figcaption><p>Watch the robot on the left and compare what it sees on the right: do the detection boxes stay on the ball and goal, and do the ToF readings ahead of the feet shrink as it approaches? NR means no return and does not mean that nothing is ahead.</p>
-</figcaption></figure></section>
-<section id="results">
-<h2>Measured results<a class="headerlink" href="#results" title="Link to this heading">#</a></h2>
-<p>With the window configuration above, 20 consecutive rounds were run, pressing R between rounds, with the start varying by ±1.5 cm forward/backward and ±1 cm sideways. A full success requires foot contact, the whole ball inside the goal, no fall and recovery to standing; complete rounds without a goal remain in the denominator.</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>Rounds</p></th>
-<th class="head cell-short"><p>Full successes</p></th>
-<th class="head cell-short"><p>Falls</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="cell-short"><p>1–5</p></td>
-<td class="cell-short"><p>5 / 5</p></td>
-<td class="cell-short"><p>0 / 5</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>6–10</p></td>
-<td class="cell-short"><p>4 / 5</p></td>
-<td class="cell-short"><p>0 / 5</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>11–15</p></td>
-<td class="cell-short"><p>4 / 5</p></td>
-<td class="cell-short"><p>0 / 5</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>16–20</p></td>
-<td class="cell-short"><p>4 / 5</p></td>
-<td class="cell-short"><p>0 / 5</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>This cohort scored <strong>17/20 (85%)</strong> with <strong>0/20</strong> falls and no technical errors; no failed round was removed. <a href="_static/data/onboard-reset-evaluation.json">View the per-round record</a>. All rounds used the same pitch and configuration; this is a sample under small start perturbations, not a general success rate. Keep recording your own results.</p>
-<p>When a round fails, first see which stage it stopped in. <code class="docutils literal notranslate"><span class="pre">summary.json</span></code> summarizes the rounds, and each round's <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> gives <code class="docutils literal notranslate"><span class="pre">terminal_reason</span></code> and failure details. A visible detection box does not mean the geometry has passed its checks; if the close-range position is not fresh enough, the policy may still stop to observe again or end the attempt. Also check whether the path was feasible, whether the kick conditions were met and whether the robot recovered its balance after contact.</p>
+<p>The robot automatically observes, approaches the ball and attempts a shot. The first round starts from the nominal position. Click the Isaac Sim window and press <strong>R</strong> to restart: the window stays open and each round starts from the standing initialization, with the start randomly offset by up to 10 cm forward/backward and up to 10 cm sideways, and the heading turned by up to 30° clockwise or counterclockwise. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.</p>
+<p>Let each round finish before pressing R to compare complete attempts from different starts. Pressing R during a task records that round separately as an interruption. Close the Isaac window to summarize the completed rounds.</p>
+<p>The simulation renders several views at once, the third-person viewport, the head RGB camera and ToF, so its speed depends on your hardware and the motion in the window may look jerky; the task advances on simulation time.</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="The complete Isaac Sim window of the onboard shot, showing the green pitch, the head RGB image and the 8×8 ToF ranges."></a><figcaption><p>Watch the robot on the left and compare what it sees on the right: do the detection boxes stay on the ball and goal, and do the ToF readings ahead of the feet shrink as it approaches? NR means no return and does not mean that nothing is ahead.</p>
+</figcaption></figure><p>When a round fails, first see which stage it stopped in. <code class="docutils literal notranslate"><span class="pre">summary.json</span></code> summarizes the rounds, and each round's <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> gives <code class="docutils literal notranslate"><span class="pre">terminal_reason</span></code> and failure details. A visible detection box does not mean the geometry has passed its checks; if the close-range position is not fresh enough, the policy may still stop to observe again or end the attempt. Also check whether the path was feasible, whether the kick conditions were met and whether the robot recovered its balance after contact.</p>
 </section>
 <section id="design">
 <h2>Limits of hand design<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
 <p>Every stage, transition and threshold of this onboard policy was written by people around one task: shooting at this goal. It is clear and easy to debug, but it fits only this task. For &quot;dribble the ball to the center circle and stop&quot; or &quot;walk up to the ball without touching it&quot;, most of the perception can be reused, but the stages, conditions and thresholds must be redesigned and retuned.</p>
-<p>If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 shows how GR00T takes this route.</p>
+<p>If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger VLA becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 shows how GR00T takes this route.</p>
 <div class="quiz"><h3>Check your understanding</h3><p>Which parts of the onboard shot were learned from data, and which were written or configured by people?</p>
 <details><summary>Show explanation</summary><p>The detector and the official walking and kicking policies were trained. The geometry, Nav2 path planning, the path follower and the stage logic were configured or programmed.</p>
 </details></div><div class="quiz"><h3>Check your understanding</h3><p>To make Microduck dribble the ball to the center circle and stop, can the existing onboard policy be reused directly?</p>
@@ -666,7 +612,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">5.1 Vision-language-action models and GR00T</p>
+        <p class="prev-next-title">5.1 Vision-language-action (VLA) models and GR00T</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -703,8 +649,7 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">What was trained and what was not</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">Repeat shots in the same window</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results">Measured results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">Shoot!</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design">Limits of hand design</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>

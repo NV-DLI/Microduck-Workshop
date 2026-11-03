@@ -27,12 +27,7 @@ def source_block(predicate):
                if isinstance(node, ast.If) and predicate(ast.unparse(node.test))]
     if len(matches) != 1:
         raise AssertionError(f"Expected one source block, found {len(matches)}")
-    # The real reset block contains a break for learning sessions. Preserve it
-    # within a single-iteration loop rather than rewriting the source behavior.
-    module = ast.Module(body=[ast.For(
-        target=ast.Name(id="_audit_iteration", ctx=ast.Store()),
-        iter=ast.List(elts=[ast.Constant(0)], ctx=ast.Load()),
-        body=[copy.deepcopy(matches[0])], orelse=[])], type_ignores=[])
+    module = ast.Module(body=[copy.deepcopy(matches[0])], type_ignores=[])
     return compile(ast.fix_missing_locations(module), "<manual source block>", "exec")
 
 
@@ -77,12 +72,12 @@ class ManualStartupTest(unittest.TestCase):
         self.robot = Robot()
         self.original = self.robot.data.joint_pos_limits.torch.clone()
         self.reset_block = source_block(lambda test: test == "flags['reset']")
-        # There are now two active-brake checks. Identify takeover by its
-        # switch_armed assignment, preserving its actual body verbatim.
+        # Identify the takeover check by its actual diagnostic; the other check
+        # releases the old brake before a reset.
         tree = ast.parse((ROOT / "lab/manual.py").read_text())
         matches = [node for node in ast.walk(tree) if isinstance(node, ast.If)
                    and ast.unparse(node.test) == "start_brake is not None and start_brake.active"
-                   and "switch_armed" in ast.unparse(node)]
+                   and "COURSE_POLICY_TAKEOVER" in ast.unparse(node)]
         self.assertEqual(len(matches), 1)
         self.takeover_block = compile(ast.fix_missing_locations(ast.Module(
             body=[copy.deepcopy(matches[0])], type_ignores=[])), "<manual takeover>", "exec")
@@ -108,10 +103,10 @@ class ManualStartupTest(unittest.TestCase):
             return brake, {"settled": True}
 
         namespace = dict(
-            flags=dict(reset=True, kick=True, switch_armed=False), learner=None,
-            start_brake=prior, step=17, env=SimpleNamespace(reset=reset), imu=None,
+            flags=dict(reset=True, kick=True),
+            start_brake=prior, step=17, env=SimpleNamespace(reset=reset),
             held={"W"}, kick_start=5, fallen=True, scored=True, resets=2,
-            a=SimpleNamespace(mode_switch=False, grounded_start=True, locomotion="walking"),
+            a=SimpleNamespace(grounded_start=True),
             settle=settle, events=[], time=SimpleNamespace(monotonic=lambda: 1),
             json=__import__("json"), print=lambda *args, **kwargs: None)
         exec(self.reset_block, namespace)
@@ -130,6 +125,43 @@ class ManualStartupTest(unittest.TestCase):
         self.assertFalse(namespace["start_brake"].active)
         self.assertTrue(torch.equal(self.robot.data.joint_pos_limits.torch, self.original))
         self.assertEqual(self.events[-1], "release")
+
+    def test_real_actor_output_precedes_release_and_action_processing(self):
+        tree = ast.parse((ROOT / "lab/manual.py").read_text())
+        loop = next(node for node in ast.walk(tree)
+                    if isinstance(node, ast.For) and ast.unparse(node.target) == "step")
+        first = next(i for i, node in enumerate(loop.body)
+                     if isinstance(node, ast.Assign)
+                     and ast.unparse(node) == "action = walk(obs)")
+        last = next(i for i, node in enumerate(loop.body)
+                    if isinstance(node, ast.Expr)
+                    and ast.unparse(node) == "env.action_manager.process_action(action)")
+        block = compile(ast.fix_missing_locations(ast.Module(
+            body=copy.deepcopy(loop.body[first:last + 1]), type_ignores=[])),
+            "<manual actor-to-processing>", "exec")
+        brake = self.Brake(self.robot)
+        brake.lock()
+        observation = torch.zeros((1, 2))
+
+        def walk(obs):
+            self.assertTrue(brake.active)
+            self.assertIs(obs, observation)
+            self.events.append("actor_output")
+            return torch.ones((1, 2))
+
+        def process_action(action):
+            self.assertFalse(brake.active)
+            self.assertTrue(torch.equal(action, torch.ones((1, 2))))
+            self.assertTrue(torch.equal(self.robot.data.joint_pos_limits.torch, self.original))
+            self.events.append("process_action")
+
+        exec(block, dict(
+            obs=observation, walk=walk, kick_start=None, step=0,
+            action_rows=[], cmd=SimpleNamespace(vel_command_b=torch.zeros((1, 3))),
+            start_brake=brake, env=SimpleNamespace(action_manager=SimpleNamespace(
+                process_action=process_action)), json=__import__("json"),
+            print=lambda *args, **kwargs: None))
+        self.assertEqual(self.events, ["actor_output", "release", "process_action"])
 
     def test_reset_queued_before_first_policy_restores_old_brake_first(self):
         self.run_reset("active")

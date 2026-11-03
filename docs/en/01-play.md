@@ -33,14 +33,9 @@ python3 scripts/run.py manual \
   --output outputs/manual-football-01
 ```
 
-Switch your input method to English, click the simulation window, and use the keys in the table; if keys do nothing, an input method is usually capturing them. The key help is also in the “Microduck • Keyboard football” tab on the right of the window.
+The command needs no model argument: it reads the official walking model `walk.onnx` and right-foot kick model `kick-teacher.onnx` from `models/`. `--seconds` is the longest simulated time the window runs, and records go to the folder given by `--output`.
 
-:::{enrichment} Key code parameters
-- **Models.** `run.py manual` needs no model argument: it reads `walk.onnx` and `kick-teacher.onnx` from `/workspace/Microduck-Workshop/models` in the container, which is the host repository's `models/` (read-only).
-- **Scene assets.** The pitch, ball, goal and robot come from the repository's `lab/assets/`: `pitch_A.usda`, `official_ball.usda`, `steel_goal.usda`, `microduck_contact.usda`.
-- **Start.** The duck first settles on the pitch with its joints locked, and the lock is released when the policy takes control; the same happens after pressing R.
-- **Output.** Records go directly into `outputs/manual-football-01`, given by `--output`, under the host repository's `outputs/`. `--seconds` is the longest simulated time the window runs.
-:::
+Click the simulation window and use the keys in the table. The key help is also in the “Microduck • Keyboard football” tab on the right of the window.
 
 :::{course-image} media/isaac-ui-keyboard-walking.png
 :alt: The complete Isaac Sim window of keyboard football: Microduck, ball and goal on the green pitch, and the keys listed in a tab on the right.

@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it." name="description" />
+<meta content="Meet vision-language-action (VLA) models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it." name="description" />
 
-  <title>5.1 Vision-language-action models and GR00T - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>5.1 Vision-language-action (VLA) models and GR00T - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -64,7 +64,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="5.2 Score autonomously with GR00T" href="08-groot-interface.html" />
-    <link rel="prev" title="4.2 Hand-designed shooting stages" href="06-onboard.html" />
+    <link rel="prev" title="4.2 Designing the shooting stages" href="06-onboard.html" />
 
 
 
@@ -335,16 +335,16 @@
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 Community skills: from goal to reward</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extension) Community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 Vision-language-action models and GR00T</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">5.1 Vision-language-action (VLA) models and GR00T</span></li>
   </ul>
 </nav>
 </div>
@@ -404,14 +404,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="vision-language-action-models-and-gr00t">
-<h1>5.1 Vision-language-action models and GR00T<a class="headerlink" href="#vision-language-action-models-and-gr00t" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Meet vision-language-action models and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="vision-language-action-vla-models-and-gr00t">
+<h1>5.1 Vision-language-action (VLA) models and GR00T<a class="headerlink" href="#vision-language-action-vla-models-and-gr00t" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Meet VLAs and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.</p>
 </div><div class="lesson-meta">Section 5.1 · Estimated learning time: 40 minutes</div></div></div><section id="idea">
 <h2>From writing steps to providing goals and examples<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
 <p>The onboard policy in Part 4 was designed around the robot's limited onboard compute: a nano detector, a classic path planner, compact motion skills and stages that people wrote for shooting. Every step is explainable, but a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.</p>
 <p>If the decision-making model can run off the robot, a much larger model becomes possible. In this course GR00T runs on a local GPU workstation, while local motion skills handle fast control; a cloud server could also play that role, with more network delay. <a href="08-groot-interface.html#deployment">Section 5.2</a> explains the details.</p>
-<p>A vision-language-action model (VLA) takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.</p>
+<p>A VLA takes a different route. You give the model a sentence describing the goal, plus enough demonstrations of “what the robot saw, what state its body was in, and what it did next”, and the model learns the mapping from observation to action. Language says what to achieve; demonstrations show how this robot achieves it.</p>
 <p>The two approaches are not exclusive. The onboard policy still needs reliable perception and control; a VLA also depends on sensors, calibration and low-level execution and control (this course also has it call pretrained walking and kicking skills, which is a design choice of this course rather than a requirement of every VLA), and its reliable performance still depends on what the demonstrations cover: pretraining can help transfer, but actions and recovery from imbalance that the demonstrations never covered cannot be assumed to be learned.</p>
 </section>
 <section id="vla">
@@ -556,7 +556,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">4.2 Hand-designed shooting stages</p>
+        <p class="prev-next-title">4.2 Designing the shooting stages</p>
       </div>
     </a>
     <a class="right-next"

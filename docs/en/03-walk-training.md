@@ -182,6 +182,8 @@ steps:
 
 The excerpt comes from the Microduck task configuration of the pinned Isaac Lab. Servo delay and supply voltage are not events but part of the actuator model; observation noise is part of the observation configuration. The test later in this section turns pushes and parameter randomization off to compare policies under nominal conditions.
 
+Pollen Robotics also uses domain randomization to train the official policies. Its training repository, microduck_rl, is built on mjlab rather than this course's Isaac Lab and Newton, so the two are not the same configuration; its walking task likewise randomizes foot friction (also 0.7–1.3), mass and inertia, trunk and head center of mass, joint friction and armature, encoder zero offsets and IMU mounting angle, and applies periodic pushes ([official walking task configuration ↗](https://github.com/pollen-robotics/microduck_rl/blob/bae39f5900b318f7e87fc485c30a31213cfa14eb/src/mjlab_microduck/tasks/microduck_velocity_env_cfg.py)). The official README adds that its servo model randomizes supply voltage, voltage sag, command delay and friction ([microduck_rl ↗](https://github.com/pollen-robotics/microduck_rl/tree/bae39f5900b318f7e87fc485c30a31213cfa14eb)).
+
 {#implementation}
 ## Core implementation of the reward and PPO
 
@@ -299,12 +301,6 @@ python3 scripts/run.py train-walk \
 | `--show` | Opens Isaac Sim to display the parallel environments; rendering uses GPU memory and slows every iteration |
 | `--output` | Where checkpoints, configuration, TensorBoard logs and the exported model are saved |
 
-:::{enrichment} Key code parameters
-- **Start point.** Training starts from a random initialization and reads no existing model.
-- **Scene and task.** The robot model is `lab/assets/microduck_contact.usda` (the full-body collision model); the task, rewards and randomization come from the runtime code arranged into `/workspace/state` when the container starts.
-- **Output.** Checkpoints (one every 250 iterations), `env.yaml` and `agent.yaml`, TensorBoard logs and the exported model go to `outputs/walking-training-01`, under the host repository's `outputs/`.
-:::
-
 **How long does a full training take?** The course's pretrained result was trained on a DGX Spark without a window: 1024 environments × 2500 iterations, a training phase of 7246 seconds (about 2 hours), roughly 4.8 minutes per 100 iterations, with other jobs on the GPU at the time. That run used the original official collision model, while the command above uses the full-body collision model, and `--show` adds rendering on top, so your time will differ.
 
 **You do not need to wait for it to finish.** Once the window appears and the terminal prints reward and episode length for each iteration, watch for a few minutes: in the first tens of iterations most ducks fall quickly and are reset one by one, and as iterations go by more and more stay up.
@@ -335,25 +331,6 @@ Read them by number:
 2. **Mean episode reward** rises quickly over the first 800 iterations and then fluctuates around 80 without clear further gains. A plateau does not mean the skill is perfect, only that more training with the same settings helps less.
 3. **Linear-velocity tracking error** falls from about 0.38 to about 0.22 m/s: forward and sideways tracking improves, but the error is still sizeable.
 4. **Yaw-rate error** falls from about 1.9 to about 0.7 rad/s and stays large: a warning that turning may not have been learned and needs its own test.
-
-```{training-chart}
-data: walk-full-training-scalars.json
-title: 1024 environments · 2500-iteration training
-badge: Training phase 7246 s
-metrics:
-- key: Train/mean_episode_length
-  label: Mean episode length / control steps
-- key: Train/mean_reward
-  label: Mean episode reward
-- key: Metrics/base_velocity/error_vel_xy
-  label: Linear-velocity error / (m/s)
-- key: Metrics/base_velocity/error_vel_yaw
-  label: Yaw-rate error / (rad/s)
-ticks: [1, 500, 1000, 1500, 2000, 2500]
-x_label: Training iteration
-iteration_label: Iteration
-caption: One raw (unsmoothed) logged value every 25 iterations from the TensorBoard event file of the same run; hover to read the values.
-```
 
 Better curves show that the training objective is improving; whether the robot walks on command is checked in an independent test. The course tested the policy exported by this run with fixed commands: 4 environments per command, 20 seconds each, randomization off.
 
@@ -408,13 +385,13 @@ python3 scripts/run.py walk \
   --output outputs/ppo-walk-test-01
 ```
 
-:::{enrichment} Key code parameters
-- **`--model`.** Reads `/workspace/Microduck-Workshop/datasets/walking-ppo/exported/policy.onnx` in the container, the course's pretrained policy in the host repository's `datasets/walking-ppo/` (read-only). The command reads only the file given by `--model`.
-- **`--velocity 0.25 0 0`.** Forward, sideways and turning velocity command; the program first sends about 2 seconds of zero velocity, then keeps sending this command.
-- **`--seed`.** The same value as the recorded run in Section 2.2, so the two results compare directly.
-- **Start.** The joints are first locked in the default standing pose and the robot settles on the ground (nothing supports the body); the lock is released after the policy computes its first action and before that action is applied, so no drop from the air adds extra wobble.
-- **Output.** `report.json` and `trajectory.json`, with one position every 0.1 s, go to the folder given by `--output`.
-:::
+| Argument | Meaning |
+|---|---|
+| `--model` | The policy file to test; here the course's pretrained `datasets/walking-ppo/exported/policy.onnx` (read-only) |
+| `--velocity 0.25 0 0` | Forward, sideways and turning velocity command; the program first sends about 2 seconds of zero velocity, then keeps sending this command |
+| `--seconds 12` | Simulated run time |
+| `--seed 202` | The same as the recorded run in Section 2.2, so the two results compare directly |
+| `--output` | Folder for `report.json` and `trajectory.json`, with one position every 0.1 s |
 
 :::{course-image} media/isaac-ui-ppo-walk-test.png
 :alt: The complete Isaac Sim window while the command above tests the pretrained PPO policy: one Microduck stepping on flat ground, RTX real-time rendering and Newton MJWarp physics in the toolbar.

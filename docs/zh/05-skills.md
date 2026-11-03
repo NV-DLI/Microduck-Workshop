@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.5 社区技能：从目标到奖励
+# 3.5 （拓展）社区技能：奖励设计
 
 :::{lesson-intro}
 :meta: 第 3.5 节 · 阅读与分析 · 预计学习时长 45 分钟
@@ -129,7 +129,7 @@ exp:
 这两个模型和它们的训练代码都不在课程仓库和容器中，课程命令也不会加载它们；代码节选来自作者公开的固定版本，只用于阅读，链接指向那个版本的完整文件。演示视频是课程网页保存的录像副本。
 
 {#how-to-read}
-## 用同一张表读社区技能
+## 遵循这样的思路分析技能
 
 每个技能都按同样的顺序读：
 

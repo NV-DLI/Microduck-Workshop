@@ -30,26 +30,35 @@ During training, Newton advances thousands of environments on the GPU at once, I
 {#actor-critic}
 ## How the Actor and Critic divide the work
 
+During training the Actor and Critic work in one loop: the Actor interacts with the environment and produces the data, while the Critic only evaluates that data and never controls the robot.
+
 ```{learning-flow}
-label: The Actor that runs at deployment
+label: How the Actor and Critic work together during training
+cells: [[0, 0], [1, 0], [2, 0], [2, 1], [1, 1], [0, 1]]
+links: [[0, 1], [1, 0], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0], [5, 3, lane]]
 nodes:
-- [61-D observation, State and commands the robot can measure]
-- [Actor, 512-256-128 fully connected network]
-- [14-D action, Joint target offsets]
+- [Actor samples actions, Outputs 14-D actions]
+- [Environment interaction, 'Newton physics, Isaac Lab rewards']
+- [Rewards and next states, 24 steps per environment]
+- [Critic estimates value, Expected return of each state]
+- [Advantages and return targets, Actual results vs. estimates]
+- [PPO update, Updates the Actor and Critic separately]
 details:
-- The observation contains only quantities also available on the real robot: IMU, joint encoders, the previous action and the commands. Noise is added during training to imitate sensor errors.
-- The Actor has three hidden layers (512, 256, 128). During training it outputs an action distribution and samples from it to explore; the exported deployment keeps only the deterministic output.
-- The 14 values are added to the default stance to give each joint's target angle, which goes to the servo model and the physics simulation.
-caption: This is the part that runs at deployment. The Critic is not on this path; it works alongside the Actor only during training.
+- The Actor (a 512-256-128 fully connected network) reads the noisy 61-D observation, outputs an action distribution and samples from it to explore.
+- The action is added to the default stance to give joint targets. Newton advances the physics, Isaac Lab computes the reward, checks for termination and returns the next observation to the Actor for the next step.
+- Thousands of environments each interact for 24 steps; observations, actions, rewards and next states form one training batch.
+- The Critic reads a fuller simulation state (see the table below) and estimates the expected return of each state in the batch. It outputs no action and takes no part in control.
+- Actual rewards and the Critic's estimates give the advantage, how much better an action did than expected, and the return targets the Critic should approach.
+- PPO updates the Actor with the advantages and the Critic with the return targets; the updated Actor then collects the next batch.
+caption: 'How the two networks work together during training. Deployed inference runs only the Actor, the policy network of [Section 2.1](01-play.html#policies): observations in, actions out; neither the Critic nor the PPO update is needed.'
 ```
 
-The Actor and Critic read their own observations and work in parallel:
+The two networks read different information:
 
 | | Actor (policy) | Critic (value function) |
 |---|---|---|
 | Input | The 61-D observation, with noise | The Actor's observation plus base linear velocity, foot height, air time, contact state and contact forces, without noise |
 | Output | 14 joint actions | One number: the return expected from the current state |
-| Role in training | Interacts with the environment and produces actions; updated by the advantages | Provides the expected return used to compute each action's advantage; itself updated from actual returns |
 | Deployment | Exported to ONNX and run on the robot | Not needed |
 
 The Critic can use simulation information the real robot cannot measure because it is never deployed; the better its estimate, the more reliable the advantages and the steadier the Actor learns. The Actor must rely only on observations available on the real robot, or it could not run after export.

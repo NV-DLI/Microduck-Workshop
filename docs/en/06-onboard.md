@@ -4,7 +4,7 @@ myst:
     description: 'How the hand-designed onboard policy reuses the sensor estimates to shoot: why an onboard policy, how hand-designed stages connect Nav2 path planning with trained motion skills, the core code of each stage, and how to repeat shots in Isaac Sim.'
 ---
 
-# 4.2 Hand-designed shooting stages
+# 4.2 Designing the shooting stages
 
 :::{lesson-intro}
 :meta: Section 4.2 · Estimated learning time: 35 minutes
@@ -15,7 +15,7 @@ myst:
 {#why}
 ## Why an onboard policy
 
-Microduck uses an onboard controller board based on a Rockchip RK3566, whose small neural accelerator (NPU) delivers 0.8 TOPS on one INT8 core; the motion policy runs in a 50 Hz loop ([official README ↗](https://github.com/pollen-robotics/microduck), [NPU notes ↗](https://github.com/pollen-robotics/microduck/blob/main/docs/project/npu-bringup.md)). That compute can hardly support low-latency inference of a vision-language-action model such as GR00T, with about three billion parameters. The onboard policy therefore uses a small detector, combined with geometry, path planning and the trained walking and kicking skills.
+Microduck uses an onboard controller board based on a Rockchip RK3566, whose small neural accelerator (NPU) delivers 0.8 TOPS on one INT8 core; the motion policy runs in a 50 Hz loop ([official README ↗](https://github.com/pollen-robotics/microduck), [NPU notes ↗](https://github.com/pollen-robotics/microduck/blob/main/docs/project/npu-bringup.md)). That compute can hardly support low-latency inference of a vision-language-action model (VLA) such as GR00T, with about three billion parameters. The onboard policy therefore uses a small detector, combined with geometry, path planning and the trained walking and kicking skills.
 
 {#pipeline}
 ## From sensors to motion: Isaac Lab + Nav2
@@ -259,13 +259,13 @@ Stages switch mainly on observations and body state: if a condition fails, the r
 {#training}
 ## What was trained and what was not
 
-- **Detector.** Its goal is to find two classes, ball and goal, in 960 × 540 head-camera images. The course started from a YOLO26n detector and trained it further on pitch images rendered in Isaac Sim, covering several floors (including the course's green pitch), different camera poses and ball positions. Detection-box labels were generated automatically by projecting the known scene geometry into the camera image, with rendered depth removing occluded parts. 512 images were used for training, 128 to select the checkpoint and another 128 held out for testing, with an mAP50 of 0.978 on the test set. This is an image-detection metric, not a shooting success rate.
+- **Detector.** Its goal is to find two classes, ball and goal, in 960 × 540 head-camera images. The course started from a YOLO26n detector and trained it further on pitch images rendered in Isaac Sim, covering several floors (including the course's green pitch), different camera poses and ball positions. Detection-box labels were generated automatically by projecting the known scene geometry into the camera image, with rendered depth removing occluded parts. 512 images were used for training, 128 to select the checkpoint and another 128 held out for testing.
 - **Walking.** The official walking policy was trained by Pollen Robotics with reinforcement learning, the method of Part 3; the course uses it with unchanged weights.
-- **Kick and recovery.** The official right-foot kick policy is also a local skill trained with reinforcement learning, with unchanged weights; the switch timing between it and standing is programmed.
+- **Kick and recovery.** The official right-foot kick policy is also a local skill trained with reinforcement learning, with unchanged weights; the timing logic for switching between it and standing is implemented here.
 - **Not trained.** The Nav2 planner, geometry, path following and stage logic were configured or programmed.
 
 {#run}
-## Repeat shots in the same window
+## Shoot!
 
 Prepare the course container as described in [Section 1.2](setup.md), then return to its terminal. If it is already running, enter it from the host with `docker exec -it microduck-workshop bash`. Run:
 
@@ -276,57 +276,22 @@ Prepare the course container as described in [Section 1.2](setup.md), then retur
 python3 scripts/run.py football --seconds 60 --output outputs/onboard-football
 ```
 
-The robot automatically observes, approaches the ball and attempts a shot. Switch to an English keyboard layout, click the Isaac Sim window and press **R** to restart. The window stays open. Each round starts from the standing initialization, with at most 1.5 cm of forward/backward offset and 1 cm of lateral offset. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.
-
-Let each round finish before pressing R to compare complete attempts. Pressing R during a task records an interruption separately, outside the complete-task success rate. Close the Isaac window to check the completed episodes and print the results.
-
-The simulation renders several views at once, the third-person viewport, the head RGB camera and ToF, so its speed depends on your hardware and the motion in the window may look jerky; the task advances on simulation time. To check only that the pipeline runs, you can skip the window:
-
-```{code-block} bash
-:caption: Terminal · Inside the container
-:class: terminal
-
-python3 scripts/run.py football --headless --seconds 60 --output outputs/onboard-football-headless
-```
-
-Without a window it runs one round, then evaluates it and prints the result.
-
 | Parameter | Meaning |
 |---|---|
 | `--seconds 60` | Per-round task limit in simulation seconds, excluding standing initialization; completion or failure ends it earlier |
-| `--output` | A new folder; in window mode rounds are kept in separate `episode-001`, `episode-002`, etc. folders |
-| `--headless` | Run and evaluate one round without opening a window |
-| `--single-run` | Open the window but run one round, then close it and evaluate |
+| `--output` | A new folder; rounds are kept in separate `episode-001`, `episode-002`, etc. folders |
 
-:::{enrichment} Key code parameters
-- **Reset.** `lab/onboard/session.py` handles R and rebuilds each environment inside the same Isaac Sim process. Sensors, localization, action history and scoring start fresh; previous results are retained.
-- **Initialization.** Temporary joint limits hold HOME while the free body settles on the ground. Once sensors and the first real policy output are ready, the limits are released before applying that output.
-- **Rates.** `lab/onboard/executor.py` uses Newton physics at 100 Hz, joint policies at 50 Hz and RGB/ToF at 15 Hz. Each action spans two 10 ms physics steps.
-- **Scene.** `lab/onboard_scene.py` creates the green pitch, the goal and the initialization above.
-- **Walking and kicking.** Walking and recovery use `velstand.onnx`, the runtime copy of official `models/walk.onnx`; kicking uses `ball_kick_right.onnx`, copied from `models/kick-teacher.onnx`.
-- **Detection and localization.** `run.py` checks the hashes in `models/scene-detector/deployment.json` before passing the detector to the onboard policy; `lab/scene_goal_points.py` finds the goalpost bases inside the detection box.
-- **Nav2.** `lab/scene_nav2/nav2.yaml` configures NavFn (A*, no traversal of unknown space) and a 2.5 cm cost map; `map_contract.py` builds the map from the surveyed pitch and current ToF and checks the path.
-:::
+The robot automatically observes, approaches the ball and attempts a shot. The first round starts from the nominal position. Click the Isaac Sim window and press **R** to restart: the window stays open and each round starts from the standing initialization, with the start randomly offset by up to 10 cm forward/backward and up to 10 cm sideways, and the heading turned by up to 30° clockwise or counterclockwise. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.
+
+Let each round finish before pressing R to compare complete attempts from different starts. Pressing R during a task records that round separately as an interruption. Close the Isaac window to summarize the completed rounds.
+
+The simulation renders several views at once, the third-person viewport, the head RGB camera and ToF, so its speed depends on your hardware and the motion in the window may look jerky; the task advances on simulation time.
 
 :::{course-image} media/isaac-ui-onboard-sensors.png
 :alt: The complete Isaac Sim window of the onboard shot, showing the green pitch, the head RGB image and the 8×8 ToF ranges.
 
 Watch the robot on the left and compare what it sees on the right: do the detection boxes stay on the ball and goal, and do the ToF readings ahead of the feet shrink as it approaches? NR means no return and does not mean that nothing is ahead.
 :::
-
-{#results}
-## Measured results
-
-With the window configuration above, 20 consecutive rounds were run, pressing R between rounds, with the start varying by ±1.5 cm forward/backward and ±1 cm sideways. A full success requires foot contact, the whole ball inside the goal, no fall and recovery to standing; complete rounds without a goal remain in the denominator.
-
-| Rounds | Full successes | Falls |
-|---|---|---|
-| 1–5 | 5 / 5 | 0 / 5 |
-| 6–10 | 4 / 5 | 0 / 5 |
-| 11–15 | 4 / 5 | 0 / 5 |
-| 16–20 | 4 / 5 | 0 / 5 |
-
-This cohort scored **17/20 (85%)** with **0/20** falls and no technical errors; no failed round was removed. <a href="_static/data/onboard-reset-evaluation.json">View the per-round record</a>. All rounds used the same pitch and configuration; this is a sample under small start perturbations, not a general success rate. Keep recording your own results.
 
 When a round fails, first see which stage it stopped in. `summary.json` summarizes the rounds, and each round's `manifest.json` gives `terminal_reason` and failure details. A visible detection box does not mean the geometry has passed its checks; if the close-range position is not fresh enough, the policy may still stop to observe again or end the attempt. Also check whether the path was feasible, whether the kick conditions were met and whether the robot recovered its balance after contact.
 
@@ -335,7 +300,7 @@ When a round fails, first see which stage it stopped in. `summary.json` summariz
 
 Every stage, transition and threshold of this onboard policy was written by people around one task: shooting at this goal. It is clear and easy to debug, but it fits only this task. For "dribble the ball to the center circle and stop" or "walk up to the ball without touching it", most of the perception can be reused, but the stages, conditions and thresholds must be redesigned and retuned.
 
-If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger vision-language-action model becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 shows how GR00T takes this route.
+If model inference can move off the robot to a GPU workstation, or to a cloud server at the cost of more network delay, a much larger VLA becomes possible: one that learns from a language instruction and demonstrations instead of hand-written stages, while trained motion skills still handle fast control. Part 5 shows how GR00T takes this route.
 
 ::::{quiz}
 Which parts of the onboard shot were learned from data, and which were written or configured by people?

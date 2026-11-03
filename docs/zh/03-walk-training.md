@@ -182,6 +182,8 @@ steps:
 
 节选来自固定版本 Isaac Lab 的 Microduck 任务配置。舵机延迟和供电电压不是事件，而是写在执行器模型里；观测噪声写在观测配置里。本节后面的测试关闭了推力与参数随机化，在名义条件下比较策略。
 
+Pollen Robotics 训练官方策略时同样使用域随机化。官方训练仓库 microduck_rl 基于 mjlab，而不是本课的 Isaac Lab 与 Newton，所以两者不是同一份配置；但它的行走任务也随机化脚底摩擦（同为 0.7–1.3）、质量与惯量、躯干和头部重心、关节摩擦与转动惯量、编码器零位偏差和 IMU 安装角度，并定时施加推力（[官方行走任务配置 ↗](https://github.com/pollen-robotics/microduck_rl/blob/bae39f5900b318f7e87fc485c30a31213cfa14eb/src/mjlab_microduck/tasks/microduck_velocity_env_cfg.py)）。官方 README 还说明，它的舵机模型会随机化供电电压、电压跌落、指令延迟和摩擦（[microduck_rl ↗](https://github.com/pollen-robotics/microduck_rl/tree/bae39f5900b318f7e87fc485c30a31213cfa14eb)）。
+
 {#implementation}
 ## 奖励与 PPO 的核心实现
 
@@ -299,12 +301,6 @@ python3 scripts/run.py train-walk \
 | `--show` | 打开 Isaac Sim 窗口显示并行环境；渲染会占用显存并让每轮训练变慢 |
 | `--output` | 检查点、配置、TensorBoard 日志和导出模型的保存位置 |
 
-:::{enrichment} 代码关键参数
-- **起点。** 训练从随机初始化开始，不读取任何已有模型。
-- **场景与任务。** 机器人模型是 `lab/assets/microduck_contact.usda`（全身碰撞模型）；训练任务、奖励和随机化来自容器启动时整理到 `/workspace/state` 的运行时代码。
-- **输出。** 检查点（每 250 轮一个）、`env.yaml` 与 `agent.yaml`、TensorBoard 日志和导出的模型都写入 `outputs/walking-training-01`，也就是宿主机仓库的 `outputs/` 下。
-:::
-
 **完整训练需要多长时间？** 课程随附的预训练结果是在 DGX Spark 上不开窗口训练的：1024 个环境 × 2500 轮，训练阶段 7246 秒（约 2 小时），平均每 100 轮约 4.8 分钟，测量时 GPU 上还有其他任务。那次训练用的是官方原始碰撞模型，而上面的命令使用全身碰撞模型；打开 `--show` 时渲染也会拖慢训练，所以你的耗时会不同。
 
 **你不需要等它训练完。** 窗口出现、终端开始逐轮打印回报和回合长度后，观察几分钟：前几十轮里大部分小鸭子很快摔倒、被单独重置，随着迭代推进，站得住的越来越多。
@@ -335,25 +331,6 @@ python3 scripts/run.py train-walk \
 2. **平均回合回报**在前 800 轮迅速上升，之后在 80 附近波动，不再明显增长。回报停止增长不等于技能完美，只说明继续用同样的设置训练收益变小。
 3. **线速度跟踪误差**从约 0.38 m/s 降到约 0.22 m/s：前进与侧移的指令跟随有改善，但误差仍不小。
 4. **转向角速度误差**从约 1.9 rad/s 降到约 0.7 rad/s，仍然偏大：这是一个提醒，转向可能没有学好，需要专门测试。
-
-```{training-chart}
-data: walk-full-training-scalars.json
-title: 1024 个环境 · 2500 轮完整训练
-badge: 训练阶段 7246 秒
-metrics:
-- key: Train/mean_episode_length
-  label: 平均回合长度 / 控制步
-- key: Train/mean_reward
-  label: 平均回合回报
-- key: Metrics/base_velocity/error_vel_xy
-  label: 线速度跟踪误差 / (m/s)
-- key: Metrics/base_velocity/error_vel_yaw
-  label: 转向角速度误差 / (rad/s)
-ticks: [1, 500, 1000, 1500, 2000, 2500]
-x_label: 训练迭代次数
-iteration_label: 迭代
-caption: 每 25 轮取一个原始记录值（未平滑），数据来自同一次训练的 TensorBoard 事件文件，可以悬停查看具体数值。
-```
 
 曲线变好只说明训练目标在改善，机器人能否按指令行走要在独立测试中检查。课程用固定指令测试了这次训练导出的策略：每种指令 4 个环境、20 秒、关闭随机化。
 
@@ -408,13 +385,13 @@ python3 scripts/run.py walk \
   --output outputs/ppo-walk-test-01
 ```
 
-:::{enrichment} 代码关键参数
-- **`--model`。** 读取容器内 `/workspace/Microduck-Workshop/datasets/walking-ppo/exported/policy.onnx`，也就是宿主机仓库 `datasets/walking-ppo/` 里课程预先训练好的策略（只读）。这条命令只读取 `--model` 指定的这一个文件。
-- **`--velocity 0.25 0 0`。** 前进、侧移和转向的速度指令；程序先发约 2 秒零速度，再持续发送这条指令。
-- **`--seed`。** 与 2.2 节的录制示例取同一个值，两次结果可以直接对照。
-- **起步。** 关节先临时锁在默认站姿，机器人在地面上自然落稳（机身不受外力支撑）；策略算出第一个动作后、执行之前再松开，避免从空中掉落造成的额外晃动。
-- **输出。** `report.json` 和每 0.1 秒一条位置记录的 `trajectory.json` 写入 `--output` 指定的目录。
-:::
+| 参数 | 含义 |
+|---|---|
+| `--model` | 要测试的策略文件；这里是课程预先训练好的 `datasets/walking-ppo/exported/policy.onnx`（只读） |
+| `--velocity 0.25 0 0` | 前进、侧移和转向的速度指令；程序先发约 2 秒零速度，再持续发送这条指令 |
+| `--seconds 12` | 运行的仿真时长 |
+| `--seed 202` | 与 2.2 节的录制示例相同，两次结果可以直接对照 |
+| `--output` | `report.json` 和每 0.1 秒一条位置记录的 `trajectory.json` 的保存目录 |
 
 :::{course-image} media/isaac-ui-ppo-walk-test.png
 :alt: 用上面的命令测试预训练 PPO 策略时的 Isaac Sim 完整界面：视口中一只 Microduck 在平地上迈步，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。

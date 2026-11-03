@@ -1,5 +1,5 @@
 # Microduck Workshop image: Isaac Sim 6.2 + Isaac Lab (pinned commit) + Newton,
-# the course detector environment and the GR00T learning environment.
+# and the course detector environment.
 #
 # Layout follows the SO-101 sim-to-real workshop: one image for every lab, the
 # course repository under /workspace/Microduck-Workshop, and outputs, datasets,
@@ -58,18 +58,6 @@ RUN /workspace/IsaacLab/.venv/bin/python /tmp/prepare_detector.py \
         --venv /workspace/detector --install \
     && rm /tmp/prepare_detector.py
 
-# GR00T learning environment: LeRobot at the commit that trained the course
-# 8D walking checkpoint, with the exact package set of that environment.
-COPY docker/groot-requirements.txt /tmp/groot-requirements.txt
-RUN python3.12 -m venv /workspace/groot-env \
-    && /workspace/groot-env/bin/pip install --no-cache-dir \
-        torch==2.11.0 torchvision==0.26.0 \
-        --index-url https://download.pytorch.org/whl/cu130 \
-    && /workspace/groot-env/bin/pip install --no-cache-dir -r /tmp/groot-requirements.txt \
-    && /workspace/groot-env/bin/pip install --no-cache-dir --no-deps \
-        "lerobot @ git+https://github.com/huggingface/lerobot.git@7e241bd630a3719a56157a497ce5d08f244784f1" \
-    && /workspace/groot-env/bin/pip freeze > /workspace/groot-env/installed-packages.txt
-
 RUN rm -rf /workspace/IsaacLab/docs /workspace/IsaacLab/.github
 
 FROM nvidia/cuda:13.0.0-base-ubuntu24.04 AS runtime
@@ -114,7 +102,6 @@ ENV NVIDIA_VISIBLE_DEVICES=all \
     UV_NO_CACHE=1 \
     ISAACLAB_PATH=/workspace/IsaacLab \
     MICRODUCK_STATE=/workspace/state \
-    MICRODUCK_GROOT_PYTHON=/workspace/groot-env/bin/python \
     MICRODUCK_NAV2_BACKEND=local \
     PYTHONPYCACHEPREFIX=/tmp/pycache
 

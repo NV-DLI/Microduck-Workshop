@@ -17,6 +17,4 @@ if [ ! -f "${XAUTHORITY:-}" ]; then
     echo "XAUTHORITY does not name a file: ${XAUTHORITY:-<unset>} (echo \$XAUTHORITY in the desktop session)" >&2
     exit 1
 fi
-DATA="${MICRODUCK_COURSE_DATA:-course-data}"
-mkdir -p "$DATA"
 echo "Host ready ($(uname -m)): DISPLAY=$DISPLAY"

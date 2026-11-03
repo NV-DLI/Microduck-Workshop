@@ -288,7 +288,7 @@ steps:
 
 This excerpt is the loop in the figure: the Isaac Lab observation manager builds the policy input, the action manager processes the action and drives the actuators, and Newton then runs four 5 ms physics steps. The full program also advances counters and checks for falls.
 
-Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked (the test in Section 3.3 uses the same start-up); the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. The stillness at the start is not an unresponsive policy.
+Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked (the test in Section 3.3 uses the same start-up); the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. The stillness at the start is not an unresponsive policy. `--model` selects the policy to run, here the official walking model in `models/`; `report.json` and `trajectory.json` go to the folder given by `--output`.
 
 ```{recorded-run}
 where: Course container · Isaac Sim window
@@ -338,10 +338,6 @@ result: |
   Then look at `trajectory.json` in the same folder, one position every 0.1 s. In the roughly 10 seconds after the forward command starts, the body moves from (0.00, 0.00) m to (1.07, 0.15) m: about 1.08 m in a straight line, roughly 0.11 m/s on average, less than half of the 0.25 m/s command, and the direction of travel drifts to the left, about 8° over the whole displacement and about 15° in the last 2 seconds. A velocity command is a request to the policy; the actual speed and direction come from the policy, the actuators and contact together. “It did not fall” is not enough: compare the actual motion with the command.
 caption: Recorded run. The command, the actual window and the terminal output all come from the same run.
 ```
-
-:::{enrichment} Key code parameters
-`--model models/walk.onnx` reads `/workspace/Microduck-Workshop/models/walk.onnx` in the container, the official walking model in the host repository's `models/` (read-only); the robot model is `lab/assets/microduck_contact.usda`; `report.json` and `trajectory.json` go to `outputs/final-live-livew`, given by `--output`.
-:::
 
 ```{formula} One statistic for velocity tracking
 \sym{rmse}=\sqrt{\frac{1}{\sym{N}}\sum_{\sym{t_idx}=1}^{\sym{N}}\symx{sqnorm}{\|\sym{v_xy}-\sym{v_cmd}\|_2^2}}

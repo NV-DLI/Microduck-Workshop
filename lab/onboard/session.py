@@ -8,17 +8,41 @@ import gc
 import weakref
 import os
 import stat
+import math
 
-JITTER_X_M = .015
-JITTER_Y_M = .010
+JITTER_X_M = .10
+JITTER_Y_M = .10
+JITTER_YAW_RAD = math.pi / 6
 
 
 def initial_position(seed, index, center):
+    return initial_pose(seed, index, center)[:2]
+
+
+def initial_pose(seed, index, center):
+    """Nominal first round; later independent reproducible XY and yaw offsets."""
     if index == 1:
-        return tuple(center)
+        return (*center, 0.0)
     rng = random.Random(seed + index - 1)
     return (center[0] + rng.uniform(-JITTER_X_M, JITTER_X_M),
-            center[1] + rng.uniform(-JITTER_Y_M, JITTER_Y_M))
+            center[1] + rng.uniform(-JITTER_Y_M, JITTER_Y_M),
+            rng.uniform(-JITTER_YAW_RAD, JITTER_YAW_RAD))
+
+
+def set_argument(argv, flag, value):
+    """Replace all spellings, including --flag=value, without duplicate values."""
+    result = []
+    i = 0
+    while i < len(argv):
+        token = argv[i]
+        if token == flag:
+            i += 2
+        elif token.startswith(flag + "="):
+            i += 1
+        else:
+            result.append(token)
+            i += 1
+    argv[:] = [*result, flag, str(value)]
 
 
 def close_environment_window(env):
@@ -107,7 +131,10 @@ class ResetSession:
         self.state = state
         value = dict(state=state, episode=self.index, output=str(self.args.output),
                      seed=self.args.seed, root_xy=[self.args.root_x, self.args.root_y],
-                     jitter_xy_m=[JITTER_X_M, JITTER_Y_M], episodes=self.rows, resources=self.resources)
+                     root_yaw_offset_rad=getattr(self.args, "root_yaw_rad", 0.0),
+                     jitter_xy_m=[JITTER_X_M, JITTER_Y_M], jitter_yaw_rad=JITTER_YAW_RAD,
+                     yaw_convention="world-Z offset applied to the measured standing61 XYZW quaternion",
+                     episodes=self.rows, resources=self.resources)
         tmp = self.root / "session.json.tmp"
         tmp.write_text(json.dumps(value, indent=2) + "\n")
         tmp.replace(self.root / "session.json")
@@ -123,14 +150,12 @@ class ResetSession:
         self.requested = False
         self.args.output = self.root / f"episode-{self.index:03d}"
         self.args.seed = self.seed + self.index - 1
-        self.args.root_x, self.args.root_y = initial_position(self.seed, self.index, self.center)
+        self.args.root_x, self.args.root_y, self.args.root_yaw_rad = initial_pose(self.seed, self.index, self.center)
         # Native contract and scene hooks derive provenance from the current argv.
         for flag, value in (("--output", self.args.output), ("--seed", self.args.seed),
-                            ("--root-x", self.args.root_x), ("--root-y", self.args.root_y)):
-            if flag in sys.argv:
-                sys.argv[sys.argv.index(flag) + 1] = str(value)
-            else:
-                sys.argv.extend([flag, str(value)])
+                            ("--root-x", self.args.root_x), ("--root-y", self.args.root_y),
+                            ("--root-yaw-rad", self.args.root_yaw_rad)):
+            set_argument(sys.argv, flag, value)
         self.resources.append(self.resource_snapshot("before_build"))
         self.write_status("running")
         return True
@@ -149,6 +174,9 @@ class ResetSession:
         interrupted = reason in ("user_reset", "window_closed")
         self.rows.append(dict(index=self.index, seed=self.args.seed,
             root_xy=[self.args.root_x, self.args.root_y], output=str(self.args.output),
+            root_yaw_offset_rad=self.args.root_yaw_rad,
+            applied_root_pose_xyzw=report.get("fixture", {}).get("root_pose_xyzw"),
+            applied_yaw_rad=report.get("initialization_reference", {}).get("applied_yaw_rad"),
             interrupted=interrupted, terminal_reason=reason,
             physical_success=bool(report.get("scorer", {}).get("physical_episode_success")),
             simulated_seconds=report.get("simulated_seconds"),
@@ -217,6 +245,7 @@ class ResetSession:
         if row is None:
             row = dict(index=self.index, seed=self.args.seed,
                 root_xy=[self.args.root_x, self.args.root_y], output=str(self.args.output),
+                root_yaw_offset_rad=getattr(self.args, "root_yaw_rad", 0.0),
                 status="technical_error")
             self.rows.append(row)
         row.update(technical_error=True, technical_error_detail=repr(error),
@@ -229,6 +258,7 @@ class ResetSession:
             report = json.loads(path.read_text()) if path.exists() else {}
             self.rows.append(dict(index=self.index, seed=self.args.seed,
                 root_xy=[self.args.root_x, self.args.root_y], output=str(self.args.output),
+                root_yaw_offset_rad=getattr(self.args, "root_yaw_rad", 0.0),
                 status="technical_error", error=report.get("error", "episode did not finalize")))
         self.input.unsubscribe_to_keyboard_events(self.keyboard, self.subscription)
         if self.window is not None:

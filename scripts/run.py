@@ -382,8 +382,6 @@ def main():
             [
                 py,
                 ROOT / "lab/manual.py",
-                "--locomotion",
-                "walking",
                 "--style",
                 a.style,
                 "--runtime",
@@ -401,10 +399,8 @@ def main():
     if a.command == "terrain":
         cmd = [
             py,
-            # Course check entry: lab/terrain.py plus the standing61 start-up protocol.
+            # Walking slope check with grounded HOME start-up.
             ROOT / "lab/course_labs/terrain_check.py",
-            "--locomotion",
-            "walking",
             "--runtime",
             m,
             "--model",

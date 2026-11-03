@@ -11,7 +11,7 @@ Covered without physics:
   release when a field changed;
 - in the executor source, HOME is held while braked, and the release happens after the first
   actor output is computed and before it is applied (static order check);
-- the onboard entry selects the student executor, refuses GR00T options and preloaded GR00T
+- the onboard entry selects its own executor, refuses GR00T options and preloaded GR00T
   skill modules; the executor requires exactly one route;
 - the grounded reference pose is the recorded one for this football pitch.
 """
@@ -34,7 +34,7 @@ import torch
 
 ROOT = Path(__file__).resolve().parents[1]
 STUDENT = ROOT / "lab/groot_walking/student"
-EXECUTOR = STUDENT / "walking_student_executor.py"
+EXECUTOR = ROOT / "lab/onboard/executor.py"
 sys.path[:0] = [
     str(ROOT / "lab/course_labs"),
     str(ROOT / "lab/runtime/simulation/core/sensors"),
@@ -442,17 +442,6 @@ class ExecutorProtocolOrder(unittest.TestCase):
                      "onboard.ready(t, last_body_imu)"):
             self.assertIn(term, text)
 
-    def test_gr00t_release_stays_inside_the_gr00t_branch(self):
-        brakes = _calls(self.run_fn, "initialization_brake.release")
-        self.assertEqual(len(brakes), 2)
-        gr00t = [
-            n for n in ast.walk(self.run_fn)
-            if isinstance(n, ast.If) and ast.unparse(n.test) == "walking_policy is not None"
-            and _calls(n, "walking_policy.step")
-        ]
-        self.assertEqual(len(gr00t), 1)
-        self.assertEqual(len(_calls(gr00t[0], "initialization_brake.release")), 1)
-
     def test_route_wiring(self):
         source = ast.unparse(self.run_fn)
         self.assertIn(
@@ -517,15 +506,6 @@ class ExecutorRoute(unittest.TestCase):
         self.assertIn("trained detector", self.parse_error(["--development-contour", "--course-onboard"]))
 
 
-class CurrentOnboardProtocolOrder(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.run_fn = _run_function(ROOT / "lab/onboard/executor.py")
-
-    test_release_after_first_output_and_before_apply = ExecutorProtocolOrder.test_release_after_first_output_and_before_apply
-    test_home_is_held_while_braked = ExecutorProtocolOrder.test_home_is_held_while_braked
-
-
 class OnboardEntry(unittest.TestCase):
     ARGV = ["--model", "velstand.onnx", "--output", "/tmp/x", "--detector-deployment", "d.json"]
 
@@ -579,25 +559,11 @@ class OnboardEntry(unittest.TestCase):
             self.assertTrue(p.is_file(), p)
 
 
-class AdapterRecord(unittest.TestCase):
-    def test_recorded_hashes_match_current_files(self):
-        adapter = json.loads((STUDENT / "ADAPTER.json").read_text())
-        for entry in adapter["files"]:
-            with self.subTest(entry["file"]):
-                path = STUDENT.parent / entry["file"]
-                self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), entry["sha256"])
-                if "repository_path" in entry:
-                    self.assertEqual(path.resolve(), (ROOT / entry["repository_path"]).resolve())
-                base = STUDENT.parent / entry.get("based_on", "")
-                if entry.get("based_on", "").startswith("rollout/"):
-                    self.assertEqual(hashlib.sha256(base.read_bytes()).hexdigest(), entry["based_on_sha256"])
-
-
 class InitializationIdentity(unittest.TestCase):
     def test_grounded_pose_is_the_recorded_football_reference(self):
         path = STUDENT / "grounded-pose.json"
-        adapter = json.loads((STUDENT / "ADAPTER.json").read_text())
-        recorded = next(f["sha256"] for f in adapter["files"] if f["file"] == "student/grounded-pose.json")
+        # Pinned standing61 source identity; historical adapter stays in the private archive.
+        recorded = "a8bf27a71420e15f1c383afa80ac95de802670feab2483660a719f2e1aa8155f"
         self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), recorded)
         pose = json.loads(path.read_text())
         self.assertEqual(pose["case"], "ankle_+0.00")

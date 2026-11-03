@@ -156,6 +156,8 @@ def arguments():
         default=-0.66,
         help="Explicit development initialization only; formal layout always starts at -.66",
     )
+    p.add_argument("--root-yaw-rad", type=float, default=0.0,
+                   help="Additional world-Z yaw of the standing61 pose, within +/-pi/6")
     p.add_argument(
         "--ball-xy",
         type=float,
@@ -259,6 +261,8 @@ def arguments():
         p.error("Finite root-y required")
     if not math.isfinite(a.root_x):
         p.error("Finite root-x required")
+    if not math.isfinite(a.root_yaw_rad) or abs(a.root_yaw_rad) > math.pi / 6 + 1e-12:
+        p.error("Finite root-yaw-rad within +/-pi/6 required")
     if not all(math.isfinite(v) for v in a.calibration_gaze) or (
         a.calibration_gaze != [0.0, 0.0] and a.calibration_command is None
     ):
@@ -642,6 +646,12 @@ def run(a, cfg, fixture):
     from joint_brake import NoSupportStartup as StartupSupport, JointBrake
 
     output = a.output.resolve()
+    from initial_pose import configure_grounded_pose, yaw_xyzw
+    pose_file = ENTRY_DIR / "grounded-pose.json"
+    rest = json.loads(pose_file.read_text())
+    # Outer scene wrappers set their own default height. Finalize after them,
+    # before gym.make, so scene creation, initialization and audit share one pose.
+    configure_grounded_pose(cfg, fixture, rest, a.root_yaw_rad)
     output.mkdir(parents=True, exist_ok=False)
     (output / "frames").mkdir()
     started = time.monotonic()
@@ -687,6 +697,12 @@ def run(a, cfg, fixture):
         )
     }
     source_snapshot = {}
+    pose_helper = ONBOARD_DIR / "initial_pose.py"
+    pose_target = output / "source-snapshot/onboard/initial_pose.py"
+    pose_target.parent.mkdir(parents=True, exist_ok=True)
+    pose_target.write_bytes(pose_helper.read_bytes())
+    source_snapshot[str(pose_helper)] = dict(
+        sha256=sha(pose_target), snapshot=str(pose_target.relative_to(output)))
     for file in [
         *MEDIA_DIR.glob("*.py"),
         MEDIA_DIR / "release.json",
@@ -945,9 +961,9 @@ def run(a, cfg, fixture):
         bp = torch.tensor(
             [fixture["ball_pose_xyzw"]], device=env.device, dtype=torch.float32
         )
-        rest = json.loads((ENTRY_DIR / "grounded-pose.json").read_text())
-        root[0, 2] = rest["root"][2]
-        root[0, 3:] = torch.tensor(rest["quat"], device=env.device)
+        # Record the exact float32 pose sent to physics, also used by startup.
+        fixture["root_pose_xyzw"] = root[0].detach().cpu().tolist()
+        fixture["root_yaw_rad"] = yaw_xyzw(fixture["root_pose_xyzw"][3:])
         robot.write_root_pose_to_sim_index(root_pose=root)
         robot.write_root_velocity_to_sim_index(
             root_velocity=torch.zeros((1, 6), device=env.device)
@@ -971,14 +987,17 @@ def run(a, cfg, fixture):
             # Same brake and stationary check as the GR00T route; the onboard actor's
             # first output additionally waits for delivered RGB, ToF and BODY50 data.
             support = onboard = OnboardBrakeStartup(support)
-            pose_file = ENTRY_DIR / "grounded-pose.json"
             report["initialization_reference"] = dict(
                 file=str(pose_file),
                 sha256=sha(pose_file),
                 case=rest["case"],
                 recorded_root_xyz=rest["root"],
-                applied_root_z=rest["root"][2],
-                applied_quaternion_xyzw=rest["quat"],
+                applied_root_z=fixture["root_pose_xyzw"][2],
+                recorded_quaternion_xyzw=rest["quat"],
+                requested_yaw_offset_rad=a.root_yaw_rad,
+                applied_yaw_rad=fixture["root_yaw_rad"],
+                applied_quaternion_xyzw=fixture["root_pose_xyzw"][3:],
+                composition="world-Z XYZW quaternion left-multiplied onto grounded reference",
                 fixture_root_xy=fixture["root_pose_xyzw"][:2],
                 fixture_minus_recorded_xy_m=[
                     fixture["root_pose_xyzw"][i] - rest["root"][i] for i in range(2)

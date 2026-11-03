@@ -33,14 +33,9 @@ python3 scripts/run.py manual \
   --output outputs/manual-football-01
 ```
 
-把输入法切换到英文，用鼠标点击仿真窗口，就可以用下表的按键操作；按键没有反应时，通常是中文输入法拦截了按键。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。
+命令不需要指定模型：它读取 `models/` 里的官方行走模型 `walk.onnx` 和右脚踢球模型 `kick-teacher.onnx`。`--seconds` 是窗口最长运行的仿真时间，记录写入 `--output` 指定的目录。
 
-:::{enrichment} 代码关键参数
-- **模型。** `run.py manual` 不需要模型参数：它读取容器内的 `/workspace/Microduck-Workshop/models`（即宿主机仓库的 `models/`，只读）中的 `walk.onnx` 和 `kick-teacher.onnx`。
-- **场景资产。** 球场、足球、球门和机器人来自仓库的 `lab/assets/`：`pitch_A.usda`、`official_ball.usda`、`steel_goal.usda`、`microduck_contact.usda`。
-- **起步。** 小鸭子先锁住关节在球场上落稳，策略开始控制时再松开；按 R 重置时同样如此。
-- **输出。** 记录直接写入 `--output` 指定的 `outputs/manual-football-01`，也就是宿主机仓库的 `outputs/` 下。`--seconds` 是窗口最长运行的仿真时间。
-:::
+用鼠标点击仿真窗口，就可以用下表的按键操作。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。
 
 :::{course-image} media/isaac-ui-keyboard-walking.png
 :alt: 键盘踢球的 Isaac Sim 完整界面：绿色球场上的 Microduck、足球和球门，右侧标签页列出按键说明。

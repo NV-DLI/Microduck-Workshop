@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.5 Community skills: from goal to reward
+# 3.5 (Extension) Community skills: reward design
 
 :::{lesson-intro}
 :meta: Section 3.5 · Reading and analysis · Estimated learning time: 45 minutes
@@ -129,7 +129,7 @@ This section reads two of them closely: the flamingo (one-leg) cycle uses gates 
 These two models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.
 
 {#how-to-read}
-## Read community skills with one table
+## Analyze skills with this approach
 
 Read every skill in the same order:
 

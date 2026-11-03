@@ -162,11 +162,18 @@ def learning_flow(d, lang):
     title_rows = max(len(t) for t, _ in wrapped)
     body_rows = max(len(b) for _, b in wrapped)
     h = 34 + title_rows * 20 + 6 + body_rows * 17 + 12
+    lane_links = set()
     if architecture:
         # Images → System 2 → System 1 → execution on the first row; observe
         # again under images and robot state under System 1 on the second.
         cells = [(0, 0), (1, 0), (2, 0), (3, 0), (2, 1), (0, 1)]
         links = [(0, 1), (1, 2), (2, 3), (3, 4), (4, 2), (3, 5), (5, 0)]
+    elif d.get("cells"):
+        # Explicit grid cells [column, row] and links [from, to] or [from, to, lane];
+        # "lane" links run below the cards, for loops that would cross a card.
+        cells = [tuple(c) for c in d["cells"]]
+        links = [(link[0], link[1]) for link in d["links"]]
+        lane_links = {(link[0], link[1]) for link in d["links"] if len(link) > 2 and link[2] == "lane"}
     else:
         # Snake order: left to right, then right to left on the next row.
         cells = [((i % cols) if (i // cols) % 2 == 0 else cols - 1 - i % cols, i // cols) for i in range(n)]
@@ -185,7 +192,7 @@ def learning_flow(d, lang):
     positions = [(col(c), row(r)) for c, r in cells]
     nodes_bottom = row(rows - 1) + h
     lane = nodes_bottom + 40  # routing lane below the cards
-    uses_lane = architecture or (rows == 1 and d.get("loop"))
+    uses_lane = architecture or bool(lane_links) or (rows == 1 and d.get("loop"))
     height = (lane if uses_lane else nodes_bottom) + margin
     width = 2 * margin + cols * w + (cols - 1) * gap_x
     cx = lambda i: positions[i][0] + w / 2
@@ -198,7 +205,16 @@ def learning_flow(d, lang):
     paths = []
     for a, z in links:
         (ca, ra), (cz, rz) = cells[a], cells[z]
-        if architecture and (a, z) == (3, 4):
+        # Two links in opposite directions between neighbours run as a parallel pair.
+        pair = 10 if (z, a) in links and ra == rz and abs(ca - cz) == 1 else 0
+        if (a, z) in lane_links:
+            path = f"M{cx(a)} {bottom(a)+end}V{lane}H{cx(z)}V{bottom(z)+end}"
+        elif pair:
+            y = cy(a) - pair if cz > ca else cy(a) + pair
+            path = f"M{right(a)+end} {y}H{left(z)-end}" if cz > ca else f"M{left(a)-end} {y}H{right(z)+end}"
+        elif d.get("cells") and ra == rz and abs(ca - cz) == 1:
+            path = f"M{right(a)+end} {cy(a)}H{left(z)-end}" if cz > ca else f"M{left(a)-end} {cy(a)}H{right(z)+end}"
+        elif architecture and (a, z) == (3, 4):
             # Down from execution into the empty cell below, then left into robot state.
             path = f"M{cx(a)} {bottom(a)+end}V{cy(z)}H{right(z)+end}"
         elif architecture and (a, z) == (3, 5):

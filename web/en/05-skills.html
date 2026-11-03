@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task." name="description" />
 
-  <title>3.5 Community skills: from goal to reward - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>3.5 (Extension) Community skills: reward design - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -335,16 +335,16 @@
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.5 Community skills: from goal to reward</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.5 (Extension) Community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Hand-designed shooting stages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.5 Community skills: from goal to reward</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.5 (Extension) Community skills: reward design</span></li>
   </ul>
 </nav>
 </div>
@@ -405,8 +405,8 @@
                 <article class="bd-article">
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="community-skills-from-goal-to-reward">
-<h1>3.5 Community skills: from goal to reward<a class="headerlink" href="#community-skills-from-goal-to-reward" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="extension-community-skills-reward-design">
+<h1>3.5 (Extension) Community skills: reward design<a class="headerlink" href="#extension-community-skills-reward-design" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task.</p>
 </div><div class="lesson-meta">Section 3.5 · Reading and analysis · Estimated learning time: 45 minutes</div></div></div><script type="application/json" class="course-symbols">{"dt": {"tex": "\\Delta t", "text": "Control step: the time between two policy outputs. Both skills here use 0.02 s (50 Hz)."}, "alpha_f": {"tex": "\\alpha", "text": "Posture blend: 0 means standing on two feet, 1 means standing on one foot. After a command change it moves smoothly from one end to the other in 1.5 s. It is used only in the reward; the policy observes only the command itself."}, "p_target": {"tex": "p^{*}_{xy}", "text": "Target horizontal position of the centre of mass (m): moves from the midpoint of the feet to above the stance foot."}, "p_mid": {"tex": "p_{\\mathrm{mid}}", "text": "Midpoint between the two feet (horizontal position, m)."}, "p_stance": {"tex": "p_{\\mathrm{stance}}", "text": "Horizontal position of the stance foot (m)."}, "c_com": {"tex": "c_{xy}", "text": "Horizontal position of the whole-robot centre of mass (m), computed by the simulator over all parts."}, "sigma_c": {"tex": "\\sigma_c", "text": "Centre-of-mass error scale: 0.03 m, tightened to 0.02 m after training iteration 700."}, "r_com": {"tex": "r_{\\mathrm{com}}", "text": "Centre-of-mass target term (weight 3)."}, "S": {"tex": "S", "text": "Smoothstep: rises smoothly from 0 to 1 while the blend is inside $[a,b]$; 0 before, 1 after."}, "tau": {"tex": "\\tau", "text": "Normalized progress inside the smoothstep, clamped to between 0 and 1."}, "a_lo": {"tex": "a", "text": "Where the smoothstep starts to rise."}, "b_hi": {"tex": "b", "text": "Where the smoothstep reaches 1."}, "clip": {"tex": "\\operatorname{clip}", "text": "Clamp: limits a value to a given interval."}, "k_swing": {"tex": "k_{\\mathrm{swing}}", "text": "Whether the foot to be lifted touches the ground right now (1 contact, 0 airborne)."}, "k_stance": {"tex": "k_{\\mathrm{stance}}", "text": "Whether the stance foot touches the ground right now (1 contact)."}, "z_swing": {"tex": "z_{\\mathrm{swing}}", "text": "Height of the foot to be lifted above the ground (m)."}, "r_contact": {"tex": "r_{\\mathrm{contact}}", "text": "Swing-foot contact term (weight 0.5): rewards contact while standing is due, penalizes it once the lift is due."}, "r_clear": {"tex": "r_{\\mathrm{clear}}", "text": "Swing-foot height term (weight 1.5): target 0.10 m, scale 0.06 m."}, "p_ball": {"tex": "p_{\\mathrm{ball}}", "text": "Position of the basketball centre (m), read directly from the simulation state; the deployed policy cannot see it."}, "p_root": {"tex": "p_{\\mathrm{root}}", "text": "Position of the robot root (body) (m)."}, "p_foot": {"tex": "p_{\\mathrm{foot}}", "text": "Position of one foot's sole reference point (m)."}, "z_root": {"tex": "z_{\\mathrm{root}}", "text": "Height of the robot root (m)."}, "z_ball": {"tex": "z_{\\mathrm{ball}}", "text": "Height of the ball centre (m)."}, "R_ball": {"tex": "R", "text": "Basketball radius, 0.12 m (size 7)."}, "g_x": {"tex": "g_x", "text": "Forward/backward component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "g_y": {"tex": "g_y", "text": "Left/right component of the gravity direction in the body frame (dimensionless); 0 when upright."}, "v_ball": {"tex": "v_{\\mathrm{ball}}", "text": "Horizontal velocity of the basketball (m/s), simulation state."}, "r_center": {"tex": "r_{\\mathrm{center}}", "text": "Body-over-ball-centre term (weight 2)."}, "r_feet": {"tex": "r_{\\mathrm{feet}}", "text": "Feet-resting-on-the-ball term (weight 1), averaged over both feet."}, "r_height": {"tex": "r_{\\mathrm{height}}", "text": "Standing-height-on-the-apex term (weight 1)."}, "r_up": {"tex": "r_{\\mathrm{up}}", "text": "Upright-body term (weight 1)."}, "r_ball": {"tex": "r_{\\mathrm{ball}}", "text": "Squared ball speed (weight −0.05): keeps the ball quiet at zero command; the weight is small so commanded rolling still pays."}, "exp": {"tex": "\\exp", "text": "Exponential: turns a squared error into a smooth reward between 0 and 1."}}</script><section id="community">
 <h2>What else can the same robot learn?<a class="headerlink" href="#community" title="Link to this heading">#</a></h2>
@@ -419,7 +419,7 @@
 <p>These two models and their training code are not in the course repository or container, and no course command loads them; every code excerpt comes from a pinned public revision of the author's work, is for reading only and links to the complete file at that revision. The demonstration videos are copies of recordings stored with the course pages.</p>
 </section>
 <section id="how-to-read">
-<h2>Read community skills with one table<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
+<h2>Analyze skills with this approach<a class="headerlink" href="#how-to-read" title="Link to this heading">#</a></h2>
 <p>Read every skill in the same order:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -693,7 +693,7 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#community">What else can the same robot learn?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">Read community skills with one table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read">Analyze skills with this approach</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flamingo">Flamingo cycle: gates set the order of movements</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basketball">Basketball balance: the reward sees the ball, the policy does not</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compare">The two skills side by side</a></li>

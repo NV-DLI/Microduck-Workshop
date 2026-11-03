@@ -133,8 +133,8 @@
             {
               "id": "05-skills",
               "title": {
-                "zh": "3.5 社区技能：从目标到奖励",
-                "en": "3.5 Community skills: from goal to reward"
+                "zh": "3.5 （拓展）社区技能：奖励设计",
+                "en": "3.5 (Extension) Community skills: reward design"
               },
               "paths": {
                 "zh": "zh/05-skills.html",
@@ -164,8 +164,8 @@
             {
               "id": "06-onboard",
               "title": {
-                "zh": "4.2 人工设计射门阶段",
-                "en": "4.2 Hand-designed shooting stages"
+                "zh": "4.2 设计射门阶段",
+                "en": "4.2 Designing the shooting stages"
               },
               "paths": {
                 "zh": "zh/06-onboard.html",
@@ -184,8 +184,8 @@
             {
               "id": "07-groot",
               "title": {
-                "zh": "5.1 视觉-语言-动作模型与 GR00T",
-                "en": "5.1 Vision-language-action models and GR00T"
+                "zh": "5.1 视觉-语言-动作模型（VLA）与 GR00T",
+                "en": "5.1 Vision-language-action (VLA) models and GR00T"
               },
               "paths": {
                 "zh": "zh/07-groot.html",
