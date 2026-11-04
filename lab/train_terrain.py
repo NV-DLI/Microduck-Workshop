@@ -71,6 +71,9 @@ def main():
         "rsl_rl_cfg_entry_point",
         overrides=["presets=backlash"],
     )
+    from course_labs.training_recipe import apply_course_recipe
+
+    apply_course_recipe(cfg, agent, rough=True)
     cfg.scene.robot.spawn.usd_path = str(
         Path(__file__).parent / "assets/microduck_contact.usda"
     )

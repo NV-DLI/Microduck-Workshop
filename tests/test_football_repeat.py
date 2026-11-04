@@ -312,7 +312,12 @@ FAKE_RUNTIME = textwrap.dedent(
     import json, sys
     from pathlib import Path
     args = sys.argv[1:]
+    wrapped = args[0].endswith("runtime_entry.py")
+    if wrapped:
+        args = args[1:]
+        assert args[0].endswith("onboard_scene.py")
     if args[0].endswith("onboard_scene.py"):
+        assert wrapped, "Physics must use the pinned runtime adapter"
         out = Path(args[args.index("--output") + 1])
         out.mkdir()
         (out / "argv.json").write_text(json.dumps(args))

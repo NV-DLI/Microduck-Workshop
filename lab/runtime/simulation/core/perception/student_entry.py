@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 M = ROOT.parent
 C = M.parents[1]
-L = M / "runtime/IsaacLab-5088b326c7fc81caa7899395b0176ad08b89e9e1"
+L = M / "runtime/IsaacLab-e527032b25939a8fc061609d3502c99e0c57f9c3"
 SOURCE = C / "configuration/core/beta-detector/dataset"
 SOURCE_SHA = "b19d1d6fce2a9d2fced110bb10a7e1ce7d792ff04131b9e4781ebcf3b1a97f2e"
 

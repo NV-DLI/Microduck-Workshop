@@ -342,7 +342,7 @@ class FakeRobot:
             for i, name in enumerate(
                 ["joint_limit_lower", "joint_limit_upper", "joint_armature", "body_mass", "body_inertia"])
         })
-        self._backend_manager = SimpleNamespace(get_model=lambda: self.model)
+        self._backend_manager = SimpleNamespace(backend=SimpleNamespace(model=self.model))
         self.root_view = SimpleNamespace(is_floating_base=floating)
         self.calls = []
 

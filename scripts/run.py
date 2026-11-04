@@ -68,7 +68,21 @@ def verify():
     return d
 
 
+PHYSICS_ENTRIES = {
+    "walk_check.py", "terrain_check.py", "manual.py", "train_walk.py",
+    "train_terrain.py", "onboard_scene.py", "view_training.py",
+}
+
+
+def physics_command(argv, c):
+    if (len(argv) > 1 and str(argv[0]) == str(c["python"])
+            and Path(str(argv[1])).name in PHYSICS_ENTRIES):
+        return [argv[0], ROOT / "lab/course_labs/runtime_entry.py", *argv[1:]]
+    return argv
+
+
 def run(argv, c):
+    argv = physics_command(argv, c)
     print("Launching:", " ".join(str(x) for x in argv), flush=True)
     return subprocess.call([str(x) for x in argv], cwd=ROOT, env=environment(c))
 
@@ -482,7 +496,7 @@ def main():
 
             def episode(index, output):
                 seed = a.seed + index - 1
-                return dict(seed=seed, commands=list(walking_football(a, fresh(output), seed, py, m)))
+                return dict(seed=seed, commands=[physics_command(cmd, c) for cmd in walking_football(a, fresh(output), seed, py, m)])
 
             return repeat_episodes.repeat(
                 out, a.repeat, episode, football_outcome, cwd=ROOT, env=environment(c)

@@ -20,7 +20,7 @@ class GroundContactEvidence:
         self.T = T
         self.sensor = env.scene["contact_forces"]
         self.foot_ids = foot_ids
-        model = env.sim.backend_manager.get_model()
+        model = env.sim.backend_manager.backend.model
         view = self.sensor.contact_view
         if view.sensing_type != "body" or view.counterpart_type != "shape":
             raise ValueError(

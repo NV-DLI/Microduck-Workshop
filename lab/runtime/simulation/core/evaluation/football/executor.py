@@ -907,7 +907,7 @@ def run(a, cfg, fixture):
             ["ankle_left", "ankle_right"], preserve_order=True
         )
         # Read-only inventory records every actual compiled ground shape, including visual geometry.
-        ground_model = env.sim.backend_manager.get_model()
+        ground_model = env.sim.backend_manager.backend.model
         ground_bodies = ground_model.shape_body.numpy()
         ground_types = ground_model.shape_type.numpy()
         ground_flags = ground_model.shape_flags.numpy()
@@ -1093,7 +1093,7 @@ def run(a, cfg, fixture):
             )[0]
             return q[ids] + q[passive_ids] + bias, qd[ids] + qd[passive_ids]
 
-        native = sim.backend_manager.get_model()
+        native = sim.backend_manager.backend.model
         drives = [x for x in native.actuators if type(x.drive).__name__ == "DriveBam"]
         if not drives:
             raise RuntimeError("Native BAM telemetry missing")

@@ -950,7 +950,7 @@ def run(a, cfg, fixture):
             )[0]
             return q[ids] + q[passive_ids] + bias, qd[ids] + qd[passive_ids]
 
-        native = sim.backend_manager.get_model()
+        native = sim.backend_manager.backend.model
         drives = [x for x in native.actuators if type(x.drive).__name__ == "DriveBam"]
         if not drives:
             raise RuntimeError("Native BAM telemetry missing")

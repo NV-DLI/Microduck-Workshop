@@ -24,6 +24,9 @@ asset = Path(__file__).parent / "assets/microduck_contact.usda"
 
 def resolve(*args, **kwargs):
     cfg, agent = original_resolve(*args, **kwargs)
+    from course_labs.training_recipe import apply_course_recipe
+
+    apply_course_recipe(cfg, agent)
     cfg.scene.robot.spawn.usd_path = str(asset.resolve())
     output = Path(remaining[remaining.index("--output") + 1])
     (output / "scene-contract.json").write_text(

@@ -67,6 +67,7 @@ def launch_with_window(cfg, options):
 
 app.launch_simulation = launch_with_window
 sys.argv = [str(known.entry), *remaining]
+sys.path.insert(0, str(known.entry.resolve().parent))
 # The training entries import Isaac Lab tasks (and with them USD) at module level.
 # With a window, Kit has to load its own USD libraries first, so start Kit here; the
 # entry's own launch_simulation then reuses this Kit instead of starting another.

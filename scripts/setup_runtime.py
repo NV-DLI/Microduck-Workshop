@@ -13,7 +13,7 @@ import platform
 from prepare_runtime import prepare
 
 ROOT = Path(__file__).resolve().parents[1]
-COMMIT = "5088b326c7fc81caa7899395b0176ad08b89e9e1"
+COMMIT = "e527032b25939a8fc061609d3502c99e0c57f9c3"
 
 
 def setup_runtime(a):
@@ -21,7 +21,7 @@ def setup_runtime(a):
         raise RuntimeError(
             "This pinned course installer targets Linux aarch64 (DGX Spark). Read the platform requirements before continuing."
         )
-    os.environ.setdefault("UV_HTTP_TIMEOUT", "600")
+    os.environ.setdefault("UV_HTTP_TIMEOUT", "1800")
     local = ROOT / ".local"
     local.mkdir(exist_ok=True)
     ffmpeg = str(a.ffmpeg.resolve()) if a.ffmpeg else shutil.which("ffmpeg")
@@ -32,7 +32,7 @@ def setup_runtime(a):
     os.environ["PATH"] = (
         str(Path(ffmpeg).parent) + os.pathsep + os.environ.get("PATH", "")
     )
-    lab = a.isaaclab.resolve() if a.isaaclab else local / "IsaacLab"
+    lab = a.isaaclab.resolve() if a.isaaclab else local / ("IsaacLab-" + COMMIT)
     if not a.isaaclab:
         uv = shutil.which("uv")
         if not uv:
@@ -53,12 +53,11 @@ def setup_runtime(a):
             )
             if (
                 hashlib.sha256(archive.read_bytes()).hexdigest()
-                != "0f0817455bca9d5098a22e5591bea4faeae84b1af980f3c5e3c2682f365ec4ef"
+                != "6a2e2eab3f6f324673e91cc51ade1df7bdef26d8a7a0feaf4cf94fb18a4e39ce"
             ):
                 raise RuntimeError("Isaac Lab source archive differs")
             with tarfile.open(archive) as tf:
                 tf.extractall(local, filter="data")
-            (local / ("IsaacLab-" + COMMIT)).rename(lab)
             for name in ["pyproject.toml", "uv.lock"]:
                 shutil.copy2(ROOT / "lab/environment" / name, lab / name)
         subprocess.run(

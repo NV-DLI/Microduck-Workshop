@@ -23,11 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip3 install --no-cache-dir --break-system-packages uv==0.9.5
 
-ARG ISAACLAB_COMMIT=5088b326c7fc81caa7899395b0176ad08b89e9e1
-ARG ISAACLAB_ARCHIVE_SHA256=0f0817455bca9d5098a22e5591bea4faeae84b1af980f3c5e3c2682f365ec4ef
+ARG ISAACLAB_COMMIT=e527032b25939a8fc061609d3502c99e0c57f9c3
+ARG ISAACLAB_ARCHIVE_SHA256=6a2e2eab3f6f324673e91cc51ade1df7bdef26d8a7a0feaf4cf94fb18a4e39ce
 
-ENV UV_NO_CACHE=1 \
-    UV_HTTP_TIMEOUT=600 \
+ENV UV_LINK_MODE=copy \
+    UV_HTTP_TIMEOUT=1800 \
     UV_PYTHON_INSTALL_DIR=/workspace/python \
     ACCEPT_EULA=Y \
     OMNI_KIT_ACCEPT_EULA=YES
@@ -47,7 +47,7 @@ RUN curl -fsSL -o isaaclab.tar.gz \
 # torch 2.11.0 (CUDA 13) and RSL-RL 5.5.1.
 COPY lab/environment/pyproject.toml lab/environment/uv.lock /workspace/IsaacLab/
 WORKDIR /workspace/IsaacLab
-RUN uv sync --frozen --extra isaacsim --extra rsl-rl \
+RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --extra isaacsim --extra rsl-rl \
     && uv pip install --python .venv/bin/python \
         onnx==1.22.0 onnxruntime==1.26.0 tensorboard
 
@@ -106,7 +106,7 @@ RUN mkdir -p /tmp/pycache /workspace/state \
 
 LABEL org.opencontainers.image.title="Microduck Workshop" \
       org.opencontainers.image.source="https://github.com/NV-DLI/Microduck-Workshop" \
-      org.microduck.isaaclab.commit="5088b326c7fc81caa7899395b0176ad08b89e9e1" \
+      org.microduck.isaaclab.commit="e527032b25939a8fc061609d3502c99e0c57f9c3" \
       org.microduck.newton.commit="71eeba16a717d4dcf0b9dd7056a7b6f863054dc3"
 
 # Healthy only after the course runtime was bound successfully at start-up.

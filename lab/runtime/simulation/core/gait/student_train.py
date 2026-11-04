@@ -54,7 +54,7 @@ def main():
         "schema": "microduck.training-ledger.v1",
         "run_id": args.output.name,
         "skill": "walking",
-        "runtime_id": "newton-bam-20261019",
+        "runtime_id": "newton-bam-20261104",
         "hardware_profile_id": "beta-gc2093-l8cx-v1",
         "initialization": "continuation" if args.resume else "random",
         "parent_checkpoint": str(args.resume) if args.resume else None,

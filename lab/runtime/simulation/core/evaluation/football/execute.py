@@ -79,8 +79,15 @@ def build(a):
     cfg, fixture = base_build(a)
     from isaaclab_tasks.contrib.microduck.mdp.actions import BiasedJointPositionAction
 
+    # Isaac Lab main serializes configuration callables as import strings.
+    # Resolve the identity check without changing the action configuration.
+    from isaaclab.utils.string import string_to_callable
+
+    action_type = cfg.actions.joint_pos.class_type
+    if isinstance(action_type, str):
+        action_type = string_to_callable(action_type)
     if (
-        cfg.actions.joint_pos.class_type is not BiasedJointPositionAction
+        action_type is not BiasedJointPositionAction
         or cfg.actions.joint_pos.clip is not None
     ):
         raise ValueError(

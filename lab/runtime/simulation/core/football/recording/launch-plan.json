@@ -1,7 +1,7 @@
 {
   "schema": "microduck.football-media-short-plan.v1",
   "status": "prepared_not_executed",
-  "python": "@COURSE@/simulation/core/runtime/IsaacLab-5088b326c7fc81caa7899395b0176ad08b89e9e1/.venv/bin/python",
+  "python": "@COURSE@/simulation/core/runtime/IsaacLab-e527032b25939a8fc061609d3502c99e0c57f9c3/.venv/bin/python",
   "argv": [
     "@COURSE@/simulation/core/football/recording/execute.py",
     "--model",

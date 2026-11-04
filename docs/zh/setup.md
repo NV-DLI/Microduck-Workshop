@@ -29,11 +29,11 @@ myst:
 |---|---|
 | 容器基础 | CUDA 13、Ubuntu 24.04、Python 3.12 |
 | 仿真平台 | Isaac Sim 6.2 |
-| 训练框架 | Isaac Lab 开发快照（2026-10-19，`5088b326`） |
+| 训练框架 | Isaac Lab 开发快照（2026-11-04，`e527032b`） |
 | 物理后端 | Newton 1.8.0.dev0（`71eeba16`） |
 | 学习 | RSL-RL 5.5.1（PPO） |
 
-本课沿用 [NVIDIA 官方 Microduck 教程](https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real) 的 `main` 分支实现，固定到包含 Microduck 任务与 BAM 电机模型的 [Isaac Lab 源码快照](https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1)，并非 3.0.0 GA。容器会自动安装表中的指定版本，您无需手动选择源码提交。
+本课沿用 [NVIDIA 官方 Microduck 教程](https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real) 的 `main` 分支实现，固定到包含 Microduck 任务与 BAM 电机模型的 [Isaac Lab 源码快照](https://github.com/isaac-sim/IsaacLab/tree/e527032b25939a8fc061609d3502c99e0c57f9c3)，并非 3.0.0 GA。课程单独锁定与配套策略模型匹配的 Newton 版本，而不直接跟随上游默认依赖。容器会自动安装表中的指定版本，您无需手动选择源码提交。
 
 {#get-code}
 ## 下载课程代码

@@ -61,7 +61,7 @@ class ManualStartupTest(unittest.TestCase):
                     joint_limit_upper=torch.tensor([1., 2.]),
                     joint_armature=torch.ones(2), body_mass=torch.ones(1),
                     body_inertia=torch.ones(1))
-                self._backend_manager = ns(get_model=lambda: self.model)
+                self._backend_manager = ns(backend=ns(model=self.model))
                 self.root_view = ns(is_floating_base=True)
 
             def write_joint_position_limit_to_sim_index(self, limits, warn_limit_violation):

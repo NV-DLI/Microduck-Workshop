@@ -191,8 +191,8 @@
     {
       "path": "simulation/core/evaluation/ground_contact_evidence.py",
       "original_sha256": "7b011526850bf9fb0031fb82846fe7012e15178ca7be5be20c32e6edc80245b8",
-      "template_sha256": "a2869efeadc8cd09041f174603e085140d9d6f4e1f7ff10acc8760613d3673a9",
-      "bytes": 4698
+      "template_sha256": "f9e95bd950c96a605be1d25aceae56629b61ee65f6cd59f7296833426341805f",
+      "bytes": 4700
     },
     {
       "path": "simulation/core/evaluation/guarded_navigation_feedback.py",
@@ -299,8 +299,8 @@
     {
       "path": "simulation/core/evaluation/football/execute.py",
       "original_sha256": "3e1ab3dbb6b04a169298f280626becf04d5ddcf6e33b42514a535efd798b78c9",
-      "template_sha256": "e01f6f0bf88a77bc1b376831a2a4342ceb9c330056e1d0a964946f25903fb0e6",
-      "bytes": 8662
+      "template_sha256": "5608267769712d8069b38444b721bcb266c3ea56697c451667864f2460c707f8",
+      "bytes": 8992
     },
     {
       "path": "simulation/core/evaluation/football/execute_media.py",
@@ -311,8 +311,8 @@
     {
       "path": "simulation/core/evaluation/football/executor.py",
       "original_sha256": "ea0637d2d52fb3c7086185c42a51e7d35490edcead6ea2b34cc69e513d6b0abc",
-      "template_sha256": "00cd6c1a7dc0ca746955d74ea65ca3a6f17f91d70e3ebe956466982fcbdc3ea6",
-      "bytes": 114319
+      "template_sha256": "5b487e8afe3174f94e7351d1087d047f786af3e6961dfdfd544d48a25809b020",
+      "bytes": 114323
     },
     {
       "path": "simulation/core/evaluation/football/final_approach.py",
@@ -905,8 +905,8 @@
     {
       "path": "simulation/core/evaluation/navigation_base/execute.py",
       "original_sha256": "1f2998d18d97c04bd644f985cb8b0869d2329e5eb23c400bbdc6c217fdaced50",
-      "template_sha256": "2aa70ff6f83a9eef5adf0e4cb20a9bcbd3e4c4612eb140734cf6ca949f14298f",
-      "bytes": 6731
+      "template_sha256": "b4b48baad5a14c9341a1d5b39f415b9679772010338c94aaa10a830f91c2c502",
+      "bytes": 7061
     },
     {
       "path": "simulation/core/evaluation/navigation_base/goal_reacquisition_native.py",
@@ -1061,8 +1061,8 @@
     {
       "path": "simulation/core/football/isaac_execute.py",
       "original_sha256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
-      "template_sha256": "d408f6b93d4aae964cad9df5c6b84bd57e3b87b14e70dab1c76d84d0956913fe",
-      "bytes": 75859
+      "template_sha256": "fa3989d081dc49f5af23dee2b2cd9ae0fc6e4284c8369faedf74db3fa47f6930",
+      "bytes": 75861
     },
     {
       "path": "simulation/core/football/kick_control.py",
@@ -1109,8 +1109,8 @@
     {
       "path": "simulation/core/football/recording/executor.py",
       "original_sha256": "d19498e420541d929d48408c85bf907a89e49ee6d0676a5fd284610bdbca1954",
-      "template_sha256": "9468986e60e2995788411d49097a4d0eb330a9a5b42bf11ce755be8d6c3b7144",
-      "bytes": 75068
+      "template_sha256": "432f109c178ba05f51bf00b71acfe2d99b2576fec58cab6390b20290df1fbf53",
+      "bytes": 75070
     },
     {
       "path": "simulation/core/football/recording/integration.json",
@@ -1121,7 +1121,7 @@
     {
       "path": "simulation/core/football/recording/launch-plan.json",
       "original_sha256": "21cdf6e8f9577ba06657a2241db74db340aa5a23af8c76c5858ab78cd7777c3f",
-      "template_sha256": "03df19e4f37fdf28aa46bb37f68f770b882fd6dcd5a384afa83cbbeb9cd03fd9",
+      "template_sha256": "00612fc5b246b197258be97d474b28b6fb066cd44e3310a8068b628ca4732039",
       "bytes": 1403
     },
     {
@@ -1199,7 +1199,7 @@
     {
       "path": "simulation/core/football/student_entry.py",
       "original_sha256": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
-      "template_sha256": "c43693b881ea106f70aabd09009caa8b383d6161b7dfc0092a9bc017d7071eac",
+      "template_sha256": "bd90bde15bd8d76470c5c60836f8c8cae3fce27df131b39b498010b4762f47f5",
       "bytes": 8952
     },
     {
@@ -1457,7 +1457,7 @@
     {
       "path": "simulation/core/gait/student_train.py",
       "original_sha256": "747a705e478ce4c0957b64ea395e6badbac0dfce70bbac53cbf71ae740993363",
-      "template_sha256": "9c7a111676d86e434ee29fbdef95d4ce96d644688c2f3c5f0bd60ac825d29bd7",
+      "template_sha256": "a72b9e8acd199a9f7cdab464d31a61ebdefdb987de84bf204329f099b34bf8d4",
       "bytes": 5925
     },
     {
@@ -1541,7 +1541,7 @@
     {
       "path": "simulation/core/perception/student_entry.py",
       "original_sha256": "cd072c94c330f52e738cb8e7dfff24720993488059409f640adc0b2f7c2145d4",
-      "template_sha256": "803669903f6e25b23161809ca63f12e67fd4cde2f867828ebb8b0ee02d5708e1",
+      "template_sha256": "e88ae7e54bc2fe64ee73516b3f0da3b8aaf4f4e3be22f8ae1d83cf1753488fd6",
       "bytes": 12602
     },
     {
@@ -2063,7 +2063,7 @@
     {
       "path": "simulation/core/runtime/source-manifest.json",
       "original_sha256": "bd95bc29f8bab0bdcff8365035a998a92cddcb70deb771863796d2f7f97e1e43",
-      "template_sha256": "bd95bc29f8bab0bdcff8365035a998a92cddcb70deb771863796d2f7f97e1e43",
+      "template_sha256": "fef22f4c3ff3efdcb72c2c075f3a5a19fc5e5b30c146d1a6f7c1e62a01fb3d18",
       "bytes": 283
     },
     {

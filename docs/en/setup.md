@@ -29,11 +29,11 @@ The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, 
 |---|---|
 | Container base | CUDA 13, Ubuntu 24.04, Python 3.12 |
 | Simulation platform | Isaac Sim 6.2 |
-| Training framework | Isaac Lab development snapshot (2026-10-19, `5088b326`) |
+| Training framework | Isaac Lab development snapshot (2026-11-04, `e527032b`) |
 | Physics backend | Newton 1.8.0.dev0 (`71eeba16`) |
 | Learning | RSL-RL 5.5.1 (PPO) |
 
-The course follows the `main`-branch implementation in the [official NVIDIA Microduck tutorial](https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real), pinned to an [Isaac Lab source snapshot](https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1) that includes the Microduck tasks and BAM motor model, not the 3.0.0 GA release. The container installs the versions listed above automatically; no manual source revision selection is needed.
+The course follows the `main`-branch implementation in the [official NVIDIA Microduck tutorial](https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real), pinned to an [Isaac Lab source snapshot](https://github.com/isaac-sim/IsaacLab/tree/e527032b25939a8fc061609d3502c99e0c57f9c3) that includes the Microduck tasks and BAM motor model, not the 3.0.0 GA release. The course separately pins Newton to the version used by its supplied policies, rather than inheriting the upstream default. The container installs the versions listed above automatically; no manual source revision selection is needed.
 
 {#get-code}
 ## Get the course code

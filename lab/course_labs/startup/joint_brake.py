@@ -7,7 +7,7 @@ class JointBrake:
  def __init__(self,robot):
   self.robot=robot;self.active=False;self.release_time=None
   self.limits=robot.data.joint_pos_limits.torch.clone();self.defaults=robot.data.default_joint_pos.torch.clone()
-  self.model=robot._backend_manager.get_model()
+  self.model=robot._backend_manager.backend.model
   self.native={n:getattr(self.model,n).numpy().copy() for n in ['joint_limit_lower','joint_limit_upper','joint_armature','body_mass','body_inertia'] if hasattr(self.model,n)}
   if not robot.root_view.is_floating_base:raise ValueError('Startup must retain a free floating base')
  def lock(self):

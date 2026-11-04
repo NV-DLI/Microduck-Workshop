@@ -44,6 +44,7 @@ try:
         None,
         {
             "device": "cuda:0",
+            "physics": "newton_mjwarp",
             "require_kit": not a.headless,
             "visualizer": [] if a.headless else ["kit"],
         },

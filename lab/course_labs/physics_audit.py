@@ -24,8 +24,8 @@ VISUAL_FIELDS = ("shape_color", "shape_opacity")
 
 
 def _model(manager):
-    if hasattr(manager, "get_model"):
-        model = manager.get_model()
+    if hasattr(manager, "backend"):
+        model = manager.backend.model
         if model is not None:
             return model
     return getattr(manager, "model", None)

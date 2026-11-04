@@ -302,6 +302,7 @@ def main():
             None,
             {
                 "device": "cuda:0",
+                "physics": "newton_mjwarp",
                 "require_kit": not a.headless or a.record,
                 "enable_cameras": a.record,
                 "visualizer": [] if a.headless else ["kit"],
@@ -448,6 +449,7 @@ def main():
                         env,
                         pose="home",
                         render=not a.headless,
+                        max_s=10.0,  # Allow all five roots to settle; stability thresholds stay unchanged.
                     )
                 except StartupNotSettled as error:
                     report["startup"] = error.record
