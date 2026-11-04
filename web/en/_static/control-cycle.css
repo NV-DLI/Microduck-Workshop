@@ -330,32 +330,9 @@ details li + li { margin-top: 4px; }
 }
 :host{display:block;container-type:inline-size;container-name:cycle;margin:1.5rem 0}.app{max-width:none;padding:0}[hidden]{display:none!important}
 
-/* Each outlined target box represents one 20 ms interval. Its slot, shared
-   with every row above, preserves the time scale; the glyph stays narrow. */
-.role-targets .cell {
-  overflow: visible;
-  background: transparent !important;
-  border: 0;
-  margin-left: 0;
-  border-radius: 0;
-}
-.role-targets .cell::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 2px;
-  bottom: 2px;
-  width: clamp(9px, 45%, 24px);
-  border: 1.5px solid var(--green-line2);
-  border-radius: 2px;
-  background: var(--green-soft);
-}
-.role-targets .cell.is-active::before {
-  background: var(--green);
-  border-color: var(--green-ink);
-}
+/* Targets fill their 20 ms slots, using the same cell geometry as requests. */
 .role-targets .cell b { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
-.lg-target { width: 9px; height: 17px; border:1.5px solid var(--green-line2); border-radius:2px; background:var(--green-soft); }
+.lg-target { width: 24px; height: 13px; border:1.5px solid var(--green-line2); border-radius:2px; background:var(--green-soft); }
 /* Keep endpoint annotations on two complete lines, below the cached steps. */
 .diagram[data-scenario="groot"] .kind-assemble { height: 82px; }
 .diagram[data-scenario="groot"] .kind-assemble .pt.edge-r .pt-label { margin-top: 32px; }

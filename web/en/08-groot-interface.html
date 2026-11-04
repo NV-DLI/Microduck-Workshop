@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-interface';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=87158fc5"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -525,7 +525,7 @@
 <h2>Control cycle<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <p>GR00T first infers a sequence of high-level requests, then execution begins. The low-level policy handles fast body feedback during execution; simulation pauses while synchronously waiting for inference. The diagram uses readable integer values: each high-level request covers 80 ms, four requests cover 320 ms, and the theoretical 50 Hz control loop updates joint actions every 20 ms.</p>
 <div data-control-cycle data-scenarios="onboard,groot" data-lang="en">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=33eb0a4ac3e1"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=cefa20893b55"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>Control cycle</h3><p>Onboard policy: RGB and ToF use nominal 15 Hz captures, followed by YOLO inference and localization. Every 20 ms, feedback control uses the latest perception and fresh body feedback to generate a motion request; the low-level Actor then generates joint targets.</p><p>GR00T: assemble an observation and wait synchronously for inference (about 300 ms on the DGX Spark server). Predict 16 requests and execute the first 4, each held for 80 ms; the Actor updates every 20 ms during execution. Observe and predict again after 320 ms. Cached requests also involve synchronous waits.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div><p><strong>Connect action chunks with RTC.</strong> Real-Time Chunking can accompany asynchronous inference: predict the next chunk while executing the current one, constrain the prefix that will be too late to change, and smooth the remaining transition. This can reduce the gap between chunks; inference still takes time, and buffer exhaustion, network jitter and timeouts remain design concerns. For this course's high-level requests, retain discrete kick-trigger and skill-state guards instead of smoothing every field indiscriminately.</p>
 <p>The <a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/real_world_deployment.md" rel="noreferer noopener" target="_blank">NVIDIA GR00T deployment guide</a> and <a class="reference external" href="https://huggingface.co/docs/lerobot/rtc" rel="noreferer noopener" target="_blank">LeRobot RTC documentation</a> explain the approach. This is an extention design: the recorded course evaluation is synchronous and does not implement RTC. Adapting the model interface, chunk length and asynchronous executor requires separate continuity and timeout validation.</p>
 </section>

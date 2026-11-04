@@ -307,7 +307,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       <header>
         <h3>${esc(h.title)}</h3>
         <p class="summary">${esc(h.summary)}</p>
-        <p class="note">${esc(tr('窄框代表一组 20 ms 关节目标，点标采集或计算；频率为仿真配置，播放为教学慢放。', 'Each narrow box represents 20 ms of joint targets; points mark captures or computation. Rates are simulation settings; playback is teaching slow motion.'))}</p>
+        <p class="note">${esc(tr('每格代表一组 20 ms 关节目标，点标采集或计算；频率为仿真配置，播放为教学慢放。', 'Each box represents 20 ms of joint targets; points mark captures or computation. Rates are simulation settings; playback is teaching slow motion.'))}</p>
       </header>
       <figure class="diagram" data-scenario="${cur}" data-ref="fig">
         ${isG ? grootFigure(model) : timelineHTML(model)}

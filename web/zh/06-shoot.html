@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-shoot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=87158fc5"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -431,7 +431,7 @@
 <section id="timing">
 <h2>板载策略的控制周期<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <div data-control-cycle data-scenarios="onboard" data-lang="zh">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=33eb0a4ac3e1"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=cefa20893b55"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>控制周期</h3><p>板载策略：RGB 与 ToF 按名义 15 Hz 采集，随后进行 YOLO 推理和位置估计。每 20 ms，反馈控制结合最近感知与新的身体反馈生成运动请求，底层 Actor 再生成关节目标。</p><p>这些频率是仿真配置，不是实测运行速度。计算期间仿真暂停；主机推理耗时与仿真时间分开计量，不相加。</p></section></div></section>
 <section id="design">
 <h2>人工设计的边界<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
