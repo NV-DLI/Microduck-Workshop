@@ -4,7 +4,7 @@
 Lesson source: MyST Markdown in docs/zh and docs/en (edit those files directly).
 Output: <out>/zh and <out>/en (default: web/). Shared media, the 3D robot,
 fonts and vendor scripts stay in web/assets and are referenced as ../assets.
-content/course.json is a read-only archive of the pre-Sphinx site and is not read.
+The pre-Sphinx course JSON is archived in the private development folder and is not read.
 
   python3 scripts/build_site.py                 # build into web/
   python3 scripts/build_site.py --out /tmp/site # staging build (links assets)

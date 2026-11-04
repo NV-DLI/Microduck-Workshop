@@ -6,15 +6,14 @@ Temporary joint limits are restored before applying the first real walking outpu
 the root is always free and receives no external support. Interactive sessions
 rebuild each episode in the same Isaac Sim application when R is pressed.
 
-GR00T options are refused here. The separate GR00T executor keeps its checkpoint's
-own low-level composition and timing.
+Only the onboard controller is exposed through this entry.
 """
 
 from pathlib import Path
 import hashlib, json, sys
 
 HERE = Path(__file__).resolve().parent
-STUDENT = HERE / "groot_walking/student"
+STARTUP_DIR = HERE / "course_labs/startup"
 if str(HERE) not in sys.path:  # already first when run as a script
     sys.path.insert(0, str(HERE))
 import football_scene  # noqa: E402
@@ -23,14 +22,14 @@ EXECUTOR = HERE / "onboard/executor.py"
 SOURCES = [
     Path(__file__).resolve(),
     EXECUTOR,
-    STUDENT / "joint_brake.py",
-    STUDENT / "grounded-pose.json",
+    STARTUP_DIR / "joint_brake.py",
+    STARTUP_DIR / "grounded-pose.json",
     HERE / "course_labs/onboard_startup.py",
     HERE / "course_labs/kit_settings.py",
     HERE / "course_labs/realtime_view.py",
     *sorted((HERE / "onboard").glob("*.py")),
 ]
-REFUSED = ("--walking-policy-server", "--development-contour", "--calibration-command")
+REFUSED = ("--development-contour", "--calibration-command")
 
 
 def sha(p):
@@ -73,11 +72,11 @@ def install_executor():
 
 def main():
     sys.argv = [sys.argv[0], *onboard_argv(sys.argv[1:])]
-    if "kick_runtime" in sys.modules or "learning.walking_runtime" in sys.modules:
-        raise RuntimeError("Fresh process required: no GR00T skill modules may be preloaded")
+    if "kick_runtime" in sys.modules:
+        raise RuntimeError("Fresh process required: no alternate kick runtime may be preloaded")
     output = Path(sys.argv[sys.argv.index("--output") + 1])
     hashes = {str(p): sha(p) for p in SOURCES}
-    pose = json.loads((STUDENT / "grounded-pose.json").read_text())
+    pose = json.loads((STARTUP_DIR / "grounded-pose.json").read_text())
     with output.with_name(output.name + "-onboard-start.json").open("x") as f:
         json.dump(
             dict(

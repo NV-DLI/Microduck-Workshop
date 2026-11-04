@@ -5,7 +5,7 @@ import argparse, hashlib, json, math, os, shutil, subprocess, sys, time, traceba
 from pathlib import Path
 
 ONBOARD_DIR = Path(__file__).resolve().parent
-ENTRY_DIR = ONBOARD_DIR.parent / "groot_walking/student"
+ENTRY_DIR = ONBOARD_DIR.parent / "course_labs/startup"
 sys.path.insert(0, str(ONBOARD_DIR))
 from schedule import Schedule
 SCHEDULE = Schedule(100, 50, 15)
@@ -286,10 +286,7 @@ def arguments():
     from recovery_config import verify_approval, ApprovalError
 
     try:
-        # The opt-in VLA entry loads this newer executor beside the installed
-        # frozen runtime. This check still binds the preserved recovery helper;
-        # it is not approval or qualification of the new learned controller.
-        # Both course routes run from this student folder, so both bind the installed one.
+        # Bind the installed recovery helper used by the onboard executor.
         recovery_dir = M / "evaluation/football"
         a.recovery_approval_verified = verify_approval(
             a.recovery_approval, parameters_dir=recovery_dir, allow_test_only=False
@@ -986,7 +983,7 @@ def run(a, cfg, fixture):
         onboard = None
         from onboard_startup import OnboardBrakeStartup
 
-        # Same brake and stationary check as the GR00T route; the onboard actor's
+        # The brake and stationary checks guard the onboard actor's
         # first output additionally waits for delivered RGB, ToF and BODY50 data.
         support = onboard = OnboardBrakeStartup(support)
         report["initialization_reference"] = dict(
@@ -1331,11 +1328,11 @@ def run(a, cfg, fixture):
                 )
                 timings["startup_feedback"] += time.monotonic() - section
                 if initialization_brake.active and support_row["score_enabled"]:
-                    # Navigation stays enabled so the first GR00T request is made, but
+                    # Navigation stays enabled until the first walking output is available, but
                     # while the joints are still locked nothing is scored or timed as
                     # model control; the task clock restarts at the brake release.
                     support_row = dict(
-                        support_row, score_enabled=False, phase="JOINT_BRAKE_AWAITING_GR00T"
+                        support_row, score_enabled=False, phase="JOINT_BRAKE_AWAITING_POLICY"
                     )
                 if support_row["failure"] and initialization_failure is None:
                     initialization_failure = support_row["failure"]
@@ -2704,7 +2701,7 @@ def run(a, cfg, fixture):
         if support is not None:
             report["startup_support"] = support.metadata()
         if "initialization_brake" not in report and "initialization_brake" in locals():
-            # No GR00T prediction (or onboard first output) arrived: the joints were never
+            # No first onboard output arrived: the joints were never
             # released and no part of this episode counts as model control.
             report["initialization_brake"] = dict(
                 initialization_brake.metadata(),

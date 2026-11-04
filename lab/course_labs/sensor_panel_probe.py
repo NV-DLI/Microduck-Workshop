@@ -36,8 +36,6 @@ parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--frames", type=int, default=45)
 parser.add_argument("--start", type=int, default=0, help="first capture ordinal to replay")
 parser.add_argument("--render-subframes", type=int, default=4)
-parser.add_argument("--role", choices=["onboard", "groot"], default="onboard",
-                    help="which consumer captions to show (groot for a GR00T episode)")
 a = parser.parse_args()
 if a.output.exists():
     raise SystemExit("Choose a new output folder: " + str(a.output))
@@ -86,7 +84,7 @@ with launch_simulation(None, {"device": "cuda:0", "require_kit": True, "visualiz
                         timestamp_s=row["timestamp_s"])
 
     rig = ReplayRig()
-    hook = sensor_panel.Attachment(rig, role=a.role)
+    hook = sensor_panel.Attachment(rig)
     checks["window_created"] = hook.record["enabled"] and hook.panel is not None
     wall = time.perf_counter()
     for row in rows:

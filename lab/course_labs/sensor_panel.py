@@ -1,7 +1,7 @@
 """Live head-sensor panel docked next to the Isaac Sim viewport (display only).
 
-`attach(env)` wraps `env.beta_rig.capture`, which both the onboard football executor and the
-GR00T walking executor call every 1/15 s of simulation time. After each capture the panel
+`attach(env)` wraps `env.beta_rig.capture`, which the onboard football executor
+calls every 1/15 s of simulation time. After each capture the panel
 shows the frames that call returned: the head-camera RGB (downscaled) and the 64 ToF zone
 distances (not the 32x32 render the ToF model samples). Nothing else is read: no extra camera,
 render, GPU readback or physics state, and the returned dictionary is passed on unchanged.
@@ -24,12 +24,9 @@ PANEL_PX = 360  # window width; content is at most 320 px wide
 MAX_LINE_CHARS = 44  # one line of the default 14 px Kit font fits about 320 px
 # Upper bound on panel updates per wall-clock second (sensor frames arrive at 15 Hz of sim time).
 MAX_UPDATES_PER_S = 15.0
-# Which consumer each sensor feeds, from the executors: onboard, the detector reads rgb and
-# controller.step(rgb, proprio, tof) reads the ToF frame; GR00T, WalkingPolicy.capture(rgb)
-# only (the rig still produces ToF, but GR00T does not receive it).
+# The detector reads RGB; the onboard controller also uses the delivered ToF frame.
 ROLES = {
     "onboard": ("Detector input", "Controller input"),
-    "groot": ("GR00T image input", "Not a GR00T input"),
 }
 LEGEND_LINES = ("NR: no return, unknown (not free space)", "<0.1: too close   X: invalid")
 ORIENTATION_LINE = "Robot's view: row 0 top, column 0 left"
@@ -308,4 +305,4 @@ def attach(env, argv):
     """Attach the panel when a Kit window was requested; returns the Attachment or None."""
     if not kit_window_requested(argv):
         return None
-    return Attachment(env.beta_rig, role="groot" if "--walking-policy-server" in argv else "onboard")
+    return Attachment(env.beta_rig)

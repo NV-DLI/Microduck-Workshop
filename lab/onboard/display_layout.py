@@ -298,8 +298,7 @@ def install(sp, sidecar, header):
             return None
         recorder = Recorder(sidecar, header)
         state["recorder"] = recorder
-        attachment = sp.Attachment(env.beta_rig, panel_factory=lambda s: LayoutPanel(s, recorder=recorder),
-                                   role="groot" if "--walking-policy-server" in argv else "onboard")
+        attachment = sp.Attachment(env.beta_rig, panel_factory=lambda s: LayoutPanel(s, recorder=recorder))
         # Stored in scene-contract.json by football_scene.py through Attachment.close().
         attachment.record["display_layout"] = dict(kind="course native dock layout (display only)",
                                                    sidecar=str(sidecar), wrapper_sha256=header["wrapper_sha256"],

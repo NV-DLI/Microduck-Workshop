@@ -5,7 +5,7 @@ offline media tools and by the CPU tests. Inputs are the dictionary returned by
 `IsaacBetaSensors.capture()`:
 
 - `rgb_raw`: uint8 HxWx3, the distortion-remapped head-camera image. The same array is
-  passed to the detector (onboard) or to the GR00T client, so the panel shows exactly what
+  passed to the onboard detector, so the panel shows exactly what
   the controller received, only downscaled.
 - `tof`: `ToFFrame.to_dict()`, 8x8 zones in row-major order (row 0 top, column 0 left as
   seen from the robot), each with status valid / no_return / invalid and range_m.

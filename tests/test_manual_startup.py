@@ -34,7 +34,7 @@ def source_block(predicate):
 @unittest.skipIf(torch is None, "torch is required for CPU JointBrake checks")
 class ManualStartupTest(unittest.TestCase):
     def setUp(self):
-        path = ROOT / "lab/groot_walking/student/joint_brake.py"
+        path = ROOT / "lab/course_labs/startup/joint_brake.py"
         spec = importlib.util.spec_from_file_location("manual_startup_brake", path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)

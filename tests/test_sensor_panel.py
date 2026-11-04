@@ -252,9 +252,7 @@ class Hook(unittest.TestCase):
         self.assertRegex(state.lines()["tof_zones"], r"^64 zones: \d+ valid, 0 NR, \d+ invalid$")
         self.assertEqual(state.lines()["tof_role"], "Controller input")
         self.assertIn("Detector input", state.rgb_caption())
-        groot = sensor_panel.PanelState("groot")
-        self.assertIn("Not a GR00T input", groot.tof_caption())
-        self.assertIn("GR00T image input", groot.rgb_caption())
+
 
     def test_every_line_fits_the_panel(self):
         dropped = capture(3.0, np.full((32, 32), 1.0), frame_dropout_probability=1.0)
@@ -279,8 +277,8 @@ class Hook(unittest.TestCase):
 
     def test_role_follows_command(self):
         env = type("Env", (), {"beta_rig": FakeRig()})()
-        hook = sensor_panel.attach(env, ["--visualizer", "kit", "--walking-policy-server", "http://x"])
-        self.assertEqual(hook.record["role"], "groot")
+        hook = sensor_panel.attach(env, ["--visualizer", "kit"])
+        self.assertEqual(hook.record["role"], "onboard")
         hook.close()
         hook = sensor_panel.attach(env, ["--visualizer", "kit"])
         self.assertEqual(hook.record["role"], "onboard")
@@ -375,7 +373,7 @@ class PanelWidgets(unittest.TestCase):
     def test_build_refresh_and_close(self):
         with FakeUi() as fake:
             rig = FakeRig()
-            hook = sensor_panel.Attachment(rig, state=sensor_panel.PanelState("groot", min_interval_s=0))
+            hook = sensor_panel.Attachment(rig, state=sensor_panel.PanelState("onboard", min_interval_s=0))
             self.assertTrue(hook.record["enabled"], hook.record["error"])
             window = fake.windows[0]
             self.assertEqual(window.dock[0], "Viewport")
@@ -390,7 +388,7 @@ class PanelWidgets(unittest.TestCase):
             self.assertEqual(texts, want)
             shown = {key: label.text for key, label in panel.labels.items()}
             self.assertEqual(shown["status"], "LIVE, frame age 0 ms")
-            self.assertEqual(shown["tof_role"], "Not a GR00T input")
+            self.assertEqual(shown["tof_role"], "Controller input")
             record = hook.close()
             self.assertTrue(window.destroyed)
             self.assertTrue(record["docked_next_to_viewport"])
@@ -432,7 +430,7 @@ class PanelWidgets(unittest.TestCase):
 
 
 class SceneWiring(unittest.TestCase):
-    """football_scene.py is the shared entry of onboard football and GR00T validation."""
+    """football_scene.py supplies the onboard scene and sensor panel."""
 
     def test_hook_attaches_closes_and_hashes(self):
         text = (ROOT / "lab/football_scene.py").read_text()

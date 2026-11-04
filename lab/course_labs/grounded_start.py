@@ -16,7 +16,7 @@ the training objective.
 from pathlib import Path
 import sys
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "groot_walking/student"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "course_labs/startup"))
 from joint_brake import JointBrake  # noqa: E402
 
 

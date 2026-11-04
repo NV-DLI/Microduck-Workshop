@@ -11,7 +11,7 @@ Covered without physics:
   release when a field changed;
 - in the executor source, HOME is held while braked, and the release happens after the first
   actor output is computed and before it is applied (static order check);
-- the onboard entry selects its own executor, refuses GR00T options and preloaded GR00T
+- the onboard entry selects its own executor, refuses unsupported options and preloaded alternate
   skill modules; the executor requires exactly one route;
 - the grounded reference pose is the recorded one for this football pitch.
 """
@@ -33,7 +33,7 @@ import numpy as np
 import torch
 
 ROOT = Path(__file__).resolve().parents[1]
-STUDENT = ROOT / "lab/groot_walking/student"
+STUDENT = ROOT / "lab/course_labs/startup"
 EXECUTOR = ROOT / "lab/onboard/executor.py"
 sys.path[:0] = [
     str(ROOT / "lab/course_labs"),
@@ -538,7 +538,6 @@ class ExecutorProtocolOrder(unittest.TestCase):
         self.assertIn("nav = DirectPath(output / 'direct-path')", source)
         self.assertIn("official_teacher_only_no_residual", source)
         self.assertNotIn("Nav2Session", source)
-        self.assertNotIn("walking_policy_server", source)
         self.assertEqual(len(_calls(self.run_fn, "OnboardBrakeStartup")), 1)
         capture = _calls(self.run_fn, "onboard.note_capture")
         self.assertEqual([ast.unparse(a) for a in capture[0].args], ["t", "rgb", "capture['tof']"])
@@ -584,7 +583,7 @@ class ExecutorRoute(unittest.TestCase):
     def test_only_onboard_route_is_accepted(self):
         self.assertIn("--course-onboard", self.parse_error(["--detector-deployment", "d.json"]))
         self.assertIn("unrecognized arguments", self.parse_error(
-            ["--detector-deployment", "d.json", "--course-onboard", "--walking-policy-server", "h:1"]))
+            ["--detector-deployment", "d.json", "--course-onboard", "--unknown-controller", "h:1"]))
 
     def test_onboard_requires_detector(self):
         self.assertIn("trained detector", self.parse_error(["--development-contour", "--course-onboard"]))
@@ -603,8 +602,7 @@ class OnboardEntry(unittest.TestCase):
         out = self.scene.onboard_argv(list(self.ARGV))
         self.assertEqual(out.count("--course-onboard"), 1)
         self.assertEqual(self.scene.onboard_argv(out).count("--course-onboard"), 1)
-        for bad in (["--walking-policy-server", "h:1"], ["--walking-policy-server=h:1"],
-                    ["--development-contour"], ["--calibration-command", "0", "0", "0"]):
+        for bad in (["--development-contour"], ["--calibration-command", "0", "0", "0"]):
             with self.subTest(bad), self.assertRaises(ValueError):
                 self.scene.onboard_argv([*self.ARGV, *bad])
         with self.assertRaises(ValueError):
@@ -627,7 +625,7 @@ class OnboardEntry(unittest.TestCase):
         self.assertEqual(seen[0], ("isaac_execute", ROOT / "lab/onboard/executor.py"))
         self.assertEqual(seen[1][1], Path("/runtime/evaluation/football/execute.py"))
 
-    def test_refuses_preloaded_gr00t_modules(self):
+    def test_refuses_preloaded_kick_runtime(self):
         argv = sys.argv
         sys.argv = ["onboard_scene.py", *self.ARGV]
         sys.modules["kick_runtime"] = types.ModuleType("kick_runtime")

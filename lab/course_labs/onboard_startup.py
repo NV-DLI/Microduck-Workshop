@@ -1,8 +1,8 @@
 """Course start-up gate for the onboard football route (standing61 joint brake).
 
 The robot starts at HOME on the measured grounded root of the same football pitch
-(groot_walking/student/grounded-pose.json), every joint temporarily locked by the
-joint-limit brake, root free and zero external wrench. This gate wraps the GR00T
+(course_labs/startup/grounded-pose.json), every joint temporarily locked by the
+joint-limit brake, root free and zero external wrench. This gate wraps the shared
 route's NoSupportStartup (same stationary check) and adds what the onboard route
 needs before its walking actor may produce its first real output:
 

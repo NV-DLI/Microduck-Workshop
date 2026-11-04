@@ -12,7 +12,7 @@ PATH = ROOT / 'lab/onboard/initial_pose.py'
 spec = importlib.util.spec_from_file_location('onboard_pose_test', PATH)
 pose = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(pose)
-REFERENCE = json.loads((ROOT/'lab/groot_walking/student/grounded-pose.json').read_text())
+REFERENCE = json.loads((ROOT/'lab/course_labs/startup/grounded-pose.json').read_text())
 
 
 def rotation(q):
