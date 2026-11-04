@@ -24,22 +24,31 @@ def prepare():
     manifest = json.loads((ROOT / "lab/bundle-manifest.json").read_text())
     dest = LOCAL / "student-course"
     dest.mkdir(parents=True, exist_ok=True)
+    # Remove only explicitly retired bundled sources, including installations
+    # prepared before the direct-path-only course. Experiment outputs are outside
+    # this managed source tree and are never inspected or removed here.
+    for relative in manifest.get("retired_files", []):
+        candidate = dest / relative
+        if candidate.is_symlink() or candidate.is_file():
+            candidate.unlink()
+        if candidate.suffix == ".py":
+            for cache in (candidate.parent / "__pycache__").glob(candidate.stem + ".*.pyc"):
+                cache.unlink()
+        for directory in (candidate.parent / "__pycache__", *candidate.parents):
+            if directory == dest:
+                break
+            if directory.is_dir() and not directory.is_symlink():
+                try:
+                    directory.rmdir()
+                except OSError:
+                    pass
     ffmpeg = shutil.which("ffmpeg")
     if not ffmpeg:
         raise RuntimeError("Install ffmpeg before preparing the runtime.")
-    runtime_config = (
-        json.loads((LOCAL / "runtime.json").read_text())
-        if (LOCAL / "runtime.json").exists()
-        else {}
-    )
     replacements = {
         "@COURSE@": str(dest),
         "@REPO@": str(ROOT),
         "@FFMPEG@": ffmpeg,
-        "sha256:c60e955f781c31c00b46b415c9bad7dc8e5faa922f0e3ea0dbb44f604685bfbd": runtime_config.get(
-            "nav2_image",
-            "sha256:c60e955f781c31c00b46b415c9bad7dc8e5faa922f0e3ea0dbb44f604685bfbd",
-        ),
     }
     baseline = {}
     digests = {}

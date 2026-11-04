@@ -90,7 +90,7 @@ def main():
                 ),
                 grounded_pose=dict(case=pose["case"], root=pose["root"], quat=pose["quat"]),
                 ground="flat Newton plane at z=0 shared by football styles A-D",
-                controller="detector, BallReacquisitionNavigator, Nav2 and official kick/standing policies",
+                controller="detector, straight public-observation path, continuous approach and official kick/standing policies",
             ),
             f,
             indent=2,

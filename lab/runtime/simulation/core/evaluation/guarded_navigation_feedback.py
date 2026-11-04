@@ -11,13 +11,13 @@ from perception import level_rotation
 
 
 MOTION_REASONS = {
-    "actual_Navfn_path": "NAV2_APPROACH",
+    "accepted_planned_path": "PATH_APPROACH",
     "fresh_RGB_position_error": "VISUAL_ALIGN",
     "observed_ball_direction_body_turn": "SEARCH_BALL",
     "sensor_pose_goal_reacquisition": "REFRESH_GOAL",
 }
 ORIGINAL_MOTION_REASONS = {
-    "actual_Navfn_path",
+    "accepted_planned_path",
     "fresh_RGB_position_error",
     "fresh_ball_required",
     "visual_localization_refresh",
@@ -48,7 +48,7 @@ class GuardedFeedbackNavigator(ObservedTurnNavigator):
         # Observing a nearby hazard must not silently request a new head pose.
         # Keep the actual command continuity; stale observations cannot retarget.
         if gaze is None and (
-            reason in UPSTREAM_HOLDS or reason.startswith("Nav2_failed:")
+            reason in UPSTREAM_HOLDS or reason.startswith("planning_failed:")
         ):
             gaze = self.gaze.current.tolist()
         out = super()._output(t, command, reason, gaze)

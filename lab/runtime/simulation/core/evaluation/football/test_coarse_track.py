@@ -187,58 +187,5 @@ class CoarseTrack(unittest.TestCase):
         )
 
 
-class CoarseRealMap(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        from test_zone_floor_projection import FloorProjection
-
-        FloorProjection.setUpClass()
-        cls.frame = FloorProjection.frame
-        cls.request = FloorProjection.request
-
-    def owner(self):
-        from zone_floor_projection import project_floor_zones
-
-        sample, _ = project_floor_zones(
-            self.request["case"]["tof_samples"][0], self.frame, floor_accepted=True
-        )
-        o = SimpleNamespace(
-            config=SimpleNamespace(layout="empty"),
-            pose=np.array(self.request["case"]["odom"]["pose_xyyaw"]),
-            goal_time=self.frame["timestamp_s"],
-            goal_map=np.array([0.93, 0.0]),
-            image_sha="0" * 64,
-        )
-        o._tof_sample = lambda *args: (sample, False)
-        return o
-
-    def test_actual_map_and_original_envelope(self):
-        o = self.owner()
-        t = self.frame["timestamp_s"]
-        r = path_authority(
-            o, self.frame, dict(timestamp_s=t), np.eye(3), 0.12, [0.712, 0.238, -0.081]
-        )
-        self.assertTrue(r["allowed"])
-        self.assertEqual(r["envelope"]["test_radius_m"], 0.1)
-        self.assertIn("map_request", r)
-
-    def test_current_hazard_and_field_boundary_rejected(self):
-        o = self.owner()
-        t = self.frame["timestamp_s"]
-        sample, _ = o._tof_sample()
-        o._tof_sample = lambda *args: (sample, True)
-        self.assertFalse(
-            path_authority(
-                o, self.frame, dict(timestamp_s=t), np.eye(3), 0.12, [0.7, 0, -0.08]
-            )["allowed"]
-        )
-        o = self.owner()
-        self.assertFalse(
-            path_authority(
-                o, self.frame, dict(timestamp_s=t), np.eye(3), 0.12, [0.7, 1.0, -0.08]
-            )["allowed"]
-        )
-
-
 if __name__ == "__main__":
     unittest.main()

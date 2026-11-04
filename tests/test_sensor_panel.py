@@ -436,7 +436,7 @@ class SceneWiring(unittest.TestCase):
 
     def test_hook_attaches_closes_and_hashes(self):
         text = (ROOT / "lab/football_scene.py").read_text()
-        self.assertIn("attach_sensor_panel(env, remaining)", text)
+        self.assertIn("attach_sensor_panel(env, sys.argv[1:])", text)
         self.assertIn('scene_record["sensor_panel"] = panel["attachment"].close()', text)
         finally_block = text[text.index("def run_and_finalize"):]
         self.assertLess(finally_block.index("finally:"), finally_block.index('panel["attachment"].close()'))

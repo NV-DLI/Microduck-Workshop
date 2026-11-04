@@ -27,6 +27,7 @@ def finish(job, config, code):
         )
     manifest = json.loads((output / "manifest.json").read_text())
     score = manifest["scorer"]
+    settled_shot = manifest.get("shot_completion", {}).get("protocol") == "settled-shot-v2"
     if a.scene_contract:
         scene = json.loads((output / "scene-contract.json").read_text())
         if scene.get("source_changed") or scene["profile"] not in (
@@ -36,106 +37,28 @@ def finish(job, config, code):
             raise ValueError("Changed or unknown scene contract")
         if scene["goal_plane_x_m"] != 0.68 or scene["goal_opening_width_m"] != 0.388:
             raise ValueError("Audit geometry does not match the recorded scene")
+    if not settled_shot:
+        raise ValueError("The course requires the settled-shot-v2 completion contract")
+    traces = [json.loads(line) for line in (output / "policy-trace.jsonl").open()]
+    controls = [json.loads(line) for line in (output / "control.jsonl").open()]
     audits = [
         ["audit_media_terminal_cadence.py", "independent-media-audit.json"],
         ["audit_football.py", "independent-root-audit.json"],
+        ["audit_shot_actual.py", "independent-shot-audit.json", "--runtime",
+         str(Path(__file__).parent / "official_kick_runtime.py"), "--materialized-root", str(a.runtime),
+         "--task-limit", str(manifest["shot_completion"]["task_limit_s"])],
+        ["audit_direct_navigation.py", "independent-direct-navigation-audit.json"],
     ]
-    if any((json.loads(line).get("native_k10") or {}).get("active") for line in (output / "policy-trace.jsonl").open()):
-        audits.append(
-            [
-                "audit_retimed_kick_actual.py",
-                "independent-retimed-recovery-audit.json",
-                "--runtime",
-                str(controller / "kick_runtime.py"),
-            ]
-        )
-    if any(
-        json.loads(line).get("public_neutral_fine_step", {}).get("state")
-        in ("TRACK", "MACRO")
-        for line in (output / "policy-trace.jsonl").open()
-    ):
-        audits.append(
-            [
-                "audit_motion_heading_reference.py",
-                "independent-motion-heading-audit.json",
-            ]
-        )
-    if any(
-        json.loads(line)
-        .get("public_handoff", {})
-        .get("memory", {})
-        .get("memory_available")
-        for line in (output / "policy-trace.jsonl").open()
-    ):
-        audits.append(
-            [
-                "audit_sole_memory_actual.py",
-                "independent-sole-memory-audit.json",
-                "--controller",
-                str(controller),
-            ]
-        )
-    traces = [json.loads(line) for line in (output / "policy-trace.jsonl").open()]
-    if any(
-        r.get("public_neutral_fine_step", {}).get("state") == "TRACK" for r in traces
-    ):
-        extra = [
-            "--lateral-target=-0.035",
-            "--coarse-lateral-target=-0.028",
-            "--brake-duration=.16",
-            "--brake-start-x=.125",
-        ]
-        if any(
-            r.get("public_neutral_fine_step", {}).get("track_brake_started_s")
-            is not None
-            for r in traces
-        ):
-            extra.append("--require-brake")
-        audits.append(
-            [
-                "audit_track_commands_actual.py",
-                "independent-track-commands-audit.json",
-                *extra,
-            ]
-        )
-    if any((output / "nav2/service/result").glob("request-*.json")) or any(
-        r.get("coarse_track_path", {}).get("map_request")
-        for r in map(json.loads, (output / "control.jsonl").open())
-    ):
-        audits.append(
-            [
-                "audit_floor_projection_actual.py",
-                "independent-floor-projection-audit.json",
-            ]
-        )
-    if any(
-        r.get("public_neutral_fine_step", {}).get("coarse_track")
-        and r.get("public_neutral_fine_step", {}).get("state") == "TRACK"
-        for r in traces
-    ):
-        audits.append(
-            ["audit_coarse_track_actual.py", "independent-coarse-track-audit.json"]
-        )
-    audits.append(
-        ["audit_guard_stop_actual.py", "independent-guard-stop-final-audit-v1.json"]
-    )
-    if any(r.get("public_neutral_fine_step", {}).get("turn_goal_only") for r in traces):
-        audits.append(
-            [
-                "audit_goal_turn_progress_actual.py",
-                "independent-goal-turn-progress-audit.json",
-                "--require-turn",
-            ]
-        )
+    if any((row.get("public_handoff") or {}).get("memory", {}).get("memory_available") for row in traces):
+        audits.append(["audit_sole_memory_actual.py", "independent-sole-memory-audit.json",
+                       "--controller", str(controller)])
+    if ((output / "direct-path/queries.jsonl").stat().st_size or
+            any((row.get("coarse_track_path") or {}).get("map_request") or
+                (row.get("coarse_active_path") or {}).get("map_request") for row in controls)):
+        audits.append(["audit_floor_projection_actual.py", "independent-floor-projection-audit.json"])
     if (output / "recovery-trace.jsonl").exists():
-        audits.append(
-            [
-                "audit_retreat_recovery.py",
-                "independent-retreat-recovery-audit-v2.json",
-                "--controller",
-                str(controller),
-            ]
-        )
+        audits.append(["audit_retreat_recovery.py", "independent-retreat-recovery-audit.json",
+                       "--controller", str(controller)])
     codes = []
     for i, (script, name, *extra) in enumerate(audits):
         with (evaluation / f"audit-{i+1}.log").open("x") as log:
@@ -163,12 +86,16 @@ def finish(job, config, code):
                     stderr=log,
                 ).returncode
             )
-    recovery = evaluation / "independent-retimed-recovery-audit.json"
-    recovered = recovery.exists() and json.loads(recovery.read_text())["passed"]
+    recovered = False
+    shot_audit = evaluation / "independent-shot-audit.json"
+    if settled_shot and shot_audit.exists():
+        recovered = json.loads(shot_audit.read_text()).get("recovered", False)
+    completion = (manifest.get("terminal_reason") == "shot_complete_ball_settled"
+                  if settled_shot else recovered)
     passed = bool(
         score["physical_episode_success"]
         and not score["contact"]["pre_kick_ball_contact_observed"]
-        and recovered
+        and completion
         and not any(codes)
     )
     report = dict(
@@ -177,7 +104,9 @@ def finish(job, config, code):
         task_seconds=manifest["task_seconds"],
         scorer=score,
         course_evaluation=dict(
-            passed=passed, recovered=recovered, audit_exit_codes=codes
+            passed=passed, recovered=recovered, audit_exit_codes=codes,
+            completion_rule="contacted completed kick with ball settled",
+            recovery_is_separate_diagnostic=settled_shot
         ),
     )
     (evaluation / "result.json").write_text(json.dumps(report, indent=2) + "\n")

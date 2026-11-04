@@ -392,7 +392,7 @@ def build_cfg(a):
     from isaaclab.sensors import ContactSensorCfg
     from isaaclab.sim.schemas import UsdPhysicsRigidBodyCfg
     from isaaclab_tasks.utils import parse_env_cfg
-    from nav2_service.obstacle_contract import OBSTACLE
+    from onboard_geometry.obstacle_contract import OBSTACLE
 
     cfg = parse_env_cfg(
         "IsaacContrib-Velocity-Flat-MicroDuck",
@@ -585,7 +585,8 @@ def run(a, cfg, fixture):
     from isaaclab_assets.robots.microduck import MICRODUCK_JOINT_NAMES
     from batch_policy import BatchPolicy
     from controller import BetaNavigator, ControllerConfig
-    from nav2_bridge import Nav2Session, quaternion_xyzw
+    from path_request import quaternion_xyzw
+    from onboard.direct_path import DirectPath
     from head_adapter import HeadAdapter
     from imu_predictor import DeliveredBodyImu
     from body_imu_input import BodyImuInput
@@ -951,7 +952,7 @@ def run(a, cfg, fixture):
             )
         if tuple(obs["policy"].shape) != (1, 61):
             raise RuntimeError("Expected native61-wide policy observation")
-        nav = Nav2Session(output / "nav2", max_wall_s=max(1800.0, a.seconds * 60))
+        nav = DirectPath(output / "direct-path")
         controller = BetaNavigator(
             nav,
             camera=rig.profile,
@@ -1943,7 +1944,7 @@ def run(a, cfg, fixture):
                                     "180s_teaching_limit",
                                     "local_segment_hits_surveyed_obstacle",
                                     "ball_goal_direction_degenerate",
-                                } or fine_reason.startswith("Nav2_failed:")
+                                } or fine_reason.startswith("planning_failed:")
                                 fine_guard = bool(
                                     not fine_hazard
                                     and not controller.refresh_too_close
@@ -2400,12 +2401,12 @@ def run(a, cfg, fixture):
             )
         report["timing_wall_seconds"] = {
             **timings,
-            "Nav2_request_subset": (
-                controller.nav2_wall_seconds if "controller" in locals() else None
+            "planning_request_subset": (
+                controller.planning_wall_seconds if "controller" in locals() else None
             ),
         }
         report["timing_scope"] = (
-            "Host wall under shared load; capture_readback_and_archive_submit includes original readback plus immutable packet copy and bounded queue wait, not worker PNG/video cost. Media worker and post-episode drain times are separate. Nav2/trace times are subsets; GPU async work is charged at synchronization."
+            "Host wall under shared load; capture_readback_and_archive_submit includes original readback plus immutable packet copy and bounded queue wait, not worker PNG/video cost. Media worker and post-episode drain times are separate. Planning/trace times are subsets; GPU async work is charged at synchronization."
         )
         report["program_wall_before_cleanup_s"] = time.monotonic() - globals().get(
             "PROGRAM_STARTED", started
@@ -2442,9 +2443,9 @@ def run(a, cfg, fixture):
                 report["detector_cleanup"] = {"error": repr(error)}
         if nav is not None:
             try:
-                report["Nav2_cleanup"] = nav.close()
+                report["planner_cleanup"] = nav.close()
             except Exception as error:
-                report["Nav2_cleanup"] = {"error": repr(error)}
+                report["planner_cleanup"] = {"error": repr(error)}
         report["source_changed_during_run"] = [
             str(p) for p, v in source_snapshot.items() if sha(p) != v["sha256"]
         ]

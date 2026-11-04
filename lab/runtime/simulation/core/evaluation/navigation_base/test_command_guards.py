@@ -45,8 +45,8 @@ class ActualChain(unittest.TestCase):
 
     def test_every_guard_preempts_active_phase_integral_and_attention(self):
         reasons = UPSTREAM_HOLDS | {
-            "Nav2_failed:timeout",
-            "Nav2_path_not_admitted",
+            "planning_failed:timeout",
+            "path_not_admitted",
             "detector_unavailable",
         }
         for reason in reasons:
@@ -67,7 +67,7 @@ class ActualChain(unittest.TestCase):
 
     def test_too_close_and_missing_ball_or_floor_stop_actual_chain(self):
         for fault in ["too_close", "ball", "floor"]:
-            n = self.nav("NAV2_APPROACH")
+            n = self.nav("PATH_APPROACH")
             if fault == "too_close":
                 n.refresh_too_close = True
             elif fault == "ball":
@@ -75,20 +75,20 @@ class ActualChain(unittest.TestCase):
             else:
                 n.last_geometry["floor_observation"]["accepted"] = False
             self.assertEqual(
-                self.apply(n, "actual_Navfn_path")["velocity_body_xyw"], [0.0, 0.0, 0.0]
+                self.apply(n, "accepted_planned_path")["velocity_body_xyw"], [0.0, 0.0, 0.0]
             )
 
     def test_old_yaw_integral_cannot_starve_aligned_forward_phase(self):
-        n = self.nav("NAV2_APPROACH")
+        n = self.nav("PATH_APPROACH")
         self.assertEqual(
-            self.apply(n, "actual_Navfn_path")["velocity_body_xyw"], [0.3, 0, 0]
+            self.apply(n, "accepted_planned_path")["velocity_body_xyw"], [0.3, 0, 0]
         )
         self.assertEqual(n.yaw_feedback.integral, 0.0)
 
     def test_zero_request_disarms_even_current_forward(self):
-        n = self.nav("NAV2_APPROACH")
+        n = self.nav("PATH_APPROACH")
         self.assertEqual(
-            self.apply(n, "actual_Navfn_path", (0, 0, 0))["velocity_body_xyw"],
+            self.apply(n, "accepted_planned_path", (0, 0, 0))["velocity_body_xyw"],
             [0.0, 0.0, 0.0],
         )
 
@@ -270,7 +270,7 @@ class ActualChain(unittest.TestCase):
             self.assertEqual(self.call(a, 0.47, gyro_body_rad_s=v)[0], [0, 0, 0])
 
     def near_nav(self):
-        n = self.nav("NAV2_APPROACH")
+        n = self.nav("PATH_APPROACH")
         n.pose = np.array([-0.345, 0.0, 0.0])
         n.ball = np.array([0.0, 0.0])
         n.goal_map = np.array([0.93, 0.0])
@@ -285,7 +285,7 @@ class ActualChain(unittest.TestCase):
 
     def test_actual_navfn_shared_near_context_crosses_old_boundary_gap(self):
         n = self.near_nav()
-        out = self.apply(n, "actual_Navfn_path")
+        out = self.apply(n, "accepted_planned_path")
         self.assertIn("heading_error_rad", out["near_ball_phase"])
         self.assertEqual(
             out["native_command_adapter"]["body_heading_owner"],
@@ -300,7 +300,7 @@ class ActualChain(unittest.TestCase):
         self.assertTrue(out["motion_authorization"]["allowed"])
 
     def test_near_hard_guards_still_override_phase_and_context(self):
-        for why in UPSTREAM_HOLDS | {"Nav2_failed:timeout", "detector_unavailable"}:
+        for why in UPSTREAM_HOLDS | {"planning_failed:timeout", "detector_unavailable"}:
             with self.subTest(why=why):
                 n = self.near_nav()
                 out = self.apply(n, why)
@@ -309,7 +309,7 @@ class ActualChain(unittest.TestCase):
 
     def test_near_explicit_zero_path_request_cannot_become_motion(self):
         n = self.near_nav()
-        out = self.apply(n, "actual_Navfn_path", (0, 0, 0))
+        out = self.apply(n, "accepted_planned_path", (0, 0, 0))
         self.assertEqual(out["velocity_body_xyw"], [0, 0, 0])
 
     def test_near_expired_goal_crop_floor_and_tof_cannot_move(self):
@@ -326,7 +326,7 @@ class ActualChain(unittest.TestCase):
                     n._tof_sample = lambda *args: (None, True)
                 else:
                     n.refresh_too_close = True
-                out = self.apply(n, "actual_Navfn_path")
+                out = self.apply(n, "accepted_planned_path")
                 self.assertEqual(out["velocity_body_xyw"], [0, 0, 0])
                 self.assertFalse(out["kick_request"])
 
@@ -414,7 +414,7 @@ class ActualChain(unittest.TestCase):
     def test_actual_chain_heading_is_toward_public_preparation_point(self):
         n = self.near_nav()
         n.native_commands.phase = "OBSERVE"
-        out = self.apply(n, "actual_Navfn_path")
+        out = self.apply(n, "accepted_planned_path")
         near = out["near_ball_phase"]
         self.assertAlmostEqual(near["heading_error_rad"], 0.0)
         self.assertAlmostEqual(

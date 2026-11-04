@@ -37,6 +37,5 @@ myst:
 - [Newton 物理引擎 ↗](https://github.com/newton-physics/newton)
 - [PPO 原论文 ↗](https://arxiv.org/abs/1707.06347)
 - [RSL-RL：强化学习实现 ↗](https://github.com/leggedrobotics/rsl_rl)
-- [Nav2 文档 ↗](https://docs.nav2.org/)
 - [Ultralytics 文档 ↗](https://docs.ultralytics.com/)
 - [VL53L8CX 传感器资料 ↗](https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html)

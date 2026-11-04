@@ -1,5 +1,5 @@
 """Run preserved actors in the dimensioned indoor scene, with an explicit new contract.
-The frozen old task stays available. New scene results have a separate denominator.
+The task uses public RGB/ToF observations and a straight approach on the empty pitch.
 """
 
 from pathlib import Path
@@ -40,7 +40,7 @@ def main():
     entry = load("isaac_execute", D / "executor.py")
     wrapper = load("scene_preserved_controller", D / "execute.py")
     # Replace measured map/landmark constants, never observations or hidden state.
-    import controller, visual_localization, nav2_bridge, contact_scoring, perception
+    import controller, visual_localization, path_request, contact_scoring, perception
     from scene_goal_points import extract_scene_goal_bases
 
     perception.extract_beta_goal_bases = extract_scene_goal_bases
@@ -75,8 +75,7 @@ def main():
     startup_support.StartupSupport = GroundedStartup
     from vision import known_goal_geometry, goal_geometry
     import scene_localization
-    from scene_nav2 import map_contract, obstacle_contract, owner, client, contract
-    from nav2_service import map_contract as old_map, contract as old_contract
+    from onboard_geometry import map_contract, obstacle_contract
 
     known_goal_geometry.POST_SEPARATION_M = 0.394
     goal_geometry.POST_CENTER_SEPARATION_M = 0.394
@@ -93,35 +92,18 @@ def main():
     contact_scoring.goal_crossing = functools.partial(
         original_crossing, goal_x=0.68, width=0.388, height=0.244, radius=0.05
     )
-    old_map.snapshot = map_contract.snapshot
-    old_contract.snapshot = map_contract.snapshot
-    nav2_bridge.prior = obstacle_contract.prior
-    nav2_bridge.BridgeClient = client.BridgeClient
-
+    path_request.prior = obstacle_contract.prior
     sys.path.append(str(HERE / "course_labs"))
-    # Same service source and protocol; in the course container the planner runs as a
-    # CPU child process (course_labs/nav2_local.py), on a host install in its own image.
-    from nav2_local import LocalServiceOwner, nav2_backend
-
-    backend = nav2_backend()
-    base_owner = LocalServiceOwner if backend == "local" else owner.ServiceOwner
-
-    class SceneOwner(base_owner):
-        def __init__(self, source_dir, *args, **kwargs):
-            super().__init__(HERE / "scene_nav2", *args, **kwargs)
-
-    nav2_bridge.ServiceOwner = SceneOwner
     import coarse_track
 
     coarse_track.snapshot = map_contract.snapshot
     original_build = wrapper.base_build
-    scene_record = {"nav2_backend": backend}
+    scene_record = {}
     recording = {}
     panel = {}
 
     def build(a):
         scene_record.clear()
-        scene_record["nav2_backend"] = backend
         recording.clear()
         panel.clear()
         a.robot_usd = HERE / "assets/microduck_contact.usda"
@@ -232,7 +214,9 @@ def main():
             locomotion_and_kick_models_retrained=False,
             perception_weights="explicit --detector-deployment; hash recorded in manifest.detector",
             known_post_center_separation_m=0.394,
-            map_bounds_xy_m=[-0.7, 0.9, -0.5, 0.5],
+            map_bounds_xy_m=path_request.prior(a.layout)["bounds_xy_m"],
+            map_prior_profile=path_request.prior(a.layout).get("profile", obstacle_contract.DEFAULT_PROFILE),
+            visual_mat_bounds_xy_m=list(obstacle_contract.VISUAL_MAT_BOUNDS_XY_M),
             new_scene_requires_independent_validation=True,
         )
         return cfg, fixture
@@ -249,10 +233,8 @@ def main():
         HERE / "terrain_visuals.py",
         HERE / "course_labs/sensor_panel.py",
         HERE / "course_labs/sensor_payload.py",
-        HERE / "course_labs/nav2_local.py",
-        HERE / "course_labs/nav2_local_preflight.py",
         *sorted((HERE / "assets").glob("*")),
-        *sorted((HERE / "scene_nav2").glob("*")),
+        *sorted((HERE / "onboard_geometry").glob("*")),
     ]
     hashes = {str(p): sha(p) for p in files if p.is_file()}
     launch_path = output.with_name(output.name + "-scene-launcher.json")

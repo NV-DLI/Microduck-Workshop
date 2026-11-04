@@ -62,7 +62,7 @@ class HeadFeedbackTests(unittest.TestCase):
         start = None
         holds = []
         for i in range(350, 390):
-            sent, d = self.call(h, i, velocity=[0.3, 0, 0], state="NAV2_APPROACH")
+            sent, d = self.call(h, i, velocity=[0.3, 0, 0], state="PATH_APPROACH")
             self.assertFalse(d["integration_enabled"])
             if d["body_zero_for_withdrawal"]:
                 start = d["withdrawal_started_s"] if start is None else start
@@ -82,7 +82,7 @@ class HeadFeedbackTests(unittest.TestCase):
                 h,
                 i,
                 velocity=[0.3, 0, 0],
-                state="NAV2_APPROACH",
+                state="PATH_APPROACH",
                 head_motion_allowed=False,
             )
             np.testing.assert_array_equal(sent, prior[0])
@@ -147,7 +147,7 @@ class HeadFeedbackTests(unittest.TestCase):
         for i in range(350, 451):
             nominal = [-0.9 if i % 2 else 0.9, 0, 0, 0]
             _, d = self.call(
-                h, i, nominal=nominal, velocity=[0.3, 0, 0], state="NAV2_APPROACH"
+                h, i, nominal=nominal, velocity=[0.3, 0, 0], state="PATH_APPROACH"
             )
             if start is None:
                 start = d["withdrawal_started_s"]

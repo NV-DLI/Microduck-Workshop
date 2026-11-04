@@ -20,7 +20,7 @@ class ImageHeadNavigator(NearBallNavigator):
             "fresh_ball_required",
             "fresh_RGB_position_error",
             "zero_command_observe_real_settling",
-            "actual_Navfn_path",
+            "accepted_planned_path",
         }
         if (
             eligible

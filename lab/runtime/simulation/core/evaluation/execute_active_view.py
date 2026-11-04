@@ -63,5 +63,4 @@ if __name__ == "__main__":
     base.controller.BetaNavigator = ActiveViewNavigator
     base.entry.isaac_execute.build_cfg = build
     base.entry.isaac_execute.run = base.entry.run
-    base.entry.nav2_bridge.Nav2Session = base.entry.BoundedLifetimeSession
     base.entry.isaac_execute.main()

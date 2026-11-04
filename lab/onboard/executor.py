@@ -60,7 +60,8 @@ def arguments():
         required=True,
         help="This entry only runs development episodes",
     )
-    p.add_argument("--seconds", type=float, default=5.0)
+    p.add_argument("--seconds", type=float, default=0.0)
+    p.add_argument("--experiment-plan", type=Path)
     p.add_argument("--seed", type=int, default=971001)
     p.add_argument("--layout", choices=["empty", "one-obstacle"], default="empty")
     p.add_argument("--width", type=int, default=960)
@@ -193,28 +194,37 @@ def arguments():
         help="Explicit developer-only diagnostic; frames and traces are still retained",
     )
     add_launcher_args(p)
-    p.add_argument("--walking-policy-server", default=None)
     p.add_argument(
         "--course-onboard",
         action="store_true",
-        help="Onboard route (YOLO detector, Nav2, original task controller) with the course joint-brake start-up",
+        help="Onboard route (YOLO detector, straight path, continuous approach) with the course joint-brake start-up",
     )
     p.add_argument("--interactive-reset", action="store_true", help="Keep the Isaac window open; R starts another small-offset episode")
     p.add_argument("--session-episodes", type=int, default=0, help="Optional session limit; 0 has no limit")
     a = p.parse_args()
+    a.experiment = None
+    if a.experiment_plan:
+        from experiment_plan import load_plan
+        a.experiment = load_plan(a.experiment_plan)
+        plan = a.experiment['document']
+        if not a.interactive_reset or a.seconds != 30 or not a.no_video:
+            p.error('Trial plans require 30 seconds, no video and an interactive session')
+        if a.session_episodes not in (0, len(plan['episodes'])):
+            p.error('Session length must match the frozen experiment plan')
+        a.session_episodes = len(plan['episodes'])
     if a.session_episodes < 0:
         p.error("Session limit must be nonnegative")
     if a.interactive_reset and "kit" not in (getattr(a, "visualizer", None) or []):
         p.error("Interactive reset requires the Kit window")
-    if bool(a.walking_policy_server) == a.course_onboard:
-        p.error("Select exactly one route: --walking-policy-server or --course-onboard")
-    if a.course_onboard and a.detector_deployment is None:
+    if not a.course_onboard:
+        p.error("Use the course onboard entry")
+    if a.detector_deployment is None:
         p.error("The onboard route requires the trained detector deployment")
     a.enable_cameras = True
     if a.device is None:
         a.device = "cuda:0"
-    if not math.isfinite(a.seconds) or not 0 < a.seconds <= 180:
-        p.error("Development duration must be in (0,180] seconds")
+    if not math.isfinite(a.seconds) or not 0 <= a.seconds <= 180:
+        p.error("Duration must be in [0,180]; zero waits for manual reset")
     if a.output.exists():
         p.error("Use a new output directory; never overwrite a failed episode")
     if not a.model.is_file() or not a.robot_usd.is_file():
@@ -423,7 +433,7 @@ def build_cfg(a):
     from isaaclab.sensors import ContactSensorCfg
     from isaaclab.sim.schemas import UsdPhysicsRigidBodyCfg
     from isaaclab_tasks.utils import parse_env_cfg
-    from nav2_service.obstacle_contract import OBSTACLE
+    from onboard_geometry.obstacle_contract import OBSTACLE
 
     cfg = parse_env_cfg(
         "IsaacContrib-Velocity-Flat-MicroDuck",
@@ -452,7 +462,7 @@ def build_cfg(a):
         ):
             raise ValueError("Export does not bind this frozen training run")
     cfg.seed = a.seed
-    cfg.episode_length_s = a.seconds + 5.0
+    cfg.episode_length_s = a.seconds + 5.0 if a.seconds else 1e12
     cfg.curriculum = None
     cfg.sim.dt = SCHEDULE.physics_dt
     cfg.decimation = SCHEDULE.decimation or SCHEDULE.P // SCHEDULE.C
@@ -609,20 +619,6 @@ def build_cfg(a):
     }
 
 
-class Nav2Unused:
-    """Stand-in for the Nav2 session on the GR00T route; every planning call is refused."""
-
-    def __init__(self):
-        self.refused_queries = 0
-
-    def query(self, case, provenance):
-        self.refused_queries += 1
-        raise RuntimeError("Nav2 planning is not part of the GR00T walking route")
-
-    def close(self):
-        return dict(nav2_started=False, refused_queries=self.refused_queries)
-
-
 def run(a, cfg, fixture):
     import numpy as np, torch, gymnasium as gym
     from PIL import Image, ImageDraw
@@ -630,7 +626,7 @@ def run(a, cfg, fixture):
     from isaaclab_assets.robots.microduck import MICRODUCK_JOINT_NAMES
     from batch_policy import BatchPolicy
     from controller import BetaNavigator, ControllerConfig
-    from nav2_bridge import Nav2Session, quaternion_xyzw
+    from path_request import quaternion_xyzw
     from head_adapter import HeadAdapter
     from imu_predictor import DeliveredBodyImu
     from body_imu_input import BodyImuInput
@@ -642,7 +638,7 @@ def run(a, cfg, fixture):
     from startup_support import NewtonSupportAdapter
     # Course initialization (standing61): temporary joint brake at HOME on the measured
     # grounded root pose, free root, zero external wrench; released before the first
-    # GR00T request is applied.
+    # walking policy output is applied.
     from joint_brake import NoSupportStartup as StartupSupport, JointBrake
 
     output = a.output.resolve()
@@ -681,6 +677,7 @@ def run(a, cfg, fixture):
         "failures_retained": True,
         "automatic_resets": False,
         "randomized": a.randomized,
+        "experiment": getattr(a, "experiment_case", None),
     }
     timings = {
         key: 0.0
@@ -697,6 +694,15 @@ def run(a, cfg, fixture):
         )
     }
     source_snapshot = {}
+    from shot_completion import ShotCompletion
+    from navigation_retry import restart_head_feedback
+    shot = ShotCompletion(a.seconds)
+    unlimited = a.seconds == 0
+    retry_at = None
+    retry_events = []
+    navigation_epoch = 0
+    blind = None
+    initialization_failure = None
     pose_helper = ONBOARD_DIR / "initial_pose.py"
     pose_target = output / "source-snapshot/onboard/initial_pose.py"
     pose_target.parent.mkdir(parents=True, exist_ok=True)
@@ -704,6 +710,7 @@ def run(a, cfg, fixture):
     source_snapshot[str(pose_helper)] = dict(
         sha256=sha(pose_target), snapshot=str(pose_target.relative_to(output)))
     for file in [
+        *ONBOARD_DIR.glob("*.py"),
         *MEDIA_DIR.glob("*.py"),
         MEDIA_DIR / "release.json",
         *ROOT.glob("*.py"),
@@ -715,7 +722,7 @@ def run(a, cfg, fixture):
         M / "perception/detector.py",
         M / "perception/serve_detector.py",
     ]:
-        target = output / "source-snapshot" / file.relative_to(M)
+        target = output / "source-snapshot" / (Path("onboard") / file.name if file.parent == ONBOARD_DIR else file.relative_to(M))
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(file.read_bytes())
         source_snapshot[str(file)] = {
@@ -925,11 +932,7 @@ def run(a, cfg, fixture):
                 "Contact partners must resolve exactly to the two ankle bodies"
             )
         report["paired_contact_order"] = contact_names
-        if a.walking_policy_server:
-            # GR00T reads the camera images itself; the onboard YOLO detector is only
-            # queried when no walking policy server is set, so it is not started.
-            report["detector"] = {"mode": "not used on the GR00T route", "started": False}
-        elif a.detector_deployment is not None:
+        if a.detector_deployment is not None:
             from detector_client import DetectorSession
 
             detector = DetectorSession(
@@ -981,29 +984,28 @@ def run(a, cfg, fixture):
             fixture["root_pose_xyzw"], float(array(robot.data.body_mass).sum())
         )
         onboard = None
-        if a.course_onboard:
-            from onboard_startup import OnboardBrakeStartup
+        from onboard_startup import OnboardBrakeStartup
 
-            # Same brake and stationary check as the GR00T route; the onboard actor's
-            # first output additionally waits for delivered RGB, ToF and BODY50 data.
-            support = onboard = OnboardBrakeStartup(support)
-            report["initialization_reference"] = dict(
-                file=str(pose_file),
-                sha256=sha(pose_file),
-                case=rest["case"],
-                recorded_root_xyz=rest["root"],
-                applied_root_z=fixture["root_pose_xyzw"][2],
-                recorded_quaternion_xyzw=rest["quat"],
-                requested_yaw_offset_rad=a.root_yaw_rad,
-                applied_yaw_rad=fixture["root_yaw_rad"],
-                applied_quaternion_xyzw=fixture["root_pose_xyzw"][3:],
-                composition="world-Z XYZW quaternion left-multiplied onto grounded reference",
-                fixture_root_xy=fixture["root_pose_xyzw"][:2],
-                fixture_minus_recorded_xy_m=[
-                    fixture["root_pose_xyzw"][i] - rest["root"][i] for i in range(2)
-                ],
-                ground="flat football pitch; the recorded grounded height is valid only on this plane",
-            )
+        # Same brake and stationary check as the GR00T route; the onboard actor's
+        # first output additionally waits for delivered RGB, ToF and BODY50 data.
+        support = onboard = OnboardBrakeStartup(support)
+        report["initialization_reference"] = dict(
+            file=str(pose_file),
+            sha256=sha(pose_file),
+            case=rest["case"],
+            recorded_root_xyz=rest["root"],
+            applied_root_z=fixture["root_pose_xyzw"][2],
+            recorded_quaternion_xyzw=rest["quat"],
+            requested_yaw_offset_rad=a.root_yaw_rad,
+            applied_yaw_rad=fixture["root_yaw_rad"],
+            applied_quaternion_xyzw=fixture["root_pose_xyzw"][3:],
+            composition="world-Z XYZW quaternion left-multiplied onto grounded reference",
+            fixture_root_xy=fixture["root_pose_xyzw"][:2],
+            fixture_minus_recorded_xy_m=[
+                fixture["root_pose_xyzw"][i] - rest["root"][i] for i in range(2)
+            ],
+            ground="flat football pitch; the recorded grounded height is valid only on this plane",
+        )
         support_adapter = NewtonSupportAdapter(robot)
         report["startup_support"] = support.metadata()
         eye = np.array([1.3, -1.7, 1.4])
@@ -1040,35 +1042,23 @@ def run(a, cfg, fixture):
         # Frozen official standing + kick teachers only; the course residual
         # network, checkpoint, training ledger and K10 deployment are not loaded.
         k10 = OfficialTeacherKickRuntime.from_installed(M)
-        if a.walking_policy_server:
-            report["kick_head_action_mapping"] = k10.verify_action_mapping(env.action_manager.get_term("joint_pos"))
-        else:
-            # Onboard route: the installed K10, navigator and Nav2 session, never GR00T variants.
-            import official_kick_runtime
-            from nav2_bridge import Nav2Session as onboard_nav2
+        import official_kick_runtime
 
-            route = dict(
-                kick_runtime=str(Path(official_kick_runtime.__file__).resolve()),
-                kick_composition=k10.MODE,
-                navigator=BetaNavigator.__name__,
-                nav2_session=onboard_nav2.__name__,
-                walking_actor=str(a.model.resolve()),
-            )
-            if (
-                route["kick_runtime"] != str(OFFICIAL_KICK_RUNTIME.resolve())
-                or route["kick_composition"] != "official_teacher_only_no_residual"
-                or "kick_runtime" in sys.modules
-                or route["navigator"] != "BallReacquisitionNavigator"
-                or route["nav2_session"] != "BoundedLifetimeSession"
-                or a.model.resolve() != (M / "models/reference/velstand.onnx").resolve()
-            ):
-                raise RuntimeError("Onboard route must use the installed controller: " + json.dumps(route))
-            report["onboard_route"] = route
-        walking_policy = None
-        if a.walking_policy_server:
-            from learning.walking_runtime import WalkingPolicy
-            walking_policy = WalkingPolicy(a.walking_policy_server, a.output, names, a.seed)
-            report["walking_policy"] = walking_policy.identity
+        route = dict(
+            kick_runtime=str(Path(official_kick_runtime.__file__).resolve()),
+            kick_composition=k10.MODE,
+            navigator=BetaNavigator.__name__,
+            walking_actor=str(a.model.resolve()),
+        )
+        if (
+            route["kick_runtime"] != str(OFFICIAL_KICK_RUNTIME.resolve())
+            or route["kick_composition"] != "official_teacher_only_no_residual"
+            or "kick_runtime" in sys.modules
+            or route["navigator"] != "BallReacquisitionNavigator"
+            or a.model.resolve() != (M / "models/reference/velstand.onnx").resolve()
+        ):
+            raise RuntimeError("Onboard route must use the installed controller: " + json.dumps(route))
+        report["onboard_route"] = route
         report["official_teacher_kick_runtime"] = {
             "identity": k10.identity,
             "course_residual_used": False,
@@ -1119,20 +1109,21 @@ def run(a, cfg, fixture):
             )
         if tuple(obs["policy"].shape) != (1, 61):
             raise RuntimeError("Expected native61-wide policy observation")
-        # GR00T route: motion requests come from the GR00T server, so the onboard
-        # Nav2 planner (an external service container) is never started here. A
-        # stand-in refuses any planning call loudly instead of faking a plan.
-        # The onboard route starts the original planner session.
-        nav = (
-            Nav2Unused()
-            if a.walking_policy_server
-            else Nav2Session(output / "nav2", max_wall_s=max(1800.0, a.seconds * 60))
-        )
+        from direct_path import DirectPath
+        nav = DirectPath(output / "direct-path")
+        report["path_planner"] = dict(kind="direct", external_service_started=False,
+                                      coarse_follower="continuous_public_feedback",
+                                      scope="Straight reference path with public ball/heading feedback and near-ball adjustment")
+        report["onboard_route"]["actual_planner_instance"] = type(nav).__name__
+        from approach_control import install_duration_support, install as install_approach
+        install_duration_support(BetaNavigator)
+        report["approach_control"] = install_approach(BetaNavigator)
         controller = BetaNavigator(
             nav,
             camera=rig.profile,
             config=ControllerConfig(
                 layout=a.layout,
+                duration_s=0 if unlimited else a.seconds,
                 gait_id=report["model_sha256"],
                 ground_mode=a.navigation_ground,
             ),
@@ -1153,14 +1144,18 @@ def run(a, cfg, fixture):
 
         recovery_approval = a.recovery_approval_verified
         import head_handoff as handoff_module
-        from relaxed_gate import install as install_handoff
+        from kick_handoff import install as install_handoff
         report["final_handoff_tolerance"] = install_handoff(handoff_module)
         handoff = HeadHandoffV121(
             SoleContactLegOdometry(controller.vision.leg),
             names,
             params=recovery_approval["parameters"],
-            task_limit_s=min(180.0, a.seconds),
+            task_limit_s=180.0 if unlimited else a.seconds,
         )
+        from blind_arrival import BlindArrivalSupervisor, PROFILE, PARAMETERS as BLIND_PARAMETERS
+        blind = BlindArrivalSupervisor()
+        handoff.blind_arrival = blind
+        report["blind_arrival"] = dict(profile=PROFILE, parameters=BLIND_PARAMETERS, validated_kick_domain=False)
         report["retreat_recovery_approval"] = {
             k: (v.as_dict() if k == "parameters" else v)
             for k, v in recovery_approval.items()
@@ -1171,8 +1166,8 @@ def run(a, cfg, fixture):
                 "goal_heading_outside_development_gate",
             ],
             "max_recoveries": 3,
-            "reserve_s": 30.0,
-            "task_limit_s": min(180.0, a.seconds),
+            "reserve_s": 5.0,
+            "task_limit_s": None if unlimited else a.seconds,
             "layout": a.layout,
             "kick_authority": False,
             "motion": "exact fixed-duration public-heading-feedback helper, 80 ticks, no post-stop authority",
@@ -1180,7 +1175,7 @@ def run(a, cfg, fixture):
             "max_public_backward_m": 0.24,
             "min_public_backward_m": 0.10,
             "rear_source": "original surveyed empty-field prior + original 10cm check_path; not rear sensing",
-            "memory_ttl_s": 4.5,
+            "memory_ttl_s": 6.5,
             "truth_used": False,
         }
         handoff_state = handoff.status(0.0)
@@ -1193,9 +1188,11 @@ def run(a, cfg, fixture):
         )
 
         fine_route = None
+        handoff.adapter.memory.maximum_age_s = 6.5
         fine_step = FineStepV65()
         fine_state = fine_step.status(0.0, handoff.adapter.memory.status(0.0))
         actual_head = [0.0, 0.0, 0.0, 0.0]
+        last_sent_velocity = [0.0, 0.0, 0.0]
         from head_feedback import ObservationHeadFeedback, head_context_allowed
         from fine_feedback_permission import fine_reacquire_feedback_allowed
 
@@ -1255,7 +1252,7 @@ def run(a, cfg, fixture):
         def log(name, row):
             writing = time.monotonic()
             logs[name].write(
-                json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n"
+                json.dumps(dict(row, navigation_epoch=navigation_epoch), ensure_ascii=False, allow_nan=False) + "\n"
             )
             logs[name].flush()
             timings["trace_write_subset"] += time.monotonic() - writing
@@ -1310,7 +1307,8 @@ def run(a, cfg, fixture):
         task_t = None
         loop_started = time.monotonic()
         with torch.inference_mode():
-            for tick in range(steps):
+            import itertools
+            for tick in itertools.count() if unlimited else range(steps):
                 if SESSION is not None and SESSION.should_interrupt():
                     report["terminal_reason"] = "user_reset" if SESSION.requested else "window_closed"
                     break
@@ -1339,10 +1337,10 @@ def run(a, cfg, fixture):
                     support_row = dict(
                         support_row, score_enabled=False, phase="JOINT_BRAKE_AWAITING_GR00T"
                     )
-                if support_row["failure"]:
-                    report["terminal_reason"] = "initialization_failed"
+                if support_row["failure"] and initialization_failure is None:
+                    initialization_failure = support_row["failure"]
+                    report["initialization_failure_reason"] = initialization_failure
                     log("startup-support", support_row)
-                    break
                 if SCHEDULE.control_at(tick):
                     section = time.monotonic()
                     task_clock = (
@@ -1356,6 +1354,9 @@ def run(a, cfg, fixture):
                         and last_body_imu is not None
                     )
                     sent_head_before = list(actual_head)
+                    if blind is not None:
+                        blind.control(epoch=navigation_epoch, fine=fine_step,
+                                      actual_head=actual_head, actual_velocity=last_sent_velocity)
                     handoff_state = handoff.policy(
                         now_s=t,
                         packet=last_body_imu,
@@ -1512,51 +1513,6 @@ def run(a, cfg, fixture):
                     if head_feedback.failure:
                         kick_requested = False
                         active_policy = "walk"
-                    if walking_policy is not None:
-                        request, phase = walking_policy.step(
-                            timestamp=t, packet=last_body_imu,
-                            default_q=robot.data.default_joint_pos.torch[0, ids].cpu().tolist(),
-                            previous_raw=previous_raw_action[0].cpu().tolist(),
-                            enabled=support_row["navigation_enabled"],
-                        )
-                        if (
-                            support_row["navigation_enabled"]
-                            and walking_policy.sequence > 0
-                            and initialization_brake.active
-                        ):
-                            # The first real GR00T prediction has just returned (sequence went
-                            # from 0 to 1 inside step) while physics waits: remove every
-                            # temporary constraint before that request is applied. Until then
-                            # the joints stay locked even though the task clock has started.
-                            initialization_brake.release(t)
-                            report["initialization_brake"] = dict(
-                                initialization_brake.metadata(),
-                                first_policy_source="GR00T",
-                                first_gr00t_prediction_s=t,
-                                navigation_enabled_at_s=support.task_started_at,
-                                locked_after_navigation_enabled_s=t - support.task_started_at,
-                                task_clock_starts_at_release=True,
-                            )
-                            # Scoring and task time count model control only.
-                            support.task_started_at = t
-                            print(
-                                "COURSE_POLICY_TAKEOVER "
-                                + json.dumps(dict(t=t, sequence=walking_policy.sequence, source="GR00T")),
-                                flush=True,
-                            )
-                            frame_pitch("after takeover")
-                            (output / "initialization-brake.json").write_text(
-                                json.dumps(report["initialization_brake"], indent=2)
-                            )
-                        velocity, actual_head = request[:3], request[3:7]
-                        kick_requested = bool(request[7] >= 0.5 and phase is not None)
-                        active_policy = "kick_right" if kick_requested else "walk"
-                        handoff_state = dict(
-                            state="GR00T_KICK" if kick_requested else "GR00T_WALK",
-                            kick_runtime_authorized=kick_requested, kick_phase_s=phase,
-                            head_return_complete=kick_requested,
-                            request_source="GR00T", truth_used=False,
-                        )
                     # Onboard route: while the joints are locked, HOME is held and no network
                     # runs. The first actor output is computed once the locked robot has
                     # settled and RGB, ToF and BODY50 data are ready; the brake is released
@@ -1564,6 +1520,7 @@ def run(a, cfg, fixture):
                     release_now = (
                         onboard is not None
                         and initialization_brake.active
+                        and initialization_failure is None
                         and not kick_requested
                         and onboard.ready(t, last_body_imu)
                     )
@@ -1733,8 +1690,10 @@ def run(a, cfg, fixture):
                             "actual_velocity_command": velocity,
                             "final_pulse_policy": pulse_trace,
                             "public_neutral_fine_step": fine_state,
+                            "blind_arrival": None if blind is None else blind.status(),
                         },
                     )
+                    last_sent_velocity = list(velocity)
                     timings["policy_50hz"] += time.monotonic() - section
                 section = time.monotonic()
                 env.action_manager.apply_action()
@@ -1998,8 +1957,6 @@ def run(a, cfg, fixture):
                     section = time.monotonic()
                     third = array(overhead.data.output["rgb"])[0, :, :, :3].copy()
                     rgb = capture["rgb_raw"]
-                    if walking_policy is not None:
-                        walking_policy.capture(rgb, t)
                     if onboard is not None:
                         onboard.note_capture(t, rgb, capture["tof"])
                     q_effective, qd_effective = encoders()
@@ -2064,8 +2021,7 @@ def run(a, cfg, fixture):
                             imu_valid
                             and support_row["navigation_enabled"]
                             and detector is not None
-                            and walking_policy is None
-                        ):
+                                                    ):
                             section = time.monotonic()
                             detector_result = detector.detect(rgb)
                             detected = detector_result["detections"]
@@ -2094,15 +2050,6 @@ def run(a, cfg, fixture):
                                     else "Measured IMU valid; zero-command policy with explicitly fading physical startup support"
                                 ),
                                 "gaze_body_yaw_pitch_rad": [0.0, 0.0],
-                            }
-                        elif walking_policy is not None:
-                            last_control = {
-                                "state": "GR00T_KICK" if kick_requested else "GR00T_WALK",
-                                "velocity_body_xyw": list(walking_policy.previous[:3]),
-                                "kick_request": kick_requested,
-                                "reason": "RGB and BODY50 walking skill requests",
-                                "gaze_body_yaw_pitch_rad": [0.0, 0.0],
-                                "truth_inputs": False,
                             }
                         elif a.calibration_command is not None:
                             gaze = calibration_gaze.update(a.calibration_gaze, t)
@@ -2151,8 +2098,7 @@ def run(a, cfg, fixture):
                                 )
                                 point = (
                                     memory_now["point_level_m"]
-                                    if (handoff.state != "APPROACH" or fine_step.active)
-                                    and memory_now["memory_available"]
+                                    if memory_now["memory_available"]
                                     else last_control.get("final_approach", {}).get(
                                         "point_level_m"
                                     )
@@ -2221,7 +2167,7 @@ def run(a, cfg, fixture):
                                     "180s_teaching_limit",
                                     "local_segment_hits_surveyed_obstacle",
                                     "ball_goal_direction_degenerate",
-                                } or fine_reason.startswith("Nav2_failed:")
+                                } or fine_reason.startswith("planning_failed:")
                                 fine_guard = bool(
                                     not fine_hazard
                                     and not controller.refresh_too_close
@@ -2234,6 +2180,13 @@ def run(a, cfg, fixture):
                                 )
                             final_diag = last_control.get("final_approach", {})
                             fine_memory = handoff.adapter.memory.status(t)
+                            from approach_control import transfer_continuous_track
+
+                            last_control["continuous_transfer"] = transfer_continuous_track(
+                                fine_step, t=t, memory=fine_memory,
+                                heading=goal_heading, goal_s=controller.goal_time,
+                                guard=fine_guard,
+                            )
                             if getattr(
                                 fine_step, "coarse_track", False
                             ) and fine_step.state in ("RETURN", "TRACK", "TURN"):
@@ -2257,6 +2210,10 @@ def run(a, cfg, fixture):
                                     fine_guard and coarse_active_path["allowed"]
                                 )
                                 last_control["coarse_active_path"] = coarse_active_path
+                            if blind is not None:
+                                blind.capture(t=t, epoch=navigation_epoch, complete=complete,
+                                              guard_safe=fine_guard, goal_heading=goal_heading,
+                                              goal_s=controller.goal_time)
                             handoff.note_capture(
                                 capture_s=t, guard_safe=fine_guard, fresh_floor=True
                             )
@@ -2421,6 +2378,37 @@ def run(a, cfg, fixture):
                                 and last_control["velocity_body_xyw"] == [0.0, 0.0, 0.0]
                                 and last_control["kick_request"] is False
                             )
+                            from approach_control import remembered_kick_gate, PARAMETERS
+                            rear = dict(allowed=False, capture_s=t, reason="missing_current_floor")
+                            if rear_inputs is not None:
+                                rear = rear_path_from_controller(controller, capture["tof"], proprio,
+                                    *rear_inputs, distance_m=.16, fixed_target=None)
+                            fine_step.parking_path = rear
+                            p = np.asarray(fine_memory.get("point_level_m"), float)
+                            parking_entry = bool(handoff.state == "APPROACH" and fine_step.state == "IDLE"
+                                and complete and fine_guard and rear.get("allowed")
+                                and p.shape == (3,) and np.isfinite(p).all()
+                                and .13 <= p[0] <= .35 and np.linalg.norm(p[:2]) <= .4
+                                and abs(p[1]) <= .3 and math.isfinite(goal_heading)
+                                and PARAMETERS["parking_angle_rad"] <= abs(goal_heading) <= 1.2
+                                and 0 <= t-controller.goal_time <= 2.)
+                            if parking_entry:
+                                fine_trigger, fine_motion_kind = True, "TURN"
+                                entry_reason = "reverse_arc_for_shot_alignment"
+                            gate = remembered_kick_gate(t=t, memory=fine_memory, heading=goal_heading,
+                                goal_s=controller.goal_time, guard=fine_guard,
+                                moving=fine_step.state not in ("IDLE", "SETTLE", "REACQUIRE"),
+                                kicked=handoff.kick_start is not None)
+                            last_control["remembered_kick_gate"] = gate
+                            if gate["allowed"] and handoff.state == "APPROACH":
+                                fine_step.state = "IDLE"
+                                fine_trigger = False
+                                handoff.enter_from_fine(now_s=t, goal_heading=goal_heading,
+                                                       goal_fix_s=controller.goal_time)
+                                handoff.head = np.asarray(actual_head, float).copy()
+                                handoff_state = handoff.status(t)
+                                last_control["velocity_body_xyw"] = [0., 0., 0.]
+                                last_control["remembered_kick_gate"]["entered_handoff"] = True
                             fine_state = fine_step.capture(
                                 t=t,
                                 guard_safe=fine_guard,
@@ -2499,7 +2487,7 @@ def run(a, cfg, fixture):
                             if handoff_state["override_body_zero"]:
                                 last_control["velocity_body_xyw"] = [0.0, 0.0, 0.0]
                                 last_control["state"] = handoff_state["state"]
-                        if walking_policy is None and last_control["kick_request"]:
+                        if last_control["kick_request"]:
                             # Do not borrow the old kick: retain this request as
                             # an explicit integration gap, keep current walk zero.
                             last_control["velocity_body_xyw"] = [0.0, 0.0, 0.0]
@@ -2513,6 +2501,9 @@ def run(a, cfg, fixture):
                     except (ValueError, TimeoutError, OSError) as error:
                         if fine_step.active:
                             fine_step.fail("neutral_step_capture_error")
+                        if blind is not None:
+                            blind.capture(t=t, epoch=navigation_epoch, complete=False,
+                                          guard_safe=False, goal_heading=None, goal_s=None)
                         handoff.note_capture(
                             capture_s=t, guard_safe=False, fresh_floor=False
                         )
@@ -2563,6 +2554,7 @@ def run(a, cfg, fixture):
                             "head_mapping": head_result,
                             "head_feedback": head_feedback_trace,
                             "public_fine_entry": fine_latch_diag,
+                            "blind_arrival": None if blind is None else blind.status(),
                         },
                     )
                     capture_count += 1  # All evidence and video frames stay in the bounded archive queue.
@@ -2578,46 +2570,62 @@ def run(a, cfg, fixture):
                         ),
                         flush=True,
                     )
-                if fell:
-                    report["terminal_reason"] = (
-                        "fall"
-                        if support_row["score_enabled"]
-                        else "initialization_fall"
-                    )
+                # Privileged contact and ball displacement decide only when the
+                # episode ends. They never authorize a kick or navigation motion.
+                reason = shot.update(
+                    now_s=t, task_s=t if task_t is None else task_t,
+                    ball_xyz=ball_xyz.tolist(),
+                    kick_completed=bool(runtime_trace and runtime_trace.get("active")
+                                        and runtime_trace.get("kick_weight") == 0.0
+                                        and runtime_trace.get("phase_s", -1) >= .26 - 1e-8),
+                    kick_contact=scorer.contact.kick_contact_observed,
+                )
+                if reason is not None and not unlimited:
+                    report["terminal_reason"] = reason
                     break
-                if walking_policy is not None and walking_policy.latch.completed:
-                    report["terminal_reason"] = "development_kick_window_complete"
-                    break
-                if walking_policy is None and head_feedback.failure is not None:
-                    report["terminal_reason"] = "public_head_feedback_failed"
-                    report["head_feedback_failure_reason"] = head_feedback.failure
-                    break
-                if fine_step.state == "FAILED":
-                    report["terminal_reason"] = "public_neutral_fine_step_failed"
-                    report["neutral_fine_failure_reason"] = fine_step.reason
-                    break
-                if controller.ball_search.failed is not None:
-                    report["terminal_reason"] = "public_ball_reacquisition_failed"
-                    report["ball_reacquisition_failure_reason"] = (
-                        controller.ball_search.failed
-                    )
-                    break
-                if controller.final_approach.failed is not None:
-                    report["terminal_reason"] = "final_alignment_failed"
-                    report["final_failure_reason"] = controller.final_approach.failed
-                    break
-                if handoff.state in ("COMPLETE", "FAILED"):
-                    report["terminal_reason"] = (
-                        "development_kick_window_complete"
-                        if handoff.state == "COMPLETE"
-                        else "public_handoff_failed"
-                    )
-                    report["final_public_handoff"] = handoff.status(t)
-                    report["retreat_recovery"] = handoff.recovery_report()
-                    break
-                if task_t is not None and task_t >= a.seconds - 1e-10:
-                    report["terminal_reason"] = "task_duration_limit"
-                    break
+                # Local failures stop the current maneuver, not the task clock.
+                # Before any kick, discard stale observations and reacquire using
+                # the same real sensors. No pose, scorer, motor history or world
+                # state is reset. After a kick, keep observing until rest/timeout.
+                # A valid blind handoff owns observation waiting, while actual
+                # head/sensor/motion failures still preempt it immediately.
+                local_failure = (
+                    head_feedback.failure
+                    or (fine_step.reason if fine_step.state == "FAILED" else None)
+                    or (controller.ball_search.failed if blind is None else blind.filter_observation_failure(controller.ball_search.failed, handoff))
+                    or (controller.final_approach.failed if blind is None else blind.filter_observation_failure(controller.final_approach.failed, handoff))
+                    or (handoff.reason if handoff.state == "FAILED" else None)
+                )
+                if local_failure and handoff.kick_start is None and task_t is not None:
+                    if retry_at is None:
+                        retry_at = t + 1.0
+                        retry_events.append(dict(timestamp_s=t, task_s=task_t, epoch=navigation_epoch,
+                            reason=str(local_failure), handoff=handoff.status(t),
+                            recovery=handoff.recovery_report(), retry_at_s=retry_at))
+                        handoff.fail("pause_before_reacquisition")
+                        fine_step.fail("pause_before_reacquisition")
+                    if last_control is not None:
+                        last_control["velocity_body_xyw"] = [0., 0., 0.]
+                    if t >= retry_at - 1e-9:
+                        gaze = controller.gaze.current.copy()
+                        controller.reset()
+                        controller.gaze.current = gaze
+                        handoff = HeadHandoffV121(
+                            SoleContactLegOdometry(controller.vision.leg), names,
+                            params=recovery_approval["parameters"], task_limit_s=180.0 if unlimited else a.seconds)
+                        handoff.adapter.memory.maximum_age_s = 6.5
+                        fine_step = FineStepV65()
+                        blind = BlindArrivalSupervisor()
+                        handoff.blind_arrival = blind
+                        head_feedback = restart_head_feedback(head_feedback)
+                        fine_route = None
+                        last_control = None
+                        retry_events[-1]["restarted_at_s"] = t
+                        navigation_epoch += 1
+                        retry_events[-1]["next_epoch"] = navigation_epoch
+                        retry_at = None
+        report["shot_completion"] = shot.status()
+        report["navigation_retries"] = retry_events
         report["loop_wall_seconds"] = time.monotonic() - loop_started
         report["processing_shared_imu_transport"] = (
             None if shared_imu is None else shared_imu.metadata()
@@ -2683,12 +2691,12 @@ def run(a, cfg, fixture):
             )
         report["timing_wall_seconds"] = {
             **timings,
-            "Nav2_request_subset": (
-                controller.nav2_wall_seconds if "controller" in locals() else None
+            "direct_path_request_subset": (
+                controller.planning_wall_seconds if "controller" in locals() else 0.
             ),
         }
         report["timing_scope"] = (
-            "Host wall elapsed; capture_readback_and_archive_submit includes original readback plus immutable packet copy and bounded queue wait, not worker PNG/video cost. Media worker and post-episode drain times are separate. Nav2/trace times are subsets; GPU async work is charged at synchronization."
+            "Host wall elapsed; capture_readback_and_archive_submit includes original readback plus immutable packet copy and bounded queue wait, not worker PNG/video cost. Media worker and post-episode drain times are separate. Path/trace times are subsets; GPU async work is charged at synchronization."
         )
         report["program_wall_before_cleanup_s"] = time.monotonic() - globals().get(
             "PROGRAM_STARTED", started
@@ -2701,9 +2709,7 @@ def run(a, cfg, fixture):
             report["initialization_brake"] = dict(
                 initialization_brake.metadata(),
                 **(
-                    dict(first_gr00t_prediction_s=None)
-                    if a.walking_policy_server
-                    else dict(first_policy_source="onboard walking actor", first_policy_output_s=None)
+                    dict(first_policy_source="onboard walking actor", first_policy_output_s=None)
                 ),
             )
         for log_file in logs.values():
@@ -2712,7 +2718,7 @@ def run(a, cfg, fixture):
         media_error = None
         if media is not None:
             try:
-                report["media_archive"] = media.close()
+                report["media_archive"] = (SESSION.drain_media(media) if SESSION is not None else media.close())
                 report["videos"] = report["media_archive"]["videos"]
             except BaseException as error:
                 media_error = error
@@ -2736,9 +2742,9 @@ def run(a, cfg, fixture):
                 report["detector_cleanup"] = {"error": repr(error)}
         if nav is not None:
             try:
-                report["Nav2_cleanup"] = nav.close()
+                report["path_cleanup"] = nav.close()
             except Exception as error:
-                report["Nav2_cleanup"] = {"error": repr(error)}
+                report["path_cleanup"] = {"error": repr(error)}
         report["source_changed_during_run"] = [
             str(p) for p, v in source_snapshot.items() if sha(p) != v["sha256"]
         ]

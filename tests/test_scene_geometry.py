@@ -21,7 +21,7 @@ class PostEvidence(unittest.TestCase):
 
     def extract(self, image, box=(58, 38, 262, 182), g=(0, 1, 0)):
         return extract_scene_goal_bases(
-            image, box, g, SimpleNamespace(width_px=320, height_px=240)
+            image, box, g, SimpleNamespace(width_px=320, height_px=240, fx=280., fy=280., cx=159.5, cy=119.5)
         )
 
     def test_real_post_shape(self):
@@ -55,9 +55,8 @@ class PostEvidence(unittest.TestCase):
 
 
 class SupportSurface(unittest.TestCase):
-    def test_ramp_and_landings_have_large_support(self):
-        from terrain import ramp_mesh
-
+    def test_flat_floor_and_finite_wedge_support_geometry(self):
+        from course_labs.terrain_check import ramp_mesh, WEDGE, wedge_height
         for angle in [-15, 0, 15]:
             meshes, origin = ramp_mesh(0, SimpleNamespace(slope_deg=angle))
             vertices = meshes[0].vertices - origin
@@ -65,8 +64,25 @@ class SupportSurface(unittest.TestCase):
             self.assertGreaterEqual(vertices[:, 0].max(), 50)
             self.assertLessEqual(vertices[:, 1].min(), -50)
             self.assertGreaterEqual(vertices[:, 1].max(), 50)
-            expected = np.clip(vertices[:, 0] - 0.35, 0, 1) * np.tan(np.deg2rad(angle))
-            np.testing.assert_allclose(vertices[:, 2], expected, atol=1e-10)
+            floor = vertices[np.abs(vertices[:, 0]) >= 49]
+            np.testing.assert_allclose(floor[:, 2], 0, atol=1e-10)
+            self.assertGreaterEqual(vertices[:, 2].min(), -1e-10)
+            self.assertAlmostEqual(vertices[:, 2].max(), wedge_height(angle))
+            if angle:
+                top = vertices[vertices[:, 2] > 1e-3]
+                self.assertGreaterEqual(top[:, 0].min(), WEDGE['foot_x'] + WEDGE['ramp_length'] - 1e-10)
+                self.assertLessEqual(top[:, 0].max(), WEDGE['foot_x'] + WEDGE['ramp_length'] + WEDGE['platform_length'] + 1e-10)
+                self.assertLessEqual(np.abs(top[:, 1]).max(), WEDGE['half_width'] + 1e-10)
+
+    def test_surface_query_preserves_platform_and_real_edges(self):
+        import torch
+        from course_labs.terrain_check import surface_height, WEDGE, wedge_height
+        foot=WEDGE['foot_x'];length=WEDGE['ramp_length'];end=foot+length+WEDGE['platform_length']
+        x=torch.tensor([foot-.1,foot,foot+length/2,foot+length,end+.01,foot+length])
+        y=torch.tensor([0.,0.,0.,0.,0.,WEDGE['half_width']+.01])
+        for angle in [-15,0,15]:
+            h=wedge_height(angle)
+            np.testing.assert_allclose(surface_height(x,y,angle).numpy(),[0,0,h/2,h,0,0],atol=1e-7)
 
 
 if __name__ == "__main__":

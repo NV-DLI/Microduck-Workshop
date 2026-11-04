@@ -95,7 +95,7 @@ class InitialPoseTest(unittest.TestCase):
         self.assertNotIn('root_yaw',code[start:end])
         self.assertNotIn('fixture',code[start:end])
         # The existing bridge rotates using the observed map pose provided by its caller.
-        bridge=(ROOT/'lab/runtime/simulation/core/football/nav2_bridge.py').read_text()
+        bridge=(ROOT/'lab/runtime/simulation/core/football/path_request.py').read_text()
         self.assertIn('x, y, yaw = pose_map_xyyaw',bridge)
 
 

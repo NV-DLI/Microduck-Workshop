@@ -295,8 +295,8 @@ def relative(origin, pose):
 def recheck_path(path, audit, t, fixed_target, expected_target=None):
     """Recompute the original check_path from the archived map request."""
     sys.path[:0] = [str(M / "football")]
-    from nav2_service.map_contract import snapshot, check_path
-    from nav2_service.obstacle_contract import prior
+    from onboard_geometry.map_contract import snapshot, check_path
+    from onboard_geometry.obstacle_contract import prior
 
     req = path.get("map_request") or {}
     case, prov = req.get("case"), req.get("provenance")

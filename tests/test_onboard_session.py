@@ -37,8 +37,8 @@ class SessionTest(unittest.TestCase):
         points = [module.initial_position(983402, i, center) for i in range(2, 502)]
         self.assertGreater(len(set(points)), 490)
         for i, (x,y) in enumerate(points, 2):
-            self.assertLessEqual(abs(x-center[0]), .10)
-            self.assertLessEqual(abs(y-center[1]), .10)
+            self.assertLessEqual(abs(x-center[0]), .05)
+            self.assertLessEqual(abs(y-center[1]), .05)
             self.assertEqual((x,y), module.initial_position(983402, i, center))
 
     def test_yaw_range_nominal_and_seed_reproducibility(self):
@@ -46,12 +46,12 @@ class SessionTest(unittest.TestCase):
         self.assertEqual(module.initial_pose(983402, 1, center), (*center, 0.0))
         poses = [module.initial_pose(983402, i, center) for i in range(2, 1002)]
         for i, (x, y, yaw) in enumerate(poses, 2):
-            self.assertLessEqual(abs(x-center[0]), .10)
-            self.assertLessEqual(abs(y-center[1]), .10)
-            self.assertLessEqual(abs(yaw), math.pi/6)
+            self.assertLessEqual(abs(x-center[0]), .05)
+            self.assertLessEqual(abs(y-center[1]), .05)
+            self.assertLessEqual(abs(yaw), math.pi/12)
             self.assertEqual((x,y,yaw), module.initial_pose(983402,i,center))
-        self.assertGreater(max(q[2] for q in poses), math.radians(29))
-        self.assertLess(min(q[2] for q in poses), math.radians(-29))
+        self.assertGreater(max(q[2] for q in poses), math.radians(14.9))
+        self.assertLess(min(q[2] for q in poses), math.radians(-14.9))
 
     def test_argument_replacement_removes_duplicate_spellings(self):
         argv = ['run', '--root-yaw-rad=.5', '--seconds', '60', '--root-yaw-rad', '-.2']
@@ -65,6 +65,7 @@ class SessionTest(unittest.TestCase):
             obj.args = SimpleNamespace(output=obj.root, seed=42, root_x=-.55, root_y=.12,
                                        session_episodes=2, ball_xy=[.02,0])
             obj.seed=42; obj.center=(-.55,.12);obj.index=0;obj.requested=False;obj.rows=[]
+            obj.experiment=None
             obj.app=SimpleNamespace(is_running=lambda:True)
             obj.resources=[]
             obj.resource_snapshot=lambda phase:dict(phase=phase)
@@ -88,7 +89,7 @@ class SessionTest(unittest.TestCase):
                 self.assertEqual(sys.argv[sys.argv.index('--seconds')+1],'60')
                 saved=json.loads((obj.root/'session.json').read_text())
                 self.assertEqual(saved['root_yaw_offset_rad'],obj.args.root_yaw_rad)
-                self.assertEqual(saved['jitter_xy_m'],[.1,.1])
+                self.assertEqual(saved['jitter_xy_m'],[.05,.05])
                 obj.requested=True
                 self.assertFalse(obj.next_episode())
             finally:sys.argv=old

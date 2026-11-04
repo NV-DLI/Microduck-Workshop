@@ -10,9 +10,9 @@ import os
 import stat
 import math
 
-JITTER_X_M = .10
-JITTER_Y_M = .10
-JITTER_YAW_RAD = math.pi / 6
+JITTER_X_M = .05
+JITTER_Y_M = .05
+JITTER_YAW_RAD = math.pi / 12
 
 
 def initial_position(seed, index, center):
@@ -98,8 +98,11 @@ class ResetSession:
         import omni.appwindow
         import omni.kit.app
         self.args = args
+        self.experiment = getattr(args, 'experiment', None)
         self.root = args.output
         self.root.mkdir(parents=True, exist_ok=False)
+        if self.experiment:
+            (self.root / 'experiment-plan.json').write_bytes(args.experiment_plan.read_bytes())
         if args.ball_xy is None:
             args.ball_xy = [.02, 0.0]
         self.seed = args.seed
@@ -135,6 +138,13 @@ class ResetSession:
                      jitter_xy_m=[JITTER_X_M, JITTER_Y_M], jitter_yaw_rad=JITTER_YAW_RAD,
                      yaw_convention="world-Z offset applied to the measured standing61 XYZW quaternion",
                      episodes=self.rows, resources=self.resources)
+        if self.experiment:
+            value['experiment_plan_sha256'] = self.experiment['sha256']
+            value['experiment_case'] = getattr(self.args, 'experiment_case', None)
+            if self.index:
+                row = self.experiment['document']['episodes'][self.index-1]
+                value['jitter_xy_m'] = [row['range_xy_m']]*2
+                value['jitter_yaw_rad'] = math.radians(row['range_yaw_deg'])
         tmp = self.root / "session.json.tmp"
         tmp.write_text(json.dumps(value, indent=2) + "\n")
         tmp.replace(self.root / "session.json")
@@ -151,6 +161,15 @@ class ResetSession:
         self.args.output = self.root / f"episode-{self.index:03d}"
         self.args.seed = self.seed + self.index - 1
         self.args.root_x, self.args.root_y, self.args.root_yaw_rad = initial_pose(self.seed, self.index, self.center)
+        if self.experiment:
+            row = self.experiment['document']['episodes'][self.index-1]
+            self.args.seed = row['seed']
+            self.args.root_x = self.center[0] + row['offset_xy_m'][0]
+            self.args.root_y = self.center[1] + row['offset_xy_m'][1]
+            self.args.root_yaw_rad = math.radians(row['yaw_deg'])
+            self.args.experiment_case = dict(plan_sha256=self.experiment['sha256'],
+                stage=self.experiment['document']['stage'],
+                braking=self.experiment['document']['braking'], case=row)
         # Native contract and scene hooks derive provenance from the current argv.
         for flag, value in (("--output", self.args.output), ("--seed", self.args.seed),
                             ("--root-x", self.args.root_x), ("--root-y", self.args.root_y),
@@ -192,11 +211,13 @@ class ResetSession:
         omni.timeline.get_timeline_interface().pause()
         settings.set_bool("/app/player/playSimulations", False)
         success = self.rows[-1]["physical_success"]
-        self.window = ui.Window("Football | R to restart", width=370, height=90)
+        self.window = ui.Window("Football | R to restart", width=460, height=110)
         with self.window.frame:
             with ui.VStack(spacing=8):
-                ui.Label("Goal!" if success else "Episode finished", alignment=ui.Alignment.CENTER)
-                ui.Label("Press R to restart / 按 R 再试一次", alignment=ui.Alignment.CENTER)
+                ui.Label(("Time limit reached" if reason == "task_duration_limit" else
+                          "Goal! Ball settled." if success else "Shot complete. Ball settled."),
+                         alignment=ui.Alignment.CENTER)
+                ui.Label("Press R to restart", alignment=ui.Alignment.CENTER)
         self.write_status("waiting_for_r")
         print("FOOTBALL_WAITING_FOR_R", self.index, flush=True)
         try:
@@ -209,6 +230,49 @@ class ResetSession:
             if prior is not None:
                 settings.set("/app/player/playSimulations", prior)
             self.write_status("rebuilding" if self.requested else "closed")
+
+    def drain_media(self, media):
+        """Keep the native window responsive while the finished archive drains.
+
+        Simulation and sensor captures are already over; only the UI is pumped.
+        Archive failures are re-raised and remain technical failures.
+        """
+        import threading
+        import carb.settings
+        import omni.timeline
+        import omni.ui as ui
+        settings = carb.settings.get_settings()
+        prior = settings.get("/app/player/playSimulations")
+        omni.timeline.get_timeline_interface().pause()
+        settings.set_bool("/app/player/playSimulations", False)
+        result, errors = [], []
+        def close():
+            try:
+                result.append(media.close())
+            except BaseException as error:
+                errors.append(error)
+        window = ui.Window("Football | Saving", width=420, height=100)
+        with window.frame:
+            with ui.VStack(spacing=8):
+                ui.Label("Attempt ended. Saving results..." if getattr(self.args, "no_video", False)
+                         else "Attempt ended. Saving recording...", alignment=ui.Alignment.CENTER)
+                ui.Label("Simulation and sensors are paused.", alignment=ui.Alignment.CENTER)
+        self.write_status("saving")
+        worker = threading.Thread(target=close, name="football-archive-drain")
+        worker.start()
+        try:
+            while worker.is_alive():
+                if self.app.is_running():
+                    self.app.update()
+                worker.join(timeout=.03)
+        finally:
+            worker.join()
+            window.destroy()
+            if prior is not None:
+                settings.set("/app/player/playSimulations", prior)
+        if errors:
+            raise errors[0]
+        return result[0]
 
     def resource_snapshot(self, phase):
         import torch

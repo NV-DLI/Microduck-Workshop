@@ -100,7 +100,6 @@ def main():
     setup.add_argument("--isaaclab", type=Path)
     setup.add_argument("--detector-python", type=Path)
     setup.add_argument("--ffmpeg", type=Path)
-    setup.add_argument("--nav2-image")
     ins = sub.add_parser("inspect-model")
     ins.add_argument("--model", type=Path, required=True)
     walk = sub.add_parser("walk")
@@ -164,14 +163,15 @@ def main():
     plan.add_argument("--output", type=Path, required=True)
     fb = sub.add_parser("football")
     fb.add_argument("--seed", type=int, default=983402)
-    fb.add_argument("--scene", choices=["legacy", "indoor"], default="indoor")
     fb.add_argument("--style", choices=list("ABCD"), default="A")
     fb.add_argument("--record-hd", action=argparse.BooleanOptionalAction, default=False)
+    fb.add_argument("--no-video", action="store_true", help="Skip video encoding; retain sensor and evaluation records")
     fb.add_argument("--single-run", action="store_true", help="Finish after one shot instead of waiting for R")
     fb.add_argument("--session-episodes", type=int, default=0, help=argparse.SUPPRESS)
     fb.add_argument("--root-y", type=float)
     fb.add_argument("--ball-xy", type=float, nargs=2)
-    fb.add_argument("--seconds", type=float, default=60)
+    fb.add_argument("--seconds", type=float, default=0, help="Optional test duration in simulation seconds; default waits for R or application close")
+    fb.add_argument("--experiment-plan", type=Path, help=argparse.SUPPRESS)
     fb.add_argument("--output", type=Path, required=True)
     fb.add_argument("--headless", action="store_true")
     fb.add_argument(
@@ -184,12 +184,11 @@ def main():
     report = sub.add_parser("report")
     report.add_argument("--run", type=Path, required=True)
     a = ap.parse_args()
+    if a.command == "football" and (a.headless or a.single_run or a.repeat is not None) and a.seconds == 0:
+        a.seconds = 30
     if a.command == "football" and a.repeat is not None:
         if a.repeat < 0:
             ap.error("--repeat needs a positive count, or 0 to repeat until Ctrl+C")
-        if a.scene != "indoor":
-            # Only this route has the grounded HOME joint-brake start-up.
-            ap.error("--repeat runs the walking onboard route on the indoor scene")
     if a.command == "verify-models":
         verify()
         return 0
@@ -299,22 +298,6 @@ def main():
         data["ffmpeg"] = Path(c["ffmpeg"]).is_file()
         data["detector_python"] = Path(c["detector_python"]).is_file()
         data["container"] = bool(c.get("container"))
-        if c.get("nav2_image"):
-            image = subprocess.run(
-                ["docker", "image", "inspect", "--format", "{{.Id}}", c["nav2_image"]],
-                capture_output=True,
-                text=True,
-            )
-            data["nav2_image"] = (
-                image.returncode == 0 and image.stdout.strip() == c["nav2_image"]
-            )
-        else:
-            # The container runs Nav2 as a CPU child process instead of a separate image.
-            data["nav2_image"] = None
-        if c.get("nav2_backend") == "local":
-            data["nav2_local"] = bool(c.get("nav2_install_record")) and Path(
-                "/opt/ros/jazzy/lib/nav2_planner/planner_server"
-            ).is_file()
         print(json.dumps(data, indent=2))
         return (
             0
@@ -323,8 +306,6 @@ def main():
                     data["cuda"],
                     data["ffmpeg"],
                     data["detector_python"],
-                    data["nav2_image"] is not False,
-                    data.get("nav2_local") is not False,
                 ]
             )
             else 1
@@ -347,7 +328,7 @@ def main():
             c,
         )
     if a.command in ("walk", "football") and not (
-        math.isfinite(a.seconds) and 0 < a.seconds <= 180
+        math.isfinite(a.seconds) and (0 <= a.seconds <= 180 if a.command == "football" else 0 < a.seconds <= 180)
     ):
         ap.error("seconds must be in (0,180]")
     if a.command == "walk":
@@ -547,7 +528,7 @@ def walking_football(a, out, seed, py, m):
     """Physics and evaluation commands of one walking onboard shot in the output folder out."""
     cmd = [
         py,
-        m / "evaluation/football/execute_media.py",
+        ROOT / "lab/onboard_scene.py",
         "--model",
         m / "models/reference/velstand.onnx",
         "--output",
@@ -564,8 +545,7 @@ def walking_football(a, out, seed, py, m):
         "--policy-imu",
         "body50",
         "--detector-deployment",
-        m.parents[1]
-        / "configuration/core/beta-detector/football_detector/deployment.json",
+        LOCAL / "scene-detector-deployment.json",
         "--detector-backend",
         "torch",
         "--detector-device",
@@ -573,45 +553,47 @@ def walking_football(a, out, seed, py, m):
         "--shared-imu-readback",
         "--packed-physics-readback",
         "--root-x",
-        "-0.66",
+        "-0.55",
         "--recovery-approval",
         m / "evaluation/football/recovery-approval.json",
     ]
-    if a.scene == "indoor":
-        manifest = ROOT / "models/scene-detector/deployment.json"
-        deployment = json.loads(manifest.read_text())
-        for key in ("weights", "onnx"):
-            artifact = manifest.parent / deployment[key]
-            if (
-                hashlib.sha256(artifact.read_bytes()).hexdigest()
-                != deployment[key + "_sha256"]
-            ):
-                raise ValueError("Indoor detector artifact changed")
-            deployment[key] = str(artifact)
-        local_deployment = LOCAL / "scene-detector-deployment.json"
-        local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
-        # Same scene and controller as lab/football_scene.py, with the course
-        # joint-brake start-up (released at the walking actor's first output).
-        cmd[1] = ROOT / "lab/onboard_scene.py"
-        cmd += [
-            "--runtime",
-            m,
-            "--style",
-            a.style,
-            "--render-subframes",
-            "1",
-            "--root-y",
-            a.root_y if a.root_y is not None else 0.12,
-            "--ball-xy",
-            *(a.ball_xy if a.ball_xy is not None else [0.02, 0.0]),
-        ]
-        cmd[cmd.index("--root-x") + 1] = "-0.55"
-        cmd[cmd.index("--detector-deployment") + 1] = local_deployment
-        if a.record_hd:
-            cmd += ["--record-hd"]
+    manifest = ROOT / "models/scene-detector/deployment.json"
+    deployment = json.loads(manifest.read_text())
+    for key in ("weights", "onnx"):
+        artifact = manifest.parent / deployment[key]
+        if (
+            hashlib.sha256(artifact.read_bytes()).hexdigest()
+            != deployment[key + "_sha256"]
+        ):
+            raise ValueError("Indoor detector artifact changed")
+        deployment[key] = str(artifact)
+    local_deployment = LOCAL / "scene-detector-deployment.json"
+    local_deployment.write_text(json.dumps(deployment, indent=2) + "\n")
+    # Same scene and controller as lab/football_scene.py, with the course
+    # joint-brake start-up (released at the walking actor's first output).
+    cmd += [
+        "--runtime",
+        m,
+        "--style",
+        a.style,
+        "--render-subframes",
+        "1",
+        "--root-y",
+        a.root_y if a.root_y is not None else 0.12,
+        "--ball-xy",
+        *(a.ball_xy if a.ball_xy is not None else [0.02, 0.0]),
+    ]
+    if a.record_hd:
+        cmd += ["--record-hd"]
+    if getattr(a, "experiment_plan", None):
+        if a.headless or a.single_run or a.repeat is not None:
+            raise ValueError("Paired experiment plans require one interactive session")
+        cmd += ["--experiment-plan", a.experiment_plan]
+    if getattr(a, "no_video", False):
+        cmd += ["--no-video"]
     if not a.headless:
         cmd += ["--visualizer", "kit"]
-        if a.scene == "indoor" and not getattr(a, "single_run", False) and getattr(a, "repeat", None) is None:
+        if not getattr(a, "single_run", False) and getattr(a, "repeat", None) is None:
             cmd += ["--interactive-reset", "--session-episodes", getattr(a, "session_episodes", 0)]
     evaluation = [
         py,
@@ -620,7 +602,7 @@ def walking_football(a, out, seed, py, m):
         m,
         "--run",
         out,
-        *(["--scene-contract"] if a.scene == "indoor" else []),
+        "--scene-contract",
     ]
     return cmd, evaluation
 

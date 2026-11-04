@@ -94,10 +94,6 @@
       "sha256": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286",
       "snapshot": "source-snapshot/football/scoring.py"
     },
-    "@COURSE@/simulation/core/football/server.py": {
-      "sha256": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8",
-      "snapshot": "source-snapshot/football/server.py"
-    },
     "@COURSE@/simulation/core/football/isaac_execute.py": {
       "sha256": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
       "snapshot": "source-snapshot/football/isaac_execute.py"
@@ -138,9 +134,9 @@
       "sha256": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a",
       "snapshot": "source-snapshot/football/body_imu_input.py"
     },
-    "@COURSE@/simulation/core/football/nav2_bridge.py": {
+    "@COURSE@/simulation/core/football/path_request.py": {
       "sha256": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
-      "snapshot": "source-snapshot/football/nav2_bridge.py"
+      "snapshot": "source-snapshot/football/path_request.py"
     },
     "@COURSE@/simulation/core/football/student_entry.py": {
       "sha256": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
@@ -170,17 +166,9 @@
       "sha256": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac",
       "snapshot": "source-snapshot/football/test_gaze_tracking.py"
     },
-    "@COURSE@/simulation/core/football/replay_actual_rgb.py": {
-      "sha256": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c",
-      "snapshot": "source-snapshot/football/replay_actual_rgb.py"
-    },
     "@COURSE@/simulation/core/football/__init__.py": {
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "snapshot": "source-snapshot/football/__init__.py"
-    },
-    "@COURSE@/simulation/core/football/test_nav2_actual.py": {
-      "sha256": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb",
-      "snapshot": "source-snapshot/football/test_nav2_actual.py"
     },
     "@COURSE@/simulation/core/football/visual_localization.py": {
       "sha256": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1",
@@ -1475,7 +1463,6 @@
     "test_cpu.py": "7ebfb45372564af57da88cce78eec80077858b89e7a6511f2cdc29a24a71791b",
     "extract_collision_geometry.py": "1a6ddf63b4671d17433b49c056111304157b0820eaf37a4657452e35a636840b",
     "scoring.py": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286",
-    "server.py": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8",
     "isaac_execute.py": "c38dd9b160bc482b77dd3bb9d13f7425c85d74b20f0782e8c4eeb199b71112b0",
     "detector_client.py": "d5cd26bb049800890ce672050be50468ed7145447b3c13d4913e5abcc75e93dd",
     "test_startup_support.py": "e805771249e360aed03aa14e5269c459bf2820de5ef45fa3ea5e9856e3ff32ae",
@@ -1486,7 +1473,7 @@
     "prepare_calibration.py": "1cb0a7a46324fdecc0223b0f3887ada8fccb349692bf46561bcdb5bbf15cf6e4",
     "startup_support.py": "fba79bfc789833ef2ada6aeee9db32a369f0448c5d9d50eb8339721306a5e134",
     "body_imu_input.py": "f1441b6991766e2bba74897241900121bd711c7797063be55c4c2d5658a1547a",
-    "nav2_bridge.py": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
+    "path_request.py": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
     "student_entry.py": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
     "audit_replay_geometry.py": "eeccc4ca89f1cd1b66b4894aff79957b633d47bfa0108ebaa82b12b3842a613d",
     "hardware_head_fk.py": "978d86632615e84c25d6ffe1a9ad766c07b0f8d587f4846191b44ff570a6f357",
@@ -1494,9 +1481,7 @@
     "test_mechanical_scoring.py": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a",
     "gaze_tracking.py": "2609ae9417ba6a664ff8e2be310a5e5c87f9d4d50a27e90a78018ee0b51dd445",
     "test_gaze_tracking.py": "0d33dadec8a566155df1debbce4c06d2d1264895b093816c914b847d28fc34ac",
-    "replay_actual_rgb.py": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c",
     "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "test_nav2_actual.py": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb",
     "visual_localization.py": "d88dc7dd5ea28bc5fdedb13ed1e8452540c43bca21fa1b3becc616b0b94c7db1",
     "kick_control.py": "d3155cc59b7be1832c8b572261401058a2ebf3bdc4e96ab47f22c7879678f034",
     "ground_plane.py": "7937edc44b7d2da693ce5d7fe8884744a8a4338b13bce53157dae50964fa3c44",
@@ -1564,7 +1549,6 @@
       "@COURSE@/configuration/core/kick_policy/export/training-ledger.snapshot.json": "0230110c7f771e764e40e1867bb030cd0dc67ea0227dbfb0e575c91c12675c18",
       "@COURSE@/configuration/core/kick_policy/checkpoint.pt": "e2e0511a0f17b32556fea909b43f98a306f4809099489d1a93c8b0d28031c06b",
       "@COURSE@/simulation/core/evaluation/bounded_image_head_servo.py": "f2c1b68ce19be41764dd040bfe2865492f862ef07ad67d6beed822f86246253e",
-      "@COURSE@/simulation/core/evaluation/execute_long_episode.py": "9a6a9948bec5250ae87002044853acf5be6bbdbedd9e3285308ae58229ae5f04",
       "@COURSE@/simulation/core/evaluation/execute_observed_ball_turn.py": "eb6e1039f478da27b4ebb00c15015c66365625c9f8ac9605404b3e368947ae3f",
       "@COURSE@/simulation/core/evaluation/execute_active_view.py": "8e149be387ccba8e34d0ab2221054b76b1e6b83ccac2f24798aaec312288c70c",
       "@COURSE@/simulation/core/evaluation/execute_velocity_policy.py": "e48ed17b2249be02fced96080a31bc58edf44cdedea63702f674b517dbf03236",
@@ -1662,7 +1646,6 @@
       "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/test_turn_prediction.py": "bd278201819648740cb60375307828bcd644b68962b45445aad12c265b246654",
       "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/test_contract.py": "11f2f9b7103a81f24fdbd61fee0dcbca921e8577d5efa06ff567e99e6c7ecdfb",
       "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/test_visibility_consumers.py": "ea880a3d83508395da36a6c66a83c7995ac88292380d7a7c6b95bb8f0ea1ad0b",
-      "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/test_zone_floor_projection.py": "c0336b53b69dafbbcd6159860174ee4645c34410295278169102864fab984d3b",
       "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/turn_prediction.py": "43490889c1dc30058a659b1af323825c8ebb417d230d4aecf3709dac0d3702d2",
       "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/visibility_gate.py": "5d3055727d1dca2cd2a41ab2287e53a053cd26b459ea4d044f76cc96786009e7",
       "@COURSE@/simulation/core/evaluation/native_backward_approached_nearball_v1/zone_floor_projection.py": "d6af215deb76b913ba072a46208fccb80906ed88ce0e5021e7c30a6e51cf5e1d",
@@ -1678,13 +1661,7 @@
       "@COURSE@/simulation/core/football/kick_policy/runtime.py": "a2781a733ecd0b9aad5b987835022ecbcfd1384a214ee031af8604d96382e32a",
       "@COURSE@/simulation/core/football/leg_odometry.py": "c88eb06e2ef0017e25b9c087884915ba477b4af2888d70eef07799504d3b2e7f",
       "@COURSE@/simulation/core/football/recording/execute.py": "798608923a74b6f959c34b32fe6af4989335602c96570d2f0a8b67c0720be1cb",
-      "@COURSE@/simulation/core/football/nav2_bridge.py": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
-      "@COURSE@/simulation/core/football/nav2_service/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "@COURSE@/simulation/core/football/nav2_service/client.py": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c",
-      "@COURSE@/simulation/core/football/nav2_service/contract.py": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79",
-      "@COURSE@/simulation/core/football/nav2_service/map_contract.py": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285",
-      "@COURSE@/simulation/core/football/nav2_service/obstacle_contract.py": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07",
-      "@COURSE@/simulation/core/football/nav2_service/owner.py": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2",
+      "@COURSE@/simulation/core/football/path_request.py": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051",
       "@COURSE@/simulation/core/football/perception.py": "6312c31a6331f92e9616a990a9b915798606b15f6e719a68e3993cf2857ec368",
       "@COURSE@/simulation/core/football/ball_memory/memory.py": "6b268da8af9bd0351cb5204809eba247fab2409f53b03fc859b953f087cc0bb6",
       "@COURSE@/simulation/core/football/sources/ball_kick_right.onnx": "147a32c388c6b19111b3ac3b550a9a6dc8b8bf267118af4d8c3712522eedb5af",

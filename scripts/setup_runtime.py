@@ -14,7 +14,6 @@ from prepare_runtime import prepare
 
 ROOT = Path(__file__).resolve().parents[1]
 COMMIT = "5088b326c7fc81caa7899395b0176ad08b89e9e1"
-IMAGE = "sha256:c60e955f781c31c00b46b415c9bad7dc8e5faa922f0e3ea0dbb44f604685bfbd"
 
 
 def setup_runtime(a):
@@ -113,21 +112,11 @@ def setup_runtime(a):
             ],
             check=True,
         )
-    navimage = a.nav2_image or IMAGE
-    if subprocess.run(
-        ["docker", "image", "inspect", navimage],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-    ).returncode:
-        from setup_nav2 import build_nav2
-
-        navimage = build_nav2()
     data = dict(
         python=str(py),
         isaaclab=str(lab),
         detector_python=str(detector),
         ffmpeg=ffmpeg,
-        nav2_image=navimage,
     )
     (local / "runtime.json").write_text(json.dumps(data, indent=2) + "\n")
     m = prepare()

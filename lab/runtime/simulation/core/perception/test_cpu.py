@@ -8,7 +8,7 @@ sys.path.insert(0, str(P.parent / "sensors"))
 sys.path.insert(0, str(P.parent / "football"))
 import numpy as np
 from beta_sensor_profile import BetaCameraProfile
-from nav2_bridge import quaternion_xyzw
+from path_request import quaternion_xyzw
 from teacher_labels import labels, rays, sphere_depth, box_depth
 from plan_dataset import make_plan, validate_plan
 

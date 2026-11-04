@@ -399,6 +399,96 @@ def _calls(node, dotted):
     return sorted(found, key=lambda n: n.lineno)
 
 
+class CaptureControlGate(unittest.TestCase):
+    """Execute the real capture decision through the controller boundary, without Kit.
+
+    Include sibling statements as well as the first ``if`` so an accidental
+    detached calibration ``if`` cannot escape the warmup gate unnoticed.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        run_fn = _run_function()
+        matches = []
+        for parent in ast.walk(run_fn):
+            for _, value in ast.iter_fields(parent):
+                if not isinstance(value, list):
+                    continue
+                for start, node in enumerate(value):
+                    if isinstance(node, ast.If) and ast.unparse(node.test) == "not imu_valid":
+                        end = next(i for i in range(start, len(value))
+                                   if _calls(value[i], "controller.step"))
+                        matches.append(value[start:end + 1])
+        if len(matches) != 1:
+            raise AssertionError("Expected one capture decision block")
+        cls.code = compile(ast.Module(body=copy.deepcopy(matches[0]), type_ignores=[]),
+                           str(EXECUTOR), "exec")
+
+    def exercise(self, *, imu_valid, navigation_enabled, calibration=None):
+        class ControllerReached(Exception):
+            pass
+
+        calls = []
+
+        def step(*args, **kwargs):
+            calls.append((args, kwargs))
+            # Deliberate stop at the dependency boundary: downstream geometry
+            # and physics are outside this warmup regression test.
+            raise ControllerReached
+
+        image, frame = object(), object()
+        packet = body_packet() if imu_valid else None
+        ns = dict(
+            imu_valid=imu_valid,
+            support_row={"navigation_enabled": navigation_enabled, "phase": "JOINT_BRAKE"},
+            onboard=object(), controller=SimpleNamespace(step=step),
+            a=SimpleNamespace(calibration_command=calibration, calibration_gaze=[0., 0.]),
+            calibration_gaze=SimpleNamespace(update=lambda gaze, t: gaze, last={}),
+            head=SimpleNamespace(solve=lambda gaze: {"accepted": True}),
+            rgb=image, proprio=packet, capture={"tof": frame}, t=4.2, detected=[],
+        )
+        reached = False
+        try:
+            exec(self.code, ns)
+        except ControllerReached:
+            reached = True
+        return ns, calls, reached
+
+    def test_warmup_and_initialization_do_not_call_controller(self):
+        for imu, navigation, calibration, state in [
+            (False, False, None, "IMU_WARMUP"),
+            (False, True, None, "IMU_WARMUP"),
+            (True, False, None, "JOINT_BRAKE"),
+            (False, True, [0., 0., 0.], "IMU_WARMUP"),
+            (True, False, [0., 0., 0.], "JOINT_BRAKE"),
+        ]:
+            with self.subTest(imu=imu, navigation=navigation, calibration=calibration):
+                ns, calls, reached = self.exercise(imu_valid=imu,
+                    navigation_enabled=navigation, calibration=calibration)
+                self.assertFalse(reached)
+                self.assertEqual(calls, [])
+                self.assertEqual(ns["last_control"]["state"], state)
+                self.assertEqual(ns["last_control"]["velocity_body_xyw"], [0., 0., 0.])
+                self.assertFalse(ns["last_control"]["kick_request"])
+
+    def test_ready_capture_reaches_controller_once_with_public_inputs(self):
+        ns, calls, reached = self.exercise(imu_valid=True, navigation_enabled=True)
+        self.assertTrue(reached)
+        self.assertEqual(len(calls), 1)
+        args, kwargs = calls[0]
+        self.assertIs(args[0], ns["rgb"])
+        self.assertIs(args[1], ns["proprio"])
+        self.assertIs(args[2], ns["capture"]["tof"])
+        self.assertEqual(kwargs, {"now_s": 4.2, "detections": []})
+
+    def test_calibration_does_not_also_navigate(self):
+        ns, calls, reached = self.exercise(imu_valid=True, navigation_enabled=True,
+                                           calibration=[0., 0., 0.])
+        self.assertFalse(reached)
+        self.assertEqual(calls, [])
+        self.assertEqual(ns["last_control"]["state"], "GAIT_CALIBRATION")
+
+
 class ExecutorProtocolOrder(unittest.TestCase):
     """Static checks of the executor loop; physics behaviour is verified in the GUI run."""
 
@@ -444,17 +534,11 @@ class ExecutorProtocolOrder(unittest.TestCase):
 
     def test_route_wiring(self):
         source = ast.unparse(self.run_fn)
-        self.assertIn(
-            "nav = Nav2Unused() if a.walking_policy_server else Nav2Session(output / 'nav2', "
-            "max_wall_s=max(1800.0, a.seconds * 60))", source)
-        mapping = _calls(self.run_fn, "k10.verify_action_mapping")
-        self.assertEqual(len(mapping), 1)
-        guarded = [
-            n for n in ast.walk(self.run_fn)
-            if isinstance(n, ast.If) and ast.unparse(n.test) == "a.walking_policy_server"
-            and _calls(n, "k10.verify_action_mapping")
-        ]
-        self.assertEqual(len(guarded), 1)
+        self.assertEqual(len(_calls(self.run_fn, "DirectPath")), 1)
+        self.assertIn("nav = DirectPath(output / 'direct-path')", source)
+        self.assertIn("official_teacher_only_no_residual", source)
+        self.assertNotIn("Nav2Session", source)
+        self.assertNotIn("walking_policy_server", source)
         self.assertEqual(len(_calls(self.run_fn, "OnboardBrakeStartup")), 1)
         capture = _calls(self.run_fn, "onboard.note_capture")
         self.assertEqual([ast.unparse(a) for a in capture[0].args], ["t", "rgb", "capture['tof']"])
@@ -497,9 +581,9 @@ class ExecutorRoute(unittest.TestCase):
                 sys.argv = argv
         return err.getvalue()
 
-    def test_exactly_one_route(self):
-        self.assertIn("exactly one route", self.parse_error(["--detector-deployment", "d.json"]))
-        self.assertIn("exactly one route", self.parse_error(
+    def test_only_onboard_route_is_accepted(self):
+        self.assertIn("--course-onboard", self.parse_error(["--detector-deployment", "d.json"]))
+        self.assertIn("unrecognized arguments", self.parse_error(
             ["--detector-deployment", "d.json", "--course-onboard", "--walking-policy-server", "h:1"]))
 
     def test_onboard_requires_detector(self):

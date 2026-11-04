@@ -72,9 +72,9 @@ class NearBallNavigator(GuardedFeedbackNavigator):
                 "visual_localization_refresh",
                 "fresh_ball_required",
                 "fresh_RGB_position_error",
-                "actual_Navfn_path",
+                "accepted_planned_path",
             }
-            and (reason != "actual_Navfn_path" or np.any(command))
+            and (reason != "accepted_planned_path" or np.any(command))
         )
         diagnostic = None
         attention = self.ball_attention

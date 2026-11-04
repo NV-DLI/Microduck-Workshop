@@ -190,12 +190,12 @@
   ]
  },
  "onboard": {
-  "run": "Interactive onboard football on DGX Spark, first completed round",
+  "run": "Direct straight approach on DGX Spark, first completed round",
   "excerpt_sim_s": [
-   3.4,
-   3.6
+   4.6,
+   4.8
   ],
-  "selection": "First 200 ms-aligned capture after the first NAV2_APPROACH decision; next three consecutive decisions, excluding initial planner startup.",
+  "selection": "First 200 ms-aligned capture after actual continuous TRACK walking begins; three consecutive decisions with the next capture as endpoint.",
   "physics_hz": 100,
   "rgb_capture_ms": [
    0,
@@ -245,53 +245,106 @@
    3
   ],
   "decision_compute_ms": [
-   39.815,
-   69.494,
-   42.485
+   42.631,
+   39.377,
+   45.633
   ],
   "detector_ms": [
-   7.677,
-   8.649,
-   7.835
+   7.927,
+   8.047,
+   10.893
   ],
   "navigation_and_gaze_ms": [
-   32.136,
-   60.843,
-   34.648
+   34.703,
+   31.328,
+   34.739
   ],
   "decisions": [
    {
-    "timestamp_s": 3.4,
-    "state": "NAV2_APPROACH",
-    "decision": 39.81505800038576,
-    "detector": 7.676924113184214,
-    "navigation": 32.13621396571398,
+    "timestamp_s": 4.6000000000000005,
+    "state": "NEUTRAL_FINE_TRACK",
+    "decision": 42.63120098039508,
+    "detector": 7.9265248496085405,
+    "navigation": 34.70328403636813,
     "scope": "capture ready to command ready; excludes rendering, archive and actor; synchronous host time"
    },
    {
-    "timestamp_s": 3.47,
-    "state": "NAV2_APPROACH",
-    "decision": 69.49400994926691,
-    "detector": 8.649264927953482,
-    "navigation": 60.842824866995215,
+    "timestamp_s": 4.67,
+    "state": "NEUTRAL_FINE_TRACK",
+    "decision": 39.376862812787294,
+    "detector": 8.0469090025872,
+    "navigation": 31.328146113082767,
     "scope": "capture ready to command ready; excludes rendering, archive and actor; synchronous host time"
    },
    {
-    "timestamp_s": 3.54,
-    "state": "NAV2_APPROACH",
-    "decision": 42.485201032832265,
-    "detector": 7.83490901812911,
-    "navigation": 34.64849991723895,
+    "timestamp_s": 4.74,
+    "state": "NEUTRAL_FINE_TRACK",
+    "decision": 45.633154921233654,
+    "detector": 10.892766062170267,
+    "navigation": 34.73854879848659,
     "scope": "capture ready to command ready; excludes rendering, archive and actor; synchronous host time"
    }
   ],
+  "actor_velocity_requests": [
+   [
+    0.3,
+    -0.2,
+    0.1594672137964102
+   ],
+   [
+    0.3,
+    -0.2,
+    0.14546744029698241
+   ],
+   [
+    0.3,
+    -0.2,
+    0.1316494269472569
+   ],
+   [
+    0.3,
+    -0.2,
+    0.13532734710667207
+   ],
+   [
+    0.3,
+    -0.2,
+    0.14767986139566092
+   ],
+   [
+    0.3,
+    -0.2,
+    0.15979150239275475
+   ],
+   [
+    0.3,
+    -0.2,
+    0.17121900204079452
+   ],
+   [
+    0.3,
+    -0.2,
+    0.17102054628764016
+   ],
+   [
+    0.3,
+    -0.2,
+    0.17092149626309494
+   ],
+   [
+    0.3,
+    -0.2,
+    0.1765165888869629
+   ]
+  ],
+  "actor_round_semantics": "Latest completed perception round at each motor update, not a constant velocity command. Continuous feedback updates velocity requests between captures using body sensors and propagated ball memory.",
   "source_sha256": {
-   "control.jsonl": "9b7664cbef2a3c7a432f0126bb33de52e447317aa7d81c49d89ec2c556d9fbd7",
-   "policy-trace.jsonl": "da487d05ebd0e0f6bcbf4fec53b958daf51ca7c1faabad9fdb578106e7e4d8ac",
-   "sensor-inputs.jsonl": "12bb263136aceb76533244f76e71568eb039800b728934a23cd9a4697f6099a2",
-   "manifest.json": "2500c850bf7dc285e0a3f250cb2dd22d4bbbd0bc64e1dcfb594092de5b96f78d"
+   "control.jsonl": "038f360cf564dee0aee7a40f27b97fc1175aa7c44e4ea549f04d6cd2d644c482",
+   "policy-trace.jsonl": "03208936437209029cea6f55e7cb45c7ee44928b3bf3c1c76f3a0078be3a8df8",
+   "sensor-inputs.jsonl": "dc4c46f763ff1bc2c5cde5d706093deed618591a2555f1d451d0f8360aaac254",
+   "manifest.json": "f90165f630b57d9be9e70fba4906256bb30b835d99e007651c57f8138a87e727"
   },
-  "measurement_scope": "Synchronous host elapsed from capture/archive submission complete through detection, geometry, navigation, gaze and guards to command ready. Excludes rendering, archive submission, motor policy inference and final trace write. DGX Spark workstation, not RK3566. Simulation time does not advance during this processing."
+  "measurement_scope": "Synchronous host elapsed from capture/archive submission complete through detection, geometry, straight-approach decisions, gaze and guards to capture-decision completion. Excludes rendering, archive submission, 50 Hz feedback, motor policy inference and final trace write. DGX Spark workstation, not RK3566. Simulation time does not advance during this processing."
  },
  "statistics": {
   "new_predictions": 899,

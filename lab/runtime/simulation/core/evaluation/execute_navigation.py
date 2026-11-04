@@ -41,5 +41,4 @@ if __name__ == "__main__":
     }
     entry.isaac_execute.build_cfg = navigation_build
     entry.isaac_execute.run = entry.run
-    entry.nav2_bridge.Nav2Session = entry.BoundedLifetimeSession
     entry.isaac_execute.main()

@@ -21,10 +21,6 @@
       "sha256": "f2c1b68ce19be41764dd040bfe2865492f862ef07ad67d6beed822f86246253e"
     },
     {
-      "path": "@COURSE@/simulation/core/evaluation/execute_long_episode.py",
-      "sha256": "9a6a9948bec5250ae87002044853acf5be6bbdbedd9e3285308ae58229ae5f04"
-    },
-    {
       "path": "@COURSE@/simulation/core/evaluation/execute_observed_ball_turn.py",
       "sha256": "eb6e1039f478da27b4ebb00c15015c66365625c9f8ac9605404b3e368947ae3f"
     },
@@ -197,32 +193,8 @@
       "sha256": "ba09619d31b29410585867d028f95aee0d97d9a1995475d35e878d030e4e492d"
     },
     {
-      "path": "@COURSE@/simulation/core/football/nav2_bridge.py",
+      "path": "@COURSE@/simulation/core/football/path_request.py",
       "sha256": "27a20efed1a8d051bfe8feec4fd96dc0f434438bd4449a10b31da0fb9f951051"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/nav2_service/__init__.py",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/nav2_service/client.py",
-      "sha256": "972bb30635b9e412c79d0d0b6d784961b4456f9c4517d4efc71c1d5805bb524c"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/nav2_service/contract.py",
-      "sha256": "1d240e00e1a3fafe738f1735b477deeb383d60aadcb1c298bfaba38e77dd6f79"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/nav2_service/map_contract.py",
-      "sha256": "a3c3e843d947c1f5593118af17e491b7b5535b9159d26105210e085d0f528285"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/nav2_service/obstacle_contract.py",
-      "sha256": "17e8c9745622645148e53cddd4c1a1d8c27e940d2b4e7631920e5f1f1ac14f07"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/nav2_service/owner.py",
-      "sha256": "cb02a5b8ab4f78fcdb7d89da612dad9258c99bbf92ef6a0bf4834a29889358f2"
     },
     {
       "path": "@COURSE@/simulation/core/football/perception.py",
@@ -233,16 +205,8 @@
       "sha256": "1cb0a7a46324fdecc0223b0f3887ada8fccb349692bf46561bcdb5bbf15cf6e4"
     },
     {
-      "path": "@COURSE@/simulation/core/football/replay_actual_rgb.py",
-      "sha256": "d98bbab7ad20f2b102d4a61e18ca90c1c96bc8fcdcc77cbe53c5404f354e7d4c"
-    },
-    {
       "path": "@COURSE@/simulation/core/football/scoring.py",
       "sha256": "06b72a15f27d357b312c8155f5c48b0c6ffe489e16e23f16e87ebdafeb028286"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/server.py",
-      "sha256": "44f0d2e9c6f66bd8fed5c28fbff251588d40d233757a6f47f1f5804a2cac48c8"
     },
     {
       "path": "@COURSE@/simulation/core/football/startup_support.py",
@@ -283,10 +247,6 @@
     {
       "path": "@COURSE@/simulation/core/football/test_mechanical_scoring.py",
       "sha256": "77748fecf05625b78ecbad67b30f6887bf84b70bb01cc4b2de713970fb50b23a"
-    },
-    {
-      "path": "@COURSE@/simulation/core/football/test_nav2_actual.py",
-      "sha256": "b4ca41dc376e6336bf7ed7c8fb583f61791c32c691f7c7ff5baa1df080e91ddb"
     },
     {
       "path": "@COURSE@/simulation/core/football/test_startup_support.py",

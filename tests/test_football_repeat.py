@@ -403,7 +403,7 @@ class ArgumentTest(unittest.TestCase):
     def test_legacy_scene_repeat_is_rejected(self):
         r = self.call("--repeat", "2", "--scene", "legacy")
         self.assertEqual(r.returncode, 2)
-        self.assertIn("indoor scene", r.stderr)
+        self.assertIn("unrecognized arguments: --scene legacy", r.stderr)
 
     def test_windowed_onboard_command_uses_reset_and_current_profile(self):
         state = Path(tempfile.mkdtemp())
@@ -415,7 +415,7 @@ class ArgumentTest(unittest.TestCase):
             from types import SimpleNamespace
             sys.path.insert(0, {str(ROOT / 'scripts')!r})
             import run
-            a = SimpleNamespace(seconds=45.0, scene="indoor", style="A", root_y=None, ball_xy=None,
+            a = SimpleNamespace(seconds=45.0, style="A", root_y=None, ball_xy=None,
                                 record_hd=True, headless=False)
             m = Path("/rt/simulation/core")
             physics, evaluation = run.walking_football(a, Path("/o/run"), 983102, "py", m)

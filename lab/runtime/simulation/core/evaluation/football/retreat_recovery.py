@@ -139,8 +139,8 @@ def rear_path_authority(
     fixed_target_map_xy=None
 ):
     """Original map contract and 10 cm envelope; rear cells FREE only via the surveyed empty prior."""
-    from nav2_bridge import make_request
-    from nav2_service.map_contract import snapshot, check_path
+    from path_request import make_request
+    from onboard_geometry.map_contract import snapshot, check_path
 
     pose = np.asarray(pose_map_xyyaw, float)
     result = dict(

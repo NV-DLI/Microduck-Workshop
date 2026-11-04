@@ -15,7 +15,7 @@ Meet VLAs and GR00T N1.7: how images, language and body state become actions, wh
 {#idea}
 ## From writing steps to providing goals and examples
 
-The onboard policy in Part 4 was designed around the robot's limited onboard compute: a nano detector, a classic path planner, compact motion skills and stages that people wrote for shooting. Every step is explainable, but a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.
+The onboard policy in Part 4 was designed around the robot's limited onboard compute: a nano detector, a straight approach with feedback, compact motion skills and stages that people wrote for shooting. Every step is explainable, but a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.
 
 If the decision-making model can run off the robot, a much larger model becomes possible. In this course GR00T runs on a local GPU workstation, while local motion skills handle fast control; a cloud server could also play that role, with more network delay. <a href="08-groot-interface.html#deployment">Section 5.2</a> explains the details.
 

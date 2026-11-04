@@ -10,7 +10,7 @@ This is specific to the existing simulator approximation, not ST calibration.
 
 from functools import lru_cache
 import copy, math
-from nav2_service.map_contract import rotate
+from onboard_geometry.map_contract import rotate
 
 
 @lru_cache(maxsize=64)

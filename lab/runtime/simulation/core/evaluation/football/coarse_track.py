@@ -7,8 +7,8 @@ No new trained model, no physical velocity claim, no kick authority.
 import math
 from collections import deque
 import numpy as np
-from nav2_service.map_contract import snapshot, check_path
-from nav2_bridge import make_request
+from onboard_geometry.map_contract import snapshot, check_path
+from path_request import make_request
 from visual_localization import rotate
 
 

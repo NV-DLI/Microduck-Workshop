@@ -8,6 +8,8 @@ def install(module):
         return module._onboard_install_record
     assert hashlib.sha256(open(module.__file__,'rb').read()).hexdigest()==EXPECTED
     cls=module.NeutralFineStep;source=textwrap.dedent(inspect.getsource(cls.policy))
+    from approach_control import fine_policy_source
+    source = fine_policy_source(source)
     old='            self.fail("neutral_step_fresh_goal_required")'
     new='            key = (self.started, self.anchor_s)\n            if getattr(self, "goal_wait_key", None) != key:\n                self.goal_wait_key = key\n                self.goal_wait_started = t\n            if t - self.goal_wait_started >= GOAL_MAX_WAIT_S - 1e-9:\n                self.fail("neutral_step_fresh_goal_required")\n            else:\n                self.reason = GOAL_WAIT_REASON'
     old="    "+old;new=textwrap.indent(new,"    ")
@@ -25,6 +27,6 @@ def install(module):
         out['goal_refresh_wait_max_s']=MAX_WAIT_S
         return out
     cls.status=status
-    module._onboard_install_record = dict(max_wait_s=MAX_WAIT_S,state='RETURN',body_velocity=[0,0,0],fresh_goal_age_max_s=.5,original_memory_and_attention_deadlines_unchanged=True,source_sha256=EXPECTED,executed_policy_sha256=hashlib.sha256(changed.encode()).hexdigest())
+    module._onboard_install_record = dict(max_wait_s=MAX_WAIT_S,state='RETURN',body_velocity=[0,0,0],fresh_goal_age_max_s=2.,memory_max_age_s=6.5,source_sha256=EXPECTED,executed_policy_sha256=hashlib.sha256(changed.encode()).hexdigest())
 
     return module._onboard_install_record

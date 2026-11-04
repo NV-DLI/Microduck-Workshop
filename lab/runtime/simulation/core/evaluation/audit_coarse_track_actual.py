@@ -5,7 +5,7 @@ from pathlib import Path
 
 M = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(M / "football")]
-from nav2_service.map_contract import snapshot, check_path
+from onboard_geometry.map_contract import snapshot, check_path
 
 
 def rot(a, p):

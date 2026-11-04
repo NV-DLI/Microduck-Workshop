@@ -95,7 +95,7 @@ After each capture, the onboard policy does three things:
 2. **Work out the floor and distances.** ToF fits the floor plane and joint angles give the camera orientation. The known ball size then places the ball on the floor; the bases of the two goalposts and their known spacing give the robot's position and heading relative to the goal.
 3. **Reject unreliable information.** If an observation is too old, a target is only partly visible, successive results disagree or the floor cannot be found, the policy does not use that result and stops to look again; it also stops moving when something is too close to its feet. A zone without a valid return only means unknown; it does not mean the way ahead is clear.
 
-A detection box narrows the search area; it does not directly provide a position for navigation. The goalpost endpoints must also pass ground-height checks and agree across three frames. A visible box therefore does not always produce a fresh, reliable position.
+A detection box narrows the search area; it does not directly provide a position the walking controller can use. The goalpost endpoints must also pass ground-height checks and agree across three frames. A visible box therefore does not always produce a fresh, reliable position.
 
 {#truth}
 ## Sensors and scoring

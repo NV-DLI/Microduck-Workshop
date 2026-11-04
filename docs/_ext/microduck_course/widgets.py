@@ -668,7 +668,7 @@ def control_timing(d, lang):
     lanes = o["lanes"]
     head, sens, dec, cmd, act, links = [], [], [], [], [], []
     ticks = [float(v) for v in o["actor_ms"]]
-    owner = o["actor_round"]  # recorded: the decision whose command each motor update used
+    owner = o["actor_round"]  # recorded latest perception round at each motor update
     decide, detect, navigate = o["decision_ms"], o["detector_ms"], o["navigation_ms"]
     assert len(owner) == len(ticks) and len(decide) == len(detect) == len(navigate) == 3
     for r, rd in enumerate(rounds):
@@ -683,7 +683,7 @@ def control_timing(d, lang):
                         label=f'{inline_md(o["decision_label"])}<small>{inline_md(fill(o["decision_note"], **times))}</small>'))
         say = fill(o["say"], round=rd["name"], k=rd["plain"], n=n, **times)
         cmd.append(item("is-command", u0, u1, t0=u0, t1=u1, x=u1, rnd=r, say=say, status="frame",
-                        label=inline_md(rounds[r]["command"])))
+                        label=inline_md(o.get("command_labels", [x["command"] for x in rounds])[r])))
         links.append(link("sens", "dec", u0, u0, t0=u0, x=u1, rnd=r))
         links.append(link("dec", "cmd", u0, u0, t0=u0, x=u1, rnd=r))
         for k, who in zip(ticks, owner):

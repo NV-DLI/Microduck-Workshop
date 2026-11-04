@@ -52,7 +52,7 @@ def head_context_allowed(
 
     if (
         reason in UPSTREAM_HOLDS
-        or reason.startswith("Nav2_failed:")
+        or reason.startswith("planning_failed:")
         or control.get("state") == "CONTROL_ERROR"
     ):
         return False

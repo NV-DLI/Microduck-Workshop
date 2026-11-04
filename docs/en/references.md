@@ -37,6 +37,5 @@ Begin with task observations, actions, and rewards, then explore physics and sen
 - [Newton physics engine ↗](https://github.com/newton-physics/newton)
 - [Proximal Policy Optimization paper ↗](https://arxiv.org/abs/1707.06347)
 - [RSL-RL: reinforcement-learning implementation ↗](https://github.com/leggedrobotics/rsl_rl)
-- [Nav2 documentation ↗](https://docs.nav2.org/)
 - [Ultralytics documentation ↗](https://docs.ultralytics.com/)
 - [VL53L8CX sensor documentation ↗](https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html)

@@ -1,7 +1,7 @@
 import math, unittest
 import numpy as np
 from head_adapter import HeadAdapter, vee
-from nav2_bridge import quaternion_xyzw
+from path_request import quaternion_xyzw
 from test_cpu import NAMES
 
 

@@ -7,7 +7,7 @@ import time
 import numpy as np
 from perception import BetaPerception, validate_observation, level_rotation
 from visual_localization import fit_posts, rotate, wrap
-from nav2_bridge import make_request, quaternion_xyzw
+from path_request import make_request, quaternion_xyzw
 from gaze_tracking import observed_ball_gaze, GazeSlew
 
 
@@ -26,12 +26,12 @@ class ControllerConfig:
 
 
 class BetaNavigator:
-    def __init__(self, nav2_session, *, camera=None, config=None):
+    def __init__(self, planner, *, camera=None, config=None):
         self.config = config or ControllerConfig()
         if self.config.ground_mode not in ("legacy-imu-sole", "tof-virtual-floor"):
             raise ValueError("Explicit navigation ground model required")
         self.vision = BetaPerception(camera)
-        self.nav2 = nav2_session
+        self.planner = planner
         self.reset()
 
     def reset(self):
@@ -55,8 +55,8 @@ class BetaNavigator:
         self.last_geometry = None
         self.gaze = GazeSlew()
         self.last_observed_ball_gaze = None
-        self.nav2_wall_seconds = 0.0
-        self.nav2_requests = 0
+        self.planning_wall_seconds = 0.0
+        self.planning_requests = 0
 
     def _output(self, t, command=(0.0, 0.0, 0.0), reason="", gaze=None):
         requested_gaze = [0.0, 0.0] if gaze is None else gaze
@@ -340,7 +340,7 @@ class BetaNavigator:
                 )
         local_blocked = False
         if self.config.layout == "one-obstacle":
-            from nav2_service.obstacle_contract import bounds
+            from onboard_geometry.obstacle_contract import bounds
 
             a, b, c, d = bounds()
             pts = np.linspace(
@@ -352,7 +352,7 @@ class BetaNavigator:
                 a - 0.1 <= p[0] <= b + 0.1 and c - 0.1 <= p[1] <= d + 0.1 for p in pts
             )
         if distance > 0.31 or local_blocked:
-            self.state = "NAV2_APPROACH"
+            self.state = "PATH_APPROACH"
             target = (
                 self.ball
                 - self.config.preparation_distance_m * unit
@@ -372,17 +372,17 @@ class BetaNavigator:
                 try:
                     nav_start = time.monotonic()
                     try:
-                        self.last_plan = self.nav2.query(case, provenance)
+                        self.last_plan = self.planner.query(case, provenance)
                         self.last_plan_time = t
                     finally:
-                        self.nav2_wall_seconds += time.monotonic() - nav_start
-                        self.nav2_requests += 1
+                        self.planning_wall_seconds += time.monotonic() - nav_start
+                        self.planning_requests += 1
                 except (ValueError, TimeoutError, OSError) as e:
                     self.last_plan = None
-                    return self._output(t, reason="Nav2_failed:" + str(e), gaze=gaze)
+                    return self._output(t, reason="planning_failed:" + str(e), gaze=gaze)
             path = self.last_plan["path_xy"]
             if not self.last_plan["envelope"]["accepted"] or not path:
-                return self._output(t, reason="Nav2_path_not_admitted", gaze=gaze)
+                return self._output(t, reason="path_not_admitted", gaze=gaze)
             near = min(
                 range(len(path)), key=lambda i: math.dist(path[i], self.pose[:2])
             )
@@ -399,11 +399,11 @@ class BetaNavigator:
                 ),
             ]
             self.quiet.clear()
-            return self._output(t, cmd, "actual_Navfn_path", gaze)
+            return self._output(t, cmd, "accepted_planned_path", gaze)
         self.state = "VISUAL_ALIGN"
         # A local segment must not cut back through the known obstacle after bypass.
         if self.config.layout == "one-obstacle":
-            from nav2_service.obstacle_contract import bounds
+            from onboard_geometry.obstacle_contract import bounds
 
             lo_x, hi_x, lo_y, hi_y = bounds()
             n = max(2, math.ceil(np.linalg.norm(delta) / 0.01))

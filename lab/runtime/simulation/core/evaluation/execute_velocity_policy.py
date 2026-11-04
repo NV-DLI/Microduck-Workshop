@@ -7,8 +7,6 @@ A = Path(__file__).resolve().parent
 M = A.parent
 sys.path.insert(0, str(M / "football"))
 import isaac_execute
-import nav2_bridge
-from execute_long_episode import BoundedLifetimeSession
 
 sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 old_build = isaac_execute.build_cfg
@@ -87,5 +85,4 @@ def run(a, cfg, fixture):
 if __name__ == "__main__":
     isaac_execute.build_cfg = build
     isaac_execute.run = run
-    nav2_bridge.Nav2Session = BoundedLifetimeSession
     isaac_execute.main()

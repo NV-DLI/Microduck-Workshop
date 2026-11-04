@@ -15,9 +15,7 @@ S = M / "sensors"
 sys.path[:0] = [str(D), str(A), str(F), str(S), str(M / "gait")]
 import isaac_execute as entry
 import controller
-import nav2_bridge
 import isaac_beta_body_imu as body_module
-from execute_long_episode import BoundedLifetimeSession
 from angular_navigation_native import AngularBallNavigator
 
 CANDIDATE = S / "processing/body50_scalar_finite_range"
@@ -164,7 +162,6 @@ def main():
     head_module.HeadAdapter = HeadCommandDomainAdapter
     controller.BetaNavigator = GoalReacquisitionNavigator
     body_module.IsaacBodyImu = FiniteBody
-    nav2_bridge.Nav2Session = BoundedLifetimeSession
     entry.build_cfg = build
     entry.run = run
     entry.main()

@@ -95,7 +95,6 @@
     "@COURSE@/simulation/core/evaluation/baseline/test_turn_prediction.py": "bd278201819648740cb60375307828bcd644b68962b45445aad12c265b246654",
     "@COURSE@/simulation/core/evaluation/baseline/test_contract.py": "11f2f9b7103a81f24fdbd61fee0dcbca921e8577d5efa06ff567e99e6c7ecdfb",
     "@COURSE@/simulation/core/evaluation/baseline/test_visibility_consumers.py": "ea880a3d83508395da36a6c66a83c7995ac88292380d7a7c6b95bb8f0ea1ad0b",
-    "@COURSE@/simulation/core/evaluation/baseline/test_zone_floor_projection.py": "c0336b53b69dafbbcd6159860174ee4645c34410295278169102864fab984d3b",
     "@COURSE@/simulation/core/evaluation/baseline/turn_prediction.py": "43490889c1dc30058a659b1af323825c8ebb417d230d4aecf3709dac0d3702d2",
     "@COURSE@/simulation/core/evaluation/baseline/visibility_gate.py": "5d3055727d1dca2cd2a41ab2287e53a053cd26b459ea4d044f76cc96786009e7",
     "@COURSE@/simulation/core/evaluation/baseline/zone_floor_projection.py": "d6af215deb76b913ba072a46208fccb80906ed88ce0e5021e7c30a6e51cf5e1d"

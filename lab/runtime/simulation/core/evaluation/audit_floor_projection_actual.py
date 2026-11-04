@@ -24,12 +24,14 @@ def quatmatrix(q):
 
 def audit(run):
     requests = {}
-    nav_count = 0
+    planning_count = 0
     coarse_count = 0
-    for path in sorted((run / "nav2/service/result").glob("request-*.json")):
-        req = json.loads(path.read_text())
-        requests[req["case"]["query_s"]] = (path, req)
-        nav_count += 1
+    path = run / "direct-path/queries.jsonl"
+    if path.exists():
+        for line in path.open():
+            req = json.loads(line)
+            requests[req["case"]["query_s"]] = (path, req)
+            planning_count += 1
     for line in (run / "control.jsonl").open():
         control = json.loads(line)
         for key in ("coarse_track_path", "coarse_active_path"):
@@ -181,7 +183,7 @@ def audit(run):
         "run": str(run),
         "passed": not errors,
         "actual_requests": count,
-        "nav2_requests": nav_count,
+        "planning_requests": planning_count,
         "coarse_path_maps": coarse_count,
         "corrected_zone_observations": corrected,
         "maximum_component_error": maxerr,
