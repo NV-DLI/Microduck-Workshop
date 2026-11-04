@@ -407,7 +407,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="gr00t">
 <h1>5.2 使用 GR00T 自主完成射门<a class="headerlink" href="#gr00t" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>GR00T 怎样完成步行射门：它读什么、输出哪 8 个高层请求、由谁执行，各模块多久更新一次，以及示范数据、动作头训练和闭环验证的思路。GR00T 的训练和推理都由课程预先完成，本节不需要动手运行。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>沿着 5.1 节的 VLA 思路，本节把 GR00T 接到 Microduck 的行走与踢球技能：明确输入、8 维高层请求和控制周期，再看示范采集、动作头训练与闭环验证怎样配合。训练和推理已预先完成，本节不需要动手运行。</p>
 </div><div class="lesson-meta">第 5.2 节 · 预计学习时长 30 分钟</div></div></div><script type="application/json" class="course-symbols">{"H": {"tex": "H", "text": "一次预测的高层请求步数；本节为 16。"}, "K": {"tex": "K", "text": "每次预测后实际执行的请求步数；本节为 4。"}, "T_exec": {"tex": "T_{\\mathrm{execute}}", "text": "执行一段请求覆盖的仿真时长；本节为 4 ÷ 12.5 Hz = 0.32 秒，不含推理和通信耗时。"}, "f_action": {"tex": "f_{\\mathrm{action}}", "text": "高层请求的记录与执行频率；本节为 12.5 Hz。"}}</script><section id="task">
 <h2>从射门目标设计学习任务<a class="headerlink" href="#task" title="Link to this heading">#</a></h2>
 <p>要让 GR00T 完成射门，首先把目标说清楚：走到足球前，调整站位，用右脚把球踢进球门，最后恢复站立。接着决定模型能看到什么、可以请求什么动作，以及怎样判断一次任务完成。下面用课程中的 Microduck 方案串起这几个设计选择；同样的方法也可以用于其他机器人任务。</p>
@@ -536,7 +536,8 @@
 <p>Microduck 的主控板不适合运行 GR00T 这样约 30 亿参数的模型。真机部署时，可以让机器人把图像与状态发给带 GPU 的工作站，工作站运行 GR00T，再把请求传回机器人；行走策略这样的小网络留在机器人本地持续运行。网络传输、图像编码和模型计算都计入端到端延迟；遇到超时或断网，机器人应进入受控停止或稳定站立，不能继续执行过期的前进请求。</p>
 <div class="quiz"><h3>检查理解</h3><p>GR00T 输出的前进请求是 0.3，能说机器人正以 0.3 m/s 前进吗？</p>
 <details><summary>查看解析</summary><p>不能。前进请求是写入行走策略的原生指令值，实际速度取决于步态、地面和身体状态，需要从测得的运动中读取。</p>
-</details></div></section>
+</details></div><p>这套接口说明了怎样在一个固定球场内连接感知与动作，尚不能证明换地面或换光线后仍然可靠。<a class="reference internal" href="09-worlds.html"><span class="std std-doc">5.3 节</span></a> 接着讨论怎样扩展环境、补充数据，并把新的条件留给独立验证。</p>
+</section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">

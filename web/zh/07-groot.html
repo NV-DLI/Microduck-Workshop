@@ -407,7 +407,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="vla-gr00t">
 <h1>5.1 视觉-语言-动作模型（VLA）与 GR00T<a class="headerlink" href="#vla-gr00t" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>认识 VLA 与 GR00T N1.7：它怎样把图像、语言和身体状态变成动作，预训练和后训练各自提供什么，以及泛化能力从哪里来、需要怎样验证。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>板载射门把任务步骤和反馈控制明确写进程序。若希望由指令和示范来提供高层决策，模型需要怎样学习？本节认识 VLA 与 GR00T N1.7，区分预训练、后训练与需要单独验证的泛化能力。</p>
 </div><div class="lesson-meta">第 5.1 节 · 预计学习时长 40 分钟</div></div></div><section id="idea">
 <h2>从“写步骤”到“给目标与示范”<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
 <p>第 4 部分的板载策略以有限的机载算力为设计目标：nano 检测器、直线接近与反馈控制、小型运动技能，加上人为射门编写的阶段。它每一步都可以解释，但换一个任务就要重新设计，场景和任务越多，维护成本越高。</p>
@@ -529,7 +529,8 @@
 <details><summary>查看解析</summary><p>训练损失只说明模型拟合了示范中的动作。模型自己控制机器人时，输入会随它的动作而改变，可能进入示范里没有的状态；能否完成任务，要在未参与训练的起点上做闭环测试，并以完整进球、不摔倒、恢复站立为标准。</p>
 </details></div><div class="quiz"><h3>检查理解</h3><p>把同一条指令换个说法后模型还能完成任务，这说明它能完成“走到球旁但不要碰球”吗？</p>
 <details><summary>查看解析</summary><p>不能。换说法检验的是对同一任务的语言理解；新任务需要不同的动作，必须有对应的示范和单独的测试。</p>
-</details></div></section>
+</details></div><p>把这些原理落实到 Microduck，还要明确模型读什么、输出什么，以及谁来保持身体平衡。<a class="reference internal" href="08-groot-interface.html"><span class="std std-doc">5.2 节</span></a> 用 8 维高层请求把 GR00T 与已有运动技能连接起来。</p>
+</section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">

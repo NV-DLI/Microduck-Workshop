@@ -406,7 +406,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="set-up-the-environment-and-get-the-code">
 <h1>1.2 Set up the environment and get the code<a class="headerlink" href="#set-up-the-environment-and-get-the-code" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>The simulation experiments introduced in the overview share one runtime environment. Build the course container, mount data and models, and check that Isaac Sim and the GPU are available.</p>
 </div><div class="lesson-meta">Hands-on · Ubuntu 24.04 · x86_64 / arm64 · Docker</div></div></div><section id="requirements">
 <h2>What you need<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p>Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the Microduck development snapshot of Isaac Lab, and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.</p>
@@ -510,6 +510,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
 <p class="admonition-title">Opening Isaac Sim for the first time</p>
 <p>The first window compiles shaders and loads assets, which can take a few minutes; the caches stay on the host, so later starts are much faster. The window appears on the host desktop; click it before using the keyboard.</p>
 </div>
+<p>Once the checks pass, leave the container running and open the pitch in <a class="reference internal" href="01-play.html"><span class="std std-doc">Section 2.1</span></a>. You will choose the direction and kick timing while pretrained policies handle walking and kicking.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>

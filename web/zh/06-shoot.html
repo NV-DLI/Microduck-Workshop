@@ -407,9 +407,8 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>4.3 射门！<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>运行板载策略，观察感知、阶段决策与底层技能怎样在控制周期中协同完成射门。</p>
-</div><div class="lesson-meta">第 4.3 节 · 预计学习时长 20 分钟</div></div></div><p>先回顾 <a class="reference internal" href="06-onboard.html"><span class="std std-doc">4.2 节</span></a> 的射门阶段，再运行实验，观察这些阶段怎样连续切换。</p>
-<section id="run">
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>把 <a class="reference internal" href="06-onboard.html"><span class="std std-doc">4.2 节</span></a> 的控制设计放进球场，观察感知、阶段切换与底层技能怎样协同完成射门，再用每轮记录检查失败发生在哪一环。</p>
+</div><div class="lesson-meta">第 4.3 节 · 预计学习时长 20 分钟</div></div></div><section id="run">
 <h2>射门！<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
 <p>先按 <a class="reference internal" href="setup.html"><span class="std std-doc">1.2 节</span></a> 准备好课程容器，再回到容器终端；容器已在运行时，可以在宿主机用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> 进入。然后运行：</p>
 <div class="literal-block-wrapper docutils container" id="id2">
@@ -433,7 +432,16 @@
 <figure class="theory-cycle" data-theory-cycle="onboard-theory" data-duration="200">
 <h3>控制周期 · 板载策略</h3><div class="cycle-grid"><div class="cycle-row"><strong>RGB + ToF · 15 Hz</strong><div class="cycle-track cycle-observations"><span class="cycle-observation" style="left:0.0000%" title="采集新观察"><i></i><small>1</small></span><span class="cycle-observation" style="left:35.0000%" title="采集新观察"><i></i><small>2</small></span><span class="cycle-observation" style="left:70.0000%" title="采集新观察"><i></i><small>3</small></span></div></div><div class="cycle-row"><strong>运动请求 · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="1">1</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="2">2</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="3">3</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="4">4</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="5">5</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="6">6</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="7">7</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="8">8</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="9">9</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="10">10</span></div></div><div class="cycle-row"><strong>身体反馈 → 底层策略 · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="20">20</span></div></div><div class="cycle-row"><span>仿真时间</span><div class="cycle-ticks"><span>0 ms</span><span>50 ms</span><span>100 ms</span><span>150 ms</span><span>200 ms</span></div></div></div>
 <div class="cycle-controls" hidden><button type="button" class="cycle-play">播放</button><label>查看周期 <input type="range" min="0" max="200" step="1" value="0"/></label><output>0 ms</output></div>
-<figcaption>RGB 与 ToF 约每 67 ms 采集一次；运动请求和底层策略每 20 ms 更新，期间使用最近有效的感知信息与新的身体反馈。</figcaption><details><summary>详解</summary><p>这是配置周期示意；0 ms 取自稳态的一次采集。菱形表示采集时刻，不是渲染耗时；采集间隔约为 67 ms。阶段观测随新采集刷新，运动请求每 20 ms 更新。阶段逻辑依据有效的球位、ToF 与身体状态生成移动或踢球请求，例如“向前走并逐渐减速”。底层策略是训练好的小型神经网络，例如官方行走 Actor：它读取当前关节角、角速度和重力方向，将请求变为 14 个关节动作。新的身体反馈每个控制周期都会更新，不必等下一张图像。</p></details></figure><p>在 <a href="08-groot-interface.html#timing">5.2 节</a>，对比用 GR00T 生成高层请求时，感知与动作更新的周期有哪些变化。</p>
+<figcaption>RGB 与 ToF 约每 67 ms 采集一次；运动请求和底层策略每 20 ms 更新，期间使用最近有效的感知信息与新的身体反馈。</figcaption><details><summary>详解</summary><p>这是配置周期示意；0 ms 取自稳态的一次采集。菱形表示采集时刻，不是渲染耗时；采集间隔约为 67 ms。阶段观测随新采集刷新，运动请求每 20 ms 更新。阶段逻辑依据有效的球位、ToF 与身体状态生成移动或踢球请求，例如“向前走并逐渐减速”。底层策略是训练好的小型神经网络，例如官方行走 Actor：它读取当前关节角、角速度和重力方向，将请求变为 14 个关节动作。新的身体反馈每个控制周期都会更新，不必等下一张图像。</p></details></figure></section>
+<section id="design">
+<h2>人工设计的边界<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
+<p>实验中，PD 航向反馈、横向纠偏和已训练的技能共同完成动作；阶段逻辑决定何时接近、停步与出脚。这些分工便于分析和调试。换成“把球带到中圈停下”或“走到球旁但不要碰球”，感知与反馈控制仍可复用，但目标位置、技能组合、切换条件和参数需要重新设计与验证。</p>
+<p>如果模型推理可以离开机器人，放到 GPU 工作站上，或以更多网络延迟为代价放到云端服务器上，就能使用大得多的 VLA：它从语言指令和示范中学习，而不是依靠手写的阶段，快速控制仍由已训练的运动技能负责。</p>
+<div class="quiz"><h3>检查理解</h3><p>板载射门中，哪些部分是从数据中学到的，哪些是人编写或配置的？</p>
+<details><summary>查看解析</summary><p>检测器、官方行走与踢球策略经过训练。几何计算、直线生成、速度反馈、减速和阶段逻辑是编写的。</p>
+</details></div><div class="quiz"><h3>检查理解</h3><p>想让 Microduck 把球带到中圈停下，现有的板载策略能直接复用吗？</p>
+<details><summary>查看解析</summary><p>感知、PD 航向反馈和部分运动技能可以复用，但目标站位、阶段顺序、切换条件和交接需要针对新任务设计与验证。</p>
+</details></div><p>带着“能否从示范学习任务决策”这个问题，进入 <a class="reference internal" href="07-groot.html"><span class="std std-doc">5.1 节</span></a>，认识视觉-语言-动作模型（VLA）与 GR00T。</p>
 </section>
 </section>
 
@@ -488,6 +496,7 @@
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">射门！</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">板载策略的控制周期</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design">人工设计的边界</a></li>
 </ul>
   </nav></div>
 

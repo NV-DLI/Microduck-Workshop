@@ -407,7 +407,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>5.3 从球场走向更多环境<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>在绿色球场上把任务做稳之后，怎样通过环境域随机化和 Cosmos 3 数据扩展，让模型面对真实家庭里不同的地面、光照和布局；哪些变化可以沿用原动作标签，哪些必须重新仿真。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>5.2 节把 GR00T 与运动技能连接在同一个绿色球场里。要走向不同地面、光照和室内布局，数据与验证还需要怎样扩展？本节讨论环境域随机化与 Cosmos 3，并区分可沿用动作标签的变化和必须重新仿真的变化。</p>
 </div><div class="lesson-meta">第 5.3 节 · 预计学习时长 35 分钟</div></div></div><section id="first">
 <h2>先把一个场景做可靠<a class="headerlink" href="#first" title="Link to this heading">#</a></h2>
 <p>本课的射门（2.1 节的键盘踢球、第 4 部分的板载策略和 5.2 节的 GR00T 步行射门）都使用同一个绿色足球场：同样的场地、球门、足球和光照。这是有意的安排。只有在一个固定场景中把任务做稳，失败才容易解释；如果原场景都不能稳定完成，再加十种房间，只会让问题更难定位。</p>
@@ -417,7 +417,7 @@
 <h2>为什么真机需要环境变化<a class="headerlink" href="#why-variation" title="Link to this heading">#</a></h2>
 <p>一个只在绿色球场上训练过的模型，可能学到了一些我们并不希望它依赖的线索。比如“绿色背景里的白点就是球”，或者“球门总在画面的这个亮度范围内”。在仿真里这些线索一直成立，模型没有理由不用它们；换到浅色木地板上，这些线索消失了，模型就可能找不到球。</p>
 <p>仿真与现实之间还有别的差距：真实相机有曝光变化、运动模糊和噪声；真实灯光会产生阴影和反光；真实地面的摩擦与仿真设置不同。这些差距统称为“仿真到现实的差距”（sim-to-real gap）。让模型在训练中见过足够多样的条件，是缩小这个差距的主要办法之一。</p>
-<figure class="media"><div class="scene-card-grid"><div class="scene-card"><h4>条纹球场</h4><a href="../assets/media/environment-pitch-striped.webp"><img loading="lazy" src="../assets/media/environment-pitch-striped.webp" alt="条纹球场"></a></div><div class="scene-card"><h4>素色球场 - 正午日光</h4><a href="../assets/media/environment-pitch-plain.webp"><img loading="lazy" src="../assets/media/environment-pitch-plain.webp" alt="素色球场 - 正午日光"></a></div><div class="scene-card"><h4>浅色反光大理石地面 - 室内白天自然光</h4><a href="../assets/media/environment-marble.webp"><img loading="lazy" src="../assets/media/environment-marble.webp" alt="浅色反光大理石地面 - 室内白天自然光"></a></div><div class="scene-card"><h4>木地板 - 室内低色温 LED 灯</h4><a href="../assets/media/environment-wood.webp"><img loading="lazy" src="../assets/media/environment-wood.webp" alt="木地板 - 室内低色温 LED 灯"></a></div><div class="scene-card"><h4>客厅 - 室内夕阳自然光</h4><a href="../assets/media/environment-furnished-room.webp"><img loading="lazy" src="../assets/media/environment-furnished-room.webp" alt="客厅 - 室内夕阳自然光"></a></div><div class="scene-card"><h4>室内活动室 - 夜间明亮照明</h4><a href="../assets/media/environment-night-room.webp"><img loading="lazy" src="../assets/media/environment-night-room.webp" alt="室内活动室 - 夜间明亮照明"></a></div></div><figcaption><p>同一台 Microduck 置于不同外观与空间条件下：观察地面纹理、反光、阴影，以及家具在相机背景中带来的变化。客厅和活动室按机器人与球场的真实尺寸布置房间及家具。这些静态场景用于说明环境差异，不代表已在各场景完成射门验证。</p>
+<figure class="media"><div class="scene-card-grid"><div class="scene-card"><h4>条纹球场</h4><a href="../assets/media/environment-pitch-striped.webp"><img loading="lazy" src="../assets/media/environment-pitch-striped.webp" alt="条纹球场"></a></div><div class="scene-card"><h4>素色球场 - 正午日光</h4><a href="../assets/media/environment-pitch-plain.webp"><img loading="lazy" src="../assets/media/environment-pitch-plain.webp" alt="素色球场 - 正午日光"></a></div><div class="scene-card"><h4>浅色反光大理石地面 - 室内白天自然光</h4><a href="../assets/media/environment-marble.webp"><img loading="lazy" src="../assets/media/environment-marble.webp" alt="浅色反光大理石地面 - 室内白天自然光"></a></div><div class="scene-card"><h4>木地板 - 室内中性白 LED 灯</h4><a href="../assets/media/environment-wood.webp"><img loading="lazy" src="../assets/media/environment-wood.webp" alt="木地板 - 室内中性白 LED 灯"></a></div><div class="scene-card"><h4>客厅 - 室内夕阳自然光</h4><a href="../assets/media/environment-furnished-room.webp"><img loading="lazy" src="../assets/media/environment-furnished-room.webp" alt="客厅 - 室内夕阳自然光"></a></div><div class="scene-card"><h4>室内活动室 - 夜间明亮照明</h4><a href="../assets/media/environment-night-room.webp"><img loading="lazy" src="../assets/media/environment-night-room.webp" alt="室内活动室 - 夜间明亮照明"></a></div></div><figcaption><p>同一台 Microduck 置于不同外观与空间条件下：观察地面纹理、反光、阴影，以及家具在相机背景中带来的变化。客厅和活动室按机器人与球场的真实尺寸布置房间及家具。这些静态场景用于说明环境差异，不代表已在各场景完成射门验证。</p>
 </figcaption></figure></section>
 <section id="domain-randomization">
 <h2>环境域随机化<a class="headerlink" href="#domain-randomization" title="Link to this heading">#</a></h2>
@@ -524,7 +524,8 @@
 <details><summary>查看解析</summary><p>不等于。它扩充了视觉条件，但动作和状态的覆盖仍然相同。学会从偏差中恢复、改走别的路线或适应新的地面，需要对应的新轨迹或纠正数据。</p>
 </details></div><div class="quiz"><h3>检查理解</h3><p>为什么改变灯光后可以沿用原来的动作标签，而把地面换成更滑的材质就不能？</p>
 <details><summary>查看解析</summary><p>灯光只改变画面，球和机器人的运动不变，原来的动作仍然正确；地面更滑会改变步态和接触，原来的动作在新条件下未必能执行，需要重新运行物理仿真并记录新的动作。</p>
-</details></div></section>
+</details></div><p>环境扩展仍然围绕同一组问题：任务要什么信息、怎样产生有效动作、用什么证据判断完成。带着这些问题，<a class="reference internal" href="models.html"><span class="std std-doc">6.1 节</span></a> 把 Microduck 的经验整理成一个可交给智能体协助实现的新任务方案。</p>
+</section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">

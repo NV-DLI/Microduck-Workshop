@@ -407,7 +407,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="rgb-tof">
 <h1>4.1 识别球与球门：RGB 检测与 ToF 测距<a class="headerlink" href="#rgb-tof" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>板载策略只靠 Microduck 自己的传感器找到足球和球门：相机认出“是什么”，ToF 测出“有多远”，关节角说明传感器“朝哪看”。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>有了行走与踢球技能，还需要让机器人自己找到球与球门。本节用 Microduck 的传感器补上这一环：相机认出“是什么”，ToF 测出“有多远”，关节角说明传感器“朝哪看”。</p>
 </div><div class="lesson-meta">第 4.1 节 · 预计学习时长 20 分钟</div></div></div><section id="sensors">
 <h2>机器人看到什么<a class="headerlink" href="#sensors" title="Link to this heading">#</a></h2>
 <figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/sensors-onboard-recorded.jpg" aria-label="板载策略的一次完整 Isaac Sim 窗口录像：左侧第三人称画面，右上头部 RGB 图像，右下 8×8 ToF 距离。"><source src="../assets/media/sensors-onboard-recorded.mp4" type="video/mp4"></video><figcaption><p>板载策略的一次仿真射门记录：第三人称画面、头部 RGB 图像、8×8 ToF 距离按同一采集时刻同步，NR 表示该区域没有有效回波。本次记录完成进球并恢复站立，按仿真时间播放。</p>

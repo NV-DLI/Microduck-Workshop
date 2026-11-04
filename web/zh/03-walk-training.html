@@ -407,7 +407,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>3.3 训练并测试行走策略<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>先理解域随机化：它是什么、有哪些类别、为什么行走需要它、本次训练实际随机化了哪些量。再阅读奖励与 PPO 的核心代码，在 Isaac Lab 中启动行走训练、观察上千个并行环境，最后测试训练好的策略。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>观测、动作、奖励和 Actor-Critic 的分工已经明确，现在把它们放进实际训练。本节先解释域随机化，再阅读奖励与 PPO 代码，启动并行训练，并测试导出的行走策略。</p>
 </div><div class="lesson-meta">第 3.3 节 · 操作实验 · 预计学习时长 45 分钟（观察训练几分钟即可；完整训练约 2 小时，可选）</div></div></div><script type="application/json" class="course-symbols">{"J_dr": {"tex": "J(\\theta)", "text": "域随机化下的学习目标：在许多组随机仿真参数上平均后的期望折扣回报。"}, "theta": {"tex": "\\theta", "text": "策略网络的参数（权重），训练时更新。"}, "E_xi": {"tex": "\\mathbb E_{\\xi\\sim p(\\xi)}", "text": "对随机抽取的参数组取平均。"}, "xi": {"tex": "\\xi", "text": "一组仿真参数，例如脚底摩擦、躯干质量、关节摩擦和舵机延迟。"}, "p_xi": {"tex": "p(\\xi)", "text": "参数的随机分布：每个参数在设定范围内抽样。"}, "E_traj": {"tex": "\\mathbb E_{\\tau\\sim\\pi_\\theta,\\,\\xi}", "text": "在参数 $\\xi$ 构成的仿真中，按当前策略采样得到的轨迹取平均。"}, "pi_theta": {"tex": "\\pi_\\theta", "text": "策略：根据观测给出动作分布的神经网络。"}, "gamma": {"tex": "\\gamma", "text": "折扣因子，课程训练取 0.99。"}, "t_idx": {"tex": "t", "text": "控制步的序号。"}, "T_horizon": {"tex": "T", "text": "一个回合中计入回报的控制步数。"}, "r_t": {"tex": "r_t", "text": "当前控制步的即时奖励：各奖励项加权求和后的值。"}, "r_v": {"tex": "r_t^{v}", "text": "当前控制步的线速度跟踪奖励，取值在 0 到 1 之间。"}, "exp": {"tex": "\\exp", "text": "指数函数：误差为 0 时结果为 1，误差越大越接近 0。"}, "v_cmd": {"tex": "\\mathbf v_{xy}^{\\mathrm{cmd}}", "text": "速度指令的水平分量（m/s）。"}, "v_xy": {"tex": "\\mathbf v_{xy}", "text": "机身实际的水平速度（m/s）。"}, "v_z": {"tex": "v_z", "text": "机身的竖直速度（m/s）；它的平方也计入误差，用来抑制上下跳动。"}, "sigma_v": {"tex": "\\sigma_v", "text": "速度误差的容忍尺度，对应代码中的 std。"}, "dt": {"tex": "\\Delta t", "text": "一个控制步的时长，0.02 s：各项奖励按时间步长累加。"}, "i": {"tex": "i", "text": "奖励项的编号。"}, "w_i": {"tex": "w_i", "text": "某一奖励项的权重。"}, "r_it": {"tex": "r_{i,t}", "text": "某一奖励项在当前控制步的值。"}, "N_batch": {"tex": "N_{\\mathrm{batch}}", "text": "每轮训练迭代采集的样本数。"}, "N_env": {"tex": "N_{\\mathrm{env}}", "text": "并行环境数；本节的完整训练为 1024。"}, "T_rollout": {"tex": "T_{\\mathrm{rollout}}", "text": "每个环境每轮采集的控制步数，为 24。它和回合长度是两个不同的量。"}, "N_total": {"tex": "N_{\\mathrm{total}}", "text": "2500 轮迭代一共采集的样本数。"}}</script><section id="concept">
 <h2>什么是域随机化<a class="headerlink" href="#concept" title="Link to this heading">#</a></h2>
 <p>仿真中每个参数都是一个确定的数：脚底摩擦系数、躯干质量、舵机从收到目标到开始转动的延迟……真实的机器人却各不相同。域随机化（Domain Randomization）的思路是：既然不知道真实参数究竟是多少，就在训练时让每个并行环境各自抽取一组不同的参数。策略同时面对上千台“略有不同的机器人”，只有学会对这些差异都有效的动作，才能在整体上获得高回报。</p>
@@ -711,6 +711,7 @@
 <section id="next">
 <h2>下一步：从平地走向坡地<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
 <p>域随机化让策略面对参数的变化，但地面仍然是平的。即使一个策略在平地上走得很好，遇到坡道时，原来的抬脚高度、落脚位置和重心调整还够用吗？3.4 节先讨论奖励应该如何设计，再把随机化扩展到地形，让步行走稳上下坡。</p>
+<p>3.4 和 3.5 节是奖励设计的拓展；若希望先完成自主射门主线，可以直接阅读 <a class="reference internal" href="06-perception.html"><span class="std std-doc">4.1 节</span></a>，了解机器人怎样找到球与球门。</p>
 </section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>

@@ -406,7 +406,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="score-autonomously-with-gr00t">
 <h1>5.2 Score autonomously with GR00T<a class="headerlink" href="#score-autonomously-with-gr00t" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>How GR00T completes the walking shot: what it reads, which 8 high-level requests it outputs and who executes them, how often each module updates, and how demonstrations, action-head training and closed-loop validation work. GR00T training and inference were done in advance by the course; nothing needs to be run in this section.</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Apply the VLA approach from Section 5.1 to Microduck’s walking and kicking skills. Define the inputs, 8-D high-level requests and control cycle, then examine demonstration collection, action-head training and closed-loop validation. Training and inference were completed in advance; no run is required here.</p>
 </div><div class="lesson-meta">Section 5.2 · Estimated learning time: 30 minutes</div></div></div><script type="application/json" class="course-symbols">{"H": {"tex": "H", "text": "High-level request steps per prediction; 16 here."}, "K": {"tex": "K", "text": "Request steps actually executed after each prediction; 4 here."}, "T_exec": {"tex": "T_{\\mathrm{execute}}", "text": "Simulation time covered by one executed segment; 4 ÷ 12.5 Hz = 0.32 s here, excluding inference and communication time."}, "f_action": {"tex": "f_{\\mathrm{action}}", "text": "Rate at which high-level requests are recorded and executed; 12.5 Hz here."}}</script><section id="task">
 <h2>Design the learning task around the goal<a class="headerlink" href="#task" title="Link to this heading">#</a></h2>
 <p>Start with the desired outcome: approach the ball, adjust the stance, kick into the goal with the right foot, and recover to standing. Then define what the model can observe, which actions it can request, and how completion will be evaluated. The Microduck example connects these choices into a method that also applies to other robot tasks.</p>
@@ -535,7 +535,8 @@
 <p>Microduck's onboard controller board is not suited to a model of about three billion parameters such as GR00T. For real deployment, the robot can send images and state to a GPU workstation that runs GR00T and returns requests; small networks such as the walking policy keep running locally on the robot. Network transfer, image encoding and model compute all add to end-to-end latency; on a timeout or lost connection the robot should enter a controlled stop or stable standing and must not keep executing a stale forward request.</p>
 <div class="quiz"><h3>Check your understanding</h3><p>GR00T outputs a forward request of 0.3. Is the robot moving forward at 0.3 m/s?</p>
 <details><summary>Show explanation</summary><p>No. The forward request is a native command value for the walking policy; the actual speed depends on gait, ground and body state and must be read from the measured motion.</p>
-</details></div></section>
+</details></div><p>This interface connects perception and action on one fixed pitch; it does not establish reliability on a different floor or under different lighting. <a class="reference internal" href="09-worlds.html"><span class="std std-doc">Section 5.3</span></a> examines environment variation, additional data and conditions reserved for independent evaluation.</p>
+</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">

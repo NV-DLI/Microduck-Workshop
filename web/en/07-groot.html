@@ -406,7 +406,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="vision-language-action-vla-models-and-gr00t">
 <h1>5.1 Vision-language-action (VLA) models and GR00T<a class="headerlink" href="#vision-language-action-vla-models-and-gr00t" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Meet VLAs and GR00T N1.7: how images, language and body state become actions, what pretraining and post-training each contribute, and where generalization comes from and how to test it.</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>The onboard shot makes its task stages and feedback control explicit in code. What must a model learn to provide high-level decisions from instructions and demonstrations instead? Meet VLAs and GR00T N1.7, separating pretraining, post-training and generalization that needs its own tests.</p>
 </div><div class="lesson-meta">Section 5.1 · Estimated learning time: 40 minutes</div></div></div><section id="idea">
 <h2>From writing steps to providing goals and examples<a class="headerlink" href="#idea" title="Link to this heading">#</a></h2>
 <p>The onboard policy in Part 4 was designed around the robot's limited onboard compute: a nano detector, a straight approach with feedback, compact motion skills and stages that people wrote for shooting. Every step is explainable, but a new task needs a new design, and the more scenes and tasks there are, the higher the maintenance cost.</p>
@@ -528,7 +528,8 @@
 <details><summary>Show explanation</summary><p>Training loss only shows that the model fits the demonstrated actions. When the model controls the robot, its inputs change with its own actions and can reach states that never appeared in the demonstrations. Whether it completes the task must be tested in closed loop from starts that were not used in training, judged by a full goal, no fall and recovering to standing.</p>
 </details></div><div class="quiz"><h3>Check your understanding</h3><p>If the model still succeeds after the same instruction is reworded, does that show it can “walk up to the ball but not touch it”?</p>
 <details><summary>Show explanation</summary><p>No. Rewording tests language understanding of the same task; a new task needs different actions and therefore matching demonstrations and its own test.</p>
-</details></div></section>
+</details></div><p>Applying these ideas to Microduck requires a concrete choice of inputs, outputs and responsibility for balance. <a class="reference internal" href="08-groot-interface.html"><span class="std std-doc">Section 5.2</span></a> connects GR00T to existing motion skills through an 8-D high-level request interface.</p>
+</section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">

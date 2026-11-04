@@ -407,7 +407,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>1.2 准备环境与获取代码<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>构建课程容器、挂载数据与模型、进入同一个容器终端，并确认 Isaac Sim 与 GPU 可用。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>要完成前面介绍的仿真实验，先准备一个共用的运行环境。本节构建课程容器、挂载数据与模型，并检查 Isaac Sim 与 GPU 是否可用。</p>
 </div><div class="lesson-meta">操作实验 · Ubuntu 24.04 · x86_64 / arm64 · Docker</div></div></div><section id="requirements">
 <h2>需要什么<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p>课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、Isaac Lab 的 Microduck 开发快照与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。</p>
@@ -511,6 +511,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
 <p class="admonition-title">第一次打开 Isaac Sim</p>
 <p>第一次打开窗口时需要编译着色器、加载资源，可能要等几分钟；缓存保存在宿主机后，之后会快很多。窗口出现在宿主机桌面上，点击窗口后键盘操作才会生效。</p>
 </div>
+<p>检查通过后，保持容器运行，进入 <a class="reference internal" href="01-play.html"><span class="std std-doc">2.1 节</span></a> 的球场：先由您判断方向和出脚时机，让已训练的策略负责迈步与踢球。</p>
 </section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
