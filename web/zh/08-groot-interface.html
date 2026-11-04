@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '08-groot-interface';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=87158fc5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -526,7 +526,7 @@
 <h2>控制周期<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <p>模型先推理下一段高层请求，再进入执行；执行段内，底层策略处理快速的身体反馈。同步等待推理时，仿真暂停。下面用便于阅读的整数说明两层控制周期：高层每条请求覆盖 80 ms，前 4 条覆盖 320 ms；底层按理论 50 Hz、每 20 ms 更新一次关节动作。</p>
 <div data-control-cycle data-scenarios="onboard,groot" data-lang="zh">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=c40d6c677e3b"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=33eb0a4ac3e1"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>控制周期</h3><p>板载策略：RGB 与 ToF 按名义 15 Hz 采集，随后进行 YOLO 推理和位置估计。每 20 ms，反馈控制结合最近感知与新的身体反馈生成运动请求，底层 Actor 再生成关节目标。</p><p>GR00T：先整理观察，再同步等待推理（DGX Spark 服务端约 300 ms）。预测 16 条请求，执行前 4 条，每条保持 80 ms；执行段内 Actor 每 20 ms 更新。320 ms 后重新观察与预测。缓存请求也有同步等待。</p><p>这些频率是仿真配置，不是实测运行速度。计算期间仿真暂停；主机推理耗时与仿真时间分开计量，不相加。</p></section></div><p><strong>用 RTC 衔接动作块。</strong> Real-Time Chunking（RTC）可以配合异步推理：执行当前动作块时提前预测下一块，把预计来不及更改的前缀作为约束，并让可调整的后续动作平滑衔接。这样可以减少“执行完再等待新推理”的空档，但推理仍需耗时；缓冲不足、网络抖动或超时仍要处理。对本课的高层请求，还必须保留踢球触发与技能状态的保护，不能简单平滑所有数值。</p>
 <p><a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/real_world_deployment.md" rel="noreferer noopener" target="_blank">NVIDIA GR00T 部署指南</a>与 <a class="reference external" href="https://huggingface.co/docs/lerobot/rtc" rel="noreferer noopener" target="_blank">LeRobot RTC 说明</a>介绍了这一思路。它是本课程的拓展设计：当前录像来自同步评估，尚未接入 RTC；采用 RTC 需要适配模型接口、动作块长度和异步执行器，再验证动作连续性与超时行为。</p>
 </section>

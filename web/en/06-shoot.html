@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-shoot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=87158fc5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -430,7 +430,7 @@
 <section id="timing">
 <h2>The onboard control cycle<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <div data-control-cycle data-scenarios="onboard" data-lang="en">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=c40d6c677e3b"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=33eb0a4ac3e1"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>Control cycle</h3><p>Onboard policy: RGB and ToF use nominal 15 Hz captures, followed by YOLO inference and localization. Every 20 ms, feedback control uses the latest perception and fresh body feedback to generate a motion request; the low-level Actor then generates joint targets.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div></section>
 <section id="design">
 <h2>Limits of hand design<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>

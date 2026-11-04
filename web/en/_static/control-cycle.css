@@ -84,11 +84,12 @@ h3 { font-size: 21px; line-height: 1.3; margin: 2px 0 6px; font-weight: 650; }
 .note { margin: 0 0 14px; font-size: 13px; color: var(--muted); max-width: 86ch; }
 
 /* figure */
-.diagram { margin: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 14px 12px 12px; overflow-x: clip; }
+.diagram { margin: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 16px 18px 14px; overflow-x: clip; }
 
 /* timeline grid */
-.tl { display: grid; grid-template-columns: 132px minmax(0, 1fr); column-gap: 12px; row-gap: 6px; align-items: stretch; }
+.tl { display: grid; grid-template-columns: 160px minmax(0, 1fr); column-gap: 18px; row-gap: 6px; align-items: stretch; }
 .lane-label { display: flex; flex-direction: column; justify-content: center; font-size: 13px; line-height: 1.25; min-width: 0; }
+.lane-label > span { word-break: keep-all; }
 .lane-label small { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 .track { position: relative; min-width: 0; }
 .track--points, .track--index { background-image: linear-gradient(to right, var(--soft-line) 1px, transparent 1px); background-size: calc(100% / var(--grid-n, 10)) 100%; box-shadow: inset -1px 0 0 var(--soft-line); }
@@ -327,38 +328,49 @@ details li + li { margin-top: 4px; }
 @media (prefers-reduced-motion: reduce) {
   .cell, .seg button { transition: none; }
 }
-/* Keep both the value and ms legible in narrow cells. */
-@container cycle (max-width: 480px) {
-  .diagram[data-scenario="groot"] .role-actor .cell b { max-width:100%; white-space:normal; text-align:center; }
-}
-
 :host{display:block;container-type:inline-size;container-name:cycle;margin:1.5rem 0}.app{max-width:none;padding:0}[hidden]{display:none!important}
 
-/* Keep the timeline beside its labels at desktop 125% browser zoom.
-   Only text wraps; event positions and duration proportions stay unchanged. */
-.tl .cell b, .tl .cell .bind { max-width: 100%; white-space: normal; text-align: center; }
-.tl .cell .bind { overflow-wrap: anywhere; }
-.diagram[data-scenario="groot"] .pt-label { max-width: 84px; white-space: normal; text-align: center; }
-.diagram[data-scenario="groot"] .pt.edge-l .pt-label { text-align: left; }
-.diagram[data-scenario="groot"] .pt.edge-r .pt-label { text-align: right; }
-.diagram[data-scenario="groot"] .kind-assemble { height: 62px; }
-.diagram[data-scenario="groot"] .kind-capture { height: 58px; }
-
-/* Compact labels preserve the horizontal arrangement in a narrow article. */
-.track { container-type: inline-size; }
-.pt-label { max-width: min(100px, 25cqw); white-space: normal; }
-.diagram[data-scenario="groot"] .pt-label { max-width: min(84px, 17cqw); }
-.diagram[data-scenario="groot"] .kind-assemble { height: 82px; }
-.diagram[data-scenario="groot"] .kind-capture { height: 72px; }
-@container cycle (min-width: 481px) and (max-width: 700px) {
-  .tl { grid-template-columns: 108px minmax(0, 1fr); column-gap: 10px; }
-  .lane-label { font-size: 12px; }
-  .lane-label small { font-size: 10.5px; }
+/* Each outlined target box represents one 20 ms interval. Its slot, shared
+   with every row above, preserves the time scale; the glyph stays narrow. */
+.role-targets .cell {
+  overflow: visible;
+  background: transparent !important;
+  border: 0;
+  margin-left: 0;
+  border-radius: 0;
 }
-
-.track--cells.tall { height: 54px; }
-.track--cells.role-host { height: 54px; }
-.diagram[data-scenario="groot"] .role-actor .cell { font-size: 10px; border-inline-width: 0.5px; }
-
+.role-targets .cell::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: clamp(9px, 45%, 24px);
+  border: 1.5px solid var(--green-line2);
+  border-radius: 2px;
+  background: var(--green-soft);
+}
+.role-targets .cell.is-active::before {
+  background: var(--green);
+  border-color: var(--green-ink);
+}
+.role-targets .cell b { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+.lg-target { width: 9px; height: 17px; border:1.5px solid var(--green-line2); border-radius:2px; background:var(--green-soft); }
+/* Keep endpoint annotations on two complete lines, below the cached steps. */
+.diagram[data-scenario="groot"] .kind-assemble { height: 82px; }
+.diagram[data-scenario="groot"] .kind-assemble .pt.edge-r .pt-label { margin-top: 32px; }
+.diagram[data-scenario="groot"] .role-host .bind { display: none; }
 .track--axis .host-tick { white-space: normal; line-height: 1.2; }
 .diagram[data-scenario="groot"] .track--axis { height: 48px; }
+
+/* Preserve the label column and font sizes; only time slots absorb changes
+   in available width, including browser zoom. Duration units may use a
+   second line inside the smallest slots; event annotations never break. */
+.role-phys .cell b, .role-request .cell b, .role-host .cell b {
+  white-space: normal;
+  text-align: center;
+}
+@container cycle (min-width: 481px) and (max-width: 700px) {
+  .diagram { padding-left: 12px; padding-right: 12px; }
+  .tl { column-gap: 10px; }
+}

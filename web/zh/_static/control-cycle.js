@@ -57,7 +57,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
             items: [0, 1, 2].map((i) => ({ s: i * 20, e: i * 20 + 20, text: '#' + (i + 1) })) },
           { type: 'points', kind: 'update', key: 'upd', label: tr('读取状态 → Actor 推理', 'Read state → Actor inference'), sub: tr('每 20 ms 更新', 'update every 20 ms'),
             items: [0, 20, 40, 60].map((t, i) => ({ t, text: i < 3 ? ms(t) : ms(t) + tr(' · 下一次', ' · next'), ghost: i === 3 })) },
-          { type: 'cells', role: 'hold', key: 'hold', label: tr('14 个关节目标（保持）', '14 joint targets (held)'), sub: tr('每次 20 ms · 50 Hz', '20 ms each · 50 Hz'),
+          { type: 'cells', role: 'hold', key: 'hold', label: tr('14 个关节目标', '14 joint targets'), sub: tr('每格 20 ms · 50 Hz', '20 ms per box · 50 Hz'),
             items: [0, 1, 2].map((i) => ({ s: i * 20, e: i * 20 + 20, text: '20 ms', alt: i % 2 })) },
           { type: 'cells', role: 'phys', key: 'phys', label: tr('Newton 物理步', 'Newton physics steps'), sub: '200 Hz',
             items: steps(0, 55, 5).map((s, j) => ({ s, e: s + 5, text: '5 ms', alt: Math.floor(j / 4) % 2 })) },
@@ -73,7 +73,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
         lanes: [
           { type: 'points', kind: 'capture', key: 'cap', label: tr('RGB + ToF 采集', 'RGB + ToF capture'), sub: tr('名义 15 Hz', 'nominal 15 Hz'),
             items: CAP_ON.map((t, i) => ({ t, name: L[i], text: ms(t) }))
-              .concat([{ t: 200, name: 'D', text: tr('200 ms · 下一窗口', '200 ms · next window'), ghost: true }]) },
+              .concat([{ t: 200, name: 'D', text: '200 ms', ghost: true }]) },
           { type: 'points', kind: 'vinfer', key: 'yolo', label: tr('YOLO 推理与位置估计', 'YOLO inference + localization'), sub: tr('每次新采集后 · 约 15 Hz', 'after each new capture · ~15 Hz'),
             items: CAP_ON.map((t) => ({ t, name: 'YOLO' })).concat([{ t: 200, name: 'YOLO', ghost: true }]) },
           { type: 'cells', role: 'vision', key: 'avail', label: tr('视觉结果（沿用）', 'Vision result (reused)'), sub: tr('沿用到下一次采集', 'held until the next capture'),
@@ -82,11 +82,11 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
             items: up.map((t, i) => ({ s: t, e: t + 20, text: '#' + (i + 1) })) },
           { type: 'points', kind: 'update', key: 'ctl', label: tr('反馈控制 → 运动请求', 'Feedback control → motion request'), sub: tr('身体反馈 · 50 Hz', 'body feedback · 50 Hz'),
             items: up.map((t) => ({ t })).concat([{ t: 200, ghost: true }]) },
-          { type: 'cells', role: 'request', key: 'req', tall: true, label: tr('运动请求（保持）', 'Motion request (held)'), sub: tr('每 20 ms 更新 · 50 Hz', 'updated every 20 ms · 50 Hz'),
-            items: up.map((t) => ({ s: t, e: t + 20, text: '20 ms', small: tr('视觉 ', 'vision ') + L[latest(CAP_ON, t)] })) },
+          { type: 'cells', role: 'request', key: 'req', tall: true, label: tr('运动请求', 'Motion request'), sub: tr('每 20 ms 更新 · 50 Hz', 'updated every 20 ms · 50 Hz'),
+            items: up.map((t) => ({ s: t, e: t + 20, text: '20 ms', small: L[latest(CAP_ON, t)] })) },
           { type: 'points', kind: 'update', key: 'upd', label: tr('底层 Actor 推理', 'Low-level Actor inference'), sub: tr('每 20 ms · 50 Hz', 'every 20 ms · 50 Hz'),
             items: up.map((t) => ({ t })).concat([{ t: 200, ghost: true }]) },
-          { type: 'cells', role: 'actor', key: 'act', label: tr('14 个关节目标（保持）', '14 joint targets (held)'), sub: tr('每次 20 ms', '20 ms each'),
+          { type: 'cells', role: 'actor', key: 'act', label: tr('14 个关节目标', '14 joint targets'), sub: tr('每格 20 ms · 50 Hz', '20 ms per box · 50 Hz'),
             items: up.map((t, i) => ({ s: t, e: t + 20, text: '20 ms', alt: i % 2 })) },
         ],
       };
@@ -97,22 +97,22 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
         'GR00T sequence schematic: a pre-inference snapshot at 0 ms (RGB A + body state + instruction) → about 300 ms of new inference on the host while simulation is paused (not to scale with simulation time) → axis break → simulation execution 0–320 ms: four 80 ms requests, request 1 from that snapshot, observations assembled at 80, 160 and 240 ms with cached requests 2–4 fetched synchronously, low-level Actor every 20 ms; at 320 ms a new snapshot starts the next chunk.'),
       lanes: [
         { type: 'points', kind: 'capture', key: 'cap', label: tr('RGB 采集', 'RGB capture'), sub: tr('名义 15 Hz', 'nominal 15 Hz'),
-          items: [{ t: 0, pre: true, name: 'A', text: tr('0 ms · 推理前', '0 ms · before inference') }]
+          items: [{ t: 0, pre: true, name: 'A', text: tr('0 ms · 推理前', '0 ms · initial') }]
             .concat(CAP_GR.slice(1).map((t, i) => ({ t, name: L[i + 1], text: ms(t) }))) },
         { type: 'points', kind: 'assemble', key: 'asm', label: tr('整理观察 → 同步请求', 'Assemble observation → sync request'), sub: tr('每 80 ms（含缓存步）', 'every 80 ms (incl. cached steps)'),
-          items: [{ t: 0, pre: true, infer: true, name: tr('推理前快照', 'pre-inference snapshot'), text: '0 ms · RGB A' }]
-            .concat([80, 160, 240].map((t, i) => ({ t, name: tr(`取缓存 #${i + 2}`, `cached #${i + 2}`), text: `${ms(t)} · RGB ${L[latest(CAP_GR, t)]}` })))
+          items: [{ t: 0, pre: true, infer: true, name: tr('推理前快照', 'input snapshot'), text: '0 ms · RGB A' }]
+            .concat([80, 160, 240].map((t, i) => ({ t, name: tr(`取缓存 #${i + 2}`, `cached #${i + 2}`), text: `RGB ${L[latest(CAP_GR, t)]}` })))
             .concat([{ t: 320, infer: true, ghost: true, name: tr('下一块：新推理', 'next chunk: infer'), text: `320 ms · RGB ${L[latest(CAP_GR, 320)]}` }]) },
         { type: 'cells', role: 'host', key: 'host', label: tr('GR00T 推理', 'GR00T inference'), sub: tr('主机时间 · 非等比例', 'host time · not to scale'),
           items: [{ seg: 'host', s: 0, e: 1, text: '≈ 300 ms', small: tr('主机计算', 'host compute') }],
           execNote: tr('使用预测缓存', 'Use cached predictions') },
         { type: 'index', key: 'q', label: tr('请求序号', 'Request no.'), sub: tr('共预测 16 条', '16 predicted'),
           items: [0, 1, 2, 3].map((i) => ({ s: i * 80, e: i * 80 + 80, text: tr(`#${i + 1} / 16`, `#${i + 1} of 16`) })) },
-        { type: 'cells', role: 'request', key: 'req', pauseLabel: true, label: tr('高层请求（保持）', 'High-level request (held)'), sub: tr('每条 80 ms · 8 个数', '80 ms each · 8 values'),
+        { type: 'cells', role: 'request', key: 'req', pauseLabel: true, label: tr('高层请求', 'High-level request'), sub: tr('每条 80 ms · 8 个数', '80 ms each · 8 values'),
           items: [0, 1, 2, 3].map((i) => ({ s: i * 80, e: i * 80 + 80, text: '80 ms' })) },
         { type: 'points', kind: 'update', key: 'upd', label: tr('身体反馈 → 底层 Actor 推理', 'Body feedback → low-level Actor inference'), sub: tr('每 20 ms 更新', 'update every 20 ms'),
           items: steps(0, 300, 20).map((t) => ({ t })).concat([{ t: 320, ghost: true }]) },
-        { type: 'cells', role: 'actor', key: 'act', label: tr('14 个关节目标（保持）', '14 joint targets (held)'), sub: tr('每次 20 ms', '20 ms each'),
+        { type: 'cells', role: 'actor', key: 'act', label: tr('14 个关节目标', '14 joint targets'), sub: tr('每格 20 ms · 50 Hz', '20 ms per box · 50 Hz'),
           items: steps(0, 300, 20).map((s, i) => ({ s, e: s + 20, text: '20 ms', alt: Math.floor(i / 4) % 2 })) },
       ],
     };
@@ -144,7 +144,8 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
         const l = host ? P.h(it.s) : P.t(it.s);
         const w = (host ? P.h(it.e) : P.t(it.e)) - l;
         const small = it.small ? `<small class="bind">${esc(it.small)}</small>` : '';
-        return `<span class="cell"${it.alt ? ' data-alt' : ''}${host ? ' data-seg="host"' : ''} data-s="${it.s}" data-e="${it.e}" style="left:${l}%;width:calc(${w}% - 2px)"><b>${esc(it.text)}</b>${small}</span>`;
+        const tooltip = lane.role === 'actor' || lane.role === 'hold' ? ` title="${esc(span(it.s, it.e))}" aria-label="${esc(span(it.s, it.e))}"` : '';
+        return `<span class="cell"${tooltip}${it.alt ? ' data-alt' : ''}${host ? ' data-seg="host"' : ''} data-s="${it.s}" data-e="${it.e}" style="left:${l}%;width:calc(${w}% - 2px)"><b>${esc(it.text)}</b>${small}</span>`;
       }).join('');
     }
     return lane.items.map((it) => {
@@ -176,6 +177,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       const cls = ['track', `track--${lane.type}`];
       if (lane.kind) cls.push(`kind-${lane.kind}`);
       if (lane.role) cls.push(`role-${lane.role}`);
+      if (lane.role === 'actor' || lane.role === 'hold') cls.push('role-targets');
       if (lane.tall) cls.push('tall');
       return `<div class="lane-label"><span>${esc(lane.label)}</span><small>${esc(lane.sub)}</small></div>`
         + `<div class="${cls.join(' ')}" data-key="${lane.key}">${bands(m, lane)}${laneInner(lane, P)}</div>`;
@@ -218,16 +220,16 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
     let items;
     if (cur === 'walking') {
       items = [li('lg-update', tr('Actor 推理', 'Actor inference')),
-        li('lg-cell', tr('目标保持', 'Target hold')),
+        li('lg-target', tr('关节目标 · 每格 20 ms', 'Joint targets · 20 ms per box')),
         li('lg-cell phys', tr('物理步 5 ms', 'Physics step 5 ms')), ph];
     } else if (cur === 'onboard') {
       items = [li('lg-diamond', tr('采集（瞬时事件）', 'Capture (instant event)')),
         li('lg-vinfer', tr('感知计算', 'Perception compute')),
         li('lg-update', tr('控制 / 推理', 'Control / inference')),
         li('lg-cell vis', tr('视觉结果沿用期', 'Vision result reused')),
-        li('lg-cell req', tr('视觉 A：请求采用的观察', 'vision A: observation used')),
+        li('lg-cell req', tr('A / B / C：请求采用的视觉结果', 'A / B / C: vision result used')),
         li('lg-bound', tr('虚线框：仍在沿用的观察', 'Dashed: earlier observation still used')),
-        li('lg-cell', tr('输出保持 20 ms', 'Output held 20 ms')), ph];
+        li('lg-target', tr('关节目标 · 每格 20 ms', 'Joint targets · 20 ms per box')), ph];
     } else {
       items = [li('lg-diamond', tr('RGB 采集（瞬时）', 'RGB capture (instant)')),
         li('lg-infer', tr('快照作为新推理输入', 'Snapshot feeds new inference')),
@@ -235,7 +237,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
         li('lg-host', tr('主机推理（非等比例）', 'Host inference (not to scale)')),
         li('lg-pause', tr('仿真暂停', 'Simulation paused')),
         li('lg-cell req', tr('请求保持 80 ms', 'Request held 80 ms')),
-        li('lg-update', tr('反馈 + Actor 推理', 'Feedback + Actor inference')), ph];
+        li('lg-update', tr('反馈 + Actor 推理', 'Feedback + Actor inference')), li('lg-target', tr('关节目标 · 每格 20 ms', 'Joint targets · 20 ms per box')), ph];
     }
     return `<ul class="legend" aria-label="${esc(tr('图例', 'Legend'))}">${items.join('')}</ul>`;
   }
@@ -305,7 +307,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       <header>
         <h3>${esc(h.title)}</h3>
         <p class="summary">${esc(h.summary)}</p>
-        <p class="note">${esc(tr('方格标保持时间，点标采集或计算；频率为仿真配置，播放为教学慢放。', 'Blocks show hold time; points mark captures or computation. Rates are simulation settings; playback is teaching slow motion.'))}</p>
+        <p class="note">${esc(tr('窄框代表一组 20 ms 关节目标，点标采集或计算；频率为仿真配置，播放为教学慢放。', 'Each narrow box represents 20 ms of joint targets; points mark captures or computation. Rates are simulation settings; playback is teaching slow motion.'))}</p>
       </header>
       <figure class="diagram" data-scenario="${cur}" data-ref="fig">
         ${isG ? grootFigure(model) : timelineHTML(model)}
