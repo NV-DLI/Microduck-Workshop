@@ -241,7 +241,7 @@ document.querySelectorAll('[data-theory-cycle]').forEach(fig => {
  const controls=fig.querySelector('.cycle-controls'),slider=fig.querySelector('input'),button=fig.querySelector('button'),out=fig.querySelector('output');
  const duration=Number(fig.dataset.duration);let raf=null;
  controls.hidden=false;
- const show=value=>{slider.value=value;out.textContent=`${Math.round(value)} ms`;fig.dataset.active='true';fig.querySelectorAll('.cycle-block').forEach(el=>{const a=parseFloat(el.style.left)/100*duration,b=parseFloat(el.style.width)/100*duration;el.classList.toggle('is-current',value>=a && value<a+b);});};
+ const show=value=>{slider.value=value;out.textContent=fig.dataset.phaseCycle ? (value<1 ? (fig.dataset.lang==='zh'?'GR00T 推理':'GR00T inference') : (fig.dataset.lang==='zh'?'执行 · ':'Execute · ')+`${Math.round((value-1)*80)} ms`) : `${Math.round(value)} ms`;fig.dataset.active='true';fig.querySelectorAll('.cycle-block').forEach(el=>{const a=parseFloat(el.style.left)/100*duration,b=parseFloat(el.style.width)/100*duration;el.classList.toggle('is-current',value>=a && value<a+b);});};
  const stop=()=>{if(raf!==null)cancelAnimationFrame(raf);raf=null;button.disabled=false;};
  slider.addEventListener('input',()=>{stop();show(Number(slider.value));});
  button.addEventListener('click',()=>{stop();button.disabled=true;const start=performance.now();const tick=now=>{let p=Math.min((now-start)/6000,1);show(p*duration);if(p<1)raf=requestAnimationFrame(tick);else stop();};raf=requestAnimationFrame(tick);});

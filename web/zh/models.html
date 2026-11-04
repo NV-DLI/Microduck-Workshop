@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,14 +57,14 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="6.2 故障排查" href="troubleshooting.html" />
+    <link rel="next" title="6.2 继续学习与参考资料" href="references.html" />
     <link rel="prev" title="5.3 从球场走向更多环境" href="09-worlds.html" />
 
 
@@ -353,8 +353,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">6.1 让智能体来帮忙</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.2 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -466,74 +465,6 @@
 </div></blockquote>
 <p>每次继续工作时，让智能体先读取上次留下的配置、结果和待解决问题。这样它可以从已有证据接着做，您也能随时看清已经验证了什么、还缺哪一步。</p>
 </section>
-<section id="inventory">
-<h2>参考：课程模型与数据<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>文件（宿主机 <code class="docutils literal notranslate"><span class="pre">models/</span></code>，容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/</span></code>）</p></th>
-<th class="head cell-short"><p>用途</p></th>
-<th class="head"><p>哪些课程命令读取它</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
-<td class="cell-short"><p>固定行走策略</p></td>
-<td><p>2.1 节键盘踢球（自动读取）；2.2 节 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>；4.3 节的板载射门和 5.2 节的 GR00T 执行层里，底层行走策略都使用同一模型的副本</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
-<td><p>3.4 节固定坡地行走策略，约 0.79 MB</p></td>
-<td><p>3.4 节 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
-<td class="cell-short"><p>踢球基础动作</p></td>
-<td><p>2.1 节键盘踢球（空格键，自动读取）；4.3 节板载射门的踢球技能使用同一模型的副本</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
-<td class="cell-short"><p>踢球残差修正</p></td>
-<td><p>5.2 节 GR00T 执行层使用；4.3 节板载射门不加载</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
-<td><p>保留的踢球训练检查点</p></td>
-<td><p>保留；本课程的动手命令不直接读取</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">detector.pt</span></code></p></td>
-<td class="cell-short"><p>固定视觉检测器</p></td>
-<td><p>保留；本课程的动手命令不直接读取</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detector.onnx</span></code></p></td>
-<td><p>检测器 ONNX 导出</p></td>
-<td><p>保留；本课程的动手命令不直接读取</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.onnx</span></code></p></td>
-<td><p>另一套室内检测器，对应 7 cm 足球的场景；本课的球场不使用</p></td>
-<td><p>保留；本课程的动手命令不直接读取</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
-<td><p>官网 10 cm 球与四种地面检测器；当前默认</p></td>
-<td><p>4.3 节 <code class="docutils literal notranslate"><span class="pre">football</span></code> 命令自动核对并加载，用作板载策略的视觉检测器</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
-<td><p>用于官网版本核对与站立试验；完整步行任务使用 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
-<td><p>保留；本课程的动手命令不直接读取</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>在<strong>容器内</strong>运行下面的命令，核对固定模型的文件大小与哈希。</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>verify-models
-</pre></div>
-</div>
-</div>
-<p>这些文件随 Git 仓库一同提供，克隆仓库即可使用，无需 Git LFS 或额外的模型账户。<code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> 记录了文件大小、来源和 SHA-256；实验入口在运行前会核对模型身份，避免误用同名文件。当前默认检测器的相对路径与 SHA-256 记录在 <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>。</p>
-<p><strong>仓库自带。</strong> 第 2–4 部分实验所用的权重；3.3 节预先训练好的 PPO 行走结果与 3.4 节的坡地训练日志在 <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> 和 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code>（容器内 <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code>，只读）。</p>
-<p><strong>GR00T。</strong> 5.2 节介绍的 GR00T 示范数据与检查点由课程方单独保存，学习本课程不需要下载。</p>
-</section>
-<section id="practice-data">
-<h2>练习数据与自己的输出<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">datasets/scene-sample/</span></code> 是一套小型图像与标签样例，本课的动手实验不直接使用；它的规模不足以检验模型在真实环境中的泛化能力。自行训练的模型和日志请保存在 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>，<code class="docutils literal notranslate"><span class="pre">models/</span></code> 中的课程文件保持原样。</p>
-</section>
 <section id="licenses">
 <h2>来源与使用条款<a class="headerlink" href="#licenses" title="Link to this heading">#</a></h2>
 <p>机器人几何、社区策略和依赖组件分别适用各自的来源与许可条款；第三方资产以其自身条款为准，课程代码的许可不能替代这些条款。分发修改版本前，请先查阅仓库中的 <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md" rel="noreferer noopener" target="_blank">来源与许可说明</a>。</p>
@@ -560,11 +491,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="troubleshooting.html"
+       href="references.html"
        title="下一页">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">下一页</p>
-        <p class="prev-next-title">6.2 故障排查</p>
+        <p class="prev-next-title">6.2 继续学习与参考资料</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -593,8 +524,6 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief">先提供这些信息</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">按能验证的小步骤推进</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handoff">给智能体一个明确的起点</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventory">参考：课程模型与数据</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practice-data">练习数据与自己的输出</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses">来源与使用条款</a></li>
 </ul>
   </nav></div>

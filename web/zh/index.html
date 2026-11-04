@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -352,8 +352,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="models.html">6.1 让智能体来帮忙</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.2 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -384,7 +383,7 @@
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>1.1 课程概览<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>本课程专注于在仿真环境中训练和验证 Microduck：从机械结构与传感器，到强化学习、运动技能和任务控制，逐步建立可检查的机器人实验。自主射门是串联感知与动作的一个综合案例，课程也涵盖行走、上下坡和更多任务的设计思路。</p>
-</div><div class="lesson-meta">6 个部分 · 18 节 · 仿真实践与前沿方法</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。" width="1600" height="1000" style="aspect-ratio: 1600 / 1000"></figure></div><div class="toctree-wrapper compound">
+</div><div class="lesson-meta">6 个部分 · 17 节 · 仿真实践与前沿方法</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。" width="1600" height="1000" style="aspect-ratio: 1600 / 1000"></figure></div><div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
@@ -398,9 +397,10 @@
 </div>
 <section id="simulation-first">
 <h2>为什么先在仿真中训练与验证<a class="headerlink" href="#simulation-first" title="Link to this heading">#</a></h2>
-<p>本课编写时（2026 年 11 月），Microduck 仍处于预售阶段，首批尚未发货，我们还无法拿到真机开展课程实验。您可以先使用课程提供的机器人模型，在 Isaac Sim、Isaac Lab 与 Newton 构成的仿真环境中学习、训练和验证，无需等待真机。<a class="reference external" href="https://store.pollen-robotics.com/policies/shipping-policy" rel="noreferer noopener" target="_blank">官方发货说明</a></p>
+<p>Microduck 当前仍处于预售阶段，首批尚未发货，我们还无法拿到真机开展课程实验。您可以先使用课程提供的机器人模型，在 Isaac Sim、Isaac Lab 与 Newton 构成的仿真环境中学习、训练和验证，无需等待真机。<a class="reference external" href="https://store.pollen-robotics.com/policies/shipping-policy" rel="noreferer noopener" target="_blank">官方发货说明</a></p>
 <p>先在仿真中训练，也是 sim2real（从仿真迁移到真实环境）范式的关键步骤。仿真允许反复试验、重置场景和并行采集数据，并通过域随机化改变摩擦、执行器特性或传感器条件，帮助策略适应变化。等真机具备条件后，再核对传感器与动作接口、校准物理参数，并逐步开展真实环境验证。</p>
 <p>本课完成的是这条路径中的仿真训练与验证阶段。仿真中的成功是后续迁移的起点，仍需在真机上检查建模误差、传感器噪声、控制延迟与接触差异。</p>
+<p>想了解从仿真训练到真机部署的完整 sim2real 过程，可以阅读 <a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">NVIDIA 的 Microduck 实践博客</a>：它介绍了行走策略的训练、验证、ONNX 导出与真机部署。</p>
 </section>
 <section id="outcome">
 <h2>学习目标<a class="headerlink" href="#outcome" title="Link to this heading">#</a></h2>
@@ -449,7 +449,7 @@
 <td><p>5.1 视觉-语言-动作模型（VLA）与 GR00T · 5.2 使用 GR00T 自主完成射门 · 5.3 从球场走向更多环境</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>6 参考与帮助</p></td>
-<td><p>6.1 让智能体来帮忙 · 6.2 故障排查 · 6.3 继续学习与参考资料</p></td>
+<td><p>6.1 让智能体来帮忙 · 6.2 继续学习与参考资料</p></td>
 </tr>
 </tbody>
 </table>

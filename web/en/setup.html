@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -352,8 +352,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Let Agent do the heavy lift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.2 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -506,7 +505,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
 </pre></div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">doctor</span></code> checks the SHA-256 of every model file, CUDA, the display variable and package versions; continue when every item passes. <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> shows the walking model's input and output names, shapes and SHA-256. If CUDA is reported unavailable, run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> on the host to confirm the driver works, then see <a class="reference internal" href="troubleshooting.html"><span class="std std-doc">Troubleshooting</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">doctor</span></code> checks the SHA-256 of every model file, CUDA, the display variable and package versions; continue when every item passes. <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> shows the walking model's input and output names, shapes and SHA-256. If CUDA is reported unavailable, run <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> on the host to confirm the driver works and confirm that GPU access is enabled for the container.</p>
 <div class="note admonition">
 <p class="admonition-title">Opening Isaac Sim for the first time</p>
 <p>The first window compiles shaders and loads assets, which can take a few minutes; the caches stay on the host, so later starts are much faster. The window appears on the host desktop; click it before using the keyboard.</p>

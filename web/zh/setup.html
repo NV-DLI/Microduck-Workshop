@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -353,8 +353,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="models.html">6.1 让智能体来帮忙</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.2 继续学习与参考资料</a></li>
 </ul>
 </div>
 </nav></div>
@@ -507,7 +506,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
 </pre></div>
 </div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">doctor</span></code> 逐一核对模型文件的 SHA-256，并检查 CUDA、显示变量和各软件包版本；所有项通过后再继续。<code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> 显示行走模型的输入输出名称、形状和 SHA-256。如果 CUDA 显示为不可用，先在宿主机运行 <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> 确认驱动正常，再查阅<a class="reference internal" href="troubleshooting.html"><span class="std std-doc">故障排查</span></a>。</p>
+<p><code class="docutils literal notranslate"><span class="pre">doctor</span></code> 逐一核对模型文件的 SHA-256，并检查 CUDA、显示变量和各软件包版本；所有项通过后再继续。<code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> 显示行走模型的输入输出名称、形状和 SHA-256。如果 CUDA 显示为不可用，先在宿主机运行 <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> 确认驱动正常，并确认容器已启用 GPU 访问。</p>
 <div class="note admonition">
 <p class="admonition-title">第一次打开 Isaac Sim</p>
 <p>第一次打开窗口时需要编译着色器、加载资源，可能要等几分钟；缓存保存在宿主机后，之后会快很多。窗口出现在宿主机桌面上，点击窗口后键盘操作才会生效。</p>

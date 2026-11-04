@@ -9,3 +9,18 @@ node_modules/
 /course-data/
 /dist/
 /web/*/.buildinfo*
+
+# Course production sources stay local; students use web/ and lab/.
+/.agents/
+/AGENTS.md
+/artwork/
+/content/
+/validation/
+/tests/
+/docs/
+/scripts/build_site.py
+/scripts/check_course.py
+/scripts/serve_site.py
+/scripts/export_lms.py
+/scripts/prepare_lms_media.py
+/scripts/lms_export/

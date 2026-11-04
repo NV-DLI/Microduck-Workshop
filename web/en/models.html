@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,14 +56,14 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6.2 Troubleshooting" href="troubleshooting.html" />
+    <link rel="next" title="6.2 Further learning and references" href="references.html" />
     <link rel="prev" title="5.3 From the pitch to more environments" href="09-worlds.html" />
 
 
@@ -352,8 +352,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">6.1 Let Agent do the heavy lift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.2 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -465,74 +464,6 @@
 </div></blockquote>
 <p>On resuming work, ask the agent to read the saved configuration, results and unresolved questions. This gives the next session a concrete starting point and makes the remaining work visible.</p>
 </section>
-<section id="inventory">
-<h2>Reference: course models and data<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>File (host <code class="docutils literal notranslate"><span class="pre">models/</span></code>, container <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/</span></code>)</p></th>
-<th class="head cell-short"><p>Purpose</p></th>
-<th class="head"><p>Course commands that read it</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
-<td><p>Fixed walking policy</p></td>
-<td><p>Section 2.1 keyboard football (read automatically); Section 2.2 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>; the low-level walking policy of the Section 4.3 onboard shot and of the Section 5.2 GR00T execution layer uses a copy of the same model</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
-<td><p>Section 3.4 fixed terrain walking actor, about 0.79 MB</p></td>
-<td><p>Section 3.4 <code class="docutils literal notranslate"><span class="pre">terrain</span> <span class="pre">--model</span> <span class="pre">models/terrain-walk.onnx</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
-<td><p>Base kicking action</p></td>
-<td><p>Section 2.1 keyboard football (Space, read automatically); the kick skill of the Section 4.3 onboard shot uses a copy of the same model</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
-<td><p>Residual kick adjustment</p></td>
-<td><p>Used by the Section 5.2 GR00T execution layer; not loaded by the Section 4.3 onboard shot</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
-<td><p>Retained kick training checkpoint</p></td>
-<td><p>Retained; not read directly by this course's hands-on commands</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">detector.pt</span></code></p></td>
-<td><p>Fixed visual detector</p></td>
-<td><p>Retained; not read directly by this course's hands-on commands</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">detector.onnx</span></code></p></td>
-<td><p>ONNX detector export</p></td>
-<td><p>Retained; not read directly by this course's hands-on commands</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">indoor-detector/detector.onnx</span></code></p></td>
-<td><p>Another indoor detector, for a scene with a 7 cm ball; not used on the course pitch</p></td>
-<td><p>Retained; not read directly by this course's hands-on commands</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
-<td><p>Official 10 cm ball and four-surface detector; current default</p></td>
-<td><p>Checked and loaded automatically by the Section 4.3 <code class="docutils literal notranslate"><span class="pre">football</span></code> command as the onboard policy's visual detector</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
-<td><p>Browser-version checks and standing tests; the complete walking task uses <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
-<td><p>Retained; not read directly by this course's hands-on commands</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Run the command below inside the container to verify fixed-model sizes and hashes.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
-<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>verify-models
-</pre></div>
-</div>
-</div>
-<p>These files ship with the Git repository, so cloning it is enough; no Git LFS or separate model account is needed. <code class="docutils literal notranslate"><span class="pre">models/manifest.json</span></code> records sizes, sources, and SHA-256 identities, and each lab checks model identity before running to guard against same-name replacements. The relative paths and SHA-256 of the current default detector are recorded in <code class="docutils literal notranslate"><span class="pre">models/scene-detector/deployment.json</span></code>.</p>
-<p><strong>In the repository.</strong> The weights for the labs of Parts 2–4; the pretrained PPO walking result of Section 3.3 and the slope-training logs of Section 3.4 are in <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo</span></code> and <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo</span></code> (<code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/datasets/</span></code> in the container, read-only).</p>
-<p><strong>GR00T.</strong> The GR00T demonstrations and checkpoint described in Section 5.2 are kept separately by the course; you do not need to download them for this course.</p>
-</section>
-<section id="practice-data">
-<h2>Practice data and your outputs<a class="headerlink" href="#practice-data" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">datasets/scene-sample/</span></code> is a small set of sample images and labels that the course labs do not use directly; it is too small to test real-world generalization. Keep your own checkpoints and logs in <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> and leave the course files in <code class="docutils literal notranslate"><span class="pre">models/</span></code> unchanged.</p>
-</section>
 <section id="licenses">
 <h2>Sources and usage terms<a class="headerlink" href="#licenses" title="Link to this heading">#</a></h2>
 <p>Robot geometry, community policies, and dependencies each follow their own source and license terms; for third-party assets those terms apply, and the course-code license does not replace them. Before redistributing changes, read the repository’s <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/THIRD_PARTY_NOTICES.md" rel="noreferer noopener" target="_blank">attribution and license notices</a>.</p>
@@ -559,11 +490,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="troubleshooting.html"
+       href="references.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">6.2 Troubleshooting</p>
+        <p class="prev-next-title">6.2 Further learning and references</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -592,8 +523,6 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief">Supply the essential context</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Advance through verifiable steps</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handoff">Give the agent a concrete starting point</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventory">Reference: course models and data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practice-data">Practice data and your outputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses">Sources and usage terms</a></li>
 </ul>
   </nav></div>

@@ -15,7 +15,7 @@ This repository holds the course site, the lab code, the container and the fixed
 3. **Teach Microduck skills with reinforcement learning**: PPO basics, reinforcement learning for Microduck, walking training with domain randomization, an extension to slopes, (extension) community skills and their reward design.
 4. **Complete the shooting task with an onboard policy**: RGB and ToF sensors, compact YOLO detection, direct path planning and hand-designed shooting stages; repeat the task and interpret successes and failures.
 5. **(Extention) Score autonomously with GR00T**: vision-language-action (VLA) models, how GR00T scores the walking shot with 8-D high-level requests and trained skills (training and inference are done in advance; no student commands), environment variation and Cosmos 3.
-6. **Reference and help**: models and data, troubleshooting, references.
+6. **Reference and help**: design your own robot task with an agent, and continue with references.
 
 Reading, figures, search and the interactive 3D duck work in a browser without Isaac Sim.
 
@@ -82,54 +82,12 @@ The GR00T part of the course is an extension that students read; its demonstrati
 
 | Directory | Contents |
 |---|---|
-| `docs/zh/`, `docs/en/` | Lesson source: MyST Markdown, one file per page, same file names in both languages |
-| `docs/_ext/`, `docs/_static/`, `docs/_templates/` | Sphinx directives for interactive figures, their styles, and small theme additions |
 | `web/` | Built site (`web/zh`, `web/en`) plus shared assets in `web/assets`: images, seekable videos, 3D model, fonts and figure scripts |
-| `content/` | Read-only archive of the pre-Sphinx JSON lessons; not used by the build |
 | `docker/` | Course image, compose files and in-container helpers |
-| `scripts/` | Lab entry point `run.py` and site build/check tools |
+| `scripts/` | Lab entry point `run.py` and environment setup tools |
 | `lab/` | Simulation, training and evaluation code, scene assets and environment locks |
 | `models/` | Fixed course policies and detectors, with SHA-256 manifest |
 | `datasets/` | Pretrained PPO results and training logs used in Part 3, small sample data |
-| `artwork/` | Editable Blender assembly, source geometry and attribution |
-
-## Build the course site
-
-Lessons are MyST Markdown under `docs/zh/` and `docs/en/`, built with Sphinx and `nvidia-sphinx-theme` on the host (the course container is not needed). Edit the Markdown directly; large media stay in `web/assets/`.
-
-```bash
-python3 -m venv .local/docs-venv
-.local/docs-venv/bin/pip install -r docs/requirements.txt
-python3 scripts/build_site.py                      # writes web/zh and web/en
-python3 scripts/check_course.py --site-only        # source, links, anchors, commands
-python3 scripts/serve_site.py --port 8080          # preview at http://localhost:8080
-```
-
-`build_site.py` treats Sphinx warnings as errors (`--out DIR` makes a staging build); `check_course.py` also verifies that code excerpts quoting this repository match the current source verbatim; without `--site-only` it checks model and runtime-bundle identities too. Serve the site over HTTP: browser module loading does not work through `file://`. The repository-local authoring skill is `.agents/skills/microduck-course/SKILL.md`.
-
-## Export for an LMS
-
-After building the site, export both Open edX editions with the same docs environment:
-
-```bash
-.local/docs-venv/bin/python scripts/export_lms.py export \
-  --site web --manifest docs/lms/microduck.json --out dist/lms \
-  --strict --report dist/lms/export-report.json
-```
-
-`microduck_zh.tar.gz` opens in Chinese with an English switch. `microduck_en.tar.gz` contains English only. Both use white pages without site navigation and preserve the lesson interactions. Shared media are deduplicated; unused assets, model weights and training datasets stay outside these packages. The manifest controls course identity, page order and language editions. The exporter validates OLX bindings and local assets; browser review is still needed for interactions and the target LMS. See `scripts/export_lms.py --help` for validation and preview commands.
-
-Optionally, make smaller packages in two steps: first copy only the files the export uses into a new staging directory and recompress its PNG, JPEG and WebP images in their own format and size, then export from that copy:
-
-```bash
-.local/docs-venv/bin/python scripts/prepare_lms_media.py stage \
-  --site web --manifest docs/lms/microduck.json --out dist/lms-stage/site
-.local/docs-venv/bin/python scripts/export_lms.py export \
-  --site dist/lms-stage/site --manifest docs/lms/microduck.json --out dist/lms \
-  --strict --report dist/lms/export-report.json
-```
-
-The image step runs in a separate Python with Pillow, WebP animation and libimagequant (`--image-python`, default `/usr/bin/python3`; on Ubuntu 24.04 `sudo apt install python3-pil`). It keeps every image's dimensions, transparency and animation timing, keeps the original file when a smaller copy fails the quality checks, and never changes `web/`. The staging directory must not exist yet. The report `dist/lms-stage/site.report.md` lists every file before and after. Videos, 3D models, fonts and scripts are copied unchanged.
 
 ## 来源与许可 / Attribution and licenses
 

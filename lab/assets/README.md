@@ -25,7 +25,7 @@ See `THIRD_PARTY_NOTICES.md` and upstream `LICENSE-MODELS.md`.
 
 ## Props
 
-`artwork/build_scene_assets.py` creates the original parametric goal and four
+Course asset generation created the original parametric goal and four
 original mat drawings. Product reference:
 [mat](https://e.tb.cn/h.jVgqwsimco7KxBM),
 [miniature steel goal](https://e.tb.cn/h.jVgIdgPCtwTum1F).
@@ -59,8 +59,7 @@ original visual meshes, body mass/inertia, joints and motor settings are retaine
 while each tyre contact shape is an analytic cylinder of diameter 30 mm and width
 7.6 mm. This approximates the rounded shoulders (maximum support difference about
 1.71 mm); it is not identical official collision geometry or a measured real tyre
-model. The original converted mesh asset remains alongside it. Use
-`artwork/refine_wheel_contacts.py` to reproduce this adaptation.
+model. The original converted mesh asset remains alongside it. Its geometry and source identity are recorded alongside the generated assets.
 
 `rollers/rest_pose.json` supplies a fixed legal initial roller posture. A reset
 event writes physical joint positions and zero velocities; it does not change

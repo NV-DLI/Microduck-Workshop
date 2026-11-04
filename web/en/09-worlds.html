@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '09-worlds';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -352,8 +352,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Let Agent do the heavy lift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.2 Further learning and references</a></li>
 </ul>
 </div>
 </nav></div>
@@ -417,7 +416,7 @@
 <h2>Why a real robot needs environment variation<a class="headerlink" href="#why-variation" title="Link to this heading">#</a></h2>
 <p>A model trained only on the green pitch may have learned cues we do not want it to rely on, such as “a white spot on a green background is the ball” or “the goal always appears within this brightness range”. In simulation those cues always hold, so the model has no reason not to use them; on a light wooden floor they vanish and the model may lose the ball.</p>
 <p>There are other gaps between simulation and reality: real cameras have exposure changes, motion blur and noise; real lights cast shadows and reflections; real floors have friction that differs from the simulated setting. Together these are called the sim-to-real gap. Letting a model see sufficiently varied conditions during training is one of the main ways to narrow it.</p>
-<figure class="media"><div class="scene-card-grid"><div class="scene-card"><h4>Striped pitch</h4><a href="../assets/media/environment-pitch-striped.webp"><img loading="lazy" src="../assets/media/environment-pitch-striped.webp" alt="Striped pitch"></a></div><div class="scene-card"><h4>Plain pitch</h4><a href="../assets/media/environment-pitch-plain.webp"><img loading="lazy" src="../assets/media/environment-pitch-plain.webp" alt="Plain pitch"></a></div><div class="scene-card"><h4>Light stone floor</h4><a href="../assets/media/environment-marble.webp"><img loading="lazy" src="../assets/media/environment-marble.webp" alt="Light stone floor"></a></div><div class="scene-card"><h4>Wooden floor</h4><a href="../assets/media/environment-wood.webp"><img loading="lazy" src="../assets/media/environment-wood.webp" alt="Wooden floor"></a></div><div class="scene-card"><h4>Furnished room</h4><a href="../assets/media/environment-furnished-room.webp"><img loading="lazy" src="../assets/media/environment-furnished-room.webp" alt="Furnished room"></a></div></div><figcaption><p>The same Microduck in different visual and spatial conditions. Compare floor texture, reflections, shadows and furniture in the camera background. The furnished room uses the official Isaac Sim Simple Room asset. These static illustrations explain environmental variation; they are not shooting-validation results.</p>
+<figure class="media"><div class="scene-card-grid"><div class="scene-card"><h4>Striped pitch</h4><a href="../assets/media/environment-pitch-striped.webp"><img loading="lazy" src="../assets/media/environment-pitch-striped.webp" alt="Striped pitch"></a></div><div class="scene-card"><h4>Plain pitch - midday sunlight</h4><a href="../assets/media/environment-pitch-plain.webp"><img loading="lazy" src="../assets/media/environment-pitch-plain.webp" alt="Plain pitch - midday sunlight"></a></div><div class="scene-card"><h4>Light reflective marble floor - indoor daylight</h4><a href="../assets/media/environment-marble.webp"><img loading="lazy" src="../assets/media/environment-marble.webp" alt="Light reflective marble floor - indoor daylight"></a></div><div class="scene-card"><h4>Wooden floor - indoor warm LED lighting</h4><a href="../assets/media/environment-wood.webp"><img loading="lazy" src="../assets/media/environment-wood.webp" alt="Wooden floor - indoor warm LED lighting"></a></div><div class="scene-card"><h4>Living room - indoor sunset light</h4><a href="../assets/media/environment-furnished-room.webp"><img loading="lazy" src="../assets/media/environment-furnished-room.webp" alt="Living room - indoor sunset light"></a></div><div class="scene-card"><h4>Indoor activity room - bright nighttime lighting</h4><a href="../assets/media/environment-night-room.webp"><img loading="lazy" src="../assets/media/environment-night-room.webp" alt="Indoor activity room - bright nighttime lighting"></a></div></div><figcaption><p>The same Microduck in different visual and spatial conditions. Compare floor texture, reflections, shadows and furniture in the camera background. The living room and activity room use furniture and room dimensions chosen to fit the physical scale of the robot and pitch. These static illustrations explain environmental variation; they are not shooting-validation results.</p>
 </figcaption></figure></section>
 <section id="domain-randomization">
 <h2>Environment domain randomization<a class="headerlink" href="#domain-randomization" title="Link to this heading">#</a></h2>
