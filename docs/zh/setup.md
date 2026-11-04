@@ -17,7 +17,7 @@ myst:
 {#requirements}
 ## 需要什么
 
-课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、锁定版本的 Isaac Lab 与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。
+课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、Isaac Lab 的 Microduck 开发快照与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。
 
 | 设备 | 系统 | 可用的课程内容 |
 |---|---|---|
@@ -28,8 +28,12 @@ myst:
 | 组件 | 课程配置 |
 |---|---|
 | 容器基础 | CUDA 13、Ubuntu 24.04、Python 3.12 |
-| 仿真 | Isaac Sim 6.2，Isaac Lab 固定提交，Newton 物理后端 |
+| 仿真平台 | Isaac Sim 6.2 |
+| 训练框架 | Isaac Lab 开发快照（2026-10-19，`5088b326`） |
+| 物理后端 | Newton 1.8.0.dev0（`71eeba16`） |
 | 学习 | RSL-RL 5.5.1（PPO） |
+
+本课沿用 [NVIDIA 官方 Microduck 教程](https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real) 的 `main` 分支实现，固定到包含 Microduck 任务与 BAM 电机模型的 [Isaac Lab 源码快照](https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1)，并非 3.0.0 GA。容器会自动安装表中的指定版本，您无需手动选择源码提交。
 
 {#get-code}
 ## 下载课程代码

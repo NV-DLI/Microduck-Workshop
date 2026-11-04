@@ -410,7 +410,7 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.</p>
 </div><div class="lesson-meta">Hands-on · Ubuntu 24.04 / DGX Spark · Docker</div></div></div><section id="requirements">
 <h2>What you need<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
-<p>Every lab in this course runs in one course container. The image holds Isaac Sim 6.2 and the pinned Isaac Lab and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.</p>
+<p>Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the Microduck development snapshot of Isaac Lab, and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head cell-short"><p>Device</p></th>
@@ -437,8 +437,14 @@
 <tr class="row-even"><td class="cell-short"><p>Container base</p></td>
 <td><p>CUDA 13, Ubuntu 24.04, Python 3.12</p></td>
 </tr>
-<tr class="row-odd"><td class="cell-short"><p>Simulation</p></td>
-<td><p>Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend</p></td>
+<tr class="row-odd"><td><p>Simulation platform</p></td>
+<td class="cell-short"><p>Isaac Sim 6.2</p></td>
+</tr>
+<tr class="row-even"><td><p>Training framework</p></td>
+<td><p>Isaac Lab development snapshot (2026-10-19, <code class="docutils literal notranslate"><span class="pre">5088b326</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Physics backend</p></td>
+<td><p>Newton 1.8.0.dev0 (<code class="docutils literal notranslate"><span class="pre">71eeba16</span></code>)</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Learning</p></td>
 <td><p>RSL-RL 5.5.1 (PPO)</p></td>
@@ -446,6 +452,7 @@
 </tbody>
 </table>
 </div>
+<p>The course follows the <code class="docutils literal notranslate"><span class="pre">main</span></code>-branch implementation in the <a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">official NVIDIA Microduck tutorial</a>, pinned to an <a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1" rel="noreferer noopener" target="_blank">Isaac Lab source snapshot</a> that includes the Microduck tasks and BAM motor model, not the 3.0.0 GA release. The container installs the versions listed above automatically; no manual source revision selection is needed.</p>
 </section>
 <section id="get-code">
 <h2>Get the course code<a class="headerlink" href="#get-code" title="Link to this heading">#</a></h2>

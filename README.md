@@ -26,7 +26,7 @@ Reading, figures, search and the interactive 3D duck work in a browser without I
 | DGX Spark (aarch64) | Ubuntu 24.04 desktop | The complete course, including Isaac Sim windows, cameras and recordings |
 
 
-The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, Isaac Lab at a fixed commit, the Newton physics backend, RSL-RL 5.5.1. Details are in Section 1.2 of the course.
+The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, the Isaac Lab development snapshot dated 2026-10-19 (`5088b326`, including the Microduck tasks and BAM motor model), Newton 1.8.0.dev0 (`71eeba16`), and RSL-RL 5.5.1. This Isaac Lab snapshot is not the 3.0.0 GA release. Details are in Section 1.2 of the course.
 
 ## Quick start
 

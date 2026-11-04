@@ -17,7 +17,7 @@ Build the course container, mount data and models, open a shell in the same cont
 {#requirements}
 ## What you need
 
-Every lab in this course runs in one course container. The image holds Isaac Sim 6.2 and the pinned Isaac Lab and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.
+Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the Microduck development snapshot of Isaac Lab, and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.
 
 | Device | System | What you can use |
 |---|---|---|
@@ -28,8 +28,12 @@ The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, 
 | Component | Course configuration |
 |---|---|
 | Container base | CUDA 13, Ubuntu 24.04, Python 3.12 |
-| Simulation | Isaac Sim 6.2, Isaac Lab at a fixed commit, Newton physics backend |
+| Simulation platform | Isaac Sim 6.2 |
+| Training framework | Isaac Lab development snapshot (2026-10-19, `5088b326`) |
+| Physics backend | Newton 1.8.0.dev0 (`71eeba16`) |
 | Learning | RSL-RL 5.5.1 (PPO) |
+
+The course follows the `main`-branch implementation in the [official NVIDIA Microduck tutorial](https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real), pinned to an [Isaac Lab source snapshot](https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1) that includes the Microduck tasks and BAM motor model, not the 3.0.0 GA release. The container installs the versions listed above automatically; no manual source revision selection is needed.
 
 {#get-code}
 ## Get the course code
