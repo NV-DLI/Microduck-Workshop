@@ -321,7 +321,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Course overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
@@ -409,8 +409,8 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>The course connects robot models, basic motion, perception and autonomous shooting. You can now bring your own robot and objective to your preferred agent for help with design, implementation and validation. Supply the goal and constraints, and use actual evidence to judge the result.</p>
 </div><div class="lesson-meta">Section 6.1 · From this course to your own robot task</div></div></div><section id="start">
 <h2>Bring this task guide<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
-<p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a> in the repository turns the course's workflow and lessons into a project guide that you can give directly to an agent. It does not depend on a particular tool or require a shooting task. Microduck can reuse the course assets and skills; another robot requires its own joint, action and physics checks.</p>
-<p>Provide the guide with your project and ask the agent to read it, inspect existing files, identify necessary missing information, and propose staged implementation. It does not need to be named AGENTS.md. If your tool reads that project convention, merge the relevant instructions into your own AGENTS.md.</p>
+<p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a>, the single English guide in the repository, turns the course's workflow and lessons into a project guide that you can give directly to an agent. It does not depend on a particular tool or require a shooting task. Microduck can reuse the course assets and skills; another robot requires its own joint, action and physics checks.</p>
+<p>Provide the English guide with your project; you can discuss the task with your agent in your preferred language. Ask it to inspect the model and sensors, ask for necessary missing information, recommend models and whether training is needed, plan data collection, and then propose staged implementation. It does not need to be named AGENTS.md. If your tool reads that project convention, merge the relevant instructions into your own AGENTS.md.</p>
 </section>
 <section id="brief">
 <h2>Supply the essential context<a class="headerlink" href="#brief" title="Link to this heading">#</a></h2>
@@ -450,6 +450,7 @@
 </table>
 </div>
 <p>Write “unknown; inspect or propose a measurement” when information is missing. Do not let the agent guess joint order, units or success criteria: a program may run while producing meaningless results.</p>
+<p>The guide asks the agent to distinguish the sensors actually available from the information the task needs: what can be read directly, what must be estimated, and what is missing. Given existing skills, resources and data, it should explain whether to reuse rules or models, or train perception, reinforcement-learning policies or a VLA. If training is needed, it should specify data sources, collection, annotation and independent validation splits.</p>
 </section>
 <section id="workflow">
 <h2>Advance through verifiable steps<a class="headerlink" href="#workflow" title="Link to this heading">#</a></h2>
@@ -459,7 +460,7 @@
 <h2>Give the agent a concrete starting point<a class="headerlink" href="#handoff" title="Link to this heading">#</a></h2>
 <p>Adapt this brief and attach the model, scene and guide:</p>
 <blockquote>
-<div><p>Use ROBOT_TASK_GUIDE.en.md to help implement a simulated robot task. The robot and model paths are [fill in], simulation versions and physics backend are [fill in], and available sensors and policies are [fill in]. In [scene and starting range], it should complete [task]. Success requires [measurable conditions]; failures include [fill in]. Resources and budget are [fill in]. First inspect the files and interfaces and identify missing information that blocks implementation. Then begin with the smallest verifiable closed loop, provide actual evidence at each stage, preserve failures and original models, and advance only when the stage is ready.</p>
+<div><p>Use ROBOT_TASK_GUIDE.en.md to help implement a simulated robot task. The robot and model paths are [fill in], simulation versions and physics backend are [fill in], and available sensors and policies are [fill in]. In [scene and starting range], it should complete [task]. Success requires [measurable conditions]; failures include [fill in]. Resources and budget are [fill in]. First inspect the files and interfaces, ask about available and task-required sensor inputs, and recommend models, whether training is needed and a data-collection plan, explaining the rationale and unresolved decisions. Then begin with the smallest verifiable closed loop, provide actual evidence at each stage, preserve failures and original models, and advance only when the stage is ready.</p>
 </div></blockquote>
 <p>On resuming work, ask the agent to read the saved configuration, results and unresolved questions. This gives the next session a concrete starting point and makes the remaining work visible.</p>
 </section>

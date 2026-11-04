@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Experience Microduck's motion, train walking and slopes with reinforcement learning, see how an onboard policy scores with sensors and hand-designed stages, then learn how GR00T learns the walking shot from demonstrations and consider how to carry it to more environments." name="description" />
+<meta content="This course focuses on training and validating Microduck in simulation. Explore its mechanisms and sensors, reinforcement learning, motion skills and task control through experiments you can inspect. Autonomous shooting is one example that connects perception and action; the course also covers walking, slopes and ways to design other tasks." name="description" />
 
-  <title>1.1 Teach Microduck to score a goal - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>1.1 Course overview - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -320,7 +320,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.1 Teach Microduck to score a goal</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">1.1 Course overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
@@ -380,9 +380,9 @@
                 <article class="bd-article">
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="teach-microduck-to-score-a-goal">
-<h1>1.1 Teach Microduck to score a goal<a class="headerlink" href="#teach-microduck-to-score-a-goal" title="Link to this heading">#</a></h1>
-<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>Experience Microduck's motion, train walking and slopes with reinforcement learning, see how an onboard policy scores with sensors and hand-designed stages, then learn how GR00T learns the walking shot from demonstrations and consider how to carry it to more environments.</p>
+<section class="tex2jax_ignore mathjax_ignore" id="course-overview">
+<h1>1.1 Course overview<a class="headerlink" href="#course-overview" title="Link to this heading">#</a></h1>
+<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>This course focuses on training and validating Microduck in simulation. Explore its mechanisms and sensors, reinforcement learning, motion skills and task control through experiments you can inspect. Autonomous shooting is one example that connects perception and action; the course also covers walking, slopes and ways to design other tasks.</p>
 </div><div class="lesson-meta">6 parts · 17 sections · Simulation and frontier methods</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="A recording of the full Isaac window, played on the simulation clock: the onboard policy controls Microduck as it scores on the green pitch, alongside synchronized head RGB and ToF sensor views." width="1600" height="872" style="aspect-ratio: 1600 / 872"></figure></div><div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -395,9 +395,15 @@
 </div>
 <div class="toctree-wrapper compound">
 </div>
+<section id="simulation-first">
+<h2>Why train and validate in simulation first?<a class="headerlink" href="#simulation-first" title="Link to this heading">#</a></h2>
+<p>At the time of writing (November 2026), Microduck is still on pre-order and the first deliveries have not started, so we do not yet have physical robots for the course labs. With the supplied robot model, you can learn, train and validate in Isaac Sim, Isaac Lab and Newton without waiting for hardware. See the <a class="reference external" href="https://store.pollen-robotics.com/policies/shipping-policy" rel="noreferer noopener" target="_blank">official shipping information</a>.</p>
+<p>Training in simulation is also a key step in sim2real: transferring a policy from simulation to a real robot. Simulation supports repeated trials, scene resets and parallel data collection. Domain randomization varies conditions such as friction, actuator properties and sensors to help policies handle variation. Once hardware is available, check the sensor and action interfaces, calibrate physical parameters and progressively validate on the real robot.</p>
+<p>This course covers the simulation training and validation stage. Success in simulation is a starting point for transfer; model mismatch, sensor noise, control latency and contact differences still need checks on hardware.</p>
+</section>
 <section id="outcome">
 <h2>What you will build<a class="headerlink" href="#outcome" title="Link to this heading">#</a></h2>
-<p>The whole course follows one Microduck, one green football pitch, one ball and one goal: meet the robot and try its motion skills, train walking and slopes with reinforcement learning and domain randomization, run an onboard policy and see how it completes the shot with sensors and hand-designed stages, then learn how GR00T learns the walking shot from demonstrations and consider how to adapt to more environments. Every lab runs in the same course container.</p>
+<p>Start with Microduck’s mechanisms and control loop, then use reinforcement learning and domain randomization to train and validate walking and slope skills. Use shooting as an example of combining sensors, hand-designed stages and trained skills into a complete task, and explore how GR00T learns high-level requests from demonstrations. Finish with environmental variation and using an agent to design your own robot task. All practical labs run in simulation inside the course container.</p>
 <ol class="arabic simple pipeline">
 <li><p>Overview and container setup</p></li>
 <li><p>Meet Microduck</p></li>
@@ -427,7 +433,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td class="cell-short"><p>1 Overview</p></td>
-<td><p>1.1 Teach Microduck to score a goal · 1.2 Set up the environment and get the code</p></td>
+<td><p>1.1 Course overview · 1.2 Set up the environment and get the code</p></td>
 </tr>
 <tr class="row-odd"><td><p>2 Meet Microduck</p></td>
 <td><p>2.1 Meet Microduck: play football first · 2.2 Mechanism and control timing</p></td>
@@ -490,6 +496,7 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-first">Why train and validate in simulation first?</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outcome">What you will build</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#learn">By the end, you can</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#route">Course route</a></li>

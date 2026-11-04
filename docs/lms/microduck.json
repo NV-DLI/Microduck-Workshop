@@ -27,8 +27,8 @@
             {
               "id": "index",
               "title": {
-                "zh": "1.1 让 Microduck 学会自主射门",
-                "en": "1.1 Teach Microduck to score a goal"
+                "zh": "1.1 课程概览",
+                "en": "1.1 Course overview"
               },
               "paths": {
                 "zh": "zh/index.html",
@@ -226,7 +226,7 @@
             {
               "id": "models",
               "title": {
-                "zh": "6.1 让智能体帮您搭把手",
+                "zh": "6.1 让智能体来帮忙",
                 "en": "6.1 Let Agent do the heavy lift"
               },
               "paths": {
