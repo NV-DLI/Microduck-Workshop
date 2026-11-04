@@ -42,4 +42,4 @@ Terrain lab appearance: `lab/course_labs/terrain_studio.py` uses the base-colour
 
 ## Environment teaching illustrations
 
-The `web/assets/media/environment-*.webp` images are static Isaac RTX illustrations of the course Microduck assets in course-authored display rooms. The wooden-floor illustration (`environment-wood.webp`) includes [Sofa 02](https://polyhaven.com/a/sofa_02) by Kirill Sannikov, from Poly Haven under [CC0](https://polyhaven.com/license), rendered from its original USD mesh and PBR textures at real-world scale. Powered by Poly Haven for asset discovery. The source sofa model and textures are kept in local production records, not included in the student runtime. Microduck and course prop attribution above continues to apply. These illustrations are not new physical task evaluations.
+The `web/assets/media/environment-*.webp` images are static Isaac RTX illustrations of the course Microduck assets in course-authored display rooms. Microduck and course prop attribution above continues to apply. These illustrations are not new physical task evaluations.
