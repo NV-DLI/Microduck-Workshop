@@ -45,7 +45,7 @@ git clone https://github.com/NV-DLI/Microduck-Workshop.git
 cd Microduck-Workshop
 ```
 
-固定的课程模型（`models/` 不到 60 MB）和第 3 部分用到的预训练结果与训练日志（`datasets/` 约 50 MB）都随仓库下载；你自己运行得到的结果写在 `outputs/`，与它们分开保存。
+固定的课程模型（`models/` 不到 60 MB）和第 3 部分用到的预训练结果与训练日志（`datasets/` 约 50 MB）都随仓库下载；您自己运行得到的结果写在 `outputs/`，与它们分开保存。
 
 ```{code-block} text
 :caption: Workspace
@@ -57,7 +57,7 @@ Microduck-Workshop/
 ├── scripts/       # 实验入口（同上）
 ├── models/        # 固定课程模型（容器内只读）
 ├── datasets/      # 示例数据与预训练 PPO 结果（容器内只读）
-└── outputs/       # 你的运行结果（容器内可写）
+└── outputs/       # 您的运行结果（容器内可写）
 ```
 
 {#build}
@@ -77,7 +77,7 @@ docker compose -f docker/compose.yaml build
 {#start}
 ## 启动容器并进入终端
 
-先准备一次宿主机上的输出与缓存目录，再允许容器在你的桌面上打开窗口，最后在后台启动容器。
+先准备一次宿主机上的输出与缓存目录，再允许容器在您的桌面上打开窗口，最后在后台启动容器。
 
 ```{code-block} bash
 :caption: Terminal · 宿主机
@@ -89,7 +89,7 @@ docker compose -f docker/compose.yaml up -d
 docker exec -it microduck-workshop bash
 ```
 
-`prepare_host.sh` 会检查 `DISPLAY` 和 `XAUTHORITY` 是否指向你的桌面会话；如果提示为空，请在桌面里打开的终端中运行。`up -d` 让名为 `microduck-workshop` 的容器在后台持续运行；`docker exec -it` 在这个容器里打开一个终端，提示符会变成 `(microduck)`，当前目录是 `/workspace/Microduck-Workshop`。
+`prepare_host.sh` 会检查 `DISPLAY` 和 `XAUTHORITY` 是否指向您的桌面会话；如果提示为空，请在桌面里打开的终端中运行。`up -d` 让名为 `microduck-workshop` 的容器在后台持续运行；`docker exec -it` 在这个容器里打开一个终端，提示符会变成 `(microduck)`，当前目录是 `/workspace/Microduck-Workshop`。
 
 **之后所有实验命令都在这个容器终端里运行**，页面上会标注“容器内”。用 Ctrl+C 停止某个实验，只会结束这一条命令，容器仍在运行，可以接着输入下一条。
 

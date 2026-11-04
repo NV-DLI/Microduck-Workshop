@@ -152,7 +152,7 @@ caption: The dashed gray line is the unclipped objective, the solid green line t
 
 Switch the advantage between +1 and −1 and move the ratio slider to see on which side the plateau appears. Clipping acts only on the objective and does not hard-limit the actual probability ratio; PPO makes updates steadier but does not guarantee that every update improves behavior. It is simple and suits data collected in massive parallel simulation, which is why it is widely used for robot locomotion.
 
-::::{enrichment} Extension: the formulas for advantage estimation and the PPO objective
+::::{enrichment} Extention: the formulas for advantage estimation and the PPO objective
 The Critic's temporal-difference error $\sym{delta_t}$ compares “this step's reward plus the expectation of the next state” with “the original expectation of this state”. Generalized Advantage Estimation (GAE) sums multi-step errors decayed by $\sym{gamma}\sym{lambda}$ into a smoother advantage; at termination $\sym{m_t}=0$, and expectations after termination no longer count.
 
 ```{formula} Temporal-difference error and generalized advantage estimation

@@ -14,7 +14,7 @@ This repository holds the course site, the lab code, the container and the fixed
 2. **Meet Microduck**: keyboard football, mechanism and the control loop.
 3. **Teach Microduck skills with reinforcement learning**: PPO basics, reinforcement learning for Microduck, walking training with domain randomization, an extension to slopes, (extension) community skills and their reward design.
 4. **Complete the shooting task with an onboard policy**: RGB and ToF sensors, compact YOLO detection, direct path planning and hand-designed shooting stages; repeat the task and interpret successes and failures.
-5. **(Extension) Score autonomously with GR00T**: vision-language-action (VLA) models, how GR00T scores the walking shot with 8-D high-level requests and trained skills (training and inference are done in advance; no student commands), environment variation and Cosmos 3.
+5. **(Extention) Score autonomously with GR00T**: vision-language-action (VLA) models, how GR00T scores the walking shot with 8-D high-level requests and trained skills (training and inference are done in advance; no student commands), environment variation and Cosmos 3.
 6. **Reference and help**: models and data, troubleshooting, references.
 
 Reading, figures, search and the interactive 3D duck work in a browser without Isaac Sim.

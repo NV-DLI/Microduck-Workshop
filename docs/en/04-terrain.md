@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.4 Extension: walking steadily up and down slopes
+# 3.4 Extention: walking steadily up and down slopes
 
 :::{lesson-intro}
 :meta: Section 3.4 · Method and hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough)

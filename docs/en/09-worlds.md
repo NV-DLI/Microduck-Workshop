@@ -26,6 +26,19 @@ A model trained only on the green pitch may have learned cues we do not want it 
 
 There are other gaps between simulation and reality: real cameras have exposure changes, motion blur and noise; real lights cast shadows and reflections; real floors have friction that differs from the simulated setting. Together these are called the sim-to-real gap. Letting a model see sufficiently varied conditions during training is one of the main ways to narrow it.
 
+:::{scene-cards}
+---
+cards: |
+  media/environment-pitch-striped.webp | Striped pitch
+  media/environment-pitch-plain.webp | Plain pitch
+  media/environment-marble.webp | Light stone floor
+  media/environment-wood.webp | Wooden floor
+  media/environment-furnished-room.webp | Furnished room
+---
+
+The same Microduck in different visual and spatial conditions. Compare floor texture, reflections, shadows and furniture in the camera background. The furnished room uses the official Isaac Sim Simple Room asset. These static illustrations explain environmental variation; they are not shooting-validation results.
+:::
+
 {#domain-randomization}
 ## Environment domain randomization
 
@@ -64,18 +77,44 @@ After moving to new environments, failures have different causes and need differ
 
 Appearance randomization changes “what it looks like”; physics randomization changes “how it actually moves”. Design and verify them separately.
 
+{#navigation}
+## Navigate complex environments with Isaac Lab 3 and Nav2
+
+Furniture, narrow passages and slopes separate navigation into two questions: which route to take, and how to walk it reliably. One design is to train a terrain-appropriate locomotion policy in Isaac Lab 3 and connect the ROS 2 Nav2 stack through Isaac Sim's ROS 2 interfaces.
+
+```{learning-flow}
+label: From a map to actual steps
+nodes:
+- ["Map and localization", "Pose, obstacles and traversable space"]
+- ["Nav2 navigation", "Plan a path and request local velocity"]
+- ["Locomotion policy", "Use body feedback to generate joint actions"]
+- ["Simulation and feedback", "Update pose, contacts and obstacle observations"]
+details:
+- Supply consistent transforms, odometry, a map and obstacle observations. Include robot dimensions and clearance margins when identifying traversable space.
+- Nav2 belongs to ROS 2. A global planner finds a route and a local controller tracks it while responding to obstacles. Adapt and limit commands to the robot's actual velocity and turning capabilities.
+- Isaac Lab 3 can train the walking policy. It reads velocity requests plus joint and IMU feedback, then generates joint targets to handle balance and ground contact.
+- Isaac Sim provides scenes, sensors and ROS 2 interfaces. New pose and obstacle information feeds navigation; body state feeds the walking policy.
+layout: learning
+loop: true
+caption: This is a design for more complex environments. The simple pitch in section 4.2 retains its direct straight approach and does not require this navigation stack.
+```
+
+A geometric route does not establish that the robot can walk it. Check slopes, steps, low obstacles and narrow passages against traversability, body clearance and policy capabilities. A conventional 2D costmap does not teach bipedal foot placement. Validate walking and recovery on the target terrain before integration, then evaluate localization, obstacle avoidance and whole-task outcomes separately.
+
+The official [Isaac Sim ROS 2 navigation tutorial](https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_navigation.html) and [RL controller tutorial](https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_rl_controller.html) demonstrate the two interfaces separately and provide a starting point for this composition.
+
 {#direct-joints}
 ## Another option: GR00T outputs the 14 servo actions directly
 
-In this course GR00T outputs 8D high-level requests, and the low-level walking policy turns them into targets for the 14 servos (Section 5.2). One could also remove that middle layer and let GR00T output joint targets directly:
+In the previous section, we designed GR00T to output 8D high-level requests, and the skill execution layer turns them into targets for the 14 servos (Section 5.2). One could also remove that middle layer and let GR00T output joint targets directly:
 
 ```{learning-flow}
 label: "Idea: GR00T outputs the 14 joint targets directly"
 nodes:
-- [Observation and instruction, "RGB images, task instruction and body state"]
-- [GR00T, Predicts a chunk of actions]
-- [Joint target sequence, "Ordered in time, 14 target angles per step"]
-- [Joint controller, "Servo position control, limits and safety protection"]
+- ["Observation and instruction", "RGB images, task instruction and body state"]
+- ["GR00T", "Predicts a chunk of actions"]
+- ["Joint target sequence", "Ordered in time, 14 target angles per step"]
+- ["Joint controller", "Servo position control, limits and safety protection"]
 details:
 - The input types remain camera images, the task instruction and body state; the state encoding and action labels must be redesigned for the 14-joint interface.
 - The model predicts the actions for a short stretch of time ahead.
@@ -101,10 +140,10 @@ NVIDIA Cosmos is a platform of world foundation models for physical AI. Cosmos 3
 ```{learning-flow}
 label: Change visual appearance; check whether action labels still hold
 nodes:
-- [Reliable source trajectory, 'Images, state, executed actions']
-- [Cosmos 3 transfer, Generate constrained appearance]
-- [Check data consistency, 'Geometry, contact, timing']
-- [Train and compare, Autonomous success in unfamiliar scenes]
+- ["Reliable source trajectory", "Images, state, executed actions"]
+- ["Cosmos 3 transfer", "Generate constrained appearance"]
+- ["Check data consistency", "Geometry, contact, timing"]
+- ["Train and compare", "Autonomous success in unfamiliar scenes"]
 details:
 - The source data first needs correct actions and timing. Behavior the original demonstration never taught cannot be added by changing its appearance.
 - Structural conditions help keep the layout while the prompt changes lighting or room appearance. Generated results are only candidates; even with constraints, some frames can be wrong.
@@ -122,27 +161,6 @@ When augmenting data with generated video, several constraints must hold:
 - **Physics does not happen again.** A generated video changes only the picture; how the ball rolls and how the feet touch the floor are not recomputed. Swapping the carpet for a more slippery floor may break the original gait and kick timing; changes involving friction, mass or contact must be collected again in physics simulation.
 
 So the role Cosmos 3 suits is a **supplement of appearance diversity**: letting the model see more lighting and room appearances while geometry, actions and physics stay the same. It cannot replace new action demonstrations, nor prove that the actions can be executed in a new environment; reliability still has to be tested in closed-loop simulation and then on the real robot.
-
-{#arena}
-## Plan a set of environment evaluations
-
-As conditions multiply, the number of evaluation combinations grows quickly. Isaac Lab-Arena splits an environment into Scene, Embodiment (robot and sensors) and Task, making combined evaluation and data collection easier; Isaac Lab organizes the learning environment, Newton advances the physics and the renderer produces images.
-
-```{scenario-matrix}
-title: Plan an evaluation set
-factors:
-- [4, Four floors]
-- [3, Three lighting setups]
-- [3, Three indoor layouts]
-seeds_label: New test starts per combination
-seeds: 5
-scope: This is only a combination counter; it does not launch simulation or training. Unchecking a factor fixes it to one condition.
-```
-
-{#experiment}
-## Widen one factor at a time
-
-A sensible order is: reliable on the green pitch → a new range of starts → small lighting changes → new floor appearance → new indoor layouts → physics changes backed by measurements. Keep the previous step as a control at every stage and compare with the same full-success criterion. If the main new failure is not seeing well, add visual coverage; if it is drifting or unsteadiness, go back to corrective demonstrations or to calibrating the low-level skills and physics parameters.
 
 ::::{quiz}
 If a video of the same actions is given ten different backgrounds, is that ten times as much action experience?
@@ -170,3 +188,5 @@ Lighting changes only the images; the motion of the ball and robot is unchanged,
 - [NVIDIA Cosmos ↗](https://www.nvidia.com/en-us/ai/cosmos/)
 - [Domain randomization for transferring from simulation to the real world ↗](https://arxiv.org/abs/1703.06907)
 - [Isaac Lab-Arena ↗](https://github.com/isaac-sim/IsaacLab-Arena)
+
+- [Isaac Sim environment assets ↗](https://docs.isaacsim.omniverse.nvidia.com/6.2.0/assets/usd_assets_environments.html)

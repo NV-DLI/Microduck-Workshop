@@ -543,6 +543,9 @@ def control_timing(d, lang):
     longer in effect). course-widgets.js marks items future/active/live/expired
     and draws the dependency arrows (data-from/data-to rows).
     """
+    if d.get("kind") in ("walking-theory", "groot-theory"):
+        from .theory_timing import render
+        return render(d["kind"], lang)
     zh = lang == "zh"
     t = lambda a, b: a if zh else b
     pct = lambda u: f"{100 * u:.3f}%"

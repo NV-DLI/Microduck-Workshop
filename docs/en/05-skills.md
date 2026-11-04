@@ -6,7 +6,7 @@ myst:
 
 <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
 
-# 3.5 (Extension) Community skills: reward design
+# 3.5 (Extention) Community skills: reward design
 
 :::{lesson-intro}
 :meta: Section 3.5 · Reading and analysis · Estimated learning time: 45 minutes

@@ -25,19 +25,18 @@ T_exec:
 f_action:
   tex: f_{\mathrm{action}}
   text: Rate at which high-level requests are recorded and executed; 12.5 Hz here.
-k_round:
-  tex: k
-  text: 'Round index: for GR00T a round is one new prediction and its execution, for the onboard policy one sensor capture and its decision; $k-1$ is the previous round and $k+1$ the next.'
 ```
 
 {#task}
-## One pitch, one gait, one instruction
+## Design the learning task around the goal
 
-GR00T here does one thing: on the course's green football pitch, walk up to the ball, kick it into the goal with the right foot, then recover to standing. The pitch, goal, ball and lighting are exactly those used by the onboard policy. The model always receives the same instruction:
+Start with the desired outcome: approach the ball, adjust the stance, kick into the goal with the right foot, and recover to standing. Then define what the model can observe, which actions it can request, and how completion will be evaluated. The Microduck example connects these choices into a method that also applies to other robot tasks.
+
+The demonstrations use this instruction:
 
 <q>Walk to the football, kick it into the goal with the right foot, and recover to standing.</q>
 
-The instruction does not say where the ball is or where to stand before kicking; the robot has to work that out from camera images and body state. Every demonstration uses this one instruction, so the model learns this one task, and nothing can be inferred about other instructions.
+Images describe the ball and goal relative to the robot; body state describes its motion; text specifies the objective. A fixed task and pitch provide an inspectable baseline. This experiment's coverage is not a limit on GR00T's capabilities: broader instructions, starting poses and environments require corresponding demonstrations and evaluation on held-out conditions.
 
 :::{course-video} media/groot-walking-success-recorded
 :alt: Simulation recording of a walking shot controlled by GR00T: on the green pitch the robot walks to the ball, settles, kicks it into the goal with the right foot and then recovers to standing.
@@ -127,105 +126,57 @@ caption: The same capture as the figure in Section 4.1, used to compare what the
 
 The onboard policy uses ToF to judge the floor and the distance ahead of its feet, while GR00T can learn the corresponding behavior only from images, body state and demonstrations. Keep this in mind when comparing the two approaches.
 
-{#timing}
-## Control timing: how often each module updates
+{#data-train}
+## Prepare demonstrations that teach the whole task
 
-The figure below comes from a completed walking-shot simulation record. It shows the previous, current and next rounds in a row and compares the order and update rates of the modules in the onboard policy and in GR00T.
+Begin with a capable teacher and record the request it makes given each observation. The teacher may be a human teleoperator or a validated automated policy. This course uses onboard-policy demonstrations covering approach, observation, adjustment, kicking and recovery. Recording only the kick would leave the model without examples of how to reach a suitable stance.
 
-```{control-timing}
-title: 'Control cycle: from observation to action'
-subtitle: Walking shot · three consecutive rounds from a recorded simulation
-modes: {onboard: Onboard policy, groot: GR00T}
-play_label: Play sequence
-replay_ms: {groot: 15000, onboard: 9000}
-rounds:
-- {label: '$\sym{k_round}-1$ previous', name: Previous round, plain: k−1, command: 'Execute round $\sym{k_round}-1$ command'}
-- {label: '$\sym{k_round}$ current', name: Current round, plain: k, command: 'Execute round $\sym{k_round}$ command'}
-- {label: '$\sym{k_round}+1$ next', name: Next round, plain: k+1, command: 'Execute round $\sym{k_round}+1$ command'}
-groot:
-  round_start_ms: [0, 320, 640, 960]
-  inference_ms: [326.5, 323.5, 333.9]
-  cached_ms:
-  - [34.3, 15.7, 15.4]
-  - [15.5, 15.2, 15.7]
-  - [16.1, 14.7, 16.0]
-  command_ms: 80
-  actor_step_ms: 20
-  capture_ms: [30, 95, 160, 230, 295, 360, 430, 495, 560, 630, 695, 760, 830, 895]
-  latest_frame_ms: [-40, 295, 630]
-  history_frame_ms:
-  - [-5770, -3840, -1970, -40]
-  - [-5440, -3570, -1640, 295]
-  - [-5170, -3240, -1305, 630]
-  actor_ms: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360, 380, 400, 420, 440, 460, 480, 500, 520, 540, 560, 580, 600, 620, 640, 660, 680, 700, 720, 740, 760, 780, 800, 820, 840, 860, 880, 900, 920, 940]
-  infer_share: 0.36
-  cache_share: 0.025
-  phase_name: Phase
-  infer_label: Inference<br>{ms} ms
-  exec_label: 4 commands<br>320 ms simulation
-  paused_label: paused
-  actor_paused_label: Actions paused
-  predict_label: 16 new<br>commands
-  lanes:
-    camera: {name: Camera capture, rate: 'RGB · 15 Hz, about every 67 ms'}
-    commands: {name: High-level motion commands, rate: 80 ms each · new inference after 4}
-    actor: {name: Low-level motion policy, rate: 50 Hz · every 20 ms}
-  say_infer: '{round} · new inference: the simulation pauses while the server computes 16 new commands in {ms} ms. Its images are the latest frame (captured {age} ms before the pause) and three history frames from about {history} s earlier; only the first 4 commands of this prediction are used; the other 12 are not executed.'
-  say_first: '{round} · command 1: taken directly from the new inference and executed for 80 ms of simulation; the low-level motion policy updates 4 times, computing a new joint action each time.'
-  say_cached: '{round} · command {n}: fetched from this round’s cache (the server took {ms} ms, with no new inference), now executed for 80 ms of simulation with 4 low-level updates.'
-  say_wait: '{round} · fetch cached command {n}: simulation pauses for the response; this server call took {ms} ms. It uses this round’s existing prediction without running a new inference.'
-  cache_title: 'Fetch the next cached command: server {ms} ms; the simulation does not advance while waiting'
-  used_title: Latest image read by the {round} new inference
-  lead_title: Latest frame, captured {age} ms before this excerpt, read by the previous round's new inference
-  capture_title: Camera capture; a newer frame replaces it before any new inference reads it
-  legend: ['Vertical line: one camera capture (bright = latest frame read by a new inference)', 'Short bar: one low-level motion-policy update', 'Hatching: simulation paused (new inference or cached command)', 'Color: owning round; grey: no longer used by the current step; dashed: not yet happened']
-  note: The inference column and the narrow cached-command columns only show order; their widths are not to scale. Inside each command, positions follow simulation time. Simulation intervals exclude capture, communication and server waiting.
-onboard:
-  capture_ms: [0, 70, 140, 200]
-  actor_ms: [0, 20, 40, 60, 80, 100, 120, 140, 160, 180]
-  actor_round: [0, 0, 0, 0, 1, 1, 1, 2, 2, 2]
-  decision_ms: [42.631, 39.377, 45.633]
-  detector_ms: [7.927, 8.047, 10.893]
-  navigation_ms: [34.703, 31.328, 34.739]
-  lanes:
-    sensors: {name: Sensor capture, rate: 'RGB + ToF · 15 Hz, about every 67 ms'}
-    decision: {name: Onboard decision, rate: once after each capture ◆}
-    commands: {name: Perception reference, rate: feedback continues between captures}
-    actor: {name: Low-level motion policy, rate: 50 Hz · every 20 ms}
-  command_labels: ['Use round $\sym{k_round}-1$ perception', 'Use round $\sym{k_round}$ perception', 'Use round $\sym{k_round}+1$ perception']
-  capture_label: RGB + ToF
-  decision_label: Detect · decide
-  decision_note: measured {ms} ms
-  capture_title: RGB and ToF update in the same simulated capture with the same timestamp
-  decision_title: 'The onboard policy processes this capture: detector call {det} ms (including raw pixel transfer and local communication), geometry, straight-approach decisions, gaze and safety guards {nav} ms, total {ms} ms (host-measured from sensor data ready to capture-decision completion, excluding sensor capture and 50 Hz feedback; simulation time does not advance meanwhile)'
-  next_title: Sensor capture for the following round
-  say: '{round}: the sensors capture RGB and ToF together → the simulation pauses for detection, geometry, straight-approach and gaze decisions, measured at {ms} ms → feedback combines this perception reference with body state to keep correcting velocity; the low-level motion policy updates {n} times.'
-  legend: ['Vertical line: one sensor capture', '◆ processing event: done while the simulation is paused; measured time below, not to axis scale', 'Short bar: one low-level motion-policy update', 'Color: owning round; grey: replaced by a newer round; dashed: not yet happened']
-  note: The horizontal axis is to scale in simulation time; processing time takes no axis width. The 15 Hz capture is rounded to the 10 ms physics step, so captures are 60 or 70 ms apart (70, 70, 60 ms here); the low-level motion policy updates 4, 3 and 3 times under the three perception references, while velocity requests continue changing between captures.
-facts:
-- modes: [onboard]
-  text: In this course's simulation RGB and ToF update in the same capture with the same timestamp; this is a simulation setting, not a claim of hardware sensor synchronization. After each capture the onboard policy uses the images, depth and body state for object detection, geometry, straight-approach and gaze decisions, then applies safety guards, and outputs gaze, velocity and skill requests.
-- modes: [onboard]
-  text: 'Captures run at 15 Hz, about 67 ms of simulation time apart, yet the three decisions here took 42.6, 39.4 and 45.6 ms on the host. These do not conflict: evaluation is synchronous and simulation time does not advance until a decision finishes, so the times are written under ◆ instead of stretching the axis. Timing starts after sensor capture and archive submission and ends when the capture decision is ready; it excludes rendering, archive submission, 50 Hz feedback and low-level motion-policy inference. This is a DGX Spark workstation measurement, not a measurement on the robot''s controller board.'
-- modes: [onboard]
-  text: Colors identify the latest perception round, not a constant velocity request. Between captures, joint encoders and the IMU continuously update position memory. Velocity feedback, safety guards and head limits run at 50 Hz before the low-level motion policy produces joint actions.
-- modes: [groot]
-  text: Each new inference outputs 16 eight-dimensional high-level motion commands (velocity, gaze and skill requests); only the first 4 are executed. Each command is held for 80 ms of simulation while the low-level motion policy computes a new joint action every 20 ms, so one command spans 4 joint-action computations. The other 12 are not executed; after the first 4, fresh observations trigger a new prediction.
-- modes: [groot]
-  text: 'In synchronous evaluation every call, once per 80 ms, waits for the server before the simulation continues: 1 call in 4 is a new inference, the other 3 only take the next command from the cache. The three new inferences here took 326.5, 323.5 and 333.9 ms of server computation. Across the evaluation batch, 899 new inferences had a median of 332 ms (P95 351 ms) and 2,680 cached calls a median of 15 ms. These are server computation times only, excluding network transfer and image capture, and must not be added to simulation time as one cycle.'
-- modes: [groot]
-  text: The camera captures at 15 Hz while the simulation advances and not while it is paused. A new inference reads only the latest frame plus three history frames from about 1.9, 3.8 and 5.8 s earlier; the frames in between are not fed to that inference directly.
-caption: 'Data from the course''s completed simulation logs: GR00T, 12 consecutive calls in one walking-shot evaluation (simulation 8.24–9.20 s, start-up warm-up skipped); onboard policy, three consecutive decisions during continuous walking in a straight-approach run (simulation 4.600–4.800 s). The excerpts show update order, not task success rates or end-to-end real-time performance. [View timing data](_static/data/control-timing-evidence.json)'
+| Data decision | Course design | Reason |
+|---|---|---|
+| Observations and labels | Align RGB, body state, task text and the 8-D request | Labels must correspond to information available before the request, without future-state leakage |
+| Sequence | One request every 80 ms; 16-step targets at each training anchor | Learn how requests develop over time |
+| History | Current image plus three past images and matching state summaries | Distinguish approach, turning and recovery; all history must precede the decision |
+| Split | Separate complete episodes into training and validation sets | Adjacent frames from the same episode must not leak across the split |
+| Checks | Fixed dimensions, joint order, units, timestamps and valid-frame flags | Prevent swapped fields or padded samples from becoming misleading training targets |
+
+A new task also needs corrective examples: approaching from the side, briefly losing sight of the ball, or recovering an unsuitable stance. Adding similar successful episodes alone may not cover the states the model reaches after making a mistake. Mark valid labels at episode boundaries so padding is not treated as real action data.
+
+{#training}
+## Freeze the vision-language backbone and train the action head
+
+The pretrained vision-language backbone converts images and instructions into features. This course freezes those parameters and trains the action head, including its state and action projections, for Microduck's 127-D state and 8-D request interface. It updates the full action head, rather than only a final linear layer or LoRA adapters. The low-level walking and kicking skills retain their existing weights.
+
+```{learning-flow}
+label: Learn Microduck's action interface from demonstrations
+nodes:
+- [Images and text, Frozen vision-language backbone]
+- [State and targets, 127-D state and 16 × 8 requests]
+- [Train the action head, Recover demonstration requests from noise]
+- [Closed-loop validation, Complete the task from new starts]
+details:
+- Reuse pretrained visual and language representations while reducing the parameters updated for this task.
+- Align state and images; calculate normalization statistics from the training set only and preserve field order and units at deployment.
+- Add noise to demonstration actions and learn the denoising direction conditioned on features and state. Backpropagation updates only the enabled action-head and projection parameters.
+- Evaluate the model using feedback from its own actions. Check goals, falls, recovery, timeouts and errors; training loss and offline action error cannot establish task success.
+layout: learning
 ```
 
-The simulation evaluation is synchronous: simulation stops while waiting for the server, so live viewing shows pauses, while a video exported on simulation time hides these waits. A real robot cannot pause physical time: the low-level motion policy needs a control loop that keeps running, high-level inference must run asynchronously with a command buffer, and stale commands and observations must be handled.
+Comparison with demonstrations can expose interface and alignment errors. Closed-loop simulation reveals whether small errors accumulate. Retain successes, failures and technical errors, distinguishing a completed attempt that failed the task from a program that did not finish. The video shows one successful episode, not a reliability estimate.
 
-{#data-train}
-## Demonstrations, training and validation
+{#timing}
+## Control cycle
 
-The course pairs camera images, body state and 8-D requests from successful onboard-policy demonstrations, then divides the data by whole episode, with no repeated episode across training and validation. Training freezes the vision-language backbone and updates only the action head, teaching the model when to move, look and kick.
+GR00T requests a sequence of high-level actions while the low-level policy handles faster body feedback. The diagram uses readable integer values: each high-level request covers 80 ms, four requests cover 320 ms, and the theoretical 50 Hz control loop updates joint actions every 20 ms.
 
-After training, GR00T controls the simulated robot itself in closed-loop tests, judged by a full goal, no fall and recovery to standing. A lower training loss only shows a better fit to the demonstrations; the video above shows one successful episode, while reliability needs repeated independent tests. This section requires observation and understanding, with no training or inference to run.
+```{control-timing}
+kind: groot-theory
+```
+
+**About 300 ms** is a rounded illustration of the measured **332 ms median** server-side fresh-inference time on DGX Spark. It is not a mean and excludes image capture, network transfer and client processing. The 80, 320 and 20 ms intervals are configured simulation time; they cannot simply be added to host computation time or used to claim real-time throughput.
+
+**Connect action chunks with RTC.** Real-Time Chunking can accompany asynchronous inference: predict the next chunk while executing the current one, constrain the prefix that will be too late to change, and smooth the remaining transition. This can reduce the gap between chunks; inference still takes time, and buffer exhaustion, network jitter and timeouts remain design concerns. For this course's high-level requests, retain discrete kick-trigger and skill-state guards instead of smoothing every field indiscriminately.
+
+The [NVIDIA GR00T deployment guide](https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/real_world_deployment.md) and [LeRobot RTC documentation](https://huggingface.co/docs/lerobot/rtc) explain the approach. This is an extention design: the recorded course evaluation is synchronous and does not implement RTC. Adapting the model interface, chunk length and asynchronous executor requires separate continuity and timeout validation.
 
 {#deployment}
 ## On a real robot: infer on a workstation, connect over the network

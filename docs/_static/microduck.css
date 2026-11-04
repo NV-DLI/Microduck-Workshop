@@ -2503,3 +2503,19 @@ html[data-theme="dark"] .recorded-badge {
   border-top: 1px solid var(--line);
   text-align: left;
 }
+
+/* Configured control periods, independent of measured host inference time. */
+.theory-cycle {margin: 1.8rem 0; padding: 1.2rem; border: 1px solid var(--line); border-radius: 8px;}
+.cycle-grid {display:grid;gap:.65rem;}
+.cycle-row {display:grid;grid-template-columns: 13rem minmax(0,1fr);gap:1rem;align-items:center;font-size:.85rem;}
+.cycle-track {position:relative;height:2.6rem;background:var(--soft);}
+.cycle-block {position:absolute;box-sizing:border-box;top:0;height:100%;display:flex;align-items:center;justify-content:center;border:2px solid var(--surface,#fff);border-radius:5px;font-size:.78rem;background:#dbe9c8;color:#24311c;transition:opacity .1s;}
+.cycle-tone-1{background:#d4e5ed;color:#233c4c}.cycle-tone-2{background:#f2e3bd;color:#4a3718}
+.theory-cycle[data-active] .cycle-block{opacity:.35}.theory-cycle[data-active] .cycle-block.is-current{opacity:1;outline:2px solid #76b900;outline-offset:-3px}
+.cycle-ticks{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}.cycle-controls{display:flex;gap:1rem;align-items:center;margin:1rem 0}.cycle-controls[hidden]{display:none}.cycle-controls label{display:flex;align-items:center;gap:.6rem;flex:1}.cycle-controls input{width:100%;min-width:3rem}.cycle-controls output{white-space:nowrap;min-width:4.5rem}
+.theory-cycle details{margin-top:.7rem}.scene-card-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:800px){.cycle-row{grid-template-columns:1fr;gap:.2rem}.scene-card-grid{grid-template-columns:1fr}}
+
+.cycle-overview{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin:1rem 0 1.5rem}.cycle-overview span{flex:1;padding:.75rem;border:1px solid var(--line);border-radius:6px;text-align:center;font-size:.9rem}.cycle-overview small{display:block;color:var(--muted);margin-top:.3rem}.cycle-overview b{font-size:1.3rem;color:#76b900}
+
+.cycle-controls label{white-space:nowrap}.cycle-controls button{padding:.35rem .8rem;border:1px solid #76b900;border-radius:5px;background:var(--soft);color:inherit}.cycle-controls button:focus-visible{outline:2px solid #76b900;outline-offset:3px}

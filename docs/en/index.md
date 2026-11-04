@@ -54,7 +54,7 @@ setup
 ```
 
 ```{toctree}
-:caption: 5 (Extension) Score autonomously with GR00T
+:caption: 5 (Extention) Score autonomously with GR00T
 :hidden:
 
 07-groot
@@ -81,7 +81,7 @@ The whole course follows one Microduck, one green football pitch, one ball and o
 2. Meet Microduck
 3. Train skills with reinforcement learning
 4. Complete the shooting task with an onboard policy
-5. (Extension) Score autonomously with GR00T
+5. (Extention) Score autonomously with GR00T
 6. Reference and help
 
 {#learn}
@@ -100,7 +100,7 @@ The whole course follows one Microduck, one green football pitch, one ball and o
 |---|---|
 | 1 Overview | 1.1 Teach Microduck to score a goal · 1.2 Set up the environment and get the code |
 | 2 Meet Microduck | 2.1 Meet Microduck: play football first · 2.2 Mechanism and control timing |
-| 3 Teach Microduck skills with reinforcement learning | 3.1 Reinforcement learning and PPO · 3.2 Reinforcement learning for Microduck · 3.3 Train and test a walking policy · 3.4 Extension: walking steadily up and down slopes · 3.5 (Extension) Community skills: reward design |
+| 3 Teach Microduck skills with reinforcement learning | 3.1 Reinforcement learning and PPO · 3.2 Reinforcement learning for Microduck · 3.3 Train and test a walking policy · 3.4 Extention: walking steadily up and down slopes · 3.5 (Extention) Community skills: reward design |
 | 4 Complete the shooting task with an onboard policy | 4.1 Find the ball and goal: RGB detection and ToF ranging · 4.2 Designing the shooting stages |
-| 5 (Extension) Score autonomously with GR00T | 5.1 Vision-language-action (VLA) models and GR00T · 5.2 Score autonomously with GR00T · 5.3 From the pitch to more environments |
-| 6 Reference and help | 6.1 Models and data · 6.2 Troubleshooting · 6.3 Further learning and references |
+| 5 (Extention) Score autonomously with GR00T | 5.1 Vision-language-action (VLA) models and GR00T · 5.2 Score autonomously with GR00T · 5.3 From the pitch to more environments |
+| 6 Reference and help | 6.1 Let Agent do the heavy lift · 6.2 Troubleshooting · 6.3 Further learning and references |

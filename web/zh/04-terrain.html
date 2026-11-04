@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=ae9b8311" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -351,7 +351,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 让智能体帮您搭把手</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
@@ -488,8 +488,8 @@
 </div>
 </div>
 <figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="坡地步行训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只 Microduck，有的在走，有的已经摔倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的坡地步行训练窗口，展示训练刚开始的样子。画面里是随机生成的训练地形，不是后面验证用的楔形坡台。</p>
-</figcaption></figure><p>观察一会儿就可以按 Ctrl+C 停止。训练每 250 轮保存一次检查点并导出一份可测试的策略（例如 <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>），跑完 1000 轮后才生成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。后面的验证默认使用课程提供的坡地模型，不需要等你的训练完成。</p>
-<p><strong>这条命令不等于课程模型的训练过程。</strong> 固定模型 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> 来自三个连续阶段：1000 轮（与上面的命令设置相同，DGX Spark 上不开窗口约 8 分钟），续训 1500 轮（加强角速度跟踪、固定名义物理参数），再续训 2000 轮（加入下一部分的转向奖励）。而且那次训练使用的接触配置与当前命令的全身碰撞模型不同。所以你的 1000 轮是一次新实验，不能期望复现固定模型的成绩。</p>
+</figcaption></figure><p>观察一会儿就可以按 Ctrl+C 停止。训练每 250 轮保存一次检查点并导出一份可测试的策略（例如 <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>），跑完 1000 轮后才生成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。后面的验证默认使用课程提供的坡地模型，不需要等您的训练完成。</p>
+<p><strong>这条命令不等于课程模型的训练过程。</strong> 固定模型 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> 来自三个连续阶段：1000 轮（与上面的命令设置相同，DGX Spark 上不开窗口约 8 分钟），续训 1500 轮（加强角速度跟踪、固定名义物理参数），再续训 2000 轮（加入下一部分的转向奖励）。而且那次训练使用的接触配置与当前命令的全身碰撞模型不同。所以您的 1000 轮是一次新实验，不能期望复现固定模型的成绩。</p>
 <figure class="media"><a class="still-link" href="../assets/media/tensorboard-terrain.png"><img loading="lazy" src="../assets/media/tensorboard-terrain.png" alt="TensorBoard 标量页面，显示三个连续训练阶段（橙、蓝、红三色）。绿框 1 为地形难度等级，2 为平均回合回报，3 为转向角速度误差。"></a><figcaption><p>固定坡地模型三个训练阶段的 TensorBoard 记录（日志在 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>），横轴是累计迭代次数，绿框与编号为课程标注。① 地形难度等级在第一阶段从约 0.6 升到 2.0 左右，课程机制把表现好的环境移到了更陡的地块；② 每次续训开始时奖励设置改变，回报随之跳变，不同阶段的回报数值不能直接比较；③ 第三阶段加入转向奖励后，转向误差降到 0.25–0.35 rad/s 附近，波动较大。</p>
 </figcaption></figure></section>
 <section id="direction">

@@ -35,3 +35,7 @@ Center lessons on the actual Isaac Sim, Isaac Lab and Newton responsibilities, w
 ## Explained mathematical symbols
 
 Write prose variables as MyST inline math. Define contextual keys in a page-level `{symbols}` YAML block (`key: {tex: ..., text: ...}`), then use `\sym{key}` or `\symx{key}{custom TeX}` in `{formula}` and inline math. The same letter with different meanings needs different keys. Unknown/unused keys fail the Sphinx build. Explanations can use `$TeX$` segments. Preserve MathML, hover/focus/tap definitions, Escape dismissal, keyboard navigation within each formula, viewport placement and the collapsible symbol list. Verify nested variables, both themes and touch; preserve equation semantics and numerical data. Match filled swatches to bars and line styles to line series, without background badges behind bar values.
+
+## Current theory lesson convention
+
+The current user request supersedes the earlier measured-event replay requirement: 2.2 shows configured 50 Hz walking periods, and 5.2 uses a simplified theoretical control cycle with approximately 300 ms server inference, identified as a rounding of the measured 332 ms DGX Spark median. Preserve the original timing evidence separately. RTC is an asynchronous extension requiring integration and validation. Use 您 in Chinese and the user-specified “Extention” in English labels. Keep section 5.2 code-free, and make section 6.1 a tool-neutral agent-assisted robot-task workflow with repository handoff guides. The final 10 multiple-choice questions are LMS-only, with private authoring files.

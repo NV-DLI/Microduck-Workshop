@@ -51,7 +51,7 @@ const UI = {
     limit: "已到限位",
     handle: (name) => `转动${name}：方向键每次 1°，Page Up/Down 每次 10°`,
     back: "返回",
-    part: "你点的是：",
+    part: "您点的是：",
   },
   en: {
     chapters: [

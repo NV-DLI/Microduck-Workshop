@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters." name="description" />
+<meta content="Give your own agent a concrete robot-task brief, a staged implementation process, and evidence-based acceptance criteria." name="description" />
 
-  <title>6.1 Models and data - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>6.1 Let Agent do the heavy lift - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=ae9b8311" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -334,15 +334,15 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extension: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extension) Community skills: reward design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
@@ -350,7 +350,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">6.1 Models and data</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">6.1 Let Agent do the heavy lift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">6.1 Models and data</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">6.1 Let Agent do the heavy lift</span></li>
   </ul>
 </nav>
 </div>
@@ -404,12 +404,67 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="models-and-data">
-<h1>6.1 Models and data<a class="headerlink" href="#models-and-data" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Every main-path lab uses explicitly named fixed files. Download once and reuse them across chapters.</p>
-</div><div class="lesson-meta">Quick reference · No retraining required</div></div></div><section id="inventory">
-<h2>Course model inventory<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="let-agent-do-the-heavy-lift">
+<h1>6.1 Let Agent do the heavy lift<a class="headerlink" href="#let-agent-do-the-heavy-lift" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>The course connects robot models, basic motion, perception and autonomous shooting. You can now bring your own robot and objective to your preferred agent for help with design, implementation and validation. Supply the goal and constraints, and use actual evidence to judge the result.</p>
+</div><div class="lesson-meta">Section 6.1 · From this course to your own robot task</div></div></div><section id="start">
+<h2>Bring this task guide<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a> in the repository turns the course's workflow and lessons into a project guide that you can give directly to an agent. It does not depend on a particular tool or require a shooting task. Microduck can reuse the course assets and skills; another robot requires its own joint, action and physics checks.</p>
+<p>Provide the guide with your project and ask the agent to read it, inspect existing files, identify necessary missing information, and propose staged implementation. It does not need to be named AGENTS.md. If your tool reads that project convention, merge the relevant instructions into your own AGENTS.md.</p>
+</section>
+<section id="brief">
+<h2>Supply the essential context<a class="headerlink" href="#brief" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Information</p></th>
+<th class="head"><p>What to specify</p></th>
+<th class="head"><p>Microduck shooting example</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>Robot</p></td>
+<td><p>USD, URDF or MJCF, meshes, units, joint names/order, limits and default pose</p></td>
+<td><p>14 controlled joints with a fixed action mapping</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Simulation</p></td>
+<td><p>Isaac Sim / Isaac Lab versions, physics backend, ground, obstacles and contacts</p></td>
+<td><p>Newton, flat pitch, ball and goal</p></td>
+</tr>
+<tr class="row-even"><td><p>Task and acceptance</p></td>
+<td><p>Starts, goal, allowed actions, completion, timeout and failure definitions</p></td>
+<td><p>Approach, actual foot-ball contact, whole ball across the goal and standing recovery</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Observations</p></td>
+<td><p>Cameras, ToF, IMU and joints, with rates, frames and latency</p></td>
+<td><p>Visual target estimates and body feedback</p></td>
+</tr>
+<tr class="row-even"><td><p>Existing capabilities</p></td>
+<td><p>Reusable models, input/output contracts, data and runnable entry points</p></td>
+<td><p>Walking, kicking and standing recovery</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>Resources</p></td>
+<td><p>Hardware, memory, acceptable runtime, training budget and output location</p></td>
+<td><p>Small initial checks and separate output directories</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Write “unknown; inspect or propose a measurement” when information is missing. Do not let the agent guess joint order, units or success criteria: a program may run while producing meaningless results.</p>
+</section>
+<section id="workflow">
+<h2>Advance through verifiable steps<a class="headerlink" href="#workflow" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-3e23d28bc5"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Organize a robot project using the course experience"><svg class="learning-svg" viewBox="0 0 900 191" role="group" aria-labelledby="learn-3e23d28bc5-title"><title id="learn-3e23d28bc5-title">Organize a robot project using the course experience</title><defs><marker id="learn-3e23d28bc5-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 95.5H244.0" marker-end="url(#learn-3e23d28bc5-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 95.5H468.0" marker-end="url(#learn-3e23d28bc5-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 95.5H692.0" marker-end="url(#learn-3e23d28bc5-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Verify the interface" aria-controls="learn-3e23d28bc5-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="143" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Verify the</text><text x="114.0" y="94" class="learning-node-title">interface</text><text x="114.0" y="118" class="learning-node-subtitle">Joints, frames,</text><text x="114.0" y="135" class="learning-node-subtitle">observations</text><text x="114.0" y="152" class="learning-node-subtitle">and actions</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Build a minimal loop" aria-controls="learn-3e23d28bc5-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="143" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Build a</text><text x="338.0" y="94" class="learning-node-title">minimal loop</text><text x="338.0" y="118" class="learning-node-subtitle">Stable initialization</text><text x="338.0" y="135" class="learning-node-subtitle">and one basic behavior</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Compose the task" aria-controls="learn-3e23d28bc5-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="143" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">Compose the task</text><text x="562.0" y="98" class="learning-node-subtitle">Perception, approach,</text><text x="562.0" y="115" class="learning-node-subtitle">execution and recovery</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. Validate and deliver" aria-controls="learn-3e23d28bc5-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="143" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">Validate</text><text x="786.0" y="94" class="learning-node-title">and deliver</text><text x="786.0" y="118" class="learning-node-subtitle">New conditions,</text><text x="786.0" y="135" class="learning-node-subtitle">failure records</text><text x="786.0" y="152" class="learning-node-subtitle">and reproduction</text></g></svg></div><div class="learning-details" aria-label="Organize a robot project using the course experience"><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-3e23d28bc5-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Verify the interface</h3><p>Read the actual model and configuration and write an input/output contract. Loading an asset does not establish correct joints or physics.</p></article><article id="learn-3e23d28bc5-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Build a minimal loop</h3><p>Test standing, walking or a basic manipulation behavior in a simple environment. Release initialization aids before policy execution; support is not learned capability.</p></article><article id="learn-3e23d28bc5-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Compose the task</h3><p>Separate inspectable stages. Reuse existing skills and simple control first, then use failure evidence to decide whether perception, locomotion or VLA training is needed.</p></article><article id="learn-3e23d28bc5-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>Validate and deliver</h3><p>Freeze a candidate and test predefined new starts. Retain every attempt and deliver configurations, model provenance, outcomes, limits and reproduction steps.</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>The shooting project illustrates how to locate an error before choosing a change. Incorrect ball position calls for sensor, coordinate and timing checks. Drifting despite seeing the ball calls for command, feedback and braking checks. A missed kick from a suitable stance calls for contact-geometry and skill-handoff checks. Falling loss, smooth video and one success do not replace task acceptance.</p>
+</section>
+<section id="handoff">
+<h2>Give the agent a concrete starting point<a class="headerlink" href="#handoff" title="Link to this heading">#</a></h2>
+<p>Adapt this brief and attach the model, scene and guide:</p>
+<blockquote>
+<div><p>Use ROBOT_TASK_GUIDE.en.md to help implement a simulated robot task. The robot and model paths are [fill in], simulation versions and physics backend are [fill in], and available sensors and policies are [fill in]. In [scene and starting range], it should complete [task]. Success requires [measurable conditions]; failures include [fill in]. Resources and budget are [fill in]. First inspect the files and interfaces and identify missing information that blocks implementation. Then begin with the smallest verifiable closed loop, provide actual evidence at each stage, preserve failures and original models, and advance only when the stage is ready.</p>
+</div></blockquote>
+<p>On resuming work, ask the agent to read the saved configuration, results and unresolved questions. This gives the next session a concrete starting point and makes the remaining work visible.</p>
+</section>
+<section id="inventory">
+<h2>Reference: course models and data<a class="headerlink" href="#inventory" title="Link to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>File (host <code class="docutils literal notranslate"><span class="pre">models/</span></code>, container <code class="docutils literal notranslate"><span class="pre">/workspace/Microduck-Workshop/models/</span></code>)</p></th>
@@ -531,7 +586,11 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventory">Course model inventory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start">Bring this task guide</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief">Supply the essential context</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Advance through verifiable steps</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#handoff">Give the agent a concrete starting point</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inventory">Reference: course models and data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#practice-data">Practice data and your outputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#licenses">Sources and usage terms</a></li>
 </ul>

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking on random slopes and verify it on a wedge ramp." name="description" />
 
-  <title>3.4 Extension: walking steadily up and down slopes - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>3.4 Extention: walking steadily up and down slopes - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=ae9b8311" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,14 +56,14 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3.5 (Extension) Community skills: reward design" href="05-skills.html" />
+    <link rel="next" title="3.5 (Extention) Community skills: reward design" href="05-skills.html" />
     <link rel="prev" title="3.3 Train and test a walking policy" href="03-walk-training.html" />
 
 
@@ -334,15 +334,15 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Extension: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extension) Community skills: reward design</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Extention: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extension) Score autonomously with GR00T</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
@@ -350,7 +350,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Models and data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Let Agent do the heavy lift</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
 </ul>
@@ -387,7 +387,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 Extension: walking steadily up and down slopes</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 Extention: walking steadily up and down slopes</span></li>
   </ul>
 </nav>
 </div>
@@ -405,8 +405,8 @@
                 <article class="bd-article">
                   
   <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="extension-walking-steadily-up-and-down-slopes">
-<h1>3.4 Extension: walking steadily up and down slopes<a class="headerlink" href="#extension-walking-steadily-up-and-down-slopes" title="Link to this heading">#</a></h1>
+<section class="tex2jax_ignore mathjax_ignore" id="extention-walking-steadily-up-and-down-slopes">
+<h1>3.4 Extention: walking steadily up and down slopes<a class="headerlink" href="#extention-walking-steadily-up-and-down-slopes" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking on random slopes and verify it on a wedge ramp.</p>
 </div><div class="lesson-meta">Section 3.4 · Method and hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough)</div></div></div><script type="application/json" class="course-symbols">{"w_i": {"tex": "w_i", "text": "Weight of reward term $i$. A positive weight means “more is better”; a negative weight makes the term a penalty."}, "g_i": {"tex": "g_i", "text": "Gate between 0 and 1 that decides whether this term applies in the current state, for example rewarding forward motion only while a push is commanded."}, "phi": {"tex": "\\phi", "text": "Shape function that turns the normalized error into a reward value, for example the tracking kernel $\\exp(-z^2)$ or the squared penalty $z^2$."}, "e_i": {"tex": "e_i", "text": "The error or physical quantity this term measures, with units, for example a velocity error (m/s)."}, "sigma_i": {"tex": "\\sigma_i", "text": "Scale in the same units as $e_i$, saying how large an error counts as “clear”. Dividing by it makes the error dimensionless."}, "z_norm": {"tex": "z", "text": "The normalized dimensionless error, $e_i/\\sigma_i$."}, "exp": {"tex": "\\exp", "text": "Exponential function, turning a squared error into a smooth reward between 0 and 1."}, "r_omega": {"tex": "r_{\\omega}", "text": "Turning-tracking reward, 1 at zero error and falling smoothly toward 0 as the error grows."}, "omega_z": {"tex": "\\omega_z", "text": "Actual angular velocity about the body $z$ axis, read from the simulation state during training (rad/s); when the body tilts it is not necessarily the world yaw rate."}, "omega_cmd": {"tex": "\\omega_z^*", "text": "Angular velocity requested by the turning command (rad/s); 0 when walking straight."}, "sigma": {"tex": "\\sigma", "text": "Tolerance scale of the turning error, here 0.15 rad/s."}}</script><section id="motivation">
 <h2>The 2026 GTC Berlin talk<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
@@ -602,7 +602,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">3.5 (Extension) Community skills: reward design</p>
+        <p class="prev-next-title">3.5 (Extention) Community skills: reward design</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

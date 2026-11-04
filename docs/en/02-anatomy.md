@@ -33,9 +33,6 @@ T_BF:
 q:
   tex: q
   text: Vector of all joint angles along this mechanical chain.
-q_joint:
-  tex: q
-  text: Angle of the joint selected in the 3D duck, as the joint coordinate of the simulation model; stored in radians and shown in degrees.
 T_joint:
   tex: '{}^{i-1}T_i'
   text: Transform between two adjacent links, set by the assembly position and the angle of this joint.
@@ -95,16 +92,6 @@ Microduck is a small biped: its legs support and move the body, the neck directs
 ```{robot-explorer}
 Colours are simplified to show what each part does; they are not the real paint. Part shapes, proportions, joint positions and axes come from the original CAD and the simulation model. The exploded spacing is only there to reveal the structure and is not an assembly sequence.
 ```
-
-Once the 3D duck has loaded, go through the three views at the top:
-
-- **The whole duck**: find the six parts: head, neck, body, hip, knee and foot. Click a name to see which servos move it, click a part to look closer, and drag to turn the duck.
-- **Exploded view**: parts that belong together move apart as a group. The numbered labels match the parts in How motors drive joints and tell how many servos drive each one; a leader starts at each servo housing and they merge before the name. Leg labels count per side. The eye is the camera. The ToF range sensor sits on the same face board, right beside the eye. The CAD has only the board's window for it, not a part for the sensor itself, so a crossed circle marks its position.
-- **How motors drive joints**: choose a part, then a motion, or click a servo in the model. The thin white line is the servo's output shaft, and the white paper-ribbon arrow beyond its end shows the drive direction: drag the ribbon, or click the dot in its middle and fine-tune with the arrow keys. Coral is the rotating servo, violet the bracket that turns with it, and parts that stay still are drawn only as light outlines. The leg controls show the left leg; the right leg mirrors it.
-
-All three views use the same parts: head 3 servos (head pitch, yaw and roll), neck 1, beak 1 (fixed in the simulation model), and per side hip 3, knee 1 and foot 1, 15 in total. Servos of one part are not always mounted together: each hip's yaw, roll and pitch servos sit in the body, the hip bracket and the thigh, so in the exploded view three leaders merge from three places into one Hip label.
-
-The panel's $\sym{q_joint}$ is the joint's angle in the simulation model. Code stores it in radians; the panel shows degrees ($1\ \mathrm{rad}\approx 57.3^\circ$), and the sign follows the right-hand rule about the joint axis. When standing, $\sym{q_joint}$ is usually not 0 (the left hip pitch is about $-26.2^\circ$), so the panel also shows the change from the stand pose. A walking policy's actions are offsets added to these stand angles. Real servos also carry their own calibration offsets, so these readings are model joint angles, not raw servo encoder values.
 
 :::{admonition} Hardware revision and simulation joints
 :class: note
@@ -197,13 +184,6 @@ No. Body pitch and roll move the neck and camera. Image stability depends on cam
 :::
 ::::
 
-{#read-assembly}
-## Exercise: trace one load path
-
-Start with the assembled model and trace upward from the ankle through the shin, knee, thigh and hip. When the foot is on the ground, support reaches the body along this path. Then separate the model and click the servos near a joint to see how adjacent links connect.
-
-Besides a motor, a servo contains reduction gears, position feedback and control electronics. After receiving a target angle it needs time to track it, limited by available torque, speed, friction and backlash. This section observes that gap between target and actual angle; Section 3.3 shows how training with randomized actuator properties helps a policy cope with it.
-
 {#policy-interface}
 ## What the policy receives and produces
 
@@ -250,10 +230,8 @@ caption: The velocity command says where and how fast to go; the policy turns it
 
 $\sym{q_target}$ is the joint target, $\sym{q_default}$ the default standing pose, and the action scale $\sym{s}$ is 1. An action is therefore an offset from the standing pose; the actuators and physics engine compute the actual motion from it. Even with matching input and output sizes, a different joint order, offset or observation normalization makes the actions wrong.
 
-```{concept-diagram}
-kind: timing
-label: 50 Hz policy updates and 200 Hz physics updates
-caption: 'One policy period contains four physics updates. The display frame rate is a separate quantity: a slower picture does not mean the simulation time step changed.'
+```{control-timing}
+kind: walking-theory
 ```
 
 ```{code-story}
@@ -339,9 +317,13 @@ result: |
 caption: Recorded run. The command, the actual window and the terminal output all come from the same run.
 ```
 
-```{formula} One statistic for velocity tracking
+Staying upright does not guarantee that the robot follows the requested velocity. Compare measured forward and sideways velocity with the command at every sample; RMSE summarizes these errors over the interval. A smaller value means closer tracking.
+
+```{formula} Check closed-loop velocity tracking
 \sym{rmse}=\sqrt{\frac{1}{\sym{N}}\sum_{\sym{t_idx}=1}^{\sym{N}}\symx{sqnorm}{\|\sym{v_xy}-\sym{v_cmd}\|_2^2}}
 ```
+
+For example, a constant forward command of 0.25 m/s and a constant measured velocity of 0.10 m/s, with no sideways motion, give an RMSE of 0.15 m/s. This illustrates the formula; it is not a measurement calculated from the sparse position record above. Compare policies using the same commands, sampling rate and evaluation interval.
 
 The root-mean-square error summarizes velocity tracking over a period; this section sets no universal pass threshold: first confirm there is no fall, then compare directions and speeds. Foot contact, actuator delay and backlash make joints lag behind their targets, which is why the policy reads a new observation every tick.
 

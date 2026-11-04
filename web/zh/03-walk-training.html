@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=ae9b8311" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-walk-training';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -351,7 +351,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 模型与数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 让智能体帮您搭把手</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 故障排查</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">6.3 继续学习与参考资料</a></li>
 </ul>
@@ -450,7 +450,7 @@
 <section id="why">
 <h2>行走为什么需要它<a class="headerlink" href="#why" title="Link to this heading">#</a></h2>
 <p>行走全靠脚与地面的接触和舵机的响应，而这些正是仿真最难做准的部分：不同批次的舵机摩擦不一样，电池电量会改变舵机输出，编码器零位有微小偏差，地面也有软有硬。如果策略只在一组“完美”参数下练习，它可能依赖这组参数的细节，换一台机器人或一块地面就站不稳。这种仿真与现实之间的差距，常被称为 sim-to-real 差距。</p>
-<p>范围的选择是一种权衡。范围太窄，策略仍然只适应少数情形；范围太宽，任务可能变得过难，策略学会的是保守、迟缓的动作，甚至学不会。范围最好以测量或硬件规格为依据，例如舵机延迟的实测区间、电池电压的工作范围。域随机化只覆盖你想到并写进配置的那些差异，不能替代真机验证。</p>
+<p>范围的选择是一种权衡。范围太窄，策略仍然只适应少数情形；范围太宽，任务可能变得过难，策略学会的是保守、迟缓的动作，甚至学不会。范围最好以测量或硬件规格为依据，例如舵机延迟的实测区间、电池电压的工作范围。域随机化只覆盖您想到并写进配置的那些差异，不能替代真机验证。</p>
 </section>
 <section id="what-varies">
 <h2>本次训练使用哪些随机化，怎样配置<a class="headerlink" href="#what-varies" title="Link to this heading">#</a></h2>
@@ -607,7 +607,7 @@
 <span class="p">)</span></code></pre></div></div></div></section>
 <section id="train">
 <h2>启动完整训练，观察并行训练<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
-<p>在 1.2 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.2 节</a>）。它从随机初始化开始训练，不读取任何已有模型的权重；<code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开 Isaac Sim 窗口，让你看到上千只小鸭子在各自随机化的环境里同时练习。<code class="docutils literal notranslate"><span class="pre">--output</span></code> 请使用尚不存在的新目录。</p>
+<p>在 1.2 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.2 节</a>）。它从随机初始化开始训练，不读取任何已有模型的权重；<code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开 Isaac Sim 窗口，让您看到上千只小鸭子在各自随机化的环境里同时练习。<code class="docutils literal notranslate"><span class="pre">--output</span></code> 请使用尚不存在的新目录。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-walk<span class="w"> </span><span class="se">\</span>
@@ -640,10 +640,10 @@
 </tbody>
 </table>
 </div>
-<p><strong>完整训练需要多长时间？</strong> 课程随附的预训练结果是在 DGX Spark 上不开窗口训练的：1024 个环境 × 2500 轮，训练阶段 7246 秒（约 2 小时），平均每 100 轮约 4.8 分钟，测量时 GPU 上还有其他任务。那次训练用的是官方原始碰撞模型，而上面的命令使用全身碰撞模型；打开 <code class="docutils literal notranslate"><span class="pre">--show</span></code> 时渲染也会拖慢训练，所以你的耗时会不同。</p>
-<p><strong>你不需要等它训练完。</strong> 窗口出现、终端开始逐轮打印回报和回合长度后，观察几分钟：前几十轮里大部分小鸭子很快摔倒、被单独重置，随着迭代推进，站得住的越来越多。</p>
+<p><strong>完整训练需要多长时间？</strong> 课程随附的预训练结果是在 DGX Spark 上不开窗口训练的：1024 个环境 × 2500 轮，训练阶段 7246 秒（约 2 小时），平均每 100 轮约 4.8 分钟，测量时 GPU 上还有其他任务。那次训练用的是官方原始碰撞模型，而上面的命令使用全身碰撞模型；打开 <code class="docutils literal notranslate"><span class="pre">--show</span></code> 时渲染也会拖慢训练，所以您的耗时会不同。</p>
+<p><strong>您不需要等它训练完。</strong> 窗口出现、终端开始逐轮打印回报和回合长度后，观察几分钟：前几十轮里大部分小鸭子很快摔倒、被单独重置，随着迭代推进，站得住的越来越多。</p>
 <p>看够了就按 Ctrl+C 停止，容器仍在运行。已保存的检查点（每 250 轮一个）会保留，但只有训练跑完才会导出 <code class="docutils literal notranslate"><span class="pre">exported/policy.onnx</span></code>。下面默认测试课程预先训练好的策略；想让自己的训练跑完时，可以去掉 <code class="docutils literal notranslate"><span class="pre">--show</span></code> 加快速度，完成后再显式换成自己的模型。</p>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-ppo-training.png" alt="训练时打开 --show 的 Isaac Sim 完整界面：白色地面上许多 Microduck 副本处在不同的步态阶段，有的站立、有的迈步、有的正在倾倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的训练窗口，训练刚开始：各副本处在不同的步态阶段，摔倒的副本会被单独重置。你的命令使用 1024 个环境，窗口里的小鸭子会更多、更密。</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-ppo-training.png" alt="训练时打开 --show 的 Isaac Sim 完整界面：白色地面上许多 Microduck 副本处在不同的步态阶段，有的站立、有的迈步、有的正在倾倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的训练窗口，训练刚开始：各副本处在不同的步态阶段，摔倒的副本会被单独重置。您的命令使用 1024 个环境，窗口里的小鸭子会更多、更密。</p>
 </figcaption></figure></section>
 <section id="watch">
 <h2>训练耗时与结果判断<a class="headerlink" href="#watch" title="Link to this heading">#</a></h2>
@@ -758,7 +758,7 @@
 </div>
 <figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-walk-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-ppo-walk-test.png" alt="用上面的命令测试预训练 PPO 策略时的 Isaac Sim 完整界面：视口中一只 Microduck 在平地上迈步，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>测试窗口：观察机器人起步后是否一直站稳、是否沿指令方向直行，还是逐渐偏向一侧。</p>
 </figcaption></figure><p>设置与 2.2 节的录制示例相同，可以直接对照：先看有没有跌倒，再比较 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 中的距离和方向。课程运行的那一次 12 秒内没有跌倒，前进指令期间走了约 1.11 m（平均约 0.11 m/s），但向右偏，整段约 26°、最后 2 秒约 37°；2.2 节的官方模型速度相近，却向左偏约 8°（最后 2 秒约 15°）。两者都能走，却都没有准确跟上指令。再把 <code class="docutils literal notranslate"><span class="pre">--velocity</span></code> 改成 <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span> <span class="pre">0.4</span></code> 测试转向，看看是否“会走不会转”。</p>
-<p><strong>测试你自己的策略。</strong> 只有当你的训练完整跑完、<code class="docutils literal notranslate"><span class="pre">outputs/walking-training-01/exported/policy.onnx</span></code> 已经生成时，才把命令里的 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 手动换成这个路径，并换一个新的 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 目录。一次成功的运行只是一个样本；要下结论，应换几组指令、从不同起点多次重复测试，并保留失败的结果。</p>
+<p><strong>测试您自己的策略。</strong> 只有当您的训练完整跑完、<code class="docutils literal notranslate"><span class="pre">outputs/walking-training-01/exported/policy.onnx</span></code> 已经生成时，才把命令里的 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 手动换成这个路径，并换一个新的 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 目录。一次成功的运行只是一个样本；要下结论，应换几组指令、从不同起点多次重复测试，并保留失败的结果。</p>
 <div class="quiz"><h3>检查理解</h3><p>为什么测试时要关闭训练中使用的随机推力和参数随机化？</p>
 <details><summary>查看解析</summary><p>本节先关闭随机推力与参数随机化，在名义条件下比较策略的基本响应。评估鲁棒性时，应另外预先固定随机分布和测试种子，让不同策略经历同一组参数与扰动，并统计全部结果。随机化并不等于不可复现。</p>
 </details></div></section>

@@ -123,7 +123,7 @@
               "id": "04-terrain",
               "title": {
                 "zh": "3.4 延伸：走稳上下坡",
-                "en": "3.4 Extension: walking steadily up and down slopes"
+                "en": "3.4 Extention: walking steadily up and down slopes"
               },
               "paths": {
                 "zh": "zh/04-terrain.html",
@@ -134,7 +134,7 @@
               "id": "05-skills",
               "title": {
                 "zh": "3.5 （拓展）社区技能：奖励设计",
-                "en": "3.5 (Extension) Community skills: reward design"
+                "en": "3.5 (Extention) Community skills: reward design"
               },
               "paths": {
                 "zh": "zh/05-skills.html",
@@ -178,7 +178,7 @@
           "id": "groot",
           "title": {
             "zh": "5 （拓展）使用 GR00T 自主完成射门",
-            "en": "5 (Extension) Score autonomously with GR00T"
+            "en": "5 (Extention) Score autonomously with GR00T"
           },
           "pages": [
             {
@@ -226,8 +226,8 @@
             {
               "id": "models",
               "title": {
-                "zh": "6.1 模型与数据",
-                "en": "6.1 Models and data"
+                "zh": "6.1 让智能体帮您搭把手",
+                "en": "6.1 Let Agent do the heavy lift"
               },
               "paths": {
                 "zh": "zh/models.html",
