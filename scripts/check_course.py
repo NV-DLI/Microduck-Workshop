@@ -27,13 +27,13 @@ STRUCTURE = [
     ("1", ["index", "setup"]),
     ("2", ["01-play", "02-anatomy"]),
     ("3", ["03-learning", "03-microduck-rl", "03-walk-training", "04-terrain", "05-skills"]),
-    ("4", ["06-perception", "06-onboard"]),
+    ("4", ["06-perception", "06-onboard", "06-shoot"]),
     ("5", ["07-groot", "08-groot-interface", "09-worlds"]),
     ("6", ["models", "troubleshooting", "references"]),
 ]
 NUMBERS = {page: f"{part}.{i + 1}" for part, pages in STRUCTURE for i, page in enumerate(pages)}
 LESSONS = ["01-play", "02-anatomy", "03-learning", "03-microduck-rl", "03-walk-training", "04-terrain", "05-skills",
-           "06-onboard", "06-perception", "07-groot", "08-groot-interface", "09-worlds"]
+           "06-onboard", "06-perception", "06-shoot", "07-groot", "08-groot-interface", "09-worlds"]
 REMOVED = ["06-autonomy", "08-aspire", "how-to-learn", "08-groot-lab"]  # removed from the course; old URLs redirect
 # Code stories whose source is this repository must quote the current file verbatim.
 REPO_SOURCE = "https://github.com/NV-DLI/Microduck-Workshop/blob/main/"

@@ -4,8 +4,6 @@ myst:
     description: "Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking on random slopes and verify it on a wedge ramp."
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 3.4 Extention: walking steadily up and down slopes
 
 :::{lesson-intro}
@@ -145,6 +143,15 @@ python3 scripts/run.py train-terrain \
   --output outputs/terrain-training-01
 ```
 
+:::{enrichment} Parameter details
+
+- **`--model`**: Initialize the walking Actor from the official `models/walk.onnx`.
+- **`--num-envs 256`**: Train 256 environments in parallel.
+- **`--iterations 1000`**: Run 1,000 PPO sampling and update iterations.
+- **`--show`**: Display the training window.
+- **`--output`**: Save new checkpoints, configuration, logs and the final exported model.
+:::
+
 :::{course-image} media/isaac-ui-terrain-training.png
 :alt: The complete Isaac Sim window of slope-walking training with --show: a few Microducks on rolling, wood-textured training terrain, some walking and some fallen; RTX real-time rendering and Newton MJWarp physics in the toolbar.
 
@@ -234,6 +241,16 @@ python3 scripts/run.py terrain \
   --slope 5 --num-envs 5 --seconds 20 --seed 49001 \
   --output outputs/terrain-evaluation-up-05
 ```
+
+:::{enrichment} Parameter details
+
+- **`--model`**: Test the supplied `models/terrain-walk.onnx`.
+- **`--slope 5`**: Use a +5° slope; set `-5` for downhill.
+- **`--num-envs 5`**: Run five non-colliding environments.
+- **`--seconds 20`**: Run for 20 simulated seconds.
+- **`--seed 49001`**: Fix the random seed.
+- **`--output`**: Save the report in a new folder.
+:::
 
 :::{course-image} media/isaac-ui-terrain-test.png
 :alt: The complete Isaac Sim window during the wedge test: a wood-textured wedge on a white floor; a Microduck has walked onto the platform and stands there, head facing forward; RTX real-time rendering and Newton MJWarp physics in the toolbar.

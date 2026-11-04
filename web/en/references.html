@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'references';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -340,6 +340,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 Shoot!</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
@@ -403,8 +404,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="further-learning-and-references">
+  <section class="tex2jax_ignore mathjax_ignore" id="further-learning-and-references">
 <h1>6.3 Further learning and references<a class="headerlink" href="#further-learning-and-references" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Find official source code, documentation, and papers by topic.</p>
 </div><div class="lesson-meta">Reading resources</div></div></div><section id="robotics">
@@ -416,7 +416,7 @@
 <ul class="simple">
 <li><p>Vary the Section 3.3 training budget and compare on the same held-out seeds.</p></li>
 <li><p>Pick a new task, such as dribbling the ball to the center circle and stopping, and compare it with the Section 4.2 shooting stages: which perception can be reused, and which stages and transitions must be redesigned?</p></li>
-<li><p>Analyse the failed rounds of the Section 4.2 onboard shot: which stage did they stop in, and was the cause observation, the path or the kick conditions?</p></li>
+<li><p>Analyse the failed rounds of the Section 4.3 onboard shot: which stage did they stop in, and was the cause observation, the path or the kick conditions?</p></li>
 <li><p>Read the <a class="reference external" href="https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html" rel="noreferer noopener" target="_blank">GR00T chapter of the SO-101 Sim-to-Real course ↗</a> and, with the data design in Section 5.2, identify the shared data-workflow steps and the different action interfaces of Microduck and SO-101.</p></li>
 <li><p>Use the Section 5.3 counter to plan held-out room evaluation and separate training from test conditions.</p></li>
 </ul>

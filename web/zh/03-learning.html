@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-learning';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -342,6 +342,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -405,8 +406,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="ppo">
+  <section class="tex2jax_ignore mathjax_ignore" id="ppo">
 <h1>3.1 强化学习与 PPO<a class="headerlink" href="#ppo" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>强化学习的通用方法：目标、奖励与回报，Actor-Critic 中 Actor 与 Critic 的分工，优势估计，以及 PPO 为什么要限制每次更新的幅度。3.2 节再把这些概念对应到 Microduck 的行走任务。</p>
 </div><div class="lesson-meta">第 3.1 节 · 理论 · 预计学习时长 15 分钟</div></div></div><script type="application/json" class="course-symbols">{"G_t": {"tex": "G_t", "text": "回报：从第 $t$ 步开始，之后所有奖励按折扣累加的总和。"}, "gamma": {"tex": "\\gamma", "text": "折扣因子，取 0 到 1 之间：越接近 1，越重视远期奖励。"}, "k_idx": {"tex": "k", "text": "从当前步往后数的步数。"}, "t_idx": {"tex": "t", "text": "时间步的序号。"}, "r_t": {"tex": "r_t", "text": "第 $t$ 步的即时奖励。"}, "delta_t": {"tex": "\\delta_t", "text": "时序差分误差：这一步的实际结果比 Critic 原先的估计好多少。"}, "m_t": {"tex": "m_t", "text": "继续标记：回合在这一步终止时为 0，否则为 1。"}, "V": {"tex": "V", "text": "价值函数（Critic）：估计从某个状态出发、按当前策略继续行动能得到的回报。"}, "s_t": {"tex": "s_t", "text": "当前步的状态。"}, "s_next": {"tex": "s_{t+1}", "text": "下一步的状态。"}, "A_hat": {"tex": "\\hat A_t", "text": "优势估计：这一步实际采取的动作比 Critic 的预期好多少。"}, "A_next": {"tex": "\\hat A_{t+1}", "text": "下一步的优势估计；递推时从后往前累积。"}, "lambda": {"tex": "\\lambda", "text": "GAE 参数：在只看一步与看很多步之间折中。"}, "rho": {"tex": "\\rho_t", "text": "概率比：同一个已采样动作在新策略与旧策略下的概率密度之比。"}, "theta": {"tex": "\\theta", "text": "策略网络的参数（权重），训练时更新。"}, "pi_theta": {"tex": "\\pi_\\theta", "text": "新策略（Actor）：根据观测给出动作的概率分布。"}, "pi_old": {"tex": "\\pi_{\\theta_{\\mathrm{old}}}", "text": "旧策略：采样这批数据时的策略，更新期间保持不变。"}, "a_t": {"tex": "a_t", "text": "当前步实际采样的动作。"}, "o_t": {"tex": "o_t", "text": "当前步的观测。"}, "L_clip": {"tex": "L^{\\mathrm{CLIP}}", "text": "PPO 的裁剪代理目标：训练要让它增大。"}, "E_t": {"tex": "\\mathbb E_t", "text": "对这一批样本的各个时间步取平均。"}, "min": {"tex": "\\min", "text": "取两项中较小的一项，只保留更保守的估计。"}, "clip": {"tex": "\\operatorname{clip}", "text": "截断：把概率比截在 $1-\\epsilon$ 到 $1+\\epsilon$ 之间再计算目标。"}, "epsilon": {"tex": "\\epsilon", "text": "裁剪阈值，常用 0.2。"}}</script><section id="loop">

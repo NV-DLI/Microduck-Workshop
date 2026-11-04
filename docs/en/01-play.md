@@ -4,8 +4,6 @@ myst:
     description: Drive Microduck with the keyboard to walk, turn and kick, then see how Isaac Sim connects the scene, the robot and pretrained policies.
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 2.1 Meet Microduck: play football first
 
 :::{lesson-intro}
@@ -33,9 +31,18 @@ python3 scripts/run.py manual \
   --output outputs/manual-football-01
 ```
 
+:::{enrichment} Parameter details
+
 The command needs no model argument: it reads the official walking model `walk.onnx` and right-foot kick model `kick-teacher.onnx` from `models/`. `--seconds` is the longest simulated time the window runs, and records go to the folder given by `--output`.
+:::
 
 Click the simulation window and use the keys in the table. The key help is also in the “Microduck • Keyboard football” tab on the right of the window.
+
+:::{admonition} Opening Isaac Sim for the first time
+:class: note
+
+The first launch may take a few minutes to load assets and compile shaders. If the desktop reports that Isaac Sim is not responding, keep the window open and choose to wait while initialization continues.
+:::
 
 :::{course-image} media/isaac-ui-keyboard-walking.png
 :alt: The complete Isaac Sim window of keyboard football: Microduck, ball and goal on the green pitch, and the keys listed in a tab on the right.
@@ -119,7 +126,7 @@ Keyboard football and the autonomous shots in Parts 4 and 5 use the same 1 × 1.
 - **Floor.** A rigid plane without foam compression or raised edges; the friction of the mat against a real floor has not been calibrated.
 :::
 
-The robot uses official Microduck CAD, base mass and joint parameters, and a full-body collision model with backlash. This keyboard lab uses the pinned XL330 BAM actuator fit, 200 Hz physics and a 50 Hz policy period. Section 4.2 uses 100 Hz physics with the same 50 Hz policy period. The walking policy controls 14 of the 15 physical servos; it does not drive the mouth. Full-body collisions let the head, legs and battery rest on the ground after a fall instead of sinking through it.
+The robot uses official Microduck CAD, base mass and joint parameters, and a full-body collision model with backlash. This keyboard lab uses the pinned XL330 BAM actuator fit, 200 Hz physics and a 50 Hz policy period. Section 4.3 uses 100 Hz physics with the same 50 Hz policy period. The walking policy controls 14 of the 15 physical servos; it does not drive the mouth. Full-body collisions let the head, legs and battery rest on the ground after a fall instead of sinking through it.
 
 This simulation configuration still differs from the real robot. The camera corresponds to GC2093, but simulation samples at 960 × 540 and 15 Hz with an uncalibrated 70° horizontal field of view; ToF and body IMU models are also approximate. It therefore cannot establish parity with the latest firmware, every hardware error or full deployment on RK3566. Before transfer, check the real hardware revision, voltage, joint offsets, lens parameters and end-to-end delay.
 

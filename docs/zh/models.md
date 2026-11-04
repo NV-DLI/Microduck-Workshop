@@ -69,15 +69,15 @@ Microduck 射门的经验是：先判断问题出在哪一层，再决定改什�
 
 | 文件（宿主机 `models/`，容器内 `/workspace/Microduck-Workshop/models/`） | 用途 | 哪些课程命令读取它 |
 |---|---|---|
-| `walk.onnx` | 固定行走策略 | 2.1 节键盘踢球（自动读取）；2.2 节 `walk --model models/walk.onnx`；4.2 节的板载射门和 5.2 节的 GR00T 执行层里，底层行走策略都使用同一模型的副本 |
+| `walk.onnx` | 固定行走策略 | 2.1 节键盘踢球（自动读取）；2.2 节 `walk --model models/walk.onnx`；4.3 节的板载射门和 5.2 节的 GR00T 执行层里，底层行走策略都使用同一模型的副本 |
 | `terrain-walk.onnx` | 3.4 节固定坡地行走策略，约 0.79 MB | 3.4 节 `terrain --model models/terrain-walk.onnx` |
-| `kick-teacher.onnx` | 踢球基础动作 | 2.1 节键盘踢球（空格键，自动读取）；4.2 节板载射门的踢球技能使用同一模型的副本 |
-| `kick-residual.onnx` | 踢球残差修正 | 5.2 节 GR00T 执行层使用；4.2 节板载射门不加载 |
+| `kick-teacher.onnx` | 踢球基础动作 | 2.1 节键盘踢球（空格键，自动读取）；4.3 节板载射门的踢球技能使用同一模型的副本 |
+| `kick-residual.onnx` | 踢球残差修正 | 5.2 节 GR00T 执行层使用；4.3 节板载射门不加载 |
 | `kick-checkpoint.pt` | 保留的踢球训练检查点 | 保留；本课程的动手命令不直接读取 |
 | `detector.pt` | 固定视觉检测器 | 保留；本课程的动手命令不直接读取 |
 | `detector.onnx` | 检测器 ONNX 导出 | 保留；本课程的动手命令不直接读取 |
 | `indoor-detector/detector.pt` / `indoor-detector/detector.onnx` | 另一套室内检测器，对应 7 cm 足球的场景；本课的球场不使用 | 保留；本课程的动手命令不直接读取 |
-| `scene-detector/detector.pt` / `scene-detector/detector.onnx` | 官网 10 cm 球与四种地面检测器；当前默认 | 4.2 节 `football` 命令自动核对并加载，用作板载策略的视觉检测器 |
+| `scene-detector/detector.pt` / `scene-detector/detector.onnx` | 官网 10 cm 球与四种地面检测器；当前默认 | 4.3 节 `football` 命令自动核对并加载，用作板载策略的视觉检测器 |
 | `official-browser/walking.onnx` / `sitstand.onnx` | 用于官网版本核对与站立试验；完整步行任务使用 `walk.onnx` | 保留；本课程的动手命令不直接读取 |
 
 在**容器内**运行下面的命令，核对固定模型的文件大小与哈希。

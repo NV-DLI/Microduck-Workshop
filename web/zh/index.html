@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -341,6 +341,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -380,11 +381,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="id1">
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>1.1 课程概览<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>本课程专注于在仿真环境中训练和验证 Microduck：从机械结构与传感器，到强化学习、运动技能和任务控制，逐步建立可检查的机器人实验。自主射门是串联感知与动作的一个综合案例，课程也涵盖行走、上下坡和更多任务的设计思路。</p>
-</div><div class="lesson-meta">6 个部分 · 17 节 · 仿真实践与前沿方法</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。" width="1600" height="872" style="aspect-ratio: 1600 / 872"></figure></div><div class="toctree-wrapper compound">
+</div><div class="lesson-meta">6 个部分 · 18 节 · 仿真实践与前沿方法</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。" width="1600" height="1000" style="aspect-ratio: 1600 / 1000"></figure></div><div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 </div>
@@ -443,7 +443,7 @@
 <td><p>3.1 强化学习与 PPO · 3.2 Microduck 的强化学习 · 3.3 训练并测试行走策略 · 3.4 延伸：走稳上下坡 · 3.5 （拓展）社区技能：奖励设计</p></td>
 </tr>
 <tr class="row-odd"><td><p>4 板载策略完成射门任务</p></td>
-<td><p>4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 设计射门阶段</p></td>
+<td><p>4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 设计射门阶段 · 4.3 射门！</p></td>
 </tr>
 <tr class="row-even"><td><p>5 （拓展）使用 GR00T 自主完成射门</p></td>
 <td><p>5.1 视觉-语言-动作模型（VLA）与 GR00T · 5.2 使用 GR00T 自主完成射门 · 5.3 从球场走向更多环境</p></td>

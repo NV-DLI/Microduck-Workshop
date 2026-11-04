@@ -4,8 +4,6 @@ myst:
     description: 先用键盘指挥 Microduck 走路、转向和踢球，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 2.1 认识 Microduck：先来踢一场球
 
 :::{lesson-intro}
@@ -33,9 +31,18 @@ python3 scripts/run.py manual \
   --output outputs/manual-football-01
 ```
 
+:::{enrichment} 参数详解
+
 命令不需要指定模型：它读取 `models/` 里的官方行走模型 `walk.onnx` 和右脚踢球模型 `kick-teacher.onnx`。`--seconds` 是窗口最长运行的仿真时间，记录写入 `--output` 指定的目录。
+:::
 
 用鼠标点击仿真窗口，就可以用下表的按键操作。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。
+
+:::{admonition} 第一次打开 Isaac Sim
+:class: note
+
+首次启动需要加载资源并编译着色器，可能等待几分钟。如果系统提示“Isaac Sim 没有响应”，请不要关闭窗口，选择等待，让初始化继续。
+:::
 
 :::{course-image} media/isaac-ui-keyboard-walking.png
 :alt: 键盘踢球的 Isaac Sim 完整界面：绿色球场上的 Microduck、足球和球门，右侧标签页列出按键说明。
@@ -119,7 +126,7 @@ steps:
 - **地面。** 按刚性平面处理，没有模拟软垫的压缩或起翘；场地垫与实物地面的摩擦尚未标定。
 :::
 
-机器人使用官方 Microduck CAD、基础质量与关节参数，以及带齿隙的全身碰撞模型。本节键盘实验使用锁定的 XL330 BAM 电机拟合、200 Hz 物理和 50 Hz 策略周期；第 4.2 节的板载射门使用 100 Hz 物理、相同的 50 Hz 策略周期；15 个实体舵机中，行走策略控制 14 个，嘴部不由这份策略驱动。全身碰撞让头、腿与电池等部位摔倒后也能被地面托住，不会穿过地面。
+机器人使用官方 Microduck CAD、基础质量与关节参数，以及带齿隙的全身碰撞模型。本节键盘实验使用锁定的 XL330 BAM 电机拟合、200 Hz 物理和 50 Hz 策略周期；第 4.3 节的板载射门使用 100 Hz 物理、相同的 50 Hz 策略周期；15 个实体舵机中，行走策略控制 14 个，嘴部不由这份策略驱动。全身碰撞让头、腿与电池等部位摔倒后也能被地面托住，不会穿过地面。
 
 这套仿真配置与真机仍有差距：相机对应 GC2093，仿真按 960 × 540、15 Hz 采样，70° 水平视场角尚未经过镜头标定；ToF 和身体 IMU 也是近似。因此它不能证明最新固件、各种硬件误差或 RK3566 上的完整部署都已复现。移到真机前，应核对实际硬件版本、电压、关节零位、镜头参数与端到端延迟。
 

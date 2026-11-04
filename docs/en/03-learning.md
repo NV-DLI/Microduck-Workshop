@@ -4,8 +4,6 @@ myst:
     description: 'The general method of reinforcement learning: goals, rewards and returns, how the Actor and Critic divide the work, advantage estimation, and why PPO limits the size of each update.'
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 3.1 Reinforcement learning and PPO
 
 :::{lesson-intro}

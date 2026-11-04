@@ -2519,3 +2519,7 @@ html[data-theme="dark"] .recorded-badge {
 .cycle-overview{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin:1rem 0 1.5rem}.cycle-overview span{flex:1;padding:.75rem;border:1px solid var(--line);border-radius:6px;text-align:center;font-size:.9rem}.cycle-overview small{display:block;color:var(--muted);margin-top:.3rem}.cycle-overview b{font-size:1.3rem;color:#76b900}
 
 .cycle-controls label{white-space:nowrap}.cycle-controls button{padding:.35rem .8rem;border:1px solid #76b900;border-radius:5px;background:var(--soft);color:inherit}.cycle-controls button:focus-visible{outline:2px solid #76b900;outline-offset:3px}
+
+.theory-cycle[hidden],.cycle-tabs[hidden]{display:none}
+.cycle-tabs{display:flex;gap:.6rem;margin:1rem 0}.cycle-tabs button{padding:.5rem 1rem;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:inherit}.cycle-tabs button[aria-pressed=true]{border-color:#76b900;box-shadow:inset 0 -3px #76b900}.cycle-tabs button:focus-visible{outline:2px solid #76b900;outline-offset:3px}
+.cycle-repeat{color:var(--muted);text-align:center;font-size:.85rem;margin:-1rem 0 1.3rem}.cycle-repeat svg{display:block;width:100%;height:30px;color:#76b900}.cycle-observation{position:absolute;top:.65rem;display:flex;align-items:center;gap:.35rem}.cycle-observation i{width:.65rem;height:.65rem;transform:rotate(45deg);background:#76b900}.cycle-observation small{font-size:.75rem}.cycle-observations{background:transparent;border-bottom:1px solid var(--line)}

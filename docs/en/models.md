@@ -69,15 +69,15 @@ On resuming work, ask the agent to read the saved configuration, results and unr
 
 | File (host `models/`, container `/workspace/Microduck-Workshop/models/`) | Purpose | Course commands that read it |
 |---|---|---|
-| `walk.onnx` | Fixed walking policy | Section 2.1 keyboard football (read automatically); Section 2.2 `walk --model models/walk.onnx`; the low-level walking policy of the Section 4.2 onboard shot and of the Section 5.2 GR00T execution layer uses a copy of the same model |
+| `walk.onnx` | Fixed walking policy | Section 2.1 keyboard football (read automatically); Section 2.2 `walk --model models/walk.onnx`; the low-level walking policy of the Section 4.3 onboard shot and of the Section 5.2 GR00T execution layer uses a copy of the same model |
 | `terrain-walk.onnx` | Section 3.4 fixed terrain walking actor, about 0.79 MB | Section 3.4 `terrain --model models/terrain-walk.onnx` |
-| `kick-teacher.onnx` | Base kicking action | Section 2.1 keyboard football (Space, read automatically); the kick skill of the Section 4.2 onboard shot uses a copy of the same model |
-| `kick-residual.onnx` | Residual kick adjustment | Used by the Section 5.2 GR00T execution layer; not loaded by the Section 4.2 onboard shot |
+| `kick-teacher.onnx` | Base kicking action | Section 2.1 keyboard football (Space, read automatically); the kick skill of the Section 4.3 onboard shot uses a copy of the same model |
+| `kick-residual.onnx` | Residual kick adjustment | Used by the Section 5.2 GR00T execution layer; not loaded by the Section 4.3 onboard shot |
 | `kick-checkpoint.pt` | Retained kick training checkpoint | Retained; not read directly by this course's hands-on commands |
 | `detector.pt` | Fixed visual detector | Retained; not read directly by this course's hands-on commands |
 | `detector.onnx` | ONNX detector export | Retained; not read directly by this course's hands-on commands |
 | `indoor-detector/detector.pt` / `indoor-detector/detector.onnx` | Another indoor detector, for a scene with a 7 cm ball; not used on the course pitch | Retained; not read directly by this course's hands-on commands |
-| `scene-detector/detector.pt` / `scene-detector/detector.onnx` | Official 10 cm ball and four-surface detector; current default | Checked and loaded automatically by the Section 4.2 `football` command as the onboard policy's visual detector |
+| `scene-detector/detector.pt` / `scene-detector/detector.onnx` | Official 10 cm ball and four-surface detector; current default | Checked and loaded automatically by the Section 4.3 `football` command as the onboard policy's visual detector |
 | `official-browser/walking.onnx` / `sitstand.onnx` | Browser-version checks and standing tests; the complete walking task uses `walk.onnx` | Retained; not read directly by this course's hands-on commands |
 
 Run the command below inside the container to verify fixed-model sizes and hashes.

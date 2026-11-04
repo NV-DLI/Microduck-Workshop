@@ -4,8 +4,6 @@ myst:
     description: 阅读两个社区技能（单脚站立循环、篮球平衡）的真实奖励代码：目标是什么、读取哪些量、公式怎样写、可能怎样失败、作者怎样检验，再用同样的步骤构思新任务。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 3.5 （拓展）社区技能：奖励设计
 
 :::{lesson-intro}

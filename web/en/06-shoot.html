@@ -1,0 +1,599 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Run the onboard policy and observe how sensing, stage decisions and low-level skills work together over each control cycle." name="description" />
+
+  <title>4.3 Shoot! - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <script data-cfasync="false">
+    try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
+  </script>
+
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
+    <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+
+
+    <script src="_static/documentation_options.js?v=7f41d439"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=a3f504f1"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '06-shoot';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
+    <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
+
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="5.1 Vision-language-action (VLA) models and GR00T" href="07-groot.html" />
+    <link rel="prev" title="4.2 Designing the shooting stages" href="06-onboard.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <script type="importmap">{"imports":{"three":"../assets/vendor/three.module.js","three/addons/":"../assets/vendor/addons/"}}</script>
+  </head>
+<body data-default-mode="dark" data-lang="en" data-page="06-shoot">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/06-shoot.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/06-shoot.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light pst-js-only" alt="Train Microduck in Simulation with NVIDIA Isaac - Home"/>
+  
+  
+    <p class="title logo__title">Train Microduck in Simulation with NVIDIA Isaac</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item"><div class="dropdown">
+  <button type="button" class="btn dropdown-toggle pst-navbar-icon" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Choose language" title="Choose language"><i class="fa-solid fa-language fa-lg" aria-hidden="true"></i></button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><a class="dropdown-item" lang="zh-CN" href="../zh/06-shoot.html">简体中文</a></li>
+    <li><a class="dropdown-item active" lang="en" href="../en/06-shoot.html" aria-current="true">English</a></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><div class="course-theme-toggle pst-js-only">
+  <button type="button" class="course-theme-switch" role="switch" aria-checked="false" aria-label="Dark mode" title="Dark mode">
+    <span class="course-theme-switch__track" aria-hidden="true">
+      <span class="course-theme-switch__thumb"></span>
+      <span class="course-theme-switch__icon" data-side="light"><i class="fa-solid fa-sun fa-fw"></i></span>
+      <span class="course-theme-switch__icon" data-side="dark"><i class="fa-solid fa-moon fa-fw"></i></span>
+    </span>
+  </button>
+  <button type="button" class="theme-change-button" data-mode="light" hidden tabindex="-1" aria-hidden="true"></button>
+  <button type="button" class="theme-change-button" data-mode="dark" hidden tabindex="-1" aria-hidden="true"></button>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NV-DLI/Microduck-Workshop" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">1 Overview</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">1.1 Course overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">1.2 Set up the environment and get the code</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">2 Meet Microduck</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.3 Shoot!</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="models.html">6.1 Let Agent do the heavy lift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">6.2 Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">6.3 Further learning and references</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">4.3 Shoot!</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="shoot">
+<h1>4.3 Shoot!<a class="headerlink" href="#shoot" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Run the onboard policy and observe how sensing, stage decisions and low-level skills work together over each control cycle.</p>
+</div><div class="lesson-meta">Section 4.3 · Estimated time 20 minutes</div></div></div><p>Review the shooting stages in <a class="reference internal" href="06-onboard.html"><span class="std std-doc">Section 4.2</span></a>, then run the experiment and observe how the stages progress.</p>
+<section id="run">
+<h2>Shoot!<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
+<p>Prepare the course container as described in <a class="reference internal" href="setup.html"><span class="std std-doc">Section 1.2</span></a>, then return to its terminal. If it is already running, enter it from the host with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code>. Run:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · Inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>football<span class="w"> </span>--output<span class="w"> </span>outputs/onboard-football
+</pre></div>
+</div>
+</div>
+<details class="enrichment"><summary>Parameter details</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>: A new folder; rounds are kept in separate <code class="docutils literal notranslate"><span class="pre">episode-001</span></code>, <code class="docutils literal notranslate"><span class="pre">episode-002</span></code>, etc. folders</p></li>
+</ul>
+</div></details><p>The robot automatically observes, approaches the ball and attempts a shot. The first round starts from the nominal position. Click the Isaac Sim window and press <strong>R</strong> to restart: the window stays open and each round starts from the standing initialization, with the start randomly offset by up to 5 cm forward/backward and up to 5 cm sideways, and the heading turned by up to 15° clockwise or counterclockwise. The ball and goal stay in place. Allow a moment for the scene to initialize; the task then starts automatically.</p>
+<p>The student experiment has no overall time limit. Scoring, missing or being unable to kick does not automatically pause the simulation; sensors keep updating. Press <strong>R</strong> to reset the attempt. Close Isaac or press <strong>Ctrl+C</strong> in its terminal to stop the program. Perception, alignment or handover failures pause the current maneuver and trigger another observation attempt.</p>
+<p>The simulation renders several views at once, the third-person viewport, the head RGB camera and ToF, so its speed depends on your hardware and the motion in the window may look jerky; the task advances on simulation time.</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="The complete Isaac Sim window of the onboard shot, showing the green pitch, the head RGB image and the 8×8 ToF ranges."></a><figcaption><p>Watch the robot on the left and compare what it sees on the right: do the detection boxes stay on the ball and goal, and do the ToF readings ahead of the feet shrink as it approaches? NR means no return and does not mean that nothing is ahead.</p>
+</figcaption></figure><p><code class="docutils literal notranslate"><span class="pre">summary.json</span></code> summarizes saved rounds. Each round's <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> includes <code class="docutils literal notranslate"><span class="pre">navigation_retries</span></code>, which records why the robot reacquired observations. A visible detection box does not mean the geometry has passed its checks; if the close-range position is not fresh enough, the policy pauses to observe again. Also check lateral error and heading during the approach, whether the kick conditions were met and whether the robot recovered its balance after contact.</p>
+<p>When you press R, the program saves the current record before starting the next round.</p>
+</section>
+<section id="timing">
+<h2>The onboard control cycle<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
+<figure class="theory-cycle" data-theory-cycle="onboard-theory" data-duration="200">
+<h3>Control cycle · onboard policy</h3><div class="cycle-grid"><div class="cycle-row"><strong>RGB + ToF · 15 Hz</strong><div class="cycle-track cycle-observations"><span class="cycle-observation" style="left:0.0000%" title="Capture a new observation"><i></i><small>1</small></span><span class="cycle-observation" style="left:35.0000%" title="Capture a new observation"><i></i><small>2</small></span><span class="cycle-observation" style="left:70.0000%" title="Capture a new observation"><i></i><small>3</small></span></div></div><div class="cycle-row"><strong>Motion requests · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="1">1</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="2">2</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="3">3</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="4">4</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="5">5</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="6">6</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="7">7</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="8">8</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="9">9</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="10">10</span></div></div><div class="cycle-row"><strong>Body feedback → low-level policy · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="20">20</span></div></div><div class="cycle-row"><strong>Newton physics · 100 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-0" style="left:5.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-0" style="left:15.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-0" style="left:25.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:35.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:45.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:55.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-1" style="left:65.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-2" style="left:75.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-2" style="left:85.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:5.0000%" title=""></span><span class="cycle-block cycle-tone-2" style="left:95.0000%;width:5.0000%" title=""></span></div></div><div class="cycle-row"><span>Simulation time</span><div class="cycle-ticks"><span>0 ms</span><span>50 ms</span><span>100 ms</span><span>150 ms</span><span>200 ms</span></div></div></div>
+<div class="cycle-controls" hidden><button type="button" class="cycle-play">Play</button><label>Inspect cycle <input type="range" min="0" max="200" step="1" value="0"/></label><output>0 ms</output></div>
+<figcaption>RGB and ToF are captured about every 67 ms. Motion requests and the low-level policy update every 20 ms using the latest valid perception and fresh body feedback. Each control cycle contains two 10 ms physics steps.</figcaption><details><summary>Details</summary><p>This schematic shows configured periods, with 0 ms at a steady-state capture. Diamonds mark capture instants, not rendering durations. Aligning 15 Hz capture to 100 Hz physics gives intervals of 60 or 70 ms. Stage observations refresh with each capture; motion requests update every 20 ms. Stage logic uses valid ball estimates, ToF and body state to request motion or a kick, such as “move forward while slowing down”. The low-level policy is a trained small neural network, such as the official walking Actor: it reads current joints, angular velocity and gravity direction and turns the request into 14 joint actions. Body feedback is updated every control cycle without waiting for the next image.</p></details></figure><p>In <a href="08-groot-interface.html#timing">Section 5.2</a>, compare how the sensing and action cycles change when GR00T generates the high-level requests.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="06-onboard.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4.2 Designing the shooting stages</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="07-groot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">5.1 Vision-language-action (VLA) models and GR00T</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">Shoot!</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">The onboard control cycle</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+
+<script defer src="../assets/vendor/katex/katex.min.js"></script>
+<script defer src="../assets/vendor/katex/auto-render.min.js"></script>
+<script defer src="_static/course-math.js"></script>
+<script defer src="../assets/presentation.js"></script>
+<script defer src="../assets/teaching.js"></script>
+<script defer src="../assets/demonstration.js"></script>
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Manage My Privacy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/preferences/start/">Do Not Sell or Share My Data</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026 NVIDIA CORPORATION &amp; AFFILIATES. All rights reserved.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

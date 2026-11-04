@@ -4,8 +4,6 @@ myst:
     description: Separate shells, joints, actuators, and sensors, then see how they form a controllable robot.
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 2.2 Mechanism and control timing
 
 :::{lesson-intro}
@@ -164,7 +162,7 @@ In the 3D duck's How motors drive joints view, choose Hip and turn the left leg'
 
 The policy outputs actions, and the action interface turns them into joint targets. Actuators produce torque from the difference between target and measured state; the resulting motion also depends on contact, gravity, inertia and friction.
 
-In this walking example, the policy runs at 50 Hz and physics at 200 Hz, so each action spans four physics steps. The Section 4.2 onboard shot uses 100 Hz physics: two physics steps per action, still a 20 ms policy period. The backlash model represents transmission play with passive joints; the physics engine computes them, and they are not policy outputs.
+In this walking example, the policy runs at 50 Hz and physics at 200 Hz, so each action spans four physics steps. The Section 4.3 onboard shot uses 100 Hz physics: two physics steps per action, still a 20 ms policy period. The backlash model represents transmission play with passive joints; the physics engine computes them, and they are not policy outputs.
 
 {#frames}
 ## Describe motion with frames

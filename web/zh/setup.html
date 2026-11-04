@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -342,6 +342,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -405,28 +406,13 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="id1">
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>1.2 准备环境与获取代码<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>构建课程容器、挂载数据与模型、进入同一个容器终端，并确认 Isaac Sim 与 GPU 可用。</p>
-</div><div class="lesson-meta">操作实验 · Ubuntu 24.04 / DGX Spark · Docker</div></div></div><section id="requirements">
+</div><div class="lesson-meta">操作实验 · Ubuntu 24.04 · x86_64 / arm64 · Docker</div></div></div><section id="requirements">
 <h2>需要什么<a class="headerlink" href="#requirements" title="Link to this heading">#</a></h2>
 <p>课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、Isaac Lab 的 Microduck 开发快照与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>设备</p></th>
-<th class="head cell-short"><p>系统</p></th>
-<th class="head cell-short"><p>可用的课程内容</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>DGX Spark（aarch64）</p></td>
-<td><p>Ubuntu 24.04 桌面</p></td>
-<td><p>完整课程，包括 Isaac Sim 窗口、相机与录像</p></td>
-</tr>
-</tbody>
-</table>
-</div>
+<p>运行实验需要您自备配有 NVIDIA DGX 系统 GPU 或 RTX GPU 的计算机，并满足 Isaac Sim 的显存、RTX 渲染与驱动要求。容器支持 Intel / AMD 的 x86_64 CPU 和 DGX Spark 的 ARM CPU（aarch64）。全部实验仅在 <strong>DGX Spark</strong> 上测试过；这不代表必须使用 Spark，其他硬件的性能与可运行规模需在本机确认。推荐使用 Ubuntu 24.04 桌面环境。</p>
 <p>宿主机需要 NVIDIA 驱动、Docker 与 NVIDIA Container Toolkit、Git，以及一个能显示窗口的桌面会话。镜像中的软件版本固定如下：</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -442,7 +428,7 @@
 <td class="cell-short"><p>Isaac Sim 6.2</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>训练框架</p></td>
-<td><p>Isaac Lab 开发快照（2026-11-04，<code class="docutils literal notranslate"><span class="pre">e527032b</span></code>）</p></td>
+<td><p>Isaac Lab 开发快照（<code class="docutils literal notranslate"><span class="pre">e527032b</span></code>）</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>物理后端</p></td>
 <td><p>Newton 1.8.0.dev0（<code class="docutils literal notranslate"><span class="pre">71eeba16</span></code>）</p></td>
@@ -482,7 +468,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </section>
 <section id="build">
 <h2>构建课程容器<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
-<p>在仓库根目录运行。首次构建要下载 Isaac Sim、Isaac Lab 等依赖，耗时取决于网络，镜像也较大，请预留足够磁盘空间。</p>
+<p>在仓库根目录运行。首次构建预计需要下载 <strong>约 10–12 GB</strong> 的文件，主要是 Isaac Sim / Kit、PyTorch 与 CUDA 依赖，还包括 CUDA 基础镜像和系统软件包。网络较慢时可能等待较长时间；CPU 架构、下载缓存和依赖包会影响实际下载量。构建后的镜像约 21 GB，构建缓存也会占用空间，建议至少预留 50 GB 空闲磁盘。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build

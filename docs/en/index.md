@@ -4,15 +4,13 @@ myst:
     description: "This course focuses on training and validating Microduck in simulation. Explore its mechanisms and sensors, reinforcement learning, motion skills and task control through experiments you can inspect. Autonomous shooting is one example that connects perception and action; the course also covers walking, slopes and ways to design other tasks."
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 1.1 Course overview
 
 :::{lesson-intro}
-:meta: 6 parts · 17 sections · Simulation and frontier methods
+:meta: 6 parts · 18 sections · Simulation and frontier methods
 :hero: media/isaac-football-hero-still.webp
 :hero-animation: media/isaac-football-hero.webp
-:hero-size: 1600x872
+:hero-size: 1600x1000
 :hero-alt: A recording of the full Isaac window, played on the simulation clock: the onboard policy controls Microduck as it scores on the green pitch, alongside synchronized head RGB and ToF sensor views.
 
 This course focuses on training and validating Microduck in simulation. Explore its mechanisms and sensors, reinforcement learning, motion skills and task control through experiments you can inspect. Autonomous shooting is one example that connects perception and action; the course also covers walking, slopes and ways to design other tasks.
@@ -51,6 +49,7 @@ setup
 
 06-perception
 06-onboard
+06-shoot
 ```
 
 ```{toctree}
@@ -110,6 +109,6 @@ Start with Microduck’s mechanisms and control loop, then use reinforcement lea
 | 1 Overview | 1.1 Course overview · 1.2 Set up the environment and get the code |
 | 2 Meet Microduck | 2.1 Meet Microduck: play football first · 2.2 Mechanism and control timing |
 | 3 Teach Microduck skills with reinforcement learning | 3.1 Reinforcement learning and PPO · 3.2 Reinforcement learning for Microduck · 3.3 Train and test a walking policy · 3.4 Extention: walking steadily up and down slopes · 3.5 (Extention) Community skills: reward design |
-| 4 Complete the shooting task with an onboard policy | 4.1 Find the ball and goal: RGB detection and ToF ranging · 4.2 Designing the shooting stages |
+| 4 Complete the shooting task with an onboard policy | 4.1 Find the ball and goal: RGB detection and ToF ranging · 4.2 Designing the shooting stages · 4.3 Shoot! |
 | 5 (Extention) Score autonomously with GR00T | 5.1 Vision-language-action (VLA) models and GR00T · 5.2 Score autonomously with GR00T · 5.3 From the pitch to more environments |
 | 6 Reference and help | 6.1 Let Agent do the heavy lift · 6.2 Troubleshooting · 6.3 Further learning and references |

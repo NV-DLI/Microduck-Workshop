@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'references';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -341,6 +341,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -404,8 +405,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="id1">
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>6.3 继续学习与参考资料<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>按课程主题查阅官方源码、文档和论文。</p>
 </div><div class="lesson-meta">阅读资源</div></div></div><section id="robotics">
@@ -417,7 +417,7 @@
 <ul class="simple">
 <li><p>调整 3.3 节的训练预算，并在相同的独立测试种子上比较表现。</p></li>
 <li><p>选一个新任务，例如把球带到中圈停下，对照 4.2 节的射门阶段，列出哪些感知可以复用、哪些阶段和切换条件要重新设计。</p></li>
-<li><p>分析 4.2 节板载射门中的失败回合：停在哪个阶段，原因来自观察、路径还是出脚条件？</p></li>
+<li><p>分析 4.3 节板载射门中的失败回合：停在哪个阶段，原因来自观察、路径还是出脚条件？</p></li>
 <li><p>阅读 <a class="reference external" href="https://docs.nvidia.com/learning/physical-ai/sim-to-real-so-101/latest/10-groot.html" rel="noreferer noopener" target="_blank">SO-101 Sim-to-Real 课程的 GR00T 章节 ↗</a>，对照 5.2 节的示范数据设计，列出 Microduck 与 SO-101 的共同步骤和不同动作接口。</p></li>
 <li><p>用 5.3 节的组合计数器规划陌生房间评测，说明哪些条件用于训练、哪些留作测试。</p></li>
 </ul>

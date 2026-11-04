@@ -4,12 +4,10 @@ myst:
     description: Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 1.2 Set up the environment and get the code
 
 :::{lesson-intro}
-:meta: Hands-on · Ubuntu 24.04 / DGX Spark · Docker
+:meta: Hands-on · Ubuntu 24.04 · x86_64 / arm64 · Docker
 
 Build the course container, mount data and models, open a shell in the same container, and confirm that Isaac Sim and the GPU work.
 :::
@@ -19,9 +17,7 @@ Build the course container, mount data and models, open a shell in the same cont
 
 Every lab in this course runs in one course container. The image holds Isaac Sim 6.2, the Microduck development snapshot of Isaac Lab, and Newton. The host only builds and starts the container, shows the simulation windows, and stores data and results.
 
-| Device | System | What you can use |
-|---|---|---|
-| DGX Spark (aarch64) | Ubuntu 24.04 desktop | The complete course, including Isaac Sim windows, cameras and recordings |
+To run the experiments, provide a computer with an NVIDIA DGX-system GPU or RTX GPU that meets the Isaac Sim memory, RTX rendering and driver requirements. The container supports Intel / AMD x86_64 CPUs and the ARM CPU in DGX Spark (aarch64). **All experiments have been tested only on DGX Spark.** Spark is not mandatory; verify performance and practical experiment size on your hardware. Ubuntu 24.04 Desktop is recommended.
 
 The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, and a desktop session that can show windows. The image pins these versions:
 
@@ -29,7 +25,7 @@ The host needs an NVIDIA driver, Docker with the NVIDIA Container Toolkit, Git, 
 |---|---|
 | Container base | CUDA 13, Ubuntu 24.04, Python 3.12 |
 | Simulation platform | Isaac Sim 6.2 |
-| Training framework | Isaac Lab development snapshot (2026-11-04, `e527032b`) |
+| Training framework | Isaac Lab development snapshot (`e527032b`) |
 | Physics backend | Newton 1.8.0.dev0 (`71eeba16`) |
 | Learning | RSL-RL 5.5.1 (PPO) |
 
@@ -67,7 +63,7 @@ Microduck-Workshop/
 {#build}
 ## Build the course container
 
-Run this from the repository root. The first build downloads Isaac Sim, the Isaac Lab dependencies and more; how long it takes depends on your network, and the image is large, so leave enough disk space.
+Run this from the repository root. The first build is expected to download **about 10–12 GB**, mainly Isaac Sim / Kit, PyTorch and CUDA dependencies, plus the CUDA base image and system packages. It can take a long time on a slow connection; CPU architecture and existing caches affect the download size. The resulting image is about 21 GB, and build caches need additional space; allow at least 50 GB of free disk space.
 
 ```{code-block} bash
 :caption: Terminal · host

@@ -34,7 +34,7 @@ services:
       DISPLAY: ${DISPLAY:?Run this from a desktop terminal so DISPLAY is set}
       XAUTHORITY: /root/.Xauthority
       # Compiled GPU kernels go to the persistent cache mounted below (ComputeCache);
-      # the size is the documented maximum. WSL 2 also relies on this cache (see compose.wslg.yaml).
+      # the size is the documented maximum.
       CUDA_CACHE_PATH: /root/.nv/ComputeCache
       CUDA_CACHE_MAXSIZE: "4294967296"
     volumes:
@@ -43,7 +43,7 @@ services:
         source: /tmp/.X11-unix
         target: /tmp/.X11-unix
       - <<: *bind
-        # X authority of the desktop session; WSLg has none (see compose.wslg.yaml).
+        # X authority of the desktop session.
         source: ${XAUTHORITY:-/dev/null}
         target: /root/.Xauthority
         read_only: true

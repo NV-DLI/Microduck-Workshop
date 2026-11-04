@@ -4,8 +4,6 @@ myst:
     description: 从环境、文件和参数开始检查，保留失败输出，以便比较下一次运行。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 6.2 故障排查
 
 :::{lesson-intro}

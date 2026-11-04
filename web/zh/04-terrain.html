@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -342,6 +342,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -405,8 +406,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="id1">
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>3.4 延伸：走稳上下坡<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行，并在一个楔形坡台上验证。</p>
 </div><div class="lesson-meta">第 3.4 节 · 方法与操作实验 · 预计学习时长 45 分钟（训练观察几分钟即可）</div></div></div><script type="application/json" class="course-symbols">{"w_i": {"tex": "w_i", "text": "第 $i$ 个奖励项的权重。正权重表示“越大越好”，负权重表示惩罚。"}, "g_i": {"tex": "g_i", "text": "门控，取 0 到 1：决定这一项在当前状态下是否生效，例如只在收到推进指令时才奖励前进。"}, "phi": {"tex": "\\phi", "text": "形状函数：把归一化误差变成奖励值，例如跟踪核 $\\exp(-z^2)$ 或平方惩罚 $z^2$。"}, "e_i": {"tex": "e_i", "text": "这一项要衡量的误差或物理量，带单位，例如速度误差（m/s）。"}, "sigma_i": {"tex": "\\sigma_i", "text": "尺度，与 $e_i$ 同单位：多大的误差算“明显”。除以它之后误差变成无量纲数。"}, "z_norm": {"tex": "z", "text": "归一化后的无量纲误差，即 $e_i/\\sigma_i$。"}, "exp": {"tex": "\\exp", "text": "指数函数：把平方误差转换成 0 到 1 之间的平滑奖励。"}, "r_omega": {"tex": "r_{\\omega}", "text": "转向跟踪奖励：误差为 0 时为 1，误差增大时平滑降向 0。"}, "omega_z": {"tex": "\\omega_z", "text": "机身坐标系中绕 $z$ 轴的实际角速度，训练时从仿真状态读取（rad/s）；机身倾斜时，它不一定等同于世界坐标系的偏航角速度。"}, "omega_cmd": {"tex": "\\omega_z^*", "text": "转向指令要求的角速度（rad/s）；直行时为 0。"}, "sigma": {"tex": "\\sigma", "text": "转向误差的容忍尺度，这里取 0.15 rad/s。"}}</script><section id="motivation">
@@ -487,7 +487,14 @@
 </pre></div>
 </div>
 </div>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="坡地步行训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只 Microduck，有的在走，有的已经摔倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的坡地步行训练窗口，展示训练刚开始的样子。画面里是随机生成的训练地形，不是后面验证用的楔形坡台。</p>
+<details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：用官方 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code> 初始化行走 Actor；不是随机初始化。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">256</span></code></strong>：并行训练 256 个环境。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">1000</span></code></strong>：进行 1,000 轮 PPO 采样与更新。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--show</span></code></strong>：显示训练窗口。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：保存新检查点、配置、日志及训练完成后的导出模型。</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="坡地步行训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只 Microduck，有的在走，有的已经摔倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的坡地步行训练窗口，展示训练刚开始的样子。画面里是随机生成的训练地形，不是后面验证用的楔形坡台。</p>
 </figcaption></figure><p>观察一会儿就可以按 Ctrl+C 停止。训练每 250 轮保存一次检查点并导出一份可测试的策略（例如 <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>），跑完 1000 轮后才生成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。后面的验证默认使用课程提供的坡地模型，不需要等您的训练完成。</p>
 <p><strong>这条命令不等于课程模型的训练过程。</strong> 固定模型 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> 来自三个连续阶段：1000 轮（与上面的命令设置相同，DGX Spark 上不开窗口约 8 分钟），续训 1500 轮（加强角速度跟踪、固定名义物理参数），再续训 2000 轮（加入下一部分的转向奖励）。而且那次训练使用的接触配置与当前命令的全身碰撞模型不同。所以您的 1000 轮是一次新实验，不能期望复现固定模型的成绩。</p>
 <figure class="media"><a class="still-link" href="../assets/media/tensorboard-terrain.png"><img loading="lazy" src="../assets/media/tensorboard-terrain.png" alt="TensorBoard 标量页面，显示三个连续训练阶段（橙、蓝、红三色）。绿框 1 为地形难度等级，2 为平均回合回报，3 为转向角速度误差。"></a><figcaption><p>固定坡地模型三个训练阶段的 TensorBoard 记录（日志在 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>），横轴是累计迭代次数，绿框与编号为课程标注。① 地形难度等级在第一阶段从约 0.6 升到 2.0 左右，课程机制把表现好的环境移到了更陡的地块；② 每次续训开始时奖励设置改变，回报随之跳变，不同阶段的回报数值不能直接比较；③ 第三阶段加入转向奖励后，转向误差降到 0.25–0.35 rad/s 附近，波动较大。</p>
@@ -519,7 +526,15 @@
 </pre></div>
 </div>
 </div>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-test.png" alt="坡台测试运行时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只 Microduck 已经走上平台并站稳，头朝前方，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>坡台测试窗口：小鸭子已经走上平台、在目标位置停住。观察它到达后是否保持直立，有没有从平台边缘掉下。</p>
+<details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：测试课程提供的 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code>。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--slope</span> <span class="pre">5</span></code></strong>：坡度为 +5°；下坡改为 <code class="docutils literal notranslate"><span class="pre">-5</span></code>。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">5</span></code></strong>：运行 5 个互不碰撞的环境。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">20</span></code></strong>：每个环境运行 20 秒仿真时间。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seed</span> <span class="pre">49001</span></code></strong>：固定随机种子。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：保存本次报告，使用新目录。</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-test.png" alt="坡台测试运行时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只 Microduck 已经走上平台并站稳，头朝前方，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>坡台测试窗口：小鸭子已经走上平台、在目标位置停住。观察它到达后是否保持直立，有没有从平台边缘掉下。</p>
 </figcaption></figure><p>终端会打印每个环境的 <code class="docutils literal notranslate"><span class="pre">passed</span></code>、<code class="docutils literal notranslate"><span class="pre">fell</span></code>、<code class="docutils literal notranslate"><span class="pre">reached_goal</span></code>、<code class="docutils literal notranslate"><span class="pre">held_seconds</span></code> 和速度均方根误差，完整结果写在输出目录的 <code class="docutils literal notranslate"><span class="pre">report.json</span></code>。下坡把 <code class="docutils literal notranslate"><span class="pre">--slope</span></code> 改成 <code class="docutils literal notranslate"><span class="pre">-5</span></code>、换一个输出目录即可。课程按这两条命令实测，时间从策略接管算起（前 2 秒站立）：</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>

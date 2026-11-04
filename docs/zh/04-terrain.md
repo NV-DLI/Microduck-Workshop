@@ -4,8 +4,6 @@ myst:
     description: 先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行，并在一个楔形坡台上验证。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 3.4 延伸：走稳上下坡
 
 :::{lesson-intro}
@@ -145,6 +143,15 @@ python3 scripts/run.py train-terrain \
   --output outputs/terrain-training-01
 ```
 
+:::{enrichment} 参数详解
+
+- **`--model`**：用官方 `models/walk.onnx` 初始化行走 Actor；不是随机初始化。
+- **`--num-envs 256`**：并行训练 256 个环境。
+- **`--iterations 1000`**：进行 1,000 轮 PPO 采样与更新。
+- **`--show`**：显示训练窗口。
+- **`--output`**：保存新检查点、配置、日志及训练完成后的导出模型。
+:::
+
 :::{course-image} media/isaac-ui-terrain-training.png
 :alt: 坡地步行训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只 Microduck，有的在走，有的已经摔倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。
 
@@ -234,6 +241,16 @@ python3 scripts/run.py terrain \
   --slope 5 --num-envs 5 --seconds 20 --seed 49001 \
   --output outputs/terrain-evaluation-up-05
 ```
+
+:::{enrichment} 参数详解
+
+- **`--model`**：测试课程提供的 `models/terrain-walk.onnx`。
+- **`--slope 5`**：坡度为 +5°；下坡改为 `-5`。
+- **`--num-envs 5`**：运行 5 个互不碰撞的环境。
+- **`--seconds 20`**：每个环境运行 20 秒仿真时间。
+- **`--seed 49001`**：固定随机种子。
+- **`--output`**：保存本次报告，使用新目录。
+:::
 
 :::{course-image} media/isaac-ui-terrain-test.png
 :alt: 坡台测试运行时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只 Microduck 已经走上平台并站稳，头朝前方，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。

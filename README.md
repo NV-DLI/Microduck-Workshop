@@ -21,12 +21,9 @@ Reading, figures, search and the interactive 3D duck work in a browser without I
 
 ## Requirements
 
-| Device | System | What you can use |
-|---|---|---|
-| DGX Spark (aarch64) | Ubuntu 24.04 desktop | The complete course, including Isaac Sim windows, cameras and recordings |
+The experiments require a computer with an NVIDIA DGX-system GPU or RTX GPU that meets Isaac Sim requirements. The container supports Intel / AMD x86_64 CPUs and DGX Spark ARM CPUs (aarch64) on Ubuntu 24.04. All experiments have been tested only on DGX Spark; Spark is not mandatory, and other hardware needs local validation.
 
-
-The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, the Isaac Lab development snapshot dated 2026-11-04 (`e527032b`, including the Microduck tasks and BAM motor model), Newton 1.8.0.dev0 (`71eeba16`), and RSL-RL 5.5.1. This Isaac Lab snapshot is not the 3.0.0 GA release. The course lock separately pins Newton for the supplied policies; a narrowly scoped USD-import adapter supports the course Newton/BAM route. Details are in Section 1.2 of the course.
+The host needs an NVIDIA driver, Docker with the [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html), Git and a desktop session that can show windows. The image pins Isaac Sim 6.2, the Isaac Lab development snapshot (`e527032b`, including the Microduck tasks and BAM motor model), Newton 1.8.0.dev0 (`71eeba16`), and RSL-RL 5.5.1. This Isaac Lab snapshot is not the 3.0.0 GA release. The course lock separately pins Newton for the supplied policies; a narrowly scoped USD-import adapter supports the course Newton/BAM route. Details are in Section 1.2 of the course.
 
 ## Quick start
 
@@ -40,7 +37,7 @@ All commands below run on the **host** from the repository root unless marked as
    cd Microduck-Workshop
    ```
 
-2. **Build the course container** (the first build downloads Isaac Sim and its dependencies; leave enough disk space).
+2. **Build the course container** (expect about 10–12 GB of downloads on a fresh install; allow at least 50 GB of free disk space).
 
    ```bash
    docker compose -f docker/compose.yaml build
@@ -66,7 +63,7 @@ All commands below run on the **host** from the repository root unless marked as
    python3 scripts/run.py inspect-model --model models/walk.onnx
    ```
 
-   On DGX Spark with a desktop session, start the keyboard football lab with `python3 scripts/run.py manual --seconds 600 --output outputs/manual-football-01`.
+   With a desktop session, start the keyboard football lab with `python3 scripts/run.py manual --seconds 600 --output outputs/manual-football-01`.
 
    `scripts/run.py` is the lab entry point (`python3 scripts/run.py --help` lists the commands, `python3 scripts/run.py <command> --help` their parameters).
 

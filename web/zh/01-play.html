@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -342,6 +342,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -405,8 +406,7 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-<section class="tex2jax_ignore mathjax_ignore" id="microduck">
+  <section class="tex2jax_ignore mathjax_ignore" id="microduck">
 <h1>2.1 认识 Microduck：先来踢一场球<a class="headerlink" href="#microduck" title="Link to this heading">#</a></h1>
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>先用键盘指挥 Microduck 走路、转向和踢球，再看看 Isaac Sim 如何把场景、机器人和预训练策略连接起来。</p>
 </div><div class="lesson-meta">第 2.1 节 · 预计学习时长 20 分钟</div></div></div><section id="meet">
@@ -424,8 +424,12 @@
 </pre></div>
 </div>
 </div>
-<p>命令不需要指定模型：它读取 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 里的官方行走模型 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code> 和右脚踢球模型 <code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code>。<code class="docutils literal notranslate"><span class="pre">--seconds</span></code> 是窗口最长运行的仿真时间，记录写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的目录。</p>
-<p>用鼠标点击仿真窗口，就可以用下表的按键操作。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。</p>
+<details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><p>命令不需要指定模型：它读取 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 里的官方行走模型 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code> 和右脚踢球模型 <code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code>。<code class="docutils literal notranslate"><span class="pre">--seconds</span></code> 是窗口最长运行的仿真时间，记录写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的目录。</p>
+</div></details><p>用鼠标点击仿真窗口，就可以用下表的按键操作。按键说明也显示在窗口右侧的 “Microduck • Keyboard football” 标签页里。</p>
+<div class="note admonition">
+<p class="admonition-title">第一次打开 Isaac Sim</p>
+<p>首次启动需要加载资源并编译着色器，可能等待几分钟。如果系统提示“Isaac Sim 没有响应”，请不要关闭窗口，选择等待，让初始化继续。</p>
+</div>
 <figure class="media"><a class="still-link" href="../assets/media/isaac-ui-keyboard-walking.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-keyboard-walking.png" alt="键盘踢球的 Isaac Sim 完整界面：绿色球场上的 Microduck、足球和球门，右侧标签页列出按键说明。"></a><figcaption><p>键盘踢球窗口：左侧是球场，右侧标签页列出按键。先观察机器人、足球和球门的相对位置，再决定往哪走。</p>
 </figcaption></figure><div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -480,7 +484,7 @@
 <li><p><strong>球门。</strong> 外尺寸宽 40 × 深 20 × 高 25 厘米；门框直径按 6 毫米计，两根立柱的中心距为 39.4 厘米。定位用中心距，进球判定用净开口，两者不要混用。</p></li>
 <li><p><strong>地面。</strong> 按刚性平面处理，没有模拟软垫的压缩或起翘；场地垫与实物地面的摩擦尚未标定。</p></li>
 </ul>
-</div></details><p>机器人使用官方 Microduck CAD、基础质量与关节参数，以及带齿隙的全身碰撞模型。本节键盘实验使用锁定的 XL330 BAM 电机拟合、200 Hz 物理和 50 Hz 策略周期；第 4.2 节的板载射门使用 100 Hz 物理、相同的 50 Hz 策略周期；15 个实体舵机中，行走策略控制 14 个，嘴部不由这份策略驱动。全身碰撞让头、腿与电池等部位摔倒后也能被地面托住，不会穿过地面。</p>
+</div></details><p>机器人使用官方 Microduck CAD、基础质量与关节参数，以及带齿隙的全身碰撞模型。本节键盘实验使用锁定的 XL330 BAM 电机拟合、200 Hz 物理和 50 Hz 策略周期；第 4.3 节的板载射门使用 100 Hz 物理、相同的 50 Hz 策略周期；15 个实体舵机中，行走策略控制 14 个，嘴部不由这份策略驱动。全身碰撞让头、腿与电池等部位摔倒后也能被地面托住，不会穿过地面。</p>
 <p>这套仿真配置与真机仍有差距：相机对应 GC2093，仿真按 960 × 540、15 Hz 采样，70° 水平视场角尚未经过镜头标定；ToF 和身体 IMU 也是近似。因此它不能证明最新固件、各种硬件误差或 RK3566 上的完整部署都已复现。移到真机前，应核对实际硬件版本、电压、关节零位、镜头参数与端到端延迟。</p>
 </section>
 <section id="policies">

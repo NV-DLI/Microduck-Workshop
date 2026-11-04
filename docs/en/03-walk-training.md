@@ -237,14 +237,15 @@ steps:
   body: The optimizer minimizes, so the code negates the objective and takes the larger term, equivalent to “maximize the smaller term”.
 ```
 
-| PPO setting | Value |
-|---|---|
-| Discount factor, GAE parameter | 0.99, 0.95 |
-| Clipping threshold | 0.2 |
-| Steps per environment per iteration | 24 |
-| Epochs per batch, mini-batches | 5, 4 |
-| Learning rate | 0.001, adapted by KL divergence |
-| Value-loss coefficient, entropy coefficient | 1.0, 0.01 |
+:::{enrichment} Parameter details
+
+- **Discount factor, GAE parameter**: 0.99, 0.95
+- **Clipping threshold**: 0.2
+- **Steps per environment per iteration**: 24
+- **Epochs per batch, mini-batches**: 5, 4
+- **Learning rate**: 0.001, adapted by KL divergence
+- **Value-loss coefficient, entropy coefficient**: 1.0, 0.01
+:::
 
 The command below trains 1024 environments for 2500 iterations, which samples:
 
@@ -294,12 +295,13 @@ python3 scripts/run.py train-walk \
   --output outputs/walking-training-01
 ```
 
-| Argument | Meaning |
-|---|---|
-| `--num-envs 1024` | Environments running on the GPU at the same time; each has its own random parameters |
-| `--iterations 2500` | PPO sampling-and-update loops; the matching sample count is computed above |
-| `--show` | Opens Isaac Sim to display the parallel environments; rendering uses GPU memory and slows every iteration |
-| `--output` | Where checkpoints, configuration, TensorBoard logs and the exported model are saved |
+:::{enrichment} Parameter details
+
+- **`--num-envs 1024`**: Environments running on the GPU at the same time; each has its own random parameters
+- **`--iterations 2500`**: PPO sampling-and-update loops; the matching sample count is computed above
+- **`--show`**: Opens Isaac Sim to display the parallel environments; rendering uses GPU memory and slows every iteration
+- **`--output`**: Where checkpoints, configuration, TensorBoard logs and the exported model are saved
+:::
 
 **How long does a full training take?** The course's pretrained result was trained on a DGX Spark without a window: 1024 environments × 2500 iterations, a training phase of 7246 seconds (about 2 hours), roughly 4.8 minutes per 100 iterations, with other jobs on the GPU at the time. That run used the original official collision model, while the command above uses the full-body collision model, and `--show` adds rendering on top, so your time will differ.
 
@@ -385,13 +387,14 @@ python3 scripts/run.py walk \
   --output outputs/ppo-walk-test-01
 ```
 
-| Argument | Meaning |
-|---|---|
-| `--model` | The policy file to test; here the course's pretrained `datasets/walking-ppo/exported/policy.onnx` (read-only) |
-| `--velocity 0.25 0 0` | Forward, sideways and turning velocity command; the program first sends about 2 seconds of zero velocity, then keeps sending this command |
-| `--seconds 12` | Simulated run time |
-| `--seed 202` | The same as the recorded run in Section 2.2, so the two results compare directly |
-| `--output` | Folder for `report.json` and `trajectory.json`, with one position every 0.1 s |
+:::{enrichment} Parameter details
+
+- **`--model`**: The policy file to test; here the course's pretrained `datasets/walking-ppo/exported/policy.onnx` (read-only)
+- **`--velocity 0.25 0 0`**: Forward, sideways and turning velocity command; the program first sends about 2 seconds of zero velocity, then keeps sending this command
+- **`--seconds 12`**: Simulated run time
+- **`--seed 202`**: The same as the recorded run in Section 2.2, so the two results compare directly
+- **`--output`**: Folder for `report.json` and `trajectory.json`, with one position every 0.1 s
+:::
 
 :::{course-image} media/isaac-ui-ppo-walk-test.png
 :alt: The complete Isaac Sim window while the command above tests the pretrained PPO policy: one Microduck stepping on flat ground, RTX real-time rendering and Newton MJWarp physics in the toolbar.

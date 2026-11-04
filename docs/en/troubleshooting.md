@@ -4,8 +4,6 @@ myst:
     description: Check environment, files, and arguments first. Preserve failed outputs for comparison.
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 6.2 Troubleshooting
 
 :::{lesson-intro}

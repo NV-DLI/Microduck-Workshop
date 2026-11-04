@@ -4,12 +4,10 @@ myst:
     description: 构建课程容器、挂载数据与模型、进入同一个容器终端，并确认 Isaac Sim 与 GPU 可用。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 1.2 准备环境与获取代码
 
 :::{lesson-intro}
-:meta: 操作实验 · Ubuntu 24.04 / DGX Spark · Docker
+:meta: 操作实验 · Ubuntu 24.04 · x86_64 / arm64 · Docker
 
 构建课程容器、挂载数据与模型、进入同一个容器终端，并确认 Isaac Sim 与 GPU 可用。
 :::
@@ -19,9 +17,7 @@ myst:
 
 课程的全部实验都在一个课程容器里运行：Isaac Sim 6.2、Isaac Lab 的 Microduck 开发快照与 Newton 都装在同一个镜像里。宿主机只负责构建和启动容器、显示仿真窗口，并保存数据和结果。
 
-| 设备 | 系统 | 可用的课程内容 |
-|---|---|---|
-| DGX Spark（aarch64） | Ubuntu 24.04 桌面 | 完整课程，包括 Isaac Sim 窗口、相机与录像 |
+运行实验需要您自备配有 NVIDIA DGX 系统 GPU 或 RTX GPU 的计算机，并满足 Isaac Sim 的显存、RTX 渲染与驱动要求。容器支持 Intel / AMD 的 x86_64 CPU 和 DGX Spark 的 ARM CPU（aarch64）。全部实验仅在 **DGX Spark** 上测试过；这不代表必须使用 Spark，其他硬件的性能与可运行规模需在本机确认。推荐使用 Ubuntu 24.04 桌面环境。
 
 宿主机需要 NVIDIA 驱动、Docker 与 NVIDIA Container Toolkit、Git，以及一个能显示窗口的桌面会话。镜像中的软件版本固定如下：
 
@@ -29,7 +25,7 @@ myst:
 |---|---|
 | 容器基础 | CUDA 13、Ubuntu 24.04、Python 3.12 |
 | 仿真平台 | Isaac Sim 6.2 |
-| 训练框架 | Isaac Lab 开发快照（2026-11-04，`e527032b`） |
+| 训练框架 | Isaac Lab 开发快照（`e527032b`） |
 | 物理后端 | Newton 1.8.0.dev0（`71eeba16`） |
 | 学习 | RSL-RL 5.5.1（PPO） |
 
@@ -67,7 +63,7 @@ Microduck-Workshop/
 {#build}
 ## 构建课程容器
 
-在仓库根目录运行。首次构建要下载 Isaac Sim、Isaac Lab 等依赖，耗时取决于网络，镜像也较大，请预留足够磁盘空间。
+在仓库根目录运行。首次构建预计需要下载 **约 10–12 GB** 的文件，主要是 Isaac Sim / Kit、PyTorch 与 CUDA 依赖，还包括 CUDA 基础镜像和系统软件包。网络较慢时可能等待较长时间；CPU 架构、下载缓存和依赖包会影响实际下载量。构建后的镜像约 21 GB，构建缓存也会占用空间，建议至少预留 50 GB 空闲磁盘。
 
 ```{code-block} bash
 :caption: Terminal · 宿主机

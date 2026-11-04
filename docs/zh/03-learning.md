@@ -4,8 +4,6 @@ myst:
     description: 强化学习的通用方法：目标、奖励与回报，Actor-Critic 中 Actor 与 Critic 的分工，优势估计，以及 PPO 为什么要限制每次更新的幅度。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 3.1 强化学习与 PPO
 
 :::{lesson-intro}

@@ -227,7 +227,10 @@ def main():
 
             def key(event, *_):
                 name = str(getattr(event.input, "name", event.input)).upper()
-                if event.type == carb.input.KeyboardEventType.KEY_PRESS:
+                if event.type == carb.input.KeyboardEventType.KEY_REPEAT:
+                    if name in ("W", "A", "S", "D", "Q", "E"):
+                        held.add(name)
+                elif event.type == carb.input.KeyboardEventType.KEY_PRESS:
                     held.add(name)
                     if name == "R":
                         flags["reset"] = True
@@ -339,6 +342,13 @@ def main():
                             held.add("Q")
                     if a.check_motion == "kick" and step == 150:
                         flags["kick"] = True
+                if not a.headless_check:
+                    # Read current key state so a missed release cannot leave motion latched.
+                    for name in ("W", "A", "S", "D", "Q", "E"):
+                        if inp.get_keyboard_value(window.get_keyboard(), getattr(carb.input.KeyboardInput, name)) > 0:
+                            held.add(name)
+                        else:
+                            held.discard(name)
                 if flags["kick"] and kick_start is None and not fallen:
                     kick_start = step
                     kick_at = step * 0.02
@@ -349,7 +359,7 @@ def main():
                 if kick_start is None and not fallen:
                     cmd.vel_command_b[0] = torch.tensor(
                         [
-                            0.25 * ("W" in held) - 0.18 * ("S" in held),
+                            0.0 if ("W" in held) == ("S" in held) else (0.25 if "W" in held else -0.40),
                             0.15 * ("A" in held) - 0.15 * ("D" in held),
                             0.45 * (("Q" in held) - ("E" in held)),
                         ],

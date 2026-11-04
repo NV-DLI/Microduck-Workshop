@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-walk-training';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -342,6 +342,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -570,35 +571,15 @@
 <span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>裁剪</h4> <p>优势与概率比相乘得到代理目标；<code>clip_param</code> 是裁剪阈值 0.2。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">surrogate</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">advantages</span><span class="p">)</span> <span class="o">*</span> <span class="n">ratio</span>
 <span class="n">surrogate_clipped</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">advantages</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span>
     <span class="n">ratio</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_param</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_param</span>
-<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>聚合损失</h4> <p>优化器做最小化，所以代码给目标加负号、取较大项，与“最大化较小项”等价。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="n">surrogate_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">surrogate</span><span class="p">,</span> <span class="n">surrogate_clipped</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></code></pre></div></div></div><div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>PPO 配置项</p></th>
-<th class="head cell-short"><p>取值</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>折扣因子、GAE 参数</p></td>
-<td class="cell-short"><p>0.99、0.95</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>裁剪阈值</p></td>
-<td class="cell-short"><p>0.2</p></td>
-</tr>
-<tr class="row-even"><td><p>每个环境每轮采样步数</p></td>
-<td class="cell-short"><p>24</p></td>
-</tr>
-<tr class="row-odd"><td><p>每批数据的更新遍数、小批次数</p></td>
-<td class="cell-short"><p>5、4</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>学习率</p></td>
-<td><p>0.001，按 KL 散度自适应</p></td>
-</tr>
-<tr class="row-odd"><td><p>价值损失系数、熵系数</p></td>
-<td class="cell-short"><p>1.0、0.01</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>下面的命令用 1024 个环境训练 2500 轮，采样量是：</p>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>聚合损失</h4> <p>优化器做最小化，所以代码给目标加负号、取较大项，与“最大化较小项”等价。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="n">surrogate_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">surrogate</span><span class="p">,</span> <span class="n">surrogate_clipped</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></code></pre></div></div></div><details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong>折扣因子、GAE 参数</strong>：0.99、0.95</p></li>
+<li><p><strong>裁剪阈值</strong>：0.2</p></li>
+<li><p><strong>每个环境每轮采样步数</strong>：24</p></li>
+<li><p><strong>每批数据的更新遍数、小批次数</strong>：5、4</p></li>
+<li><p><strong>学习率</strong>：0.001，按 KL 散度自适应</p></li>
+<li><p><strong>价值损失系数、熵系数</strong>：1.0、0.01</p></li>
+</ul>
+</div></details><p>下面的命令用 1024 个环境训练 2500 轮，采样量是：</p>
 <div class="formula"><div class="formula-label">每轮采样量与总样本数</div><div class="formula-body">\[\htmlData{sym=N_batch}{N_{\mathrm{batch}}}=\htmlData{sym=N_env}{N_{\mathrm{env}}}\times \htmlData{sym=T_rollout}{T_{\mathrm{rollout}}}=1024\times24=24{,}576,\qquad \htmlData{sym=N_total}{N_{\mathrm{total}}}=2500\times24{,}576=61{,}440{,}000\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(N_{\mathrm{batch}}\)</dt><dd>每轮训练迭代采集的样本数。</dd></div><div><dt>\(N_{\mathrm{env}}\)</dt><dd>并行环境数；本节的完整训练为 1024。</dd></div><div><dt>\(T_{\mathrm{rollout}}\)</dt><dd>每个环境每轮采集的控制步数，为 24。它和回合长度是两个不同的量。</dd></div><div><dt>\(N_{\mathrm{total}}\)</dt><dd>2500 轮迭代一共采集的样本数。</dd></div></dl></details></div><p>按 50 Hz 换算，约 6144 万条交互相当于在仿真中累计练习约 341 小时；并行环境让这些经验在约 2 小时内收集完。训练入口把这些部件连在一起：</p>
 <div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/runtime/simulation/core/gait/student_train.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>创建训练环境</h4> <p>按 Isaac Lab 的任务配置创建并行环境，再包装成 RSL-RL 能读取的向量环境。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">base</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">cfg</span><span class="o">=</span><span class="n">cfg</span><span class="p">)</span><span class="o">.</span><span class="n">unwrapped</span>
 <span class="n">env</span> <span class="o">=</span> <span class="n">RslRlVecEnvWrapper</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">clip_actions</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">clip_actions</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>保存实际配置</h4> <p>把本次使用的环境配置（观测、奖励、随机化与课程设置）和算法配置写进输出目录，事后可以逐项核对。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">dump_yaml</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">output</span> <span class="o">/</span> <span class="s2">"env.yaml"</span><span class="p">),</span> <span class="n">cfg</span><span class="p">)</span>
@@ -618,29 +599,13 @@
 </pre></div>
 </div>
 </div>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>参数</p></th>
-<th class="head cell-short"><p>含义</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">1024</span></code></p></td>
-<td><p>同时在 GPU 上运行的环境数；每个环境各有一组随机参数</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">2500</span></code></p></td>
-<td><p>PPO 采样与更新的循环次数，上面已计算过对应的样本量</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--show</span></code></p></td>
-<td><p>打开 Isaac Sim 窗口显示并行环境；渲染会占用显存并让每轮训练变慢</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--output</span></code></p></td>
-<td><p>检查点、配置、TensorBoard 日志和导出模型的保存位置</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>完整训练需要多长时间？</strong> 课程随附的预训练结果是在 DGX Spark 上不开窗口训练的：1024 个环境 × 2500 轮，训练阶段 7246 秒（约 2 小时），平均每 100 轮约 4.8 分钟，测量时 GPU 上还有其他任务。那次训练用的是官方原始碰撞模型，而上面的命令使用全身碰撞模型；打开 <code class="docutils literal notranslate"><span class="pre">--show</span></code> 时渲染也会拖慢训练，所以您的耗时会不同。</p>
+<details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">1024</span></code></strong>：同时在 GPU 上运行的环境数；每个环境各有一组随机参数</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">2500</span></code></strong>：PPO 采样与更新的循环次数，上面已计算过对应的样本量</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--show</span></code></strong>：打开 Isaac Sim 窗口显示并行环境；渲染会占用显存并让每轮训练变慢</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：检查点、配置、TensorBoard 日志和导出模型的保存位置</p></li>
+</ul>
+</div></details><p><strong>完整训练需要多长时间？</strong> 课程随附的预训练结果是在 DGX Spark 上不开窗口训练的：1024 个环境 × 2500 轮，训练阶段 7246 秒（约 2 小时），平均每 100 轮约 4.8 分钟，测量时 GPU 上还有其他任务。那次训练用的是官方原始碰撞模型，而上面的命令使用全身碰撞模型；打开 <code class="docutils literal notranslate"><span class="pre">--show</span></code> 时渲染也会拖慢训练，所以您的耗时会不同。</p>
 <p><strong>您不需要等它训练完。</strong> 窗口出现、终端开始逐轮打印回报和回合长度后，观察几分钟：前几十轮里大部分小鸭子很快摔倒、被单独重置，随着迭代推进，站得住的越来越多。</p>
 <p>看够了就按 Ctrl+C 停止，容器仍在运行。已保存的检查点（每 250 轮一个）会保留，但只有训练跑完才会导出 <code class="docutils literal notranslate"><span class="pre">exported/policy.onnx</span></code>。下面默认测试课程预先训练好的策略；想让自己的训练跑完时，可以去掉 <code class="docutils literal notranslate"><span class="pre">--show</span></code> 加快速度，完成后再显式换成自己的模型。</p>
 <figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-ppo-training.png" alt="训练时打开 --show 的 Isaac Sim 完整界面：白色地面上许多 Microduck 副本处在不同的步态阶段，有的站立、有的迈步、有的正在倾倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的训练窗口，训练刚开始：各副本处在不同的步态阶段，摔倒的副本会被单独重置。您的命令使用 1024 个环境，窗口里的小鸭子会更多、更密。</p>
@@ -731,32 +696,14 @@
 </pre></div>
 </div>
 </div>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>参数</p></th>
-<th class="head cell-short"><p>含义</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--model</span></code></p></td>
-<td><p>要测试的策略文件；这里是课程预先训练好的 <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo/exported/policy.onnx</span></code>（只读）</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--velocity</span> <span class="pre">0.25</span> <span class="pre">0</span> <span class="pre">0</span></code></p></td>
-<td><p>前进、侧移和转向的速度指令；程序先发约 2 秒零速度，再持续发送这条指令</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">12</span></code></p></td>
-<td class="cell-short"><p>运行的仿真时长</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--seed</span> <span class="pre">202</span></code></p></td>
-<td><p>与 2.2 节的录制示例相同，两次结果可以直接对照</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--output</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">report.json</span></code> 和每 0.1 秒一条位置记录的 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 的保存目录</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-walk-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-ppo-walk-test.png" alt="用上面的命令测试预训练 PPO 策略时的 Isaac Sim 完整界面：视口中一只 Microduck 在平地上迈步，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>测试窗口：观察机器人起步后是否一直站稳、是否沿指令方向直行，还是逐渐偏向一侧。</p>
+<details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：要测试的策略文件；这里是课程预先训练好的 <code class="docutils literal notranslate"><span class="pre">datasets/walking-ppo/exported/policy.onnx</span></code>（只读）</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--velocity</span> <span class="pre">0.25</span> <span class="pre">0</span> <span class="pre">0</span></code></strong>：前进、侧移和转向的速度指令；程序先发约 2 秒零速度，再持续发送这条指令</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">12</span></code></strong>：运行的仿真时长</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seed</span> <span class="pre">202</span></code></strong>：与 2.2 节的录制示例相同，两次结果可以直接对照</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：<code class="docutils literal notranslate"><span class="pre">report.json</span></code> 和每 0.1 秒一条位置记录的 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 的保存目录</p></li>
+</ul>
+</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-ppo-walk-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-ppo-walk-test.png" alt="用上面的命令测试预训练 PPO 策略时的 Isaac Sim 完整界面：视口中一只 Microduck 在平地上迈步，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>测试窗口：观察机器人起步后是否一直站稳、是否沿指令方向直行，还是逐渐偏向一侧。</p>
 </figcaption></figure><p>设置与 2.2 节的录制示例相同，可以直接对照：先看有没有跌倒，再比较 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 中的距离和方向。课程运行的那一次 12 秒内没有跌倒，前进指令期间走了约 1.11 m（平均约 0.11 m/s），但向右偏，整段约 26°、最后 2 秒约 37°；2.2 节的官方模型速度相近，却向左偏约 8°（最后 2 秒约 15°）。两者都能走，却都没有准确跟上指令。再把 <code class="docutils literal notranslate"><span class="pre">--velocity</span></code> 改成 <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">0</span> <span class="pre">0.4</span></code> 测试转向，看看是否“会走不会转”。</p>
 <p><strong>测试您自己的策略。</strong> 只有当您的训练完整跑完、<code class="docutils literal notranslate"><span class="pre">outputs/walking-training-01/exported/policy.onnx</span></code> 已经生成时，才把命令里的 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 手动换成这个路径，并换一个新的 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 目录。一次成功的运行只是一个样本；要下结论，应换几组指令、从不同起点多次重复测试，并保留失败的结果。</p>
 <div class="quiz"><h3>检查理解</h3><p>为什么测试时要关闭训练中使用的随机推力和参数随机化？</p>

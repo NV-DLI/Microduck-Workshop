@@ -4,8 +4,6 @@ myst:
     description: "Read the real reward code of two community skills (flamingo cycle and basketball balance): what the goal is, which quantities are read, how the formulas are written, how they can fail and how the authors checked them, then use the same steps to plan a new task."
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 3.5 (Extention) Community skills: reward design
 
 :::{lesson-intro}

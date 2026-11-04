@@ -153,7 +153,10 @@ def main():
     )
     env = dict(os.environ)
     env["OMNI_KIT_ACCEPT_EULA"] = "YES"
-    env["LD_PRELOAD"] = "/lib/aarch64-linux-gnu/libgomp.so.1"
+    # OpenMP preloading is needed on the ARM reference host only.
+    openmp = Path("/lib/aarch64-linux-gnu/libgomp.so.1")
+    if openmp.is_file():
+        env["LD_PRELOAD"] = ":".join(filter(None, (str(openmp), env.get("LD_PRELOAD", ""))))
     env["PATH"] = str(M / "runtime/tools/bin") + os.pathsep + env.get("PATH", "")
 
     def run(argv):

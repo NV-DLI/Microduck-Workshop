@@ -1199,8 +1199,8 @@
     {
       "path": "simulation/core/football/student_entry.py",
       "original_sha256": "e1fc082385ad0c16048aea8f58b9f63d6c3ef1cc6c8b35a97bf8cec0e39f060e",
-      "template_sha256": "bd90bde15bd8d76470c5c60836f8c8cae3fce27df131b39b498010b4762f47f5",
-      "bytes": 8952
+      "template_sha256": "13863c1d2afc70066c5a0e76e547a2778a93bf9db2a4bd3544f14be638518b25",
+      "bytes": 9131
     },
     {
       "path": "simulation/core/football/test_beta_image_geometry.py",
@@ -1541,8 +1541,8 @@
     {
       "path": "simulation/core/perception/student_entry.py",
       "original_sha256": "cd072c94c330f52e738cb8e7dfff24720993488059409f640adc0b2f7c2145d4",
-      "template_sha256": "e88ae7e54bc2fe64ee73516b3f0da3b8aaf4f4e3be22f8ae1d83cf1753488fd6",
-      "bytes": 12602
+      "template_sha256": "6b35e8b827b82d9185c4f1d481d60044e3287e59a11729330d722603a9671ece",
+      "bytes": 12781
     },
     {
       "path": "simulation/core/perception/teacher_labels.py",

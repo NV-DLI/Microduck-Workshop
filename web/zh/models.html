@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -342,6 +342,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -477,7 +478,7 @@
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>
 <td class="cell-short"><p>固定行走策略</p></td>
-<td><p>2.1 节键盘踢球（自动读取）；2.2 节 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>；4.2 节的板载射门和 5.2 节的 GR00T 执行层里，底层行走策略都使用同一模型的副本</p></td>
+<td><p>2.1 节键盘踢球（自动读取）；2.2 节 <code class="docutils literal notranslate"><span class="pre">walk</span> <span class="pre">--model</span> <span class="pre">models/walk.onnx</span></code>；4.3 节的板载射门和 5.2 节的 GR00T 执行层里，底层行走策略都使用同一模型的副本</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">terrain-walk.onnx</span></code></p></td>
 <td><p>3.4 节固定坡地行走策略，约 0.79 MB</p></td>
@@ -485,11 +486,11 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-teacher.onnx</span></code></p></td>
 <td class="cell-short"><p>踢球基础动作</p></td>
-<td><p>2.1 节键盘踢球（空格键，自动读取）；4.2 节板载射门的踢球技能使用同一模型的副本</p></td>
+<td><p>2.1 节键盘踢球（空格键，自动读取）；4.3 节板载射门的踢球技能使用同一模型的副本</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">kick-residual.onnx</span></code></p></td>
 <td class="cell-short"><p>踢球残差修正</p></td>
-<td><p>5.2 节 GR00T 执行层使用；4.2 节板载射门不加载</p></td>
+<td><p>5.2 节 GR00T 执行层使用；4.3 节板载射门不加载</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">kick-checkpoint.pt</span></code></p></td>
 <td><p>保留的踢球训练检查点</p></td>
@@ -509,7 +510,7 @@
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scene-detector/detector.pt</span></code> / <code class="docutils literal notranslate"><span class="pre">scene-detector/detector.onnx</span></code></p></td>
 <td><p>官网 10 cm 球与四种地面检测器；当前默认</p></td>
-<td><p>4.2 节 <code class="docutils literal notranslate"><span class="pre">football</span></code> 命令自动核对并加载，用作板载策略的视觉检测器</p></td>
+<td><p>4.3 节 <code class="docutils literal notranslate"><span class="pre">football</span></code> 命令自动核对并加载，用作板载策略的视觉检测器</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">official-browser/walking.onnx</span></code> / <code class="docutils literal notranslate"><span class="pre">sitstand.onnx</span></code></p></td>
 <td><p>用于官网版本核对与站立试验；完整步行任务使用 <code class="docutils literal notranslate"><span class="pre">walk.onnx</span></code></p></td>

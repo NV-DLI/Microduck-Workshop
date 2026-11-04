@@ -17,9 +17,9 @@ COMMIT = "e527032b25939a8fc061609d3502c99e0c57f9c3"
 
 
 def setup_runtime(a):
-    if platform.system() != "Linux" or platform.machine() != "aarch64":
+    if platform.system() != "Linux" or platform.machine() not in ("aarch64", "x86_64"):
         raise RuntimeError(
-            "This pinned course installer targets Linux aarch64 (DGX Spark). Read the platform requirements before continuing."
+            "This pinned course installer supports Linux aarch64 (DGX Spark) and x86_64 (Intel/AMD). Read the platform requirements before continuing."
         )
     os.environ.setdefault("UV_HTTP_TIMEOUT", "1800")
     local = ROOT / ".local"

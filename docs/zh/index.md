@@ -4,15 +4,13 @@ myst:
     description: 本课程专注于在仿真环境中训练和验证 Microduck：从机械结构与传感器，到强化学习、运动技能和任务控制，逐步建立可检查的机器人实验。自主射门是串联感知与动作的一个综合案例，课程也涵盖行走、上下坡和更多任务的设计思路。
 ---
 
-<!-- Course source of truth: edit this Markdown directly. Migrated from content/course.json sha256 05a2fa050056450b… (zh-depth b42bebdaf018…) on 2026-10-29; the JSON is a read-only archive. -->
-
 # 1.1 课程概览
 
 :::{lesson-intro}
-:meta: 6 个部分 · 17 节 · 仿真实践与前沿方法
+:meta: 6 个部分 · 18 节 · 仿真实践与前沿方法
 :hero: media/isaac-football-hero-still.webp
 :hero-animation: media/isaac-football-hero.webp
-:hero-size: 1600x872
+:hero-size: 1600x1000
 :hero-alt: Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。
 
 本课程专注于在仿真环境中训练和验证 Microduck：从机械结构与传感器，到强化学习、运动技能和任务控制，逐步建立可检查的机器人实验。自主射门是串联感知与动作的一个综合案例，课程也涵盖行走、上下坡和更多任务的设计思路。
@@ -51,6 +49,7 @@ setup
 
 06-perception
 06-onboard
+06-shoot
 ```
 
 ```{toctree}
@@ -110,6 +109,6 @@ references
 | 1 概览 | 1.1 课程概览 · 1.2 准备环境与获取代码 |
 | 2 认识 Microduck | 2.1 认识 Microduck：先来踢一场球 · 2.2 拆解机械结构与控制周期 |
 | 3 使用强化学习让 Microduck 学会技能 | 3.1 强化学习与 PPO · 3.2 Microduck 的强化学习 · 3.3 训练并测试行走策略 · 3.4 延伸：走稳上下坡 · 3.5 （拓展）社区技能：奖励设计 |
-| 4 板载策略完成射门任务 | 4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 设计射门阶段 |
+| 4 板载策略完成射门任务 | 4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 设计射门阶段 · 4.3 射门！ |
 | 5 （拓展）使用 GR00T 自主完成射门 | 5.1 视觉-语言-动作模型（VLA）与 GR00T · 5.2 使用 GR00T 自主完成射门 · 5.3 从球场走向更多环境 |
 | 6 参考与帮助 | 6.1 让智能体来帮忙 · 6.2 故障排查 · 6.3 继续学习与参考资料 |

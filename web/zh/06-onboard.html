@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=bf9b1fa3" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=c9042c06" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,14 +57,14 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-onboard';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=3f75754c"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=36a10d7c"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
-    <link rel="next" title="5.1 视觉-语言-动作模型（VLA）与 GR00T" href="07-groot.html" />
+    <link rel="next" title="4.3 射门！" href="06-shoot.html" />
     <link rel="prev" title="4.1 识别球与球门：RGB 检测与 ToF 测距" href="06-perception.html" />
 
 
@@ -342,6 +342,7 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 识别球与球门：RGB 检测与 ToF 测距</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.2 设计射门阶段</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 射门！</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
@@ -532,35 +533,7 @@
 <li><p><strong>踢球与恢复。</strong> 官方右脚踢球策略同样是强化学习训练的局部技能，权重不变；这里实现了它与站立之间切换的时序逻辑。</p></li>
 <li><p><strong>没有训练的部分。</strong> 几何计算、直线生成、速度反馈、减速和阶段逻辑都是编写出来的。</p></li>
 </ul>
-</section>
-<section id="run">
-<h2>射门！<a class="headerlink" href="#run" title="Link to this heading">#</a></h2>
-<p>先按 <a class="reference internal" href="setup.html"><span class="std std-doc">1.2 节</span></a> 准备好课程容器，再回到容器终端；容器已在运行时，可以在宿主机用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">exec</span> <span class="pre">-it</span> <span class="pre">microduck-workshop</span> <span class="pre">bash</span></code> 进入。然后运行：</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
-<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>football<span class="w"> </span>--output<span class="w"> </span>outputs/onboard-football
-</pre></div>
-</div>
-</div>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>参数</p></th>
-<th class="head cell-short"><p>含义</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--output</span></code></p></td>
-<td><p>一个新目录；各轮记录分别保存在 <code class="docutils literal notranslate"><span class="pre">episode-001</span></code>、<code class="docutils literal notranslate"><span class="pre">episode-002</span></code> 等子目录</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>机器人会自动观察、接近足球并尝试射门。第一轮从名义起点出发。点击 Isaac Sim 窗口，按 <strong>R</strong> 就能重新开始：窗口保持打开，每轮都从站立初始化开始，起点随机偏移，前后、左右各最多 5 厘米，朝向顺时针或逆时针最多偏转 15°；足球和球门的位置不变。场景重新初始化时稍等片刻，随后任务会自动开始。</p>
-<p>学生实验不设总时限，进球、未进球或暂时无法出脚时都不会自动暂停仿真。传感器持续刷新；按 <strong>R</strong> 才会重置当前尝试。关闭 Isaac 应用，或在启动它的终端按 <strong>Ctrl+C</strong>，即可停止程序。感知、对准或交接失败只会暂停当前动作，并尝试重新观察。</p>
-<p>仿真要同时渲染第三人称视口、头部 RGB 相机和 ToF 等多路画面，运行速度取决于硬件性能，窗口里的动作看起来可能卡顿；任务按仿真时间推进。</p>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="板载射门的 Isaac Sim 完整界面，同时显示绿色球场、头部 RGB 图像和 8×8 ToF 距离。"></a><figcaption><p>左侧观察机器人，右侧对照它此刻看到的图像与距离：识别框是否稳定地框住球和球门，脚前的 ToF 读数是否随接近而变小。NR 表示没有回波，不能据此认为前方没有障碍。</p>
-</figcaption></figure><p><code class="docutils literal notranslate"><span class="pre">summary.json</span></code> 汇总已保存的各轮记录；单轮 <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> 的 <code class="docutils literal notranslate"><span class="pre">navigation_retries</span></code> 记录中途重新观察的原因。识别框仍在，并不表示几何位置已经通过检查；近距位置不够新鲜时，策略会停步重新观察。也要检查接近时的左右偏差和朝向、出脚条件是否满足，以及触球后是否恢复平衡。</p>
-<p>按 R 重置时，程序先保存当前记录，再开始下一轮。</p>
+<p>在 <a class="reference internal" href="06-shoot.html"><span class="std std-doc">4.3 节</span></a> 运行射门实验，并观察板载策略的控制周期。</p>
 </section>
 <section id="design">
 <h2>人工设计的边界<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
@@ -601,11 +574,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="07-groot.html"
+       href="06-shoot.html"
        title="下一页">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">下一页</p>
-        <p class="prev-next-title">5.1 视觉-语言-动作模型（VLA）与 GR00T</p>
+        <p class="prev-next-title">4.3 射门！</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -642,7 +615,6 @@
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">哪些经过训练，哪些没有</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run">射门！</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design">人工设计的边界</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
 </ul>

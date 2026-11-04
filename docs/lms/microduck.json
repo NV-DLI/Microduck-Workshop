@@ -171,6 +171,17 @@
                 "zh": "zh/06-onboard.html",
                 "en": "en/06-onboard.html"
               }
+            },
+            {
+              "id": "06-shoot",
+              "title": {
+                "zh": "4.3 射门！",
+                "en": "4.3 Shoot!"
+              },
+              "paths": {
+                "zh": "zh/06-shoot.html",
+                "en": "en/06-shoot.html"
+              }
             }
           ]
         },
@@ -278,12 +289,17 @@
         "run": "V1-ZH",
         "title": "使用 NVIDIA Isaac 在仿真环境训练 Microduck",
         "language": "zh_HANS",
-        "start": "2026-10-30T00:00:00Z",
+        "start": "2026-10-31T08:00:00Z",
         "about": {
           "short_description": "使用 NVIDIA Isaac Sim 与 Isaac Lab，在仿真中训练 Microduck 行走与上下坡，运行板载策略完成步行射门，并了解 GR00T 怎样从示范中学会射门。",
           "overview_html": "about/overview.zh.html",
           "duration": "06:00",
           "effort": "06:00"
+        },
+        "policy": {
+          "self_paced": true,
+          "enrollment_start": "2026-10-30T12:00:00Z",
+          "invitation_only": false
         }
       }
     },
@@ -301,12 +317,17 @@
         "run": "V1",
         "title": "Train Microduck in Simulation with NVIDIA Isaac",
         "language": "en",
-        "start": "2026-10-30T00:00:00Z",
+        "start": "2026-10-31T08:00:00Z",
         "about": {
           "short_description": "Train Microduck in simulation with NVIDIA Isaac Sim and Isaac Lab: learn walking and slopes with PPO, run an onboard policy for a walking shot, and see how GR00T learns the shot from demonstrations.",
           "overview_html": "about/overview.en.html",
           "duration": "06:00",
           "effort": "06:00"
+        },
+        "policy": {
+          "self_paced": true,
+          "enrollment_start": "2026-10-30T12:00:00Z",
+          "invitation_only": false
         }
       }
     }

@@ -69,7 +69,7 @@ loop: true
 | 4–7 | Neck pitch, head pitch, head yaw, head roll | Radians from neutral | The head adapter clamps and rate-limits them before the low level |
 | 8 | Right-foot kick | 0 to 1 | Above 0.5 the execution layer confirms that the robot has settled and the head is centered, then runs the roughly 4-second local kick-and-recovery skill |
 
-The first three numbers are the walking policy's native command values, not measured velocities; the kick value is only a “kick now” request, not a joint angle or a success probability. GR00T learns “when to walk where, where to look and when to kick”; balance, stepping and ball contact are left to skills already trained with reinforcement learning and running at 50 Hz. In this execution layer the kick and recovery combine the reference kick and standing policies, a course-trained residual correction and recovery logic, which differs from the official-only configuration of the onboard policy in Section 4.2.
+The first three numbers are the walking policy's native command values, not measured velocities; the kick value is only a “kick now” request, not a joint angle or a success probability. GR00T learns “when to walk where, where to look and when to kick”; balance, stepping and ball contact are left to skills already trained with reinforcement learning and running at 50 Hz. In this execution layer the kick and recovery combine the reference kick and standing policies, a course-trained residual correction and recovery logic, which differs from the official-only configuration of the onboard policy in Section 4.3.
 
 **Why not output joint angles directly?** One GR00T inference takes about 0.33 s of server compute, while the walking policy updates its joint actions from body feedback every 20 ms. Controlling joints directly, the model would also have to learn balance and contact, which needs richer demonstrations and strict timing validation. The price is that GR00T is limited by the skills below it: a motion the walking policy cannot perform cannot be requested either.
 
@@ -169,10 +169,9 @@ Comparison with demonstrations can expose interface and alignment errors. Closed
 GR00T requests a sequence of high-level actions while the low-level policy handles faster body feedback. The diagram uses readable integer values: each high-level request covers 80 ms, four requests cover 320 ms, and the theoretical 50 Hz control loop updates joint actions every 20 ms.
 
 ```{control-timing}
-kind: groot-theory
+kind: comparison-theory
 ```
 
-**About 300 ms** is a rounded illustration of the measured **332 ms median** server-side fresh-inference time on DGX Spark. It is not a mean and excludes image capture, network transfer and client processing. The 80, 320 and 20 ms intervals are configured simulation time; they cannot simply be added to host computation time or used to claim real-time throughput.
 
 **Connect action chunks with RTC.** Real-Time Chunking can accompany asynchronous inference: predict the next chunk while executing the current one, constrain the prefix that will be too late to change, and smooth the remaining transition. This can reduce the gap between chunks; inference still takes time, and buffer exhaustion, network jitter and timeouts remain design concerns. For this course's high-level requests, retain discrete kick-trigger and skill-state guards instead of smoothing every field indiscriminately.
 
