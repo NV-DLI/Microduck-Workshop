@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,8 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '09-worlds';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -65,7 +66,7 @@
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="搜索" href="search.html" />
     <link rel="next" title="6.1 让智能体来帮忙" href="models.html" />
-    <link rel="prev" title="5.2 使用 GR00T 自主完成射门" href="08-groot-interface.html" />
+    <link rel="prev" title="5.2 模仿学习：使用 GR00T 自主完成射门" href="08-groot-interface.html" />
 
 
 
@@ -347,7 +348,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 模仿学习：使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
@@ -510,8 +511,8 @@
 </section>
 <section id="cosmos">
 <h2>Cosmos 3：为同一段动作补充视觉变化<a class="headerlink" href="#cosmos" title="Link to this heading">#</a></h2>
-<p>在仿真中改变材质和灯光，需要为每种条件准备资产并重新渲染。另一条补充途径是用生成模型直接改变已有视频的外观。</p>
-<p>NVIDIA Cosmos 是面向物理 AI 的世界基础模型平台。Cosmos 3 把理解场景（推理）、生成视频（世界生成）和生成动作放进同一个模型家族。对本任务，一个适合研究的用法是视频迁移（video transfer）：以一段已有的仿真示范视频为基础，用边缘、深度或分割等结构条件约束画面中物体的位置和形状，再用文字提示改变光照、地面或房间外观，生成新的候选视频。</p>
+<p>在仿真中改变材质和灯光，需要为每种条件准备资产并重新渲染。另一条补充途径是用<a class="reference external" href="https://www.nvidia.com/en-us/glossary/generative-ai/" rel="noreferer noopener" target="_blank">生成模型</a>直接改变已有视频的外观。</p>
+<p>NVIDIA Cosmos 是面向<a class="reference external" href="https://www.nvidia.com/en-us/glossary/generative-physical-ai/" rel="noreferer noopener" target="_blank">物理 AI</a>的<a class="reference external" href="https://www.nvidia.com/en-us/glossary/world-models/" rel="noreferer noopener" target="_blank">世界基础模型</a>平台。Cosmos 3 把理解场景（推理）、生成视频（世界生成）和生成动作放进同一个模型家族。对本任务，一个适合研究的用法是视频迁移（video transfer）：以一段已有的仿真示范视频为基础，用边缘、深度或分割等结构条件约束画面中物体的位置和形状，再用文字提示改变光照、地面或房间外观，生成新的候选视频。</p>
 <figure class="learning-figure" data-learning-flow="learn-8131a1f9e2"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="改变视觉外观，检查动作标签是否仍然成立"><svg class="learning-svg" viewBox="0 0 900 137" role="group" aria-labelledby="learn-8131a1f9e2-title"><title id="learn-8131a1f9e2-title">改变视觉外观，检查动作标签是否仍然成立</title><defs><marker id="learn-8131a1f9e2-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H244.0" marker-end="url(#learn-8131a1f9e2-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 68.5H468.0" marker-end="url(#learn-8131a1f9e2-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 68.5H692.0" marker-end="url(#learn-8131a1f9e2-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 可靠原始轨迹" aria-controls="learn-8131a1f9e2-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">可靠原始轨迹</text><text x="114.0" y="98" class="learning-node-subtitle">图像、状态与执行动作</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Cosmos 3 迁移" aria-controls="learn-8131a1f9e2-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="89" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Cosmos 3 迁移</text><text x="338.0" y="98" class="learning-node-subtitle">生成受条件约束的外观</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 检查数据一致性" aria-controls="learn-8131a1f9e2-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="89" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">检查数据一致性</text><text x="562.0" y="98" class="learning-node-subtitle">目标几何、接触与时间</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 训练与对照评测" aria-controls="learn-8131a1f9e2-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">训练与对照评测</text><text x="786.0" y="98" class="learning-node-subtitle">陌生环境中的自主成功</text></g></svg></div><div class="learning-details" aria-label="改变视觉外观，检查动作标签是否仍然成立"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-8131a1f9e2-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>可靠原始轨迹</h3><p>源数据首先要有正确的动作和时间对应关系。原示范没有教会的行为，改变它的外观也补不出来。</p></article><article id="learn-8131a1f9e2-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Cosmos 3 迁移</h3><p>结构条件帮助保持布局，提示词改变光照或房间外观。生成结果只是候选数据，即使有条件约束，也可能出现错误的帧。</p></article><article id="learn-8131a1f9e2-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>检查数据一致性</h3><p>检查球和球门的大小与位置、机器人的形状、接触时刻和跨帧连续性。如果球被生成到脚的另一侧，原来的动作标签就不再成立，这段数据应当丢弃。</p></article><article id="learn-8131a1f9e2-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>训练与对照评测</h3><p>在相同示范量与训练预算下，与不加生成数据的模型比较；把新房间或新组合留给测试，才能判断扩展是否有帮助。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>用生成视频扩充数据时，有几条约束必须守住：</p>
 <ul class="simple">
 <li><p><strong>几何必须保持。</strong> 球、球门、相机视角和机器人的相对位置不能变。动作标签是“在这个几何关系下该怎么做”，几何一变，标签就失效。</p></li>
@@ -556,7 +557,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">上一页</p>
-        <p class="prev-next-title">5.2 使用 GR00T 自主完成射门</p>
+        <p class="prev-next-title">5.2 模仿学习：使用 GR00T 自主完成射门</p>
       </div>
     </a>
     <a class="right-next"

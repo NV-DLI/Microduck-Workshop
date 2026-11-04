@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,8 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -346,7 +347,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
@@ -466,7 +467,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </section>
 <section id="build">
 <h2>Build the course container<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
-<p>Run this from the repository root. The first build is expected to download <strong>about 10–12 GB</strong>, mainly Isaac Sim / Kit, PyTorch and CUDA dependencies, plus the CUDA base image and system packages. It can take a long time on a slow connection; CPU architecture and existing caches affect the download size. The resulting image is about 21 GB, and build caches need additional space; allow at least 50 GB of free disk space.</p>
+<p>Run this from the repository root. The first build is expected to download <strong>about 10–12 GB</strong>, mainly Isaac Sim / Kit, <a class="reference external" href="https://www.nvidia.com/en-us/glossary/pytorch/" rel="noreferer noopener" target="_blank">PyTorch</a> and CUDA dependencies, plus the CUDA base image and system packages. It can take a long time on a slow connection; CPU architecture and existing caches affect the download size. The resulting image is about 21 GB, and build caches need additional space; allow at least 50 GB of free disk space.</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build

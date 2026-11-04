@@ -2525,3 +2525,30 @@ html[data-theme="dark"] .recorded-badge {
 .cycle-repeat{color:var(--muted);text-align:center;font-size:.85rem;margin:-1rem 0 1.3rem}.cycle-repeat svg{display:block;width:100%;height:30px;color:#76b900}.cycle-observation{position:absolute;top:.65rem;display:flex;align-items:center;gap:.35rem}.cycle-observation i{width:.65rem;height:.65rem;transform:rotate(45deg);background:#76b900}.cycle-observation small{font-size:.75rem}.cycle-observations{background:transparent;border-bottom:1px solid var(--line)}
 
 .cycle-inference-caption{width:20%;text-align:center;color:var(--muted)}.cycle-execution-ticks{width:80%;display:flex;justify-content:space-between}.theory-cycle[data-phase-cycle] .cycle-controls output{min-width:9rem}.theory-cycle[data-phase-cycle] .cycle-tone-2{background:#ead5b8}
+
+/* Glossary concepts: quiet tint, distinct from underlined file/reference links. */
+.bd-article a[href^="https://www.nvidia.com/en-us/glossary/"] {
+  color: inherit;
+  background-color: rgb(118 185 0 / 9%);
+  text-decoration: none;
+  border: 0;
+  border-radius: 3px;
+  padding: 0.03em 0.12em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.bd-article a[href^="https://www.nvidia.com/en-us/glossary/"]:hover {
+  color: inherit;
+  background-color: rgb(118 185 0 / 19%);
+  text-decoration: none;
+}
+.bd-article a[href^="https://www.nvidia.com/en-us/glossary/"]:focus-visible {
+  outline: 2px solid #76b900;
+  outline-offset: 3px;
+}
+html[data-theme="dark"] .bd-article a[href^="https://www.nvidia.com/en-us/glossary/"] {
+  background-color: rgb(118 185 0 / 15%);
+}
+html[data-theme="dark"] .bd-article a[href^="https://www.nvidia.com/en-us/glossary/"]:hover {
+  background-color: rgb(118 185 0 / 25%);
+}

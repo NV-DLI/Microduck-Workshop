@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,8 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -346,7 +347,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 模仿学习：使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
@@ -382,7 +383,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>1.1 课程概览<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>本课程专注于在仿真环境中训练和验证 Microduck：从机械结构与传感器，到强化学习、运动技能和任务控制，逐步建立可检查的机器人实验。自主射门是串联感知与动作的一个综合案例，课程也涵盖行走、上下坡和更多任务的设计思路。</p>
+<div class="lesson-heading is-home has-hero-animation"><div class="lesson-heading-text"><div class="lead"><p>本课程专注于在仿真环境中<a class="reference external" href="https://www.nvidia.com/en-us/glossary/ai-training/" rel="noreferer noopener" target="_blank">训练</a>和验证 Microduck：从机械结构与传感器，到<a class="reference external" href="https://www.nvidia.com/en-us/glossary/reinforcement-learning/" rel="noreferer noopener" target="_blank">强化学习</a>、运动技能和任务控制，逐步建立可检查的机器人实验。自主射门是串联感知与动作的一个综合案例，课程也涵盖行走、上下坡和更多任务的设计思路。</p>
 </div><div class="lesson-meta">6 个部分 · 17 节 · 仿真实践与前沿方法</div></div><figure class="hero-image hero-animation"><img class="dark-light" fetchpriority="high" src="../assets/media/isaac-football-hero.webp" alt="Isaac 完整窗口的运行录像，按仿真时间播放：板载策略控制 Microduck 在绿色球场踢球进门，旁边同步显示头部 RGB 和 ToF 传感器画面。" width="1600" height="1000" style="aspect-ratio: 1600 / 1000"></figure></div><div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -404,7 +405,7 @@
 </section>
 <section id="outcome">
 <h2>学习目标<a class="headerlink" href="#outcome" title="Link to this heading">#</a></h2>
-<p>课程先认识 Microduck 的机构与控制闭环，再学习强化学习和域随机化，训练与验证行走、上下坡等运动技能。随后以射门为例，把传感器、人工设计的阶段和已训练的技能组合成完整任务，并了解 GR00T 怎样从示范中学习高层请求。最后讨论环境变化，以及如何借助智能体设计自己的机器人任务。所有动手实验都在课程容器的仿真环境中进行。</p>
+<p>课程先认识 Microduck 的机构与控制闭环，再学习强化学习和域随机化，训练与验证行走、上下坡等运动技能。随后以射门为例，把传感器、人工设计的阶段和已训练的技能组合成完整任务，并了解 GR00T 怎样从示范中学习高层请求。最后讨论环境变化，以及如何借助<a class="reference external" href="https://www.nvidia.com/en-us/glossary/ai-agents/" rel="noreferer noopener" target="_blank">智能体</a>设计自己的机器人任务。所有动手实验都在课程容器的仿真环境中进行。</p>
 <ol class="arabic simple pipeline">
 <li><p>课程概览与容器环境准备</p></li>
 <li><p>认识 Microduck</p></li>
@@ -446,7 +447,7 @@
 <td><p>4.1 识别球与球门：RGB 检测与 ToF 测距 · 4.2 设计射门阶段 · 4.3 射门！</p></td>
 </tr>
 <tr class="row-even"><td><p>5 （拓展）使用 GR00T 自主完成射门</p></td>
-<td><p>5.1 视觉-语言-动作模型（VLA）与 GR00T · 5.2 使用 GR00T 自主完成射门 · 5.3 从球场走向更多环境</p></td>
+<td><p>5.1 视觉-语言-动作模型（VLA）与 GR00T · 5.2 模仿学习：使用 GR00T 自主完成射门 · 5.3 从球场走向更多环境</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>6 参考与帮助</p></td>
 <td><p>6.1 让智能体来帮忙 · 6.2 继续学习与参考资料</p></td>

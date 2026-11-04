@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,8 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-shoot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -346,7 +347,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
@@ -428,10 +429,9 @@
 </section>
 <section id="timing">
 <h2>The onboard control cycle<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
-<figure class="theory-cycle" data-theory-cycle="onboard-theory" data-duration="200">
-<h3>Control cycle · onboard policy</h3><div class="cycle-grid"><div class="cycle-row"><strong>RGB + ToF · 15 Hz</strong><div class="cycle-track cycle-observations"><span class="cycle-observation" style="left:0.0000%" title="Capture a new observation"><i></i><small>1</small></span><span class="cycle-observation" style="left:35.0000%" title="Capture a new observation"><i></i><small>2</small></span><span class="cycle-observation" style="left:70.0000%" title="Capture a new observation"><i></i><small>3</small></span></div></div><div class="cycle-row"><strong>Motion requests · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="1">1</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="2">2</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="3">3</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="4">4</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="5">5</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="6">6</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="7">7</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="8">8</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="9">9</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="10">10</span></div></div><div class="cycle-row"><strong>Body feedback → low-level policy · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="20">20</span></div></div><div class="cycle-row"><span>Simulation time</span><div class="cycle-ticks"><span>0 ms</span><span>50 ms</span><span>100 ms</span><span>150 ms</span><span>200 ms</span></div></div></div>
-<div class="cycle-controls" hidden><button type="button" class="cycle-play">Play</button><label>Inspect cycle <input type="range" min="0" max="200" step="1" value="0"/></label><output>0 ms</output></div>
-<figcaption>RGB and ToF are captured about every 67 ms. Motion requests and the low-level policy update every 20 ms using the latest valid perception and fresh body feedback.</figcaption><details><summary>Details</summary><p>This schematic shows configured periods, with 0 ms at a steady-state capture. Diamonds mark capture instants, not rendering durations. Capture intervals are about 67 ms. Stage observations refresh with each capture; motion requests update every 20 ms. Stage logic uses valid ball estimates, ToF and body state to request motion or a kick, such as “move forward while slowing down”. The low-level policy is a trained small neural network, such as the official walking Actor: it reads current joints, angular velocity and gravity direction and turns the request into 14 joint actions. Body feedback is updated every control cycle without waiting for the next image.</p></details></figure></section>
+<div data-control-cycle data-scenarios="onboard" data-lang="en">
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=c40d6c677e3b"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<section class="control-cycle-fallback"><h3>Control cycle</h3><p>Onboard policy: RGB and ToF use nominal 15 Hz captures, followed by YOLO inference and localization. Every 20 ms, feedback control uses the latest perception and fresh body feedback to generate a motion request; the low-level Actor then generates joint targets.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div></section>
 <section id="design">
 <h2>Limits of hand design<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
 <p>In the experiment, heading PD, lateral correction and trained skills produce motion; stage logic decides when to approach, stop and kick. These roles make the controller easier to analyze and debug. For &quot;dribble the ball to the center circle and stop&quot; or &quot;walk up to the ball without touching it&quot;, perception and feedback control remain reusable, but target positions, skill combinations, transitions and parameters need new design and validation.</p>

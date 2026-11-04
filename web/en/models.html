@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Give your own agent a concrete robot-task brief, a staged implementation process, and evidence-based acceptance criteria." name="description" />
+<meta content="Use an agent as a course teaching assistant for concepts, diagrams and lab troubleshooting, then design and validate your own robot task." name="description" />
 
   <title>6.1 Let Agent do the heavy lift - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,8 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -346,7 +347,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Score autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
@@ -406,8 +407,18 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="let-agent-do-the-heavy-lift">
 <h1>6.1 Let Agent do the heavy lift<a class="headerlink" href="#let-agent-do-the-heavy-lift" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>From individual skills to complete tasks and changing environments, the preceding sections established a way to design and validate robot behavior. Apply it to your own robot with an agent’s help, supplying the goals and constraints and judging results from actual evidence.</p>
-</div><div class="lesson-meta">Section 6.1 · From this course to your own robot task</div></div></div><section id="start">
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>From individual skills to complete tasks and changing environments, the preceding sections established a way to design and validate robot behavior. First use an agent to understand the course and troubleshoot labs, then apply the same approach to your own robot task.</p>
+</div><div class="lesson-meta">Section 6.1 · Course help and your own robot task</div></div></div><section id="course-ta">
+<h2>First, use your agent as a course teaching assistant<a class="headerlink" href="#course-ta" title="Link to this heading">#</a></h2>
+<p>Give your agent <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a> and the course repository when a concept is unclear or a lab fails. The guide includes a teaching-assistant mode: <strong>answer only questions related to this course and the environment needed for its labs</strong>. For unrelated questions, the agent should explain its scope and redirect to the course.</p>
+<p>Ask it to compare imitation and reinforcement learning, explain the arrows and time axes in a control-cycle diagram, or break a concept into smaller steps and examples. It can also inspect the relevant lesson, code and logs when container builds, Isaac startup, training or shooting commands fail. If it cannot access your computer, provide the section, command, complete error and relevant device information. You do not need the full robot-task brief below just to ask a course question.</p>
+<p>Start with this prompt:</p>
+<blockquote>
+<div><p>Read ROBOT_TASK_GUIDE.en.md and act as my teaching assistant for the Microduck course. Answer only questions related to the course and its required lab environment. I am studying [section] and my question is [fill in]. Read the relevant course pages and code, then explain concisely, interpret the diagram or give a step-by-step example, citing your sources. For a runtime problem, inspect the command, environment and error first, then propose the smallest fix and a verification step. Ask for missing information when needed; do not guess the cause or claim a run succeeded without evidence.</p>
+</div></blockquote>
+<p>The guide defines a scope and troubleshooting approach; it does not replace course materials or execution evidence. Ask the agent to identify the section or code supporting its answer. After a fix, rerun the failing step to confirm the issue is resolved. You can then apply the same approach to designing your own robot task.</p>
+</section>
+<section id="start">
 <h2>Bring this task guide<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
 <p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a>, the single English guide in the repository, turns the course's workflow and lessons into a project guide that you can give directly to an agent. It does not depend on a particular tool or require a shooting task. Microduck can reuse the course assets and skills; another robot requires its own joint, action and physics checks.</p>
 <p>Provide the English guide with your project; you can discuss the task with your agent in your preferred language. Ask it to inspect the model and sensors, ask for necessary missing information, recommend models and whether training is needed, plan data collection, and then propose staged implementation. It does not need to be named AGENTS.md. If your tool reads that project convention, merge the relevant instructions into your own AGENTS.md.</p>
@@ -520,6 +531,7 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#course-ta">First, use your agent as a course teaching assistant</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start">Bring this task guide</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief">Supply the essential context</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">Advance through verifiable steps</a></li>

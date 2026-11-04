@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="把课程中的机器人任务设计过程交给自己的智能体，准备清楚的输入、分步实现与可检查的验收结果。" name="description" />
+<meta content="让智能体作为课程助教答疑、解读图表与排查实验问题，再协助设计和验证自己的机器人任务。" name="description" />
 
   <title>6.1 让智能体来帮忙 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,8 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'models';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -347,7 +348,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 模仿学习：使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
@@ -407,8 +408,18 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>6.1 让智能体来帮忙<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>从单个技能到完整任务，再到环境变化，前面已经建立了一套设计与验证思路。现在把它用于您自己的机器人：让熟悉的智能体协助设计、实现和验证，由您提供目标与约束，并依据实际证据判断结果。</p>
-</div><div class="lesson-meta">第 6.1 节 · 从课程走向自己的机器人任务</div></div></div><section id="start">
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>从单个技能到完整任务，再到环境变化，前面已经建立了一套设计与验证思路。您可以先让熟悉的智能体（Agent）协助理解课程、排查实验问题，再把这套方法用于自己的机器人任务。</p>
+</div><div class="lesson-meta">第 6.1 节 · 课程答疑与自己的机器人任务</div></div></div><section id="course-ta">
+<h2>先让智能体做您的课程助教<a class="headerlink" href="#course-ta" title="Link to this heading">#</a></h2>
+<p>遇到不理解的概念或运行报错时，也可以把 <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a> 和课程仓库交给智能体，让它像助教一样协助您。指南已包含课程助教模式：<strong>只回答与本课程及其必要实验环境相关的问题</strong>；遇到无关问题，应说明范围并引导您回到课程。</p>
+<p>您可以请它比较模仿学习与强化学习，按箭头和时间轴解读控制周期图，或把一个知识点拆成更小的步骤和例子。实践中，容器构建失败、Isaac 无法启动、训练或射门命令报错，也可以让它结合对应章节、代码和日志排查。若智能体无法读取您的电脑，请提供章节位置、运行的命令、完整报错和必要的设备信息；不必一开始就提供后面整份机器人任务说明。</p>
+<p>可以直接这样开始：</p>
+<blockquote>
+<div><p>请先读取 ROBOT_TASK_GUIDE.en.md，以本课程助教的身份帮助我，只回答与 Microduck 课程及其必要实验环境相关的问题。我正在学习【章节】，问题是【填写】。请先查阅对应课程页面与代码，再用简洁的解释、图表解读或分步例子帮助我理解，并指出依据。如果是运行问题，请先查看命令、环境和报错，给出范围最小的修复与验证方法；缺少信息时再问我，不要猜测原因或声称已经运行成功。</p>
+</div></blockquote>
+<p>指南能约定回答范围和排查方式，但不能代替课程资料与实际运行证据。您可以要求智能体指出所依据的章节或代码位置；修复后应重新运行出错的步骤，确认问题确实解决。学会使用这些方法后，还可以继续让它协助设计自己的机器人任务。</p>
+</section>
+<section id="start">
 <h2>带上这份任务指南<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
 <p>仓库中唯一的英文任务指南 <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/ROBOT_TASK_GUIDE.en.md" rel="noreferer noopener" target="_blank">ROBOT_TASK_GUIDE.en.md</a>把本课程的设计流程和实践经验整理成了可直接交给智能体的项目指南。它不依赖某一种智能体，也不要求照搬射门任务。Microduck 可以复用课程中的模型与技能；换成其他机器人时，需要重新确认关节、动作接口和物理参数。</p>
 <p>将英文指南与项目文件一起提供给您的智能体，您仍可以用中文描述任务。请它先检查模型和传感器，询问缺少的必要信息，再推荐适合的模型、是否需要训练以及数据采集方案，最后提出分阶段实现计划。指南不是必须命名为 AGENTS.md 才能使用；如果您的工具按这个约定读取项目说明，也可以把适用的内容合并到自己的 AGENTS.md 中。</p>
@@ -521,6 +532,7 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#course-ta">先让智能体做您的课程助教</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start">带上这份任务指南</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#brief">先提供这些信息</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow">按能验证的小步骤推进</a></li>

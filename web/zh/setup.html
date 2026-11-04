@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,8 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -347,7 +348,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 模仿学习：使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
@@ -467,7 +468,7 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </section>
 <section id="build">
 <h2>构建课程容器<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
-<p>在仓库根目录运行。首次构建预计需要下载 <strong>约 10–12 GB</strong> 的文件，主要是 Isaac Sim / Kit、PyTorch 与 CUDA 依赖，还包括 CUDA 基础镜像和系统软件包。网络较慢时可能等待较长时间；CPU 架构、下载缓存和依赖包会影响实际下载量。构建后的镜像约 21 GB，构建缓存也会占用空间，建议至少预留 50 GB 空闲磁盘。</p>
+<p>在仓库根目录运行。首次构建预计需要下载 <strong>约 10–12 GB</strong> 的文件，主要是 Isaac Sim / Kit、<a class="reference external" href="https://www.nvidia.com/en-us/glossary/pytorch/" rel="noreferer noopener" target="_blank">PyTorch</a> 与 CUDA 依赖，还包括 CUDA 基础镜像和系统软件包。网络较慢时可能等待较长时间；CPU 架构、下载缓存和依赖包会影响实际下载量。构建后的镜像约 21 GB，构建缓存也会占用空间，建议至少预留 50 GB 空闲磁盘。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build

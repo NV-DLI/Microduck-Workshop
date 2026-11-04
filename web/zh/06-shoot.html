@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,8 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-shoot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -347,7 +348,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 模仿学习：使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
@@ -429,10 +430,9 @@
 </section>
 <section id="timing">
 <h2>板载策略的控制周期<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
-<figure class="theory-cycle" data-theory-cycle="onboard-theory" data-duration="200">
-<h3>控制周期 · 板载策略</h3><div class="cycle-grid"><div class="cycle-row"><strong>RGB + ToF · 15 Hz</strong><div class="cycle-track cycle-observations"><span class="cycle-observation" style="left:0.0000%" title="采集新观察"><i></i><small>1</small></span><span class="cycle-observation" style="left:35.0000%" title="采集新观察"><i></i><small>2</small></span><span class="cycle-observation" style="left:70.0000%" title="采集新观察"><i></i><small>3</small></span></div></div><div class="cycle-row"><strong>运动请求 · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="1">1</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="2">2</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="3">3</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="4">4</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="5">5</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="6">6</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="7">7</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="8">8</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="9">9</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="10">10</span></div></div><div class="cycle-row"><strong>身体反馈 → 底层策略 · 50 Hz</strong><div class="cycle-track"><span class="cycle-block cycle-tone-0" style="left:0.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:10.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:20.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-0" style="left:30.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:40.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:50.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-1" style="left:60.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:70.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:80.0000%;width:10.0000%" title="20">20</span><span class="cycle-block cycle-tone-2" style="left:90.0000%;width:10.0000%" title="20">20</span></div></div><div class="cycle-row"><span>仿真时间</span><div class="cycle-ticks"><span>0 ms</span><span>50 ms</span><span>100 ms</span><span>150 ms</span><span>200 ms</span></div></div></div>
-<div class="cycle-controls" hidden><button type="button" class="cycle-play">播放</button><label>查看周期 <input type="range" min="0" max="200" step="1" value="0"/></label><output>0 ms</output></div>
-<figcaption>RGB 与 ToF 约每 67 ms 采集一次；运动请求和底层策略每 20 ms 更新，期间使用最近有效的感知信息与新的身体反馈。</figcaption><details><summary>详解</summary><p>这是配置周期示意；0 ms 取自稳态的一次采集。菱形表示采集时刻，不是渲染耗时；采集间隔约为 67 ms。阶段观测随新采集刷新，运动请求每 20 ms 更新。阶段逻辑依据有效的球位、ToF 与身体状态生成移动或踢球请求，例如“向前走并逐渐减速”。底层策略是训练好的小型神经网络，例如官方行走 Actor：它读取当前关节角、角速度和重力方向，将请求变为 14 个关节动作。新的身体反馈每个控制周期都会更新，不必等下一张图像。</p></details></figure></section>
+<div data-control-cycle data-scenarios="onboard" data-lang="zh">
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=c40d6c677e3b"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<section class="control-cycle-fallback"><h3>控制周期</h3><p>板载策略：RGB 与 ToF 按名义 15 Hz 采集，随后进行 YOLO 推理和位置估计。每 20 ms，反馈控制结合最近感知与新的身体反馈生成运动请求，底层 Actor 再生成关节目标。</p><p>这些频率是仿真配置，不是实测运行速度。计算期间仿真暂停；主机推理耗时与仿真时间分开计量，不相加。</p></section></div></section>
 <section id="design">
 <h2>人工设计的边界<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>
 <p>实验中，PD 航向反馈、横向纠偏和已训练的技能共同完成动作；阶段逻辑决定何时接近、停步与出脚。这些分工便于分析和调试。换成“把球带到中圈停下”或“走到球旁但不要碰球”，感知与反馈控制仍可复用，但目标位置、技能组合、切换条件和参数需要重新设计与验证。</p>

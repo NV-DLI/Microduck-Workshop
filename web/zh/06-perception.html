@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=4734ec91" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,8 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-perception';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/course-widgets.js?v=cce942b9"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=257fa98a"></script>
+    <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
     <link rel="icon" href="_static/favicon.png"/>
@@ -347,7 +348,7 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 （拓展）使用 GR00T 自主完成射门</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 视觉-语言-动作模型（VLA）与 GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 使用 GR00T 自主完成射门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 模仿学习：使用 GR00T 自主完成射门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 从球场走向更多环境</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 参考与帮助</span></p>
@@ -439,7 +440,7 @@
 </section>
 <section id="detector">
 <h2>用 YOLO 认出球与球门<a class="headerlink" href="#detector" title="Link to this heading">#</a></h2>
-<p>检测器是 <strong>YOLO26n</strong>，即 Ultralytics YOLO26 系列中最小的 nano 版本，约 250 万个参数。YOLO 是 “You Only Look Once” 的缩写：网络对整张图像只做一次前向计算，就同时给出所有识别框。</p>
+<p>检测器是 <strong>YOLO26n</strong>，即 Ultralytics YOLO26 系列中最小的 nano 版本，约 250 万个参数。它用<a class="reference external" href="https://www.nvidia.com/en-us/glossary/convolutional-neural-network/" rel="noreferer noopener" target="_blank">卷积神经网络</a>逐层提取图像特征。YOLO 是 “You Only Look Once” 的缩写：网络对整张图像只做一次前向计算，就同时给出所有识别框。</p>
 <figure class="learning-figure" data-learning-flow="learn-1d98334e99"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="YOLO 检测器怎样把一张 RGB 图像变成带类别的识别框"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-1d98334e99-title"><title id="learn-1d98334e99-title">YOLO 检测器怎样把一张 RGB 图像变成带类别的识别框</title><defs><marker id="learn-1d98334e99-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-1d98334e99-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-1d98334e99-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-1d98334e99-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 输入图像" aria-controls="learn-1d98334e99-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">输入图像</text><text x="114.0" y="98" class="learning-node-subtitle">960 × 540 缩放</text><text x="114.0" y="115" class="learning-node-subtitle">到 640 × 640</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 主干网络" aria-controls="learn-1d98334e99-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">主干网络</text><text x="338.0" y="98" class="learning-node-subtitle">从边缘和形状提取特征</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 颈部网络" aria-controls="learn-1d98334e99-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">颈部网络</text><text x="562.0" y="98" class="learning-node-subtitle">融合大小不同的尺度</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 检测头" aria-controls="learn-1d98334e99-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">检测头</text><text x="786.0" y="98" class="learning-node-subtitle">类别、置信度和识别框</text></g></svg></div><div class="learning-details" aria-label="YOLO 检测器怎样把一张 RGB 图像变成带类别的识别框"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-1d98334e99-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>输入图像</h3><p>头部相机图像经缩放和补边，变成 640 × 640 的网络输入。检测器只读取这台机器人自己的相机图像，不读取外部相机或仿真中的物体列表。</p></article><article id="learn-1d98334e99-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>主干网络</h3><p>多层卷积把像素变成特征：先是边缘和色块，再到圆形的球、球门框架这样的形状。</p></article><article id="learn-1d98334e99-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>颈部网络</h3><p>把不同尺度的特征组合起来，远处较小的球门和近处较大的足球都能被找到。</p></article><article id="learn-1d98334e99-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>检测头</h3><p>检测头输出类别（球或球门）、置信度和识别框。筛选后的识别框换算回原始 960 × 540 图像坐标，再交给板载策略。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>识别框仍然只是像素位置，下一步才把它变成地面上的位置。</p>
 <p>Microduck 的主控板基于 Rockchip RK3566，算力有限（<a href="06-onboard.html#why">4.2 节</a>会说明这为什么重要）。Ultralytics 支持把 YOLO 导出到 RK3566 的 NPU，所以小型检测器适合作为板载部署的选择。</p>
 </section>
