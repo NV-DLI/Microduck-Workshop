@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -330,7 +330,7 @@
 <li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with RL</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
@@ -338,13 +338,13 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">4.3 Shoot!</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
@@ -429,8 +429,9 @@
 </section>
 <section id="timing">
 <h2>The onboard control cycle<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
+<p>Here, motion requests specify forward, lateral and turning motion. The trained walking Actor takes these requests together with body feedback and produces joint targets; the implementation does not first create foot trajectories and then solve IK. Joint drives continue to track the target angles. <a href="02-anatomy.html#ik-and-control">Section 2.2</a> distinguishes this learned control path from inverse kinematics and inverse dynamics.</p>
 <div data-control-cycle data-scenarios="onboard" data-lang="en">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=cefa20893b55"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=a73542c5b044"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>Control cycle</h3><p>Onboard policy: RGB and ToF use nominal 15 Hz captures, followed by YOLO inference and localization. Every 20 ms, feedback control uses the latest perception and fresh body feedback to generate a motion request; the low-level Actor then generates joint targets.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div></section>
 <section id="design">
 <h2>Limits of hand design<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>

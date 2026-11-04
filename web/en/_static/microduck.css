@@ -129,6 +129,17 @@ html[data-theme] {
     padding-right: 0;
   }
 }
+/* English navigation derives its intrinsic width from chapter captions.
+   Section lists fill that width without contributing their unwrapped size. */
+@media (min-width: 960px) {
+  html[lang="en"] .bd-sidebar-primary nav.bd-links ul {
+    contain: inline-size;
+  }
+  html[lang="en"] .bd-sidebar-primary nav.bd-links li > a {
+    white-space: normal;
+    overflow-wrap: break-word;
+  }
+}
 /* Below the theme's lg breakpoint the logo is hidden and the course title sits
    between the drawer toggles; the theme keeps it on one unshrinkable line,
    which widened the page. The title wraps instead (two lines fit the header

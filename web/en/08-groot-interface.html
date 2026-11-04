@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=1893ac09" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -330,7 +330,7 @@
 <li class="toctree-l1"><a class="reference internal" href="01-play.html">2.1 Meet Microduck: play football first</a></li>
 <li class="toctree-l1"><a class="reference internal" href="02-anatomy.html">2.2 Mechanism and control timing</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with reinforcement learning</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">3 Teach Microduck skills with RL</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
@@ -338,13 +338,13 @@
 <li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete the shooting task with an onboard policy</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="06-perception.html">4.1 Find the ball and goal: RGB detection and ToF ranging</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-onboard.html">4.2 Designing the shooting stages</a></li>
 <li class="toctree-l1"><a class="reference internal" href="06-shoot.html">4.3 Shoot!</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Score autonomously with GR00T</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">5.2 Imitation learning: score autonomously with GR00T</a></li>
@@ -446,9 +446,13 @@
 </table>
 </div>
 <p>The first three numbers are the walking policy's native command values, not measured velocities; the kick value is only a “kick now” request, not a joint angle or a success probability. GR00T learns “when to walk where, where to look and when to kick”; balance, stepping and ball contact are left to skills already trained with reinforcement learning and running at 50 Hz. In this execution layer the kick and recovery combine the reference kick and standing policies, a course-trained residual correction and recovery logic, which differs from the official-only configuration of the onboard policy in Section 4.3.</p>
+<p>As with the onboard policy, the walking Actor combines these motion requests with body feedback to produce joint targets, which the joint drives track. IK in <a href="02-anatomy.html#ik-and-control">Section 2.2</a> solves end-effector targets for joint angles; this execution path has no explicit IK or inverse-dynamics step. GR00T changes how task requests are produced while the low level still uses learned motion skills.</p>
 <p><strong>Why not output joint angles directly?</strong> One GR00T inference takes about 0.33 s of server compute, while the walking policy updates its joint actions from body feedback every 20 ms. Controlling joints directly, the model would also have to learn balance and contact, which needs richer demonstrations and strict timing validation. The price is that GR00T is limited by the skills below it: a motion the walking policy cannot perform cannot be requested either.</p>
 <p>GR00T predicts <span class="math notranslate nohighlight">\(\htmlData{sym=H}{H}\)</span> = 16 request steps at a time; the execution side executes only the first <span class="math notranslate nohighlight">\(\htmlData{sym=K}{K}\)</span> = 4 and then predicts again from a new observation:</p>
 <div class="formula"><div class="formula-label">Simulation time covered by one executed segment</div><div class="formula-body">\[\htmlData{sym=T_exec}{T_{\mathrm{execute}}} = \htmlData{sym=K}{K} / \htmlData{sym=f_action}{f_{\mathrm{action}}}\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(T_{\mathrm{execute}}\)</dt><dd>Simulation time covered by one executed segment; 4 ÷ 12.5 Hz = 0.32 s here, excluding inference and communication time.</dd></div><div><dt>\(K\)</dt><dd>Request steps actually executed after each prediction; 4 here.</dd></div><div><dt>\(f_{\mathrm{action}}\)</dt><dd>Rate at which high-level requests are recorded and executed; 12.5 Hz here.</dd></div></dl></details></div><p>At <span class="math notranslate nohighlight">\(\htmlData{sym=f_action}{f_{\mathrm{action}}}\)</span> = 12.5 Hz, 4 steps cover 0.32 s of simulation time; each request holds for 80 ms, during which the walking policy updates 4 times.</p>
+<p><strong>Four steps is the execution horizon, not the prediction limit.</strong> Here, the prediction horizon <span class="math notranslate nohighlight">\(\htmlData{sym=H}{H}\)</span> is the number of steps predicted at once; the action/execution horizon <span class="math notranslate nohighlight">\(\htmlData{sym=K}{K}\)</span> is the prefix executed before predicting again. The current model predicts 16 steps. The executor can use a longer prefix, such as 8 steps (0.64 s) or 16 steps (1.28 s), instead of 4. Execution cannot exceed the available prediction segment. Increasing the prediction length also requires compatible model settings, sequence labels, training and validation.</p>
+<p>Why does this example use 4? In an earlier small development comparison under limited training data and training budget, the same model succeeded more often with 4 executed steps than with 8 or 16, so the example retained that setting. Independent tests still varied, and the current model has not undergone the same length comparison. This is neither a general recommendation nor evidence that 4 is optimal for the current model.</p>
+<p>A longer execution horizon reduces the number of new predictions, but high-level decisions depend on older observations for longer and correct deviations later. A shorter horizon uses fresh observations for new predictions more often, but adds new-inference waits. Changing this horizon does not change the RGB capture rate, the 80 ms observation-and-request cadence, or the low-level Actor’s 20 ms body-feedback and joint-action updates. Compare lengths with the model, starting conditions and evaluation rules held fixed, then consider success, motion continuity and latency together.</p>
 </section>
 <section id="inputs">
 <h2>What GR00T reads<a class="headerlink" href="#inputs" title="Link to this heading">#</a></h2>
@@ -525,7 +529,7 @@
 <h2>Control cycle<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <p>GR00T first infers a sequence of high-level requests, then execution begins. The low-level policy handles fast body feedback during execution; simulation pauses while synchronously waiting for inference. The diagram uses readable integer values: each high-level request covers 80 ms, four requests cover 320 ms, and the theoretical 50 Hz control loop updates joint actions every 20 ms.</p>
 <div data-control-cycle data-scenarios="onboard,groot" data-lang="en">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=cefa20893b55"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=a73542c5b044"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>Control cycle</h3><p>Onboard policy: RGB and ToF use nominal 15 Hz captures, followed by YOLO inference and localization. Every 20 ms, feedback control uses the latest perception and fresh body feedback to generate a motion request; the low-level Actor then generates joint targets.</p><p>GR00T: assemble an observation and wait synchronously for inference (about 300 ms on the DGX Spark server). Predict 16 requests and execute the first 4, each held for 80 ms; the Actor updates every 20 ms during execution. Observe and predict again after 320 ms. Cached requests also involve synchronous waits.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div><p><strong>Connect action chunks with RTC.</strong> Real-Time Chunking can accompany asynchronous inference: predict the next chunk while executing the current one, constrain the prefix that will be too late to change, and smooth the remaining transition. This can reduce the gap between chunks; inference still takes time, and buffer exhaustion, network jitter and timeouts remain design concerns. For this course's high-level requests, retain discrete kick-trigger and skill-state guards instead of smoothing every field indiscriminately.</p>
 <p>The <a class="reference external" href="https://github.com/NVIDIA/Isaac-GR00T/blob/main/getting_started/real_world_deployment.md" rel="noreferer noopener" target="_blank">NVIDIA GR00T deployment guide</a> and <a class="reference external" href="https://huggingface.co/docs/lerobot/rtc" rel="noreferer noopener" target="_blank">LeRobot RTC documentation</a> explain the approach. This is an extention design: the recorded course evaluation is synchronous and does not implement RTC. Adapting the model interface, chunk length and asynchronous executor requires separate continuity and timeout validation.</p>
 </section>
