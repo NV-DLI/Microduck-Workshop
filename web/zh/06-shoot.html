@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-shoot';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -424,7 +424,7 @@
 </div></details><p>机器人会自动观察、接近足球并尝试射门。第一轮从名义起点出发。点击 Isaac Sim 窗口，按 <strong>R</strong> 就能重新开始：窗口保持打开，每轮都从站立初始化开始，起点随机偏移，前后、左右各最多 5 厘米，朝向顺时针或逆时针最多偏转 15°；足球和球门的位置不变。场景重新初始化时稍等片刻，随后任务会自动开始。</p>
 <p>学生实验不设总时限，进球、未进球或暂时无法出脚时都不会自动暂停仿真。传感器持续刷新；按 <strong>R</strong> 才会重置当前尝试。关闭 Isaac 应用，或在启动它的终端按 <strong>Ctrl+C</strong>，即可停止程序。感知、对准或交接失败只会暂停当前动作，并尝试重新观察。</p>
 <p>仿真要同时渲染第三人称视口、头部 RGB 相机和 ToF 等多路画面，运行速度取决于硬件性能，窗口里的动作看起来可能卡顿；任务按仿真时间推进。</p>
-<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="板载射门的 Isaac Sim 完整界面，同时显示绿色球场、头部 RGB 图像和 8×8 ToF 距离。"></a><figcaption><p>左侧观察机器人，右侧对照它此刻看到的图像与距离：识别框是否稳定地框住球和球门，脚前的 ToF 读数是否随接近而变小。NR 表示没有回波，不能据此认为前方没有障碍。</p>
+<figure class="media media-solo" style="--media-w: 1600; --media-h: 1000"><video controls playsinline preload="metadata" poster="../assets/media/isaac-onboard-offset-success.jpg" aria-label="起点带位置与朝向偏差的真实板载射门：完整 Isaac 窗口及同步 RGB、ToF 画面。"><source src="../assets/media/isaac-onboard-offset-success.mp4" type="video/mp4"></video><figcaption><p>从带位置与朝向偏差的起点出发，观察接近、射门与恢复站立；右侧同步显示机器人看到的 RGB 与 ToF 距离。按仿真时间播放。NR 表示没有回波，不代表前方没有障碍。</p>
 </figcaption></figure><p><code class="docutils literal notranslate"><span class="pre">summary.json</span></code> 汇总已保存的各轮记录；单轮 <code class="docutils literal notranslate"><span class="pre">manifest.json</span></code> 的 <code class="docutils literal notranslate"><span class="pre">navigation_retries</span></code> 记录中途重新观察的原因。识别框仍在，并不表示几何位置已经通过检查；近距位置不够新鲜时，策略会停步重新观察。也要检查接近时的左右偏差和朝向、出脚条件是否满足，以及触球后是否恢复平衡。</p>
 <p>按 R 重置时，程序先保存当前记录，再开始下一轮。</p>
 </section>
@@ -432,7 +432,7 @@
 <h2>板载策略的控制周期<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <p>这里的“运动请求”是前进、横移、转向等输入。它们与身体反馈一起送入已训练的行走 Actor，再生成关节目标；并没有先把请求转换成脚部轨迹、再调用 IK。关节驱动继续跟踪目标角。回看 <a href="02-anatomy.html#ik-and-control">2.2 节</a>，可区分这一学习控制路径与逆运动学、逆动力学。</p>
 <div data-control-cycle data-scenarios="onboard" data-lang="zh">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=a73542c5b044"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=27e1e61e509d"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
 <section class="control-cycle-fallback"><h3>控制周期</h3><p>板载策略：RGB 与 ToF 按名义 15 Hz 采集，随后进行 YOLO 推理和位置估计。每 20 ms，反馈控制结合最近感知与新的身体反馈生成运动请求，底层 Actor 再生成关节目标。</p><p>这些频率是仿真配置，不是实测运行速度。计算期间仿真暂停；主机推理耗时与仿真时间分开计量，不相加。</p></section></div></section>
 <section id="design">
 <h2>人工设计的边界<a class="headerlink" href="#design" title="Link to this heading">#</a></h2>

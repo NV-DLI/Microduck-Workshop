@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-microduck-rl';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -423,7 +423,7 @@
 <td><p>61 维：机身角速度、重力方向、14 个关节的角度与角速度、上一步动作，以及速度、头部和机身姿态指令（顺序见 <a href="02-anatomy.html#policy-interface">2.2 节</a>）</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>目标指令</p></td>
-<td><p>前进 −0.4～0.4 m/s、横移 −0.3～0.3 m/s、转向 −1.0～1.0 rad/s，每隔 3–8 秒重新抽取；练习原地站立的环境从 2% 起，随训练逐级增至 25%</p></td>
+<td><p>前进 −0.4～0.4 m/s、横移 −0.3～0.3 m/s、转向 −1.0～1.0 rad/s，每隔 3–8 秒重新抽取；每次重新抽取指令时，随机分配行走、转向或零速度站立任务；站立时前进、横移和转向速度都为 0</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>动作</p></td>
 <td><p>14 维：各关节目标角度相对默认站姿的偏移，每 20 ms（50 Hz）输出一次</p></td>
@@ -432,11 +432,12 @@
 <td><p>速度跟踪、站直、站姿、抬脚与落脚、动作平滑等多项加权求和</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>回合结束</p></td>
-<td><p>机身倾斜超过 70° 判为跌倒；否则最长 20 秒（1000 个控制步）</p></td>
+<td><p>躯干或头颈触地、平地机身高度低于 6.5 cm，或倾斜超过 70°，均结束当前回合并重置；否则最长 20 秒</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>这里的“环境”就是一只独立练习的小鸭子及其场景。站立候选的抽样参数从 2% 按训练步数逐级调到 25%，让站立练习逐渐增多；部分候选还会被分配到原地转向组，所以这不是最终站立数量的精确比例，也不是站立成功率。</p>
 <p>训练时，Newton 在 GPU 上同时推进上千个环境，Isaac Lab 为每个环境计算观测、奖励和终止，RSL-RL 的 PPO 用这些数据更新网络。PPO 不需要预先下载数据集：训练数据就是这些环境实时产生的交互。</p>
 </section>
 <section id="actor-critic">
@@ -480,12 +481,12 @@
 </thead>
 <tbody>
 <tr class="row-even"><td class="cell-short"><p>线速度跟踪</p></td>
-<td class="cell-short"><p>2.0</p></td>
-<td><p>水平速度是否接近指令，有没有上下跳动</p></td>
+<td class="cell-short"><p>4.0</p></td>
+<td><p>水平朝向坐标系中的速度是否接近指令</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>角速度跟踪</p></td>
-<td class="cell-short"><p>2.0</p></td>
-<td><p>机身 z 轴角速度是否跟上转向指令，同时横滚、俯仰角速度是否足够小</p></td>
+<td class="cell-short"><p>4.0</p></td>
+<td><p>绕世界竖直轴的角速度是否跟上转向指令</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>站直</p></td>
 <td class="cell-short"><p>2.0</p></td>
@@ -493,7 +494,7 @@
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>站姿</p></td>
 <td class="cell-short"><p>1.0</p></td>
-<td><p>关节是否离默认站姿太远</p></td>
+<td><p>站立指令下，腿部关节是否接近默认站姿；行走时不计这一项</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>腾空时间</p></td>
 <td class="cell-short"><p>3.0</p></td>
@@ -514,6 +515,7 @@
 </tbody>
 </table>
 </div>
+<p>本节保留官方的头部目标跟踪与慢偏差惩罚，允许头部随步态运动，并不把头部高度锁成常数。为多练习直行，60% 的环境先抽入纯前进指令组；随后独立抽取的 15% 原地转向组会覆盖前者，另有站立课程，因此最终执行比例并非恰好 60%。</p>
 <p>权重取自完整训练保存的 <code class="docutils literal notranslate"><span class="pre">env.yaml</span></code>。跟踪类奖励在误差为 0 时最大、误差越大越小；带负权重的项是惩罚。多项相加后，机器人只有“既跟上指令，又走得稳、走得顺”才能拿到高分。3.3 节给出线速度跟踪项的实际代码，3.4 和 3.5 节继续讨论怎样设计奖励。</p>
 <div class="quiz"><h3>检查理解</h3><p>Critic 的输入里有机身线速度和足部接触力，Actor 没有。为什么不把这些也给 Actor？</p>
 <details><summary>查看解析</summary><p>Actor 要部署到机器人上，只能使用真机能可靠测到的量；机身线速度和接触力在真机上很难准确测量。Critic 只在训练时使用，可以读取仿真中的这些信息，让回报估计更准。</p>
@@ -525,7 +527,7 @@
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">
-<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab：Microduck 任务源码 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/e527032b25939a8fc061609d3502c99e0c57f9c3/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab：Microduck 任务源码 ↗</a></p></li>
 <li><p><a class="reference external" href="https://github.com/leggedrobotics/rsl_rl/tree/v5.5.1/rsl_rl/algorithms" rel="noreferer noopener" target="_blank">RSL-RL 5.5.1 算法源码 ↗</a></p></li>
 </ul>
 </section>

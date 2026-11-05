@@ -39,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/robot-explorer.css?v=10dc1e9c" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -58,7 +58,7 @@
     <script defer="defer" src="_static/robot-explorer-loader.js?v=33c591fc"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '02-anatomy';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -337,8 +337,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: Walking steadily on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="nav bd-sidenav">
@@ -348,9 +348,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: shoot autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 Beyond the pitch</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -418,10 +418,51 @@
 <p>Colours are simplified to show what each part does; they are not the real paint. Part shapes, proportions, joint positions and axes come from the original CAD and the simulation model. The exploded spacing is only there to reveal the structure and is not an assembly sequence.</p>
 </div>
 </div>
-<div class="note admonition">
-<p class="admonition-title">Hardware revision and simulation joints</p>
-<p>Of the 15 servos, the simulated policy drives 14 joints; the beak is fixed in the simulation model, so it cannot turn in the 3D duck. The controller board shown keeps the Raspberry Pi Zero 2 W shape from the CAD; the current Beta version instead uses a custom onboard controller board based on a Rockchip RK3566, a different hardware generation. The camera, ToF sensor and IMU observe the task: the onboard policy in Section 4.1 uses them to find the ball and goal, and GR00T in Part 5 reads the camera images and body state.</p>
+</section>
+<section id="hardware">
+<h2>Hardware behind this experiment<a class="headerlink" href="#hardware" title="Link to this heading">#</a></h2>
+<p>First connect the compute, actuation and sensing components to their roles. The table lists the motor model used in the course and the Beta sensor reference. The exploded view retains the Raspberry Pi Zero 2 W shape from older CAD; it does not depict the Beta controller board.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>Component</p></th>
+<th class="head"><p>Model or configuration</p></th>
+<th class="head"><p>Role in the robot and this experiment</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Servos and joint feedback</p></td>
+<td><p>ROBOTIS DYNAMIXEL <strong>XL330</strong> family; its BAM motor fit is used in simulation</p></td>
+<td><p>Drive joints and report angles and speeds; the physical robot has 15 servos, while the policy controls 14 and the simulated beak is fixed</p></td>
+</tr>
+<tr class="row-odd"><td><p>Controller board</p></td>
+<td><p>Custom Beta board based on <strong>Rockchip RK3566</strong>; 1 GB RAM, 32 GB storage</p></td>
+<td><p>Runs control and perception; the <strong>NPU is integrated into the RK3566</strong>, with one INT8 core rated at 0.8 TOPS, rather than a separate compute board</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>RGB camera</p></td>
+<td><p>GalaxyCore <strong>GC2093</strong></p></td>
+<td><p>Supplies head-camera color images; this experiment samples at 960 × 540 and 15 Hz with assumed simulation optics</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>ToF ranging</p></td>
+<td><p>ST <strong>VL53L8CX</strong>, 8 × 8 zones</p></td>
+<td><p>Measures distances in front of the robot to help identify the floor and nearby obstacles; it is not an additional spinning LiDAR</p></td>
+</tr>
+<tr class="row-even"><td><p>Inertial measurement units (IMUs)</p></td>
+<td><p>ST <strong>LSM6DSV16X</strong>; one in the body and one in the head</p></td>
+<td><p>Supply angular velocity and orientation information; motion control primarily uses the body IMU and joint feedback, while the head IMU is a separate stream</p></td>
+</tr>
+<tr class="row-odd"><td><p>Battery and power</p></td>
+<td><p>Removable <strong>NP-F550</strong>, 2600 mAh, with a power board</p></td>
+<td><p>Powers compute and servos; battery life is not evaluated in simulation</p></td>
+</tr>
+<tr class="row-even"><td><p>Connectivity and interaction</p></td>
+<td><p>Wi-Fi, Bluetooth, microphones, speaker and NFC</p></td>
+<td><p>Support networking, audio and near-field interaction; these features do not enter this experiment's motion-control loop</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<p>The motor reference comes from the <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/model.rs" rel="noreferer noopener" target="_blank">official runtime</a>. See the <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs" rel="noreferer noopener" target="_blank">board definition</a>, <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs" rel="noreferer noopener" target="_blank">camera configuration</a>, <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/tof/src/lib.rs" rel="noreferer noopener" target="_blank">ToF driver</a> and <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/imu.rs" rel="noreferer noopener" target="_blank">IMU driver</a> for the controller and sensors. The <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/docs/project/npu-bringup.md" rel="noreferer noopener" target="_blank">NPU notes</a> and <a class="reference external" href="https://pollen-robotics.com/microduck/press-kit/" rel="noreferer noopener" target="_blank">official spec sheet</a> cover compute and other physical components.</p>
+<p>RGB and ToF observe external targets; IMU and joint feedback describe the robot's own movement. Isaac approximates these interfaces without reproducing the entire RK3566 firmware or every hardware error.</p>
 <div class="quiz"><h3>Check your understanding</h3><p>In How motors drive joints, compare the left leg's Hip roll and Hip pitch. When the joint turns, does the housing of the servo that drives it move?</p>
 <details><summary>Show explanation</summary><p>For hip roll, no: that servo is fixed to the hip-yaw bracket above it, and its output shaft turns the bracket below together with the whole leg. For hip pitch, yes: that servo sits in the thigh and its output shaft is fixed to the hip bracket above, so the servo housing turns with the thigh, shank and foot around the shaft. Both mountings drive the joint; they differ only in which side of the joint moves. Neck pitch, head yaw and head roll use the second mounting too.</p>
 </details></div></section>
@@ -562,18 +603,23 @@
 <p>Joint position control still runs continuously. A common PD controller illustrates the idea: target-angle error and joint velocity determine the corrective torque. This feedback law is not an inverse-dynamics solution. Our actuator model also represents command delay, motor damping, friction and limits, with position error driving the motor response; Newton then computes dynamics and contact to obtain the actual motion.</p>
 <p>Compare NVIDIA's <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/5.1.0/manipulators/concepts/kinematics_solver.html" rel="noreferer noopener" target="_blank">IK interface</a>, <a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/omni_physics/107.2/extensions/runtime/source/omni.physics.tensors/docs/inverse_dynamics.html" rel="noreferer noopener" target="_blank">inverse-dynamics documentation</a> and <a class="reference external" href="https://isaac-sim.github.io/IsaacLab/v3.0.0/source/concepts/actuators.html" rel="noreferer noopener" target="_blank">Isaac Lab actuator guide</a> to distinguish geometry, torque calculation and joint feedback control.</p>
 <div data-control-cycle data-scenarios="walking" data-lang="en">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=a73542c5b044"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
-<section class="control-cycle-fallback"><h3>Control cycle</h3><p>Walking: every 20 ms, the Actor uses body feedback to infer 14 joint targets, held across four 5 ms physics steps.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · core excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Build the observation, then run the policy</h4> <p>Every 20 ms, update the observation history and feed the policy observation to the locomotion policy.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="c1"># One observation and action every 20 ms (50 Hz).</span>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=27e1e61e509d"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<section class="control-cycle-fallback"><h3>Control cycle</h3><p>Walking: every 20 ms, the Actor uses body feedback to infer 14 joint targets, held across four 5 ms physics steps.</p><p>Rates are simulation settings, not measured runtime speed. Simulation pauses during computation; host inference time and simulation time use separate clocks and are not added.</p></section></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · core excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/course_labs/walk_check.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Observe and infer</h4> <p>Update observation history every 20 ms and infer joint actions.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="c1"># One observation and action every 20 ms (50 Hz).</span>
 <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span>
     <span class="n">env</span><span class="o">.</span><span class="n">observation_manager</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">update_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"policy"</span><span class="p">]</span>
-<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Process the policy action</h4> <p>The action manager receives this policy output and prepares it for simulation.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Advance four physics steps</h4> <p>One policy action spans 4 × 5 ms; each step advances the simulation step counter, writes the action and updates the scene, giving 50 Hz control over 200 Hz physics.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="c1"># Hold that action through four 5 ms Newton steps (200 Hz).</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Release startup locks before the first action</h4> <p>After grounded settling and the first real policy output, restore the original joint parameters and hand control to the policy.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">if</span> <span class="n">brake</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+    <span class="c1"># Sensors are ready and the first policy output exists: release</span>
+    <span class="c1"># every temporary joint limit before this action is applied.</span>
+    <span class="n">brake</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="n">step</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">"startup"</span><span class="p">][</span><span class="s2">"brake"</span><span class="p">]</span> <span class="o">=</span> <span class="n">brake</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"COURSE_POLICY_TAKEOVER "</span> <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">step</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)),</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Process the action</h4> <p>The action manager accepts the policy output.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>Advance four physics steps</h4> <p>Hold the action for four 5 ms steps. Viewport redraws do not change the physics or control rate.</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># Hold that action through four 5 ms Newton steps (200 Hz).</span>
 <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">env</span><span class="o">.</span><span class="n">_sim_step_counter</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">apply_action</span><span class="p">()</span>
     <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
-    <span class="n">env</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">headless</span> <span class="ow">and</span> <span class="n">tick</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">headless</span> <span class="ow">and</span> <span class="n">tick</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">step</span> <span class="o">%</span> <span class="n">every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mf">0.005</span><span class="p">)</span></code></pre></div></div></div><p>This excerpt is the loop in the figure: the Isaac Lab observation manager builds the policy input, the action manager processes the action and drives the actuators, and Newton then runs four 5 ms physics steps. The full program also advances counters and checks for falls.</p>
-<p>Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked (the test in Section 3.3 uses the same start-up); the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. The stillness at the start is not an unresponsive policy. <code class="docutils literal notranslate"><span class="pre">--model</span></code> selects the policy to run, here the official walking model in <code class="docutils literal notranslate"><span class="pre">models/</span></code>; <code class="docutils literal notranslate"><span class="pre">report.json</span></code> and <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> go to the folder given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p>
+<p>Below is a run of this program recorded in the course container; you do not need to run it. The robot first settles on the ground with its joints locked ; the program then sends a zero velocity command for about 2 seconds, followed by a constant 0.25 m/s forward command, for a total of 12 seconds of simulated time. This record includes a zero-command hold; the practical test in Section 3.3 sends the walking command directly after grounded initialization. <code class="docutils literal notranslate"><span class="pre">--model</span></code> selects the policy to run, here the official walking model in <code class="docutils literal notranslate"><span class="pre">models/</span></code>; <code class="docutils literal notranslate"><span class="pre">report.json</span></code> and <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> go to the folder given by <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p>
 <figure class="recorded-run"><div class="recorded-head"><span class="recorded-badge">Recorded run · no need to run</span><span class="recorded-where">Course container · Isaac Sim window</span><span class="recorded-meta">DGX Spark · official walking model <code>models/walk.onnx</code></span></div><div class="recorded-command highlight"><pre><code>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>walk<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span>--velocity<span class="w"> </span><span class="m">0</span>.25<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--seconds<span class="w"> </span><span class="m">12</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">202</span><span class="w"> </span><span class="se">\</span>
@@ -672,6 +718,7 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assembly">From assembly to components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">Hardware behind this experiment</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kinematic-chain">From mechanism to joint control</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-map">Parts, joints, and degrees of freedom</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control">How software moves the mechanism</a></li>

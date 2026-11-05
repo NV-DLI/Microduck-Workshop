@@ -1,8 +1,8 @@
 {
   "file": "terrain-walk.onnx",
-  "sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+  "sha256": "fcb0623e0492be0b84ff78c52becc1dff02713b0236e92623108f445bb2099f9",
   "bytes": 793215,
-  "parent_sha256": "2fc7f8ee6acd7d0d3f66a99927b5d5a56589aeed02ec714de329b252d5ccf492",
+  "parent_sha256": "584d1753c39b906faee8a823bc4612f4306518a8634793c09919699c4e279e8b",
   "architecture": {
     "observations": 61,
     "hidden_units": [
@@ -12,43 +12,49 @@
     ],
     "actions": 14,
     "activation": "ELU",
-    "normalization": "embedded, frozen from official actor"
+    "normalization": "embedded, frozen from course flat actor"
   },
   "training": {
     "algorithm": "PPO via RSL-RL in Isaac Lab",
     "physics_backend": "Newton",
-    "environments": 256,
+    "environments": 1024,
     "rollout_steps": 24,
-    "stages": [
-      {
-        "iterations": 1000,
-        "seed": 43001,
-        "wall_seconds": 488.05511641700286
-      },
-      {
-        "iterations": 1500,
-        "seed": 43002,
-        "wall_seconds": 585.0435538939782
-      },
-      {
-        "iterations": 2000,
-        "seed": 43003,
-        "wall_seconds": 790.2012678550091
-      }
-    ],
+    "iterations": 1000,
+    "checkpoint": "datasets/terrain-ppo/model_999.pt",
+    "parent_checkpoint": "datasets/walking-straight/model_1000.pt",
+    "parent_checkpoint_sha256": "feb86fe3e0eaddc743078c5502f90e9c25aaa5ccdce705fdbebac7af09a96d3d",
+    "seed": 1105802,
+    "wall_seconds": 1735.1178061920218,
+    "timing_context": "DGX Spark with concurrent diagnostics and recording; not an isolated training benchmark",
     "terrain_mix": {
       "flat": 0.25,
       "pyramidal": 0.375,
       "inverted_pyramidal": 0.375
     },
     "slope_tangent": [
-      0.03,
-      0.22
+      0.02,
+      0.36
     ],
-    "critic": "new critic at initial warm start",
-    "first_actor_parity_max_absolute_error": 1.639e-07
+    "critic": "initialized from selected flat checkpoint",
+    "first_actor_parity_max_absolute_error": 4.76837158203125e-07,
+    "learning_rate": 5e-05,
+    "fixed_reward_weights": true,
+    "head_control": "all 14 joint actions from actor; no head lock",
+    "terrain_contact": {
+      "solref": [
+        0.04,
+        1
+      ],
+      "solimp": [
+        0.85,
+        0.95,
+        0.001,
+        0.5,
+        2
+      ]
+    }
   },
-  "evaluation": "datasets/terrain/evaluation.json",
-  "default_scope": "Chapter4 only; keyboard and autonomous football retain original walking actor",
-  "license": "Apache-2.0, derived from Pollen Robotics official actor"
+  "evaluation": "datasets/terrain/current-wedge-evaluation.json",
+  "default_scope": "Section 3.4 slope exercise only; other skills retain their own models",
+  "license": "Apache-2.0; course-trained weights using the Pollen Robotics / Isaac Lab training recipe"
 }

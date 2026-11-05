@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-perception';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -65,7 +65,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="4.2 Designing the shooting stages" href="06-onboard.html" />
-    <link rel="prev" title="3.5 (Extention) Community skills: reward design" href="05-skills.html" />
+    <link rel="prev" title="3.5 (Extention) community skills: reward design" href="05-skills.html" />
 
 
 
@@ -335,8 +335,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: Walking steadily on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="current nav bd-sidenav">
@@ -346,9 +346,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: shoot autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 Beyond the pitch</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -410,7 +410,7 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Walking and kicking skills still need a way to find the ball and goal. Microduck’s sensors provide it: the camera recognizes what is there, ToF measures distance and joint angles show where the sensors point.</p>
 </div><div class="lesson-meta">Section 4.1 · Estimated learning time: 20 minutes</div></div></div><section id="sensors">
 <h2>What the robot sees<a class="headerlink" href="#sensors" title="Link to this heading">#</a></h2>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/sensors-onboard-recorded.jpg" aria-label="A complete Isaac Sim window recording of one onboard shot: the third-person view on the left, the head RGB image at the top right and the 8×8 ToF distances at the bottom right."><source src="../assets/media/sensors-onboard-recorded.mp4" type="video/mp4"></video><figcaption><p>One simulated shot with the onboard policy: the third-person view, the head RGB image and the 8×8 ToF distances are synchronized to the same capture time; NR marks a zone without a valid return. This recorded attempt scores and returns to standing, playing on the simulation clock.</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="Enlarge image"><span class="annotated-image"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="Full Isaac Sim window screenshot: green outlines mark the upper-right RGB image and lower-right ToF distance panel."><span class="image-highlight" style="left:66.375%;top:7.45%;width:20.875%;height:26.61%"><b>RGB</b></span><span class="image-highlight" style="left:66.375%;top:34.63%;width:20.875%;height:54.59%"><b>ToF</b></span></span></a><figcaption><p>The green outlines mark the robot’s sensor views: the head RGB camera at the upper right and 8×8 ToF distances in meters below it. NR means no valid return for that zone. The third-person view on the left helps you observe the robot.</p>
 </figcaption></figure><p>A shot needs three answers: where the ball is, where the goal is, and how far away they are. Each sensor answers a different part.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
@@ -488,7 +488,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">3.5 (Extention) Community skills: reward design</p>
+        <p class="prev-next-title">3.5 (Extention) community skills: reward design</p>
       </div>
     </a>
     <a class="right-next"

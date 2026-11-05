@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -516,9 +516,8 @@
     <span class="c1"># A bounded official kick, then a smooth handoff to standing.</span>
     <span class="n">weight</span> <span class="o">=</span> <span class="p">(</span>
         <span class="mf">1.0</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">&lt;</span> <span class="mf">0.14</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">phase</span> <span class="o">-</span> <span class="mf">0.14</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.12</span><span class="p">)</span>
-    <span class="p">)</span></code></pre></div></div></div><p>算出权重后，程序用 <code class="docutils literal notranslate"><span class="pre">torch.lerp</span></code> 在行走动作与踢球动作之间插值，结果交给动作管理器映射为关节目标。手动实验让踢球动作完整保持 0.14 秒，再用 0.12 秒平滑切回行走策略的站立动作。这两个时间只影响技能之间的切换，官方权重保持不变。</p>
-<p>策略文件不到 1 MB，但运行完整仿真还要为场景、物理和渲染占用显存，不能按文件大小估算。1.2 节运行过的 <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> 会显示策略文件的 SHA-256、输入输出张量形状和用到的算子。</p>
-</section>
+    <span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>混合动作，平滑切回站立</h4> <p><code>torch.lerp</code> 按权重混合行走与踢球动作。权重为 1 时使用踢球动作，逐渐降到 0 时切回零速度行走策略的站立动作；权重为 0 时保留第 1 步算出的行走动作。结果交给动作管理器映射为关节目标。这种混合是在实验中观察到动作切换较平滑后采用的工程选择，并非唯一实现；这里的切换时序是本实验的执行端配置，并未修改官方网络权重。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">kick</span><span class="p">(</span><span class="n">obs</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span></code></pre></div></div></div></section>
 <section id="reflect">
 <h2>刚才是谁在决定下一步<a class="headerlink" href="#reflect" title="Link to this heading">#</a></h2>
 <div class="quiz"><h3>检查理解</h3><p>刚才您已经完成了哪些机器人还不会自主完成的判断？</p>

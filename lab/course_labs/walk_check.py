@@ -1,8 +1,8 @@
-"""Course walking check: lab/walk.py with the standing61 start-up protocol.
+"""Course walking check with grounded startup and a fixed world camera.
 
-Identical to lab/walk.py except that the robot first settles on the ground with
-its joints temporarily locked (course_labs/grounded_start.py) and the lock is
-released right before the first policy action is applied. No automatic reset on a fall.
+The root stays free while joints are temporarily locked for ground settling.
+Release immediately before the first policy action, with the requested walking
+command already in its observation. No automatic reset on a fall.
 """
 
 from pathlib import Path
@@ -130,7 +130,8 @@ try:
         manager.set_decimation(1)
         env._physics_handles_decimation = False
         if not a.headless:
-            env.sim.set_camera_view((1.2, -1.4, 0.9), (0.4, 0.0, 0.15))
+            # Fixed world camera: keep the start and a 2 m walk visible together.
+            env.sim.set_camera_view((1.0, -2.6, 1.1), (1.0, 0.0, 0.12))
             # Live display profile (window only): smaller viewport texture, 25 Hz redraw.
             report["viewport"] = apply_viewport_profile()
             print("COURSE_VIEWPORT " + json.dumps(report["viewport"]), flush=True)
@@ -145,17 +146,30 @@ try:
         except StartupNotSettled as error:
             report["startup"] = error.record
             raise
+        if not a.headless:
+            # Display only: reserve most of the window for the fixed walking view.
+            import omni.ui as ui
+            workspace = ui.Workspace
+            for _ in range(6):
+                for name, width in (("Stage", True), ("Content", False)):
+                    handle = workspace.get_window(name)
+                    if handle is not None and handle.docked:
+                        if width:
+                            workspace.set_dock_id_width(handle.dock_id, workspace.get_main_window_width() * 0.12)
+                        else:
+                            workspace.set_dock_id_height(handle.dock_id, workspace.get_main_window_height() * 0.07)
+                env.sim.render()
         cmd = env.command_manager.get_term("base_velocity")
         fallen = False
         pacer = Pacer()
         with torch.inference_mode():
             for step in range(round(a.seconds / 0.02)):
 
-                # Allow two seconds to settle before applying the requested velocity.
+                # Grounded initialization has already settled the robot. Start the
+                # requested motion with the first policy output, without marching
+                # in place under an extra zero-velocity hold.
                 cmd.is_standing_env[:] = False
-                cmd.vel_command_b[:] = (
-                    torch.tensor(a.velocity, device="cuda:0") if step >= 100 else 0
-                )
+                cmd.vel_command_b[:] = torch.tensor(a.velocity, device="cuda:0")
                 env.command_manager.get_term("head_pose").command[:] = 0
                 env.command_manager.get_term("body_pose").command[:] = 0
 

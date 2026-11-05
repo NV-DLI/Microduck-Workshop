@@ -1,0 +1,53 @@
+{
+  "schema": "microduck.course-data.v2",
+  "package": "walking-straight",
+  "description": "Official-recipe straight-walking PPO: selected 1001-iteration checkpoint, complete 4096-env 2500-iteration training logs and configuration.",
+  "files": [
+    {
+      "path": "agent.yaml",
+      "bytes": 1480,
+      "sha256": "d116ba2275931ffab173e89500d2553a23bd5983a1150609878b09735941b644"
+    },
+    {
+      "path": "env.yaml",
+      "bytes": 82274,
+      "sha256": "22fa0c3a19732fa349e1007db6c4cf9da1455076374ce32e4224c87000b7d957"
+    },
+    {
+      "path": "events.out.tfevents.1793858981.spark-c239.71611.0",
+      "bytes": 5728090,
+      "sha256": "df04c6a782b3e5e21a3cd99d7c551a4edb98dbd6adb04cb33301864d6d4e8f51"
+    },
+    {
+      "path": "exported/policy.onnx",
+      "bytes": 13967,
+      "sha256": "584d1753c39b906faee8a823bc4612f4306518a8634793c09919699c4e279e8b"
+    },
+    {
+      "path": "exported/policy.onnx.data",
+      "bytes": 791040,
+      "sha256": "7839813acaea00aad1182b4258109979b8603e60221cc2c3a91dd1ed2f21df7a"
+    },
+    {
+      "path": "model_1000.pt",
+      "bytes": 4843381,
+      "sha256": "feb86fe3e0eaddc743078c5502f90e9c25aaa5ccdce705fdbebac7af09a96d3d"
+    },
+    {
+      "path": "scene-contract.json",
+      "bytes": 408,
+      "sha256": "87c25eaeff12f3bb67bd6376bf716f900cd82fb493af31de71e1ddfdbad94919"
+    },
+    {
+      "path": "selection.json",
+      "bytes": 563,
+      "sha256": "9c771cd5a5d28385f953345856fc2dd8463ebbc0a0c914ad1a09cd1255bd941e"
+    },
+    {
+      "path": "training-ledger.json",
+      "bytes": 1951,
+      "sha256": "4253b0f9dc32a30f39deaabd51149f5728634ad3e4cb441c4a9490726f6d3339"
+    }
+  ],
+  "total_bytes": 11463154
+}

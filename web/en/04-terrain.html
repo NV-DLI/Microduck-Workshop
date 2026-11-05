@@ -7,9 +7,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="Learn to design rewards first: what a reward is, why it must be designed, and how to write and check one; then train walking on random slopes and verify it on a wedge ramp." name="description" />
+<meta content="Adapt the course walking policy to random slopes, then check straight walking and stable arrivals on a 15-degree wedge." name="description" />
 
-  <title>3.4 Extention: walking steadily up and down slopes - Train Microduck in Simulation with NVIDIA Isaac</title>
+  <title>3.4 Extention: Walking steadily on slopes - Train Microduck in Simulation with NVIDIA Isaac</title>
   <script data-cfasync="false">
     try { if (localStorage.getItem("mode") === "auto") { localStorage.setItem("mode", "dark"); localStorage.setItem("theme", "dark"); } } catch (e) {}
   </script>
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -64,7 +64,7 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="3.5 (Extention) Community skills: reward design" href="05-skills.html" />
+    <link rel="next" title="3.5 (Extention) community skills: reward design" href="05-skills.html" />
     <link rel="prev" title="3.3 Train and test a walking policy" href="03-walk-training.html" />
 
 
@@ -335,8 +335,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Extention: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.4 Extention: Walking steadily on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="nav bd-sidenav">
@@ -346,9 +346,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: shoot autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 Beyond the pitch</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -388,7 +388,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 Extention: walking steadily up and down slopes</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">3.4 Extention: Walking steadily on slopes</span></li>
   </ul>
 </nav>
 </div>
@@ -405,191 +405,106 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="extention-walking-steadily-up-and-down-slopes">
-<h1>3.4 Extention: walking steadily up and down slopes<a class="headerlink" href="#extention-walking-steadily-up-and-down-slopes" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Flat-ground training connected velocity tracking, stability and domain randomization. What must change on a slope? Start from success criteria, design the rewards, train on random slopes and verify on a fixed wedge ramp.</p>
-</div><div class="lesson-meta">Section 3.4 · Method and hands-on · Estimated learning time: 45 minutes (watching training for a few minutes is enough)</div></div></div><script type="application/json" class="course-symbols">{"w_i": {"tex": "w_i", "text": "Weight of reward term $i$. A positive weight means “more is better”; a negative weight makes the term a penalty."}, "g_i": {"tex": "g_i", "text": "Gate between 0 and 1 that decides whether this term applies in the current state, for example rewarding forward motion only while a push is commanded."}, "phi": {"tex": "\\phi", "text": "Shape function that turns the normalized error into a reward value, for example the tracking kernel $\\exp(-z^2)$ or the squared penalty $z^2$."}, "e_i": {"tex": "e_i", "text": "The error or physical quantity this term measures, with units, for example a velocity error (m/s)."}, "sigma_i": {"tex": "\\sigma_i", "text": "Scale in the same units as $e_i$, saying how large an error counts as “clear”. Dividing by it makes the error dimensionless."}, "z_norm": {"tex": "z", "text": "The normalized dimensionless error, $e_i/\\sigma_i$."}, "exp": {"tex": "\\exp", "text": "Exponential function, turning a squared error into a smooth reward between 0 and 1."}, "r_omega": {"tex": "r_{\\omega}", "text": "Turning-tracking reward, 1 at zero error and falling smoothly toward 0 as the error grows."}, "omega_z": {"tex": "\\omega_z", "text": "Actual angular velocity about the body $z$ axis, read from the simulation state during training (rad/s); when the body tilts it is not necessarily the world yaw rate."}, "omega_cmd": {"tex": "\\omega_z^*", "text": "Angular velocity requested by the turning command (rad/s); 0 when walking straight."}, "sigma": {"tex": "\\sigma", "text": "Tolerance scale of the turning error, here 0.15 rad/s."}}</script><p><a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">NVIDIA’s Microduck walkthrough</a>also trains a walking policy on slopes, stairs and uneven terrain and deploys it to the real robot. Read it alongside this slope exercise to connect simulation training with the broader sim2real workflow.</p>
-<section id="motivation">
-<h2>The 2026 GTC Berlin talk<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>In the 2026 GTC Berlin talk, Microduck had to cross an obstacle course of ramps, platforms and props.</p>
-<figure class="media"><a class="still-link" href="../assets/media/gtc-berlin-microduck-environment.webp" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/gtc-berlin-microduck-environment.webp" alt="The assembled Microduck obstacle course in Isaac Sim: wooden and metal ramps, platforms, cardboard boxes, equipment cases and lights spread over a white floor, with Microduck standing on a platform between metal ramps."></a><figcaption><p>The Microduck obstacle course from the NVIDIA technical blog. Image: <a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA technical blog, Figure 6 ↗</a>.</p>
-</figcaption></figure><p>This section takes only the simplest task: walk up a wooden wedge, stay upright on top, then walk back down. How can reaching the top, staying there and not falling become feedback a policy can learn from? We design the rewards first, then train and verify.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="extention-walking-steadily-on-slopes">
+<h1>3.4 Extention: Walking steadily on slopes<a class="headerlink" href="#extention-walking-steadily-on-slopes" title="Link to this heading">#</a></h1>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>Flat-ground training connects velocity tracking, stability and domain randomization. Slopes add changes in foot height and loading. This section continues from the selected policy in Section 3.3, trains on random slopes, and checks direction, arrival and standing on a fixed wooden wedge.</p>
+</div><div class="lesson-meta">Section 3.4 · Concepts and lab · Estimated learning time: 45 minutes (allow extra time for full training)</div></div></div><script type="application/json" class="course-symbols">{"exp": {"tex": "\\exp", "text": "The exponential function maps squared error to a smooth reward between 0 and 1."}, "r_omega": {"tex": "r_{\\omega}", "text": "Turning-rate reward, approaching 1 as the tracking error approaches zero."}, "omega_z": {"tex": "\\omega_z", "text": "Actual angular velocity about the world vertical axis (rad/s)."}, "omega_cmd": {"tex": "\\omega_z^*", "text": "Commanded turning rate (rad/s), zero for straight walking."}, "sigma": {"tex": "\\sigma", "text": "Turning-error tolerance, set to 0.5 rad/s here."}}</script><section id="motivation">
+<h2>From flat ground to slopes<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">NVIDIA's Microduck practical guide</a> describes training with slopes, steps and uneven ground. The GTC Berlin demonstration scene combines ramps, platforms and props into an obstacle course.</p>
+<figure class="media"><a class="still-link" href="../assets/media/gtc-berlin-microduck-environment.webp" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/gtc-berlin-microduck-environment.webp" alt="Microduck obstacle course with wooden and metal ramps, platforms and props."></a><figcaption><p>Microduck obstacle course from the NVIDIA technical blog. <a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">Image source: Figure 6 ↗</a>.</p>
+</figcaption></figure><p id="why">Slopes change relative foot height, the component of gravity along the surface and available friction. Climbing needs more propulsion; descending needs speed control. Instead of prescribing a climbing gait, we expose the policy to these conditions while retaining the useful walking rewards and constraints.</p>
+</section>
+<section id="baseline">
+<h2>First try the two flat-ground policies<a class="headerlink" href="#baseline" title="Link to this heading">#</a></h2>
+<p>Place the official walking policy and the flat-ground policy trained in Section 3.3 on the same 15° wedge. Straight walking on level ground does not guarantee successful movement across changes in surface height and loading.</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-flat-baselines.jpg" aria-label="On the same 15-degree ascent, the official walking policy on the left drifts sideways while the course flat-ground policy on the right stalls near the ramp foot."><source src="../assets/media/terrain-flat-baselines.mp4" type="video/mp4"></video><figcaption><p>Official walking policy on the left; course flat-ground policy after 1001 iterations on the right. Both use the same wedge, contact parameters, initial-randomization settings and velocity command, aligned by simulation time. Neither reaches the platform within these 20-second trials: the official policy drifts sideways, while the course flat-ground policy stalls near the ramp foot.</p>
+</figcaption></figure><p>Next, start on the platform and check whether the same two flat-ground policies descend into the goal area and remain standing.</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-flat-downhill-baselines.jpg" aria-label="Official and course flat-ground policies on a 15-degree descent; neither satisfies the arrival-and-standing criterion."><source src="../assets/media/terrain-flat-downhill-baselines.mp4" type="video/mp4"></video><figcaption><p>Official policy on the left, course flat-ground policy after 1001 iterations on the right. The official policy descends the ramp but misses the goal area; the course flat-ground policy falls during the descent. Completing the task also requires direction control and stable standing in the goal area.</p>
+</figcaption></figure><p>The policy needs experience with propulsion, direction control and balance on slopes. These examples do not imply that both flat-ground policies fail on every slope. Next, continue training with slope experience.</p>
 </section>
 <section id="reward">
-<h2>Task and reward design<a class="headerlink" href="#reward" title="Link to this heading">#</a></h2>
-<p>A <strong>reward</strong> provides feedback at each training step; PPO uses accumulated reward to update the policy (see <a href="03-microduck-rl.html#reward-design">Section 3.2</a>). A <strong>success criterion</strong> determines whether evaluation passes. One guides learning; the other checks the result.</p>
-<p>Rewarding only success may give too little feedback; rewarding only uprightness may encourage standing still. Reward design breaks the task into learnable signals and uses weights to balance progress, stability and smoothness.</p>
-<p id="method">The six steps below do not depend on the robot; Section 3.5 uses them again to read community skills:</p>
-<ol class="arabic simple">
-<li><p><strong>Write the acceptance test first.</strong> State the goal, time limit and failure conditions, and fix how you will evaluate.</p></li>
-<li><p><strong>List usable quantities.</strong> Note frame, units and source; the reward may read simulation truth, but policy inputs must be available on deployment.</p></li>
-<li><p><strong>Choose a shape.</strong> Bounded rewards for tracking a target, penalties for suppressing deviations, single events paid once.</p></li>
-<li><p><strong>Set the scale.</strong> Check weight signs, normalization scales and gates, and compare what each term actually contributes.</p></li>
-<li><p><strong>Look for loopholes.</strong> Can the policy score high without the task? Would ending early spare it penalties (when most steps are penalties, falling early “loses less”)?</p></li>
-<li><p><strong>Validate independently.</strong> Evaluate against the success criterion, ideally with seeds and scenes kept out of tuning; to learn what one term does, retrain without only that term from the same start, with an equal budget and paired seeds, and compare.</p></li>
-</ol>
-<div class="formula"><div class="formula-label">A common way to write one reward term (course notation)</div><div class="formula-body">\[\htmlData{sym=w_i}{w_i}\,\htmlData{sym=g_i}{g_i}\,\htmlData{sym=phi}{\phi}\!\left(\frac{\htmlData{sym=e_i}{e_i}}{\htmlData{sym=sigma_i}{\sigma_i}}\right)\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(w_i\)</dt><dd>Weight of reward term \(i\). A positive weight means “more is better”; a negative weight makes the term a penalty.</dd></div><div><dt>\(g_i\)</dt><dd>Gate between 0 and 1 that decides whether this term applies in the current state, for example rewarding forward motion only while a push is commanded.</dd></div><div><dt>\(\phi\)</dt><dd>Shape function that turns the normalized error into a reward value, for example the tracking kernel \(\exp(-z^2)\) or the squared penalty \(z^2\).</dd></div><div><dt>\(e_i\)</dt><dd>The error or physical quantity this term measures, with units, for example a velocity error (m/s).</dd></div><div><dt>\(\sigma_i\)</dt><dd>Scale in the same units as \(e_i\), saying how large an error counts as “clear”. Dividing by it makes the error dimensionless.</dd></div></dl></details></div><div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Shape <span class="math notranslate nohighlight">\(\htmlData{sym=phi}{\phi}(\htmlData{sym=z_norm}{z})\)</span></p></th>
-<th class="head cell-short"><p>Weight</p></th>
-<th class="head cell-short"><p>Suits</p></th>
-<th class="head cell-short"><p>Watch out for</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Tracking kernel <span class="math notranslate nohighlight">\(\htmlData{sym=exp}{\exp}(-\htmlData{sym=z_norm}{z}^2)\)</span></p></td>
-<td class="cell-short"><p>Positive</p></td>
-<td><p>Bringing velocity or posture close to a target</p></td>
-<td><p>Bounded between 0 and 1; too small a scale gives almost always 0, too large hides the difference between good and poor</p></td>
-</tr>
-<tr class="row-odd"><td><p>Squared penalty <span class="math notranslate nohighlight">\(\htmlData{sym=z_norm}{z}^2\)</span></p></td>
-<td class="cell-short"><p>Negative</p></td>
-<td><p>Quantities that should be small, such as sideways slip or action change</p></td>
-<td><p>Unbounded, so a few outliers can dominate the total</p></td>
-</tr>
-<tr class="row-even"><td><p>Clipped progress</p></td>
-<td class="cell-short"><p>Positive</p></td>
-<td><p>Rewarding forward motion without encouraging runaway speed</p></td>
-<td><p>Looks only at speed, not at whether the direction leads to the target</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>One-time event</p></td>
-<td><p>Positive or negative</p></td>
-<td><p>Take-off, landing, arrival, failure</p></td>
-<td><p>Must not be triggerable again and again</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Real code varies, but it can usually be split into what is read, how it is normalized, when it applies and how large its weight is.</p>
-<p id="question"><strong>The acceptance test for this section.</strong> A finite wooden wedge stands on a flat white floor: solid sides, a slope at the front and a 0.6 m wide platform on top. The same wedge tests both directions:</p>
+<h2>Keep the walking rewards and adapt to slopes<a class="headerlink" href="#reward" title="Link to this heading">#</a></h2>
+<p id="direction">Training starts from the course <strong>1001-iteration flat-ground checkpoint</strong>, loading the Actor, Critic and their observation normalization states. A fresh optimizer with a smaller learning rate performs 1000 continuous slope-adaptation iterations. The Actor already knows how to step, and the Critic retains a useful starting point for evaluating walking states; both continue learning from slope experience.</p>
+<p>The main rewards come from the official recipe:</p>
 <ul class="simple">
-<li><p><strong>Uphill</strong>: start on the floor in front of the slope. The robot has arrived when its body is 0.15 m past the top of the ramp and both feet are on the platform (at least 0.06 m from the edge); it passes only if it then stays upright on the platform for at least 2 s and until the episode ends, without falling or dropping off an edge.</p></li>
-<li><p><strong>Downhill</strong>: start on the platform. The robot has arrived when its body is 0.25 m past the foot of the ramp and both feet are on the floor beyond it; it passes only if it then stays upright on the floor for at least 2 s and until the episode ends.</p></li>
+<li><p><strong>Linear velocity tracking:</strong> Compare horizontal velocity with the command in a frame retaining heading but removing body roll and pitch. Leaning on a slope does not directly redefine forward motion.</p></li>
+<li><p><strong>Turning-rate tracking:</strong> Compare angular velocity about the world vertical axis with the turning command. With a zero turning command, persistent rotation reduces reward.</p></li>
+<li><p><strong>Stability and action quality:</strong> Retain uprightness, contact and joint-limit terms, plus an action-change penalty. Body contact or a clear fall promptly resets the episode.</p></li>
+<li><p><strong>Free head movement:</strong> Head-pose commands are zero, but the head joints are not locked. The Actor controls all 14 joints; posture and smoothness penalties remain soft constraints that allow adjustments while walking.</p></li>
 </ul>
-<p>The forward command stops on arrival, so “walking on as commanded and dropping off the far side of the platform” does not count as a policy failure. As in Section 3.3, each duck first settles with locked joints at its start, and the lock is released after the policy's first output.</p>
-<p id="scene">The check command first creates a flat white floor, then adds a wood-grain wedge with collision, keeping the original friction settings. Uphill runs start in front of the ramp foot; downhill runs start on the platform, facing the ramp foot.</p>
-<p id="baseline"><strong>Measure a baseline first.</strong> The official walking policy was trained on flat ground only. On this wedge it veers to one side at the start of the ramp going uphill and finally falls; going downhill it stops on the ramp and, within 20 seconds, neither arrives nor falls. Neither failure is “unable to walk”: uphill it loses direction and balance, downhill it stalls. So the report keeps arrival, falls and stalling apart; looking only at falls would miss the downhill stall.</p>
-<p id="why">A slope changes the relative height of foot and ground, the component of gravity along the surface and the usable friction: on a 10° ramp the gravity component down the slope is about 17% of the weight, so climbing needs more propulsion and descending needs more speed control. We do not hand-write an uphill gait; the training scenes and rewards must cover these variations instead. Newton computes gravity, contact and actuator response at every physics step, and Isaac Lab lets the same policy practise on many slopes in parallel.</p>
-</section>
+<div class="formula"><div class="formula-label">Turning-rate reward</div><div class="formula-body">\[\htmlData{sym=r_omega}{r_{\omega}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=omega_z}{\omega_z}-\htmlData{sym=omega_cmd}{\omega_z^*}}{\htmlData{sym=sigma}{\sigma}}\right)^2\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\omega}\)</dt><dd>Turning-rate reward, approaching 1 as the tracking error approaches zero.</dd></div><div><dt>\(\exp\)</dt><dd>The exponential function maps squared error to a smooth reward between 0 and 1.</dd></div><div><dt>\(\omega_z\)</dt><dd>Actual angular velocity about the world vertical axis (rad/s).</dd></div><div><dt>\(\omega_z^*\)</dt><dd>Commanded turning rate (rad/s), zero for straight walking.</dd></div><div><dt>\(\sigma\)</dt><dd>Turning-error tolerance, set to 0.5 rad/s here.</dd></div></dl></details></div><p>Here <span class="math notranslate nohighlight">\(\htmlData{sym=sigma}{\sigma}\)</span> = 0.5 rad/s. Zero error gives a reward of 1; an error equal to this tolerance gives about 0.37. This constrains <strong>turning rate</strong>, without directly correcting accumulated heading error. Check lateral displacement during evaluation as well as reward.</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Fixed rewards during slope adaptation</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Allow small rotations within a natural gait</h4> <p>Use the official world-frame turning-rate reward with a fixed tolerance of 0.5 rad/s.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">track_ang_vel</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">"std"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Retain smoothness and head-posture constraints</h4> <p>Penalize action changes and head-pose bias with the same weights throughout all 1000 iterations. The policy still controls the head.</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">action_rate_l2</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">head_pose_bias</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span></code></pre></div></div></div></section>
 <section id="train">
-<h2>Training on random slopes: practice inside the training distribution<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
-<p>The domain randomization of Section 3.3 varies physical parameters such as friction, mass and delay; terrain randomization adds the shape of the ground to the random draw. The training terrain mixes flat ground with uphill and downhill slopes of many gradients. Isaac Lab's terrain curriculum adjusts the gradient step by step according to performance: environments that walk well move to steeper slopes and those that struggle move back to gentler ones; <code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> in TensorBoard records the average level.</p>
-<p>These random slopes are the <strong>training distribution</strong>: the policy practises climbing, descending and keeping its balance on slopes there. The complete layout of the fixed wedge used later (a ramp leading to a platform) does not appear in the training terrain, so results on the wedge test these skills in a separate verification scene rather than scoring the policy inside its training scene.</p>
-<p>Training does not start from scratch: the official ONNX network weights and normalization parameters are copied as the starting point of the new policy, while the value network and optimizer start fresh. Before training, check that the new policy network and the original ONNX give the same output for the same observation, so an interface error is not mistaken for a need for more training.</p>
-<figure class="learning-figure" data-learning-flow="learn-8077310ef8"><p class="learning-help learning-scroll-hint">Swipe horizontally to see the full diagram</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="Training distribution and a separate verification scene"><svg class="learning-svg" viewBox="0 0 900 174" role="group" aria-labelledby="learn-8077310ef8-title"><title id="learn-8077310ef8-title">Training distribution and a separate verification scene</title><defs><marker id="learn-8077310ef8-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 87.0H356.0" marker-end="url(#learn-8077310ef8-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 87.0H692.0" marker-end="url(#learn-8077310ef8-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. Write the test" aria-controls="learn-8077310ef8-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="126" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">Write the test</text><text x="114.0" y="98" class="learning-node-subtitle">Reach and hold /</text><text x="114.0" y="115" class="learning-node-subtitle">descend and stand</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Random-slope training" aria-controls="learn-8077310ef8-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="126" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">Random-slope</text><text x="450.0" y="94" class="learning-node-title">training</text><text x="450.0" y="118" class="learning-node-subtitle">Flat ground, uphill</text><text x="450.0" y="135" class="learning-node-subtitle">and downhill slopes</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. Wedge verification" aria-controls="learn-8077310ef8-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="126" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">Wedge</text><text x="786.0" y="94" class="learning-node-title">verification</text><text x="786.0" y="118" class="learning-node-subtitle">Fixed verification</text><text x="786.0" y="135" class="learning-node-subtitle">layout, same test</text></g></svg></div><div class="learning-details" aria-label="Training distribution and a separate verification scene"><button type="button" class="learning-reset" aria-label="Close explanation" title="Close explanation" hidden>×</button><article id="learn-8077310ef8-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>Write the test</h3><p>Fix the criteria before training. Record reaching, holding and falls separately, and report uphill and downhill separately.</p></article><article id="learn-8077310ef8-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Random-slope training</h3><p>Parallel environments sample random slopes and the terrain curriculum adapts the difficulty; the flat samples keep flat walking in practice.</p></article><article id="learn-8077310ef8-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>Wedge verification</h3><p>The complete wedge layout is not in the random training terrain; old and new policies are compared on the same wedge with the same test. A stricter independent test would also keep seeds and layouts out of tuning.</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>Keeping the training distribution and the verification scene apart shows whether what was learned carries over to a new layout.</figcaption></figure><p>Run the command below in the course container shell from Section 1.2 (to reopen it, see <a href="setup.html#start">Section 1.2</a>) to continue training for 1000 iterations with 256 environments, starting from the official walking policy given by <code class="docutils literal notranslate"><span class="pre">--model</span></code>; <code class="docutils literal notranslate"><span class="pre">--show</span></code> opens Isaac Sim so you can watch the ducks practise on different tiles at once. Use a new folder under <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> for <code class="docutils literal notranslate"><span class="pre">--output</span></code>.</p>
+<h2>Train continuously on random slopes<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
+<p>Section 3.3 randomizes friction, mass, actuator delay and observation noise. We retain these variations and add <strong>ground shape</strong> to the training distribution: 25% flat ground, 37.5% ascending slopes and 37.5% descending slopes, with angles of approximately 1°–20°.</p>
+<p>Isaac Lab's terrain curriculum starts on easier tiles and adjusts difficulty according to walking performance. <code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> records the mean level. Reward weights, head-command ranges and center-of-mass randomization ranges stay fixed while terrain difficulty changes. Learning therefore uses a consistent scoring rule, though increasing difficulty can still produce normal fluctuations.</p>
+<p>Run this in the course container prepared in Section 1.2. It uses the supplied flat-ground checkpoint and matching ONNX with the same training recipe as the fixed slope model; completing your own flat-ground training first is unnecessary. Choose a new output directory.</p>
 <div class="literal-block-wrapper docutils container" id="id1">
 <div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">256</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>datasets/walking-straight/exported/policy.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--parent-checkpoint<span class="w"> </span>datasets/walking-straight/model_1000.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">1024</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--show<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--output<span class="w"> </span>outputs/terrain-training-01
 </pre></div>
 </div>
 </div>
 <details class="enrichment"><summary>Parameter details</summary><div class="enrichment-body"><ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>: Initialize the walking Actor from the official <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code>.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">256</span></code></strong>: Train 256 environments in parallel.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">1000</span></code></strong>: Run 1,000 PPO sampling and update iterations.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--show</span></code></strong>: Display the training window.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>: Save new checkpoints, configuration, logs and the final exported model.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>: Matching flat-ground ONNX, used to initialize the Actor and verify numerical agreement with inference.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--parent-checkpoint</span></code></strong>: Flat-ground Actor, Critic and normalization states. Filenames use zero-based indices: <code class="docutils literal notranslate"><span class="pre">model_1000.pt</span></code> follows 1001 completed iterations.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">1024</span></code></strong>: Train 1,024 environments in parallel.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">1000</span></code></strong>: Complete 1,000 continuous PPO sampling and update iterations on slopes.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--show</span></code></strong>: Display the training window; rendering adds overhead.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>: Save checkpoints, configuration, TensorBoard logs and exported policies.</p></li>
 </ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="The complete Isaac Sim window of slope-walking training with --show: a few Microducks on rolling, wood-textured training terrain, some walking and some fallen; RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The slope-walking training window opened by <code class="docutils literal notranslate"><span class="pre">--show</span></code>, at the start of training. The picture shows the randomly generated training terrain, not the wedge used for verification later.</p>
-</figcaption></figure><p>Watch for a while and stop with Ctrl+C. Training saves a checkpoint every 250 iterations with a testable export (for example <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>); <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code> appears only after all 1000 iterations. The verification below uses the course terrain model by default, so you do not need to wait for your training.</p>
-<p><strong>This command is not how the course model was trained.</strong> The fixed model <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> comes from three consecutive stages: 1000 iterations (the same settings as the command above, about 8 minutes on a DGX Spark without a window), 1500 more (stronger angular-velocity tracking, fixed nominal physics parameters), and 2000 more (adding the turning reward of the next part). That training also used a different contact configuration from the full-body collision model of the current command. Your 1000 iterations are therefore a new experiment, and you should not expect them to reproduce the fixed model's results.</p>
-<figure class="media"><a class="still-link" href="../assets/media/tensorboard-terrain.png"><img loading="lazy" src="../assets/media/tensorboard-terrain.png" alt="The TensorBoard scalars page with three consecutive training stages in orange, blue and red. Green outline 1 is the terrain difficulty level, 2 the mean episode reward, 3 the yaw-rate error."></a><figcaption><p>TensorBoard record of the three training stages of the fixed terrain model (logs in <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>); the horizontal axis is the cumulative iteration, and the green boxes and numbers are course annotations. ① In the first stage the terrain level rises from about 0.6 to around 2.0 as the curriculum moves well-performing environments to steeper tiles; ② each continuation changes the reward settings, so the return jumps and values from different stages cannot be compared directly; ③ after the turning reward is added in stage three, the turning error falls to around 0.25–0.35 rad/s, with large fluctuations.</p>
+</div></details><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/isaac-ui-terrain-training.jpg" aria-label="Matching close views of parallel Microduck slope training, early and after 1000 iterations."><source src="../assets/media/isaac-ui-terrain-training.mp4" type="video/mp4"></video><figcaption><p>Early slope adaptation on the left and training after 1000 iterations on the right. Compare falls, resets and sustained walking. The random training terrain differs from the fixed evaluation wedge.</p>
+</figcaption></figure><p>The command completes all 1000 iterations by default, without an automatic early stop. It saves and exports a policy every 250 iterations, then writes <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code> on completion. To observe briefly, stop with Ctrl+C and use a saved export; the evaluation below can also use the supplied course model.</p>
+<p>One DGX Spark run recorded approximately <strong>29 minutes</strong> in the training loop while diagnostics and recording also ran. Treat this as a waiting-time reference rather than an isolated performance benchmark. Window rendering and other workloads affect the elapsed time.</p>
+<figure class="media"><a class="still-link" href="../assets/media/tensorboard-slope-adaptation.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/tensorboard-slope-adaptation.png" alt="TensorBoard for the current 1000-iteration slope run, showing mean terrain level, yaw-rate error, mean episode length and return, with smoothing set to zero."></a><figcaption><p>TensorBoard screenshot of this continuous 1000-iteration run, reading <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>. The horizontal axis shows PPO iterations; smoothing is 0 and outliers are included. Mean terrain level reaches about 4.2. <code class="docutils literal notranslate"><span class="pre">mean_episode_length</span></code> counts control steps of 0.02 seconds each: the first 50 iterations average about 4.9 seconds and the last 50 about 14.3 seconds. Later terrain is harder, so read episode-length fluctuations alongside terrain level.</p>
 </figcaption></figure></section>
-<section id="direction">
-<h2>Reducing drift with a turning reward<a class="headerlink" href="#direction" title="Link to this heading">#</a></h2>
-<p>Before stage three the policy could already step up a +5° ramp, but it slowly turned while walking and drifted away from the goal. The forward-velocity reward is computed in the body frame, so a body that has turned can still be “walking well toward its own front”. Stage three therefore adds a separate body-z turning reward:</p>
-<div class="formula"><div class="formula-label">Turning-tracking reward</div><div class="formula-body">\[\htmlData{sym=r_omega}{r_{\omega}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=omega_z}{\omega_z}-\htmlData{sym=omega_cmd}{\omega_z^*}}{\htmlData{sym=sigma}{0.15}}\right)^2\right]\]</div><details class="formula-symbols"><summary>Variable meanings</summary><dl><div><dt>\(r_{\omega}\)</dt><dd>Turning-tracking reward, 1 at zero error and falling smoothly toward 0 as the error grows.</dd></div><div><dt>\(\exp\)</dt><dd>Exponential function, turning a squared error into a smooth reward between 0 and 1.</dd></div><div><dt>\(\omega_z\)</dt><dd>Actual angular velocity about the body \(z\) axis, read from the simulation state during training (rad/s); when the body tilts it is not necessarily the world yaw rate.</dd></div><div><dt>\(\omega_z^*\)</dt><dd>Angular velocity requested by the turning command (rad/s); 0 when walking straight.</dd></div><div><dt>\(\sigma\)</dt><dd>Tolerance scale of the turning error, here 0.15 rad/s.</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=omega_z}{\omega_z}\)</span> is the actual angular velocity about the body z axis and <span class="math notranslate nohighlight">\(\htmlData{sym=omega_cmd}{\omega_z^*}\)</span> the turning command, 0 when walking straight. At zero error the reward is 1; at an error of <span class="math notranslate nohighlight">\(\htmlData{sym=sigma}{\sigma}\)</span> = 0.15 rad/s it drops to 0.37, and at 0.30 rad/s only 0.02 remains. Only the z component is used because walking itself involves roll and pitch sway, and putting all three axes into a narrow tracking kernel would lower the score of a normal gait.</p>
-<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · Core source excerpt</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">Full source ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>Reward function entry</h4> <p>Computed for all parallel environments at once; the docstring says it does not judge the roll and pitch of the gait.</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">yaw_rate_tracking</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Reward turning accuracy independently of gait roll and pitch motion."""</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>Read actual and target turning rates</h4> <p>Read the body-frame angular velocity and the turning component of the velocity command (column 3).</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">velocity</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_ang_vel_b</span>
-    <span class="n">velocity</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="s2">"torch"</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">command_manager</span><span class="o">.</span><span class="n">get_command</span><span class="p">(</span><span class="s2">"base_velocity"</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Compute a bounded reward</h4> <p>Take only the z component of the angular velocity, subtract the command, divide by <code>std</code>, square and take the negative exponential, matching the formula above.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">velocity</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">square</span><span class="p">())</span></code></pre></div></div></div><p>In training this term joins the reward manager with weight 4.0; the same stage also lowers the weight of the original three-axis angular-velocity term to 0.5 and sets the linear-velocity term to 3.0.</p>
-<p><strong>It constrains turning speed without correcting accumulated heading error.</strong> Standing still also earns full marks, so it needs progress, posture and smoothness terms alongside it.</p>
-<p>The final model passed the wedge tests below. Several weights and the training budget changed together, so the turning reward's contribution remains untested. Use step 6 to design a controlled comparison.</p>
-</section>
-<section id="evaluate">
-<h2>Comparing on the same wedge<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h2>
-<p>Old and new policies are compared with the same wedge, test and start settings. The two comparison videos below are single runs each, played in sync on simulation time.</p>
-<figure class="media"><div class="comparison-labels"><span>Top: official policy</span><span>Bottom: terrain policy</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-ascent.jpg" aria-label="Uphill +5° comparison: the official walking policy above tips over at the front of the slope; the slope policy below walks onto the platform and stands."><source src="../assets/media/terrain-v4fast-ascent.mp4" type="video/mp4"></video><figcaption><p>Uphill +5° (first 15 seconds): the official walking policy (top) veers to one side at the front of the ramp and falls at about 12.1 s; the terrain policy (bottom) reaches the platform at about 8.9 s and stays on it.</p>
-</figcaption></figure><figure class="media"><div class="comparison-labels"><span>Top: official policy</span><span>Bottom: terrain policy</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-descent.jpg" aria-label="Downhill −5° comparison: the official walking policy above stops on the slope; the slope policy below walks down and stands on the floor."><source src="../assets/media/terrain-v4fast-descent.mp4" type="video/mp4"></video><figcaption><p>Downhill −5° (20 seconds): the official walking policy (top) stops on the ramp, neither arriving nor falling; the terrain policy (bottom) walks down at about 8.3 s and then stands on the floor.</p>
-</figcaption></figure><p>Run the command below <strong>inside the container</strong>; by default it loads the course terrain model. After your own training, change <code class="docutils literal notranslate"><span class="pre">--model</span></code> to <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code> and run again with a new output folder. Five environments run on the same wedge without colliding; the window shows only the first.</p>
+<section id="scene">
+<h2>Evaluate on a fixed wedge<a class="headerlink" href="#scene" title="Link to this heading">#</a></h2>
+<p id="question">Training uses random slopes. Evaluation uses a finite wooden wedge on a white floor: a 0.5 m ramp, a 0.6 m platform and a width of 0.6 m. This complete layout was not part of the training terrain, so it checks whether the learned behavior transfers to another layout.</p>
+<ul class="simple">
+<li><p><strong>Uphill:</strong> The body reaches 0.15 m beyond the ramp top and both feet enter the platform by at least 0.06 m, then the forward command stops.</p></li>
+<li><p><strong>Downhill:</strong> Start on the platform facing the ramp. The body reaches 0.25 m beyond the ramp foot and both feet reach the flat floor, then the forward command stops.</p></li>
+<li><p><strong>Both directions:</strong> Remain upright in the goal for at least 2 seconds and through the end of the episode, with no fall or reset anywhere in the run.</p></li>
+</ul>
+<p>As in Section 3.3, the robot first settles on the actual contact surface. Temporary joint constraints release after the first policy output is available, and walking starts immediately. At arrival, only the velocity command becomes zero; the policy still controls the head and legs. The evaluation wedge uses a tighter contact response to reduce sole penetration, with the visible wood aligned to the collision surface. Contact parameters affect results and must stay consistent when comparing policies.</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-slope-success.jpg" aria-label="A simultaneous split-screen view of the slope policy climbing and descending 15-degree wedges, arriving and remaining standing in both trials."><source src="../assets/media/terrain-slope-success.mp4" type="video/mp4"></video><figcaption><p>After 1000 slope-training iterations: ascent on the left and descent on the right, synchronized by simulation time. Both trials reach the goal and remain standing. Fixed cameras make direction, surface transitions and balance after arrival easy to compare.</p>
+</figcaption></figure><p>Run the following in the course container. The window shows the first environment; the others are simulated alongside it, and the report includes each result.</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>terrain<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--model<span class="w"> </span>models/terrain-walk.onnx<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--slope<span class="w"> </span><span class="m">5</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">49001</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-evaluation-up-05
+<span class="w">  </span>--slope<span class="w"> </span><span class="m">15</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-uphill
 </pre></div>
 </div>
 </div>
 <details class="enrichment"><summary>Parameter details</summary><div class="enrichment-body"><ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>: Test the supplied <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code>.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--slope</span> <span class="pre">5</span></code></strong>: Use a +5° slope; set <code class="docutils literal notranslate"><span class="pre">-5</span></code> for downhill.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">5</span></code></strong>: Run five non-colliding environments.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">20</span></code></strong>: Run for 20 simulated seconds.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seed</span> <span class="pre">49001</span></code></strong>: Fix the random seed.</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>: Save the report in a new folder.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>: Fixed course slope policy. To test your own trained policy, use <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--slope</span> <span class="pre">15</span></code></strong>: A 15° ascent. Use <code class="docutils literal notranslate"><span class="pre">-15</span></code> for descent and choose a different output directory.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">5</span></code></strong>: Five independent environments, with randomized initial lateral position within ±2.5 cm and heading within ±0.025 rad.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">20</span></code></strong>: Run for 20 seconds after takeover, including standing after arrival.</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>: Save <code class="docutils literal notranslate"><span class="pre">report.json</span></code> and the trajectory.</p></li>
 </ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-test.png" aria-label="Enlarge image"><img loading="lazy" src="../assets/media/isaac-ui-terrain-test.png" alt="The complete Isaac Sim window during the wedge test: a wood-textured wedge on a white floor; a Microduck has walked onto the platform and stands there, head facing forward; RTX real-time rendering and Newton MJWarp physics in the toolbar."></a><figcaption><p>The wedge test window: the duck has walked onto the platform and stopped at the target. Watch whether it stays upright after arriving and does not drop off the platform edge.</p>
-</figcaption></figure><p>The terminal prints <code class="docutils literal notranslate"><span class="pre">passed</span></code>, <code class="docutils literal notranslate"><span class="pre">fell</span></code>, <code class="docutils literal notranslate"><span class="pre">reached_goal</span></code>, <code class="docutils literal notranslate"><span class="pre">held_seconds</span></code> and the velocity RMS error for each environment, and the full result goes to <code class="docutils literal notranslate"><span class="pre">report.json</span></code> in the output folder. For downhill, change <code class="docutils literal notranslate"><span class="pre">--slope</span></code> to <code class="docutils literal notranslate"><span class="pre">-5</span></code> and use a new output folder. The course measured these two commands, with times counted from when the policy takes over (the first 2 s are standing):</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>Direction</p></th>
-<th class="head cell-short"><p>Passed</p></th>
-<th class="head cell-short"><p>Fell</p></th>
-<th class="head cell-short"><p>Reached goal</p></th>
-<th class="head"><p>Held after arrival</p></th>
-<th class="head"><p>Velocity RMSE while moving</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="cell-short"><p>Uphill +5°</p></td>
-<td class="cell-short"><p>5/5</p></td>
-<td class="cell-short"><p>0/5</p></td>
-<td class="cell-short"><p>8.9–9.0 s</p></td>
-<td><p>11.0–11.1 s, still on the platform at 20 s</p></td>
-<td class="cell-short"><p>about 0.11 m/s</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>Downhill −5°</p></td>
-<td class="cell-short"><p>5/5</p></td>
-<td class="cell-short"><p>0/5</p></td>
-<td class="cell-short"><p>8.2–8.3 s</p></td>
-<td><p>11.7–11.8 s, still standing on the floor at 20 s</p></td>
-<td class="cell-short"><p>about 0.09 m/s</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Keep three points in mind when reading this table:</p>
-<ul class="simple">
-<li><p><strong>Only ±5°, five environments per direction.</strong> It describes the conditions tested, not a general success rate, and it is not an independent held-out test. Steeper slopes need their own measurements; change <code class="docutils literal notranslate"><span class="pre">--slope</span></code> to ±10 and ±15 in turn. See the <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">evaluation summary ↗</a> for per-environment results on this wedge.</p></li>
-<li><p><strong>Standing uses the course's head hold.</strong> With a zero velocity command (the 2 s before starting and after arrival) this policy lowers its head a long way. Only in those two periods does the check script replace the targets of the 4 head servos with the standing-pose angles (pitch raised by a further 0.2 rad); leg actions always come from the policy. “Held after arrival” is therefore achieved by the policy together with this head hold.</p></li>
-<li><p><strong>For this section only.</strong> Section 2.1 and Parts 4 and 5 keep using the original walking policy. A model you train must report flat ground, uphill and downhill under the same conditions; a gain on slopes that loses flat walking is not a qualified replacement.</p></li>
-</ul>
-<div class="quiz"><h3>Check your understanding</h3><p>The training terrain already contains many slopes. Why verify separately on the wedge?</p>
-<details><summary>Show explanation</summary><p>The random slopes are the training distribution and the complete wedge layout does not appear in the training terrain, so the test checks whether skills learned on random slopes carry over to this specific layout rather than repeating moves in the training scene. Old and new policies are compared on the same wedge with the same test; if you keep tuning on the verification results, it stops being an independent test, and a stricter approach keeps seeds and layouts out of tuning.</p>
+</div></details><p>The first validation cohort passed <strong>5/5 at +15° and 5/5 at −15°</strong>. A repeat with the same configuration and seed passed <strong>4/5 uphill and 5/5 downhill</strong>, with one uphill fall. These small samples vary; a perfect first run is not a reliability guarantee. Different slopes, friction or initial poses also need their own checks. <a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">Per-environment results ↗</a>. This policy is used only for the slope exercise; other skills retain their own models.</p>
+<div class="quiz"><h3>Check your understanding</h3><p>Do a higher reward and a successful climbing video establish a reliable slope policy?</p>
+<details><summary>Show explanation</summary><p>No. Return measures how well the policy earns the chosen rewards, and one video shows one episode. Evaluate ascent, descent and standing with consistent contacts, initial randomization and success criteria. Reserve new seeds and layouts that did not guide tuning to test generalization, and check that flat-ground ability remains intact.</p>
 </details></div></section>
 <section id="next">
-<h2>Summary<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>The reward is the training signal, the success criterion is the acceptance test; write them separately and write the test first.</p></li>
-<li><p>Random slopes are the training distribution and the fixed wedge is a separate verification scene; conclusions come from the latter and apply only to the conditions tested.</p></li>
-<li><p>The fixed terrain model passed 5/5 each way on the ±5° wedge (five environments per direction). The turning reward constrains turning speed and does not correct accumulated heading; without a comparison experiment, the pass cannot be credited to it or to any other single change.</p></li>
-<li><p>A reward curve cannot replace the acceptance test: a rising training return only means the policy has become better at collecting this reward.</p></li>
-</ul>
-<p>Section 3.5 reads the reward code community authors wrote for the one-leg stand and basketball balance, and uses the same six steps to judge their goals, implementation and limits.</p>
+<h2>Review<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
+<p>Flat-ground ability provides a starting point, random terrain provides new experience, and velocity and stability rewards guide updates. A fixed wedge checks whether the robot can arrive and remain standing. Section 3.5 compares one-leg standing and basketball balance to explore rewards for other tasks.</p>
 </section>
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">
-<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab" rel="noreferer noopener" target="_blank">Isaac Lab: tasks, terrain and parallel learning ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab" rel="noreferer noopener" target="_blank">Isaac Lab: tasks, terrain and parallel training ↗</a></p></li>
 <li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton physics engine ↗</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" rel="noreferer noopener" target="_blank">Terrain actor: network, training and model information ↗</a></p></li>
-<li><p><a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA technical blog: using AI agents to teach robots like Microduck to walk in simulation  ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" rel="noreferer noopener" target="_blank">Slope model information ↗</a></p></li>
 </ul>
 </section>
 </section>
@@ -618,7 +533,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">3.5 (Extention) Community skills: reward design</p>
+        <p class="prev-next-title">3.5 (Extention) community skills: reward design</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -643,12 +558,12 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">The 2026 GTC Berlin talk</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">Task and reward design</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">Training on random slopes: practice inside the training distribution</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direction">Reducing drift with a turning reward</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">Comparing on the same wedge</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">From flat ground to slopes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline">First try the two flat-ground policies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">Keep the walking rewards and adapt to slopes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">Train continuously on random slopes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene">Evaluate on a fixed wedge</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">Review</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
 </ul>
   </nav></div>

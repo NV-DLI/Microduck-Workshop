@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="先学会设计奖励：奖励是什么、为什么必须设计、怎样写出和检验奖励；再在随机坡面上训练步行，并在一个楔形坡台上验证。" name="description" />
+<meta content="从平地行走策略继续训练，在随机坡面上练习走直与平衡，再验证 15° 上下坡。" name="description" />
 
   <title>3.4 延伸：走稳上下坡 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '04-terrain';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -408,189 +408,104 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>3.4 延伸：走稳上下坡<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>平地训练已经把速度跟踪、稳定性和域随机化连在一起。遇到坡道时，这些要求还够不够？本节从成功判据出发设计奖励，在随机坡面上训练，再到固定楔形坡台验证。</p>
-</div><div class="lesson-meta">第 3.4 节 · 方法与操作实验 · 预计学习时长 45 分钟（训练观察几分钟即可）</div></div></div><script type="application/json" class="course-symbols">{"w_i": {"tex": "w_i", "text": "第 $i$ 个奖励项的权重。正权重表示“越大越好”，负权重表示惩罚。"}, "g_i": {"tex": "g_i", "text": "门控，取 0 到 1：决定这一项在当前状态下是否生效，例如只在收到推进指令时才奖励前进。"}, "phi": {"tex": "\\phi", "text": "形状函数：把归一化误差变成奖励值，例如跟踪核 $\\exp(-z^2)$ 或平方惩罚 $z^2$。"}, "e_i": {"tex": "e_i", "text": "这一项要衡量的误差或物理量，带单位，例如速度误差（m/s）。"}, "sigma_i": {"tex": "\\sigma_i", "text": "尺度，与 $e_i$ 同单位：多大的误差算“明显”。除以它之后误差变成无量纲数。"}, "z_norm": {"tex": "z", "text": "归一化后的无量纲误差，即 $e_i/\\sigma_i$。"}, "exp": {"tex": "\\exp", "text": "指数函数：把平方误差转换成 0 到 1 之间的平滑奖励。"}, "r_omega": {"tex": "r_{\\omega}", "text": "转向跟踪奖励：误差为 0 时为 1，误差增大时平滑降向 0。"}, "omega_z": {"tex": "\\omega_z", "text": "机身坐标系中绕 $z$ 轴的实际角速度，训练时从仿真状态读取（rad/s）；机身倾斜时，它不一定等同于世界坐标系的偏航角速度。"}, "omega_cmd": {"tex": "\\omega_z^*", "text": "转向指令要求的角速度（rad/s）；直行时为 0。"}, "sigma": {"tex": "\\sigma", "text": "转向误差的容忍尺度，这里取 0.15 rad/s。"}}</script><p><a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">NVIDIA 的 Microduck 实践博客</a>也训练了包含斜坡、台阶和不平整地面的行走策略，并将其部署到真机。可以对照阅读，了解这里的坡地练习怎样连接到更完整的 sim2real 流程。</p>
-<section id="motivation">
-<h2>2026 GTC 柏林的演讲<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
-<p>在 2026 年 GTC 柏林的演讲中，Microduck 要穿过由坡台、平台和道具组成的障碍场地。</p>
-<figure class="media"><a class="still-link" href="../assets/media/gtc-berlin-microduck-environment.webp" aria-label="放大图片"><img loading="lazy" src="../assets/media/gtc-berlin-microduck-environment.webp" alt="Isaac Sim 中搭好的 Microduck 障碍场地：白色地面上散布着木质与金属坡台、平台、纸箱、器材箱和灯具，Microduck 站在一组金属坡台中间的平台上。"></a><figcaption><p>NVIDIA 技术博客中的 Microduck 障碍场地。图片来源：<a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA 技术博客，图 6 ↗</a>。</p>
-</figcaption></figure><p>本节只取其中最简单的任务：走上木质楔形坡台并站稳，再走下来。怎样把“到达、站稳、不跌倒”变成策略能学习的反馈？先设计奖励，再训练和验证。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>平地训练已经把速度跟踪、稳定性和域随机化连在一起。遇到坡道时，还需要适应脚下高度和受力的变化。本节从 3.3 节选定的平地策略继续训练，让小鸭子在随机坡面上练习，再到固定木质坡台验证走直、到达和站稳。</p>
+</div><div class="lesson-meta">第 3.4 节 · 方法与操作实验 · 预计学习时长 45 分钟（完整训练另需等待）</div></div></div><script type="application/json" class="course-symbols">{"exp": {"tex": "\\exp", "text": "指数函数，把平方误差转换成 0 到 1 之间的平滑奖励。"}, "r_omega": {"tex": "r_{\\omega}", "text": "转向跟踪奖励，转向角速度误差越小，奖励越接近 1。"}, "omega_z": {"tex": "\\omega_z", "text": "世界坐标系中绕竖直轴的实际角速度（rad/s）。"}, "omega_cmd": {"tex": "\\omega_z^*", "text": "转向指令要求的角速度（rad/s），直行时为 0。"}, "sigma": {"tex": "\\sigma", "text": "转向误差的容忍尺度，这里取 0.5 rad/s。"}}</script><section id="motivation">
+<h2>从平地走向坡道<a class="headerlink" href="#motivation" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">NVIDIA 的 Microduck 实践博客</a>介绍了包含斜坡、台阶和不平整地面的训练。在 GTC 柏林演示的场景中，Microduck 需要穿过坡台、平台和道具组成的障碍场地。</p>
+<figure class="media"><a class="still-link" href="../assets/media/gtc-berlin-microduck-environment.webp" aria-label="放大图片"><img loading="lazy" src="../assets/media/gtc-berlin-microduck-environment.webp" alt="Microduck 障碍场地中的木质与金属坡台、平台及道具。"></a><figcaption><p>NVIDIA 技术博客中的 Microduck 障碍场地。<a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">图片来源：图 6 ↗</a>。</p>
+</figcaption></figure><p id="why">坡面改变了脚与地面的相对高度、重力沿坡面的分量和可用摩擦。上坡需要更多推进，下坡更需要控制速度。我们不手写上坡步态，而是让训练场景覆盖这些变化，保留平地行走中已经有效的奖励和约束。</p>
+</section>
+<section id="baseline">
+<h2>先试两种平地行走策略<a class="headerlink" href="#baseline" title="Link to this heading">#</a></h2>
+<p>先把官方行走策略和 3.3 节训练的平地策略放到同一个 15° 坡台上。平地上能走直，并不意味着遇到坡面高度与受力变化时也能顺利通过。</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-flat-baselines.jpg" aria-label="同一 15 度上坡条件下，左侧官方行走策略偏向一侧，右侧课程平地策略停在坡脚附近。"><source src="../assets/media/terrain-flat-baselines.mp4" type="video/mp4"></video><figcaption><p>左侧为官方行走策略，右侧为课程平地 1001 轮策略。两侧使用相同坡台、接触参数、初始随机化设置和速度指令，按仿真时间对齐。这两次测试都未在 20 秒内到达平台：官方策略逐渐走偏，课程平地策略在坡脚附近停滞。</p>
+</figcaption></figure><p>再从坡顶出发，观察同样两种平地策略能否下坡后到达目标区域并站稳。</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-flat-downhill-baselines.jpg" aria-label="官方行走策略与课程平地策略的 15 度下坡对比，两侧均未通过到达目标并站稳的判据。"><source src="../assets/media/terrain-flat-downhill-baselines.mp4" type="video/mp4"></video><figcaption><p>左侧为官方策略，右侧为课程平地 1001 轮策略。官方策略走下了斜坡，但偏离了目标区域；课程平地策略则在下坡过程中跌倒。能走下斜坡并不等于完成任务，还需要控制方向，并在目标区域站稳。</p>
+</figcaption></figure><p>这说明需要让策略练习坡面上的推进、方向控制与平衡；它并不代表这两种平地策略在所有坡度下都会失败。接下来用坡地经验继续训练。</p>
 </section>
 <section id="reward">
-<h2>任务与奖励设计<a class="headerlink" href="#reward" title="Link to this heading">#</a></h2>
-<p><strong>奖励</strong>是每一步的训练反馈，PPO 用累计奖励调整策略（见 <a href="03-microduck-rl.html#reward-design">3.2 节</a>）；<strong>成功判据</strong>则在评测时判断任务是否完成。前者引导学习，后者检验结果。</p>
-<p>只在成功时给分，反馈可能太稀疏；只奖励站直，策略又可能停着不走。设计奖励，就是把任务拆成可学习的信号，并用权重平衡前进、稳定和平滑。</p>
-<p id="method">下面六步不依赖具体机器人，3.5 节读社区技能时也会用到：</p>
-<ol class="arabic simple">
-<li><p><strong>先写验收。</strong> 明确目标、时限和失败条件，并固定评测方法。</p></li>
-<li><p><strong>列出可用量。</strong> 注明坐标系、单位和来源；奖励可读仿真真值，策略输入必须能在部署时获取。</p></li>
-<li><p><strong>选择形状。</strong> 跟踪目标用有界奖励，抑制偏差用惩罚，单次事件只计一次分。</p></li>
-<li><p><strong>确定尺度。</strong> 核对权重正负、归一化尺度和门控，并比较各项的实际贡献。</p></li>
-<li><p><strong>检查漏洞。</strong> 不完成任务能否拿高分？提前终止会不会让策略少受惩罚（每步大多是惩罚时，早摔倒反而“少扣分”）？</p></li>
-<li><p><strong>独立验证。</strong> 按成功判据评测，最好另留没有参与调参的种子和场景；想知道某一项的作用，要在同一起点、同等预算、配对种子下只移除这一项再训练比较。</p></li>
-</ol>
-<div class="formula"><div class="formula-label">一个奖励项的常见写法（课程的通用记法）</div><div class="formula-body">\[\htmlData{sym=w_i}{w_i}\,\htmlData{sym=g_i}{g_i}\,\htmlData{sym=phi}{\phi}\!\left(\frac{\htmlData{sym=e_i}{e_i}}{\htmlData{sym=sigma_i}{\sigma_i}}\right)\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(w_i\)</dt><dd>第 \(i\) 个奖励项的权重。正权重表示“越大越好”，负权重表示惩罚。</dd></div><div><dt>\(g_i\)</dt><dd>门控，取 0 到 1：决定这一项在当前状态下是否生效，例如只在收到推进指令时才奖励前进。</dd></div><div><dt>\(\phi\)</dt><dd>形状函数：把归一化误差变成奖励值，例如跟踪核 \(\exp(-z^2)\) 或平方惩罚 \(z^2\)。</dd></div><div><dt>\(e_i\)</dt><dd>这一项要衡量的误差或物理量，带单位，例如速度误差（m/s）。</dd></div><div><dt>\(\sigma_i\)</dt><dd>尺度，与 \(e_i\) 同单位：多大的误差算“明显”。除以它之后误差变成无量纲数。</dd></div></dl></details></div><div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>形状 <span class="math notranslate nohighlight">\(\htmlData{sym=phi}{\phi}(\htmlData{sym=z_norm}{z})\)</span></p></th>
-<th class="head cell-short"><p>权重</p></th>
-<th class="head cell-short"><p>适合</p></th>
-<th class="head cell-short"><p>需要注意</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>跟踪核 <span class="math notranslate nohighlight">\(\htmlData{sym=exp}{\exp}(-\htmlData{sym=z_norm}{z}^2)\)</span></p></td>
-<td class="cell-short"><p>正</p></td>
-<td><p>让速度、姿态等接近目标</p></td>
-<td><p>取值在 0–1 之间；尺度太小几乎总是 0，太大则好坏难分</p></td>
-</tr>
-<tr class="row-odd"><td><p>平方惩罚 <span class="math notranslate nohighlight">\(\htmlData{sym=z_norm}{z}^2\)</span></p></td>
-<td class="cell-short"><p>负</p></td>
-<td><p>侧滑、动作变化等越小越好的量</p></td>
-<td><p>没有上界，个别异常值会主导总奖励</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>截断的进展</p></td>
-<td class="cell-short"><p>正</p></td>
-<td><p>奖励前进，又不鼓励无限加速</p></td>
-<td><p>只看速度大小，不检查方向是否朝向目标</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>一次性事件</p></td>
-<td class="cell-short"><p>正或负</p></td>
-<td><p>起跳、着地、到达、失败</p></td>
-<td><p>要防止同一事件被反复触发</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>实际代码的写法各不相同，但通常都能拆成“读取什么量、怎样归一化、何时生效、权重多大”。</p>
-<p id="question"><strong>本节的验收。</strong> 白色平地上放着一个有限大小的木质楔形坡台：两侧是实心侧面，前面是斜坡，顶上是 0.6 m 宽的平台。同一个坡台测试两个方向：</p>
+<h2>保留步行奖励，让策略适应坡面<a class="headerlink" href="#reward" title="Link to this heading">#</a></h2>
+<p id="direction">训练从课程平地 <strong>1001 轮检查点</strong>开始，同时载入 Actor、Critic 和各自的观测归一化状态；重新建立较小学习率的优化器，连续适应坡面 1000 轮。Actor 不必重新学习怎样迈步，Critic 也保留了对行走状态的评价基础，但两者都需要用坡地的新经验继续更新。</p>
+<p>奖励沿用官方配方中的主要项：</p>
 <ul class="simple">
-<li><p><strong>上坡</strong>：从坡脚前的地面出发。机身越过坡顶 0.15 m、两只脚都踏上平台（离坡顶边缘至少 0.06 m）时算到达；之后留在平台上保持直立至少 2 秒并持续到回合结束，不跌倒、不从边缘掉下，才算通过。</p></li>
-<li><p><strong>下坡</strong>：从平台上出发。机身越过坡脚 0.25 m、两只脚都踏上坡脚之外的地面时算到达；之后在地面上保持直立至少 2 秒并持续到回合结束，才算通过。</p></li>
+<li><p><strong>线速度跟踪</strong>：在只保留朝向、去掉机身横滚与俯仰的坐标系中比较水平速度与指令。坡上前倾不会直接改变“向前走”的定义。</p></li>
+<li><p><strong>转向跟踪</strong>：比较世界坐标系绕竖直轴的角速度与转向指令。直行指令为零，持续转偏会降低奖励。</p></li>
+<li><p><strong>稳定与动作质量</strong>：保留直立、接触、关节限位等项，以及动作变化惩罚，避免为了追速度而失去平衡。身体触地或明显倒下后及时重置回合。</p></li>
+<li><p><strong>头部可动</strong>：头部姿态指令设为零，但头部关节并未锁住；全部 14 个关节由 Actor 控制。姿态偏差与动作平滑项是软约束，策略仍可在行走中调整头部。</p></li>
 </ul>
-<p>到达后前进指令随即停止，这样“按指令继续往前走、从平台另一侧掉下去”不会被算成策略的失败。和 3.3 节一样，每只小鸭子先锁住关节在出发位置落稳，策略第一次输出后再松开。</p>
-<p id="scene">验证命令会先创建白色平地，再添加带碰撞的木纹楔形坡台，摩擦设置沿用原配置。上坡时从坡脚前出发，下坡时从平台朝坡脚出发。</p>
-<p id="baseline"><strong>先测基线。</strong> 官方行走策略只在平地上训练过。在这个坡台上，它上坡时在斜坡前部偏向一侧，最后摔倒；下坡时走到斜坡上就停住，20 秒内既没有到达，也没有摔倒。两种失败都不是“走不动”：上坡失去方向和平衡，下坡停滞不前。所以报告要把到达、跌倒和停滞分开记录，只看“是否摔倒”会漏掉下坡的停滞。</p>
-<p id="why">坡面改变了脚与地面的相对高度、重力沿坡面的分量和可用摩擦：10° 坡道上，沿坡向下的重力约为体重的 17%，上坡需要更多推进，下坡更需要控制速度。我们不手写上坡步态，而是让训练场景和奖励覆盖这些变化；Newton 在每个物理步计算重力、接触和执行器响应，Isaac Lab 让同一策略在大量坡面上并行试验。</p>
-</section>
+<div class="formula"><div class="formula-label">转向跟踪奖励</div><div class="formula-body">\[\htmlData{sym=r_omega}{r_{\omega}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=omega_z}{\omega_z}-\htmlData{sym=omega_cmd}{\omega_z^*}}{\htmlData{sym=sigma}{\sigma}}\right)^2\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\omega}\)</dt><dd>转向跟踪奖励，转向角速度误差越小，奖励越接近 1。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数，把平方误差转换成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(\omega_z\)</dt><dd>世界坐标系中绕竖直轴的实际角速度（rad/s）。</dd></div><div><dt>\(\omega_z^*\)</dt><dd>转向指令要求的角速度（rad/s），直行时为 0。</dd></div><div><dt>\(\sigma\)</dt><dd>转向误差的容忍尺度，这里取 0.5 rad/s。</dd></div></dl></details></div><p>这里 <span class="math notranslate nohighlight">\(\htmlData{sym=sigma}{\sigma}\)</span> = 0.5 rad/s。误差为零时奖励为 1，误差等于这个尺度时约为 0.37。它约束的是<strong>转向速度</strong>，并不直接把已经积累的航向偏差纠正回去，因此仍要在验证中观察横向位移，不能只看奖励分数。</p>
+<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 固定坡地适应中的奖励权重</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>容许正常步态中的小幅转动</h4> <p>使用官方的世界坐标系转向跟踪函数，固定误差尺度为 0.5 rad/s。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">track_ang_vel</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">"std"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>保留平滑与头部姿态约束</h4> <p>动作变化与头部姿态偏差持续受到惩罚，权重在这 1000 轮中保持不变，头部仍由策略控制。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">action_rate_l2</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2</span>
+<span class="n">cfg</span><span class="o">.</span><span class="n">rewards</span><span class="o">.</span><span class="n">head_pose_bias</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span></code></pre></div></div></div></section>
 <section id="train">
-<h2>随机坡面训练：在训练分布中练习<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
-<p>3.3 节的域随机化改变摩擦、质量和延迟等物理参数；地形随机化把“地面形状”也加入随机抽样。训练地形混合了平地和各种坡度的上坡、下坡。Isaac Lab 的地形课程（curriculum）按表现逐步调整坡度：走得好的环境移到更陡的坡面，走不好的退回较缓处，TensorBoard 中的 <code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> 记录平均难度等级。</p>
-<p>这些随机坡面是<strong>训练分布</strong>：策略在其中练习上坡、下坡和在坡面上保持平衡。后面验证用的固定楔形坡台（一段斜坡接一块平台）这一完整布局没有出现在训练地形中，所以坡台上的结果是在单独的验证场景中检验这些能力，而不是在训练场景里打分。</p>
-<p>训练不从零开始：复制官方 ONNX 的网络权重与归一化参数作为新策略的起点，价值网络与优化器重新初始化。训练前先核对新策略网络与原 ONNX 对同一观测的输出一致，避免把接口错误误认为“需要更多训练”。</p>
-<figure class="learning-figure" data-learning-flow="learn-bc61625db6"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="训练分布与单独的验证场景"><svg class="learning-svg" viewBox="0 0 900 154" role="group" aria-labelledby="learn-bc61625db6-title"><title id="learn-bc61625db6-title">训练分布与单独的验证场景</title><defs><marker id="learn-bc61625db6-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H356.0" marker-end="url(#learn-bc61625db6-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M544.0 77.0H692.0" marker-end="url(#learn-bc61625db6-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 写下验收" aria-controls="learn-bc61625db6-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">写下验收</text><text x="114.0" y="98" class="learning-node-subtitle">到达平台并保持 /</text><text x="114.0" y="115" class="learning-node-subtitle">下到地面并站稳</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. 随机坡面训练" aria-controls="learn-bc61625db6-detail-1" aria-expanded="false"><rect x="360.0" y="24" width="180" height="106" rx="6"/><text x="450.0" y="48" class="learning-node-index">02</text><text x="450.0" y="74" class="learning-node-title">随机坡面训练</text><text x="450.0" y="98" class="learning-node-subtitle">平地与各种坡度</text><text x="450.0" y="115" class="learning-node-subtitle">的上坡、下坡</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 楔形坡台验证" aria-controls="learn-bc61625db6-detail-2" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">03</text><text x="786.0" y="74" class="learning-node-title">楔形坡台验证</text><text x="786.0" y="98" class="learning-node-subtitle">固定的验证布</text><text x="786.0" y="115" class="learning-node-subtitle">局、同一判据</text></g></svg></div><div class="learning-details" aria-label="训练分布与单独的验证场景"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-bc61625db6-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>写下验收</h3><p>训练开始前固定判据：到达、保持、跌倒分开记录，上坡和下坡分别报告。</p></article><article id="learn-bc61625db6-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>随机坡面训练</h3><p>并行环境在随机坡面上采样，地形课程按表现调整难度；保留的平地样本让平地能力继续得到练习。</p></article><article id="learn-bc61625db6-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>楔形坡台验证</h3><p>楔形坡台的完整布局不在随机训练地形中；新旧策略用同一坡台、同一判据比较。更严格的独立测试还应另留没有参与调参的种子和布局。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>训练分布与验证场景分开，才能看出学到的能力能否用到新的布局上。</figcaption></figure><p>在 1.2 节准备的课程容器终端里运行下面的命令（需要重新进入容器时，见 <a href="setup.html#start">1.2 节</a>），以 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 指定的官方行走策略为起点，用 256 个环境继续训练 1000 轮；<code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开 Isaac Sim，可以看到小鸭子分布在不同地块上同时练习。<code class="docutils literal notranslate"><span class="pre">--output</span></code> 请使用 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code> 下尚不存在的新目录。</p>
+<h2>在随机坡面上连续训练<a class="headerlink" href="#train" title="Link to this heading">#</a></h2>
+<p>3.3 节的域随机化改变摩擦、质量、执行器延迟和观测噪声；这里继续保留这些变化，并把<strong>地面形状</strong>也加入训练分布。地形由 25% 平地、37.5% 上坡和 37.5% 下坡组成，坡度范围约 1°–20°。</p>
+<p>Isaac Lab 的地形课程（curriculum）从较缓的地块开始，根据行走表现升降难度，<code class="docutils literal notranslate"><span class="pre">Curriculum/terrain_levels</span></code> 记录平均等级。奖励权重、头部指令范围与质心随机化幅度保持固定，只有地形难度随表现变化。这样可以在同一套评分标准下观察学习过程，难度增加时仍可能出现正常波动。</p>
+<p>在 1.2 节准备的课程容器终端中执行。下面使用课程提供的平地检查点与配套 ONNX，和固定坡地模型采用同一训练配方；不需要先完成您自己的平地训练。<code class="docutils literal notranslate"><span class="pre">--output</span></code> 使用尚不存在的新目录。</p>
 <div class="literal-block-wrapper docutils container" id="id2">
 <div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>train-terrain<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">256</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--model<span class="w"> </span>datasets/walking-straight/exported/policy.onnx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--parent-checkpoint<span class="w"> </span>datasets/walking-straight/model_1000.pt<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-envs<span class="w"> </span><span class="m">1024</span><span class="w"> </span>--iterations<span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--show<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--output<span class="w"> </span>outputs/terrain-training-01
 </pre></div>
 </div>
 </div>
 <details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：用官方 <code class="docutils literal notranslate"><span class="pre">models/walk.onnx</span></code> 初始化行走 Actor；不是随机初始化。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">256</span></code></strong>：并行训练 256 个环境。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">1000</span></code></strong>：进行 1,000 轮 PPO 采样与更新。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--show</span></code></strong>：显示训练窗口。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：保存新检查点、配置、日志及训练完成后的导出模型。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：配套平地 ONNX，载入 Actor 并核对训练网络与推理模型的输出一致。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--parent-checkpoint</span></code></strong>：平地 Actor、Critic 与归一化状态；文件编号从零开始，<code class="docutils literal notranslate"><span class="pre">model_1000.pt</span></code> 对应完成 1001 轮。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">1024</span></code></strong>：并行训练 1,024 个环境。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--iterations</span> <span class="pre">1000</span></code></strong>：连续完成 1,000 轮坡地 PPO 采样与更新。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--show</span></code></strong>：显示训练窗口，渲染会增加耗时。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：保存检查点、配置、TensorBoard 日志与导出模型。</p></li>
 </ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-training.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-training.png" alt="坡地步行训练时打开 --show 的 Isaac Sim 完整界面：铺着木纹的起伏训练地形上分布着几只 Microduck，有的在走，有的已经摔倒，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p><code class="docutils literal notranslate"><span class="pre">--show</span></code> 打开的坡地步行训练窗口，展示训练刚开始的样子。画面里是随机生成的训练地形，不是后面验证用的楔形坡台。</p>
-</figcaption></figure><p>观察一会儿就可以按 Ctrl+C 停止。训练每 250 轮保存一次检查点并导出一份可测试的策略（例如 <code class="docutils literal notranslate"><span class="pre">export-model_250/policy.onnx</span></code>），跑完 1000 轮后才生成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。后面的验证默认使用课程提供的坡地模型，不需要等您的训练完成。</p>
-<p><strong>这条命令不等于课程模型的训练过程。</strong> 固定模型 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code> 来自三个连续阶段：1000 轮（与上面的命令设置相同，DGX Spark 上不开窗口约 8 分钟），续训 1500 轮（加强角速度跟踪、固定名义物理参数），再续训 2000 轮（加入下一部分的转向奖励）。而且那次训练使用的接触配置与当前命令的全身碰撞模型不同。所以您的 1000 轮是一次新实验，不能期望复现固定模型的成绩。</p>
-<figure class="media"><a class="still-link" href="../assets/media/tensorboard-terrain.png"><img loading="lazy" src="../assets/media/tensorboard-terrain.png" alt="TensorBoard 标量页面，显示三个连续训练阶段（橙、蓝、红三色）。绿框 1 为地形难度等级，2 为平均回合回报，3 为转向角速度误差。"></a><figcaption><p>固定坡地模型三个训练阶段的 TensorBoard 记录（日志在 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code>），横轴是累计迭代次数，绿框与编号为课程标注。① 地形难度等级在第一阶段从约 0.6 升到 2.0 左右，课程机制把表现好的环境移到了更陡的地块；② 每次续训开始时奖励设置改变，回报随之跳变，不同阶段的回报数值不能直接比较；③ 第三阶段加入转向奖励后，转向误差降到 0.25–0.35 rad/s 附近，波动较大。</p>
+</div></details><figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/isaac-ui-terrain-training.jpg" aria-label="相同近景视角下，坡地训练早期与训练 1000 轮后的并行 Microduck 对比。"><source src="../assets/media/isaac-ui-terrain-training.mp4" type="video/mp4"></video><figcaption><p>左侧是坡地适应早期，右侧是完成 1000 轮后的训练状态。观察摔倒重置与持续行走的差别。随机训练地形与后面的固定楔形坡台不同。</p>
+</figcaption></figure><p>命令默认跑完全部 1000 轮，不会提前自动停止。训练期间每隔 250 轮保存并导出模型，完成后生成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。只想观察时可以按 Ctrl+C 停止，再使用已保存的导出策略；后面的验证也可以直接使用课程模型。</p>
+<p>一次 DGX Spark 运行的训练循环约为 <strong>29 分钟</strong>，当时还并行进行了诊断与录制，因此这只是等待时间的参考，不是独占设备的性能测试。窗口渲染和其他负载会影响实际时间。</p>
+<figure class="media"><a class="still-link" href="../assets/media/tensorboard-slope-adaptation.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/tensorboard-slope-adaptation.png" alt="本次连续 1000 轮坡地训练的 TensorBoard 界面，显示平均地形等级、偏航角速度误差、平均回合长度和回报；平滑设为零。"></a><figcaption><p>本次连续 1000 轮训练的 TensorBoard 截图，读取 <code class="docutils literal notranslate"><span class="pre">datasets/terrain-ppo/</span></code> 的日志；横轴为 PPO 迭代，平滑设为 0，不忽略离群值。平均地形等级升至约 4.2。<code class="docutils literal notranslate"><span class="pre">mean_episode_length</span></code> 的单位是控制步，每步 0.02 秒；前 50 轮平均约 4.9 秒，末 50 轮约 14.3 秒。后期地形更难，回合长度仍会波动，应与地形等级一起看。</p>
 </figcaption></figure></section>
-<section id="direction">
-<h2>用转向奖励减少走偏<a class="headerlink" href="#direction" title="Link to this heading">#</a></h2>
-<p>第三阶段之前的策略在 +5° 坡道上已经能迈步上坡，却会一边走一边慢慢转偏，偏离要到达的目标。前进速度奖励按机身坐标系计算，身体转偏后仍可能“向自己的前方走得很好”，所以第三阶段加入一项单独的 z 轴转向奖励：</p>
-<div class="formula"><div class="formula-label">转向跟踪奖励</div><div class="formula-body">\[\htmlData{sym=r_omega}{r_{\omega}}=\htmlData{sym=exp}{\exp}\!\left[-\left(\frac{\htmlData{sym=omega_z}{\omega_z}-\htmlData{sym=omega_cmd}{\omega_z^*}}{\htmlData{sym=sigma}{0.15}}\right)^2\right]\]</div><details class="formula-symbols"><summary>变量含义</summary><dl><div><dt>\(r_{\omega}\)</dt><dd>转向跟踪奖励：误差为 0 时为 1，误差增大时平滑降向 0。</dd></div><div><dt>\(\exp\)</dt><dd>指数函数：把平方误差转换成 0 到 1 之间的平滑奖励。</dd></div><div><dt>\(\omega_z\)</dt><dd>机身坐标系中绕 \(z\) 轴的实际角速度，训练时从仿真状态读取（rad/s）；机身倾斜时，它不一定等同于世界坐标系的偏航角速度。</dd></div><div><dt>\(\omega_z^*\)</dt><dd>转向指令要求的角速度（rad/s）；直行时为 0。</dd></div><div><dt>\(\sigma\)</dt><dd>转向误差的容忍尺度，这里取 0.15 rad/s。</dd></div></dl></details></div><p><span class="math notranslate nohighlight">\(\htmlData{sym=omega_z}{\omega_z}\)</span> 是机身绕 z 轴的实际角速度，<span class="math notranslate nohighlight">\(\htmlData{sym=omega_cmd}{\omega_z^*}\)</span> 是转向指令，直行时为 0。误差为 0 时奖励为 1；误差达到 <span class="math notranslate nohighlight">\(\htmlData{sym=sigma}{\sigma}\)</span> = 0.15 rad/s 时降到 0.37，达到 0.30 rad/s 时只剩 0.02。只取 z 分量，是因为行走本身伴随横滚和俯仰的晃动，三轴一起放进窄的跟踪核会压低正常步态的得分。</p>
-<div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/train_terrain.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>奖励函数入口</h4> <p>一次为所有并行环境计算；文档字符串说明它不评价步态中的横滚和俯仰。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="k">def</span><span class="w"> </span><span class="nf">yaw_rate_tracking</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="mf">0.15</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Reward turning accuracy independently of gait roll and pitch motion."""</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>读取实际与目标转向速度</h4> <p>读取机身坐标系的角速度，以及速度指令中的转向分量（第 3 列）。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code>    <span class="n">velocity</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="p">[</span><span class="s2">"robot"</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">root_link_ang_vel_b</span>
-    <span class="n">velocity</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="s2">"torch"</span><span class="p">,</span> <span class="n">velocity</span><span class="p">)</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">command_manager</span><span class="o">.</span><span class="n">get_command</span><span class="p">(</span><span class="s2">"base_velocity"</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>计算有界奖励</h4> <p>只取角速度的 z 分量，减去指令后除以 <code>std</code>，平方再取负指数，对应上面的公式。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">velocity</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span><span class="p">)</span><span class="o">.</span><span class="n">square</span><span class="p">())</span></code></pre></div></div></div><p>训练时这一项以权重 4.0 加入奖励管理器；同一阶段还把原三轴角速度项的权重降到 0.5、线速度项设为 3.0。</p>
-<p><strong>它约束转向速度，不纠正已累积的航向偏差。</strong> 原地不转也能得满分，因此还要配合前进、姿态和平滑等奖励。</p>
-<p>最终模型通过了后面的坡台测试。但这一阶段同时改了多个权重并增加训练，无法单独确认转向奖励的贡献；可以按第 6 步设计对照实验。</p>
-</section>
-<section id="evaluate">
-<h2>在同一个楔形坡台上比较<a class="headerlink" href="#evaluate" title="Link to this heading">#</a></h2>
-<p>比较新旧策略时，坡台、判据和起点设置都相同。下面两段对比录像各是一次单独运行，按仿真时间同步播放。</p>
-<figure class="media"><div class="comparison-labels"><span>上：官方策略</span><span>下：坡地策略</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-ascent.jpg" aria-label="上坡 +5° 的对比：上方官方行走策略在坡道前部侧倒，下方坡地策略走上平台并站稳。"><source src="../assets/media/terrain-v4fast-ascent.mp4" type="video/mp4"></video><figcaption><p>上坡 +5°（截取前 15 秒）：官方行走策略（上）在坡道前部偏向一侧，约 12.1 秒摔倒；坡地策略（下）约 8.9 秒走上平台，之后一直站在平台上。</p>
-</figcaption></figure><figure class="media"><div class="comparison-labels"><span>上：官方策略</span><span>下：坡地策略</span></div><video controls playsinline preload="metadata" poster="../assets/media/terrain-v4fast-descent.jpg" aria-label="下坡 −5° 的对比：上方官方行走策略停在斜坡上，下方坡地策略走下坡台并在地面上站稳。"><source src="../assets/media/terrain-v4fast-descent.mp4" type="video/mp4"></video><figcaption><p>下坡 −5°（20 秒）：官方行走策略（上）停在斜坡上，既没有到达也没有摔倒；坡地策略（下）约 8.3 秒走下坡台，之后在地面上站稳。</p>
-</figcaption></figure><p>在<strong>容器内</strong>运行下面的命令，默认加载课程提供的坡地模型。完成自己的训练后，把 <code class="docutils literal notranslate"><span class="pre">--model</span></code> 换成 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>，换一个输出目录再运行。5 个环境在同一个坡台上互不碰撞地运行，窗口只显示第 1 个。</p>
+<section id="scene">
+<h2>在固定坡台上验证<a class="headerlink" href="#scene" title="Link to this heading">#</a></h2>
+<p id="question">训练地形是随机坡面；验证使用白色平地上的有限木质楔形坡台，斜坡长 0.5 m、顶部平台长 0.6 m、宽 0.6 m。这个完整布局没有出现在训练地形中，用来检查策略能否把学到的能力用到另一种布局。</p>
+<ul class="simple">
+<li><p><strong>上坡</strong>：机身越过坡顶 0.15 m，两只脚都进入平台至少 0.06 m，随后停止前进。</p></li>
+<li><p><strong>下坡</strong>：从平台朝坡脚出发，机身越过坡脚 0.25 m，两只脚都踏上平地，随后停止前进。</p></li>
+<li><p><strong>共同要求</strong>：到达后保持直立至少 2 秒并持续到回合结束，全程没有跌倒或重置。</p></li>
+</ul>
+<p>机器人先按 3.3 节的方法在实际接触面上落稳，取得第一次策略输出后解除临时关节约束，直接开始行走。到达后只将速度指令归零，头部和腿部仍全部由策略控制。验证坡台采用较紧的接触响应，减少脚底压入；画面中的木皮与碰撞面保持对齐。接触参数会影响结果，比较不同策略时也要保持一致。</p>
+<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/terrain-slope-success.jpg" aria-label="同一坡地策略分屏同时展示 15 度上坡与下坡，两侧均到达目标并站稳。"><source src="../assets/media/terrain-slope-success.mp4" type="video/mp4"></video><figcaption><p>完成 1000 轮坡地训练后，左侧上坡、右侧下坡，两侧按仿真时间同步播放。这两个回合均到达目标并站稳；固定相机便于比较方向、坡面过渡与到达后的平衡。</p>
+</figcaption></figure><p>在课程容器中运行以下命令。窗口展示第一个环境，其余环境同时计算；报告分别记录所有环境的结果。</p>
 <div class="literal-block-wrapper docutils container" id="id3">
 <div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>terrain<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--model<span class="w"> </span>models/terrain-walk.onnx<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--slope<span class="w"> </span><span class="m">5</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">49001</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-evaluation-up-05
+<span class="w">  </span>--slope<span class="w"> </span><span class="m">15</span><span class="w"> </span>--num-envs<span class="w"> </span><span class="m">5</span><span class="w"> </span>--seconds<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>outputs/terrain-uphill
 </pre></div>
 </div>
 </div>
 <details class="enrichment"><summary>参数详解</summary><div class="enrichment-body"><ul class="simple">
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：测试课程提供的 <code class="docutils literal notranslate"><span class="pre">models/terrain-walk.onnx</span></code>。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--slope</span> <span class="pre">5</span></code></strong>：坡度为 +5°；下坡改为 <code class="docutils literal notranslate"><span class="pre">-5</span></code>。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">5</span></code></strong>：运行 5 个互不碰撞的环境。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">20</span></code></strong>：每个环境运行 20 秒仿真时间。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seed</span> <span class="pre">49001</span></code></strong>：固定随机种子。</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：保存本次报告，使用新目录。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--model</span></code></strong>：课程固定坡地策略。测试自己训练的策略时，改为 <code class="docutils literal notranslate"><span class="pre">outputs/terrain-training-01/exported/policy.onnx</span></code>。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--slope</span> <span class="pre">15</span></code></strong>：15° 上坡。改为 <code class="docutils literal notranslate"><span class="pre">-15</span></code> 测下坡，并使用另一个输出目录。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--num-envs</span> <span class="pre">5</span></code></strong>：五个独立环境，初始横向位置在 ±2.5 cm、朝向在 ±0.025 rad 内随机变化。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--seconds</span> <span class="pre">20</span></code></strong>：接管后运行 20 秒，包含到达后的站立。</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">--output</span></code></strong>：保存 <code class="docutils literal notranslate"><span class="pre">report.json</span></code> 和运动轨迹。</p></li>
 </ul>
-</div></details><figure class="media"><a class="still-link" href="../assets/media/isaac-ui-terrain-test.png" aria-label="放大图片"><img loading="lazy" src="../assets/media/isaac-ui-terrain-test.png" alt="坡台测试运行时的 Isaac Sim 完整界面：白色地面上的木纹楔形坡台，一只 Microduck 已经走上平台并站稳，头朝前方，顶部显示 RTX 实时渲染与 Newton MJWarp 物理。"></a><figcaption><p>坡台测试窗口：小鸭子已经走上平台、在目标位置停住。观察它到达后是否保持直立，有没有从平台边缘掉下。</p>
-</figcaption></figure><p>终端会打印每个环境的 <code class="docutils literal notranslate"><span class="pre">passed</span></code>、<code class="docutils literal notranslate"><span class="pre">fell</span></code>、<code class="docutils literal notranslate"><span class="pre">reached_goal</span></code>、<code class="docutils literal notranslate"><span class="pre">held_seconds</span></code> 和速度均方根误差，完整结果写在输出目录的 <code class="docutils literal notranslate"><span class="pre">report.json</span></code>。下坡把 <code class="docutils literal notranslate"><span class="pre">--slope</span></code> 改成 <code class="docutils literal notranslate"><span class="pre">-5</span></code>、换一个输出目录即可。课程按这两条命令实测，时间从策略接管算起（前 2 秒站立）：</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>方向</p></th>
-<th class="head cell-short"><p>通过</p></th>
-<th class="head cell-short"><p>跌倒</p></th>
-<th class="head cell-short"><p>到达目标</p></th>
-<th class="head cell-short"><p>到达后保持</p></th>
-<th class="head"><p>行进中速度 RMSE</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="cell-short"><p>上坡 +5°</p></td>
-<td class="cell-short"><p>5/5</p></td>
-<td class="cell-short"><p>0/5</p></td>
-<td class="cell-short"><p>8.9–9.0 秒</p></td>
-<td><p>11.0–11.1 秒，到第 20 秒仍在平台上</p></td>
-<td class="cell-short"><p>约 0.11 m/s</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>下坡 −5°</p></td>
-<td class="cell-short"><p>5/5</p></td>
-<td class="cell-short"><p>0/5</p></td>
-<td class="cell-short"><p>8.2–8.3 秒</p></td>
-<td><p>11.7–11.8 秒，到第 20 秒仍站在地面上</p></td>
-<td class="cell-short"><p>约 0.09 m/s</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>读这张表时注意三点：</p>
-<ul class="simple">
-<li><p><strong>只是 ±5°、每个方向 5 个环境。</strong> 它描述的是测过的这组条件，不是一般的成功率，也不是独立的留出测试。更陡的坡度要单独测量，可以依次把 <code class="docutils literal notranslate"><span class="pre">--slope</span></code> 改成 ±10、±15。每个环境的结果见<a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">评测摘要 ↗</a>。</p></li>
-<li><p><strong>站立时有课程的头部保持。</strong> 这个策略在速度指令为 0 时（出发前 2 秒与到达之后）会把头压得很低。验证脚本只在这两段时间把 4 个头部舵机的目标换成站姿角度（俯仰再抬高 0.2 rad），腿部动作始终来自策略。所以“到达后保持”是策略和这个头部保持一起做到的。</p></li>
-<li><p><strong>只用于本节。</strong> 2.1 节和第 4、5 部分仍使用原行走策略。自己训练的模型要在相同条件下同时报告平地、上坡和下坡，坡地改善却丢失平地能力不算合格替代。</p></li>
-</ul>
-<div class="quiz"><h3>检查理解</h3><p>训练地形里已经有很多坡，为什么还要在楔形坡台上单独验证？</p>
-<details><summary>查看解析</summary><p>随机坡面是训练分布，楔形坡台这一完整布局没有出现在训练地形中，验证的是在随机坡面上学到的能力能否用到这个具体布局上，而不是在训练场景里重复动作。新旧策略要在同一坡台、同一判据下比较；如果根据验证结果反复调参，它就不再是独立测试，更严格的做法是另留没有参与调参的种子和布局。</p>
+</div></details><p>当前模型在上述坡台条件的首次验证中，<strong>+15° 与 −15° 各 5/5 通过</strong>；相同配置与种子再次运行，上坡 <strong>4/5</strong>、下坡 <strong>5/5</strong>，上坡有一只跌倒。小样本仍有波动，不能据一次全通过保证可靠性；换坡度、摩擦或初始姿态也需重新验证。<a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/datasets/terrain/current-wedge-evaluation.json" rel="noreferer noopener" target="_blank">逐环境结果 ↗</a>。本节模型只用于坡地实验，其他技能仍加载各自的模型。</p>
+<div class="quiz"><h3>检查理解</h3><p>奖励曲线提高、视频里能走上坡，是否就能说明坡地策略已经可靠？</p>
+<details><summary>查看解析</summary><p>还不能。回报只说明策略更会获得这套训练奖励，单段视频也只是一回合。应在统一接触、初始随机化与成功判据下分别检查上坡、下坡和站稳，并另留没有参与调参的种子与布局测试泛化。改进坡地能力后，也要检查平地能力是否保留。</p>
 </details></div></section>
 <section id="next">
 <h2>小结<a class="headerlink" href="#next" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>奖励是训练信号，成功判据是验收；两者分开写，先写验收。</p></li>
-<li><p>随机坡面是训练分布，固定楔形坡台是单独的验证场景；结论来自后者，而且只适用于测过的条件。</p></li>
-<li><p>固定坡地模型在 ±5° 坡台上各 5/5 通过（每个方向 5 个环境）。转向奖励约束转向速度，不纠正已累积的航向；没有对照实验，不能把通过归功于它或其他某项调整。</p></li>
-<li><p>回报曲线不能代替验收：训练回报上升，只说明策略更会拿这组奖励的分数。</p></li>
-</ul>
-<p>3.5 节阅读社区作者为单脚站立和篮球平衡写的奖励代码，用同样的六步判断它们的目标、写法和局限。</p>
+<p>平地能力提供起点，随机地形提供新经验，速度与稳定性奖励指导策略更新。固定坡台则检验到达后能否站稳。3.5 节再比较单脚站立与篮球平衡，看看怎样用奖励表达不同任务。</p>
 </section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">
 <li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab" rel="noreferer noopener" target="_blank">Isaac Lab：任务、地形与并行训练 ↗</a></p></li>
 <li><p><a class="reference external" href="https://github.com/newton-physics/newton" rel="noreferer noopener" target="_blank">Newton 物理引擎 ↗</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" rel="noreferer noopener" target="_blank">坡地策略：网络、训练配置与模型信息 ↗</a></p></li>
-<li><p><a class="reference external" href="https://developer.nvidia.com/blog/using-ai-agents-to-teach-robots-like-microduck-to-walk-in-simulation/" rel="noreferer noopener" target="_blank">NVIDIA 技术博客：用 AI 智能体在仿真中教 Microduck 行走 ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/models/terrain-walk.json" rel="noreferer noopener" target="_blank">坡地模型信息 ↗</a></p></li>
 </ul>
 </section>
 </section>
@@ -644,11 +559,11 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">2026 GTC 柏林的演讲</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">任务与奖励设计</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">随机坡面训练：在训练分布中练习</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direction">用转向奖励减少走偏</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluate">在同一个楔形坡台上比较</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">从平地走向坡道</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#baseline">先试两种平地行走策略</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">保留步行奖励，让策略适应坡面</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train">在随机坡面上连续训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scene">在固定坡台上验证</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#next">小结</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
 </ul>

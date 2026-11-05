@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="在绿色球场上把任务做稳之后，怎样通过环境域随机化和 Cosmos 3 数据扩展，让模型面对真实家庭里不同的地面、光照和布局；哪些变化可以沿用原动作标签，哪些必须重新仿真。" name="description" />
+<meta content="用域随机化与 Cosmos 扩展环境，并区分视觉变化和必须重新仿真的变化。" name="description" />
 
   <title>5.3 从球场走向更多环境 - 使用 NVIDIA Isaac 在仿真环境训练 Microduck</title>
   <script data-cfasync="false">
@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '09-worlds';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -408,126 +408,53 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>5.3 从球场走向更多环境<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>5.2 节把 GR00T 与运动技能连接在同一个绿色球场里。要走向不同地面、光照和室内布局，数据与验证还需要怎样扩展？本节讨论环境域随机化与 Cosmos 3，并区分可沿用动作标签的变化和必须重新仿真的变化。</p>
-</div><div class="lesson-meta">第 5.3 节 · 预计学习时长 35 分钟</div></div></div><section id="first">
-<h2>先把一个场景做可靠<a class="headerlink" href="#first" title="Link to this heading">#</a></h2>
-<p>本课的射门（2.1 节的键盘踢球、第 4 部分的板载策略和 5.2 节的 GR00T 步行射门）都使用同一个绿色足球场：同样的场地、球门、足球和光照。这是有意的安排。只有在一个固定场景中把任务做稳，失败才容易解释；如果原场景都不能稳定完成，再加十种房间，只会让问题更难定位。</p>
-<p>但真实机器人不会只待在一个绿色球场上。家里的地面可能是木地板、瓷砖或地毯；白天和夜晚的光线不同；背景里有沙发、桌腿和杂物。在固定球场上把射门做稳之后，下一个问题是怎样逐步扩展环境。本节只讲思路和原则。</p>
-</section>
-<section id="why-variation">
-<h2>为什么真机需要环境变化<a class="headerlink" href="#why-variation" title="Link to this heading">#</a></h2>
-<p>一个只在绿色球场上训练过的模型，可能学到了一些我们并不希望它依赖的线索。比如“绿色背景里的白点就是球”，或者“球门总在画面的这个亮度范围内”。在仿真里这些线索一直成立，模型没有理由不用它们；换到浅色木地板上，这些线索消失了，模型就可能找不到球。</p>
-<p>仿真与现实之间还有别的差距：真实相机有曝光变化、运动模糊和噪声；真实灯光会产生阴影和反光；真实地面的摩擦与仿真设置不同。这些差距统称为“仿真到现实的差距”（sim-to-real gap）。让模型在训练中见过足够多样的条件，是缩小这个差距的主要办法之一。</p>
-<figure class="media"><div class="scene-card-grid"><div class="scene-card"><h4>条纹球场</h4><a href="../assets/media/environment-pitch-striped.webp"><img loading="lazy" src="../assets/media/environment-pitch-striped.webp" alt="条纹球场"></a></div><div class="scene-card"><h4>素色球场 - 正午日光</h4><a href="../assets/media/environment-pitch-plain.webp"><img loading="lazy" src="../assets/media/environment-pitch-plain.webp" alt="素色球场 - 正午日光"></a></div><div class="scene-card"><h4>浅色反光大理石地面 - 室内白天自然光</h4><a href="../assets/media/environment-marble.webp"><img loading="lazy" src="../assets/media/environment-marble.webp" alt="浅色反光大理石地面 - 室内白天自然光"></a></div><div class="scene-card"><h4>木地板 - 室内中性白 LED 灯</h4><a href="../assets/media/environment-wood.webp"><img loading="lazy" src="../assets/media/environment-wood.webp" alt="木地板 - 室内中性白 LED 灯"></a></div><div class="scene-card"><h4>客厅 - 室内夕阳自然光</h4><a href="../assets/media/environment-furnished-room.webp"><img loading="lazy" src="../assets/media/environment-furnished-room.webp" alt="客厅 - 室内夕阳自然光"></a></div><div class="scene-card"><h4>室内活动室 - 夜间明亮照明</h4><a href="../assets/media/environment-night-room.webp"><img loading="lazy" src="../assets/media/environment-night-room.webp" alt="室内活动室 - 夜间明亮照明"></a></div></div><figcaption><p>同一台 Microduck 置于不同外观与空间条件下：观察地面纹理、反光、阴影，以及家具在相机背景中带来的变化。客厅和活动室按机器人与球场的真实尺寸布置房间及家具。这些静态场景用于说明环境差异，不代表已在各场景完成射门验证。</p>
+<div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>5.2 节只使用一个绿色球场。接下来扩展地面、光照与布局，同时检查动作标签是否仍然成立。</p>
+</div><div class="lesson-meta">第 5.3 节 · 预计学习时长 35 分钟</div></div></div><section id="why-variation">
+<h2>先稳定任务，再改变环境<a class="headerlink" href="#why-variation" title="Link to this heading">#</a></h2>
+<p>固定球场便于定位失败，但模型可能依赖“绿地上的白点”这类线索。真实相机的曝光、反光和地面摩擦会变化，形成仿真到现实的差距（sim-to-real gap）。下面六种场景展示需要覆盖的变化。</p>
+<figure class="media"><div class="scene-card-grid"><div class="scene-card"><h4>条纹球场</h4><a href="../assets/media/environment-pitch-striped.webp"><img loading="lazy" src="../assets/media/environment-pitch-striped.webp" alt="条纹球场"></a></div><div class="scene-card"><h4>素色球场 - 正午日光</h4><a href="../assets/media/environment-pitch-plain.webp"><img loading="lazy" src="../assets/media/environment-pitch-plain.webp" alt="素色球场 - 正午日光"></a></div><div class="scene-card"><h4>浅色反光大理石地面 - 室内白天自然光</h4><a href="../assets/media/environment-marble.webp"><img loading="lazy" src="../assets/media/environment-marble.webp" alt="浅色反光大理石地面 - 室内白天自然光"></a></div><div class="scene-card"><h4>木地板 - 室内中性白 LED 灯</h4><a href="../assets/media/environment-wood.webp"><img loading="lazy" src="../assets/media/environment-wood.webp" alt="木地板 - 室内中性白 LED 灯"></a></div><div class="scene-card"><h4>客厅 - 室内夕阳自然光</h4><a href="../assets/media/environment-furnished-room.webp"><img loading="lazy" src="../assets/media/environment-furnished-room.webp" alt="客厅 - 室内夕阳自然光"></a></div><div class="scene-card"><h4>室内活动室 - 夜间明亮照明</h4><a href="../assets/media/environment-night-room.webp"><img loading="lazy" src="../assets/media/environment-night-room.webp" alt="室内活动室 - 夜间明亮照明"></a></div></div><figcaption><p>静态环境示意；房间、家具、机器人与球场按实际尺寸布置，不代表已在这些环境验证射门。</p>
 </figcaption></figure></section>
-<section id="domain-randomization">
-<h2>环境域随机化<a class="headerlink" href="#domain-randomization" title="Link to this heading">#</a></h2>
-<p>3.3 和 3.4 节已经用域随机化（Domain Randomization）改变了舵机特性、摩擦和地形：不追求仿真与某一个真实环境一模一样，而是让选定条件在一定范围内随机变化，希望真实环境也落在范围里。看图像的 GR00T 还需要视觉条件的变化，例如光照、材质和背景。范围应依据真实使用条件选择，并在未见过的组合与边界条件下评测。</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head cell-short"><p>类别</p></th>
-<th class="head cell-short"><p>可以变化的条件</p></th>
-<th class="head"><p>对射门任务的影响</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="cell-short"><p>外观</p></td>
-<td><p>地面材质与图案、墙面与背景、无关的家具与杂物</p></td>
-<td><p>改变画面，动作本身不必改变</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>光照</p></td>
-<td><p>亮度、色温、光源方向、阴影</p></td>
-<td><p>改变画面，动作本身不必改变</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>相机</p></td>
-<td><p>曝光、轻微的安装角度偏差、噪声</p></td>
-<td><p>改变画面；安装角度变化较大时，看到的几何关系也会变</p></td>
-</tr>
-<tr class="row-odd"><td class="cell-short"><p>起点</p></td>
-<td><p>机器人与球的位置、朝向和距离</p></td>
-<td><p>同时改变画面和需要的动作</p></td>
-</tr>
-<tr class="row-even"><td class="cell-short"><p>物理</p></td>
-<td><p>地面摩擦、球的质量与弹性、关节特性</p></td>
-<td><p>改变运动结果，原来的动作可能不再适用</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>一条实用的经验是：<strong>想想您预计真实场景里会变化什么，就随机化什么</strong>。范围太窄，覆盖不到真实情况；范围太宽，模型要学的东西太多，可能在每种情况下都变得保守。</p>
-<p>随机化也要保持任务本身不变。球门的大小、球的大小、机器人的身体结构，以及“踢进球门算成功”的判据，都不应随着外观一起漂移。改变外观是为了让模型学会忽略无关的变化，而不是把任务变成另一个任务。</p>
-</section>
-<section id="initial-state-variation">
-<h2>先随机起点，再扩展房间<a class="headerlink" href="#initial-state-variation" title="Link to this heading">#</a></h2>
-<p>起点变化通常是第一步：先在同一个绿色球场内改变机器人与球的位置，检验模型能否从没见过的组合完成任务；再扩大朝向和距离的范围；最后才引入室内背景、光照与地面外观。</p>
-<p>起点和物理条件变化后，机器人需要的动作也变了，必须重新运行物理仿真，让老师在新条件下重新给出动作；原来轨迹上的动作标签已经不再适用。只有纯外观变化（同样的位置、同样的运动，只是画面看起来不同）才可能沿用原来的动作标签。</p>
-</section>
 <section id="diagnose">
-<h2>先分清是“看不清”还是“做不到”<a class="headerlink" href="#diagnose" title="Link to this heading">#</a></h2>
-<p>扩展到新环境后，模型失败的原因各不相同，需要的帮助也不同：</p>
+<h2>随机化什么，重新采集什么<a class="headerlink" href="#diagnose" title="Link to this heading">#</a></h2>
+<p>域随机化沿用 3.3、3.4 节的思路，让条件在真实使用范围内变化。先扩展同一球场的起点与朝向，再增加视觉条件和房间布局；留出未见组合与边界条件测试。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head cell-short"><p>看到的失败</p></th>
-<th class="head"><p>更可能需要的帮助</p></th>
-<th class="head cell-short"><p>接下来要验证</p></th>
+<tr class="row-odd"><th class="head cell-short"><p>变化</p></th>
+<th class="head cell-short"><p>数据处理</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>换光照后找不到球</p></td>
-<td><p>视觉数据覆盖与外观随机化</p></td>
-<td><p>在未参与训练的光照下，找球与完整射门是否都恢复</p></td>
+<tr class="row-even"><td><p>光照、纹理、背景</p></td>
+<td><p>仅改变外观且几何与动作不变时，才可沿用动作标签</p></td>
 </tr>
-<tr class="row-odd"><td><p>看见球，却从侧面越走越偏</p></td>
-<td><p>偏差状态的纠正示范</p></td>
-<td><p>纠正数据是否覆盖了模型实际走到的偏差状态</p></td>
+<tr class="row-odd"><td><p>起点、球的位置、相机安装位置</p></td>
+<td><p>重新检查几何与时间对齐；起点变化需重新采集轨迹</p></td>
 </tr>
-<tr class="row-even"><td><p>在新地面上踢球后站不稳或摔倒</p></td>
-<td><p>物理参数随机化与底层技能的适应</p></td>
-<td><p>实测的摩擦与接触是否落在仿真范围内</p></td>
-</tr>
-<tr class="row-odd"><td><p>家具挡路，原路线不可用</p></td>
-<td><p>布局变化与可执行的绕行技能</p></td>
-<td><p>新布局下是否有可执行路线，绕行后仍能完成射门</p></td>
+<tr class="row-even"><td><p>摩擦、质量、接触、障碍物</p></td>
+<td><p>重新运行物理仿真，采集适合新条件的动作</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>外观随机化改变“看到的样子”，物理随机化改变“真实的运动”，两者要分别设计、分别检验。</p>
+<p>找不到球，需要补视觉覆盖；看到球却走偏，需要纠正示范；新地面站不稳，需要验证底层技能。增加背景不能替代新的动作经验。</p>
 </section>
 <section id="navigation">
-<h2>复杂环境中的导航：Isaac Lab 3 与 Nav2<a class="headerlink" href="#navigation" title="Link to this heading">#</a></h2>
-<p>家具、狭窄通道和坡面会把“朝目标前进”变成两个问题：走哪条路，以及怎样沿着这条路走稳。可以在 Isaac Lab 3 中训练适合目标地形的运动控制（locomotion）策略，再通过 Isaac Sim 的 ROS 2 接口连接 Nav2 导航栈，让两层各自处理擅长的问题。</p>
-<figure class="learning-figure" data-learning-flow="learn-caa7756ba3"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="从环境地图到实际迈步"><svg class="learning-svg" viewBox="0 0 900 194" role="group" aria-labelledby="learn-caa7756ba3-title"><title id="learn-caa7756ba3-title">从环境地图到实际迈步</title><defs><marker id="learn-caa7756ba3-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-caa7756ba3-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-caa7756ba3-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-caa7756ba3-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M786.0 134V170H114.0V134" marker-end="url(#learn-caa7756ba3-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 地图与定位" aria-controls="learn-caa7756ba3-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">地图与定位</text><text x="114.0" y="98" class="learning-node-subtitle">机器人位置、障碍</text><text x="114.0" y="115" class="learning-node-subtitle">物与可通行区域</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Nav2 导航" aria-controls="learn-caa7756ba3-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Nav2 导航</text><text x="338.0" y="98" class="learning-node-subtitle">规划路径并生成</text><text x="338.0" y="115" class="learning-node-subtitle">局部速度请求</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 运动控制策略" aria-controls="learn-caa7756ba3-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">运动控制策略</text><text x="562.0" y="98" class="learning-node-subtitle">结合身体反馈</text><text x="562.0" y="115" class="learning-node-subtitle">产生关节动作</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 仿真与反馈" aria-controls="learn-caa7756ba3-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">仿真与反馈</text><text x="786.0" y="98" class="learning-node-subtitle">更新位置、接触</text><text x="786.0" y="115" class="learning-node-subtitle">与障碍物观测</text></g></svg></div><div class="learning-details" aria-label="从环境地图到实际迈步"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-caa7756ba3-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>地图与定位</h3><p>提供一致的坐标变换、里程计、地图和障碍物观测；机器人尺寸与安全余量也要进入可通行区域的判断。</p></article><article id="learn-caa7756ba3-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Nav2 导航</h3><p>Nav2 属于 ROS 2。全局规划器寻找路线，局部控制器跟踪路径并响应障碍；输出还要经过适配和限幅，符合机器人真正能执行的速度与转向范围。</p></article><article id="learn-caa7756ba3-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>运动控制策略</h3><p>Isaac Lab 3 可以用于训练行走策略。策略读取速度请求和关节、IMU 等身体状态，输出关节目标，处理平衡与足地接触。</p></article><article id="learn-caa7756ba3-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>仿真与反馈</h3><p>Isaac Sim 提供场景、传感器与 ROS 2 接口。新的定位与障碍物信息反馈给导航，身体状态反馈给行走策略。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>这是面向更复杂场景的组合设计。4.2 节的简单球场仍使用直线接近，不需要启用这套导航栈。</figcaption></figure><p>规划出一条路，不等于机器人已经会走这条路。斜坡、台阶、低矮障碍和狭窄通道都要结合地形可通行性、机身净空与策略能力筛选；普通二维代价地图不会自动教会双足机器人落脚。应先验证目标地形上的行走与恢复能力，再把它与导航接起来，并分别检查定位误差、避障和完整任务结果。</p>
-<p>官方的 <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_navigation.html" rel="noreferer noopener" target="_blank">Isaac Sim ROS 2 导航教程</a>和<a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_rl_controller.html" rel="noreferer noopener" target="_blank">强化学习控制器教程</a>分别展示导航与策略接入方式，可作为组合这两层的参考。</p>
+<h2>有障碍时：导航与运动控制分工<a class="headerlink" href="#navigation" title="Link to this heading">#</a></h2>
+<p>家具挡路时，可用 Nav2 规划路线，再由 Isaac Lab 3 训练的运动策略执行。4.2 节的空旷球场仍只用直线接近。</p>
+<figure class="learning-figure" data-learning-flow="learn-1a6ea64b76"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="路线规划与身体控制"><svg class="learning-svg" viewBox="0 0 900 194" role="group" aria-labelledby="learn-1a6ea64b76-title"><title id="learn-1a6ea64b76-title">路线规划与身体控制</title><defs><marker id="learn-1a6ea64b76-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-1a6ea64b76-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-1a6ea64b76-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-1a6ea64b76-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M786.0 134V170H114.0V134" marker-end="url(#learn-1a6ea64b76-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 地图与定位" aria-controls="learn-1a6ea64b76-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">地图与定位</text><text x="114.0" y="98" class="learning-node-subtitle">位置 · 障碍物</text><text x="114.0" y="115" class="learning-node-subtitle">· 可通行区域</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Nav2" aria-controls="learn-1a6ea64b76-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Nav2</text><text x="338.0" y="98" class="learning-node-subtitle">路径与局部速度请求</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 运动策略" aria-controls="learn-1a6ea64b76-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">运动策略</text><text x="562.0" y="98" class="learning-node-subtitle">身体反馈 → 关节目标</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 仿真与反馈" aria-controls="learn-1a6ea64b76-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">仿真与反馈</text><text x="786.0" y="98" class="learning-node-subtitle">位置 · 接触 · 传感器</text></g></svg></div><div class="learning-details" aria-label="路线规划与身体控制"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-1a6ea64b76-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>地图与定位</h3><p>地图、里程计和坐标变换需一致。</p></article><article id="learn-1a6ea64b76-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Nav2</h3><p>速度必须限制在机器人能力范围内。</p></article><article id="learn-1a6ea64b76-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>运动策略</h3><p>处理平衡与足地接触。</p></article><article id="learn-1a6ea64b76-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>仿真与反馈</h3><p>通过 Isaac Sim ROS 2 接口连接导航与运动控制。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>规划出路线不等于会走：坡面、台阶与净空仍要单独验证。参考 <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_navigation.html" rel="noreferer noopener" target="_blank">ROS 2 导航</a>与<a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/latest/ros2_tutorials/robot_control/tutorial_ros2_rl_controller.html" rel="noreferer noopener" target="_blank">强化学习控制器</a>教程。</p>
 </section>
 <section id="direct-joints">
-<h2>另一种选择：让 GR00T 直接输出 14 个舵机动作<a class="headerlink" href="#direct-joints" title="Link to this heading">#</a></h2>
-<p>上一节，我们将 GR00T 的输出设计成了 8 维高层请求，由技能执行层把请求变成 14 个舵机的目标（5.2 节）。也可以设想去掉中间这一层，让 GR00T 直接输出关节目标：</p>
-<figure class="learning-figure" data-learning-flow="learn-bd2eb89c07"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="设想：GR00T 直接输出 14 个关节目标"><svg class="learning-svg" viewBox="0 0 900 194" role="group" aria-labelledby="learn-bd2eb89c07-title"><title id="learn-bd2eb89c07-title">设想：GR00T 直接输出 14 个关节目标</title><defs><marker id="learn-bd2eb89c07-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 77.0H244.0" marker-end="url(#learn-bd2eb89c07-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 77.0H468.0" marker-end="url(#learn-bd2eb89c07-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 77.0H692.0" marker-end="url(#learn-bd2eb89c07-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M786.0 134V170H114.0V134" marker-end="url(#learn-bd2eb89c07-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 观察与指令" aria-controls="learn-bd2eb89c07-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="106" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">观察与指令</text><text x="114.0" y="98" class="learning-node-subtitle">RGB 图像、任务</text><text x="114.0" y="115" class="learning-node-subtitle">指令与身体状态</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. GR00T" aria-controls="learn-bd2eb89c07-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="106" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">GR00T</text><text x="338.0" y="98" class="learning-node-subtitle">预测一段动作</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 关节目标序列" aria-controls="learn-bd2eb89c07-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="106" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">关节目标序列</text><text x="562.0" y="98" class="learning-node-subtitle">按时间排列，每一</text><text x="562.0" y="115" class="learning-node-subtitle">步 14 个目标角度</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 关节控制器" aria-controls="learn-bd2eb89c07-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="106" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">关节控制器</text><text x="786.0" y="98" class="learning-node-subtitle">舵机位置控制、</text><text x="786.0" y="115" class="learning-node-subtitle">限幅与安全保护</text></g></svg></div><div class="learning-details" aria-label="设想：GR00T 直接输出 14 个关节目标"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-bd2eb89c07-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>观察与指令</h3><p>输入类型仍是相机图像、任务指令和身体状态；状态编码与动作标签需要按 14 关节接口重新设计。</p></article><article id="learn-bd2eb89c07-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>GR00T</h3><p>模型一次预测接下来一小段时间的动作。</p></article><article id="learn-bd2eb89c07-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>关节目标序列</h3><p>每一步直接给出 14 个舵机的目标角度，不再经过行走策略。</p></article><article id="learn-bd2eb89c07-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>关节控制器</h3><p>舵机仍要做位置控制，目标还要经过限幅和变化速率限制；推理超时或输出异常时，机器人应进入受控停止。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>这只是一种设计设想，本课没有训练或验证这种控制方式。</figcaption></figure><p>这里省去的是“高层请求 → 行走或踢球技能 → 关节目标”的中间技能层。当前分层方案原本也没有显式 IK 或逆动力学求解器，所以不能把这个改动理解为“去掉原来必需的 IK”。若对比的是“先规划脚的位置，再通过 IK 求关节角”的控制路线，直接预测关节目标确实不需要在执行端再做这一步几何求解。</p>
-<p>直接输出关节目标也不等于直接输出电机力矩或电流。舵机位置控制、目标限幅与变化速率限制仍然需要保留；机器人仍受重力、惯量、摩擦与接触影响。模型需要从示范中学会原本由技能层承担的协调与平衡。</p>
-<p>它的潜在好处是更灵活：动作不再受底层技能限制，同一个模型也可能学会更多种任务。代价是要求高得多：</p>
-<ul class="simple">
-<li><p><strong>数据</strong>：需要更多、更多样的示范，连失衡后的恢复也要从示范中学到，因为不再有底层策略负责平衡。</p></li>
-<li><p><strong>延迟与平衡</strong>：动作块可以逐步执行，但模型仍需及时根据新观测纠偏。要处理动作的连续执行、过期动作和失衡恢复；远端推理还要计入网络延迟。</p></li>
-</ul>
+<h2>另一种选择：直接输出 14 个关节目标<a class="headerlink" href="#direct-joints" title="Link to this heading">#</a></h2>
+<figure class="learning-figure" data-learning-flow="learn-6a0cededa6"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="设计设想：省去中间技能层"><svg class="learning-svg" viewBox="0 0 900 177" role="group" aria-labelledby="learn-6a0cededa6-title"><title id="learn-6a0cededa6-title">设计设想：省去中间技能层</title><defs><marker id="learn-6a0cededa6-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H244.0" marker-end="url(#learn-6a0cededa6-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 68.5H468.0" marker-end="url(#learn-6a0cededa6-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 68.5H692.0" marker-end="url(#learn-6a0cededa6-arrow)"/><path class="learning-edge" data-from="3" data-to="0" d="M786.0 117V153H114.0V117" marker-end="url(#learn-6a0cededa6-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 观察与指令" aria-controls="learn-6a0cededa6-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">观察与指令</text><text x="114.0" y="98" class="learning-node-subtitle">RGB · 身体状态 · 文本</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. GR00T" aria-controls="learn-6a0cededa6-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="89" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">GR00T</text><text x="338.0" y="98" class="learning-node-subtitle">预测动作块</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 14 个关节目标" aria-controls="learn-6a0cededa6-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="89" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">14 个关节目标</text><text x="562.0" y="98" class="learning-node-subtitle">每一步的目标角</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 关节控制器" aria-controls="learn-6a0cededa6-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">关节控制器</text><text x="786.0" y="98" class="learning-node-subtitle">位置跟踪 · 限幅</text></g></svg></div><div class="learning-details" aria-label="设计设想：省去中间技能层"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-6a0cededa6-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>观察与指令</h3><p>重新设计状态与动作标签。</p></article><article id="learn-6a0cededa6-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>GR00T</h3><p>平衡与协调也要从示范学习。</p></article><article id="learn-6a0cededa6-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>14 个关节目标</h3><p>不再通过行走或踢球策略。</p></article><article id="learn-6a0cededa6-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>关节控制器</h3><p>保留变化速率限制、异常与超时处理。</p></article></div><span class="sr-only learning-status" role="status"></span><figcaption>设计设想，本实验没有训练或验证此方式。</figcaption></figure><p>省去的是技能层，<strong>不是“原来必需的 IK”</strong>：当前分层方案也没有显式 IK 或逆动力学求解器。若采用脚部位姿经 IK 求关节角的路线，直接预测角度才会省去该几何求解。</p>
+<p>关节目标仍需舵机控制，不等于力矩或电流。潜在好处是动作更自由；代价是更多平衡与恢复示范，以及更严格的推理延迟、动作连续性和接触验证。</p>
 </section>
 <section id="cosmos">
-<h2>Cosmos 3：为同一段动作补充视觉变化<a class="headerlink" href="#cosmos" title="Link to this heading">#</a></h2>
-<p>在仿真中改变材质和灯光，需要为每种条件准备资产并重新渲染。另一条补充途径是用<a class="reference external" href="https://www.nvidia.com/en-us/glossary/generative-ai/" rel="noreferer noopener" target="_blank">生成模型</a>直接改变已有视频的外观。</p>
-<p>NVIDIA Cosmos 是面向<a class="reference external" href="https://www.nvidia.com/en-us/glossary/generative-physical-ai/" rel="noreferer noopener" target="_blank">物理 AI</a>的<a class="reference external" href="https://www.nvidia.com/en-us/glossary/world-models/" rel="noreferer noopener" target="_blank">世界基础模型</a>平台。Cosmos 3 把理解场景（推理）、生成视频（世界生成）和生成动作放进同一个模型家族。对本任务，一个适合研究的用法是视频迁移（video transfer）：以一段已有的仿真示范视频为基础，用边缘、深度或分割等结构条件约束画面中物体的位置和形状，再用文字提示改变光照、地面或房间外观，生成新的候选视频。</p>
-<figure class="learning-figure" data-learning-flow="learn-8131a1f9e2"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="改变视觉外观，检查动作标签是否仍然成立"><svg class="learning-svg" viewBox="0 0 900 137" role="group" aria-labelledby="learn-8131a1f9e2-title"><title id="learn-8131a1f9e2-title">改变视觉外观，检查动作标签是否仍然成立</title><defs><marker id="learn-8131a1f9e2-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H244.0" marker-end="url(#learn-8131a1f9e2-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 68.5H468.0" marker-end="url(#learn-8131a1f9e2-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 68.5H692.0" marker-end="url(#learn-8131a1f9e2-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 可靠原始轨迹" aria-controls="learn-8131a1f9e2-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">可靠原始轨迹</text><text x="114.0" y="98" class="learning-node-subtitle">图像、状态与执行动作</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Cosmos 3 迁移" aria-controls="learn-8131a1f9e2-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="89" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Cosmos 3 迁移</text><text x="338.0" y="98" class="learning-node-subtitle">生成受条件约束的外观</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 检查数据一致性" aria-controls="learn-8131a1f9e2-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="89" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">检查数据一致性</text><text x="562.0" y="98" class="learning-node-subtitle">目标几何、接触与时间</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 训练与对照评测" aria-controls="learn-8131a1f9e2-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">训练与对照评测</text><text x="786.0" y="98" class="learning-node-subtitle">陌生环境中的自主成功</text></g></svg></div><div class="learning-details" aria-label="改变视觉外观，检查动作标签是否仍然成立"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-8131a1f9e2-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>可靠原始轨迹</h3><p>源数据首先要有正确的动作和时间对应关系。原示范没有教会的行为，改变它的外观也补不出来。</p></article><article id="learn-8131a1f9e2-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Cosmos 3 迁移</h3><p>结构条件帮助保持布局，提示词改变光照或房间外观。生成结果只是候选数据，即使有条件约束，也可能出现错误的帧。</p></article><article id="learn-8131a1f9e2-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>检查数据一致性</h3><p>检查球和球门的大小与位置、机器人的形状、接触时刻和跨帧连续性。如果球被生成到脚的另一侧，原来的动作标签就不再成立，这段数据应当丢弃。</p></article><article id="learn-8131a1f9e2-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>训练与对照评测</h3><p>在相同示范量与训练预算下，与不加生成数据的模型比较；把新房间或新组合留给测试，才能判断扩展是否有帮助。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>用生成视频扩充数据时，有几条约束必须守住：</p>
-<ul class="simple">
-<li><p><strong>几何必须保持。</strong> 球、球门、相机视角和机器人的相对位置不能变。动作标签是“在这个几何关系下该怎么做”，几何一变，标签就失效。</p></li>
-<li><p><strong>动作标签的语义必须保持。</strong> 生成只改变图像，状态和 8 维请求原样沿用；这只有在外观变化不影响“该怎么做”时才成立。</p></li>
-<li><p><strong>时间上要一致。</strong> 步行射门的 GR00T 一次读取跨越约 5.8 秒的 4 张历史图像。如果同一段视频里前后帧被生成成不同的房间或灯光，模型看到的就是一个现实中不会发生的场景。</p></li>
-<li><p><strong>物理不会重新发生。</strong> 生成视频改变的只是画面，球怎样滚、脚怎样接触地面并没有重新计算。把地毯换成更滑的地面，原来的步态和出脚时机就未必成立；涉及摩擦、质量或接触的变化，要回到物理仿真中重新采集。</p></li>
-</ul>
-<p>所以 Cosmos 3 适合承担的角色是<strong>外观多样性的补充</strong>：在几何、动作和物理都不变的前提下，让模型见到更多光照和房间外观。它不能替代新的动作示范，也不能证明动作在新环境中可以执行；可靠性仍要靠闭环仿真和之后的真机测试来检验。</p>
-<div class="quiz"><h3>检查理解</h3><p>同一段动作的视频换了十种背景，就等于获得了十倍不同的动作经验吗？</p>
-<details><summary>查看解析</summary><p>不等于。它扩充了视觉条件，但动作和状态的覆盖仍然相同。学会从偏差中恢复、改走别的路线或适应新的地面，需要对应的新轨迹或纠正数据。</p>
-</details></div><div class="quiz"><h3>检查理解</h3><p>为什么改变灯光后可以沿用原来的动作标签，而把地面换成更滑的材质就不能？</p>
-<details><summary>查看解析</summary><p>灯光只改变画面，球和机器人的运动不变，原来的动作仍然正确；地面更滑会改变步态和接触，原来的动作在新条件下未必能执行，需要重新运行物理仿真并记录新的动作。</p>
-</details></div><p>环境扩展仍然围绕同一组问题：任务要什么信息、怎样产生有效动作、用什么证据判断完成。带着这些问题，<a class="reference internal" href="models.html"><span class="std std-doc">6.1 节</span></a> 把 Microduck 的经验整理成一个可交给智能体协助实现的新任务方案。</p>
+<h2>Cosmos 3：补充视觉变化<a class="headerlink" href="#cosmos" title="Link to this heading">#</a></h2>
+<p>NVIDIA Cosmos 是面向<a class="reference external" href="https://www.nvidia.com/en-us/glossary/generative-physical-ai/" rel="noreferer noopener" target="_blank">物理 AI</a>的<a class="reference external" href="https://www.nvidia.com/en-us/glossary/world-models/" rel="noreferer noopener" target="_blank">世界基础模型</a>平台。可研究用 Cosmos 3 的<a class="reference external" href="https://www.nvidia.com/en-us/glossary/generative-ai/" rel="noreferer noopener" target="_blank">生成模型</a>对视频做外观迁移：边缘、深度或分割约束结构，文本指定新的光照与材质。</p>
+<figure class="learning-figure" data-learning-flow="learn-ff929dfc2c"><p class="learning-help learning-scroll-hint">左右滑动查看完整图示</p><div class="diagram-scroll" tabindex="0" role="region" aria-label="外观变化必须保持动作标签有效"><svg class="learning-svg" viewBox="0 0 900 137" role="group" aria-labelledby="learn-ff929dfc2c-title"><title id="learn-ff929dfc2c-title">外观变化必须保持动作标签有效</title><defs><marker id="learn-ff929dfc2c-arrow" markerWidth="6" markerHeight="6" refX="5.25" refY="3" orient="auto"><path d="M0 0L5.25 3L0 6" fill="none" stroke="currentColor" stroke-width="1.4"/></marker></defs><path class="learning-edge" data-from="0" data-to="1" d="M208.0 68.5H244.0" marker-end="url(#learn-ff929dfc2c-arrow)"/><path class="learning-edge" data-from="1" data-to="2" d="M432.0 68.5H468.0" marker-end="url(#learn-ff929dfc2c-arrow)"/><path class="learning-edge" data-from="2" data-to="3" d="M656.0 68.5H692.0" marker-end="url(#learn-ff929dfc2c-arrow)"/><g class="learning-node" data-node="0" role="button" tabindex="0" aria-label="1. 原始示范" aria-controls="learn-ff929dfc2c-detail-0" aria-expanded="false"><rect x="24.0" y="24" width="180" height="89" rx="6"/><text x="114.0" y="48" class="learning-node-index">01</text><text x="114.0" y="74" class="learning-node-title">原始示范</text><text x="114.0" y="98" class="learning-node-subtitle">图像 · 状态 · 动作</text></g><g class="learning-node" data-node="1" role="button" tabindex="0" aria-label="2. Cosmos 3 迁移" aria-controls="learn-ff929dfc2c-detail-1" aria-expanded="false"><rect x="248.0" y="24" width="180" height="89" rx="6"/><text x="338.0" y="48" class="learning-node-index">02</text><text x="338.0" y="74" class="learning-node-title">Cosmos 3 迁移</text><text x="338.0" y="98" class="learning-node-subtitle">生成候选外观</text></g><g class="learning-node" data-node="2" role="button" tabindex="0" aria-label="3. 一致性检查" aria-controls="learn-ff929dfc2c-detail-2" aria-expanded="false"><rect x="472.0" y="24" width="180" height="89" rx="6"/><text x="562.0" y="48" class="learning-node-index">03</text><text x="562.0" y="74" class="learning-node-title">一致性检查</text><text x="562.0" y="98" class="learning-node-subtitle">几何 · 接触 · 时间</text></g><g class="learning-node" data-node="3" role="button" tabindex="0" aria-label="4. 对照评测" aria-controls="learn-ff929dfc2c-detail-3" aria-expanded="false"><rect x="696.0" y="24" width="180" height="89" rx="6"/><text x="786.0" y="48" class="learning-node-index">04</text><text x="786.0" y="74" class="learning-node-title">对照评测</text><text x="786.0" y="98" class="learning-node-subtitle">未见环境的完整任务</text></g></svg></div><div class="learning-details" aria-label="外观变化必须保持动作标签有效"><button type="button" class="learning-reset" aria-label="关闭说明" title="关闭说明" hidden>×</button><article id="learn-ff929dfc2c-detail-0" data-node-detail="0" class="learning-definition"><h3><span>1</span>原始示范</h3><p>先保证原始数据正确。</p></article><article id="learn-ff929dfc2c-detail-1" data-node-detail="1" class="learning-definition"><h3><span>2</span>Cosmos 3 迁移</h3><p>条件约束不保证生成结果正确。</p></article><article id="learn-ff929dfc2c-detail-2" data-node-detail="2" class="learning-definition"><h3><span>3</span>一致性检查</h3><p>球、球门、身体与相机关系不变；历史帧前后连贯。</p></article><article id="learn-ff929dfc2c-detail-3" data-node-detail="3" class="learning-definition"><h3><span>4</span>对照评测</h3><p>固定示范量与预算，对比是否加入生成数据。</p></article></div><span class="sr-only learning-status" role="status"></span></figure><p>只有外观变化不影响动作语义时，才能沿用状态和 8 维请求。GR00T 的 4 帧历史跨约 5.8 秒，生成结果也必须跨帧一致。视频不会重算摩擦与接触；更滑的地面需要新物理轨迹，不能只换画面。</p>
+<div class="quiz"><h3>检查理解</h3><p>同一段动作换十种背景，就有十倍不同的动作经验吗？</p>
+<details><summary>查看解析</summary><p>没有。视觉覆盖增加，动作与状态覆盖不变；纠偏、绕行和适应地面仍需新示范。</p>
+</details></div><p><a class="reference internal" href="models.html"><span class="std std-doc">6.1 节</span></a> 将任务、输入、动作与验证整理成可由智能体协助实现的新任务方案。</p>
 </section>
 <section id="references">
 <h2>参考资料<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
@@ -592,14 +519,11 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first">先把一个场景做可靠</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-variation">为什么真机需要环境变化</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#domain-randomization">环境域随机化</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-state-variation">先随机起点，再扩展房间</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnose">先分清是“看不清”还是“做不到”</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigation">复杂环境中的导航：Isaac Lab 3 与 Nav2</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-joints">另一种选择：让 GR00T 直接输出 14 个舵机动作</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmos">Cosmos 3：为同一段动作补充视觉变化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-variation">先稳定任务，再改变环境</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnose">随机化什么，重新采集什么</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#navigation">有障碍时：导航与运动控制分工</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-joints">另一种选择：直接输出 14 个关节目标</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cosmos">Cosmos 3：补充视觉变化</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">参考资料</a></li>
 </ul>
   </nav></div>

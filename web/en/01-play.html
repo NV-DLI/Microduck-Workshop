@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '01-play';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -335,8 +335,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: Walking steadily on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="nav bd-sidenav">
@@ -346,9 +346,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: shoot autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 Beyond the pitch</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -515,9 +515,8 @@
     <span class="c1"># A bounded official kick, then a smooth handoff to standing.</span>
     <span class="n">weight</span> <span class="o">=</span> <span class="p">(</span>
         <span class="mf">1.0</span> <span class="k">if</span> <span class="n">phase</span> <span class="o">&lt;</span> <span class="mf">0.14</span> <span class="k">else</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">phase</span> <span class="o">-</span> <span class="mf">0.14</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.12</span><span class="p">)</span>
-    <span class="p">)</span></code></pre></div></div></div><p>With the weight computed, the program uses <code class="docutils literal notranslate"><span class="pre">torch.lerp</span></code> to interpolate between the walking and kick actions and hands the result to the action manager, which maps it to joint targets. The lab plays the kick fully for 0.14 s, then blends back to the walking policy's stance over 0.12 s. These times only shape the handoff between skills; the official weights stay unchanged.</p>
-<p>A policy file is under 1 MB, but the full simulation also needs GPU memory for the scene, physics and rendering, so do not size memory by file size. The <code class="docutils literal notranslate"><span class="pre">inspect-model</span></code> command from Section 1.2 prints a policy file's SHA-256, input and output tensor shapes, and the operators it uses.</p>
-</section>
+    <span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>Blend actions and return smoothly to standing</h4> <p><code>torch.lerp</code> mixes walking and kick actions using the weight. A weight of 1 selects the kick; as it falls toward 0, control returns to the walking policy at zero velocity, which produces standing actions. At 0, the walking action computed in step 1 is retained. The action manager then maps the result to joint targets. This blend is an engineering choice adopted after observing smoother transitions in experiments, not the only implementation. Its timing is configured in the lab executor; the official network weights are unchanged.</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code>    <span class="k">if</span> <span class="n">weight</span><span class="p">:</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">lerp</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">kick</span><span class="p">(</span><span class="n">obs</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span></code></pre></div></div></div></section>
 <section id="reflect">
 <h2>Who decided the next step?<a class="headerlink" href="#reflect" title="Link to this heading">#</a></h2>
 <div class="quiz"><h3>Check your understanding</h3><p>Which decisions did you just make that the robot cannot yet make on its own?</p>

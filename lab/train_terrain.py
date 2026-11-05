@@ -1,4 +1,4 @@
-"""Adapt a preserved ONNX walking actor to mixed flat and sloped terrain."""
+"""Adapt the selected course walking actor and critic to mixed flat and sloped terrain."""
 
 from pathlib import Path
 import argparse
@@ -22,28 +22,22 @@ def compact_onnx(message):
                 compact_onnx(value)
 
 
-def yaw_rate_tracking(env, std=0.15):
-    """Reward turning accuracy independently of gait roll and pitch motion."""
-    import torch
-
-    velocity = env.scene["robot"].data.root_link_ang_vel_b
-    velocity = getattr(velocity, "torch", velocity)
-    target = env.command_manager.get_command("base_velocity")[:, 2]
-    return torch.exp(-((velocity[:, 2] - target) / std).square())
-
-
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--runtime", type=Path, required=True)
     p.add_argument("--model", type=Path, required=True)
     p.add_argument("--output", type=Path, required=True)
-    p.add_argument("--num-envs", type=int, default=256)
-    p.add_argument("--yaw-precision", action="store_true")
+    p.add_argument("--num-envs", type=int, default=1024)
     p.add_argument("--resume", type=Path)
-    p.add_argument("--refine-heading", action="store_true")
     p.add_argument("--iterations", type=int, default=1000)
-    p.add_argument("--seed", type=int, default=43001)
+    p.add_argument("--seed", type=int, default=1105802)
+    p.add_argument("--parent-checkpoint", type=Path, default=Path("datasets/walking-straight/model_1000.pt"))
     a = p.parse_args()
+    if a.num_envs < 1 or a.iterations < 1:
+        p.error("Use positive training counts")
+    for source in (a.model, a.parent_checkpoint, a.resume):
+        if source is not None and not source.is_file():
+            p.error(f"Missing input: {source}")
     a.output.mkdir(parents=True, exist_ok=False)
     import torch
     import onnx
@@ -58,7 +52,6 @@ def main():
     from isaaclab_rl.rsl_rl import RslRlVecEnvWrapper
     from rsl_rl.runners import OnPolicyRunner
     import isaaclab.terrains as terrain_gen
-    from tensordict import TensorDict
 
     sys.path.insert(0, str(a.runtime / "gait"))
     from batch_policy import BatchPolicy
@@ -71,9 +64,9 @@ def main():
         "rsl_rl_cfg_entry_point",
         overrides=["presets=backlash"],
     )
-    from course_labs.training_recipe import apply_course_recipe
+    from course_labs.training_recipe import apply_official_walking_recipe
 
-    apply_course_recipe(cfg, agent, rough=True)
+    apply_official_walking_recipe(cfg, agent)
     cfg.scene.robot.spawn.usd_path = str(
         Path(__file__).parent / "assets/microduck_contact.usda"
     )
@@ -86,52 +79,15 @@ def main():
     cfg.commands.base_velocity.ranges.ang_vel_z = (-0.2, 0.2)
     cfg.commands.base_velocity.rel_forward_envs = 0.8
     cfg.commands.base_velocity.rel_turn_in_place_envs = 0.0
-    cfg.commands.base_velocity.rel_standing_envs = 0.1
     cfg.commands.head_pose.ranges = tuple((0.0, 0.0) for _ in range(4))
     cfg.commands.body_pose.ranges = tuple((0.0, 0.0) for _ in range(6))
     cfg.events.push_robot = None
-
-    # Narrow the experiment to direction control under nominal physical parameters.
-    if a.refine_heading:
-        cfg.rewards.track_ang_vel.weight = 4.0
-        cfg.rewards.track_ang_vel.params["std"] = 0.2
-        cfg.commands.base_velocity.ranges.ang_vel_z = (-0.4, 0.4)
-        cfg.commands.base_velocity.rel_standing_envs = 0.2
-        for name in [
-            "foot_friction",
-            "encoder_bias",
-            "mass_inertia",
-            "randomize_com",
-            "randomize_head_com",
-            "randomize_joint_friction",
-            "randomize_armature",
-        ]:
-            setattr(cfg.events, name, None)
-        cfg.scene.robot.actuators["servos"].vin_range = None
-        cfg.scene.robot.actuators["servos"].vin_drop_gain_range = None
-        cfg.scene.robot.actuators["servos"].min_delay = 4
-        cfg.scene.robot.actuators["servos"].max_delay = 4
-        cfg.observations.policy.enable_corruption = False
-        cfg.observations.policy.imu.params.update(max_angle_deg=0, min_lag=0, max_lag=0)
-        cfg.curriculum.com_range = None
-        cfg.curriculum.head_com_range = None
-
-    # Isolate body-z tracking from roll/pitch, while retaining the original stability terms.
-    if a.yaw_precision:
-        from isaaclab.managers import RewardTermCfg
-
-        cfg.rewards.track_ang_vel.weight = 0.5
-        cfg.rewards.track_ang_vel.params["std"] = 0.31622776601683794
-        cfg.rewards.yaw_precision = RewardTermCfg(
-            func=yaw_rate_tracking, weight=4.0, params={"std": 0.15}
-        )
-        cfg.rewards.track_lin_vel.weight = 3.0
 
     # Mix flat, ascending and descending tiles; curriculum controls their difficulty.
     cfg.scene.terrain.terrain_generator = terrain_gen.TerrainGeneratorCfg(
         seed=a.seed,
         size=(4.0, 4.0),
-        num_rows=5,
+        num_rows=8,
         num_cols=8,
         curriculum=True,
         border_width=2.0,
@@ -140,10 +96,10 @@ def main():
         sub_terrains={
             "flat": terrain_gen.MeshPlaneTerrainCfg(proportion=0.25),
             "slopes": terrain_gen.HfPyramidSlopedTerrainCfg(
-                proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7
+                proportion=0.375, slope_range=(0.02, 0.36), platform_width=0.7
             ),
             "descending": terrain_gen.HfInvertedPyramidSlopedTerrainCfg(
-                proportion=0.375, slope_range=(0.03, 0.22), platform_width=0.7
+                proportion=0.375, slope_range=(0.02, 0.36), platform_width=0.7
             ),
         },
     )
@@ -160,18 +116,26 @@ def main():
     cfg.curriculum.head_pose_bias_weight = None
     cfg.curriculum.head_pose_range = None
     cfg.curriculum.standing_envs = None
+    # One fixed reward definition throughout this adaptation; terrain difficulty
+    # remains performance-driven. No stage-boundary reward/normalizer reset.
+    cfg.rewards.track_ang_vel.params["std"] = 0.5
+    cfg.rewards.action_rate_l2.weight = -0.2
+    cfg.rewards.head_pose_bias.weight = -2.0
+    cfg.commands.base_velocity.rel_standing_envs = 0.15
+    cfg.curriculum.com_range = None
+    cfg.curriculum.head_com_range = None
+    cfg.events.randomize_com.params["com_range"] = {axis: (-.005,.005) for axis in "xyz"}
+    cfg.events.randomize_head_com.params["com_range"] = {axis: (-.005,.005) for axis in "xyz"}
     digest = hashlib.sha256(a.model.read_bytes()).hexdigest()
     ledger = dict(
         status="starting",
-        initialization="official ONNX actor; fresh critic and optimizer",
+        initialization="selected flat1001 actor and critic; fresh adaptation optimizer",
         parent_sha256=digest,
         seed=a.seed,
         num_envs=a.num_envs,
         iterations=a.iterations,
-        training_slopes="pyramids, tan(angle)=0.03..0.22; 25% flat",
-        evaluation_seeds_excluded=[42001, 44001],
+        training_slopes="pyramids, tan(angle)=0.02..0.36; 25% flat",
         original_weights_modified=False,
-        yaw_precision=a.yaw_precision,
     )
 
     def save_report():
@@ -186,10 +150,20 @@ def main():
         runner = OnPolicyRunner(
             env, to_dict(agent), log_dir=str(a.output), device="cuda:0"
         )
+        runner.load(str(a.parent_checkpoint), load_cfg={"actor": True, "critic": True, "optimizer": False, "iteration": False})
         actor = runner.alg.actor
+        ledger["parent_checkpoint"] = str(a.parent_checkpoint)
+        ledger["parent_checkpoint_sha256"] = hashlib.sha256(a.parent_checkpoint.read_bytes()).hexdigest()
+        # Preserve the checkpoint critic; reduce exploration for terrain adaptation.
+        with torch.no_grad():
+            for name, parameter in actor.named_parameters():
+                if name.endswith("log_std"):
+                    parameter.fill_(np.log(0.15))
+                elif name.endswith("std"):
+                    parameter.fill_(0.15)
 
         # Warm-start the actor and its normalization from the preserved ONNX file.
-        # The critic and optimizer are new unless an explicit checkpoint is restored.
+        # The critic comes from the parent checkpoint; the optimizer starts fresh.
         constants = {
             x.name: numpy_helper.to_array(x).copy()
             for x in onnx.load(str(a.model)).graph.initializer
@@ -228,13 +202,23 @@ def main():
 
         # Continuation restores training state; never overwrite the source checkpoint.
         if a.resume:
-            runner.load(str(a.resume))
+            infos = runner.load(str(a.resume))
+            # Resume updates after the saved zero-based iteration, with fresh episodes.
+            # Terrain assignments restart at the initial levels; no exact physics replay.
+            steps = (infos or {}).get("course_environment_steps")
+            if steps is None:
+                steps = 0 if a.resume.name == "initial.pt" else (runner.current_learning_iteration + 1) * agent.num_steps_per_env
+            runner.current_learning_iteration = int(steps) // agent.num_steps_per_env
+            base.common_step_counter = int(steps)
+            env.reset()
+            ledger["resume_environment_steps"] = int(steps)
+            ledger["resume_terrain_assignments"] = "reinitialized at starting levels"
             ledger.update(
                 initialization="checkpoint continuation",
-                parent_checkpoint_sha256=hashlib.sha256(
+                resume_checkpoint=str(a.resume),
+                resume_checkpoint_sha256=hashlib.sha256(
                     a.resume.read_bytes()
                 ).hexdigest(),
-                refine_heading=a.refine_heading,
             )
         actor.obs_normalizer.until = 0
         dump_yaml(str(a.output / "env.yaml"), cfg)
@@ -259,6 +243,8 @@ def main():
         original_save = runner.save
 
         def snapshot(path, infos=None):
+            infos = dict(infos or {})
+            infos["course_environment_steps"] = int(base.common_step_counter)
             original_save(path, infos)
             export(a.output / ("export-" + Path(path).stem))
             ledger.update(

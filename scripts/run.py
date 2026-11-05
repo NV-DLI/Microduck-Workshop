@@ -137,13 +137,12 @@ def main():
     terrain.add_argument("--headless", action="store_true")
     terrain.add_argument("--record", action="store_true")
     slope_train = sub.add_parser("train-terrain")
-    slope_train.add_argument("--yaw-precision", action="store_true")
     slope_train.add_argument("--resume", type=Path)
-    slope_train.add_argument("--refine-heading", action="store_true")
     slope_train.add_argument("--model", type=Path, required=True)
-    slope_train.add_argument("--num-envs", type=int, default=256)
+    slope_train.add_argument("--parent-checkpoint", type=Path, default=Path("datasets/walking-straight/model_1000.pt"))
+    slope_train.add_argument("--num-envs", type=int, default=1024)
     slope_train.add_argument("--iterations", type=int, default=1000)
-    slope_train.add_argument("--seed", type=int, default=43001)
+    slope_train.add_argument("--seed", type=int, default=1105802)
     slope_train.add_argument("--output", type=Path, required=True)
     slope_train.add_argument(
         "--show", action="store_true", help="Open Isaac Sim to watch the parallel environments"
@@ -152,6 +151,7 @@ def main():
     train.add_argument("--num-envs", type=int, default=64)
     train.add_argument("--iterations", type=int, default=20)
     train.add_argument("--seed", type=int, default=101)
+    train.add_argument("--resume", type=Path)
     train.add_argument("--output", type=Path, required=True)
     train.add_argument(
         "--show", action="store_true", help="Open Isaac Sim to watch the parallel environments"
@@ -351,7 +351,7 @@ def main():
         out = fresh(a.output)
         cmd = [
             py,
-            # Course check entry: lab/walk.py plus the standing61 start-up protocol.
+            # Walking check with grounded startup and direct velocity commands.
             ROOT / "lab/course_labs/walk_check.py",
             "--runtime",
             m,
@@ -438,10 +438,7 @@ def main():
         ]
         if a.resume:
             cmd += ["--resume", a.resume.resolve()]
-        if a.refine_heading:
-            cmd += ["--refine-heading"]
-        if a.yaw_precision:
-            cmd += ["--yaw-precision"]
+        cmd += ["--parent-checkpoint", a.parent_checkpoint.resolve()]
         return run(cmd, c)
     if a.command == "train-walk":
         if a.num_envs < 1 or a.iterations < 1:
@@ -453,6 +450,7 @@ def main():
                 ROOT / "lab/train_walk.py",
                 "--runtime",
                 m,
+                *(["--resume", a.resume.resolve()] if a.resume else []),
                 "--num-envs",
                 a.num_envs,
                 "--iterations",

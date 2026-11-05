@@ -39,7 +39,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/robot-explorer.css?v=10dc1e9c" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -59,7 +59,7 @@
     <script defer="defer" src="_static/robot-explorer-loader.js?v=33c591fc"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '02-anatomy';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -419,10 +419,51 @@
 <p>颜色经过简化，用来区分零件的作用，不是实物涂装；零件的形状、比例、关节位置和转轴来自原始 CAD 与仿真模型。拆解图中零件分开的距离只是为了看清结构，不代表实际的装配步骤。</p>
 </div>
 </div>
-<div class="note admonition">
-<p class="admonition-title">硬件版本与仿真关节</p>
-<p>Microduck 的 15 个舵机中，仿真策略控制 14 个关节，喙部在仿真模型中固定，所以 3D 小鸭里的喙不能转动。图中的主控板沿用 CAD 里的 Raspberry Pi Zero 2 W 外形；当前 Beta 版改用基于 Rockchip RK3566 的定制主控板，两者是不同代次的硬件。摄像头、ToF 测距和 IMU 用于观察任务：4.1 节的板载策略用它们识别球与球门，第 5 部分的 GR00T 读取摄像头画面和身体状态。</p>
+</section>
+<section id="hardware">
+<h2>本实验依据的硬件<a class="headerlink" href="#hardware" title="Link to this heading">#</a></h2>
+<p>理解仿真前，先把计算、驱动和感知部件对应起来。下表列出课程使用的电机模型与 Beta 版传感器参考；拆解图的主控板仍沿用旧 CAD 中 Raspberry Pi Zero 2 W 的外形，不能把它当作 Beta 主控板。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head cell-short"><p>部件</p></th>
+<th class="head cell-short"><p>型号或配置</p></th>
+<th class="head"><p>在机器人与本实验中的作用</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="cell-short"><p>舵机与关节反馈</p></td>
+<td><p>ROBOTIS DYNAMIXEL <strong>XL330</strong> 系列；仿真使用其 BAM 电机拟合</p></td>
+<td><p>驱动关节，并反馈角度和速度；实物共 15 个舵机，策略控制 14 个，喙部在仿真中固定</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>主控板</p></td>
+<td><p>基于 <strong>Rockchip RK3566</strong> 的 Beta 定制板；1 GB RAM、32 GB 存储</p></td>
+<td><p>运行控制与感知程序；<strong>NPU 集成在 RK3566 芯片内</strong>，为单核 INT8、0.8 TOPS，不是另一块外接计算板</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>RGB 相机</p></td>
+<td><p>GalaxyCore <strong>GC2093</strong></p></td>
+<td><p>提供头部彩色图像；本实验按 960 × 540、15 Hz 采样，镜头参数采用仿真假设</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>ToF 测距</p></td>
+<td><p>ST <strong>VL53L8CX</strong>，8 × 8 分区</p></td>
+<td><p>测量前方各方向的距离，辅助判断地面与近处障碍；不是另一台旋转式激光雷达</p></td>
+</tr>
+<tr class="row-even"><td><p>惯性测量单元（IMU）</p></td>
+<td><p>ST <strong>LSM6DSV16X</strong>；机身、头部各一颗</p></td>
+<td><p>提供角速度与姿态信息；运动控制主要使用机身 IMU 与关节反馈，头部 IMU 是独立数据流</p></td>
+</tr>
+<tr class="row-odd"><td class="cell-short"><p>电池与供电</p></td>
+<td><p>可拆卸 <strong>NP-F550</strong> 电池，2600 mAh；配套电源板</p></td>
+<td><p>给计算板与舵机供电；仿真不验证续航</p></td>
+</tr>
+<tr class="row-even"><td class="cell-short"><p>通信与交互</p></td>
+<td><p>Wi-Fi、Bluetooth、麦克风、扬声器、NFC</p></td>
+<td><p>用于连接、音频和近场交互；这些功能不参与本实验的运动控制闭环</p></td>
+</tr>
+</tbody>
+</table>
 </div>
+<p>电机依据<a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/model.rs" rel="noreferer noopener" target="_blank">官方运行时代码</a>，计算板与传感器对应<a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/robotd-params/src/board.rs" rel="noreferer noopener" target="_blank">板卡定义</a>、<a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/mediad/src/sensor.rs" rel="noreferer noopener" target="_blank">相机配置</a>、<a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/tof/src/lib.rs" rel="noreferer noopener" target="_blank">ToF 驱动</a>和 <a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/duck-control/src/imu.rs" rel="noreferer noopener" target="_blank">IMU 驱动</a>。NPU 见<a class="reference external" href="https://github.com/pollen-robotics/microduck/blob/53230463927095ea890f231d29089bb0a538c06f/docs/project/npu-bringup.md" rel="noreferer noopener" target="_blank">官方说明</a>，电池及其他整机配置见<a class="reference external" href="https://pollen-robotics.com/microduck/press-kit/" rel="noreferer noopener" target="_blank">官方硬件规格</a>。</p>
+<p>RGB 和 ToF 用于观察外部目标；IMU 与关节反馈用于判断自身运动。课程在 Isaac 中近似这些接口，并没有把整套 RK3566 固件或全部硬件误差复现出来。</p>
 <div class="quiz"><h3>检查理解</h3><p>在“电机怎样驱动关节”里比较左腿的“髋侧倾”和“髋俯仰”：转动时，驱动关节的舵机外壳会跟着动吗？</p>
 <details><summary>查看解析</summary><p>髋侧倾时不会：这个舵机固定在上一级的髋偏航支架上，转动的是输出轴，输出轴带动下面的支架和整条腿。髋俯仰时会：这个舵机装在大腿里，输出轴连在上一级的髋支架上，所以是舵机外壳连同大腿、小腿和脚一起绕输出轴转。两种装法都能驱动关节，区别只在于关节哪一侧跟着动。颈俯仰、头偏航和头侧倾也属于后一种装法。</p>
 </details></div></section>
@@ -563,18 +604,23 @@
 <p>关节位置控制仍要持续工作。常用的 PD 控制提供一个直观例子：根据目标角与实际角的误差、关节速度调节力矩。这种反馈控制不等同于求解逆动力学。本实验使用的舵机模型还模拟目标延迟、电机阻尼、摩擦与限幅，由位置误差驱动电机响应；Newton 再计算动力学与接触，得到实际运动。</p>
 <p>可对照 NVIDIA 的 <a class="reference external" href="https://docs.isaacsim.omniverse.nvidia.com/5.1.0/manipulators/concepts/kinematics_solver.html" rel="noreferer noopener" target="_blank">IK 接口说明</a>、<a class="reference external" href="https://docs.omniverse.nvidia.com/kit/docs/omni_physics/107.2/extensions/runtime/source/omni.physics.tensors/docs/inverse_dynamics.html" rel="noreferer noopener" target="_blank">逆动力学说明</a>和 <a class="reference external" href="https://isaac-sim.github.io/IsaacLab/v3.0.0/source/concepts/actuators.html" rel="noreferer noopener" target="_blank">Isaac Lab 执行器说明</a>，区分几何求解、力矩求解与关节反馈控制。</p>
 <div data-control-cycle data-scenarios="walking" data-lang="zh">
-<template><link rel="stylesheet" href="_static/control-cycle.css?v=a73542c5b044"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
-<section class="control-cycle-fallback"><h3>控制周期</h3><p>行走：每 20 ms 读取身体反馈，由 Actor 推理出 14 个关节目标；目标保持四个 5 ms 物理步。</p><p>这些频率是仿真配置，不是实测运行速度。计算期间仿真暂停；主机推理耗时与仿真时间分开计量，不相加。</p></section></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/walk.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>组装观察，再运行策略</h4> <p>每 20 ms 更新一次观察历史，把 policy 观察送入运动策略。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="c1"># One observation and action every 20 ms (50 Hz).</span>
+<template><link rel="stylesheet" href="_static/control-cycle.css?v=27e1e61e509d"><div id="app" class="app"></div><div id="announce" class="sr-only" role="status" aria-live="polite"></div></template>
+<section class="control-cycle-fallback"><h3>控制周期</h3><p>行走：每 20 ms 读取身体反馈，由 Actor 推理出 14 个关节目标；目标保持四个 5 ms 物理步。</p><p>这些频率是仿真配置，不是实测运行速度。计算期间仿真暂停；主机推理耗时与仿真时间分开计量，不相加。</p></section></div><div class="code-story" data-story><div class="story-corner" aria-hidden="true"></div><div class="code-toolbar"><span>Python · 核心代码节选</span><a class="source-link" href="https://github.com/NV-DLI/Microduck-Workshop/blob/main/lab/course_labs/walk_check.py" target="_blank" rel="noopener">完整代码 ↗</a></div><article class="story-step" data-story-step="0" tabindex="0"><div class="story-text"><h4><span>1</span>组装观察并运行策略</h4> <p>每 20 ms 更新观察历史，由策略输出关节动作。</p></div></article><div class="story-code-chunk" data-story-target="0"><span class="story-code-number" aria-hidden="true">1</span><div class="highlight"><pre><code><span class="c1"># One observation and action every 20 ms (50 Hz).</span>
 <span class="n">action</span> <span class="o">=</span> <span class="n">policy</span><span class="p">(</span>
     <span class="n">env</span><span class="o">.</span><span class="n">observation_manager</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">update_history</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="s2">"policy"</span><span class="p">]</span>
-<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>处理策略动作</h4> <p>动作管理器接收本次策略输出，准备驱动仿真。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>推进 4 个物理步</h4> <p>策略动作跨越 4 × 5 ms；每步累加仿真步计数、写入动作并更新场景，形成 50 Hz 控制与 200 Hz 物理的关系。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="c1"># Hold that action through four 5 ms Newton steps (200 Hz).</span>
+<span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="1" tabindex="0"><div class="story-text"><h4><span>2</span>第一次动作前解除初始化锁定</h4> <p>落地稳定且获得第一次真实策略输出后，恢复原始关节参数，交给策略独立控制。</p></div></article><div class="story-code-chunk" data-story-target="1"><span class="story-code-number" aria-hidden="true">2</span><div class="highlight"><pre><code><span class="k">if</span> <span class="n">brake</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>
+    <span class="c1"># Sensors are ready and the first policy output exists: release</span>
+    <span class="c1"># every temporary joint limit before this action is applied.</span>
+    <span class="n">brake</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="n">step</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">"startup"</span><span class="p">][</span><span class="s2">"brake"</span><span class="p">]</span> <span class="o">=</span> <span class="n">brake</span><span class="o">.</span><span class="n">metadata</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"COURSE_POLICY_TAKEOVER "</span> <span class="o">+</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">step</span> <span class="o">*</span> <span class="mf">0.02</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">)),</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="2" tabindex="0"><div class="story-text"><h4><span>3</span>处理策略动作</h4> <p>动作管理器接收本次策略输出。</p></div></article><div class="story-code-chunk" data-story-target="2"><span class="story-code-number" aria-hidden="true">3</span><div class="highlight"><pre><code><span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">process_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span></code></pre></div></div><article class="story-step" data-story-step="3" tabindex="0"><div class="story-text"><h4><span>4</span>推进四个物理步</h4> <p>同一动作保持四个 5 ms 物理步；视窗按需刷新，不改变物理与控制频率。</p></div></article><div class="story-code-chunk" data-story-target="3"><span class="story-code-number" aria-hidden="true">4</span><div class="highlight"><pre><code><span class="c1"># Hold that action through four 5 ms Newton steps (200 Hz).</span>
 <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
     <span class="n">env</span><span class="o">.</span><span class="n">_sim_step_counter</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="n">env</span><span class="o">.</span><span class="n">action_manager</span><span class="o">.</span><span class="n">apply_action</span><span class="p">()</span>
     <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">write_data_to_sim</span><span class="p">()</span>
-    <span class="n">env</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">headless</span> <span class="ow">and</span> <span class="n">tick</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">sim</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">render</span><span class="o">=</span><span class="ow">not</span> <span class="n">a</span><span class="o">.</span><span class="n">headless</span> <span class="ow">and</span> <span class="n">tick</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">step</span> <span class="o">%</span> <span class="n">every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">env</span><span class="o">.</span><span class="n">scene</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mf">0.005</span><span class="p">)</span></code></pre></div></div></div><p>这段节选对应图中的闭环：Isaac Lab 的观测管理器生成策略输入，动作管理器处理动作并驱动执行器，Newton 随后执行四个 5 ms 物理步。完整程序还会更新计数器并检查是否跌倒。</p>
-<p>下面是课程在容器中用这段程序实际运行过的一次记录，您无需再次运行。机器人先锁住关节在地面上落稳（3.3 节的测试也采用这种启动方式）；之后程序先发送约 2 秒的零速度指令，再持续发送 0.25 m/s 的前进指令，共 12 秒仿真时间。开头的静止并不是策略没有响应。<code class="docutils literal notranslate"><span class="pre">--model</span></code> 指定要运行的策略，这里是 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 里的官方行走模型；<code class="docutils literal notranslate"><span class="pre">report.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的目录。</p>
+<p>下面是课程在容器中用这段程序实际运行过的一次记录，您无需再次运行。机器人先锁住关节在地面上落稳；之后程序先发送约 2 秒的零速度指令，再持续发送 0.25 m/s 的前进指令，共 12 秒仿真时间。这份记录的开头包含零速度等待；3.3 节的实践在落地初始化后直接发送行走指令。<code class="docutils literal notranslate"><span class="pre">--model</span></code> 指定要运行的策略，这里是 <code class="docutils literal notranslate"><span class="pre">models/</span></code> 里的官方行走模型；<code class="docutils literal notranslate"><span class="pre">report.json</span></code> 和 <code class="docutils literal notranslate"><span class="pre">trajectory.json</span></code> 写入 <code class="docutils literal notranslate"><span class="pre">--output</span></code> 指定的目录。</p>
 <figure class="recorded-run"><div class="recorded-head"><span class="recorded-badge">录制示例 · 无需运行</span><span class="recorded-where">课程容器 · Isaac Sim 窗口</span><span class="recorded-meta">DGX Spark · 官方行走模型 <code>models/walk.onnx</code></span></div><div class="recorded-command highlight"><pre><code>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>walk<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--model<span class="w"> </span>models/walk.onnx<span class="w"> </span>--velocity<span class="w"> </span><span class="m">0</span>.25<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--seconds<span class="w"> </span><span class="m">12</span><span class="w"> </span>--seed<span class="w"> </span><span class="m">202</span><span class="w"> </span><span class="se">\</span>
@@ -672,6 +718,7 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assembly">从整体到组件</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hardware">本实验依据的硬件</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kinematic-chain">从机械结构到关节控制</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#joint-map">先分清零件、关节和自由度</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control">软件如何让部件运动</a></li>

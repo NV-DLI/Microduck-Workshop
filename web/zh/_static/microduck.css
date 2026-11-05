@@ -2563,3 +2563,24 @@ html[data-theme="dark"] .bd-article a[href^="https://www.nvidia.com/en-us/glossa
 html[data-theme="dark"] .bd-article a[href^="https://www.nvidia.com/en-us/glossary/"]:hover {
   background-color: rgb(118 185 0 / 25%);
 }
+
+
+/* Static top views share the learning-flow palette and outlines. */
+.onboard-geometry { background: var(--soft); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; }
+.onboard-geometry svg { display: block; width: 100%; height: auto; font-family: var(--course-font); }
+.onboard-geometry .og-pitch { fill: none; stroke: var(--line); stroke-width: 1.5; }
+.onboard-geometry .og-robot, .onboard-geometry .og-goal, .onboard-geometry .og-ball { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; }
+.onboard-geometry .og-target { fill: var(--code-active-bg); stroke: var(--green); stroke-width: 2; stroke-dasharray: 5 4; }
+.onboard-geometry .og-mouth { fill: none; stroke: var(--ink); stroke-width: 3; }
+.onboard-geometry .og-label { fill: var(--ink); font-size: 18px; font-weight: 600; }
+.onboard-geometry .og-note { fill: var(--muted); font-size: 16px; }
+.onboard-geometry .og-sight { fill: none; stroke: var(--muted); opacity: .55; stroke-width: 1.5; stroke-dasharray: 6 6; }
+.onboard-geometry .og-shot, .onboard-geometry .og-offset { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 5; }
+.onboard-geometry .og-route { fill: none; stroke: var(--green); stroke-width: 3; }
+.onboard-geometry figcaption { padding: 0 1.25rem 1rem; }
+
+/* Screenshot callouts are page overlays; the recorded pixels stay unchanged. */
+.annotated-image { display: block; position: relative; }
+.annotated-image > img { display: block; width: 100%; height: auto; max-height: none; }
+.image-highlight { position: absolute; box-sizing: border-box; border: 3px solid #76b900; pointer-events: none; }
+.image-highlight > b { position: absolute; right: 100%; top: -3px; padding: .15rem .45rem; background: #76b900; color: #111; font: 700 .875rem/1.4 var(--course-font); white-space: nowrap; }

@@ -1,0 +1,8 @@
+{
+  "robot": "official full-contact backlash model",
+  "scene_adapter_sha256": "ed6fe84a40989523b7a040035b46353c8273be3a79cb079fd641517c7b4a2b79",
+  "robot_sha256": "89bfe34c9b9f74e5b09fa0ab4521963300aa8b224f0ef0e08ecdcb2949caf0af",
+  "historical_training_results_reused": false,
+  "recipe": "official-straight",
+  "rendering": "physics-only training; view resulting policies in the shared RTX walking lab"
+}

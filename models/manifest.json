@@ -45,9 +45,9 @@
     },
     {
       "file": "terrain-walk.onnx",
-      "sha256": "437b9dae6b48c8df5eae913ba7a693c48af1cbef32bd9f5a7f7431d1467af7e2",
+      "sha256": "fcb0623e0492be0b84ff78c52becc1dff02713b0236e92623108f445bb2099f9",
       "bytes": 793215,
-      "source": "Course terrain adaptation of the Pollen Robotics official walking actor",
+      "source": "Course-trained flat walking policy adapted to slopes using the Pollen Robotics / Isaac Lab training recipe",
       "role": "terrain-walk"
     },
     {
@@ -88,5 +88,5 @@
   ],
   "training_performed": true,
   "downstream_default": "course models; student outputs require explicit opt-in",
-  "training_scope": "New scene detector fine-tuned; preserved prior models unchanged; additional official browser policies retain source identities."
+  "training_scope": "Scene detector fine-tuning, course flat-walking PPO and slope adaptation; other fixed skill weights and official browser policies retain their source identities"
 }

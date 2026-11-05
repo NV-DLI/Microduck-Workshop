@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -441,11 +441,44 @@
 </div>
 <p>本课沿用 <a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">NVIDIA 官方 Microduck 教程</a> 的 <code class="docutils literal notranslate"><span class="pre">main</span></code> 分支实现，固定到包含 Microduck 任务与 BAM 电机模型的 <a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/e527032b25939a8fc061609d3502c99e0c57f9c3" rel="noreferer noopener" target="_blank">Isaac Lab 源码快照</a>，并非 3.0.0 GA。课程单独锁定与配套策略模型匹配的 Newton 版本，而不直接跟随上游默认依赖。容器会自动安装表中的指定版本，您无需手动选择源码提交。</p>
 </section>
+<section id="host-check">
+<h2>先检查宿主机<a class="headerlink" href="#host-check" title="Link to this heading">#</a></h2>
+<p>标准 DGX Spark 的 DGX OS 已带有 NVIDIA 驱动、Docker 和配置好的 NVIDIA Container Toolkit，通常不需要重新安装。Toolkit 把宿主机的 GPU 设备和驱动库提供给容器，Isaac 的计算与 RTX 渲染都需要它；它与用于编译 CUDA 程序的 CUDA Toolkit 不是同一个组件。本课程已在镜像中安装计算依赖，无需另装宿主机 CUDA Toolkit。参见 <a class="reference external" href="https://docs.nvidia.com/dgx/dgx-spark/nvidia-container-runtime-for-docker.html" rel="noreferer noopener" target="_blank">Spark 官方容器说明</a>。</p>
+<p>在宿主机桌面终端逐条检查：</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>nvidia-smi
+docker<span class="w"> </span>--version
+docker<span class="w"> </span>compose<span class="w"> </span>version
+nvidia-ctk<span class="w"> </span>--version
+git<span class="w"> </span>--version
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> 应显示 GPU，其他命令应显示版本号。课程使用 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>，版本需为 2.30.0 或更新版本，以支持配置中的 <code class="docutils literal notranslate"><span class="pre">gpus:</span> <span class="pre">all</span></code>。</p>
+<p>如果没有 Git，先安装它；已有 Git 时跳过这一步。本仓库不需要 Git LFS。</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机（仅缺少 Git 时）</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>git
+</pre></div>
+</div>
+</div>
+<p>再运行 <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">info</span></code>，确认当前用户能访问 Docker。若提示访问 Docker socket 的权限不足，可按 Spark 官方方法将当前用户加入 Docker 组，然后在新组会话中继续：</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机（仅 Docker 权限不足时）</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
+newgrp<span class="w"> </span>docker
+</pre></div>
+</div>
+</div>
+<p>如果重新安装过系统，或上述组件确实缺失，按 <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/" rel="noreferer noopener" target="_blank">Docker 的 Ubuntu 安装说明</a>安装 Docker Engine 和 Compose 插件，再按 <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">NVIDIA Container Toolkit 安装与 Docker 配置说明</a>补齐 GPU 容器支持。保留 Spark 自带且正常工作的驱动。后面用到的 <code class="docutils literal notranslate"><span class="pre">xhost</span></code> 通常随 Ubuntu 桌面提供；若提示找不到命令，安装 <code class="docutils literal notranslate"><span class="pre">x11-xserver-utils</span></code>。</p>
+</section>
 <section id="get-code">
 <h2>下载课程代码<a class="headerlink" href="#get-code" title="Link to this heading">#</a></h2>
 <p>在<strong>宿主机</strong>的桌面终端中运行下面的命令。</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DLI/Microduck-Workshop.git
 <span class="nb">cd</span><span class="w"> </span>Microduck-Workshop
@@ -453,8 +486,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 </div>
 <p>固定的课程模型（<code class="docutils literal notranslate"><span class="pre">models/</span></code> 不到 60 MB）和第 3 部分用到的预训练结果与训练日志（<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> 约 50 MB）都随仓库下载；您自己运行得到的结果写在 <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>，与它们分开保存。</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
 ├── docker/        # 镜像、启动配置与容器内辅助命令
 ├── lab/           # 仿真与学习代码（启动时实时挂载进容器）
@@ -469,8 +502,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 <section id="build">
 <h2>构建课程容器<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
 <p>在仓库根目录运行。首次构建预计需要下载 <strong>约 10–12 GB</strong> 的文件，主要是 Isaac Sim / Kit、<a class="reference external" href="https://www.nvidia.com/en-us/glossary/pytorch/" rel="noreferer noopener" target="_blank">PyTorch</a> 与 CUDA 依赖，还包括 CUDA 基础镜像和系统软件包。网络较慢时可能等待较长时间；CPU 架构、下载缓存和依赖包会影响实际下载量。构建后的镜像约 21 GB，构建缓存也会占用空间，建议至少预留 50 GB 空闲磁盘。</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build
 </pre></div>
 </div>
@@ -480,8 +513,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 <section id="start">
 <h2>启动容器并进入终端<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
 <p>先准备一次宿主机上的输出与缓存目录，再允许容器在您的桌面上打开窗口，最后在后台启动容器。</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Terminal · 宿主机</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/prepare_host.sh
 xhost<span class="w"> </span>+local:
 docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>up<span class="w"> </span>-d
@@ -500,8 +533,8 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <section id="check">
 <h2>确认可以开始<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>
 <p>在<strong>容器内</strong>运行下面的命令。</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">Terminal · 容器内</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>doctor
 python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-model<span class="w"> </span>--model<span class="w"> </span>models/walk.onnx
 </pre></div>
@@ -574,6 +607,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">需要什么</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#host-check">先检查宿主机</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-code">下载课程代码</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build">构建课程容器</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start">启动容器并进入终端</a></li>

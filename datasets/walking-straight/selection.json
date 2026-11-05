@@ -1,0 +1,11 @@
+{
+  "schema": "microduck.course-selected-checkpoint.v1",
+  "completed_training_iterations": 2500,
+  "selected_completed_iteration": 1001,
+  "checkpoint": "model_1000.pt",
+  "num_envs": 4096,
+  "recipe": "official-straight",
+  "selection": "Independent short-distance walking evaluation; later checkpoints need not perform better.",
+  "training_log_scope": "Complete 2500-iteration run. Exported actor is checkpoint 1000 (1001 completed iterations), not the final checkpoint.",
+  "onnx_sha256": "584d1753c39b906faee8a823bc4612f4306518a8634793c09919699c4e279e8b"
+}

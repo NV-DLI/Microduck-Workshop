@@ -9,6 +9,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
   const CAP_ON = [0, 200 / 3, 400 / 3];                 // onboard RGB + ToF, nominal 15 Hz
   const CAP_GR = [0, 200 / 3, 400 / 3, 200, 800 / 3];   // GR00T RGB, nominal 15 Hz
   const L = 'ABCDE';
+  const WALK_CYCLES = ['t−1', 't', 't+1'];
   const TOTAL = { walking: 60, onboard: 200, groot: 320 };
   const PLAY_MS = { walking: 6000, onboard: 8000, groot: 8000 }; // real ms for the whole sim window
   const HOST_PLAY_MS = 3000;   // illustrative inference progress, NOT a timer
@@ -53,14 +54,14 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
         aria: tr('行走控制周期示意：0、20、40 ms 各读取一次状态并输出 14 个关节目标；每组目标保持 20 ms，覆盖 4 个 5 ms 物理步。',
           'Walking cycle schematic: the state is read and 14 joint targets are output at 0, 20 and 40 ms; each set is held for 20 ms, covering four 5 ms physics steps.'),
         lanes: [
-          { type: 'index', key: 'k', label: tr('控制周期序号', 'Control cycle no.'), sub: tr('每周期 20 ms', '20 ms per cycle'),
-            items: [0, 1, 2].map((i) => ({ s: i * 20, e: i * 20 + 20, text: '#' + (i + 1) })) },
-          { type: 'points', kind: 'update', key: 'upd', label: tr('读取状态 → Actor 推理', 'Read state → Actor inference'), sub: tr('每 20 ms 更新', 'update every 20 ms'),
+          { type: 'index', key: 'k', label: tr('控制周期序号', 'Control cycle no.'), sub: tr('t 为当前周期 · 每周期 20 ms', 't = current · 20 ms per cycle'),
+            items: [0, 1, 2].map((i) => ({ s: i * 20, e: i * 20 + 20, text: WALK_CYCLES[i], currentCycle: i === 1 })) },
+          { type: 'points', kind: 'update', key: 'upd', label: tr('关节目标更新时点', 'Joint-target update'), sub: tr('Actor 推理完成后', 'after Actor inference'),
             items: [0, 20, 40, 60].map((t, i) => ({ t, text: i < 3 ? ms(t) : ms(t) + tr(' · 下一次', ' · next'), ghost: i === 3 })) },
           { type: 'cells', role: 'hold', key: 'hold', label: tr('14 个关节目标', '14 joint targets'), sub: tr('每格 20 ms · 50 Hz', '20 ms per box · 50 Hz'),
-            items: [0, 1, 2].map((i) => ({ s: i * 20, e: i * 20 + 20, text: '20 ms', alt: i % 2 })) },
+            items: [0, 1, 2].map((i) => ({ s: i * 20, e: i * 20 + 20, text: '20 ms', alt: i % 2, currentCycle: i === 1 })) },
           { type: 'cells', role: 'phys', key: 'phys', label: tr('Newton 物理步', 'Newton physics steps'), sub: '200 Hz',
-            items: steps(0, 55, 5).map((s, j) => ({ s, e: s + 5, text: '5 ms', alt: Math.floor(j / 4) % 2 })) },
+            items: steps(0, 55, 5).map((s, j) => ({ s, e: s + 5, text: '5 ms', alt: Math.floor(j / 4) % 2, currentCycle: Math.floor(j / 4) === 1 })) },
         ],
       };
     }
@@ -123,8 +124,6 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
     play: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>',
     pause: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5h3v11H4zM9 2.5h3v11H9z" fill="currentColor"/></svg>',
     replay: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5a5.5 5.5 0 1 1-5.3 4H1l2.6-3.2L6.3 6.5H4.3A3.8 3.8 0 1 0 8 4.2z" fill="currentColor"/></svg>',
-    prev: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 2.5h2v11H3zM13 2.5v11L6 8z" fill="currentColor"/></svg>',
-    next: '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11 2.5h2v11h-2zM3 2.5v11L10 8z" fill="currentColor"/></svg>',
   };
 
   // Position helpers: simulation time → % of track; host fraction → % of track.
@@ -145,7 +144,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
         const w = (host ? P.h(it.e) : P.t(it.e)) - l;
         const small = it.small ? `<small class="bind">${esc(it.small)}</small>` : '';
         const tooltip = lane.role === 'actor' || lane.role === 'hold' ? ` title="${esc(span(it.s, it.e))}" aria-label="${esc(span(it.s, it.e))}"` : '';
-        return `<span class="cell"${tooltip}${it.alt ? ' data-alt' : ''}${host ? ' data-seg="host"' : ''} data-s="${it.s}" data-e="${it.e}" style="left:${l}%;width:calc(${w}% - 2px)"><b>${esc(it.text)}</b>${small}</span>`;
+        return `<span class="cell"${tooltip}${it.alt ? ' data-alt' : ''}${it.currentCycle ? ' data-current-cycle' : ''}${host ? ' data-seg="host"' : ''} data-s="${it.s}" data-e="${it.e}" style="left:${l}%;width:calc(${w}% - 2px)"><b>${esc(it.text)}</b>${small}</span>`;
       }).join('');
     }
     return lane.items.map((it) => {
@@ -214,12 +213,24 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       + `<small class="outs-legend"><span><i class="sw"></i>${esc(tr('#1–#4：依次执行', '#1–#4: executed in turn'))}</span><span><i class="sw drop"></i>${esc(tr('#5–#16：不执行，随后重新预测', '#5–#16: not executed; replan next'))}</span></small></div>`;
   }
 
+  function walkingComputeHTML() {
+    return `<div class="actor-compute" role="group" aria-label="${esc(tr('每个控制周期的主机计算顺序', 'Host computation in each control cycle'))}">
+      <div class="actor-compute-heading">${esc(tr('每个周期开始：先完成主机计算', 'At each cycle start: finish host computation first'))}</div>
+      <div class="actor-compute-flow">
+        <span>${esc(tr('读取状态', 'Read state'))}</span><b aria-hidden="true">→</b>
+        <span class="actor-compute-infer"><strong>Actor ${esc(tr('推理', 'inference'))}</strong><small>${esc(tr('耗时随设备变化 · 非零', 'Device-dependent, nonzero duration'))}</small></span><b aria-hidden="true">→</b>
+        <span>${esc(tr('生成关节目标', 'Produce joint targets'))}</span>
+      </div>
+      <p>${esc(tr('计算过程不按时间比例绘制；仿真时钟等待推理完成，再推进下方的 20 ms。', 'Computation is not drawn to scale. The simulation clock waits for inference, then advances through the 20 ms below.'))}</p>
+    </div>`;
+  }
+
   function legendHTML() {
     const li = (cls, text) => `<li><span class="lg ${cls}" aria-hidden="true"></span>${esc(text)}</li>`;
     const ph = li('lg-ph', tr('当前时刻', 'Current time'));
     let items;
     if (cur === 'walking') {
-      items = [li('lg-update', tr('Actor 推理', 'Actor inference')),
+      items = [li('lg-update', tr('推理完成，更新目标', 'Inference done; update targets')),
         li('lg-target', tr('关节目标 · 每格 20 ms', 'Joint targets · 20 ms per box')),
         li('lg-cell phys', tr('物理步 5 ms', 'Physics step 5 ms')), ph];
     } else if (cur === 'onboard') {
@@ -246,7 +257,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
     let items;
     if (cur === 'walking') items = [
       tr('Actor 根据关节与 IMU 反馈输出 14 个关节目标，每 20 ms 更新一次。目标在四个 5 ms 物理步内保持。', 'The Actor uses joint and IMU feedback to output 14 joint targets every 20 ms, held across four 5 ms physics steps.'),
-      tr('计算点不表示推理耗时；仿真等待计算完成后才继续。20 ms 是保持间隔，播放不是实时性能演示。', 'Compute points do not measure inference time; simulation waits for computation. 20 ms is the hold interval, and playback does not demonstrate real-time performance.')
+      tr('Actor 推理需要主机时间，具体耗时取决于设备和推理实现，尚未单独测量。上方方框表示计算顺序与非零耗时，宽度不对应毫秒；仿真等待输出后才推进。下方 20 ms 是仿真中的目标保持间隔，不是推理耗时。', 'Actor inference takes host time depending on the device and inference implementation; it has not been timed separately here. The boxes above show computation order and nonzero duration, not milliseconds to scale. Simulation advances after the output is ready. The 20 ms below is the simulated target-hold interval, not inference latency.')
     ];
     else if (cur === 'onboard') items = [
       tr('新采集后运行 YOLO、位置估计和依赖图像的阶段判断。每 20 ms，反馈控制结合最近视觉结果与新的身体反馈，更新运动请求，例如前进并减速；Actor 再将请求转成关节目标。', 'New captures trigger YOLO, localization and image-dependent stage decisions. Every 20 ms, feedback control uses the latest vision and fresh body feedback to update a motion request, such as moving forward while slowing down; the Actor turns it into joint targets.'),
@@ -307,17 +318,14 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       <header>
         <h3>${esc(h.title)}</h3>
         <p class="summary">${esc(h.summary)}</p>
-        <p class="note">${esc(tr('每格代表一组 20 ms 关节目标，点标采集或计算；频率为仿真配置，播放为教学慢放。', 'Each box represents 20 ms of joint targets; points mark captures or computation. Rates are simulation settings; playback is teaching slow motion.'))}</p>
+        <p class="note">${esc(cur === 'walking' ? tr('下方每格代表一组 20 ms 关节目标；频率为仿真配置，播放为教学慢放。', 'Each timeline box represents 20 ms of joint targets. Rates are simulation settings; playback is teaching slow motion.') : tr('每格代表一组 20 ms 关节目标，点标采集或计算；频率为仿真配置，播放为教学慢放。', 'Each box represents 20 ms of joint targets; points mark captures or computation. Rates are simulation settings; playback is teaching slow motion.'))}</p>
       </header>
       <figure class="diagram" data-scenario="${cur}" data-ref="fig">
-        ${isG ? grootFigure(model) : timelineHTML(model)}
+        ${isG ? grootFigure(model) : (cur === 'walking' ? walkingComputeHTML() : '') + timelineHTML(model)}
         ${legendHTML()}
       </figure>
       <div class="controls" role="group" aria-label="${esc(tr('播放控制', 'Playback controls'))}">
         <button type="button" class="btn primary" data-act="play"></button>
-        <button type="button" class="btn" data-act="prev">${ICON.prev}<span>${esc(tr('上一步', 'Previous'))}</span></button>
-        <button type="button" class="btn" data-act="next"><span>${esc(tr('下一步', 'Next'))}</span>${ICON.next}</button>
-        <button type="button" class="btn" data-act="reset">${esc(tr('重置', 'Reset'))}</button>
         <div class="scrub">
           <label for="cyc-range">${esc(isG ? tr('执行段仿真时间', 'Execution sim time') : tr('仿真时间', 'Simulation time'))}</label>
           <input id="cyc-range" type="range" min="0" max="${model.total}" step="any" value="0">
@@ -343,8 +351,6 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       nowList: ref('nowList'),
       range: app.querySelector('#cyc-range'),
       play: app.querySelector('[data-act="play"]'),
-      prev: app.querySelector('[data-act="prev"]'),
-      next: app.querySelector('[data-act="next"]'),
       cells: Array.from(app.querySelectorAll('.tl .cell')),
       ptLanes: Array.from(app.querySelectorAll('.tl .track--points')).map((el) => ({ el, key: el.dataset.key, pts: Array.from(el.querySelectorAll('.pt')) })),
       lane: {},
@@ -374,7 +380,7 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
     if (cur === 'walking') {
       if (st.ended) return {key:'w-end',title:tr('已完成 · 60 ms','Completed · 60 ms'),lines:[tr('3 个控制周期，共 12 个物理步。','3 control cycles, 12 physics steps.')]};
       const k=Math.min(2,Math.floor(t/20+EPS)),p=Math.min(3,Math.floor((t-k*20)/5+EPS)),a=k*20+p*5;
-      return {key:`w${k}-${p}`,title:tr(`控制周期 #${k+1} · ${span(k*20,k*20+20)}`,`Control cycle #${k+1} · ${span(k*20,k*20+20)}`),lines:[
+      return {key:`w${k}-${p}`,title:tr(`控制周期 ${WALK_CYCLES[k]} · ${span(k*20,k*20+20)}`,`Control cycle ${WALK_CYCLES[k]} · ${span(k*20,k*20+20)}`),lines:[
         tr(`${ms(k*20)}：Actor 根据身体反馈生成 14 个关节目标。`,`${ms(k*20)}: Actor uses body feedback to generate 14 joint targets.`),
         tr(`保持目标；当前物理步 ${p+1}/4（${span(a,a+5)}）。`,`Hold targets; physics step ${p+1}/4 (${span(a,a+5)}).`)]};
     }
@@ -494,8 +500,6 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
     else if (atStart(st)) { label = tr('播放', 'Play'); icon = ICON.play; }
     else { label = tr('继续', 'Resume'); icon = ICON.play; }
     if (dom.play.dataset.label !== label) { dom.play.innerHTML = `${icon}<span>${esc(label)}</span>`; dom.play.dataset.label = label; }
-    dom.prev.setAttribute('aria-disabled', String(atStart(st)));
-    dom.next.setAttribute('aria-disabled', String(st.ended));
     const s = statusText(st);
     if (dom.status.textContent !== s) dom.status.textContent = s;
 
@@ -692,9 +696,6 @@ document.querySelectorAll('[data-control-cycle]').forEach(host => {
       if (b.getAttribute('aria-disabled') === 'true') return;
       switch (b.dataset.act) {
         case 'play': if (playing) pause(true); else play(); break;
-        case 'prev': step(-1); break;
-        case 'next': step(1); break;
-        case 'reset': reset(); break;
         case 'lang': setLanguage(lang === 'zh' ? 'en' : 'zh', true); break;
         case 'theme': setTheme(theme === 'dark' ? 'light' : 'dark'); break;
         default: break;

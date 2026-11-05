@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'setup';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -335,8 +335,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-microduck-rl.html">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: Walking steadily on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="nav bd-sidenav">
@@ -346,9 +346,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: shoot autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 Beyond the pitch</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -440,11 +440,44 @@
 </div>
 <p>The course follows the <code class="docutils literal notranslate"><span class="pre">main</span></code>-branch implementation in the <a class="reference external" href="https://huggingface.co/blog/nvidia/microduck-isaac-lab-sim-to-real" rel="noreferer noopener" target="_blank">official NVIDIA Microduck tutorial</a>, pinned to an <a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/e527032b25939a8fc061609d3502c99e0c57f9c3" rel="noreferer noopener" target="_blank">Isaac Lab source snapshot</a> that includes the Microduck tasks and BAM motor model, not the 3.0.0 GA release. The course separately pins Newton to the version used by its supplied policies, rather than inheriting the upstream default. The container installs the versions listed above automatically; no manual source revision selection is needed.</p>
 </section>
+<section id="host-check">
+<h2>Check the host first<a class="headerlink" href="#host-check" title="Link to this heading">#</a></h2>
+<p>Standard DGX Spark systems ship with DGX OS, the NVIDIA driver, Docker and a configured NVIDIA Container Toolkit, so these usually do not need reinstalling. The Toolkit exposes the host GPU devices and driver libraries to containers; Isaac needs them for computation and RTX rendering. It is different from the CUDA Toolkit used to compile CUDA programs. The course image already installs its compute dependencies, so no separate host CUDA Toolkit installation is needed. See the <a class="reference external" href="https://docs.nvidia.com/dgx/dgx-spark/nvidia-container-runtime-for-docker.html" rel="noreferer noopener" target="_blank">Spark container documentation</a>.</p>
+<p>Run these checks one at a time in a host desktop terminal:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>nvidia-smi
+docker<span class="w"> </span>--version
+docker<span class="w"> </span>compose<span class="w"> </span>version
+nvidia-ctk<span class="w"> </span>--version
+git<span class="w"> </span>--version
+</pre></div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> should list the GPU; the other commands should print version numbers. The course uses <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code> version 2.30.0 or later to support <code class="docutils literal notranslate"><span class="pre">gpus:</span> <span class="pre">all</span></code> in its configuration.</p>
+<p>Install Git only if it is missing. This repository does not require Git LFS.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Terminal · host (only if Git is missing)</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>git
+</pre></div>
+</div>
+</div>
+<p>Then run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">info</span></code> to check that your user can access Docker. If access to the Docker socket is denied, follow the Spark instructions to add your user to the Docker group, then continue in the new group session:</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Terminal · host (only for a Docker permission error)</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
+newgrp<span class="w"> </span>docker
+</pre></div>
+</div>
+</div>
+<p>If you reinstalled the operating system or these components are missing, follow the <a class="reference external" href="https://docs.docker.com/engine/install/ubuntu/" rel="noreferer noopener" target="_blank">Docker installation instructions for Ubuntu</a> for Docker Engine and the Compose plugin, then the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html" rel="noreferer noopener" target="_blank">NVIDIA Container Toolkit installation and Docker configuration instructions</a> for GPU access. Keep the working driver supplied with Spark. The <code class="docutils literal notranslate"><span class="pre">xhost</span></code> command used below normally comes with Ubuntu Desktop; if it is missing, install <code class="docutils literal notranslate"><span class="pre">x11-xserver-utils</span></code>.</p>
+</section>
 <section id="get-code">
 <h2>Get the course code<a class="headerlink" href="#get-code" title="Link to this heading">#</a></h2>
 <p>Run these commands in a desktop terminal on the <strong>host</strong>.</p>
-<div class="literal-block-wrapper docutils container" id="id1">
-<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id1" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DLI/Microduck-Workshop.git
 <span class="nb">cd</span><span class="w"> </span>Microduck-Workshop
@@ -452,8 +485,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 </div>
 </div>
 <p>The fixed course models (<code class="docutils literal notranslate"><span class="pre">models/</span></code> under 60 MB) and the pretrained results and training logs used in Part 3 (<code class="docutils literal notranslate"><span class="pre">datasets/</span></code> about 50 MB) come with the repository; your own runs go to <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>, kept separate from them.</p>
-<div class="literal-block-wrapper docutils container" id="id2">
-<div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">Workspace</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
 <div class="workspace-tree highlight-text notranslate"><div class="highlight"><pre><span></span>Microduck-Workshop/
 ├── docker/        # image, start-up configuration and in-container helpers
 ├── lab/           # simulation and learning code (mounted live into the container)
@@ -468,8 +501,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 <section id="build">
 <h2>Build the course container<a class="headerlink" href="#build" title="Link to this heading">#</a></h2>
 <p>Run this from the repository root. The first build is expected to download <strong>about 10–12 GB</strong>, mainly Isaac Sim / Kit, <a class="reference external" href="https://www.nvidia.com/en-us/glossary/pytorch/" rel="noreferer noopener" target="_blank">PyTorch</a> and CUDA dependencies, plus the CUDA base image and system packages. It can take a long time on a slow connection; CPU architecture and existing caches affect the download size. The resulting image is about 21 GB, and build caches need additional space; allow at least 50 GB of free disk space.</p>
-<div class="literal-block-wrapper docutils container" id="id3">
-<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>build
 </pre></div>
 </div>
@@ -479,8 +512,8 @@ git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NV-DL
 <section id="start">
 <h2>Start the container and open a shell<a class="headerlink" href="#start" title="Link to this heading">#</a></h2>
 <p>Prepare the output and cache folders on the host once, allow the container to open windows on your desktop, start the container in the background, and open a shell in it.</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">Terminal · host</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>./docker/prepare_host.sh
 xhost<span class="w"> </span>+local:
 docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>docker/compose.yaml<span class="w"> </span>up<span class="w"> </span>-d
@@ -499,8 +532,8 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <section id="check">
 <h2>Check that you can start<a class="headerlink" href="#check" title="Link to this heading">#</a></h2>
 <p>Run these commands <strong>inside the container</strong>.</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">Terminal · inside the container</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
 <div class="terminal highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>scripts/run.py<span class="w"> </span>doctor
 python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-model<span class="w"> </span>--model<span class="w"> </span>models/walk.onnx
 </pre></div>
@@ -573,6 +606,7 @@ python3<span class="w"> </span>scripts/run.py<span class="w"> </span>inspect-mod
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requirements">What you need</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#host-check">Check the host first</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#get-code">Get the course code</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build">Build the course container</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#start">Start the container and open a shell</a></li>

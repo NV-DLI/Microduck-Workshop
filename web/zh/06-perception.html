@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -57,7 +57,7 @@
     <script src="_static/translations.js?v=beaddf03"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '06-perception';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -411,7 +411,7 @@
 <div class="lesson-heading"><div class="lesson-heading-text"><div class="lead"><p>有了行走与踢球技能，还需要让机器人自己找到球与球门。本节用 Microduck 的传感器补上这一环：相机认出“是什么”，ToF 测出“有多远”，关节角说明传感器“朝哪看”。</p>
 </div><div class="lesson-meta">第 4.1 节 · 预计学习时长 20 分钟</div></div></div><section id="sensors">
 <h2>机器人看到什么<a class="headerlink" href="#sensors" title="Link to this heading">#</a></h2>
-<figure class="media"><video controls playsinline preload="metadata" poster="../assets/media/sensors-onboard-recorded.jpg" aria-label="板载策略的一次完整 Isaac Sim 窗口录像：左侧第三人称画面，右上头部 RGB 图像，右下 8×8 ToF 距离。"><source src="../assets/media/sensors-onboard-recorded.mp4" type="video/mp4"></video><figcaption><p>板载策略的一次仿真射门记录：第三人称画面、头部 RGB 图像、8×8 ToF 距离按同一采集时刻同步，NR 表示该区域没有有效回波。本次记录完成进球并恢复站立，按仿真时间播放。</p>
+<figure class="media"><a class="still-link" href="../assets/media/isaac-ui-onboard-sensors.png" aria-label="放大图片"><span class="annotated-image"><img loading="lazy" src="../assets/media/isaac-ui-onboard-sensors.png" alt="Isaac Sim 完整窗口截图：绿色框标出右上角的 RGB 图像和右下角的 ToF 距离面板。"><span class="image-highlight" style="left:66.375%;top:7.45%;width:20.875%;height:26.61%"><b>RGB</b></span><span class="image-highlight" style="left:66.375%;top:34.63%;width:20.875%;height:54.59%"><b>ToF</b></span></span></a><figcaption><p>绿色框标出了机器人自己的传感器画面：右上角是头部 RGB 相机，右下角是 8×8 ToF 距离（单位米）。NR 表示该区域没有有效回波；左侧是便于观察机器人的第三人称视图。</p>
 </figcaption></figure><p>射门需要回答三个问题：球在哪里、球门在哪里、它们离机器人多远。每种传感器回答其中一部分。</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>

@@ -38,7 +38,7 @@
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=9eb029fd" />
+    <link rel="stylesheet" type="text/css" href="_static/microduck.css?v=0dd9e61f" />
     <link rel="stylesheet" type="text/css" href="_static/course-theme-toggle.css?v=07f09c7c" />
   
   <!-- So that users can add custom icons -->
@@ -56,7 +56,7 @@
     <script src="_static/copybutton.js?v=a3f504f1"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '03-microduck-rl';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <script defer="defer" src="_static/control-cycle.js?v=239586a2"></script>
+    <script defer="defer" src="_static/control-cycle.js?v=f9a5b1c5"></script>
     <script defer="defer" src="_static/course-widgets.js?v=c108c76a"></script>
     <script defer="defer" src="_static/course-theme-toggle.js?v=c866673c"></script>
 
@@ -335,8 +335,8 @@
 <li class="toctree-l1"><a class="reference internal" href="03-learning.html">3.1 Reinforcement learning and PPO</a></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">3.2 Reinforcement learning for Microduck</a></li>
 <li class="toctree-l1"><a class="reference internal" href="03-walk-training.html">3.3 Train and test a walking policy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: walking steadily up and down slopes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) Community skills: reward design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04-terrain.html">3.4 Extention: Walking steadily on slopes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05-skills.html">3.5 (Extention) community skills: reward design</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">4 Complete shooting task with onboard policy</span></p>
 <ul class="nav bd-sidenav">
@@ -346,9 +346,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">5 (Extention) Shoot with GR00T</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action (VLA) models and GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: score autonomously with GR00T</a></li>
-<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 From the pitch to more environments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07-groot.html">5.1 Vision-language-action models and GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08-groot-interface.html">5.2 Imitation learning: shoot autonomously with GR00T</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09-worlds.html">5.3 Beyond the pitch</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">6 Reference and help</span></p>
 <ul class="nav bd-sidenav">
@@ -422,7 +422,7 @@
 <td><p>61 values: body angular velocity, gravity direction, angles and velocities of the 14 joints, the previous action, and velocity, head and body-pose commands (order in <a href="02-anatomy.html#policy-interface">Section 2.2</a>)</p></td>
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>Command</p></td>
-<td><p>Forward −0.4 to 0.4 m/s, sideways −0.3 to 0.3 m/s, turning −1.0 to 1.0 rad/s, resampled every 3–8 s; the share of environments practicing standing still starts at 2% and rises step by step to 25%</p></td>
+<td><p>Forward −0.4 to 0.4 m/s, sideways −0.3 to 0.3 m/s, turning −1.0 to 1.0 rad/s, resampled every 3–8 s; each command resampling randomly assigns walking, turning or zero-velocity standing; standing sets forward, sideways and turning commands to zero</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Action</p></td>
 <td><p>14 values: target joint-angle offsets from the default stance, output every 20 ms (50 Hz)</p></td>
@@ -431,11 +431,12 @@
 <td><p>A weighted sum of velocity tracking, staying upright, posture, foot lift and placement, smooth actions and more</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Episode end</p></td>
-<td><p>A body tilt beyond 70° counts as a fall; otherwise at most 20 s (1000 control steps)</p></td>
+<td><p>Trunk or head/neck ground contact, body height below 6.5 cm on flat ground, or tilt beyond 70° ends and resets the episode; otherwise at most 20 s</p></td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>An “environment” is one independently practicing robot and its scene. The standing-candidate sampling parameter increases from 2% to 25% at scheduled training steps, giving standing practice more weight. Some candidates are reassigned to the turn-in-place group, so this is neither an exact final fraction of standing robots nor a standing success rate.</p>
 <p>During training, Newton advances thousands of environments on the GPU at once, Isaac Lab computes each environment's observations, rewards and terminations, and RSL-RL's PPO updates the networks from that data. PPO needs no downloaded dataset: the training data is the interaction these environments produce in real time.</p>
 </section>
 <section id="actor-critic">
@@ -479,12 +480,12 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Linear-velocity tracking</p></td>
-<td class="cell-short"><p>2.0</p></td>
-<td><p>Is the horizontal velocity close to the command, without bouncing up and down?</p></td>
+<td class="cell-short"><p>4.0</p></td>
+<td><p>Does velocity in the horizontal heading frame match the command?</p></td>
 </tr>
 <tr class="row-odd"><td><p>Angular-velocity tracking</p></td>
-<td class="cell-short"><p>2.0</p></td>
-<td><p>Does the angular velocity about the body z axis follow the turning command, while roll and pitch rates stay small?</p></td>
+<td class="cell-short"><p>4.0</p></td>
+<td><p>Does world-frame yaw rate match the turning command?</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Upright</p></td>
 <td class="cell-short"><p>2.0</p></td>
@@ -492,7 +493,7 @@
 </tr>
 <tr class="row-odd"><td class="cell-short"><p>Posture</p></td>
 <td class="cell-short"><p>1.0</p></td>
-<td><p>Do the joints stay near the default stance?</p></td>
+<td><p>Are leg joints near the default pose under a standing command? This term is disabled while walking.</p></td>
 </tr>
 <tr class="row-even"><td class="cell-short"><p>Air time</p></td>
 <td class="cell-short"><p>3.0</p></td>
@@ -513,6 +514,7 @@
 </tbody>
 </table>
 </div>
+<p>The official head-target tracking and slow-bias penalty remain active; head motion with the gait is allowed, without fixing head height. To practise straight walking more often, 60% of environments first enter a forward-only command bucket. A later independent 15% turn-in-place bucket takes precedence, alongside the standing curriculum, so the final forward-only share is not exactly 60%.</p>
 <p>The weights come from the <code class="docutils literal notranslate"><span class="pre">env.yaml</span></code> saved with the full training run. Tracking rewards are largest at zero error and shrink as the error grows; terms with negative weights are penalties. Added together, only “following the command while walking steadily and smoothly” scores high. Section 3.3 shows the actual code of the linear-velocity term, and Sections 3.4 and 3.5 continue with reward design.</p>
 <div class="quiz"><h3>Check your understanding</h3><p>The Critic's input includes base linear velocity and foot contact forces, the Actor's does not. Why not give these to the Actor too?</p>
 <details><summary>Show explanation</summary><p>The Actor is deployed on the robot, so it can use only quantities the real robot measures reliably; base linear velocity and contact forces are hard to measure accurately on hardware. The Critic is used only in training and can read this simulation information to estimate return more accurately.</p>
@@ -524,7 +526,7 @@
 <section id="references">
 <h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
 <ul class="references simple">
-<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/5088b326c7fc81caa7899395b0176ad08b89e9e1/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab: Microduck task source ↗</a></p></li>
+<li><p><a class="reference external" href="https://github.com/isaac-sim/IsaacLab/tree/e527032b25939a8fc061609d3502c99e0c57f9c3/source/isaaclab_tasks/isaaclab_tasks/contrib/microduck" rel="noreferer noopener" target="_blank">Isaac Lab: Microduck task source ↗</a></p></li>
 <li><p><a class="reference external" href="https://github.com/leggedrobotics/rsl_rl/tree/v5.5.1/rsl_rl/algorithms" rel="noreferer noopener" target="_blank">RSL-RL 5.5.1 algorithm source ↗</a></p></li>
 </ul>
 </section>

@@ -1,0 +1,16 @@
+{
+  "status": "completed",
+  "initialization": "selected flat1001 actor and critic; fresh adaptation optimizer",
+  "parent_sha256": "584d1753c39b906faee8a823bc4612f4306518a8634793c09919699c4e279e8b",
+  "seed": 1105802,
+  "num_envs": 1024,
+  "iterations": 1000,
+  "training_slopes": "pyramids, tan(angle)=0.02..0.36; 25% flat",
+  "original_weights_modified": false,
+  "parent_checkpoint": "datasets/walking-straight/model_1000.pt",
+  "parent_checkpoint_sha256": "feb86fe3e0eaddc743078c5502f90e9c25aaa5ccdce705fdbebac7af09a96d3d",
+  "initial_actor_max_abs_error": 4.76837158203125e-07,
+  "latest_checkpoint": "datasets/terrain-ppo/model_999.pt",
+  "training_wall_seconds": 1735.1178061920218,
+  "timing_context": "DGX Spark with concurrent diagnostics and recording; not an isolated training benchmark"
+}

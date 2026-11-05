@@ -115,101 +115,18 @@ def head_gaze_down_deg(head_q, trunk_q):
     return world, relative
 
 
-# Course head hold: standing still (the first 2 s, and after the goal) the trained policy
-# tilts its head ~67 deg down, so the four head servos are given their
-# HOME targets instead, through the normal servo action (same PD servos, no extra force or
-# joint lock). Leg actions always stay the policy's. The switch blends over 0.5 s.
-# Under the hold, gravity and gearbox play left the head ~0.12 rad nose-down of HOME, so the
-# head_pitch target sits HEAD_PITCH_HOLD_OFFSET below HOME (negative = nose up); the offset
-# eases in from 0 over the first 0.5 s after takeover, so the start pose is HOME.
 HEAD_JOINTS = ("neck_pitch", "head_pitch", "head_yaw", "head_roll")
-HEAD_HOLD_BLEND_S = 0.5
-HEAD_PITCH_HOLD_OFFSET = -0.20
-
-
-class HeadHold:
-    """Replace the head slots of the policy action with HOME-head action values (blended)."""
-
-    def __init__(self, env, term_name="joint_pos", pitch_offset=HEAD_PITCH_HOLD_OFFSET):
-        import torch
-
-        term = env.action_manager.get_term(term_name)
-        robot = env.scene["robot"]
-        names = list(term._joint_names)
-        self.slots = torch.tensor([names.index(n) for n in HEAD_JOINTS], device=env.device)
-        joints = [robot.joint_names.index(n) for n in HEAD_JOINTS]
-
-        def T(x):
-            return getattr(x, "torch", x)
-
-        home = T(robot.data.default_joint_pos)[:, joints]
-        limits = T(robot.data.soft_joint_pos_limits)[:, joints]
-        home = home.clamp(limits[..., 0], limits[..., 1])
-        target = home.clone()
-        target[:, HEAD_JOINTS.index("head_pitch")] += pitch_offset
-        target = target.clamp(limits[..., 0], limits[..., 1])
-        offset, scale = term._offset, term._scale
-        if isinstance(offset, torch.Tensor):
-            offset = offset[:, self.slots]
-        if isinstance(scale, torch.Tensor):
-            scale = scale[:, self.slots]
-        # The servo target is raw * scale + offset (clipped), minus the encoder bias.
-        bias = getattr(term, "encoder_bias", None)
-        bias = bias[:, self.slots] if bias is not None else 0.0
-        self.hold_home = (home + bias - offset) / scale
-        self.hold_final = (target + bias - offset) / scale
-        self.hold = self.hold_home
-        self.home_rad = home
-        self.target_rad = target
-        self.pitch_offset = pitch_offset
-        self.weight = torch.ones(env.num_envs, device=env.device)
-        self.rate = 0.02 / HEAD_HOLD_BLEND_S
-        self.ramp_steps = round(HEAD_HOLD_BLEND_S / 0.02)
-        self.steps = 0
-
-    def update(self, want):
-        """Move each weight toward 1 (want) or 0 by at most one blend step."""
-        import torch
-
-        self.weight = (self.weight + (want.float() * 2 - 1) * self.rate).clamp(0.0, 1.0)
-        # Hold target: HOME at takeover, eased to the offset target over the first 0.5 s.
-        if self.steps >= self.ramp_steps:
-            self.hold = self.hold_final
-        elif self.steps > 0:
-            self.hold = torch.lerp(self.hold_home, self.hold_final, self.steps / self.ramp_steps)
-        self.steps += 1
-
-    def __call__(self, action):
-        return blend_head(action, self.slots, self.hold, self.weight)
-
-
-def blend_head(action, slots, hold, weight):
-    """Action with the head slots at weight 1 = hold, 0 = policy (exact at both ends)."""
-    import torch
-
-    out = action.clone()
-    w = weight[:, None]
-    policy = action[:, slots]
-    mixed = torch.where(w >= 1, hold.expand_as(policy), torch.where(w <= 0, policy, policy + w * (hold - policy)))
-    out[:, slots] = mixed
-    return out
 
 
 # Interactive viewport render-texture size. Only the image Kit renders for the viewport
 # shrinks; the window and the full Isaac UI keep their size and the image is scaled into it.
-# Display only: camera sensors, recorded video and policy inputs do not use this texture.
+# Display only: policy inputs do not use this texture. Recording uses the native viewport.
 # MICRODUCK_VIEWPORT_RESOLUTION="WxH" overrides (e.g. 960x540, or 1920x1080 for a sharper
 # view); "native" leaves Kit's own setting.
 VIEWPORT_RESOLUTION = "960x540"
-# Recorded video camera (--record; RECORD_SIZE, 52 deg, RECORD_FPS of simulated time), offsets from
-# the spawn point: low front-left three-quarter view that keeps the whole v3 wedge and the
-# robot at the uphill start/goal and the downhill start/goal in the frame.
-RECORD_EYE_OFFSET = (-0.55, -1.75, 0.60)
-RECORD_TARGET_OFFSET = (0.75, 0.0, 0.08)
-# Recorded video: the same live renderer and look as the window, one frame per 20 ms control
-# step (50 fps of simulated time), rendered once per frame. Not a separate high-quality render.
+# Native viewport recording samples every other 20 ms control step.
 RECORD_SIZE = (960, 540)
-RECORD_FPS = 50
+RECORD_FPS = 25
 
 
 def parse_resolution(text):
@@ -264,6 +181,8 @@ def main():
         or not 3 <= a.seconds <= 60
     ):
         p.error("slope: ±20°, envs: 1–128, seconds: 3–60")
+    if a.record and a.headless:
+        p.error("Native viewport recording requires the Isaac window")
     if a.record and a.num_envs != 1:
         p.error("Record one environment at a time: --num-envs 1")
     a.output.mkdir(parents=True, exist_ok=False)
@@ -287,7 +206,7 @@ def main():
         automatic_resets=False,
         support_surface_bounds_relative_m=[-50.0, 50.0, -50.0, 50.0],
         geometry=dict(
-            kind="finite wedge on a flat floor (v3, half the v2 size); v2 was twice as large, older reports used an endless step-up ramp",
+            kind="finite wedge on a flat floor",
             direction="uphill" if a.slope > 0 else "downhill" if a.slope < 0 else "flat",
             platform_height_m=wedge_height(a.slope),
             **WEDGE,
@@ -304,7 +223,7 @@ def main():
                 "device": "cuda:0",
                 "physics": "newton_mjwarp",
                 "require_kit": not a.headless or a.record,
-                "enable_cameras": a.record,
+                "enable_cameras": False,
                 "visualizer": [] if a.headless else ["kit"],
                 "kit_args": kit_args(),
             },
@@ -318,6 +237,18 @@ def main():
                     MicroDuckTerrainImporter,
                 )
 
+                import isaaclab.sim as sim_utils
+                from isaaclab_newton.sim.schemas import MujocoCollisionCfg
+
+                class WedgeTerrainImporter(MicroDuckTerrainImporter):
+                    def import_mesh(self, name, mesh):
+                        super().import_mesh(name, mesh)
+                        sim_utils.apply_collision_properties(
+                            f"{self.cfg.prim_path}/{name}/mesh",
+                            [MujocoCollisionCfg(solref=(0.02, 1.0), solimp=(0.85, 0.95, 0.001, 0.5, 2.0))],
+                        )
+
+                report["terrain_contact"] = {"solref": [0.02, 1.0], "solimp": [0.85, 0.95, 0.001, 0.5, 2.0]}
                 @configclass
                 class RampCfg(SubTerrainBaseCfg):
                     function = ramp_mesh
@@ -343,7 +274,7 @@ def main():
                     LAB / "assets/microduck_contact.usda"
                 )
                 cfg.scene.terrain.terrain_type = "generator"
-                cfg.scene.terrain.class_type = MicroDuckTerrainImporter
+                cfg.scene.terrain.class_type = WedgeTerrainImporter
                 cfg.scene.terrain.terrain_generator = TerrainGeneratorCfg(
                     seed=a.seed,
                     size=(6.0, 4.0),
@@ -362,14 +293,6 @@ def main():
                         from terrain_studio import configure_scene
 
                     configure_scene(cfg)
-                if a.record:
-                    from terrain_visuals import camera_prestartup
-                    from isaaclab.managers import EventTermCfg
-
-                    cfg.events.terrain_camera = EventTermCfg(
-                        func=camera_prestartup, mode="prestartup",
-                        params=dict(width=RECORD_SIZE[0], height=RECORD_SIZE[1]),
-                    )
                 if a.slope < 0:
                     # Downhill: start in the middle of the high platform, facing the ramp (-x).
                     x, y, z = cfg.scene.robot.init_state.pos
@@ -432,13 +355,9 @@ def main():
                         report["wood_skin_alignment"] = dict(status="error", error=repr(error))
                     print("COURSE_WOOD_ALIGNMENT " + json.dumps(report["wood_skin_alignment"]), flush=True)
                 if a.record:
-                    from terrain_visuals import start_recording, capture
-
-                    camera, video_process = start_recording(
-                        env, a.output, eye_offset=RECORD_EYE_OFFSET, target_offset=RECORD_TARGET_OFFSET, fps=RECORD_FPS
-                    )
+                    from viewport_recording import start_recording, capture
+                    video_process = start_recording(a.output / "video.mp4", RECORD_SIZE, RECORD_FPS)
                     import zlib
-
                     recorded = dict(frames=0, duplicate_consecutive_frames=0, last_crc=None)
                 robot = env.scene["robot"]
                 policy = BatchPolicy(a.model, digest, "cuda:0")
@@ -492,29 +411,8 @@ def main():
                                 head_joint_offset_rad=offset.cpu().tolist())
 
                 report["head_after_settle"] = head_state()
-                # MICRODUCK_HEAD_HOLD=0 turns the course head hold off (diagnostic: raw policy head).
-                # Built after the start-up brake is released (the brake narrows the joint limits).
-                hold_enabled = os.environ.get("MICRODUCK_HEAD_HOLD", "1") != "0"
-                # MICRODUCK_HEAD_PITCH_HOLD_OFFSET (rad) overrides the calibration for diagnosis.
-                head_pitch_offset = float(os.environ.get("MICRODUCK_HEAD_PITCH_HOLD_OFFSET", HEAD_PITCH_HOLD_OFFSET))
-                head_hold = None
-                report["head_hold"] = dict(
-                    enabled=hold_enabled,
-                    kind="course head hold controller added to the policy: head servos only, legs always policy",
-                    joints=list(HEAD_JOINTS),
-                    when="velocity request zero: before the walk starts (first 2 s) and after the goal is reached",
-                    target="HOME head joint angles (task default pose, level gaze relative to the trunk), with the "
-                    "head_pitch target offset below; neck_pitch, head_yaw, head_roll at HOME",
-                    head_pitch_target_offset_rad=head_pitch_offset,
-                    head_pitch_offset_ease_in_seconds=HEAD_HOLD_BLEND_S,
-                    offset_reason="calibration for the residual nose-down sag (gravity, gearbox play) measured under "
-                    "the HOME hold; a fixed configured offset, not a closed-loop gaze controller",
-                    mechanism="the four head slots of the 14-servo action are set to the action value whose servo "
-                    "target is HOME (raw = (HOME + encoder bias - offset) / scale); same PD servos and gains, no joint "
-                    "lock, no external force; the applied action is the observed previous action",
-                    blend_seconds=HEAD_HOLD_BLEND_S,
-                    note="results reflect policy + course head hold, not the policy's own head control",
-                )
+                report["head_hold"] = {"enabled": False, "note": "All 14 joint targets come from the actor."}
+                report["initial_zero_request_seconds"] = 0.0
                 timing = dict(policy=[], physics=[], render=[], step=[])
                 # MICRODUCK_PROFILE=1 splits each step into policy/physics/render with CUDA
                 # synchronisation (diagnostic: the syncs add their own overhead).
@@ -523,9 +421,8 @@ def main():
                 # Viewport refresh interval in control steps (display only: physics 200 Hz and
                 # policy 50 Hz are unchanged): every 2nd step = 25 Hz. MICRODUCK_RENDER_EVERY overrides.
                 render_every = max(1, int(os.environ.get("MICRODUCK_RENDER_EVERY", "2")))
-                # While recording with a window every control step is drawn (one render per
-                # recorded frame), so the effective display interval is 1 (50 Hz).
-                display_every = 1 if a.record else render_every
+                # Recording draws every other control step (25 Hz of simulation time).
+                display_every = 2 if a.record else render_every
                 report["render_every_control_steps"] = display_every
                 report["render_every_configured"] = render_every
                 start_pos = T(robot.data.root_pos_w) - origin
@@ -568,8 +465,19 @@ def main():
                     )
                     env.sim.set_camera_view(eye, target)
                     report["viewport"] = viewport_resolution(
-                        parse_resolution(os.environ.get("MICRODUCK_VIEWPORT_RESOLUTION", VIEWPORT_RESOLUTION))
+                        RECORD_SIZE if a.record else parse_resolution(os.environ.get("MICRODUCK_VIEWPORT_RESOLUTION", VIEWPORT_RESOLUTION))
                     )
+                    import omni.ui as ui
+
+                    for _ in range(8):
+                        for name, width in (("Stage", True), ("Content", False)):
+                            handle = ui.Workspace.get_window(name)
+                            if handle is not None and handle.docked:
+                                if width:
+                                    ui.Workspace.set_dock_id_width(handle.dock_id, ui.Workspace.get_main_window_width() * 0.12)
+                                else:
+                                    ui.Workspace.set_dock_id_height(handle.dock_id, ui.Workspace.get_main_window_height() * 0.07)
+                        env.sim.render()
                     print("COURSE_VIEWPORT " + json.dumps(report["viewport"]), flush=True)
                 # Real-time pacing against a cumulative deadline: a slow step is followed by
                 # steps without waiting until the run is back on schedule (lag beyond 0.1 s
@@ -582,9 +490,7 @@ def main():
                         frame_start = time.monotonic()
                         cmd.is_standing_env[:] = False
                         cmd.vel_command_b[:] = 0
-                        if step >= 100:
-                            forward = 0.25
-                            cmd.vel_command_b[:, 0] = torch.where(reached, 0.0, forward)
+                        cmd.vel_command_b[:, 0] = torch.where(reached, 0.0, 0.25)
                         env.command_manager.get_term("head_pose").command[:] = torch.tensor(head_command, device=env.device)
                         env.command_manager.get_term("body_pose").command[:] = 0
                         action = policy(
@@ -602,15 +508,6 @@ def main():
                                 + json.dumps(dict(t=step * 0.02, step=step, envs=a.num_envs)),
                                 flush=True,
                             )
-                        if hold_enabled and head_hold is None:
-                            head_hold = HeadHold(env, pitch_offset=head_pitch_offset)
-                            report["head_hold"].update(hold_action=head_hold.hold_final.cpu().tolist(),
-                                                       hold_target_rad=head_hold.target_rad.cpu().tolist(),
-                                                       home_rad=head_hold.home_rad.cpu().tolist())
-                        if head_hold is not None:
-                            # Hold before the walk starts and after the goal; the policy's head while moving.
-                            head_hold.update(reached | (step < 100))
-                            action = head_hold(action)
                         env.action_manager.process_action(action)
                         if profile:
                             torch.cuda.synchronize()
@@ -622,9 +519,8 @@ def main():
                             if profile and tick == 3:
                                 torch.cuda.synchronize()
                                 t_physics = time.monotonic()
-                            # While recording with a window, every control step renders once (the
-                            # recorded frame); headless, the camera update renders it instead.
-                            draw = not a.headless and tick == 3 and (a.record or step % render_every == 0)
+                            # Render the current physical state without changing policy frequency.
+                            draw = not a.headless and tick == 3 and step % display_every == 0
                             env.sim.step(render=draw)
                             rendered_frames += draw
                             env.scene.update(0.005)
@@ -636,8 +532,8 @@ def main():
                             timing["render"].append(t_render - t_physics)
                         env.episode_length_buf += 1
                         env.common_step_counter += 1
-                        if a.record:
-                            frame = capture(env, camera, video_process, renders=0)
+                        if a.record and step % 2 == 0:
+                            frame = capture(env, video_process, a.output, recorded["frames"], RECORD_SIZE)
                             crc = zlib.crc32(frame)
                             recorded["duplicate_consecutive_frames"] += crc == recorded["last_crc"]
                             recorded["frames"] += 1
@@ -672,15 +568,14 @@ def main():
                         # No per-step GPU->CPU reads here (they stall the pipeline): environments
                         # that have arrived contribute zero, and the goal marker is printed at the
                         # next 0.1 s trajectory row with the exact arrival time.
-                        if step >= 100:
-                            moving = ~reached
-                            squared_error = torch.where(
-                                moving, (T(robot.data.root_lin_vel_b)[:, 0] - 0.25).square(), 0.0
-                            )
-                            error += squared_error
-                            moving_samples += moving.float()
-                            upright_error += torch.where(~fallen, squared_error, 0.0)
-                            upright_samples += (~fallen & moving).float()
+                        moving = ~reached
+                        squared_error = torch.where(
+                            moving, (T(robot.data.root_lin_vel_b)[:, 0] - 0.25).square(), 0.0
+                        )
+                        error += squared_error
+                        moving_samples += moving.float()
+                        upright_error += torch.where(~fallen, squared_error, 0.0)
+                        upright_samples += (~fallen & moving).float()
                         if step % 5 == 0:
                             if not goal_printed and bool(reached[0]):  # environment 0 is the one the window shows
                                 goal_printed = True
@@ -690,7 +585,6 @@ def main():
                                     t=(step + 1) * 0.02,
                                     position=pos.cpu().tolist(),
                                     fell=fallen.cpu().tolist(),
-                                    head_hold_weight=head_hold.weight.cpu().tolist() if head_hold else None,
                                     **head_state(),
                                 )
                             )
@@ -705,21 +599,17 @@ def main():
                     if video_process.wait() != 0:
                         raise RuntimeError("Video encoding failed")
                     report["recording"] = dict(
-                        width=int(camera.cfg.width),
-                        height=int(camera.cfg.height),
+                        width=RECORD_SIZE[0],
+                        height=RECORD_SIZE[1],
                         fps_simulated_time=RECORD_FPS,
                         frames=recorded["frames"],
-                        expected_frames=round(a.seconds / 0.02),
+                        expected_frames=(round(a.seconds / 0.02) + 1) // 2,
                         video_seconds=recorded["frames"] / RECORD_FPS,
                         simulated_seconds=a.seconds,
                         wall_seconds=time.monotonic() - start,
                         duplicate_consecutive_frames=recorded["duplicate_consecutive_frames"],
-                        renders_per_frame=1,
-                        render_path="window: sim.step(render=True) at the 4th physics step of each control step, "
-                        "then the camera reads that render; headless: the camera update pumps one Kit update",
-                        renderer="same live RTX settings as the window (no extra samples, no offline quality pass)",
-                        frames_written="one per 20 ms control step, in order; no duplication, interpolation or speed change",
-                        start_warmup_renders=8,
+                        render_path="native Kit viewport; display updates assert unchanged root positions",
+                        frames_written="one per 40 ms simulated time; no interpolation",
                     )
                 held_seconds = torch.nan_to_num(a.seconds - reached_time, nan=0.0)
                 report["head_at_end"] = head_state()
@@ -757,7 +647,7 @@ def main():
                     passed=(reached & ~fallen & goal_at_end).cpu().tolist(),
                     fell=fallen.cpu().tolist(),
                     reached_goal=reached.cpu().tolist(),
-                    reached_goal_time_s=reached_time.cpu().tolist(),
+                    reached_goal_time_s=[v if math.isfinite(v) else None for v in reached_time.cpu().tolist()],
                     held_goal_until_end=(reached & ~fallen & ~left_goal).cpu().tolist(),
                     held_seconds=held_seconds.cpu().tolist(),
                     left_goal_after_arrival=left_goal.cpu().tolist(),

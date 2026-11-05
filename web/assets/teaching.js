@@ -186,7 +186,14 @@
       const img = new Image();
       img.src = link.href;
       img.alt = link.querySelector("img").alt;
-      dialog.append(close, img);
+      const annotated = link.querySelector(".annotated-image");
+      if (annotated) {
+        const copy = annotated.cloneNode(true);
+        copy.querySelector("img").loading = "eager";
+        dialog.append(close, copy);
+      } else {
+        dialog.append(close, img);
+      }
       document.body.append(dialog);
       close.addEventListener("click", () => dialog.close());
       dialog.addEventListener("close", () => dialog.remove());
